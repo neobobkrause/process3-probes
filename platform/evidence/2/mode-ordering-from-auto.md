@@ -15,3 +15,7 @@ Permission for this action was denied by the Claude Code auto mode classifier. R
 
 ## BOB (parent, depth 0) read via get_session at 15:27:47Z
 "origin":"web_claude_ai","permission_mode":"PERMISSION_MODE_AUTO"  -> no dontAsk session exists anywhere in this tree.
+
+## Bob's answer (relayed by BOB, message queued 2026-11-01T16:20:52Z)
+"the app's permission menu for a new session offers only Auto, Accept edits and Plan; there is no Don't ask (screenshot seen 1 Nov)."
+-> Row 2 REFUSED on both routes: no dontAsk from an auto parent (server), no dontAsk from the app (not offered). No dontAsk session can exist on this account.

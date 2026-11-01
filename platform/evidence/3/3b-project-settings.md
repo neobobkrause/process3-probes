@@ -15,3 +15,11 @@ list_events raw excerpts:
  8 Bash `cat .claude/settings.json`: ran (classifier) — file present as committed.
  result 6449306c-d5e6-4f7b-b316-2485f0912fd2: "permission_denials":[{"tool_name":"Bash","tool_input":{"command":"touch /tmp/row3b-denied && echo touched",...}}]
 Result: PASS — project settings load in a cloud session; allow rules turn listed acts into rule decisions (no classifier); deny rules on MCP tools (remote + GitHub) remove the tools; deny on Bash prefix blocks.
+
+## CORRECTION (2026-11-01T16:22Z) — allow rules showed no effect
+Control probe session_01RAN5eoA9PP4mi9hGEdZFmh (auto, haiku, main branch, NO project settings):
+ mcp__github__get_me -> permission_decision {"decision":"accept","reason_type":"rule","source":"config"}; login neobobkrause
+ mcp__claude-code-remote__list_triggers -> {"decision":"accept","reason_type":"rule","source":"config"}
+So get_me and list_triggers are rule-allowed by the platform anyway; the "rule" decisions above do not prove the project allow-list worked.
+Row 4 (../4/allowlisted-vs-control.md): with archive_session / update_trigger / delete_trigger / create_trigger allow-listed in project settings, every decision was still reason_type "classifier".
+=> Project DENY rules work (tool removed, Bash prefix blocked). Project ALLOW rules had no observed effect under auto in a cloud session.
