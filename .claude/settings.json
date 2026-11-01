@@ -1,0 +1,8 @@
+{
+  "permissions": {
+    "deny": [
+      "Bash(touch /tmp/row17-denied*)",
+      "mcp__claude-code-remote__list_sessions"
+    ]
+  }
+}
