@@ -1,0 +1,13 @@
+name: probe
+on:
+  workflow_dispatch:
+  push:
+    branches: [main, tranche]
+    paths: ['src/**']
+  pull_request:
+    paths: ['src/**']
+jobs:
+  probe-check:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "probe ran for ${{ github.event_name }} on ${{ github.ref }}"; sleep 5
