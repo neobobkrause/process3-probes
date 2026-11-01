@@ -10,3 +10,9 @@ Cross-check by gh api (15:45Z):
  pulls/1 -> {"number":1,"state":"closed","draft":false,"merged":true,"merged_at":"2026-11-01T15:44:56Z","merge_commit_sha":"379d4818...","user":"neobobkrause","merged_by":"neobobkrause","created_at":"2026-11-01T15:44:43Z"}
  issues/1/events -> ready_for_review 15:44:49Z (neobobkrause); merged 15:44:56Z; closed 15:44:56Z
 Result: PASS (4/4 acts) by GitHub MCP tools in a child session; none classifier-gated in that auto child (permission_denials empty). Note: the acts are attributed to neobobkrause (Bob's own GitHub account), not to a bot account.
+
+## Why children act as neobobkrause and this session as civicsmith (BOB asked)
+Not explained by any tool result. Observed only:
+- This session (origin "claude_code_mcp_seed", created by BOB, source neobobkrause/process3-probes) -> get_me {"login":"civicsmith"}; gh api (proxy-injected credential for api.github.com) also acts with civicsmith's permissions (pull-only before Bob's change, admin after).
+- Children created by this session with create_session + source_url (also origin "claude_code_mcp_seed") -> get_me {"login":"neobobkrause"}; PR #1 user, ready_for_review, merged_by = neobobkrause.
+- BOB's own session record lists sources neobobkrause/neoprocess and civicsmith/process3-probes. A guess, not shown by any result: the GitHub credential is attached when a session is created, and this session got the civicsmith one.
