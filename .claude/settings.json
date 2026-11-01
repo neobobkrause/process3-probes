@@ -1,0 +1,12 @@
+{
+  "permissions": {
+    "defaultMode": "dontAsk",
+    "allow": [
+      "Bash(touch /tmp/row21-listed)",
+      "mcp__claude-code-remote__create_session"
+    ],
+    "deny": [
+      "Bash(rm:*)"
+    ]
+  }
+}
