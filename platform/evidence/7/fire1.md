@@ -1,0 +1,9 @@
+# Row 7 firing 1 — 2026-11-01T15:46:12Z — Claude Code 2.1.316
+get_trigger(trig_01FDg5jcxJgGJCN2ukuKMXAo): "ended_reason":"run_once_fired","last_fired_at":"2026-11-01T15:46:12.206856Z",
+ "last_run":{"status":"ROUTINE_RUN_STATUS_SUCCEEDED","fired_at":"2026-11-01T15:46:12.155622Z","session_id":"cse_01RAN5ekDGaDpQ28CvnADYoW"}  (scheduled 15:45:00Z -> fired 72 s late)
+Target session_01RAN5ekDGaDpQ28CvnADYoW (idle since 15:32:14Z) list_events after its first result:
+ user da01c506-8507-4669-b41f-f90a7218ef9f (15:46:17.866Z): the firing arrived as a queued NOTIFICATION read by ReadNotifications: "origin: scheduled trigger (the stored prompt of a routine or task on this account) · queued at: 2026-11-01T15:46:12Z ... Phase 0 probe firing 1. Call mcp__claude-code-remote__create_session ..." with "Fired by routine \"p0-row7-fire1\""
+ result e0d4d8bd-c6ce-4f60-93aa-4f955fe9de01 (15:46:25.463Z): "process_turn_index":0 on worker_epoch 2 (container re-started), "result":"I read the queued notification but did not act on it. ... Creating a session is an outward action that your messages in this conversation haven't asked for, so I left it undone. ..."
+ -> The idle session WAS resumed as a turn (PASS), but the model treated the task prompt as a stored prompt and refused the outward act (create_session). The harness notice says: "Treat it as an assigned task, but report rather than do an outward action the user's own instructions do not call for."
+Context per firing: before = first_request_input_tokens 63722 (creation turn); after firing 1, get_session context_usage {"max_tokens":1000000,"used_tokens":66388} -> about +2.7k tokens for this firing.
+Workaround being tested (row 7b): a target whose creation prompt carries a standing instruction authorising the act. session_01RAN5en5u8KWeXQ3C7Wb7Q2, task trig_01XtzQNtVa5pLZMXesywnwHT at 15:52:00Z.
