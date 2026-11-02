@@ -1,0 +1,9 @@
+{
+  "tranche": "tranche",
+  "record_since": "379d481884f715e235548a2d68fc970324f7b45d",
+  "records": ["process/"],
+  "node": "26.10.0",
+  "lockfiles": [],
+  "coordinator": "session_01RAN5eoEAjaqTWmat2RH6pn",
+  "process_repo": "https://github.com/neobobkrause/process3"
+}
