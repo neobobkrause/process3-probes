@@ -89,7 +89,7 @@ The runner read the build 22 change in merge.mjs before moving the pin. pinChang
 All reviewer verdicts were "approve" one-liners, given in full in the runner's `--reviewed` text. Each gate on the PR head read success (gate; record-push and post success or still running).
 
 ### Counts, part B overall
-- Tranche into main merged by `p3 merge`, unattended, after green gate and fresh review: **4** (#122, #125, #127 and, before them, nothing). Main moved from 379d481 to 0a7d54e.
+- Tranche into main merged by `p3 merge`, unattended, after green gate and fresh review: **3** (#122, #125, #127). Main moved from 379d481 to 0a7d54e.
 - Refused: #122 once by the tool's process_repo gate (old pin 237b4d4), fixed by build 22. #129 once by the judge, with no explanation given.
 - Review rejections: 1 (#122, first brief). With the corrected brief: 0 of 8.
 - Judge refusals of the runner, whole round: 1 (try 4's merge call), not repeated, so it never reached two in a row.
