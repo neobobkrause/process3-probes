@@ -1,0 +1,53 @@
+# PLT-8 probe (3 Nov 2026), runs only from its own working branch; never merged.
+# Job token-made: with the workflow's own GITHUB_TOKEN, pushes a branch and opens a pull request
+# into tranche, to see whether process-gate, probe and process-record start on what it made.
+# Job draft-release: cuts a draft release (never public) with a new tag.
+name: plt8-probe
+on:
+  push:
+    branches: ['bob/probe-plt8-01RAN5emSV6v']
+permissions: {}
+jobs:
+  token-made:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          ref: tranche
+          fetch-depth: 1
+      - name: push a branch with the workflow token
+        run: |
+          b="bob/probe-plt8-token-made-${GITHUB_RUN_ID}"
+          echo "B=$b" >> "$GITHUB_ENV"
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git checkout -b "$b"
+          echo "made by run ${GITHUB_RUN_ID} with GITHUB_TOKEN at $(date -u +%FT%TZ)" > src/plt8-token-probe.txt
+          git add src/plt8-token-probe.txt
+          git commit -m "PLT-8 probe: a commit pushed with the workflow's own GITHUB_TOKEN"
+          git push origin "$b"
+          echo "pushed $b at $(git rev-parse HEAD) $(date -u +%FT%TZ)"
+      - name: open a pull request with the workflow token
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh pr create --base tranche --head "$B" --title "PLT-8 probe: PR opened by GITHUB_TOKEN (run ${GITHUB_RUN_ID}); close, do not merge" --body "Opened by workflow run ${GITHUB_RUN_ID} with its own GITHUB_TOKEN, to see whether process-gate starts. Close without merging."
+          echo "opened at $(date -u +%FT%TZ)"
+  draft-release:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      contents: write
+    steps:
+      - name: cut a draft release with a new tag
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          t="p3dev-plt8-probe-${GITHUB_RUN_ID}"
+          gh release create "$t" --repo "$GITHUB_REPOSITORY" --draft --target "$GITHUB_SHA" --title "PLT-8 probe draft (run ${GITHUB_RUN_ID}), not for publishing" --notes "Draft cut by a workflow with GITHUB_TOKEN. Never publish."
+          gh release view "$t" --repo "$GITHUB_REPOSITORY" --json tagName,isDraft,isPrerelease,url,createdAt
+          if gh api "repos/$GITHUB_REPOSITORY/git/ref/tags/$t"; then echo "tag exists on the remote"; else echo "tag does not exist on the remote while the release is a draft"; fi
