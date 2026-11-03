@@ -1,0 +1,82 @@
+# PLT-8 probe, rows 4b and 1c (3 Nov 2026). Runs only from its own working branch; never merged.
+# Job signing (4b): signs a small file with secrets.P3_PROBE_TEST_SIGNING_KEY using Node's built-in
+# crypto, verifies it with vars.P3_PROBE_TEST_SIGNING_PUBKEY, attaches file and signature to a new
+# draft release (never public), and prints only "verified true" or "verified false".
+# Job owner-push (1c): if secrets.P3_PROBE_OWNER_TOKEN is set, pushes a throwaway branch with it,
+# to see whether process-record starts on that push. No step prints a secret.
+name: plt8b-probe
+on:
+  push:
+    branches: ['bob/probe-plt8b-01RAN5ekkzYo']
+permissions: {}
+jobs:
+  signing:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      contents: write
+    steps:
+      - name: sign and verify
+        env:
+          SIGNING_KEY: ${{ secrets.P3_PROBE_TEST_SIGNING_KEY }}
+          SIGNING_PUBKEY: ${{ vars.P3_PROBE_TEST_SIGNING_PUBKEY }}
+        run: |
+          if [ -z "$SIGNING_KEY" ]; then echo "::error::secret P3_PROBE_TEST_SIGNING_KEY is not set"; exit 1; fi
+          if [ -z "$SIGNING_PUBKEY" ]; then echo "::error::variable P3_PROBE_TEST_SIGNING_PUBKEY is not set"; exit 1; fi
+          mkdir -p "$RUNNER_TEMP/out"
+          echo "PLT-8 probe 4b payload, run ${GITHUB_RUN_ID}, commit ${GITHUB_SHA}" > "$RUNNER_TEMP/out/payload.txt"
+          node -e '
+            const crypto = require("crypto"); const fs = require("fs");
+            const dir = process.env.RUNNER_TEMP + "/out";
+            const data = fs.readFileSync(dir + "/payload.txt");
+            let ok = false;
+            try {
+              const key = crypto.createPrivateKey(process.env.SIGNING_KEY);
+              const sig = crypto.sign(null, data, key);
+              fs.writeFileSync(dir + "/payload.txt.sig", sig.toString("base64") + "\n");
+              const pub = crypto.createPublicKey(process.env.SIGNING_PUBKEY);
+              ok = crypto.verify(null, data, pub, sig);
+            } catch (e) { ok = false; }
+            console.log("verified " + ok);
+            fs.writeFileSync(dir + "/verified", String(ok));
+          '
+      - name: attach to a new draft release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          t="p3dev-plt8-sign-${GITHUB_RUN_ID}"
+          files="$RUNNER_TEMP/out/payload.txt"
+          [ -f "$RUNNER_TEMP/out/payload.txt.sig" ] && files="$files $RUNNER_TEMP/out/payload.txt.sig"
+          gh release create "$t" --repo "$GITHUB_REPOSITORY" --draft --target "$GITHUB_SHA" --title "PLT-8 4b signing probe (run ${GITHUB_RUN_ID}), not for publishing" --notes "Draft cut by a probe workflow. Never publish." $files
+          gh release view "$t" --repo "$GITHUB_REPOSITORY" --json tagName,isDraft,url,assets --jq '{tagName,isDraft,url,assets:[.assets[].name]}'
+          [ "$(cat "$RUNNER_TEMP/out/verified")" = "true" ]
+  owner-push:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      contents: read
+    steps:
+      - name: is the owner token set
+        id: has
+        env:
+          OWNER_TOKEN: ${{ secrets.P3_PROBE_OWNER_TOKEN }}
+        run: |
+          if [ -z "$OWNER_TOKEN" ]; then echo "secret P3_PROBE_OWNER_TOKEN is not set; skipping row 1c"; echo "set=0" >> "$GITHUB_OUTPUT"; else echo "secret P3_PROBE_OWNER_TOKEN is set"; echo "set=1" >> "$GITHUB_OUTPUT"; fi
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        if: steps.has.outputs.set == '1'
+        with:
+          ref: tranche
+          fetch-depth: 1
+          token: ${{ secrets.P3_PROBE_OWNER_TOKEN }}
+      - name: push a throwaway branch with the owner token
+        if: steps.has.outputs.set == '1'
+        run: |
+          b="bob/probe-plt8-owner-${GITHUB_RUN_ID}"
+          git config user.name "plt8 probe"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git checkout -b "$b"
+          echo "pushed by run ${GITHUB_RUN_ID} with the owner token at $(date -u +%FT%TZ)" > src/plt8-owner-probe.txt
+          git add src/plt8-owner-probe.txt
+          git commit -q -m "PLT-8 probe 1c: a commit pushed with the owner token"
+          git push -q origin "$b"
+          echo "pushed $b at $(git rev-parse HEAD) $(date -u +%FT%TZ)"
