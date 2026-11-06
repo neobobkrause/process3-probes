@@ -1,0 +1,80 @@
+{
+  "at": "2026-11-06T19:08:56Z",
+  "by": "session_018BhcecWcETw22rxhPvoZ53",
+  "tranche": "tranche",
+  "tip": "bfddf257317d1899247ff42c52f8e0eaa93fa228",
+  "approvals": "9d44cc6301cc448765dec483a70b191bee8c70b3c2a3b6bdac71778ef5fe946a",
+  "coordinator": "session_018BhcecWcETw22rxhPvoZ53",
+  "addresses": {},
+  "tasks": [
+    {
+      "id": "trig_01HbdaW3eYvQVZn2p3t9CCkc",
+      "name": "BOB layer 9 check-in",
+      "run_once_at": "2026-11-06T19:11:00Z",
+      "prompt": "BOB check-in (layer flow, SLB-10, layer 9): ... Set the next check-in.",
+      "session": "session_018Bhceff4p3dNtYx3XNk4CX",
+      "role": "unknown"
+    },
+    {
+      "id": "trig_01KnhTkpeHhsAJCf1f2Gy4km",
+      "name": "Phase 2 survival read",
+      "run_once_at": "2026-11-18T17:00:00Z",
+      "prompt": "PHASE 2 SURVIVAL READ (Build Plan, metrics survival P3-G5). ...",
+      "session": "session_018BhcecWcETw22rxhPvoZ53",
+      "role": "coordinator"
+    },
+    {
+      "id": "trig_011nK1jS7NwXi19ZT39TStZS",
+      "name": "Phase 1 survival read",
+      "run_once_at": "2026-11-16T17:00:00Z",
+      "prompt": "PHASE 1 SURVIVAL READ (Build Plan, metrics survival P3-G5). ...",
+      "session": "session_018BhcecWcETw22rxhPvoZ53",
+      "role": "coordinator"
+    },
+    {
+      "id": "trig_017zoER3MZgcwCCaPXex3Y4C",
+      "name": "Coordinator hourly flow check",
+      "cron_expression": "51 * * * *",
+      "prompt": "HOURLY FLOW CHECK (coordinator), SLB-10 trial on the shared layer branch. ...",
+      "session": "session_018BhcecWcETw22rxhPvoZ53",
+      "role": "coordinator"
+    },
+    {
+      "id": "trig_01HBGHt8e2s7qwtHsNoiphgs",
+      "name": "sweep",
+      "cron_expression": "48 * * * *",
+      "prompt": "Sweep. First run `git fetch origin tranche` ...",
+      "session": "session_018BhceduipEp2mmEFHN9Diu",
+      "role": "unknown"
+    },
+    {
+      "id": "trig_01TFNsa6XmoaXvLbTW61KqAj",
+      "name": "watcher",
+      "cron_expression": "17 11 * * *",
+      "prompt": "Watch. Do what your starting prompt's \"When your daily task fires\" says ...",
+      "session": "session_018BhcefMKiLuojtdyeh1nzG",
+      "role": "unknown"
+    },
+    {
+      "id": "trig_01LvNnxKBdB31x23mDSg9XBN",
+      "name": "alpha-pipeline-runner",
+      "run_once_at": "2027-01-01T09:00:00Z",
+      "prompt": "You are the Alpha Pipeline scheduled runner ...",
+      "session": null,
+      "role": "not the process",
+      "fresh": true
+    }
+  ],
+  "jobs": [],
+  "messages": [],
+  "layers": [],
+  "lanes": [],
+  "asks": [],
+  "sessions": [
+    "session_018BhcecWcETw22rxhPvoZ53",
+    "session_018Bhceff4p3dNtYx3XNk4CX",
+    "session_018BhceduipEp2mmEFHN9Diu",
+    "session_018BhcefMKiLuojtdyeh1nzG"
+  ],
+  "dry_run": true
+}
