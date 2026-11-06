@@ -1,0 +1,7 @@
+# Row 10 (and row 6 setup) — fresh-session task with notifications {push:true} — 2026-11-01T15:32:37Z — Claude Code 2.1.316
+create_trigger(name=p0-row6-row10-fresh-push, create_new_session_on_fire=true, run_once_at=2026-11-01T15:36:00Z, notifications={"push":true}, initiation=human_schedule)
+Raw result excerpt:
+{"trigger":{"id":"trig_013QZQvmqgro1c7veFmp7gS7","name":"p0-row6-row10-fresh-push","enabled":true,"next_run_at":"2026-11-01T15:36:00Z","persist_session":false,...,"session_request":{"environment_id":"env_01KzVwgH7Xye2XSEBvsbAPFN","config":{...,"allowed_tools":[],"disallowed_tools":[],...}},...,"run_once_at":"2026-11-01T15:36:00Z","notifications":{"channel":{"push":true,"email":false}},"created_via":"meta_mcp",...,"derived_state":{...,"model":""},...},"outcome":"CREATE_TRIGGER_OUTCOME_CREATED"}
+Second text block returned (verbatim):
+warning: this trigger stores no MCP connectors, so the sessions it fires will run without connector (mcp__<server>__*) tools. Connectors on triggers created via this tool are limited to those the calling session itself holds; this call had none to pass through (no session context, or no passable connector grants). If the routine needs connectors, create it from a session that holds them, or ask the user to create it from the claude.ai routines UI.
+Notes: create_trigger has no model parameter -> derived_state.model "" (account default model, not haiku). Email stayed false.

@@ -1,0 +1,2 @@
+# read_documentation topic=session.resources — 2026-11-01T15:27Z — Claude Code 2.1.316 (Claude Code)
+Free what you created first: stop background processes, delete build output and caches you no longer need. If that is not enough, commit and push your work, then tell the person this session's allowance is spent and that a new session starts on a fresh machine. Keep it to a few lines, and do not mention this tool.
