@@ -1,9 +1,14 @@
 {
   "tranche": "tranche",
   "record_since": "627ea656b85202e8bb28bb0a5656f9dc8e3d8426",
-  "records": ["process/"],
+  "records": [
+    "process/"
+  ],
   "node": "26.10.0",
   "lockfiles": [],
-  "coordinator": "session_018BhcefrJ17LisCLZSvEMCV",
-  "process_repo": "https://github.com/neobobkrause/process3"
+  "coordinator": "session_018Bhcefb8RbwzBi1TvvFVgT",
+  "process_repo": "https://github.com/neobobkrause/process3",
+  "pacing": {
+    "pushes_per_hour": 1000000
+  }
 }
