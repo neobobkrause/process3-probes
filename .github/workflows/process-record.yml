@@ -1,9 +1,12 @@
-# Process3 record check on every push to any branch (REC-10), at the tranche's process pin,
-# from the merge-base with the tranche (or main). Not a required check.
+# Process3 record check on every push to main and the tranche (REC-10), at the tranche's
+# process pin, from the merge-base with the tranche (or main). Not a required check, and nothing
+# reads it: a pull request's record is checked by the gate (fewer runs, 4 Nov: working branches
+# were 403 of 495 runs). A tranche not named "tranche" has no run here.
 # Copied into a product as .github/workflows/process-record.yml.
 name: process-record
 on:
   push:
+    branches: [main, tranche]
 permissions:
   contents: read
 concurrency:
@@ -15,7 +18,7 @@ jobs:
     timeout-minutes: 5
     steps:
       # Full history, but file contents only for the checkout; any other file the checks read
-      # is fetched when read (Bob's decision 3A, 2 Nov 2026: the full checkout of a large
+      # is fetched when read (decision 3A, Bob, 2 Nov, before the log; unverified: the full checkout of a large
       # product took up to 4 minutes). A private repository keeps the full fetch: the token is
       # not kept, so a later fetch of a file there could not authenticate.
       - uses: actions/checkout@v4
@@ -26,8 +29,11 @@ jobs:
       - name: the tranche's process pin
         id: pin
         run: |
-          cfg=$(cat process/config.json 2>/dev/null || echo '{}')
-          tranche=$(echo "$cfg" | jq -r '.tranche // "tranche"')
+          # The tranche's name from main's config (the default name while main has none, as before
+          # a product's first close), never from the pushed commit; the rest from the tranche's.
+          tranche=$(git show origin/main:process/config.json 2>/dev/null || echo '{}')
+          tranche=$(echo "$tranche" | jq -r '.tranche // "tranche"')
+          cfg=$(git show "origin/$tranche:process/config.json" 2>/dev/null || cat process/config.json 2>/dev/null || echo '{}')
           echo "TRANCHE=$tranche" >> "$GITHUB_ENV"
           if pin=$(git rev-parse -q --verify "origin/$tranche:.process"); then :;
           elif pin=$(git rev-parse -q --verify "HEAD:.process"); then echo "::warning::the tranche has no pin yet; the pushed commit's pin runs";
