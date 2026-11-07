@@ -1,0 +1,97 @@
+{
+  "at": "2026-11-07T05:32:32Z",
+  "by": "session_018Bhcefb8RbwzBi1TvvFVgT",
+  "tranche": "tranche",
+  "tip": "3566fb62d972bfdfd1d171e6740e91757c4d714f",
+  "approvals": "9d44cc6301cc448765dec483a70b191bee8c70b3c2a3b6bdac71778ef5fe946a",
+  "coordinator": "session_018Bhcefb8RbwzBi1TvvFVgT",
+  "addresses": {},
+  "tasks": [
+    {
+      "id": "trig_01Xr6hruLoNajPFrX5CAxwBq",
+      "name": "Phase 2 survival read",
+      "run_once_at": "2026-11-18T17:00:00Z",
+      "prompt": "PHASE 2 SURVIVAL READ (Build Plan, metrics survival P3-G5). From the copy run `node .process/tool/p3.mjs metrics report` and read its survival figures: of the product behaviour merged in Phase 2, how much survives on the tranche today (not reverted, rewritten or retired), per module and in sum, with the measured cost. Record it in the findings file and tell Bob the figures in plain lines. (If this session is no longer the coordinator, forward this text to the current coordinator: ROOT's `address coordinator`.)",
+      "session": "session_018Bhcefb8RbwzBi1TvvFVgT",
+      "role": "coordinator"
+    },
+    {
+      "id": "trig_01S6Uz77Um5Fs9KKkbRLsANK",
+      "name": "Phase 1 survival read",
+      "run_once_at": "2026-11-16T17:00:00Z",
+      "prompt": "PHASE 1 SURVIVAL READ (Build Plan, metrics survival P3-G5). From the copy run `node .process/tool/p3.mjs metrics report` and read its survival figures: of the product behaviour merged in Phase 1, how much survives on the tranche today (not reverted, rewritten or retired), per module and in sum, with the measured cost. Record it in the findings file and tell Bob the figures in plain lines. (If this session is no longer the coordinator, forward this text to the current coordinator: ROOT's `address coordinator`.)",
+      "session": "session_018Bhcefb8RbwzBi1TvvFVgT",
+      "role": "coordinator"
+    },
+    {
+      "id": "trig_012Umw7Ey83qEgKDxVXTKNwZ",
+      "name": "Coordinator hourly flow check",
+      "cron_expression": "51 * * * *",
+      "prompt": "HOURLY FLOW CHECK (coordinator). Stop rule: each layer closes in under about 27.6 h from open. Answer \"is it moving with urgency?\" with numbers: the open layer, its jobs (working / complete / deferred), hours since open, lands in the last hour, and whether BOB lands and merges in dependency order. GITHUB BUDGET AND AUDIT (P27, PD-3): in a process3 worktree at the tranche run `node tool/p3.mjs github budget` and record the primary %, content-creating % and pushes/120 for the hour; if any is above 85% or a pause/stop is recorded, find which session drives it and slow it. Run `node tool/p3.mjs github audit --since <an hour ago>` and chase any unexplained push or write gap to its session. Push my own notes ONLY with `node <tranche worktree>/tool/p3.mjs github push origin start/coordinator-4nov`. Work the latest handoff's in-flight list (notes/coordinator-handoff-7nov-b.md and later notes). Check ROOT, BOB, the lanes and the builders are alive; nudge any idle while waiting on ci. Record a line in notes/coordinator-findings-3-4nov.md on start/coordinator-4nov and push (one push). Check your own context; hand over at 60%.",
+      "session": "session_018Bhcefb8RbwzBi1TvvFVgT",
+      "role": "coordinator"
+    },
+    {
+      "id": "trig_01HBGHt8e2s7qwtHsNoiphgs",
+      "name": "sweep",
+      "cron_expression": "48 * * * *",
+      "prompt": "Sweep. First run `git fetch origin tranche`, then `git checkout -q --detach FETCH_HEAD`, then `git submodule update --init .process`, then `node .process/tool/p3.mjs start check --wake --approvals 9d44cc6301cc448765dec483a70b191bee8c70b3c2a3b6bdac71778ef5fe946a`; if it says the approvals changed, tell Bob by push notification and take no further step. Then save list_sessions (every session of the last day, archived ones included) as JSON and run `node .process/tool/p3.mjs sweep --session session_018BhceduipEp2mmEFHN9Diu --sessions <that file> --context <the percent of the window get_session on yourself shows>` and do only what it prints, each act its own command. Create nothing else, merge nothing, edit no task but this one's prompt as your ROOT prompt allows, archive only what it prints.",
+      "session": "session_018BhceduipEp2mmEFHN9Diu",
+      "role": "unknown"
+    },
+    {
+      "id": "trig_01TFNsa6XmoaXvLbTW61KqAj",
+      "name": "watcher",
+      "cron_expression": "17 11 * * *",
+      "prompt": "Watch. Do what your starting prompt's \"When your daily task fires\" says, starting with `git fetch origin tranche`, then `git checkout -q --detach FETCH_HEAD`, then `git submodule update --init .process`, then `node .process/tool/p3.mjs start check --wake --approvals 9d44cc6301cc448765dec483a70b191bee8c70b3c2a3b6bdac71778ef5fe946a`; if it says the approvals changed, tell Bob by push notification and take no further step.",
+      "session": "session_018BhcefMKiLuojtdyeh1nzG",
+      "role": "unknown"
+    },
+    {
+      "id": "trig_01LvNnxKBdB31x23mDSg9XBN",
+      "name": "alpha-pipeline-runner",
+      "run_once_at": "2027-01-01T09:00:00Z",
+      "prompt": "You are the Alpha Pipeline scheduled runner: ONE equity-research analysis job per run, autonomously. (Bob's own task, not the process; listed and never touched.)",
+      "session": null,
+      "role": "not the process",
+      "fresh": true
+    }
+  ],
+  "jobs": [],
+  "messages": [
+    {
+      "from": "pin",
+      "n": 1,
+      "to": "bob",
+      "at": "2026-11-07T02:17:25Z",
+      "text": "pin moved to 55bd1d186f6e710db22d963305a7c6899db9c2ec: run your wake steps (start check --wake prints a changed prompt), then status"
+    },
+    {
+      "from": "pin",
+      "n": 2,
+      "to": "bob",
+      "at": "2026-11-07T03:20:13Z",
+      "text": "pin moved to e64530f31e5dda6c34b0ed3310dfeb59cc0ca3ce: run your wake steps (start check --wake prints a changed prompt), then status"
+    },
+    {
+      "from": "pin",
+      "n": 3,
+      "to": "bob",
+      "at": "2026-11-07T04:08:58Z",
+      "text": "pin moved to 19fe9dd48609e83281a956dad118154156362132: run your wake steps (start check --wake prints a changed prompt), then status"
+    },
+    {
+      "from": "pin",
+      "n": 4,
+      "to": "bob",
+      "at": "2026-11-07T05:21:00Z",
+      "text": "pin moved to f6a9846db14713bc8d29d5f5287151fa8cdb50b4: run your wake steps (start check --wake prints a changed prompt), then status"
+    }
+  ],
+  "layers": [],
+  "lanes": [],
+  "asks": [],
+  "sessions": [
+    "session_018Bhcefb8RbwzBi1TvvFVgT"
+  ]
+}
