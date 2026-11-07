@@ -10,5 +10,11 @@
   "process_repo": "https://github.com/neobobkrause/process3",
   "pacing": {
     "pushes_per_hour": 1000000
+  },
+  "deploy": {
+    "internal_walk": {
+      "none": "the probes are a process test bed with no product behaviour to walk",
+      "by": "Bob, 7 Nov 2026"
+    }
   }
 }
