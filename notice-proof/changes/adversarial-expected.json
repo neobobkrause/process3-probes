@@ -1,0 +1,78 @@
+{
+  "about": "Expected answers for the proof session's own adversarial round, written by Claude (this proof session) from the method's rules and a reading of the code, BEFORE the tool or any test was run on these changes. Same fields as planned-expected.json, plus 'attack' (what would count as defeating the method). Where the rules leave a question open, the expectation states the reading used. Never edited after a result was seen; later notes go under 'notes' with a date.",
+  "changes": {
+    "A01-stored-row-shape": {
+      "told": [],
+      "why": "bookings' interface is unchanged (the row form is internal and not exported), so the listing is the same and nobody is told.",
+      "brokenPredicted": ["reports"], "wrongWithoutFailingTest": [], "refuses": [],
+      "attack": "reports reads bookings' rows straight out of the shared store. If reports' tests fail and reports is not told, the method has a hole: data shared through a store bypasses every interface."
+    },
+    "A03-reexported-function": {
+      "told": ["rooms", "front", "reports"],
+      "why": "slugify's result bound changes. rooms calls slugify; front calls the slugify that rooms re-exports, which is text-rules' own. rooms' listing (which includes the re-export) changes through text-rules, so its unfollowed user reports is told.",
+      "brokenPredicted": ["rooms", "front"], "wrongWithoutFailingTest": [], "refuses": [],
+      "attack": "Defeat if front, which never names text-rules, is not told."
+    },
+    "A04-message-kind-not-shared": {
+      "told": [],
+      "why": "By its code, billing uses MeterInput and WORKER_FILE from meter, not MeterMsg (it wrote its own copy of the message kind). The rules tell only users of the changed entry.",
+      "brokenPredicted": ["billing"], "wrongWithoutFailingTest": [], "refuses": [],
+      "attack": "Two running parts that do not share one written kind (breaking rule 8). Defeat if billing breaks without being told: the method depends on rule 8 being kept, and nothing checks it."
+    },
+    "A06-error-kind-changed": {
+      "told": ["billing"],
+      "why": "Reading used: the error a provider raises when a value is out of bounds is part of what it hands back (Bob's rule on tests names 'the recognition of an error when out of bounds'). splitEvenly now raises a different kind of error; billing calls splitEvenly.",
+      "brokenPredicted": ["billing"], "wrongWithoutFailingTest": [], "refuses": [],
+      "attack": "Defeat if billing is not told: the listing leaves out the kinds of error a function raises."
+    },
+    "A07-bound-test-moved-line-not": {
+      "told": [],
+      "why": "The listing is the same (the bound line was left).",
+      "brokenPredicted": ["front"], "wrongWithoutFailingTest": [], "refuses": [],
+      "attack": "Unlike P17, the job also moved its own bound test, so nothing stops it. Defeat: front breaks, nobody is told, bookings' own tests pass."
+    },
+    "A08-request-line-built-in-steps": {
+      "told": [],
+      "why": "billing has no users.",
+      "brokenPredicted": [], "wrongWithoutFailingTest": [], "refuses": [],
+      "attack": "The code is right. Defeat if the check refuses billing (a false refusal), because the reader cannot read a request line built in steps."
+    },
+    "A09-assert-narrowing": {
+      "told": [],
+      "why": "Only meter's tests change; the listing is the same.",
+      "brokenPredicted": [], "wrongWithoutFailingTest": [], "refuses": [],
+      "attack": "The test is right. Defeat if the check refuses meter (a false refusal). Known from development before this round."
+    },
+    "A10-kind-split-same-shape": {
+      "told": ["reports"],
+      "why": "Booking keeps its shape; BookingCore and BookingPrice are new entries with no users. The listing changed, so reports (not followed fully) is told; nobody else.",
+      "brokenPredicted": [], "wrongWithoutFailingTest": [], "refuses": [],
+      "attack": "Defeat if any user other than reports is told."
+    },
+    "A11-string-spelled-String": {
+      "told": [],
+      "why": "Reading used: String and string name the same domain and range for a slug; nothing a user could notice changed.",
+      "brokenPredicted": [], "wrongWithoutFailingTest": [], "refuses": [],
+      "attack": "Defeat if rooms is told (told for nothing) or the check refuses rooms' honest code because of the spelling."
+    },
+    "A12-caught-error-makes-user-unfollowed": {
+      "told": ["reports"],
+      "why": "Opening a booking only accepts more, so nobody is told for that; reports is not followed fully and the listing changed. front's tests read the message of a caught error, which is not a value of any provider.",
+      "brokenPredicted": [], "wrongWithoutFailingTest": [], "refuses": [],
+      "attack": "Defeat if front is told (told for nothing) because a caught error, a value of unknown kind, makes the tool give up on following front."
+    },
+    "A13-computed-member-renamed": {
+      "told": ["rooms", "bookings", "reports"],
+      "why": "Store.get is removed. bookings calls it by name. rooms calls it by a computed name, which the tool cannot follow, so rooms counts as using everything of store (rooms also names the kind Store, whose list of names lost get). reports is not followed fully.",
+      "brokenPredicted": ["rooms", "bookings", "billing", "front", "reports"], "wrongWithoutFailingTest": [], "refuses": ["bookings"],
+      "attack": "Defeat if rooms is not told."
+    },
+    "A14-copy-of-kind-in-the-middle": {
+      "told": ["bookings", "meter", "billing", "reports"],
+      "why": "Amount's field is renamed. bookings, meter and billing use money directly. bookings' handle method quote hands back money's Amount, so bookings' listing changes through money and reports (not followed) is told. front reads cents from bookings' own Price kind, which did not change, so front is not told now; bookings' check should refuse its code (it passes an Amount where its comment says Price), and front is told when bookings' job changes Price.",
+      "brokenPredicted": ["bookings", "meter", "billing", "front"], "wrongWithoutFailingTest": [], "refuses": ["bookings", "meter", "billing"],
+      "attack": "Defeat if front breaks and nothing points at the cause: neither a notice to front nor a refusal of bookings."
+    }
+  },
+  "notes": []
+}
