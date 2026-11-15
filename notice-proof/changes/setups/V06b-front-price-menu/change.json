@@ -1,0 +1,7 @@
+{
+  "title": "The front desk shows the price list: one line per kind of room, with the price of a seat for a night",
+  "provider": "front",
+  "covers": [
+    "a user that imports a provider file outside the provider's interface (the standing state)"
+  ]
+}

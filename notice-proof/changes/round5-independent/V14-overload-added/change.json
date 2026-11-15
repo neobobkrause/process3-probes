@@ -1,0 +1,8 @@
+{
+  "title": "formatAmount also writes a list of amounts, joined by +, as a second overload",
+  "provider": "money",
+  "covers": [
+    "a function gains a second overload (accepts more)",
+    "every existing call is answered the same"
+  ]
+}

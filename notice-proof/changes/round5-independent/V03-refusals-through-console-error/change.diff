@@ -1,0 +1,46 @@
+--- before/meter/src/worker.mjs
++++ after/meter/src/worker.mjs
+@@ -17,7 +17,10 @@
+   /** @type {MeterInput} checks a MeterInput below */
+   const input = JSON.parse(line);
+   if (input.kind !== 'use' || !Number.isInteger(input.minutes) || input.minutes < 1 || input.minutes > 1440) {
+-    send({ kind: 'refused', room: String(input.room), reason: 'minutes out of bounds' });
++    // A use outside its bound is the caller's error: it is reported on the error stream, as errors are.
++    /** @type {MeterMsg} */
++    const refusal = { kind: 'refused', room: String(input.room), reason: 'minutes out of bounds' };
++    console.error(JSON.stringify(refusal));
+     return;
+   }
+   count++;
+--- before/meter/test/index.test.mjs
++++ after/meter/test/index.test.mjs
+@@ -5,7 +5,8 @@
+ /** @import { MeterMsg } from '../src/index.mjs' */
+ 
+ /**
+- * Runs the meter's program on the given lines and collects what it sends back.
++ * Runs the meter's program on the given lines and collects what it sends back: its standard output, then its
++ * standard error.
+  * @param {string[]} lines
+  * @returns {Promise<MeterMsg[]>}
+  */
+@@ -13,9 +14,11 @@
+   return new Promise((resolve, reject) => {
+     const child = spawn(process.execPath, [WORKER_FILE]);
+     let out = '';
++    let err = '';
+     child.stdout.on('data', (/** @type {any} */ d) => (out += d));
++    child.stderr.on('data', (/** @type {any} */ d) => (err += d));
+     child.on('error', reject);
+-    child.on('close', () => resolve(out.trim().split('\n').filter(Boolean).map((l) => /** @type {MeterMsg} */ (JSON.parse(l)))));
++    child.on('close', () => resolve((out + err).trim().split('\n').filter(Boolean).map((l) => /** @type {MeterMsg} */ (JSON.parse(l)))));
+     child.stdin.end(lines.join('\n') + '\n');
+   });
+ }
+@@ -36,5 +39,5 @@
+ 
+ test('bound minutes: whole number, 1 to 1440', async () => {
+   const msgs = await runMeter([1, 1440, 0, 1441, 2.5].map((minutes) => JSON.stringify({ kind: 'use', room: 'r', minutes })));
+-  assert.deepEqual(msgs.map((m) => m.kind), ['reading', 'reading', 'refused', 'refused', 'refused', 'done']);
++  assert.deepEqual(msgs.map((m) => m.kind), ['reading', 'reading', 'done', 'refused', 'refused', 'refused']);
+ });

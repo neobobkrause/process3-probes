@@ -1,0 +1,9 @@
+{
+  "title": "The meter refuses uses longer than ten hours, which are mistakes (a room left booked overnight); its bound test moves with it, the bound line is forgotten",
+  "provider": "meter",
+  "covers": [
+    "bound changed in code and its test, the bound line not",
+    "the test's values are the receiver of .map, outside what the fingerprint reads"
+  ],
+  "note": "billing's meterUsage still states (through MeterInput) that uses of up to 1440 minutes are priced; its tests use 10 and 20 minutes, and 2000 (refused either way)."
+}

@@ -1,0 +1,7 @@
+{
+  "title": "bookings keeps its price list in src/prices.mjs: the price of a seat for a night, by kind of room",
+  "provider": "bookings",
+  "covers": [
+    "a provider file that is not in its interface (the standing state)"
+  ]
+}

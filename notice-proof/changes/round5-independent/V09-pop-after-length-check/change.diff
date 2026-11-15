@@ -1,0 +1,39 @@
+--- before/bookings/src/index.mjs
++++ after/bookings/src/index.mjs
+@@ -45,6 +45,7 @@
+  * @property {(id: string) => Booking} cancel cancels an open booking; refuses an unknown or already cancelled one
+  * @property {(id: string) => Booking | undefined} find
+  * @property {(room: string, party: number, nights: number) => Amount} quote what a booking would cost
++ * @property {(party: number) => string} suggest the id of the smallest room that seats the party; refuses a party no room seats
+  */
+ 
+ /**
+@@ -131,6 +132,12 @@
+       store.put('bookings', id, done);
+       return done;
+     },
++    /** @throws {RangeError} when no room seats the party */
++    suggest(party) {
++      const fitting = rooms.list().filter((r) => r.seats >= party).sort((a, b) => b.seats - a.seats);
++      if (fitting.length === 0) throw new RangeError(`bookings: no room seats ${party}`);
++      return fitting.pop().id;
++    },
+   };
+ }
+ 
+--- before/bookings/test/index.test.mjs
++++ after/bookings/test/index.test.mjs
+@@ -67,6 +67,13 @@
+   assert.throws(() => bookings.open(req({ room: 'attic' })), RangeError);
+ });
+ 
++test('suggest names the smallest room that seats the party', () => {
++  const { bookings } = system();
++  assert.equal(bookings.suggest(10), 'studio');
++  assert.equal(bookings.suggest(13), 'hall');
++  assert.throws(() => bookings.suggest(301), RangeError);
++});
++
+ test('bound bookquote.total: what the whole stay costs, for the whole party and every night', () => {
+   const { bookings } = system();
+   const h = bookingHandlers(bookings);

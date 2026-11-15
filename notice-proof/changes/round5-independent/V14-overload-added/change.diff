@@ -1,0 +1,39 @@
+--- before/money/src/index.mjs
++++ after/money/src/index.mjs
+@@ -48,10 +48,23 @@
+ 
+ /**
+  * Writes an amount for people to read.
++ * @overload
+  * @param {Amount} a
+  * @returns {string}
+  */
++/**
++ * Writes several amounts for people to read, one after another, joined by " + ".
++ * @overload
++ * @param {Amount[]} list
++ * @returns {string}
++ */
++/**
++ * Writes one amount, or several, for people to read.
++ * @param {Amount | Amount[]} a
++ * @returns {string}
++ */
+ export function formatAmount(a) {
++  if (Array.isArray(a)) return a.map((x) => formatAmount(x)).join(' + ');
+   return `${a.currency} ${(a.cents / 100).toFixed(2)}`;
+ }
+ 
+--- before/money/test/index.test.mjs
++++ after/money/test/index.test.mjs
+@@ -27,6 +27,10 @@
+   assert.match(s, /12[.,]50/);
+ });
+ 
++test('formatAmount writes several amounts joined by +', () => {
++  assert.equal(formatAmount([amount(100, 'EUR'), amount(250, 'EUR')]), 'EUR 1.00 + EUR 2.50');
++});
++
+ test('bound parts: whole number, 1 to 100', () => {
+   assert.equal(splitEvenly(amount(100, 'EUR'), 1).length, 1);
+   assert.equal(splitEvenly(amount(100, 'EUR'), 100).length, 100);

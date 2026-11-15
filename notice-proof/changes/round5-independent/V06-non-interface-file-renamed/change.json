@@ -1,0 +1,13 @@
+{
+  "title": "bookings' price list holds amounts, made with money's amount, so that each price carries its currency; it is renamed SEAT_NIGHT to say so",
+  "provider": "bookings",
+  "covers": [
+    "a provider changes a file outside its interface",
+    "a user imports that file; no entry holds what it uses"
+  ],
+  "before": [
+    "setups/V06a-bookings-price-list",
+    "setups/V06b-front-price-menu"
+  ],
+  "note": "front imports SEAT_NIGHT_CENTS from bookings/src/prices.mjs: the module no longer loads, and every front test fails."
+}

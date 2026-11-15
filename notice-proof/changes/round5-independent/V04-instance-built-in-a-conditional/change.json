@@ -1,0 +1,9 @@
+{
+  "title": "An amount cannot be changed once made: money builds it as an instance with read-only cents and currency, and keeps one zero of each currency",
+  "provider": "money",
+  "covers": [
+    "what is handed back becomes a class instance, built in a conditional expression",
+    "rule 22's check looks only at a value standing directly in a return, declaration, field or argument"
+  ],
+  "note": "Copies (the store's structuredClone, the door's JSON, the meter's message lines) keep only own fields: an amount arrives as {}."
+}

@@ -1,0 +1,21 @@
+--- before/meter/src/worker.mjs
++++ after/meter/src/worker.mjs
+@@ -16,7 +16,7 @@
+   if (line.trim() === '') return;
+   /** @type {MeterInput} checks a MeterInput below */
+   const input = JSON.parse(line);
+-  if (input.kind !== 'use' || !Number.isInteger(input.minutes) || input.minutes < 1 || input.minutes > 1440) {
++  if (input.kind !== 'use' || !Number.isInteger(input.minutes) || input.minutes < 1 || input.minutes > 600) {
+     send({ kind: 'refused', room: String(input.room), reason: 'minutes out of bounds' });
+     return;
+   }
+--- before/meter/test/index.test.mjs
++++ after/meter/test/index.test.mjs
+@@ -35,6 +35,6 @@
+ });
+ 
+ test('bound minutes: whole number, 1 to 1440', async () => {
+-  const msgs = await runMeter([1, 1440, 0, 1441, 2.5].map((minutes) => JSON.stringify({ kind: 'use', room: 'r', minutes })));
++  const msgs = await runMeter([1, 600, 0, 601, 2.5].map((minutes) => JSON.stringify({ kind: 'use', room: 'r', minutes })));
+   assert.deepEqual(msgs.map((m) => m.kind), ['reading', 'reading', 'refused', 'refused', 'refused', 'done']);
+ });

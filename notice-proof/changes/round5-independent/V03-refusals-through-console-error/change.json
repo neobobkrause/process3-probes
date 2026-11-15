@@ -1,0 +1,9 @@
+{
+  "title": "The meter reports refusals with console.error, on the error stream, as errors are reported; its tests read both streams",
+  "provider": "meter",
+  "covers": [
+    "a message's channel changes through console.error; its @message channel is not updated",
+    "the bound test changes the order of its expected list only"
+  ],
+  "note": "billing reads only the meter's standard output: a refused use no longer rejects meterUsage, and billing's test of a use outside the bound fails."
+}

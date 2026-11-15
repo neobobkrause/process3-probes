@@ -1,0 +1,19 @@
+--- before/money/test/index.test.mjs
++++ after/money/test/index.test.mjs
+@@ -27,11 +27,12 @@
+   assert.match(s, /12[.,]50/);
+ });
+ 
++/** A hundred euro cents split into the given number of parts. */
++const split = (/** @type {number} */ n) => splitEvenly(amount(100, 'EUR'), n);
++
+ test('bound parts: whole number, 1 to 100', () => {
+-  assert.equal(splitEvenly(amount(100, 'EUR'), 1).length, 1);
+-  assert.equal(splitEvenly(amount(100, 'EUR'), 100).length, 100);
+-  assert.throws(() => splitEvenly(amount(100, 'EUR'), 0), RangeError);
+-  assert.throws(() => splitEvenly(amount(100, 'EUR'), 101), RangeError);
++  for (const parts of [1, 100]) assert.equal(split(parts).length, parts);
++  for (const parts of [0, 101]) assert.throws(() => split(parts), RangeError);
+ });
+ 
+ test('splitEvenly parts add up exactly and differ by at most one cent', () => {

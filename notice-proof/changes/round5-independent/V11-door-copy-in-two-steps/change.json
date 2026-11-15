@@ -1,0 +1,8 @@
+{
+  "title": "The door refuses an answer larger than 64 KiB of text, as a connection would; it measures the answer as it copies it",
+  "provider": "door",
+  "covers": [
+    "a JSON copy written in two statements",
+    "a new error stated on the kind (rule 10)"
+  ]
+}

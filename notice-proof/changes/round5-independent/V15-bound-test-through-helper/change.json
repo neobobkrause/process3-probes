@@ -1,0 +1,8 @@
+{
+  "title": "The test of the bound of parts splits through a helper and two loops; the same values, the same checks",
+  "provider": "money",
+  "covers": [
+    "a bound test rewritten with a helper of its own file",
+    "values and checks unchanged"
+  ]
+}

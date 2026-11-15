@@ -1,0 +1,47 @@
+--- before/money/src/index.mjs
++++ after/money/src/index.mjs
+@@ -18,6 +18,33 @@
+ const MAX_CENTS = 10_000_000;
+ 
+ /**
++ * An amount as money builds it: its cents and currency cannot be changed once it is made.
++ */
++class FixedAmount {
++  /** @type {number} */
++  #cents;
++  /** @type {Currency} */
++  #currency;
++  /**
++   * @param {number} cents
++   * @param {Currency} currency
++   */
++  constructor(cents, currency) {
++    this.#cents = cents;
++    this.#currency = currency;
++  }
++  get cents() {
++    return this.#cents;
++  }
++  get currency() {
++    return this.#currency;
++  }
++}
++
++/** One zero of each currency, made once and shared: most amounts made are zero (empty totals, free rooms). */
++const ZERO = { EUR: new FixedAmount(0, 'EUR'), USD: new FixedAmount(0, 'USD'), GBP: new FixedAmount(0, 'GBP') };
++
++/**
+  * Makes an amount, refusing one outside its bound.
+  * @param {number} cents
+  * @param {Currency} currency
+@@ -29,9 +56,7 @@
+     throw new RangeError(`amount: cents out of bounds: ${cents}`);
+   }
+   if (!CURRENCIES.includes(currency)) throw new RangeError(`amount: unknown currency: ${currency}`);
+-  /** @type {Amount} builds an Amount */
+-  const out = { cents, currency };
+-  return out;
++  return cents === 0 ? ZERO[currency] : new FixedAmount(cents, currency);
+ }
+ 
+ /**

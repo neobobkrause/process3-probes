@@ -1,0 +1,7 @@
+{
+  "title": "createRooms takes its dependencies apart in its parameter list",
+  "provider": "rooms",
+  "covers": [
+    "a parameter written as a destructuring pattern; kinds and behaviour unchanged"
+  ]
+}

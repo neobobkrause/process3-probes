@@ -1,0 +1,40 @@
+--- before/door/src/index.mjs
++++ after/door/src/index.mjs
+@@ -21,8 +21,12 @@
+  * @property {<K extends keyof AllOps>(op: K, body: AllOps[K]['req']) => Promise<AllOps[K]['res']>} call calls an operation by name with a body
+  * @property {<K extends keyof AllOps>(line: `op=${K}&${string}`) => Promise<AllOps[K]['res']>} get calls an operation written as a request line, op=name&field=value; every value arrives as text
+  * @carriesop call get
++ * @throws {RangeError} when an answer is larger than the door carries, MAX_ANSWER characters of JSON
+  */
+ 
++/** The most a door carries in one answer, in characters of JSON: what one message of a connection holds. */
++const MAX_ANSWER = 65536;
++
+ /**
+  * Makes a door over the handlers.
+  * @param {Handlers} handlers
+@@ -37,7 +41,9 @@
+     const h = /** @type {Record<string, ((req: unknown) => unknown) | undefined>} */ (handlers)[op];
+     if (typeof h !== 'function') throw new Error(`door: unknown operation: ${op}`);
+     await Promise.resolve();
+-    return JSON.parse(JSON.stringify(h(JSON.parse(JSON.stringify(body)))));
++    const answer = JSON.stringify(h(JSON.parse(JSON.stringify(body))));
++    if (answer.length > MAX_ANSWER) throw new RangeError(`door: the answer to ${op} is larger than ${MAX_ANSWER} characters`);
++    return JSON.parse(answer);
+   };
+   return {
+     call: (op, body) => dispatch(op, body),
+--- before/door/test/index.test.mjs
++++ after/door/test/index.test.mjs
+@@ -30,6 +30,11 @@
+   assert.deepEqual(r.seen, { room: 'hall', party: '12', nights: '3' });
+ });
+ 
++test('an answer larger than the door carries is refused', async () => {
++  const door = loose(createDoor(echo));
++  await assert.rejects(() => door.call('bookquote', { note: 'x'.repeat(70000) }), RangeError);
++});
++
+ test('an unknown operation is refused', async () => {
+   const door = loose(createDoor(echo));
+   await assert.rejects(() => door.call('nosuch', {}), /unknown operation/);

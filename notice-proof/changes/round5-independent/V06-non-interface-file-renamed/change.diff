@@ -1,0 +1,46 @@
+--- before/bookings/src/prices.mjs
++++ after/bookings/src/prices.mjs
+@@ -1,10 +1,12 @@
+ /**
+  * The price list bookings works from, kept apart so that the venue's prices can be read in one place.
+  */
++import { amount } from '../../money/src/index.mjs';
+ /** @import { RoomKind } from '../../rooms/src/index.mjs' */
++/** @import { Amount } from '../../money/src/index.mjs' */
+ 
+ /**
+- * The price of one seat for one night, in euro cents, by kind of room.
+- * @type {Readonly<Record<RoomKind, number>>}
++ * The price of one seat for one night, by kind of room.
++ * @type {Readonly<Record<RoomKind, Amount>>}
+  */
+-export const SEAT_NIGHT_CENTS = Object.freeze({ hall: 1500, studio: 1500, kitchen: 1500 });
++export const SEAT_NIGHT = Object.freeze({ hall: amount(1500, 'EUR'), studio: amount(1500, 'EUR'), kitchen: amount(1500, 'EUR') });
+--- before/bookings/src/index.mjs
++++ after/bookings/src/index.mjs
+@@ -3,13 +3,13 @@
+  */
+ import { amount } from '../../money/src/index.mjs';
+ import { parseDay, formatDay, addDays } from '../../calendar/src/index.mjs';
+-import { SEAT_NIGHT_CENTS } from './prices.mjs';
++import { SEAT_NIGHT } from './prices.mjs';
+ /** @import { Amount } from '../../money/src/index.mjs' */
+ /** @import { Store } from '../../store/src/index.mjs' */
+ /** @import { Rooms } from '../../rooms/src/index.mjs' */
+ 
+ /** The price of one seat for one night in a hall, in euro cents. */
+-export const PRICE_PER_SEAT_NIGHT = SEAT_NIGHT_CENTS.hall;
++export const PRICE_PER_SEAT_NIGHT = SEAT_NIGHT.hall.cents;
+ 
+ /**
+  * A booking.
+@@ -95,7 +95,8 @@
+     const room = rooms.find(roomId);
+     if (!room) throw new RangeError(`bookings: unknown room: ${roomId}`);
+     checkSize(party, nights, room.seats);
+-    return amount(SEAT_NIGHT_CENTS[room.kind] * party * nights, 'EUR');
++    const price = SEAT_NIGHT[room.kind];
++    return amount(price.cents * party * nights, price.currency);
+   };
+   /** @param {string} id */
+   const find = (id) => {

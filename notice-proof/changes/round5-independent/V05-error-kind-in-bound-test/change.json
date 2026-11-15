@@ -1,0 +1,12 @@
+{
+  "title": "splitEvenly throws TypeError for a number of parts outside its bound (a caller's mistake, not an amount out of range); its bound test says so, the @throws line is forgotten",
+  "provider": "money",
+  "covers": [
+    "kind of error changed in code and in the bound test, the @throws line not",
+    "the expected kind of error is a name, which the fingerprint does not keep"
+  ],
+  "before": [
+    "setups/A06-billing-expects-range-error"
+  ],
+  "note": "billing's test expects an invoice in 101 instalments to be refused with RangeError."
+}

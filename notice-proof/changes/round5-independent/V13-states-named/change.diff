@@ -1,0 +1,23 @@
+--- before/bookings/src/index.mjs
++++ after/bookings/src/index.mjs
+@@ -11,6 +11,11 @@
+ export const PRICE_PER_SEAT_NIGHT = 1500;
+ 
+ /**
++ * The states a booking can be in.
++ * @typedef {'open' | 'cancelled'} BookingState
++ */
++
++/**
+  * A booking.
+  * @typedef {Object} Booking
+  * @property {string} id
+@@ -19,7 +24,7 @@
+  * @property {string} until the morning after the last night, YYYY-MM-DD
+  * @property {number} nights
+  * @property {number} party how many people
+- * @property {'open' | 'cancelled'} state
++ * @property {BookingState} state
+  * @property {Amount} total what the booking costs
+  * @property {string} [note]
+  * @bound day: a real calendar day written YYYY-MM-DD

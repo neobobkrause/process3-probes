@@ -1,0 +1,14 @@
+{
+  "title": "A tally is in euros unless told otherwise, and Tally.sum hands back the tally itself, so that a caller can go on adding to it",
+  "provider": "money",
+  "covers": [
+    "a harmless change (accepts more) and a breaking one in the same entry",
+    "the backstop is skipped once the tool's own comparison found anything"
+  ],
+  "before": [
+    "setups/Y13a-money-tally",
+    "setups/Z13a-money-tally-sum",
+    "setups/Z13b-billing-tally-sum"
+  ],
+  "note": "billing resolves meterUsage with Tally.sum(...): it now resolves a Tally, and its test reads .cents of it."
+}

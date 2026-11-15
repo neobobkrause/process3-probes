@@ -1,0 +1,8 @@
+{
+  "title": "The meter exits as soon as its closing message is written, so that nothing left open can keep a finished meter running",
+  "provider": "meter",
+  "covers": [
+    "honest code using Node's write with a callback, which the tool's description of Node does not have",
+    "a message written one per line, with a callback"
+  ]
+}

@@ -1,0 +1,8 @@
+{
+  "title": "money reads its largest amount from limits.json, which the venue's treasurer keeps; the value is unchanged",
+  "provider": "money",
+  "covers": [
+    "honest code importing a JSON file with an import attribute",
+    "the reader is not set to read JSON"
+  ]
+}

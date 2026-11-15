@@ -1,0 +1,12 @@
+--- before/rooms/src/index.mjs
++++ after/rooms/src/index.mjs
+@@ -54,8 +54,7 @@
+  * @param {{store: Store}} deps
+  * @returns {Rooms}
+  */
+-export function createRooms(deps) {
+-  const { store } = deps;
++export function createRooms({ store }) {
+   return {
+     add(input) {
+       if (!ROOM_KINDS.includes(input.kind)) throw new RangeError(`rooms: unknown kind: ${input.kind}`);

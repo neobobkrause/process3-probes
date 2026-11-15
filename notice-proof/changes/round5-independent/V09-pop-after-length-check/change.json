@@ -1,0 +1,8 @@
+{
+  "title": "bookings suggests the smallest room that seats a party",
+  "provider": "bookings",
+  "covers": [
+    "new handle method (new entry)",
+    "honest pop() after a length check, on a list of a provider's kind"
+  ]
+}

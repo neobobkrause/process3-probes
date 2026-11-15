@@ -1,0 +1,7 @@
+{
+  "title": "The states a booking can be in get a name of their own, BookingState",
+  "provider": "bookings",
+  "covers": [
+    "a union written in place is given a name; every kind the same"
+  ]
+}

@@ -1,0 +1,43 @@
+--- before/front/src/index.mjs
++++ after/front/src/index.mjs
+@@ -3,6 +3,7 @@
+  */
+ import { isEmail, titleCase } from '../../text-rules/src/index.mjs';
+ import { ROOM_KINDS } from '../../rooms/src/index.mjs';
++import { SEAT_NIGHT_CENTS } from '../../bookings/src/prices.mjs';
+ /** @import { RoomKind } from '../../rooms/src/index.mjs' */
+ /** @import { Door } from '../../door/src/index.mjs' */
+ 
+@@ -23,6 +24,7 @@
+  * @property {(form: BookingForm) => Promise<{id: string, text: string}>} book refuses a form without a valid email
+  * @property {(id: string) => Promise<string>} cancel
+  * @property {() => string[]} kindsMenu one line per kind of room
++ * @property {() => string[]} priceMenu one line per kind of room, with the price of a seat for a night
+  * @property {(kind?: RoomKind) => Promise<string[]>} roomMenu one line per room
+  */
+ 
+@@ -53,6 +55,9 @@
+     kindsMenu() {
+       return ROOM_KINDS.map((k) => titleCase(k));
+     },
++    priceMenu() {
++      return ROOM_KINDS.map((k) => `${titleCase(k)}: ${(SEAT_NIGHT_CENTS[k] / 100).toFixed(2)} EUR a seat a night`);
++    },
+     async roomMenu(kind) {
+       const { rooms } = await door.call('roomlist', kind === undefined ? {} : { kind });
+       return rooms.map((r) => `${r.name} (${r.seats} seats)`);
+--- before/front/test/index.test.mjs
++++ after/front/test/index.test.mjs
+@@ -49,6 +49,12 @@
+   for (const line of menu) assert.match(line, /^[A-Z]/);
+ });
+ 
++test('the price menu has one line per kind, each with a price', () => {
++  const menu = system().priceMenu();
++  assert.equal(menu.length, 3);
++  for (const line of menu) assert.match(line, /^[A-Z]\w*: \d+\.\d\d EUR a seat a night$/);
++});
++
+ test('the room menu lists rooms with their seats', async () => {
+   const front = system();
+   const all = await front.roomMenu();

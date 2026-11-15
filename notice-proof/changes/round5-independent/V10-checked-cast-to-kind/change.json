@@ -1,0 +1,8 @@
+{
+  "title": "rooms reads a kind of room as a person types it: any case, spaces around it allowed",
+  "provider": "rooms",
+  "covers": [
+    "new function (new entry)",
+    "a cast from text to a kind of room, after checking the text against the list of kinds"
+  ]
+}
