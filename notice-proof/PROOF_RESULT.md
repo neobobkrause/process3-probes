@@ -106,10 +106,12 @@ In the written interface itself (not the side checks, not behaviour), the holes 
 
 ## Regressions: why an earlier change was ever answered worse
 
-Measured over every design: no earlier change that a design answered rightly became a hole on a later design. Earlier changes were answered worse in two ways (judged, Claude, from the results):
+Measured over every design: no earlier change that a design answered rightly became a hole on a later design. But seven earlier changes were answered worse on some later design or run, and every one was avoidable (judged, Claude):
 
-1. **Defects of mine, caught by rerunning every earlier change and fixed before the design's final result.** Two rules of design 2 contradicted each other (the bound-test rule required a test the comments-only first step forbade), and one honest first step was refused until design 3 settled it. A rule of design 6, in its first form, passed on the bounds of every call a method makes instead of only a call handed straight on, and told two changes' users for nothing; it was narrowed the same day. A narrowing in design 6 of what counts as a message made one earlier change a hole on its first run; fixed. The cause each time: the rules are separate patches to the same few checks, and nothing but the rerun shows that a new patch leaves the old cases alone.
-2. **Costs kept on purpose.** A rule cannot tell an attack from honest code of the same shape. Design 7's rule that a plain handle's methods do not use `this` stops a method that starts needing its object, and also refuses an honest method that calls `this.list()`: 1 false refusal line on an earlier change. The stricter backstop of design 4 and the operation-name rule of design 2 added 3 notices for nothing on earlier changes. Each such rule trades a hole for a refusal or a notice.
+1. **Defects caught only after the fact.** Two rules of design 2 contradicted each other (the bound-test rule required a test the comments-only first step forbade), and one honest first step was refused until design 3. A rule of design 6, in its first form, passed on the bounds of every call a method makes instead of only a call handed straight on, and told two changes' users for nothing. A narrowing in design 6 of what counts as a message made one earlier change a hole on its first run. Each was found by rerunning every earlier change and fixed before the design's final result. They happened because I changed the tool first and checked the earlier changes afterwards, instead of refusing to accept any version of the tool until every earlier change was back to its recorded answer.
+2. **Worse answers I accepted instead of fixing.** Design 7's rule that a plain handle's methods do not use `this` stops a method that starts needing its object, and also refuses an honest method that calls `this.list()`. I chose a refusal because it was the quick way to stop the attack. A rule that tells the users who hand such a method on as a value would have stopped the attack without refusing the honest method. The stricter comparison of design 4 and the operation-name rule of design 2 added 3 notices for nothing on earlier changes in the same way: I accepted a worse answer instead of looking for the rule that did not need one.
+
+Both kinds are avoidable by one rule of practice, made rule 54 of design 8 below: **no version of the tool is accepted while any recorded change is answered worse than before.** A change whose recorded answer must change on purpose (a rule Bob changes) is recorded again, with the reason, before the tool is accepted.
 
 ## Every rule added beyond the brief's nine points
 
@@ -181,13 +183,14 @@ With the test run beside the notice, most of that check work is covered anyway (
 
 | | Design 1 (the brief) | Design 7 (latest built) | Design 8 (recommended; described, not built) |
 | --- | --- | --- | --- |
-| Rules | 9 points | 9 points + 51 rules | 9 points + the 28 rules of design 7 that change who is told + rule 52, + the test run (rule 53) |
+| Rules | 9 points | 9 points + 51 rules | 9 points + the 28 rules of design 7 that change who is told + rules 52 to 54 |
 | New refusals beyond Bob's two | none | 23 | none required; the 23 are offered for Bob's yes or no, each on its own line above |
 | Holes from its own blind round | 5 | 8 | not run |
 
 **Design 8** (judged, Claude; Bob chose the interface fix, 15 Nov 2026; full text in `notes/iteration-8-design.md`):
 
 - **Rule 52: TypeScript has the last word.** The one difference that tells nobody, a provider accepting more, is accepted only when TypeScript's own type checker, reading the old and new interface in one program, confirms that the new entry can stand wherever the old one was used. Otherwise, or where the tool cannot find the entry to ask, the users are told. This closes the class of interface holes of the last three blind rounds where the tool's own comparison overruled the printed declaration (judged; unproven).
+- **Rule 54: no regressions.** No version of the tool is accepted while any recorded change (the 150 of this proof, and every case the real product adds) is answered worse than before: a hole where there was none, a refusal of code that passed, or a notice for nothing that was not sent. A recorded answer changes only on purpose, with the reason written down, before the tool is accepted.
 - **Rule 53: the test run.** After every provider change, the tests of every module that uses it, directly or through another module, run before the change merges; a failure stops the merge, told or not. It adds no test; it runs the ones that exist.
 - **The rules of form** (the 23 new refusals) are not needed for safety once the test run is in place (measured above), and Bob has not approved them. My recommendation is to leave them out, except as Bob chooses from the table.
 

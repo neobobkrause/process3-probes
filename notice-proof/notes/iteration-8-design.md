@@ -19,3 +19,9 @@ Parameter order was made part of the interface in iteration 7 (rule 48), and a r
 | # | Rule |
 | --- | --- |
 | 53 | **After every provider change, the tests of every module that uses the provider, directly or through another module (following the declared lists), run before the change merges.** A failure stops the merge whether or not the failing module was told. On design 7, over all 150 changes of the proof, this would have caught all 40 users that needed a change or broke and were not told (measured: each had a test of its own that failed), at about 4.5 module test runs per change, against 3.2 for declared users only, on 11 modules. It runs only tests that exist; it adds none. |
+
+## And a rule of practice
+
+| # | Rule |
+| --- | --- |
+| 54 | **No regressions.** No version of the tool is accepted while any recorded change (the 150 of this proof, and every case the real product adds) is answered worse than before: a hole where there was none, a refusal of code that passed, or a notice for nothing that was not sent. A recorded answer changes only on purpose, with the reason written down, before the tool is accepted. Added after Bob's objection of 15 Nov 2026 that the regressions of designs 2 to 7 were avoidable: they were (see PROOF_RESULT.md, "Regressions"). |
