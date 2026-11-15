@@ -1,0 +1,54 @@
+--- before/bookings/src/index.mjs
++++ after/bookings/src/index.mjs
+@@ -44,7 +44,7 @@
+  * @property {(req: BookingRequest) => Booking} open opens a booking; refuses one outside the bounds or for an unknown room
+  * @property {(id: string) => Booking} cancel cancels an open booking; refuses an unknown or already cancelled one
+  * @property {(id: string) => Booking | undefined} find
+- * @property {(room: string, party: number, nights: number) => Amount} quote what a booking would cost
++ * @property {(room: string, nights: number, party: number) => Amount} quote what a booking would cost, for so many nights and so many people (the order of the venue's price sheet)
+  */
+ 
+ /**
+@@ -87,10 +87,10 @@
+   let next = 1;
+   /**
+    * @param {string} roomId
+-   * @param {number} party
+    * @param {number} nights
++   * @param {number} party
+    */
+-  const quote = (roomId, party, nights) => {
++  const quote = (roomId, nights, party) => {
+     const room = rooms.find(roomId);
+     if (!room) throw new RangeError(`bookings: unknown room: ${roomId}`);
+     checkSize(party, nights, room.seats);
+@@ -106,7 +106,7 @@
+     find,
+     open(req) {
+       const first = parseDay(req.day);
+-      const total = quote(req.room, req.party, req.nights);
++      const total = quote(req.room, req.nights, req.party);
+       /** @type {Booking} builds a Booking */
+       const b = {
+         id: `b-${next++}`,
+@@ -148,6 +148,6 @@
+       if (!b) throw new RangeError(`bookings: unknown booking: ${req.id}`);
+       return { state: b.state, total: b.total, room: b.room };
+     },
+-    bookquote: (req) => ({ total: bookings.quote(req.room, req.party, req.nights) }),
++    bookquote: (req) => ({ total: bookings.quote(req.room, req.nights, req.party) }),
+   };
+ }
+--- before/bookings/test/index.test.mjs
++++ after/bookings/test/index.test.mjs
+@@ -26,8 +26,8 @@
+ 
+ test('the total grows with party and nights and is in whole cents', () => {
+   const { bookings } = system();
+-  const small = bookings.quote('hall', 10, 1);
+-  const big = bookings.quote('hall', 20, 2);
++  const small = bookings.quote('hall', 1, 10);
++  const big = bookings.quote('hall', 2, 20);
+   assert.ok(Number.isInteger(small.cents) && small.cents > 0);
+   assert.equal(big.cents, small.cents * 4);
+   assert.equal(bookings.open(req({ party: 10, nights: 1 })).total.cents, small.cents);

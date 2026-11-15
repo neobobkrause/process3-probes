@@ -1,0 +1,9 @@
+{
+  "title": "The meter writes an empty line after each message, so that people reading its output can tell one message from the next; the encoding is one named function",
+  "provider": "meter",
+  "covers": [
+    "something other than a message written on a message channel",
+    "the message is encoded by a function declaration, which the check does not follow"
+  ],
+  "note": "The meter's own test skips empty lines (filter(Boolean)) and passes. billing splits standard output on line ends and parses every line: JSON.parse('') throws in its data handler, and its meter tests fail."
+}

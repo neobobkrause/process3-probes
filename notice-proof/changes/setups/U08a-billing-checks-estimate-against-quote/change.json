@@ -1,0 +1,7 @@
+{
+  "title": "billing's tests check an estimate for a large party against what bookings quotes for it",
+  "provider": "billing",
+  "covers": [
+    "a user calls a handle method with two numbers by position (the standing state)"
+  ]
+}

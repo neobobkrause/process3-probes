@@ -1,0 +1,63 @@
+--- before/bookings/src/index.mjs
++++ after/bookings/src/index.mjs
+@@ -64,6 +64,31 @@
+  * @typedef {{[K in keyof BookingOps]: (req: BookingOps[K]['req']) => BookingOps[K]['res']}} BookingHandlers
+  */
+ 
++/** The table bookings keeps its rows in. */
++const TABLE = 'bookings';
++
++/**
++ * A booking as its row is kept: without its first day, which is worked out from until and nights when the row is
++ * read, so that a row cannot hold a first day and a last morning that disagree.
++ * @param {Booking} b
++ */
++function toRow(b) {
++  const { day, ...row } = b;
++  return row;
++}
++
++/**
++ * A booking read back from its row.
++ * @param {unknown} value what the store holds for a booking
++ * @returns {Booking}
++ */
++function fromRow(value) {
++  const row = /** @type {Omit<Booking, 'day'>} the store holds only rows written by toRow in this table */ (value);
++  /** @type {Booking} builds a Booking */
++  const b = { ...row, day: formatDay(addDays(parseDay(row.until), -row.nights)) };
++  return b;
++}
++
+ /**
+  * Refuses a party or a number of nights outside its bound.
+  * @param {number} party
+@@ -98,8 +123,8 @@
+   };
+   /** @param {string} id */
+   const find = (id) => {
+-    const rec = store.get('bookings', id);
+-    return rec ? /** @type {Booking} */ (rec.value) : undefined;
++    const rec = store.get(TABLE, id);
++    return rec ? fromRow(rec.value) : undefined;
+   };
+   return {
+     quote,
+@@ -119,7 +144,7 @@
+         total,
+       };
+       if (req.note !== undefined) b.note = req.note;
+-      store.put('bookings', b.id, b);
++      store.put(TABLE, b.id, toRow(b));
+       return b;
+     },
+     cancel(id) {
+@@ -128,7 +153,7 @@
+       if (b.state !== 'open') throw new Error(`bookings: not open: ${id}`);
+       /** @type {Booking} builds a Booking */
+       const done = { ...b, state: 'cancelled' };
+-      store.put('bookings', id, done);
++      store.put(TABLE, id, toRow(done));
+       return done;
+     },
+   };

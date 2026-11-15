@@ -1,0 +1,18 @@
+--- before/store/test/index.test.mjs
++++ after/store/test/index.test.mjs
+@@ -13,6 +13,15 @@
+   assert.equal(s.get('t', 'missing'), undefined);
+ });
+ 
++test('get hands back a fresh copy each time, never the record the store holds', () => {
++  const s = createStore();
++  s.put('t', 'x', { a: 1 });
++  const one = s.get('t', 'x');
++  const two = s.get('t', 'x');
++  assert.notStrictEqual(one, two);
++  assert.deepEqual(one, two);
++});
++
+ test('bound version: whole number, 1 or more', () => {
+   const s = createStore();
+   const first = s.put('t', 'x', 1);

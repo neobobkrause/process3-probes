@@ -1,0 +1,13 @@
+{
+  "title": "Adding a room asks the handle's own find whether the name's slug is taken, so that rooms are read from the store in one place",
+  "provider": "rooms",
+  "covers": [
+    "a method now uses this",
+    "its declared kind (a property holding a function) is unchanged",
+    "a user calls it without its handle"
+  ],
+  "before": [
+    "setups/U07a-reports-adds-rooms-from-a-list"
+  ],
+  "note": "rooms' own tests call add on the handle and pass. reports' test hands rooms.add to forEach: this is undefined and add throws a TypeError; reports' first test fails. rooms' listing is unchanged, so reports (not followed) is not told."
+}

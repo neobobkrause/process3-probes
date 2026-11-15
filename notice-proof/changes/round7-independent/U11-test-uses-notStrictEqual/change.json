@@ -1,0 +1,8 @@
+{
+  "title": "store's tests check that get hands back a fresh copy each time, never the record the store holds",
+  "provider": "store",
+  "covers": [
+    "honest test code using assert.notStrictEqual",
+    "the tool's description of node:assert is incomplete"
+  ]
+}

@@ -1,0 +1,7 @@
+{
+  "title": "bookings reads the price of a seat for a night from the venue's price sheet, prices.json, which its staff keep",
+  "provider": "bookings",
+  "covers": [
+    "a module's data kept in a JSON file of its own (the standing state)"
+  ]
+}

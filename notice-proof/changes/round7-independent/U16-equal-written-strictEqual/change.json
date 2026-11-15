@@ -1,0 +1,8 @@
+{
+  "title": "money's tests write assert.strictEqual where they wrote assert.equal; with node:assert/strict the two are the same check",
+  "provider": "money",
+  "covers": [
+    "bound tests rewritten with the same values and the same checks under another name",
+    "assert.equal is assert.strictEqual in node:assert/strict"
+  ]
+}

@@ -1,0 +1,10 @@
+{
+  "title": "bookings names its table once, in a constant, and keeps each row without its first day, which is worked out from until and nights when the row is read",
+  "provider": "bookings",
+  "covers": [
+    "a table name held in a constant",
+    "rows written are not of the owned kind",
+    "the rows rule is skipped when the name is not a literal"
+  ],
+  "note": "reports reads each booking row's day: parseDay(undefined) throws, and reports' first test fails. bookings' listing is unchanged (toRow, fromRow and TABLE are not exported)."
+}

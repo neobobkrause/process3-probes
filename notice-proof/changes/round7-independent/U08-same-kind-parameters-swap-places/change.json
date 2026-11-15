@@ -1,0 +1,12 @@
+{
+  "title": "quote takes the nights before the party, the order the venue's price sheet asks them in; its comment, its callers in bookings and its tests say so",
+  "provider": "bookings",
+  "covers": [
+    "two parameters of the same kind change places (renamed by position)",
+    "parameter names are in neither the tool's form nor the printed declaration"
+  ],
+  "before": [
+    "setups/U08a-billing-checks-estimate-against-quote"
+  ],
+  "note": "billing's set-up test calls bookings.quote('hall', 20, 3), which now reads 20 nights and is refused (nights out of bounds): billing's test fails. Bookings.quote is (string, number, number) => Amount before and after, in the tool's form and in the printed declaration."
+}

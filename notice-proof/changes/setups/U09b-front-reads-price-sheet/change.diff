@@ -1,0 +1,52 @@
+--- before/front/src/index.mjs
++++ after/front/src/index.mjs
+@@ -3,9 +3,13 @@
+  */
+ import { isEmail, titleCase } from '../../text-rules/src/index.mjs';
+ import { ROOM_KINDS } from '../../rooms/src/index.mjs';
++import { readFileSync } from 'node:fs';
+ /** @import { RoomKind } from '../../rooms/src/index.mjs' */
+ /** @import { Door } from '../../door/src/index.mjs' */
+ 
++/** The venue's price sheet, which its staff keep beside bookings' code. */
++const PRICE_SHEET = new URL('../../bookings/src/prices.json', import.meta.url);
++
+ /**
+  * What a person fills in to book.
+  * @typedef {Object} BookingForm
+@@ -23,6 +27,7 @@
+  * @property {(form: BookingForm) => Promise<{id: string, text: string}>} book refuses a form without a valid email
+  * @property {(id: string) => Promise<string>} cancel
+  * @property {() => string[]} kindsMenu one line per kind of room
++ * @property {() => string} priceLine the price of a seat for a night, as the venue's price sheet says it now
+  * @property {(kind?: RoomKind) => Promise<string[]>} roomMenu one line per room
+  */
+ 
+@@ -53,6 +58,11 @@
+     kindsMenu() {
+       return ROOM_KINDS.map((k) => titleCase(k));
+     },
++    priceLine() {
++      /** @type {{seatNightCents: number}} the venue's price sheet, read afresh so that a price its staff change shows at once */
++      const sheet = JSON.parse(readFileSync(PRICE_SHEET, 'utf8'));
++      return `A seat for a night: ${(sheet.seatNightCents / 100).toFixed(2)} EUR`;
++    },
+     async roomMenu(kind) {
+       const { rooms } = await door.call('roomlist', kind === undefined ? {} : { kind });
+       return rooms.map((r) => `${r.name} (${r.seats} seats)`);
+--- before/front/test/index.test.mjs
++++ after/front/test/index.test.mjs
+@@ -43,6 +43,13 @@
+   assert.ok((await front.cancel(id)).includes(id));
+ });
+ 
++test('the price line says what one seat for one night costs', async () => {
++  const front = system();
++  const r = await front.book({ email: 'a@b.cd', room: 'kitchen', day: '2026-12-05', nights: 1, party: 1 });
++  const price = /(\d+\.\d\d) EUR$/.exec(front.priceLine())?.[1];
++  assert.ok(price !== undefined && r.text.endsWith(`${price} EUR`));
++});
++
+ test('the kinds menu has one line per kind, each starting with a capital', () => {
+   const menu = system().kindsMenu();
+   assert.ok(menu.length >= 1);

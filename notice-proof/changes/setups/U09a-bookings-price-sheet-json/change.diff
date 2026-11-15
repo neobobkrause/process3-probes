@@ -1,0 +1,24 @@
+--- before/bookings/src/prices.json
++++ after/bookings/src/prices.json
+@@ -0,0 +1,3 @@
++{
++  "seatNightCents": 1500
++}
+--- before/bookings/src/index.mjs
++++ after/bookings/src/index.mjs
+@@ -3,12 +3,13 @@
+  */
+ import { amount } from '../../money/src/index.mjs';
+ import { parseDay, formatDay, addDays } from '../../calendar/src/index.mjs';
++import prices from './prices.json' with { type: 'json' };
+ /** @import { Amount } from '../../money/src/index.mjs' */
+ /** @import { Store } from '../../store/src/index.mjs' */
+ /** @import { Rooms } from '../../rooms/src/index.mjs' */
+ 
+-/** The price of one seat for one night, in euro cents. */
+-export const PRICE_PER_SEAT_NIGHT = 1500;
++/** The price of one seat for one night, in euro cents, as the venue's price sheet (prices.json, which its staff keep) says. */
++export const PRICE_PER_SEAT_NIGHT = prices.seatNightCents;
+ 
+ /**
+  * A booking.

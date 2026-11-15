@@ -1,0 +1,15 @@
+--- before/billing/test/index.test.mjs
++++ after/billing/test/index.test.mjs
+@@ -42,6 +42,12 @@
+   assert.equal(est.deposit.currency, b.total.currency);
+ });
+ 
++test('an estimate for a large party is what bookings quotes for it', async () => {
++  const { bookings, billing } = system();
++  const est = await billing.estimate('hall', 20, 3);
++  assert.equal(est.total.cents, bookings.quote('hall', 20, 3).cents);
++});
++
+ test('metered use is priced by the meter and added up', async () => {
+   const { billing } = system();
+   const one = await billing.meterUsage([{ kind: 'use', room: 'hall', minutes: 10 }]);

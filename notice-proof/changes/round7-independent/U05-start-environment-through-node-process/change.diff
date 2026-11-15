@@ -1,0 +1,89 @@
+--- before/meter/src/index.mjs
++++ after/meter/src/index.mjs
+@@ -1,5 +1,6 @@
+ /**
+  * The meter: a separately running program that prices the minutes rooms were used.
++ * It prices in the currency the venue sets in METER_CURRENCY in its environment, and will not start without one.
+  * It is sent MeterInput lines on its standard input and answers with MeterMsg lines on its standard output,
+  * each one JSON on a line of its own. Both sides use the kinds written here.
+  */
+--- before/meter/src/worker.mjs
++++ after/meter/src/worker.mjs
+@@ -2,10 +2,24 @@
+  * The meter's program. Run it with node; see index.mjs for what it is sent and what it sends back.
+  */
+ import { createInterface } from 'node:readline';
+-import { amount } from '../../money/src/index.mjs';
++import { env } from 'node:process';
++import { amount, CURRENCIES } from '../../money/src/index.mjs';
+ import { RATE_CENTS_PER_MINUTE } from './index.mjs';
+ /** @import { MeterInput, MeterMsg } from './index.mjs' */
++/** @import { Currency } from '../../money/src/index.mjs' */
+ 
++/**
++ * The currency the meter prices in, as the venue sets it in METER_CURRENCY in the meter's environment. A meter started
++ * without one stops at once, since a price in a currency nobody chose is worse than none.
++ * @returns {Currency}
++ * @throws {RangeError} when METER_CURRENCY is not one of CURRENCIES
++ */
++function currencyToPriceIn() {
++  for (const c of CURRENCIES) if (c === env.METER_CURRENCY) return c;
++  throw new RangeError(`meter: set METER_CURRENCY to the currency to price in, one of ${CURRENCIES.join(', ')}`);
++}
++
++const currency = currencyToPriceIn();
+ let count = 0;
+ 
+ /** @param {MeterMsg} msg */
+@@ -21,6 +35,6 @@
+     return;
+   }
+   count++;
+-  send({ kind: 'reading', room: input.room, minutes: input.minutes, cost: amount(input.minutes * RATE_CENTS_PER_MINUTE, 'EUR') });
++  send({ kind: 'reading', room: input.room, minutes: input.minutes, cost: amount(input.minutes * RATE_CENTS_PER_MINUTE, currency) });
+ });
+ lines.on('close', () => send({ kind: 'done', count }));
+--- before/meter/test/index.test.mjs
++++ after/meter/test/index.test.mjs
+@@ -1,17 +1,21 @@
+ import { test } from 'node:test';
+ import assert from 'node:assert/strict';
+ import { spawn } from 'node:child_process';
++import { env } from 'node:process';
+ import { WORKER_FILE } from '../src/index.mjs';
+ /** @import { MeterMsg } from '../src/index.mjs' */
+ 
+ /**
+- * Runs the meter's program on the given lines and collects what it sends back.
++ * Runs the meter's program on the given lines and collects what it sends back. It prices in euros unless told
++ * otherwise.
+  * @param {string[]} lines
++ * @param {string} [currency] what METER_CURRENCY is set to in the meter's environment
+  * @returns {Promise<MeterMsg[]>}
+  */
+-function runMeter(lines) {
++function runMeter(lines, currency = 'EUR') {
+   return new Promise((resolve, reject) => {
+-    const child = spawn(process.execPath, [WORKER_FILE]);
++    const child = spawn(process.execPath, [WORKER_FILE], { env: { ...env, METER_CURRENCY: currency } });
++    child.stdin.on('error', () => {}); // a meter that stopped at once no longer reads what it is sent
+     let out = '';
+     child.stdout.on('data', (/** @type {any} */ d) => (out += d));
+     child.on('error', reject);
+@@ -34,6 +38,16 @@
+   assert.equal(done.count, 2);
+ });
+ 
++test('the meter prices in the currency it is started with', async () => {
++  const [a] = await runMeter([JSON.stringify({ kind: 'use', room: 'hall', minutes: 30 })], 'GBP');
++  if (a.kind !== 'reading') return assert.fail('expected a reading');
++  assert.equal(a.cost.currency, 'GBP');
++});
++
++test('a meter started without a currency prices nothing', async () => {
++  assert.deepEqual(await runMeter([JSON.stringify({ kind: 'use', room: 'hall', minutes: 30 })], ''), []);
++});
++
+ test('bound minutes: whole number, 1 to 1440', async () => {
+   const msgs = await runMeter([1, 1440, 0, 1441, 2.5].map((minutes) => JSON.stringify({ kind: 'use', room: 'r', minutes })));
+   assert.deepEqual(msgs.map((m) => m.kind), ['reading', 'reading', 'refused', 'refused', 'refused', 'done']);

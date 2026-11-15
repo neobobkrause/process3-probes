@@ -1,0 +1,8 @@
+{
+  "title": "The meter's program is named by a file-system path, not a URL's pathname, so that it starts from a folder whose name has a space",
+  "provider": "meter",
+  "covers": [
+    "honest code using import.meta.resolve",
+    "the tool's description of ImportMeta is incomplete"
+  ]
+}

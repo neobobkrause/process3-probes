@@ -1,0 +1,8 @@
+{
+  "title": "store's test helper names the store's kind with @import, as every other module names kinds of another file",
+  "provider": "store",
+  "covers": [
+    "a kind named by @import in place of an inline import()",
+    "every kind the same"
+  ]
+}

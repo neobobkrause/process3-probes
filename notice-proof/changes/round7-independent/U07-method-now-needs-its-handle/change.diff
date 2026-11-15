@@ -1,0 +1,12 @@
+--- before/rooms/src/index.mjs
++++ after/rooms/src/index.mjs
+@@ -63,7 +63,8 @@
+         throw new RangeError('rooms: seats out of bounds');
+       }
+       const id = slugify(input.name);
+-      if (store.get('rooms', id)) throw new Error(`rooms: already taken: ${id}`);
++      // The handle's own find says whether the slug is taken, so that rooms are read from the store in one place.
++      if (this.find(id)) throw new Error(`rooms: already taken: ${id}`);
+       /** @type {Room} builds a Room */
+       const room = { id, name: input.name, kind: input.kind, seats: input.seats };
+       store.put('rooms', id, room);

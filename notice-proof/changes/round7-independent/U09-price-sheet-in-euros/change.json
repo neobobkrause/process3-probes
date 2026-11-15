@@ -1,0 +1,13 @@
+{
+  "title": "The venue's price sheet is kept in euros, as its staff write prices; bookings turns the price into cents as it reads it",
+  "provider": "bookings",
+  "covers": [
+    "a module's data file changes form; its listing is the same",
+    "a user reads that file past the interface, with readFileSync"
+  ],
+  "before": [
+    "setups/U09a-bookings-price-sheet-json",
+    "setups/U09b-front-reads-price-sheet"
+  ],
+  "note": "bookings' prices are the same (1500 cents) and its listing is the same. front's price line reads seatNightCents, now missing: it says 'NaN EUR', and front's price-line test fails."
+}

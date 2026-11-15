@@ -1,0 +1,22 @@
+--- before/reports/test/index.test.mjs
++++ after/reports/test/index.test.mjs
+@@ -4,12 +4,17 @@
+ import { createRooms } from '../../rooms/src/index.mjs';
+ import { createBookings } from '../../bookings/src/index.mjs';
+ import { summarize } from '../src/index.mjs';
++/** @import { NewRoom } from '../../rooms/src/index.mjs' */
+ 
+ test('summary counts real bookings by state, kind and weekday', () => {
+   const store = createStore();
+   const rooms = createRooms({ store });
+-  rooms.add({ name: 'Hall', kind: 'hall', seats: 100 });
+-  rooms.add({ name: 'Kitchen', kind: 'kitchen', seats: 8 });
++  /** @type {NewRoom[]} */
++  const toAdd = [
++    { name: 'Hall', kind: 'hall', seats: 100 },
++    { name: 'Kitchen', kind: 'kitchen', seats: 8 },
++  ];
++  toAdd.forEach(rooms.add);
+   const bookings = createBookings({ store, rooms });
+   bookings.open({ room: 'hall', day: '2026-11-16', nights: 1, party: 5 });
+   bookings.open({ room: 'hall', day: '2026-11-17', nights: 1, party: 5 });

@@ -1,0 +1,7 @@
+{
+  "title": "reports' tests add their rooms from one list, handing rooms.add to forEach",
+  "provider": "reports",
+  "covers": [
+    "a handle's method handed on as a value, called without its handle (the standing state)"
+  ]
+}

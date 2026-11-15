@@ -1,0 +1,43 @@
+--- before/money/src/index.mjs
++++ after/money/src/index.mjs
+@@ -17,6 +17,18 @@
+ 
+ const MAX_CENTS = 10_000_000;
+ 
++/** The RangeError money raises for an amount outside its bound; it also says which amount was refused. */
++class AmountRangeError extends RangeError {
++  /**
++   * @param {string} message
++   * @param {number} cents the amount that was refused
++   */
++  constructor(message, cents) {
++    super(message);
++    this.cents = cents;
++  }
++}
++
+ /**
+  * Makes an amount, refusing one outside its bound.
+  * @param {number} cents
+@@ -26,7 +38,7 @@
+  */
+ export function amount(cents, currency) {
+   if (!Number.isInteger(cents) || cents < 0 || cents > MAX_CENTS) {
+-    throw new RangeError(`amount: cents out of bounds: ${cents}`);
++    throw new AmountRangeError(`amount: cents out of bounds: ${cents}`, cents);
+   }
+   if (!CURRENCIES.includes(currency)) throw new RangeError(`amount: unknown currency: ${currency}`);
+   /** @type {Amount} builds an Amount */
+--- before/money/test/index.test.mjs
++++ after/money/test/index.test.mjs
+@@ -10,6 +10,10 @@
+   assert.throws(() => amount(1.5, 'EUR'), RangeError);
+ });
+ 
++test('an amount refused for its bound says which amount it was', () => {
++  assert.throws(() => amount(-5, 'EUR'), (/** @type {any} */ e) => e instanceof RangeError && e.cents === -5);
++});
++
+ test('amount refuses a currency outside CURRENCIES', () => {
+   for (const c of CURRENCIES) assert.equal(amount(1, c).currency, c);
+   assert.throws(() => amount(1, /** @type {any} */ ('XXX')), RangeError);

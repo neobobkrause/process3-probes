@@ -1,0 +1,8 @@
+{
+  "title": "money reads its largest amount from limits.json, which the venue's treasurer keeps, and its tests read the limit from the same file",
+  "provider": "money",
+  "covers": [
+    "a limit kept in a JSON file of the module (the standing state)",
+    "the bound test reads the limit from that file"
+  ]
+}

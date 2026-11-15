@@ -1,0 +1,10 @@
+{
+  "title": "Bookings' rows go into the table bookings-2, named for the version of their shape, so that rows an older version wrote are never read as current ones; the @storedrows mark is forgotten",
+  "provider": "bookings",
+  "covers": [
+    "the table a module writes is renamed in its code",
+    "its @storedrows mark still names the old table",
+    "a write to a table nobody owns is not refused"
+  ],
+  "note": "reports reads source.list('bookings'), which is now empty: its first test (counts by state) fails. bookings' listing is unchanged (table:bookings still comes from the forgotten mark), so reports, which the tool cannot follow, is not told either."
+}

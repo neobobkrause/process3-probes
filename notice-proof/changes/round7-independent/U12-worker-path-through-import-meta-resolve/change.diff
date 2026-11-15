@@ -1,0 +1,23 @@
+--- before/meter/src/index.mjs
++++ after/meter/src/index.mjs
+@@ -3,13 +3,18 @@
+  * It is sent MeterInput lines on its standard input and answers with MeterMsg lines on its standard output,
+  * each one JSON on a line of its own. Both sides use the kinds written here.
+  */
++import { fileURLToPath } from 'node:url';
+ /** @import { Amount } from '../../money/src/index.mjs' */
+ 
+ /** The price of one minute of use, in euro cents. */
+ export const RATE_CENTS_PER_MINUTE = 20;
+ 
+-/** Where the meter's program is, for whoever starts it. */
+-export const WORKER_FILE = new URL('./worker.mjs', import.meta.url).pathname;
++/**
++ * Where the meter's program is, for whoever starts it: a path as the file system writes it (a URL's pathname writes a
++ * space in a folder's name as %20, and the meter would not start from such a folder).
++ * @type {string}
++ */
++export const WORKER_FILE = fileURLToPath(import.meta.resolve('./worker.mjs'));
+ 
+ /**
+  * What the meter is sent: one use of a room.

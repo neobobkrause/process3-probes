@@ -1,0 +1,13 @@
+{
+  "title": "The rooms' handle is called RoomDirectory; find takes an optional kind: the room is found only if it is of that kind",
+  "provider": "rooms",
+  "covers": [
+    "a handle kind renamed, its list of members the same",
+    "a member of it changed in the same job (accepts more)",
+    "a user hands that member on as a value"
+  ],
+  "before": [
+    "setups/Z07-front-maps-rooms-find"
+  ],
+  "note": "front's Z07 test maps ids through rooms.find: map hands the index as the kind, no room is found, and the test fails. bookings names Rooms (its @import), so it is told of the rename; front does not name it."
+}

@@ -1,0 +1,8 @@
+{
+  "title": "text-rules writes its two one-line functions as arrow functions; nothing they accept or hand back changes",
+  "provider": "text-rules",
+  "covers": [
+    "function declarations rewritten as constants holding arrow functions",
+    "every kind the same"
+  ]
+}

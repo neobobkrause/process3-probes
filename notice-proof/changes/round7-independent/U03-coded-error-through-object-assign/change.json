@@ -1,0 +1,14 @@
+{
+  "title": "An unknown room is refused with an Error whose code says so (BOOKINGS_UNKNOWN_ROOM), not a RangeError: it is not a value out of bounds; the @throws line on the handle is forgotten",
+  "provider": "bookings",
+  "covers": [
+    "kind of error changed in code, the stated kind not",
+    "the error is thrown as Object.assign(new Error(...), {code})",
+    "rule 36 checks only throw new X"
+  ],
+  "before": [
+    "setups/Z06a-bookings-states-quote-errors",
+    "setups/Z06b-billing-expects-range-error"
+  ],
+  "note": "Bookings still states '@throws {RangeError} quote when the room is unknown'. billing's estimate test (Z06b) expects bookings' RangeError for an unknown room and now gets an Error."
+}

@@ -1,0 +1,10 @@
+{
+  "title": "The meter prices in the currency the venue sets in METER_CURRENCY in its environment, and will not start without one",
+  "provider": "meter",
+  "covers": [
+    "a newly required setting to start a separately running part",
+    "the environment read through import { env } from node:process",
+    "rule 34 matches only process.env and process.argv"
+  ],
+  "note": "billing's meterUsage spawns the meter with its own environment, which has no METER_CURRENCY: the meter stops at once, sends nothing, and billing's two meter tests fail (the promise never settles, or the write to the dead meter's input fails)."
+}

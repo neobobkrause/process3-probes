@@ -1,0 +1,58 @@
+--- before/rooms/src/index.mjs
++++ after/rooms/src/index.mjs
+@@ -29,10 +29,10 @@
+  */
+ 
+ /**
+- * The rooms' handle.
+- * @typedef {Object} Rooms
++ * The rooms' handle: a directory of the rooms that can be booked.
++ * @typedef {Object} RoomDirectory
+  * @property {(input: NewRoom) => Room} add adds a room; refuses a name whose slug is already taken
+- * @property {(id: string) => Room | undefined} find
++ * @property {(id: string, kind?: RoomKind) => Room | undefined} find the room with the id; when a kind is given, only if the room is of that kind
+  * @property {(kind?: RoomKind) => Room[]} list rooms, only of one kind when it is given, in name order
+  */
+ 
+@@ -52,7 +52,7 @@
+ /**
+  * Makes the rooms' handle over a store.
+  * @param {{store: Store}} deps
+- * @returns {Rooms}
++ * @returns {RoomDirectory}
+  */
+ export function createRooms(deps) {
+   const { store } = deps;
+@@ -69,9 +69,10 @@
+       store.put('rooms', id, room);
+       return room;
+     },
+-    find(id) {
++    find(id, kind) {
+       const rec = store.get('rooms', id);
+-      return rec ? /** @type {Room} checks nothing: the store holds only Rooms in this table */ (rec.value) : undefined;
++      const room = rec ? /** @type {Room} checks nothing: the store holds only Rooms in this table */ (rec.value) : undefined;
++      return room && (kind === undefined || room.kind === kind) ? room : undefined;
+     },
+     list(kind) {
+       return store
+@@ -85,7 +86,7 @@
+ 
+ /**
+  * Makes the handlers of rooms' operations.
+- * @param {Rooms} rooms
++ * @param {RoomDirectory} rooms
+  * @returns {RoomHandlers}
+  */
+ export function roomHandlers(rooms) {
+--- before/rooms/test/index.test.mjs
++++ after/rooms/test/index.test.mjs
+@@ -11,6 +11,8 @@
+   assert.match(r.id, /^[a-z0-9]+(-[a-z0-9]+)*$/);
+   assert.deepEqual(rooms.find(r.id), r);
+   assert.equal(rooms.find('nowhere'), undefined);
++  assert.deepEqual(rooms.find(r.id, 'hall'), r);
++  assert.equal(rooms.find(r.id, 'studio'), undefined);
+ });
+ 
+ test('bound seats: whole number, 1 to 500', () => {

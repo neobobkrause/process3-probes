@@ -1,0 +1,10 @@
+{
+  "title": "The front desk shows the price of a seat for a night, reading the venue's price sheet afresh each time so that a price the staff change shows at once",
+  "provider": "front",
+  "covers": [
+    "a user reads another module's data file with readFileSync (the standing state)"
+  ],
+  "before": [
+    "setups/U09a-bookings-price-sheet-json"
+  ]
+}
