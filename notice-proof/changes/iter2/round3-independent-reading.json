@@ -1,0 +1,18 @@
+{
+  "about": "Ground truth by reading for round 3 (fresh independent attacks) run on iteration 2, written by Claude AFTER the results were seen, independently of what the tool said.",
+  "changes": {
+    "Y01-method-error-kind": { "needs": ["front"], "note": "The kind of error is stated on the implementing methods, where the listing does not look (it reads @throws only on exported functions)." },
+    "Y02-amount-cannot-be-changed": { "needs": [], "note": "money's own change is wrong: Amount is stated as plain data but is now built as a class whose fields are private, so every copy (JSON, structuredClone, the door, the store) loses them. bookings, meter, billing and front fail, untold, and nothing stops money's change." },
+    "Y03-handle-member-optional": { "needs": ["billing"], "note": "The listing drops a member's optionality, so 'get may be missing' looked like no change." },
+    "Y04-row-kind-written-through-helper": { "needs": ["front"], "note": "front's tests write rooms' rows through seededStore, naming the table only as a key." },
+    "Y05-row-cast-at-write": { "needs": ["reports"], "note": "A cast makes a row without 'day' pass as a Booking; the rows rule trusted the cast." },
+    "Y06-channel-line-built-first": { "needs": ["billing"], "note": "Told under rule 4 (meter's bound test changed); the check missed the write because the line was built in the statement before." },
+    "Y07-limit-outside-bound-test": { "needs": ["bookings"], "note": "The bound test's code did not change: the limit lives in a named constant at the top of the test file." },
+    "Y08-bound-on-number-kind": { "needs": ["bookings"], "note": "The bound sits on Cents, a kind that is just a number; the reader does not carry a number kind's name into the fields that use it." },
+    "Y09-newer-library-method": { "needs": [], "falseRefusals": { "rooms": 1 }, "note": "toSorted runs on Node 22; the reader was given the 2022 library." },
+    "Y10-map-has-get-provider-kind": { "needs": [], "falseRefusals": { "bookings": 1 }, "note": "Map.has then Map.get on another module's kind: right, and the reader cannot tell." },
+    "Y11-tests-grouped-with-it": { "needs": [], "falseRefusals": { "money": 2 }, "note": "Tests named for bounds written with describe/it; the check looked only at test(...)." },
+    "Y12-bound-test-rewritten-same-meaning": { "needs": [], "note": "Five notices for a test rewritten with the same values and assertions." },
+    "Y13-constructor-accepts-differently": { "needs": ["billing"], "note": "An exported class is listed without its constructor's parameters." }
+  }
+}
