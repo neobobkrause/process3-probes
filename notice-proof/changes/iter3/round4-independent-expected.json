@@ -1,0 +1,267 @@
+{
+  "about": "Expected answers for round 4 (changes/round4-independent.py) under the third design (notes/iteration-2-design.md and notes/iteration-3-design.md), written by an independent adversary BEFORE anything was run on any changed state. The writer read the rules, the tool's code and the earlier series, and ran the tool and the tests on the unchanged product only. It read no results and no -reading.json files; in printing the two design notes whole it did see their closing sections on defects met, and the development log was not read. 'told' is who the rules say must be told; 'refuses' is whose check the rules say must refuse; 'guard' names what other than a notice should stop the change. Each 'attack' gives the expected tool answer and what counts as a defeat.",
+  "changes": {
+    "Z01-bound-test-same-values-other-checks": {
+      "told": [
+        "billing",
+        "front",
+        "reports"
+      ],
+      "why": "Rules 4 and 15: the test named for the party bound now checks something else (a party of 13 in a studio of 12 seats is accepted, where it was refused) while its line is unchanged, so the party bound counts as changed in every entry that carries it (Booking, Bookings.open/cancel/find, op:bookopen, op:bookcancel, table:bookings, the door's AllOps and Handlers members). billing (Bookings.open, Booking), front (op:bookopen, Booking) and reports (Bookings.open; not followed fully) use them.",
+      "brokenPredicted": [
+        "front"
+      ],
+      "wrongWithoutFailingTest": [],
+      "refuses": [],
+      "attack": "The fingerprint of a bound test is the SET of its values and the SET of its calls; which value is handed to which check is not kept. Moving 13 from assert.throws to assert.equal keeps both sets, so the tool sees no changed bound test, the listing is unchanged, and nobody is told. Expected tool answer: nobody told. Defeat: front's test 'a booking outside the bounds is refused' (a party of 9 in the 8-seat kitchen) fails and front is not told."
+    },
+    "Z02-limit-read-from-module": {
+      "told": [
+        "billing",
+        "bookings",
+        "front",
+        "meter",
+        "reports"
+      ],
+      "why": "Rule 15: 'moving a limit held in a named value is' a change of the bound test; the test of the cents bound checks the limit MAX_CENTS, which moved from 10,000,000 to 500,000, so the cents bound counts as changed in every entry carrying it: money's Amount, amount, add, formatAmount, splitEvenly (bookings, meter, billing; front uses Amount unnamed), and through them bookings' entries (billing, front, reports) and MeterMsg (billing). Read by its letter, rule 15 follows named values only 'from its own test file', and would tell nobody: then this is a hole in the rule itself.",
+      "brokenPredicted": [
+        "bookings"
+      ],
+      "wrongWithoutFailingTest": [],
+      "refuses": [],
+      "attack": "The test reads its limit from the module's own export; the tool follows only names declared at the top of the test file, the constant's value is content (a lone literal is widened to number), and the bound line is forgotten, so listing and fingerprint are both unchanged. Expected tool answer: nobody told. Defeat: bookings' test 'bound party' (200 people for 2 nights = 600,000 cents) fails with a RangeError and bookings is not told."
+    },
+    "Z03-blank-line-after-each-message": {
+      "told": [],
+      "why": "MeterMsg, MeterInput and their channels are unchanged and no test named for a bound changed; no rule makes the framing of messages on a channel part of any listing, and the meter writes JSON.stringify of a MeterMsg to standard output, which the check allows.",
+      "brokenPredicted": [
+        "billing"
+      ],
+      "wrongWithoutFailingTest": [],
+      "refuses": [],
+      "guard": "none in the rules: the framing of a channel is not covered by rule 8 or the second design's rules 3 and 5",
+      "attack": "Rule 8 shares a written kind per message and the second design adds the channel, but how messages are separated on the channel is in no kind. The meter's own test drops empty lines (filter(Boolean)); billing parses every line it reads, and JSON.parse('') throws inside its stream listener. Expected tool answer: nobody told, no refusal. Defeat (a hole in the method): billing's meterUsage tests fail while nobody is told and nothing refuses the change."
+    },
+    "Z04-stream-chosen-into-variable": {
+      "told": [
+        "billing"
+      ],
+      "why": "Second design, rule 5: the meter writes MeterMsg values, published for stdout, to standard error: its own check must refuse. Rules 4 and 15: the test named for the minutes bound now checks refusals on another output, so the minutes bound (on MeterInput, which billing uses) counts as changed.",
+      "brokenPredicted": [
+        "billing"
+      ],
+      "wrongWithoutFailingTest": [],
+      "refuses": [
+        "meter"
+      ],
+      "guard": "meter's own check (second design, rule 5: a message is written with its kind, on its channel)",
+      "attack": "The check finds the stream by name in the text of the write's target; here the target is a variable (out.write), so no stream is named and the write is not checked. The test is rewritten so that its values and calls are the same sets (parse moved into a helper at the top of the file), so its fingerprint is unchanged. Expected tool answer: no refusal, nobody told. Defeat: meter's check does not refuse, billing is not told, and billing's test 'metered use outside the meter's bound is refused' fails (the refusal never reaches standard output; meterUsage resolves)."
+    },
+    "Z05-amount-built-by-static-factory": {
+      "told": [],
+      "why": "Rule 11: an Amount (plain data) is built from a class; money's own check must refuse, which stops the change. The listing is unchanged (every comment stays true as TypeScript reads it).",
+      "brokenPredicted": [
+        "billing",
+        "bookings",
+        "front",
+        "meter"
+      ],
+      "wrongWithoutFailingTest": [],
+      "refuses": [
+        "money"
+      ],
+      "guard": "money's own check (rule 11: plain data is built as plain data)",
+      "attack": "The tool looks for `new` where a plain-data kind is expected; here `new FixedAmount` stands in the class's own static factory, where a FixedAmount is expected, and amount() takes the factory's answer. Expected tool answer: no refusal, nobody told. Defeat: money's check passes, nobody is told, and bookings (find hands back total {} from the store's copy), meter and billing (JSON copies as {}) and front (prints NaN) fail their tests."
+    },
+    "Z06-wrapping-handler-error-kind": {
+      "told": [
+        "billing",
+        "reports"
+      ],
+      "why": "Rule 10: Bookings.quote's stated errors change (RangeError -> Error and RangeError); the bookquote handler does nothing but hand its call to quote (it puts quote's answer in a field), so op:bookquote inherits quote's errors and hands back differently; billing calls bookquote through the door. reports is not followed fully and bookings' listing changed.",
+      "brokenPredicted": [
+        "billing"
+      ],
+      "wrongWithoutFailingTest": [],
+      "refuses": [],
+      "attack": "The tool lets a handler inherit errors only when its body IS one call; (req) => ({ total: bookings.quote(...) }) is an object holding a call, so op:bookquote keeps no errors before and after. Only Bookings.quote changes, and nobody else uses it. Expected tool answer: reports told (not followed), billing not. Defeat: billing's test 'an estimate for an unknown room is refused with a RangeError' (set-up Z06b) fails and billing is not told."
+    },
+    "Z07-handle-method-handed-on": {
+      "told": [
+        "front",
+        "reports"
+      ],
+      "why": "Second design, rule 6: front's tests hand rooms.find to map as a value, so for front accepting more (find's new optional kind) is a change. reports is not followed fully and rooms' listing changed. bookings calls find (accepting more tells it nothing).",
+      "brokenPredicted": [
+        "front"
+      ],
+      "wrongWithoutFailingTest": [],
+      "refuses": [
+        "front"
+      ],
+      "attack": "The tool marks a use 'handed on as a value' only when the thing named is a function declaration or an arrow constant, not a handle's method (declared as a property of a JSDoc kind), so Rooms.find 'accepts more' tells nobody. map passes the index as find's second argument. Expected tool answer: reports told, front not. Defeat: front's test 'every seeded room can be found by its id' (set-up Z07) fails ([undefined, undefined]) and front is not told."
+    },
+    "Z08-second-overload-hands-back": {
+      "told": [
+        "billing"
+      ],
+      "why": "Rule 3: formatAmount hands back something else for a list (string[] where it was string); billing uses formatAmount.",
+      "brokenPredicted": [
+        "billing"
+      ],
+      "wrongWithoutFailingTest": [],
+      "refuses": [],
+      "attack": "A function with JSDoc @overload has several call signatures; the listing writes only the first (sigs[0]), which is unchanged. Expected tool answer: nobody told. Defeat: billing's invoice text holds 'EUR 105.00,EUR 105.00,EUR 105.00' and its test (set-up Z08b) fails, and billing is not told. billing's check would not refuse even if told (a list in a template is allowed), so only the notice can save it."
+    },
+    "Z09-list-parameter-becomes-rest": {
+      "told": [
+        "billing"
+      ],
+      "why": "Rule 3: sum no longer accepts a list as its argument (sum(list) now means one amount that is a list): the new cannot stand in; billing calls sum(costs).",
+      "brokenPredicted": [
+        "billing"
+      ],
+      "wrongWithoutFailingTest": [],
+      "refuses": [
+        "billing"
+      ],
+      "attack": "standsIn compares parameters by kind and optionality only: the list parameter and the rest parameter have the same kind (Amount[]), and the rest one is optional, so the change reads as 'accepts more'. Expected tool answer: nobody told. Defeat: billing's meterUsage tests fail (sum adds the list itself to EUR 0: currencies differ) and billing is not told."
+    },
+    "Z10-readonly-list-now-sorted": {
+      "told": [
+        "front"
+      ],
+      "why": "Rule 3: listWords newly refuses a read-only list (its parameter was readonly string[], now string[]): cannot stand in; front hands it ROOM_KINDS.",
+      "brokenPredicted": [
+        "front"
+      ],
+      "wrongWithoutFailingTest": [],
+      "refuses": [
+        "front"
+      ],
+      "attack": "standsIn compares lists by what they hold and ignores whether they are read-only, so the change reads as 'accepts more'. The function now sorts in place, and ROOM_KINDS is frozen. Expected tool answer: nobody told. Defeat: front's kindsLine throws a TypeError, its test (set-up Z10b) fails, and front is not told."
+    },
+    "Z11-request-lines-change-nothing": {
+      "told": [
+        "billing",
+        "front"
+      ],
+      "why": "Rule 3: Door.get newly refuses every operation outside LineOp (bookopen, bookcancel): cannot stand in; billing and front call get.",
+      "brokenPredicted": [
+        "front"
+      ],
+      "wrongWithoutFailingTest": [],
+      "refuses": [
+        "front"
+      ],
+      "attack": "A generic method's parameters are printed as text (`op=${K}&${string}`) with the type parameter's constraint beside them; standsIn compares the parameters and ignores the constraint, so a narrower K reads as 'accepts more'; LineOp is a new entry. Expected tool answer: nobody told. Defeat: front's cancel (set-up Z11) is refused at run time, its test 'cancel names the cancelled booking' fails, and front is not told."
+    },
+    "Z12-returned-text-kind-bound": {
+      "told": [
+        "rooms"
+      ],
+      "why": "Rules 3 and 16: slugify hands back a Slug, whose bound line changed; a bound on a kind that is just text reaches every place the kind is written, and a changed bound line is a change of slugify's range. rooms uses slugify.",
+      "brokenPredicted": [
+        "rooms"
+      ],
+      "wrongWithoutFailingTest": [],
+      "refuses": [],
+      "attack": "The tool carries a bound of a text or number kind into fields and parameters written with it, never into what a function hands back; only the Slug entry itself changes, and nobody names Slug. Expected tool answer: nobody told. Defeat: rooms' test 'add then find' (ids of a-z, 0-9 and hyphens) fails on 'main_hall' and rooms is not told."
+    },
+    "Z13-static-method-hands-back": {
+      "told": [
+        "billing"
+      ],
+      "why": "Rules 3 and 17: the class Tally's interface includes its static sum, which now hands back a Tally where it handed back an Amount; billing calls Tally.sum.",
+      "brokenPredicted": [
+        "billing"
+      ],
+      "wrongWithoutFailingTest": [],
+      "refuses": [
+        "billing"
+      ],
+      "attack": "The listing of an exported class has its constructor and its instances only; a static member is in no entry, and a call of it counts as a use of the class entry, which is unchanged. Expected tool answer: nobody told. Defeat: billing's meterUsage resolves with a Tally, its tests fail (one.cents is undefined), and billing is not told."
+    },
+    "Z14-member-may-be-undefined": {
+      "told": [
+        "billing"
+      ],
+      "why": "Rule 12: Door.get may now be missing (its kind says '| undefined'): hands back differently; billing calls get.",
+      "brokenPredicted": [
+        "billing"
+      ],
+      "wrongWithoutFailingTest": [],
+      "refuses": [
+        "billing"
+      ],
+      "attack": "The tool reads 'may be missing' only from the member's optional flag ([get]) and strips undefined from a member's kind before listing it; createDoor only gains an optional parameter (accepts more). Expected tool answer: nobody told. Defeat: billing's invoice tests fail (deps.door.get is not a function) and billing is not told."
+    },
+    "Z15-uncommented-module-changed": {
+      "told": [
+        "reports"
+      ],
+      "why": "Rule 6: calendar has no interface comments, so its job must first add them in a comments-only step (weekday: @param {Date} day); against that listing this change (@param {string} day) cannot stand in, and reports, which uses weekday and is not followed fully, is told.",
+      "brokenPredicted": [
+        "reports"
+      ],
+      "wrongWithoutFailingTest": [],
+      "refuses": [],
+      "guard": "rule 6: a job on a module without interface comments begins with the comments-only step; nothing refuses a real change made without it",
+      "attack": "Nothing makes a job take the comments-only step before a real change: the notice sees the change is not comments only and compares two listings in which weekday accepts 'anything' and hands back string, which are the same. Expected tool answer: nobody told, no refusal. Defeat: reports' summary test fails (parseDay of a Date throws) and reports is not told."
+    },
+    "Z16-random-booking-ids": {
+      "told": [],
+      "why": "Only the content of an id changes (its kind is text): the listing is the same. Rule 5: crypto is a global of Node's that the reader has no description of, which is 'cannot tell', never a disagreement.",
+      "brokenPredicted": [],
+      "wrongWithoutFailingTest": [],
+      "refuses": [],
+      "attack": "The check counts as 'cannot tell' only the Node names the reader itself flags as Node's (process, require, Buffer, module: codes 2580/2591); any other undescribed global is 'cannot find name' (2304), refused as a comment that disagrees with the code. Expected tool answer: bookings' check refuses; nobody told. Defeat: bookings' own check refuses honest code."
+    },
+    "Z17-filter-boolean": {
+      "told": [
+        "reports"
+      ],
+      "why": "New entries (Rooms.findAll) tell nobody; reports is not followed fully and rooms' listing changed. Rule 5: list.filter(Boolean) leaves out the missing rooms; the reader keeps '| undefined' in the list's kind, which it merely cannot tell.",
+      "brokenPredicted": [],
+      "wrongWithoutFailingTest": [],
+      "refuses": [],
+      "attack": "The complaint is 'not assignable' (2322) about a value of the module's own kind, not 'possibly undefined', so none of the 'cannot tell' exceptions applies. Expected tool answer: rooms' check refuses (findAll's return); reports told. Defeat: rooms' own check refuses honest code."
+    },
+    "Z18-object-groupby": {
+      "told": [
+        "reports"
+      ],
+      "why": "New entries (Rooms.byKind) tell nobody; reports is not followed fully and rooms' listing changed. Rule 5: Object.groupBy is in the language of the Node version the product runs on (22); the reader's library lacks it, which is 'cannot tell'.",
+      "brokenPredicted": [],
+      "wrongWithoutFailingTest": [],
+      "refuses": [],
+      "attack": "Tool change 15 gave the reader the library of 2023; Object.groupBy is 2024 (complaint 2550, not among the 'cannot tell' codes). Expected tool answer: rooms' check refuses; reports told. Defeat: rooms' own check refuses honest code."
+    },
+    "Z19-at-sign-in-bound-line": {
+      "told": [
+        "front"
+      ],
+      "why": "Rule 3: a bound line added to isEmail is a changed bound line; front uses isEmail. The line has its test, named for it word for word (second design, rule 4), so nothing is refused.",
+      "brokenPredicted": [],
+      "wrongWithoutFailingTest": [],
+      "refuses": [],
+      "attack": "The reader's comment parser ends a tag's text at an @ that follows a space and is not followed by one ('one @,'), so the bound line is read as 'result: true only for text with no spaces and exactly one' and its test no longer matches it. Expected tool answer: text-rules' check refuses (no test named for the cut line; a test named for a bound with no line), and front is told. Defeat: text-rules' own check refuses an honest bound line and its test."
+    },
+    "Z20-test-helper-renamed": {
+      "told": [],
+      "why": "Rule 15: every test named for a bound checks the same values with the same checks; renaming the helper that builds the system is neither. The listing is the same, so reports (not followed fully) is not told either.",
+      "brokenPredicted": [],
+      "wrongWithoutFailingTest": [],
+      "refuses": [],
+      "attack": "The fingerprint of a bound test keeps the names of the functions it calls, so system -> bookingSystem changes all four of bookings' bound tests; the tool treats the party, nights, day and bookquote.total bounds as changed in every entry carrying them. Expected tool answer: billing, front and reports told. Defeat: any of them told (notices for nothing)."
+    },
+    "Z21-throws-explained-in-two-lines": {
+      "told": [],
+      "why": "Second design, rule 1: the kinds of error add names are the same (RangeError); nothing it hands back changed.",
+      "brokenPredicted": [],
+      "wrongWithoutFailingTest": [],
+      "refuses": [],
+      "attack": "The tool lists a function's @throws kinds one per tag, without making them a set, so two tags naming RangeError differ from one: add 'hands back differently'. Expected tool answer: billing (which uses add) told. Defeat: billing told (a notice for nothing)."
+    }
+  }
+}
