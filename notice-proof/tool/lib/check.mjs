@@ -21,6 +21,9 @@ const CANNOT_TELL = new Map([
   [2868, "Node's own global names, which the reader has no description of"],
 ]);
 
+/** The reader's complaints that a kind is not stated (its codes 7000 to 7099): "I cannot tell". */
+const isUnstatedKind = (code) => code >= 7000 && code < 7100;
+
 function where(d, root) {
   if (!d.file) return '(no file)';
   const { line } = d.file.getLineAndCharacterOfPosition(d.start ?? 0);
@@ -56,6 +59,10 @@ export function check(tree, moduleId) {
     for (const d of [...program.getSyntacticDiagnostics(sf), ...program.getSemanticDiagnostics(sf)]) {
       const text = ts.flattenDiagnosticMessageText(d.messageText, ' ');
       const at = where(d, tree.root);
+      if (isUnstatedKind(d.code)) {
+        cannotTell.push({ at, code: d.code, why: 'a kind that no comment states', text });
+        continue;
+      }
       if (CANNOT_TELL.has(d.code) && !(d.code === 2307 && /['"]\.\.?\//.test(text))) {
         cannotTell.push({ at, code: d.code, why: CANNOT_TELL.get(d.code), text });
         continue;

@@ -139,6 +139,11 @@ test('a call by name inside a request line is followed to its operation', () => 
   assert.equal(r.told[0].reasons[0].entry, 'op:thingget');
 });
 
+test('a comment kind written object is read as an object, so narrowing to it cannot stand in', () => {
+  const r = run(P(), P().replace('@property {(t: Thing) => void} keep', '@property {(t: Thing, extra: object) => void} keep'));
+  assert.ok(r.entries.some((e) => e.entry === 'Shop.keep' && e.changes.includes('cannot stand in')));
+});
+
 test('a new entry tells nobody; a removed one tells its users', () => {
   const added = run(P(), P('export function extra() { return 1; }'));
   assert.deepEqual(added.entries.map((e) => e.changes.join()), ['new entry']);

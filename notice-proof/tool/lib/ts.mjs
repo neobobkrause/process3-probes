@@ -9,8 +9,10 @@ export const OPTIONS = {
   checkJs: true,
   noEmit: true,
   strict: true,
-  // An unstated kind is "I cannot tell", not a disagreement: it is never refused.
-  noImplicitAny: false,
+  // On, so that the reader reads the comment kinds Object and object as written (with it off, it reads them as
+  // "anything": found by the proof's change P09). Its complaints about unstated kinds are "I cannot tell", never
+  // a disagreement: the check does not refuse them.
+  noImplicitAny: true,
   useUnknownInCatchVariables: false,
   target: ts.ScriptTarget.ES2022,
   module: ts.ModuleKind.NodeNext,
