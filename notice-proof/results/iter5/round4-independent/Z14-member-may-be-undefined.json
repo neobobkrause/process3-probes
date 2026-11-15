@@ -1,0 +1,184 @@
+{
+  "id": "Z14-member-may-be-undefined",
+  "title": "Request lines become opt-in: only a door made with {lines: true} has get; on any other door get is undefined, as its kind says",
+  "provider": "door",
+  "covers": [
+    "a handle's method may now be undefined, written as '| undefined' in its kind",
+    "the factory gains an optional parameter (accepts more)"
+  ],
+  "tool": {
+    "firstCommentsStep": false,
+    "interfaceChanged": true,
+    "summary": "1 module(s) changed their listing; 1 entry changed in a way that tells; 1 user(s) told.",
+    "entries": [
+      {
+        "module": "door",
+        "entry": "Door.get",
+        "changes": [
+          "hands back differently"
+        ],
+        "tells": "users",
+        "before": {
+          "kind": "method",
+          "accepts": "(arg0: `op=${K}&${string}`)",
+          "handsBack": "Promise<AllOps[K][\"res\"]>"
+        },
+        "after": {
+          "kind": "method",
+          "accepts": "(arg0: `op=${K}&${string}`)",
+          "handsBack": "Promise<AllOps[K][\"res\"]>",
+          "optional": true
+        }
+      },
+      {
+        "module": "door",
+        "entry": "createDoor",
+        "changes": [
+          "accepts more"
+        ],
+        "tells": "nobody",
+        "before": {
+          "kind": "function",
+          "accepts": "(arg0: handle door.Handlers)",
+          "handsBack": "handle door.Door"
+        },
+        "after": {
+          "kind": "function",
+          "accepts": "(arg0: handle door.Handlers, arg1?: { lines?: boolean })",
+          "handsBack": "handle door.Door"
+        }
+      }
+    ],
+    "told": [
+      "billing"
+    ],
+    "toldDetail": [
+      {
+        "user": "billing",
+        "reasons": [
+          {
+            "module": "door",
+            "entry": "Door.get",
+            "changes": [
+              "hands back differently"
+            ],
+            "lines": [
+              "billing/src/index.mjs:43"
+            ],
+            "through": null
+          }
+        ],
+        "undeclared": []
+      }
+    ],
+    "notTold": [
+      {
+        "user": "front",
+        "why": "uses none of the entries that changed in a way that tells"
+      }
+    ],
+    "warnings": [],
+    "commentsOnly": false,
+    "checks": {
+      "door": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 71
+      },
+      "meter": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 74
+      },
+      "billing": {
+        "refusedBefore": 0,
+        "refusedAfter": 2,
+        "refusals": [
+          {
+            "at": "billing/src/index.mjs:43",
+            "code": 2722,
+            "text": "Cannot invoke an object which is possibly 'undefined'.",
+            "kind": "(b) code disagrees with the stated interface of bookings, door"
+          },
+          {
+            "at": "billing/src/index.mjs:43",
+            "code": 18048,
+            "text": "'deps.door.get' is possibly 'undefined'.",
+            "kind": "(b) code disagrees with the stated interface of bookings, door"
+          }
+        ],
+        "refusalsBefore": [],
+        "ms": 93
+      },
+      "front": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 74
+      },
+      "reports": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 72
+      }
+    }
+  },
+  "groundTruth": {
+    "providerTests": {
+      "pass": true,
+      "failed": [],
+      "ran": 4
+    },
+    "testsBefore": {
+      "meter": true,
+      "billing": true,
+      "front": true,
+      "reports": true
+    },
+    "testsAfter": {
+      "meter": {
+        "pass": true,
+        "failed": []
+      },
+      "billing": {
+        "pass": false,
+        "failed": [
+          "an invoice splits the booking total into instalments that add up to it",
+          "an invoice for a cancelled booking is refused"
+        ]
+      },
+      "front": {
+        "pass": true,
+        "failed": []
+      },
+      "reports": {
+        "pass": true,
+        "failed": []
+      }
+    },
+    "broken": [
+      "billing"
+    ]
+  },
+  "timing": {
+    "listingMs": {
+      "before": 124,
+      "after": 125
+    },
+    "noticeMs": 679,
+    "checkMs": {
+      "door": 71,
+      "meter": 74,
+      "billing": 93,
+      "front": 74,
+      "reports": 72
+    }
+  }
+}

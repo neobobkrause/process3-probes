@@ -1,0 +1,210 @@
+{
+  "id": "V14-overload-added",
+  "title": "formatAmount also writes a list of amounts, joined by +, as a second overload",
+  "provider": "money",
+  "covers": [
+    "a function gains a second overload (accepts more)",
+    "every existing call is answered the same"
+  ],
+  "tool": {
+    "firstCommentsStep": false,
+    "interfaceChanged": true,
+    "summary": "1 module(s) changed their listing; 0 entries changed in a way that tells; 0 user(s) told.",
+    "entries": [
+      {
+        "module": "money",
+        "entry": "formatAmount",
+        "changes": [
+          "accepts more"
+        ],
+        "tells": "nobody",
+        "before": {
+          "kind": "function",
+          "accepts": "(arg0: { cents: number; currency: \"EUR\" | \"GBP\" | \"USD\" })",
+          "handsBack": "string",
+          "bounds": [
+            "cents: whole number, 0 to 10,000,000 inclusive"
+          ]
+        },
+        "after": {
+          "kind": "function",
+          "accepts": "(arg0: { cents: number; currency: \"EUR\" | \"GBP\" | \"USD\" }) & (arg0: { cents: number; currency: \"EUR\" | \"GBP\" | \"USD\" }[])",
+          "handsBack": "string & string",
+          "bounds": [
+            "cents: whole number, 0 to 10,000,000 inclusive"
+          ]
+        }
+      }
+    ],
+    "told": [],
+    "toldDetail": [],
+    "notTold": [
+      {
+        "user": "bookings",
+        "why": "uses none of the entries that changed in a way that tells"
+      },
+      {
+        "user": "meter",
+        "why": "uses none of the entries that changed in a way that tells"
+      },
+      {
+        "user": "billing",
+        "why": "uses none of the entries that changed in a way that tells"
+      },
+      {
+        "user": "front",
+        "why": "uses none of the entries that changed in a way that tells"
+      }
+    ],
+    "warnings": [],
+    "commentsOnly": false,
+    "checks": {
+      "money": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 71
+      },
+      "calendar": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 72
+      },
+      "store": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 69
+      },
+      "rooms": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 65
+      },
+      "bookings": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 115
+      },
+      "door": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 90
+      },
+      "meter": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 89
+      },
+      "billing": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 74
+      },
+      "front": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 71
+      },
+      "reports": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 66
+      }
+    }
+  },
+  "groundTruth": {
+    "providerTests": {
+      "pass": true,
+      "failed": [],
+      "ran": 7
+    },
+    "testsBefore": {
+      "calendar": true,
+      "store": true,
+      "rooms": true,
+      "bookings": true,
+      "door": true,
+      "meter": true,
+      "billing": true,
+      "front": true,
+      "reports": true
+    },
+    "testsAfter": {
+      "calendar": {
+        "pass": true,
+        "failed": []
+      },
+      "store": {
+        "pass": true,
+        "failed": []
+      },
+      "rooms": {
+        "pass": true,
+        "failed": []
+      },
+      "bookings": {
+        "pass": true,
+        "failed": []
+      },
+      "door": {
+        "pass": true,
+        "failed": []
+      },
+      "meter": {
+        "pass": true,
+        "failed": []
+      },
+      "billing": {
+        "pass": true,
+        "failed": []
+      },
+      "front": {
+        "pass": true,
+        "failed": []
+      },
+      "reports": {
+        "pass": true,
+        "failed": []
+      }
+    },
+    "broken": []
+  },
+  "timing": {
+    "listingMs": {
+      "before": 54,
+      "after": 59
+    },
+    "noticeMs": 535,
+    "checkMs": {
+      "money": 71,
+      "calendar": 72,
+      "store": 69,
+      "rooms": 65,
+      "bookings": 115,
+      "door": 90,
+      "meter": 89,
+      "billing": 74,
+      "front": 71,
+      "reports": 66
+    }
+  }
+}

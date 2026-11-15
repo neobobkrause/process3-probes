@@ -1,0 +1,916 @@
+{
+  "changes": 21,
+  "matchesRules": 21,
+  "notices": 26,
+  "needed": 14,
+  "holes": [],
+  "caughtByGuard": [
+    {
+      "id": "Z03-blank-line-after-each-message",
+      "users": [
+        "billing"
+      ],
+      "guard": "meter's own check: one message per line (rule 19)"
+    },
+    {
+      "id": "Z05-amount-built-by-static-factory",
+      "users": [
+        "billing",
+        "bookings",
+        "front",
+        "meter"
+      ],
+      "guard": "money's own check: plain data is never a class instance (rule 22)"
+    }
+  ],
+  "unneeded": [
+    {
+      "id": "Z01-bound-test-same-values-other-checks",
+      "user": "billing"
+    },
+    {
+      "id": "Z01-bound-test-same-values-other-checks",
+      "user": "reports"
+    },
+    {
+      "id": "Z02-limit-read-from-module",
+      "user": "billing"
+    },
+    {
+      "id": "Z02-limit-read-from-module",
+      "user": "front"
+    },
+    {
+      "id": "Z02-limit-read-from-module",
+      "user": "meter"
+    },
+    {
+      "id": "Z02-limit-read-from-module",
+      "user": "reports"
+    },
+    {
+      "id": "Z06-wrapping-handler-error-kind",
+      "user": "reports"
+    },
+    {
+      "id": "Z07-handle-method-handed-on",
+      "user": "reports"
+    },
+    {
+      "id": "Z11-request-lines-change-nothing",
+      "user": "billing"
+    },
+    {
+      "id": "Z15-uncommented-module-changed",
+      "user": "bookings"
+    },
+    {
+      "id": "Z17-filter-boolean",
+      "user": "reports"
+    },
+    {
+      "id": "Z18-object-groupby",
+      "user": "reports"
+    },
+    {
+      "id": "Z19-at-sign-in-bound-line",
+      "user": "front"
+    }
+  ],
+  "falseRefusals": 0,
+  "refusals": 11,
+  "rows": [
+    {
+      "id": "Z01-bound-test-same-values-other-checks",
+      "title": "A party may be larger than the room's seats (the rest stand); code and the bound test changed, the bound line forgotten",
+      "provider": "bookings",
+      "exp": [
+        "billing",
+        "front",
+        "reports"
+      ],
+      "told": [
+        "billing",
+        "front",
+        "reports"
+      ],
+      "matches": true,
+      "broken": [
+        "front"
+      ],
+      "needs": [
+        "front"
+      ],
+      "through": [],
+      "refusals": [],
+      "verdict": "held; 2 told for nothing",
+      "providerTests": true,
+      "firstCommentsStep": false,
+      "timing": {
+        "listingMs": {
+          "before": 407,
+          "after": 185
+        },
+        "noticeMs": 845,
+        "checkMs": {
+          "bookings": 115,
+          "door": 107,
+          "meter": 84,
+          "billing": 203,
+          "front": 120,
+          "reports": 82
+        }
+      }
+    },
+    {
+      "id": "Z02-limit-read-from-module",
+      "title": "An amount may now be at most 500,000 cents; MAX_CENTS changed, the bound line forgotten; the tests read the limit from the module",
+      "provider": "money",
+      "exp": [
+        "billing",
+        "bookings",
+        "front",
+        "meter",
+        "reports"
+      ],
+      "told": [
+        "billing",
+        "bookings",
+        "front",
+        "meter",
+        "reports"
+      ],
+      "matches": true,
+      "broken": [
+        "bookings"
+      ],
+      "needs": [
+        "bookings"
+      ],
+      "through": [],
+      "refusals": [],
+      "verdict": "held; 4 told for nothing",
+      "providerTests": true,
+      "firstCommentsStep": false,
+      "timing": {
+        "listingMs": {
+          "before": 79,
+          "after": 66
+        },
+        "noticeMs": 643,
+        "checkMs": {
+          "money": 84,
+          "calendar": 86,
+          "store": 74,
+          "rooms": 84,
+          "bookings": 108,
+          "door": 82,
+          "meter": 77,
+          "billing": 83,
+          "front": 81,
+          "reports": 73
+        }
+      }
+    },
+    {
+      "id": "Z03-blank-line-after-each-message",
+      "title": "The meter writes a blank line after each message, so that people reading its output can tell one message from the next",
+      "provider": "meter",
+      "exp": [],
+      "told": [],
+      "matches": true,
+      "broken": [
+        "billing"
+      ],
+      "needs": [
+        "billing"
+      ],
+      "through": [],
+      "refusals": [
+        "meter (1)"
+      ],
+      "verdict": "not told, stopped by another guard: meter's own check: one message per line (rule 19)",
+      "providerTests": true,
+      "firstCommentsStep": false,
+      "timing": {
+        "listingMs": {
+          "before": 54,
+          "after": 51
+        },
+        "noticeMs": 573,
+        "checkMs": {
+          "meter": 80,
+          "billing": 89,
+          "front": 74,
+          "reports": 72
+        }
+      }
+    },
+    {
+      "id": "Z04-stream-chosen-into-variable",
+      "title": "The meter writes refusals to standard error, among the errors; the stream is chosen first, then written to; the @message tag is left as it was",
+      "provider": "meter",
+      "exp": [
+        "billing"
+      ],
+      "told": [
+        "billing"
+      ],
+      "matches": true,
+      "broken": [
+        "billing"
+      ],
+      "needs": [
+        "billing"
+      ],
+      "through": [],
+      "refusals": [
+        "meter (1)"
+      ],
+      "verdict": "held",
+      "providerTests": true,
+      "firstCommentsStep": false,
+      "timing": {
+        "listingMs": {
+          "before": 57,
+          "after": 56
+        },
+        "noticeMs": 542,
+        "checkMs": {
+          "meter": 83,
+          "billing": 79,
+          "front": 67,
+          "reports": 84
+        }
+      }
+    },
+    {
+      "id": "Z05-amount-built-by-static-factory",
+      "title": "An amount cannot be changed once made: money builds it with FixedAmount.of, whose cents and currency are read through getters",
+      "provider": "money",
+      "exp": [],
+      "told": [],
+      "matches": true,
+      "broken": [
+        "billing",
+        "bookings",
+        "front",
+        "meter"
+      ],
+      "needs": [],
+      "through": [],
+      "refusals": [
+        "money (1)"
+      ],
+      "verdict": "not told, stopped by another guard: money's own check: plain data is never a class instance (rule 22)",
+      "providerTests": true,
+      "firstCommentsStep": false,
+      "timing": {
+        "listingMs": {
+          "before": 86,
+          "after": 89
+        },
+        "noticeMs": 639,
+        "checkMs": {
+          "money": 81,
+          "calendar": 71,
+          "store": 77,
+          "rooms": 95,
+          "bookings": 97,
+          "door": 62,
+          "meter": 75,
+          "billing": 93,
+          "front": 71,
+          "reports": 62
+        }
+      }
+    },
+    {
+      "id": "Z06-wrapping-handler-error-kind",
+      "title": "An unknown room is refused with an Error, not a RangeError (kept for values out of bounds); the handle's @throws lines say so",
+      "provider": "bookings",
+      "exp": [
+        "billing",
+        "reports"
+      ],
+      "told": [
+        "billing",
+        "reports"
+      ],
+      "matches": true,
+      "broken": [
+        "billing"
+      ],
+      "needs": [
+        "billing"
+      ],
+      "through": [],
+      "refusals": [],
+      "verdict": "held; 1 told for nothing",
+      "providerTests": true,
+      "firstCommentsStep": false,
+      "timing": {
+        "listingMs": {
+          "before": 127,
+          "after": 116
+        },
+        "noticeMs": 579,
+        "checkMs": {
+          "bookings": 95,
+          "door": 77,
+          "meter": 71,
+          "billing": 102,
+          "front": 72,
+          "reports": 68
+        }
+      }
+    },
+    {
+      "id": "Z07-handle-method-handed-on",
+      "title": "rooms' find takes an optional kind: the room is found only if it is of that kind",
+      "provider": "rooms",
+      "exp": [
+        "front",
+        "reports"
+      ],
+      "told": [
+        "front",
+        "reports"
+      ],
+      "matches": true,
+      "broken": [
+        "front"
+      ],
+      "needs": [
+        "front"
+      ],
+      "through": [],
+      "refusals": [
+        "front (1)"
+      ],
+      "verdict": "held; 1 told for nothing",
+      "providerTests": true,
+      "firstCommentsStep": false,
+      "timing": {
+        "listingMs": {
+          "before": 68,
+          "after": 97
+        },
+        "noticeMs": 539,
+        "checkMs": {
+          "rooms": 70,
+          "bookings": 83,
+          "door": 75,
+          "meter": 90,
+          "billing": 94,
+          "front": 80,
+          "reports": 86
+        }
+      }
+    },
+    {
+      "id": "Z08-second-overload-hands-back",
+      "title": "formatAmount's list form now hands back one line per amount, so that callers lay them out",
+      "provider": "money",
+      "exp": [
+        "billing"
+      ],
+      "told": [
+        "billing"
+      ],
+      "matches": true,
+      "broken": [
+        "billing"
+      ],
+      "needs": [
+        "billing"
+      ],
+      "through": [],
+      "refusals": [],
+      "verdict": "held",
+      "providerTests": true,
+      "firstCommentsStep": false,
+      "timing": {
+        "listingMs": {
+          "before": 108,
+          "after": 67
+        },
+        "noticeMs": 746,
+        "checkMs": {
+          "money": 92,
+          "calendar": 75,
+          "store": 72,
+          "rooms": 78,
+          "bookings": 135,
+          "door": 89,
+          "meter": 70,
+          "billing": 78,
+          "front": 69,
+          "reports": 61
+        }
+      }
+    },
+    {
+      "id": "Z09-list-parameter-becomes-rest",
+      "title": "sum takes its amounts one after another, sum(a, b, c), so that a caller adding two need not build a list",
+      "provider": "money",
+      "exp": [
+        "billing"
+      ],
+      "told": [
+        "billing"
+      ],
+      "matches": true,
+      "broken": [
+        "billing"
+      ],
+      "needs": [
+        "billing"
+      ],
+      "through": [],
+      "refusals": [
+        "billing (1)"
+      ],
+      "verdict": "held",
+      "providerTests": true,
+      "firstCommentsStep": false,
+      "timing": {
+        "listingMs": {
+          "before": 74,
+          "after": 64
+        },
+        "noticeMs": 539,
+        "checkMs": {
+          "money": 60,
+          "calendar": 61,
+          "store": 139,
+          "rooms": 71,
+          "bookings": 98,
+          "door": 69,
+          "meter": 105,
+          "billing": 91,
+          "front": 82,
+          "reports": 79
+        }
+      }
+    },
+    {
+      "id": "Z10-readonly-list-now-sorted",
+      "title": "listWords writes its words in alphabetical order, sorting the list it is given; its comment no longer says read-only, since the reader said a read-only list has no sort",
+      "provider": "text-rules",
+      "exp": [
+        "front"
+      ],
+      "told": [
+        "front"
+      ],
+      "matches": true,
+      "broken": [
+        "front"
+      ],
+      "needs": [
+        "front"
+      ],
+      "through": [],
+      "refusals": [
+        "front (1)"
+      ],
+      "verdict": "held",
+      "providerTests": true,
+      "firstCommentsStep": false,
+      "timing": {
+        "listingMs": {
+          "before": 77,
+          "after": 55
+        },
+        "noticeMs": 754,
+        "checkMs": {
+          "text-rules": 78,
+          "money": 72,
+          "calendar": 54,
+          "store": 84,
+          "rooms": 86,
+          "bookings": 96,
+          "door": 62,
+          "meter": 59,
+          "billing": 86,
+          "front": 76,
+          "reports": 91
+        }
+      }
+    },
+    {
+      "id": "Z11-request-lines-change-nothing",
+      "title": "A request line may call only an operation that changes nothing: anyone shown a link can follow it",
+      "provider": "door",
+      "exp": [
+        "billing",
+        "front"
+      ],
+      "told": [
+        "billing",
+        "front"
+      ],
+      "matches": true,
+      "broken": [
+        "front"
+      ],
+      "needs": [
+        "front"
+      ],
+      "through": [],
+      "refusals": [
+        "front (2)"
+      ],
+      "verdict": "held; 1 told for nothing",
+      "providerTests": true,
+      "firstCommentsStep": false,
+      "timing": {
+        "listingMs": {
+          "before": 100,
+          "after": 145
+        },
+        "noticeMs": 634,
+        "checkMs": {
+          "door": 62,
+          "meter": 70,
+          "billing": 80,
+          "front": 111,
+          "reports": 73
+        }
+      }
+    },
+    {
+      "id": "Z12-returned-text-kind-bound",
+      "title": "Slugs join words with single underscores, as the venue's booking system needs; Slug's bound line, its test and slugify's tests say so",
+      "provider": "text-rules",
+      "exp": [
+        "rooms"
+      ],
+      "told": [
+        "rooms"
+      ],
+      "matches": true,
+      "broken": [
+        "rooms"
+      ],
+      "needs": [
+        "rooms"
+      ],
+      "through": [],
+      "refusals": [],
+      "verdict": "held",
+      "providerTests": true,
+      "firstCommentsStep": false,
+      "timing": {
+        "listingMs": {
+          "before": 48,
+          "after": 46
+        },
+        "noticeMs": 572,
+        "checkMs": {
+          "text-rules": 58,
+          "money": 84,
+          "calendar": 92,
+          "store": 81,
+          "rooms": 82,
+          "bookings": 99,
+          "door": 60,
+          "meter": 68,
+          "billing": 101,
+          "front": 91,
+          "reports": 78
+        }
+      }
+    },
+    {
+      "id": "Z13-static-method-hands-back",
+      "title": "Tally.sum hands back the tally itself, so that a caller can go on adding to it",
+      "provider": "money",
+      "exp": [
+        "billing"
+      ],
+      "told": [
+        "billing"
+      ],
+      "matches": true,
+      "broken": [
+        "billing"
+      ],
+      "needs": [
+        "billing"
+      ],
+      "through": [],
+      "refusals": [
+        "billing (1)"
+      ],
+      "verdict": "held",
+      "providerTests": true,
+      "firstCommentsStep": false,
+      "timing": {
+        "listingMs": {
+          "before": 64,
+          "after": 62
+        },
+        "noticeMs": 603,
+        "checkMs": {
+          "money": 72,
+          "calendar": 68,
+          "store": 88,
+          "rooms": 73,
+          "bookings": 88,
+          "door": 70,
+          "meter": 70,
+          "billing": 125,
+          "front": 97,
+          "reports": 76
+        }
+      }
+    },
+    {
+      "id": "Z14-member-may-be-undefined",
+      "title": "Request lines become opt-in: only a door made with {lines: true} has get; on any other door get is undefined, as its kind says",
+      "provider": "door",
+      "exp": [
+        "billing"
+      ],
+      "told": [
+        "billing"
+      ],
+      "matches": true,
+      "broken": [
+        "billing"
+      ],
+      "needs": [
+        "billing"
+      ],
+      "through": [],
+      "refusals": [
+        "billing (2)"
+      ],
+      "verdict": "held",
+      "providerTests": true,
+      "firstCommentsStep": false,
+      "timing": {
+        "listingMs": {
+          "before": 124,
+          "after": 125
+        },
+        "noticeMs": 679,
+        "checkMs": {
+          "door": 71,
+          "meter": 74,
+          "billing": 93,
+          "front": 74,
+          "reports": 72
+        }
+      }
+    },
+    {
+      "id": "Z15-uncommented-module-changed",
+      "title": "calendar's weekday takes the day as written, YYYY-MM-DD, since every caller had to parse it first (no comments-only step first)",
+      "provider": "calendar",
+      "exp": [
+        "bookings",
+        "reports"
+      ],
+      "told": [
+        "bookings",
+        "reports"
+      ],
+      "matches": true,
+      "broken": [
+        "reports"
+      ],
+      "needs": [
+        "reports"
+      ],
+      "through": [],
+      "refusals": [],
+      "verdict": "held; 1 told for nothing",
+      "providerTests": true,
+      "firstCommentsStep": false,
+      "timing": {
+        "listingMs": {
+          "before": 58,
+          "after": 74
+        },
+        "noticeMs": 599,
+        "checkMs": {
+          "calendar": 56,
+          "store": 86,
+          "rooms": 80,
+          "bookings": 89,
+          "door": 74,
+          "meter": 106,
+          "billing": 91,
+          "front": 109,
+          "reports": 83
+        }
+      }
+    },
+    {
+      "id": "Z16-random-booking-ids",
+      "title": "Booking ids are b- and a random UUID, so that one id says nothing about the bookings before it",
+      "provider": "bookings",
+      "exp": [],
+      "told": [],
+      "matches": true,
+      "broken": [],
+      "needs": [],
+      "through": [],
+      "refusals": [],
+      "verdict": "held",
+      "providerTests": true,
+      "firstCommentsStep": false,
+      "timing": {
+        "listingMs": {
+          "before": 119,
+          "after": 116
+        },
+        "noticeMs": 750,
+        "checkMs": {
+          "bookings": 87,
+          "door": 64,
+          "meter": 73,
+          "billing": 81,
+          "front": 83,
+          "reports": 141
+        }
+      }
+    },
+    {
+      "id": "Z17-filter-boolean",
+      "title": "rooms gains findAll: the rooms with the given ids, in order, ids with no room left out",
+      "provider": "rooms",
+      "exp": [
+        "reports"
+      ],
+      "told": [
+        "reports"
+      ],
+      "matches": true,
+      "broken": [],
+      "needs": [],
+      "through": [],
+      "refusals": [],
+      "verdict": "held; 1 told for nothing",
+      "providerTests": true,
+      "firstCommentsStep": false,
+      "timing": {
+        "listingMs": {
+          "before": 69,
+          "after": 90
+        },
+        "noticeMs": 570,
+        "checkMs": {
+          "rooms": 65,
+          "bookings": 102,
+          "door": 87,
+          "meter": 77,
+          "billing": 129,
+          "front": 85,
+          "reports": 81
+        }
+      }
+    },
+    {
+      "id": "Z18-object-groupby",
+      "title": "rooms gains byKind: the rooms of each kind there is a room of, with Object.groupBy",
+      "provider": "rooms",
+      "exp": [
+        "reports"
+      ],
+      "told": [
+        "reports"
+      ],
+      "matches": true,
+      "broken": [],
+      "needs": [],
+      "through": [],
+      "refusals": [],
+      "verdict": "held; 1 told for nothing",
+      "providerTests": true,
+      "firstCommentsStep": false,
+      "timing": {
+        "listingMs": {
+          "before": 79,
+          "after": 79
+        },
+        "noticeMs": 647,
+        "checkMs": {
+          "rooms": 86,
+          "bookings": 79,
+          "door": 94,
+          "meter": 95,
+          "billing": 98,
+          "front": 86,
+          "reports": 83
+        }
+      }
+    },
+    {
+      "id": "Z19-at-sign-in-bound-line",
+      "title": "isEmail states the bound on its result, with a test named for it",
+      "provider": "text-rules",
+      "exp": [
+        "front"
+      ],
+      "told": [
+        "front"
+      ],
+      "matches": true,
+      "broken": [],
+      "needs": [],
+      "through": [],
+      "refusals": [],
+      "verdict": "held; 1 told for nothing",
+      "providerTests": true,
+      "firstCommentsStep": false,
+      "timing": {
+        "listingMs": {
+          "before": 44,
+          "after": 58
+        },
+        "noticeMs": 570,
+        "checkMs": {
+          "text-rules": 51,
+          "money": 63,
+          "calendar": 55,
+          "store": 81,
+          "rooms": 80,
+          "bookings": 96,
+          "door": 70,
+          "meter": 73,
+          "billing": 105,
+          "front": 81,
+          "reports": 97
+        }
+      }
+    },
+    {
+      "id": "Z20-test-helper-renamed",
+      "title": "bookings' test helper system is renamed bookingSystem; nothing else changes",
+      "provider": "bookings",
+      "exp": [],
+      "told": [],
+      "matches": true,
+      "broken": [],
+      "needs": [],
+      "through": [],
+      "refusals": [],
+      "verdict": "held",
+      "providerTests": true,
+      "firstCommentsStep": false,
+      "timing": {
+        "listingMs": {
+          "before": 132,
+          "after": 122
+        },
+        "noticeMs": 664,
+        "checkMs": {
+          "bookings": 104,
+          "door": 80,
+          "meter": 66,
+          "billing": 95,
+          "front": 93,
+          "reports": 62
+        }
+      }
+    },
+    {
+      "id": "Z21-throws-explained-in-two-lines",
+      "title": "add's @throws comment explains its two cases on two lines; the kind of error is the same",
+      "provider": "money",
+      "exp": [],
+      "told": [],
+      "matches": true,
+      "broken": [],
+      "needs": [],
+      "through": [],
+      "refusals": [],
+      "verdict": "held",
+      "providerTests": true,
+      "firstCommentsStep": false,
+      "timing": {
+        "listingMs": {
+          "before": 48,
+          "after": 53
+        },
+        "noticeMs": 551,
+        "checkMs": {
+          "money": 63,
+          "calendar": 69,
+          "store": 108,
+          "rooms": 66,
+          "bookings": 77,
+          "door": 66,
+          "meter": 67,
+          "billing": 78,
+          "front": 75,
+          "reports": 79
+        }
+      }
+    }
+  ]
+}

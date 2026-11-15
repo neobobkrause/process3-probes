@@ -1,0 +1,182 @@
+{
+  "id": "Y10-map-has-get-provider-kind",
+  "title": "bookings adds up what the open bookings of each room come to (takings)",
+  "provider": "bookings",
+  "covers": [
+    "new handle method (new entry)",
+    "honest Map.has/get the reader cannot follow, with a value of money's kind"
+  ],
+  "tool": {
+    "firstCommentsStep": false,
+    "interfaceChanged": true,
+    "summary": "1 module(s) changed their listing; 0 entries changed in a way that tells; 1 user(s) told.",
+    "entries": [
+      {
+        "module": "bookings",
+        "entry": "Bookings",
+        "changes": [
+          "new entry"
+        ],
+        "lost": [],
+        "gained": [
+          "takings"
+        ],
+        "tells": "nobody",
+        "before": {
+          "kind": "handle kind",
+          "handsBack": "names: cancel, find, open, quote"
+        },
+        "after": {
+          "kind": "handle kind",
+          "handsBack": "names: cancel, find, open, quote, takings"
+        }
+      },
+      {
+        "module": "bookings",
+        "entry": "Bookings.takings",
+        "changes": [
+          "new entry"
+        ],
+        "after": {
+          "kind": "method",
+          "accepts": "()",
+          "handsBack": "{ [key: string]: { cents: number; currency: \"EUR\" | \"GBP\" | \"USD\" } }",
+          "bounds": [
+            "cents: whole number, 0 to 10,000,000 inclusive"
+          ]
+        },
+        "tells": "nobody"
+      }
+    ],
+    "told": [
+      "reports"
+    ],
+    "toldDetail": [
+      {
+        "user": "reports",
+        "reasons": [
+          {
+            "module": "bookings",
+            "notFollowed": [
+              "reads or calls values of unknown kind: reports/src/index.mjs:13 source.list('rooms').map; reports/src/index.mjs:13 source.list('rooms'); reports/src/index.mjs:13 source.list (+9)"
+            ],
+            "through": null
+          }
+        ],
+        "undeclared": []
+      }
+    ],
+    "notTold": [
+      {
+        "user": "door",
+        "why": "uses none of the entries that changed in a way that tells"
+      },
+      {
+        "user": "billing",
+        "why": "uses none of the entries that changed in a way that tells"
+      },
+      {
+        "user": "front",
+        "why": "uses none of the entries that changed in a way that tells"
+      }
+    ],
+    "warnings": [],
+    "commentsOnly": false,
+    "checks": {
+      "bookings": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 160
+      },
+      "door": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 98
+      },
+      "meter": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 72
+      },
+      "billing": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 88
+      },
+      "front": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 113
+      },
+      "reports": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 80
+      }
+    }
+  },
+  "groundTruth": {
+    "providerTests": {
+      "pass": true,
+      "failed": [],
+      "ran": 9
+    },
+    "testsBefore": {
+      "door": true,
+      "meter": true,
+      "billing": true,
+      "front": true,
+      "reports": true
+    },
+    "testsAfter": {
+      "door": {
+        "pass": true,
+        "failed": []
+      },
+      "meter": {
+        "pass": true,
+        "failed": []
+      },
+      "billing": {
+        "pass": true,
+        "failed": []
+      },
+      "front": {
+        "pass": true,
+        "failed": []
+      },
+      "reports": {
+        "pass": true,
+        "failed": []
+      }
+    },
+    "broken": []
+  },
+  "timing": {
+    "listingMs": {
+      "before": 145,
+      "after": 134
+    },
+    "noticeMs": 640,
+    "checkMs": {
+      "bookings": 160,
+      "door": 98,
+      "meter": 72,
+      "billing": 88,
+      "front": 113,
+      "reports": 80
+    }
+  }
+}

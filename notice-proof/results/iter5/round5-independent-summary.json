@@ -1,0 +1,591 @@
+{
+  "changes": 15,
+  "matchesRules": 15,
+  "notices": 8,
+  "needed": 5,
+  "holes": [],
+  "caughtByGuard": [
+    {
+      "id": "V03-refusals-through-console-error",
+      "users": [
+        "billing"
+      ],
+      "guard": "meter's own check refuses MeterMsg written with console.error (rule 30)"
+    },
+    {
+      "id": "V04-instance-built-in-a-conditional",
+      "users": [
+        "billing",
+        "bookings",
+        "front",
+        "meter"
+      ],
+      "guard": "money's own check refuses the class instance (rule 31)"
+    },
+    {
+      "id": "V06-non-interface-file-renamed",
+      "users": [
+        "front"
+      ],
+      "guard": "front's own check refuses its import of a file that is not one of bookings' interface files, before the change too (rule 28): that state could not have been merged"
+    }
+  ],
+  "unneeded": [
+    {
+      "id": "V09-pop-after-length-check",
+      "user": "reports"
+    },
+    {
+      "id": "V10-checked-cast-to-kind",
+      "user": "reports"
+    },
+    {
+      "id": "V11-door-copy-in-two-steps",
+      "user": "billing"
+    },
+    {
+      "id": "V11-door-copy-in-two-steps",
+      "user": "front"
+    },
+    {
+      "id": "V13-states-named",
+      "user": "reports"
+    }
+  ],
+  "falseRefusals": 0,
+  "refusals": 7,
+  "rows": [
+    {
+      "id": "V01-accepts-more-hides-static",
+      "title": "A tally is in euros unless told otherwise, and Tally.sum hands back the tally itself, so that a caller can go on adding to it",
+      "provider": "money",
+      "exp": [
+        "billing"
+      ],
+      "told": [
+        "billing"
+      ],
+      "matches": true,
+      "broken": [
+        "billing"
+      ],
+      "needs": [
+        "billing"
+      ],
+      "through": [],
+      "refusals": [
+        "billing (1)"
+      ],
+      "verdict": "held",
+      "providerTests": true,
+      "firstCommentsStep": false,
+      "timing": {
+        "listingMs": {
+          "before": 317,
+          "after": 141
+        },
+        "noticeMs": 989,
+        "checkMs": {
+          "money": 112,
+          "calendar": 71,
+          "store": 78,
+          "rooms": 79,
+          "bookings": 115,
+          "door": 89,
+          "meter": 76,
+          "billing": 86,
+          "front": 88,
+          "reports": 68
+        }
+      }
+    },
+    {
+      "id": "V02-bound-values-in-mapped-list",
+      "title": "The meter refuses uses longer than ten hours, which are mistakes (a room left booked overnight); its bound test moves with it, the bound line is forgotten",
+      "provider": "meter",
+      "exp": [
+        "billing"
+      ],
+      "told": [
+        "billing"
+      ],
+      "matches": true,
+      "broken": [],
+      "needs": [
+        "billing"
+      ],
+      "through": [],
+      "refusals": [],
+      "verdict": "held",
+      "providerTests": true,
+      "firstCommentsStep": false,
+      "timing": {
+        "listingMs": {
+          "before": 70,
+          "after": 70
+        },
+        "noticeMs": 600,
+        "checkMs": {
+          "meter": 97,
+          "billing": 84,
+          "front": 80,
+          "reports": 73
+        }
+      }
+    },
+    {
+      "id": "V03-refusals-through-console-error",
+      "title": "The meter reports refusals with console.error, on the error stream, as errors are reported; its tests read both streams",
+      "provider": "meter",
+      "exp": [],
+      "told": [],
+      "matches": true,
+      "broken": [
+        "billing"
+      ],
+      "needs": [
+        "billing"
+      ],
+      "through": [],
+      "refusals": [
+        "meter (1)"
+      ],
+      "verdict": "not told, stopped by another guard: meter's own check refuses MeterMsg written with console.error (rule 30)",
+      "providerTests": true,
+      "firstCommentsStep": false,
+      "timing": {
+        "listingMs": {
+          "before": 61,
+          "after": 58
+        },
+        "noticeMs": 560,
+        "checkMs": {
+          "meter": 58,
+          "billing": 96,
+          "front": 73,
+          "reports": 115
+        }
+      }
+    },
+    {
+      "id": "V04-instance-built-in-a-conditional",
+      "title": "An amount cannot be changed once made: money builds it as an instance with read-only cents and currency, and keeps one zero of each currency",
+      "provider": "money",
+      "exp": [],
+      "told": [],
+      "matches": true,
+      "broken": [
+        "billing",
+        "bookings",
+        "front",
+        "meter"
+      ],
+      "needs": [],
+      "through": [],
+      "refusals": [
+        "money (2)"
+      ],
+      "verdict": "not told, stopped by another guard: money's own check refuses the class instance (rule 31)",
+      "providerTests": true,
+      "firstCommentsStep": false,
+      "timing": {
+        "listingMs": {
+          "before": 54,
+          "after": 70
+        },
+        "noticeMs": 641,
+        "checkMs": {
+          "money": 88,
+          "calendar": 63,
+          "store": 117,
+          "rooms": 68,
+          "bookings": 86,
+          "door": 68,
+          "meter": 85,
+          "billing": 105,
+          "front": 113,
+          "reports": 84
+        }
+      }
+    },
+    {
+      "id": "V05-error-kind-in-bound-test",
+      "title": "splitEvenly throws TypeError for a number of parts outside its bound (a caller's mistake, not an amount out of range); its bound test says so, the @throws line is forgotten",
+      "provider": "money",
+      "exp": [
+        "billing"
+      ],
+      "told": [
+        "billing"
+      ],
+      "matches": true,
+      "broken": [
+        "billing"
+      ],
+      "needs": [
+        "billing"
+      ],
+      "through": [],
+      "refusals": [
+        "money (1)"
+      ],
+      "verdict": "held",
+      "providerTests": true,
+      "firstCommentsStep": false,
+      "timing": {
+        "listingMs": {
+          "before": 48,
+          "after": 56
+        },
+        "noticeMs": 547,
+        "checkMs": {
+          "money": 61,
+          "calendar": 53,
+          "store": 66,
+          "rooms": 85,
+          "bookings": 93,
+          "door": 76,
+          "meter": 97,
+          "billing": 95,
+          "front": 107,
+          "reports": 67
+        }
+      }
+    },
+    {
+      "id": "V06-non-interface-file-renamed",
+      "title": "bookings' price list holds amounts, made with money's amount, so that each price carries its currency; it is renamed SEAT_NIGHT to say so",
+      "provider": "bookings",
+      "exp": [],
+      "told": [],
+      "matches": true,
+      "broken": [
+        "front"
+      ],
+      "needs": [
+        "front"
+      ],
+      "through": [],
+      "refusals": [
+        "front (2)"
+      ],
+      "verdict": "not told, stopped by another guard: front's own check refuses its import of a file that is not one of bookings' interface files, before the change too (rule 28): that state could not have been merged",
+      "providerTests": true,
+      "firstCommentsStep": false,
+      "timing": {
+        "listingMs": {
+          "before": 142,
+          "after": 124
+        },
+        "noticeMs": 686,
+        "checkMs": {
+          "bookings": 86,
+          "door": 93,
+          "meter": 59,
+          "billing": 87,
+          "front": 73,
+          "reports": 74
+        }
+      }
+    },
+    {
+      "id": "V07-write-with-callback",
+      "title": "The meter exits as soon as its closing message is written, so that nothing left open can keep a finished meter running",
+      "provider": "meter",
+      "exp": [],
+      "told": [],
+      "matches": true,
+      "broken": [],
+      "needs": [],
+      "through": [],
+      "refusals": [],
+      "verdict": "held",
+      "providerTests": true,
+      "firstCommentsStep": false,
+      "timing": {
+        "listingMs": {
+          "before": 60,
+          "after": 56
+        },
+        "noticeMs": 537,
+        "checkMs": {
+          "meter": 88,
+          "billing": 86,
+          "front": 85,
+          "reports": 68
+        }
+      }
+    },
+    {
+      "id": "V08-limit-read-from-json",
+      "title": "money reads its largest amount from limits.json, which the venue's treasurer keeps; the value is unchanged",
+      "provider": "money",
+      "exp": [],
+      "told": [],
+      "matches": true,
+      "broken": [],
+      "needs": [],
+      "through": [],
+      "refusals": [],
+      "verdict": "held",
+      "providerTests": true,
+      "firstCommentsStep": false,
+      "timing": {
+        "listingMs": {
+          "before": 75,
+          "after": 63
+        },
+        "noticeMs": 686,
+        "checkMs": {
+          "money": 66,
+          "calendar": 53,
+          "store": 77,
+          "rooms": 62,
+          "bookings": 114,
+          "door": 82,
+          "meter": 83,
+          "billing": 85,
+          "front": 86,
+          "reports": 67
+        }
+      }
+    },
+    {
+      "id": "V09-pop-after-length-check",
+      "title": "bookings suggests the smallest room that seats a party",
+      "provider": "bookings",
+      "exp": [
+        "reports"
+      ],
+      "told": [
+        "reports"
+      ],
+      "matches": true,
+      "broken": [],
+      "needs": [],
+      "through": [],
+      "refusals": [],
+      "verdict": "held; 1 told for nothing",
+      "providerTests": true,
+      "firstCommentsStep": false,
+      "timing": {
+        "listingMs": {
+          "before": 118,
+          "after": 104
+        },
+        "noticeMs": 605,
+        "checkMs": {
+          "bookings": 87,
+          "door": 64,
+          "meter": 65,
+          "billing": 86,
+          "front": 74,
+          "reports": 71
+        }
+      }
+    },
+    {
+      "id": "V10-checked-cast-to-kind",
+      "title": "rooms reads a kind of room as a person types it: any case, spaces around it allowed",
+      "provider": "rooms",
+      "exp": [
+        "reports"
+      ],
+      "told": [
+        "reports"
+      ],
+      "matches": true,
+      "broken": [],
+      "needs": [],
+      "through": [],
+      "refusals": [],
+      "verdict": "held; 1 told for nothing",
+      "providerTests": true,
+      "firstCommentsStep": false,
+      "timing": {
+        "listingMs": {
+          "before": 92,
+          "after": 67
+        },
+        "noticeMs": 561,
+        "checkMs": {
+          "rooms": 67,
+          "bookings": 92,
+          "door": 74,
+          "meter": 67,
+          "billing": 79,
+          "front": 74,
+          "reports": 68
+        }
+      }
+    },
+    {
+      "id": "V11-door-copy-in-two-steps",
+      "title": "The door refuses an answer larger than 64 KiB of text, as a connection would; it measures the answer as it copies it",
+      "provider": "door",
+      "exp": [
+        "billing",
+        "front"
+      ],
+      "told": [
+        "billing",
+        "front"
+      ],
+      "matches": true,
+      "broken": [],
+      "needs": [],
+      "through": [],
+      "refusals": [],
+      "verdict": "held; 2 told for nothing",
+      "providerTests": true,
+      "firstCommentsStep": false,
+      "timing": {
+        "listingMs": {
+          "before": 136,
+          "after": 111
+        },
+        "noticeMs": 497,
+        "checkMs": {
+          "door": 67,
+          "meter": 78,
+          "billing": 91,
+          "front": 113,
+          "reports": 87
+        }
+      }
+    },
+    {
+      "id": "V12-destructured-parameter",
+      "title": "createRooms takes its dependencies apart in its parameter list",
+      "provider": "rooms",
+      "exp": [],
+      "told": [],
+      "matches": true,
+      "broken": [],
+      "needs": [],
+      "through": [],
+      "refusals": [],
+      "verdict": "held",
+      "providerTests": true,
+      "firstCommentsStep": false,
+      "timing": {
+        "listingMs": {
+          "before": 75,
+          "after": 81
+        },
+        "noticeMs": 639,
+        "checkMs": {
+          "rooms": 74,
+          "bookings": 114,
+          "door": 79,
+          "meter": 75,
+          "billing": 95,
+          "front": 82,
+          "reports": 77
+        }
+      }
+    },
+    {
+      "id": "V13-states-named",
+      "title": "The states a booking can be in get a name of their own, BookingState",
+      "provider": "bookings",
+      "exp": [
+        "reports"
+      ],
+      "told": [
+        "reports"
+      ],
+      "matches": true,
+      "broken": [],
+      "needs": [],
+      "through": [],
+      "refusals": [],
+      "verdict": "held; 1 told for nothing",
+      "providerTests": true,
+      "firstCommentsStep": false,
+      "timing": {
+        "listingMs": {
+          "before": 106,
+          "after": 105
+        },
+        "noticeMs": 592,
+        "checkMs": {
+          "bookings": 120,
+          "door": 89,
+          "meter": 85,
+          "billing": 74,
+          "front": 75,
+          "reports": 78
+        }
+      }
+    },
+    {
+      "id": "V14-overload-added",
+      "title": "formatAmount also writes a list of amounts, joined by +, as a second overload",
+      "provider": "money",
+      "exp": [],
+      "told": [],
+      "matches": true,
+      "broken": [],
+      "needs": [],
+      "through": [],
+      "refusals": [],
+      "verdict": "held",
+      "providerTests": true,
+      "firstCommentsStep": false,
+      "timing": {
+        "listingMs": {
+          "before": 54,
+          "after": 59
+        },
+        "noticeMs": 535,
+        "checkMs": {
+          "money": 71,
+          "calendar": 72,
+          "store": 69,
+          "rooms": 65,
+          "bookings": 115,
+          "door": 90,
+          "meter": 89,
+          "billing": 74,
+          "front": 71,
+          "reports": 66
+        }
+      }
+    },
+    {
+      "id": "V15-bound-test-through-helper",
+      "title": "The test of the bound of parts splits through a helper and two loops; the same values, the same checks",
+      "provider": "money",
+      "exp": [],
+      "told": [],
+      "matches": true,
+      "broken": [],
+      "needs": [],
+      "through": [],
+      "refusals": [],
+      "verdict": "held",
+      "providerTests": true,
+      "firstCommentsStep": false,
+      "timing": {
+        "listingMs": {
+          "before": 89,
+          "after": 64
+        },
+        "noticeMs": 662,
+        "checkMs": {
+          "money": 63,
+          "calendar": 59,
+          "store": 79,
+          "rooms": 66,
+          "bookings": 103,
+          "door": 85,
+          "meter": 80,
+          "billing": 94,
+          "front": 80,
+          "reports": 70
+        }
+      }
+    }
+  ]
+}
