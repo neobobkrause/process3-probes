@@ -1,0 +1,110 @@
+{
+  "id": "W11-structured-log-line",
+  "title": "The door writes one line of JSON to the error stream for each call it cannot carry, for the venue's operators",
+  "provider": "door",
+  "covers": [
+    "a structured log line written with console.error",
+    "no kind changes"
+  ],
+  "tool": {
+    "firstCommentsStep": false,
+    "interfaceChanged": false,
+    "summary": "The listing before and after is the same. Nobody is told.",
+    "entries": [],
+    "told": [],
+    "toldDetail": [],
+    "notTold": [],
+    "warnings": [],
+    "commentsOnly": false,
+    "checks": {
+      "door": {
+        "refusedBefore": 0,
+        "refusedAfter": 1,
+        "refusals": [
+          {
+            "at": "door/src/index.mjs:40",
+            "code": "message",
+            "text": "a message written to stderr has no kind its sender publishes",
+            "kind": "(c) a rule of form: a message is written with its kind, on its channel"
+          }
+        ],
+        "refusalsBefore": [],
+        "ms": 78
+      },
+      "meter": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 76
+      },
+      "billing": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 97
+      },
+      "front": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 82
+      },
+      "reports": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 65
+      }
+    }
+  },
+  "groundTruth": {
+    "providerTests": {
+      "pass": true,
+      "failed": [],
+      "ran": 3
+    },
+    "testsBefore": {
+      "meter": true,
+      "billing": true,
+      "front": true,
+      "reports": true
+    },
+    "testsAfter": {
+      "meter": {
+        "pass": true,
+        "failed": []
+      },
+      "billing": {
+        "pass": true,
+        "failed": []
+      },
+      "front": {
+        "pass": true,
+        "failed": []
+      },
+      "reports": {
+        "pass": true,
+        "failed": []
+      }
+    },
+    "broken": []
+  },
+  "timing": {
+    "listingMs": {
+      "before": 136,
+      "after": 109
+    },
+    "noticeMs": 586,
+    "checkMs": {
+      "door": 78,
+      "meter": 76,
+      "billing": 97,
+      "front": 82,
+      "reports": 65
+    }
+  }
+}

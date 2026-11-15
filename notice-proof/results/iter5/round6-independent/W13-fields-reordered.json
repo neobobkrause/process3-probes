@@ -1,0 +1,254 @@
+{
+  "id": "W13-fields-reordered",
+  "title": "Booking's comment lists its fields in the order the front desk reads a booking out; nothing else changes",
+  "provider": "bookings",
+  "covers": [
+    "a kind's @property lines reordered",
+    "the printed declaration keeps the written order"
+  ],
+  "tool": {
+    "firstCommentsStep": false,
+    "interfaceChanged": true,
+    "summary": "1 module(s) changed their listing; 2 entries changed in a way that tells; 3 user(s) told.",
+    "entries": [
+      {
+        "module": "bookings",
+        "entry": "Booking",
+        "changes": [
+          "declaration changed (not classified)"
+        ],
+        "tells": "users",
+        "before": {
+          "kind": "kind",
+          "handsBack": "{ day: string; id: string; nights: number; note?: string; party: number; room: string; state: \"cancelled\" | \"open\"; total: { cents: number; currency: \"EUR\" | \"GBP\" | \"USD\" }; until: string }",
+          "bounds": [
+            "cents: whole number, 0 to 10,000,000 inclusive",
+            "day: a real calendar day written YYYY-MM-DD",
+            "nights: whole number, 1 to 14",
+            "party: whole number, 1 to 200, and no more than the room's seats"
+          ],
+          "side": "handsBack"
+        },
+        "after": {
+          "kind": "kind",
+          "handsBack": "{ day: string; id: string; nights: number; note?: string; party: number; room: string; state: \"cancelled\" | \"open\"; total: { cents: number; currency: \"EUR\" | \"GBP\" | \"USD\" }; until: string }",
+          "bounds": [
+            "cents: whole number, 0 to 10,000,000 inclusive",
+            "day: a real calendar day written YYYY-MM-DD",
+            "nights: whole number, 1 to 14",
+            "party: whole number, 1 to 200, and no more than the room's seats"
+          ],
+          "side": "handsBack"
+        }
+      },
+      {
+        "module": "bookings",
+        "entry": "table:bookings",
+        "changes": [
+          "declaration changed (not classified)"
+        ],
+        "tells": "users",
+        "before": {
+          "kind": "stored rows",
+          "accepts": "{ day: string; id: string; nights: number; note?: string; party: number; room: string; state: \"cancelled\" | \"open\"; total: { cents: number; currency: \"EUR\" | \"GBP\" | \"USD\" }; until: string }",
+          "handsBack": "{ day: string; id: string; nights: number; note?: string; party: number; room: string; state: \"cancelled\" | \"open\"; total: { cents: number; currency: \"EUR\" | \"GBP\" | \"USD\" }; until: string }",
+          "bounds": [
+            "cents: whole number, 0 to 10,000,000 inclusive",
+            "day: a real calendar day written YYYY-MM-DD",
+            "nights: whole number, 1 to 14",
+            "party: whole number, 1 to 200, and no more than the room's seats"
+          ],
+          "side": "both"
+        },
+        "after": {
+          "kind": "stored rows",
+          "accepts": "{ day: string; id: string; nights: number; note?: string; party: number; room: string; state: \"cancelled\" | \"open\"; total: { cents: number; currency: \"EUR\" | \"GBP\" | \"USD\" }; until: string }",
+          "handsBack": "{ day: string; id: string; nights: number; note?: string; party: number; room: string; state: \"cancelled\" | \"open\"; total: { cents: number; currency: \"EUR\" | \"GBP\" | \"USD\" }; until: string }",
+          "bounds": [
+            "cents: whole number, 0 to 10,000,000 inclusive",
+            "day: a real calendar day written YYYY-MM-DD",
+            "nights: whole number, 1 to 14",
+            "party: whole number, 1 to 200, and no more than the room's seats"
+          ],
+          "side": "both"
+        }
+      }
+    ],
+    "told": [
+      "billing",
+      "front",
+      "reports"
+    ],
+    "toldDetail": [
+      {
+        "user": "billing",
+        "reasons": [
+          {
+            "module": "bookings",
+            "entry": "Booking",
+            "changes": [
+              "declaration changed (not classified)"
+            ],
+            "lines": [
+              "billing/test/index.test.mjs:21",
+              "billing/test/index.test.mjs:22",
+              "billing/test/index.test.mjs:23",
+              "billing/test/index.test.mjs:26",
+              "billing/test/index.test.mjs:32",
+              "billing/test/index.test.mjs:33"
+            ],
+            "through": null
+          }
+        ],
+        "undeclared": []
+      },
+      {
+        "user": "front",
+        "reasons": [
+          {
+            "module": "bookings",
+            "entry": "Booking",
+            "changes": [
+              "declaration changed (not classified)"
+            ],
+            "lines": [
+              "front/src/index.mjs:46",
+              "front/src/index.mjs:47",
+              "front/src/index.mjs:51"
+            ],
+            "through": null
+          }
+        ],
+        "undeclared": []
+      },
+      {
+        "user": "reports",
+        "reasons": [
+          {
+            "module": "bookings",
+            "entry": "Booking",
+            "changes": [
+              "declaration changed (not classified)"
+            ],
+            "lines": [
+              "reports/test/index.test.mjs:17"
+            ],
+            "through": null
+          },
+          {
+            "module": "bookings",
+            "notFollowed": [
+              "reads or calls values of unknown kind: reports/src/index.mjs:13 source.list('rooms').map; reports/src/index.mjs:13 source.list('rooms'); reports/src/index.mjs:13 source.list (+9)"
+            ],
+            "through": null
+          }
+        ],
+        "undeclared": []
+      }
+    ],
+    "notTold": [
+      {
+        "user": "door",
+        "why": "uses none of the entries that changed in a way that tells"
+      }
+    ],
+    "warnings": [],
+    "commentsOnly": true,
+    "checks": {
+      "bookings": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 97
+      },
+      "door": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 71
+      },
+      "meter": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 68
+      },
+      "billing": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 89
+      },
+      "front": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 80
+      },
+      "reports": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 71
+      }
+    }
+  },
+  "groundTruth": {
+    "providerTests": {
+      "pass": true,
+      "failed": [],
+      "ran": 8
+    },
+    "testsBefore": {
+      "door": true,
+      "meter": true,
+      "billing": true,
+      "front": true,
+      "reports": true
+    },
+    "testsAfter": {
+      "door": {
+        "pass": true,
+        "failed": []
+      },
+      "meter": {
+        "pass": true,
+        "failed": []
+      },
+      "billing": {
+        "pass": true,
+        "failed": []
+      },
+      "front": {
+        "pass": true,
+        "failed": []
+      },
+      "reports": {
+        "pass": true,
+        "failed": []
+      }
+    },
+    "broken": []
+  },
+  "timing": {
+    "listingMs": {
+      "before": 172,
+      "after": 197
+    },
+    "noticeMs": 940,
+    "checkMs": {
+      "bookings": 97,
+      "door": 71,
+      "meter": 68,
+      "billing": 89,
+      "front": 80,
+      "reports": 71
+    }
+  }
+}
