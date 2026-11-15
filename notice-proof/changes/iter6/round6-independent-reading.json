@@ -1,22 +1,90 @@
 {
-  "about": "Ground truth by reading for round 6 (fresh independent attacks) run on iteration 5, written by Claude AFTER the results were seen, independently of what the tool said.",
-  "changes": {
-    "W01-meter-start-argument": { "needs": ["billing"], "note": "How a running part is started (its command-line arguments) has no written kind." },
-    "W02-meter-ready-line": { "needs": ["billing"], "note": "An empty line written on the message channel; the one-per-line rule looked only at writes holding a message." },
-    "W03-error-stated-on-kind-not-checked": { "needs": ["billing"], "note": "The code's error kind changed; the kind's @throws line was not, and only a function's own @throws was compared with its code." },
-    "W04-bound-on-built-method": { "needs": ["front"], "note": "A bound written on the method where the object is built was not read; front's code is wrong but no test of it fails." },
-    "W05-price-list-in-euros": { "needs": ["front"], "note": "front loads a file of bookings that is not an interface file with import(); rule 28 looked only at import statements. front's own check refuses the line, but front was not told, so its check did not run." },
-    "W06-old-overload-kept-behind": { "needs": ["billing"], "note": "Contrived (the adversary's mark): the old overload is kept but placed after a broader one, so it can no longer be reached." },
-    "W07-throws-union": { "needs": [], "falseRefusals": { "text-rules": 2 }, "note": "@throws {TypeError|RangeError} was compared as one piece of text." },
-    "W08-cast-after-has": { "needs": [], "falseRefusals": { "rooms": 1 }, "note": "A cast that only drops 'missing' after a has check." },
-    "W09-row-written-in-place": { "needs": [], "falseRefusals": { "bookings": 1 }, "note": "A row written in place: the reader widened 'cancelled' to text, so a valid row looked like another kind." },
-    "W10-json-settings-file": { "needs": [], "falseRefusals": { "text-rules": 1 }, "note": "Reading a settings file is not a message between running parts; rule 3 as written refused it." },
-    "W11-structured-log-line": { "needs": [], "falseRefusals": { "door": 1 }, "note": "An operator's log line is not a message to another part; rule 30 as written refused it." },
-    "W12-error-code": { "needs": [], "falseRefusals": { "money": 1 }, "note": "Adding a code to an error object is right in JavaScript; the reader does not allow it." },
-    "W13-fields-reordered": { "needs": [], "note": "Three notices for nothing: the printed declaration kept the written order of fields." },
-    "W14-list-kind-named": { "needs": [], "note": "One notice for nothing: a named list kind written out with brackets." },
-    "W15-export-list": { "needs": [] },
-    "W16-store-gains-id": { "needs": [], "note": "Two notices for nothing (rooms, bookings): a new method named id took the bound line 'id: ...' from the other methods." },
-    "W17-limit-read-through-namespace": { "needs": ["bookings"], "note": "The bound test reads money's limit through a namespace import, which the fingerprint did not follow." }
+ "about": "Ground truth by reading for round 6 (fresh independent attacks) run on iteration 6, written by Claude AFTER the results were seen, independently of what the tool said. 'needs' is copied from the reading on iteration 5 (the changes and the product are the same); 'guard' and 'falseRefusals' are judged again from iteration 6's results.",
+ "changes": {
+  "W01-meter-start-argument": {
+   "needs": [
+    "billing"
+   ],
+   "note": "How a running part is started (its command-line arguments) has no written kind.",
+   "guard": "meter's own check refuses process.argv read without a kind published with @message argv (rule 34)"
+  },
+  "W02-meter-ready-line": {
+   "needs": [
+    "billing"
+   ],
+   "note": "An empty line written on the message channel; the one-per-line rule looked only at writes holding a message.",
+   "guard": "meter's own check refuses a write of something other than a message on standard output, which carries messages (rule 35)"
+  },
+  "W03-error-stated-on-kind-not-checked": {
+   "needs": [
+    "billing"
+   ],
+   "note": "The code's error kind changed; the kind's @throws line was not, and only a function's own @throws was compared with its code.",
+   "guard": "bookings' own check refuses throwing Error where the kind states RangeError for quote (rule 36)"
+  },
+  "W04-bound-on-built-method": {
+   "needs": [
+    "front"
+   ],
+   "note": "A bound written on the method where the object is built was not read; front's code is wrong but no test of it fails."
+  },
+  "W05-price-list-in-euros": {
+   "needs": [
+    "front"
+   ],
+   "note": "front loads a file of bookings that is not an interface file with import(); rule 28 looked only at import statements. front's own check refuses the line, but front was not told, so its check did not run.",
+   "guard": "front's own check refuses its import() of a file of bookings that is not an interface file (rule 38), in the set-up state already, so the set-up could not have been merged"
+  },
+  "W06-old-overload-kept-behind": {
+   "needs": [
+    "billing"
+   ],
+   "note": "Contrived (the adversary's mark): the old overload is kept but placed after a broader one, so it can no longer be reached."
+  },
+  "W07-throws-union": {
+   "needs": [],
+   "note": "@throws {TypeError|RangeError} was compared as one piece of text. Iteration 6: no longer refused."
+  },
+  "W08-cast-after-has": {
+   "needs": [],
+   "note": "A cast that only drops 'missing' after a has check. Iteration 6: no longer refused."
+  },
+  "W09-row-written-in-place": {
+   "needs": [],
+   "note": "A row written in place: the reader widened 'cancelled' to text, so a valid row looked like another kind. Iteration 6: no longer refused."
+  },
+  "W10-json-settings-file": {
+   "needs": [],
+   "note": "Reading a settings file is not a message between running parts; rule 3 as written refused it. Iteration 6: no longer refused."
+  },
+  "W11-structured-log-line": {
+   "needs": [],
+   "note": "An operator's log line is not a message to another part; rule 30 as written refused it. Iteration 6: no longer refused."
+  },
+  "W12-error-code": {
+   "needs": [],
+   "note": "Adding a code to an error object is right in JavaScript; the reader does not allow it. Iteration 6: no longer refused."
+  },
+  "W13-fields-reordered": {
+   "needs": [],
+   "note": "Three notices for nothing: the printed declaration kept the written order of fields."
+  },
+  "W14-list-kind-named": {
+   "needs": [],
+   "note": "One notice for nothing: a named list kind written out with brackets."
+  },
+  "W15-export-list": {
+   "needs": []
+  },
+  "W16-store-gains-id": {
+   "needs": [],
+   "note": "Two notices for nothing (rooms, bookings): a new method named id took the bound line 'id: ...' from the other methods."
+  },
+  "W17-limit-read-through-namespace": {
+   "needs": [
+    "bookings"
+   ],
+   "note": "The bound test reads money's limit through a namespace import, which the fingerprint did not follow."
   }
+ }
 }

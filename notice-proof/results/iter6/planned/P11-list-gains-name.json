@@ -507,49 +507,49 @@
         "refusedAfter": 0,
         "refusals": [],
         "refusalsBefore": [],
-        "ms": 86
+        "ms": 89
       },
       "bookings": {
         "refusedBefore": 0,
         "refusedAfter": 0,
         "refusals": [],
         "refusalsBefore": [],
-        "ms": 84
+        "ms": 151
       },
       "door": {
         "refusedBefore": 0,
         "refusedAfter": 0,
         "refusals": [],
         "refusalsBefore": [],
-        "ms": 72
+        "ms": 74
       },
       "meter": {
         "refusedBefore": 0,
         "refusedAfter": 0,
         "refusals": [],
         "refusalsBefore": [],
-        "ms": 111
+        "ms": 85
       },
       "billing": {
         "refusedBefore": 0,
         "refusedAfter": 0,
         "refusals": [],
         "refusalsBefore": [],
-        "ms": 75
+        "ms": 93
       },
       "front": {
         "refusedBefore": 0,
         "refusedAfter": 0,
         "refusals": [],
         "refusalsBefore": [],
-        "ms": 73
+        "ms": 71
       },
       "reports": {
         "refusedBefore": 0,
         "refusedAfter": 0,
         "refusals": [],
         "refusalsBefore": [],
-        "ms": 68
+        "ms": 83
       }
     }
   },
@@ -597,18 +597,18 @@
   },
   "timing": {
     "listingMs": {
-      "before": 79,
-      "after": 94
+      "before": 105,
+      "after": 83
     },
-    "noticeMs": 578,
+    "noticeMs": 490,
     "checkMs": {
-      "rooms": 86,
-      "bookings": 84,
-      "door": 72,
-      "meter": 111,
-      "billing": 75,
-      "front": 73,
-      "reports": 68
+      "rooms": 89,
+      "bookings": 151,
+      "door": 74,
+      "meter": 85,
+      "billing": 93,
+      "front": 71,
+      "reports": 83
     }
   }
 }

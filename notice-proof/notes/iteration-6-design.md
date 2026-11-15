@@ -26,3 +26,16 @@ Written by Claude (the proof session), 15 Nov 2026, after round 6: a fresh indep
 | 31 | A property added to an error object is "cannot tell". | W12 |
 | 32 | The printed declaration lists the fields of an object kind in a fixed order. | W13 |
 | 33 | A named plain kind is written out without brackets unless it is a union or a function. | W14 |
+
+## A rule added while running iteration 6
+
+| # | Rule | Answers |
+| --- | --- | --- |
+| 43 | **A method or operation handler inherits the bounds of every listed entry it calls**, as it inherits their stated errors (rule 23). A bound newly written on `open` limits what `bookopen` accepts just as much. | W04 |
+
+Added 15 Nov 2026 after the first run of iteration 6, in which W04 was still a hole: rule 37 put the new bound on `Bookings.open`, but front reaches `open` only through the operation `bookopen`, whose handler calls it.
+
+## Defects met while running iteration 6
+
+- 15 Nov 2026, round 5 change V03: rule 40 lets a log line written with `console` pass unless what it writes has a message kind. The meter writes a refusal held in a variable declared with the message kind, but the reader narrows the variable to one member of that kind, which carries no mark; the tool took it for a log line and refused nothing, where iteration 5 had refused it. A hole, opened by iteration 6. Fixed by reading the kind the variable is declared with. Rerunning V03 overwrote its first result before it was committed; its first comparison line read: refusals none, billing broken and not told.
+- 15 Nov 2026, round 5 change V11: the door's check newly refuses one line, judged a real disagreement under rule 36 (see the iteration-6 reading). The expected answers did not foresee it.

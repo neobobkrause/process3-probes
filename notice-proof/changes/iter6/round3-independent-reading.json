@@ -1,65 +1,65 @@
 {
-  "about": "Ground truth by reading under iteration 5, written by Claude AFTER the results were seen, independently of what the tool said.",
-  "changes": {
-    "Y01-method-error-kind": {
-      "needs": [
-        "front"
-      ]
-    },
-    "Y02-amount-cannot-be-changed": {
-      "needs": [],
-      "guard": "money's own check refuses Amount built as a class instance (rule 11)",
-      "note": "bookings, meter, billing and front would fail if it were merged."
-    },
-    "Y03-handle-member-optional": {
-      "needs": [
-        "billing"
-      ]
-    },
-    "Y04-row-kind-written-through-helper": {
-      "needs": [
-        "front"
-      ]
-    },
-    "Y05-row-cast-at-write": {
-      "needs": [
-        "reports"
-      ],
-      "guard": "bookings' own check refuses the cast (rule 14)"
-    },
-    "Y06-channel-line-built-first": {
-      "needs": [
-        "billing"
-      ],
-      "guard": "meter's own check refuses the write to stderr",
-      "note": "billing was also told (rule 26)."
-    },
-    "Y07-limit-outside-bound-test": {
-      "needs": [
-        "bookings"
-      ]
-    },
-    "Y08-bound-on-number-kind": {
-      "needs": [
-        "bookings"
-      ]
-    },
-    "Y09-newer-library-method": {
-      "needs": []
-    },
-    "Y10-map-has-get-provider-kind": {
-      "needs": []
-    },
-    "Y11-tests-grouped-with-it": {
-      "needs": []
-    },
-    "Y12-bound-test-rewritten-same-meaning": {
-      "needs": []
-    },
-    "Y13-constructor-accepts-differently": {
-      "needs": [
-        "billing"
-      ]
-    }
+ "about": "Ground truth by reading under iteration 5, written by Claude AFTER the results were seen, independently of what the tool said. Copied to iteration 6 unchanged: the changes and the product are the same, and the results on iteration 6 showed no change in what was refused or told.",
+ "changes": {
+  "Y01-method-error-kind": {
+   "needs": [
+    "front"
+   ]
+  },
+  "Y02-amount-cannot-be-changed": {
+   "needs": [],
+   "guard": "money's own check refuses Amount built as a class instance (rule 11)",
+   "note": "bookings, meter, billing and front would fail if it were merged."
+  },
+  "Y03-handle-member-optional": {
+   "needs": [
+    "billing"
+   ]
+  },
+  "Y04-row-kind-written-through-helper": {
+   "needs": [
+    "front"
+   ]
+  },
+  "Y05-row-cast-at-write": {
+   "needs": [
+    "reports"
+   ],
+   "guard": "bookings' own check refuses the cast (rule 14)"
+  },
+  "Y06-channel-line-built-first": {
+   "needs": [
+    "billing"
+   ],
+   "guard": "meter's own check refuses the write to stderr",
+   "note": "billing was also told (rule 26)."
+  },
+  "Y07-limit-outside-bound-test": {
+   "needs": [
+    "bookings"
+   ]
+  },
+  "Y08-bound-on-number-kind": {
+   "needs": [
+    "bookings"
+   ]
+  },
+  "Y09-newer-library-method": {
+   "needs": []
+  },
+  "Y10-map-has-get-provider-kind": {
+   "needs": []
+  },
+  "Y11-tests-grouped-with-it": {
+   "needs": []
+  },
+  "Y12-bound-test-rewritten-same-meaning": {
+   "needs": []
+  },
+  "Y13-constructor-accepts-differently": {
+   "needs": [
+    "billing"
+   ]
   }
+ }
 }
