@@ -18,6 +18,12 @@
    "toolUses": 108,
    "durationMs": 1617254,
    "finished": "2026-11-15T15:48Z"
+  },
+  "ai-catalogue": {
+   "tokens": 405587,
+   "toolUses": 109,
+   "durationMs": 1652663,
+   "finished": "2026-11-15T15:49Z"
   }
  }
 }
