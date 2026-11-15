@@ -1,0 +1,65 @@
+--- before/bookings/src/index.mjs
++++ after/bookings/src/index.mjs
+@@ -78,6 +78,17 @@
+ }
+ 
+ /**
++ * The row bookings keeps for a booking: the booking without its first day, which is worked out again from until
++ * and nights when the row is read. Rows are smaller, and the first day cannot disagree with until and nights.
++ * @param {Booking} b
++ * @returns {Booking}
++ */
++function toRow(b) {
++  const { day, ...row } = b;
++  return /** @type {Booking} a Booking whose first day is worked out again when it is read */ (row);
++}
++
++/**
+  * Makes the bookings' handle.
+  * @param {{store: Store, rooms: Rooms}} deps
+  * @returns {Bookings}
+@@ -99,7 +110,9 @@
+   /** @param {string} id */
+   const find = (id) => {
+     const rec = store.get('bookings', id);
+-    return rec ? /** @type {Booking} */ (rec.value) : undefined;
++    if (!rec) return undefined;
++    const row = /** @type {Booking} the first day is not kept: it is worked out from until and nights */ (rec.value);
++    return { ...row, day: formatDay(addDays(parseDay(row.until), -row.nights)) };
+   };
+   return {
+     quote,
+@@ -119,7 +132,7 @@
+         total,
+       };
+       if (req.note !== undefined) b.note = req.note;
+-      store.put('bookings', b.id, b);
++      store.put('bookings', b.id, toRow(b));
+       return b;
+     },
+     cancel(id) {
+@@ -128,7 +141,7 @@
+       if (b.state !== 'open') throw new Error(`bookings: not open: ${id}`);
+       /** @type {Booking} builds a Booking */
+       const done = { ...b, state: 'cancelled' };
+-      store.put('bookings', id, done);
++      store.put('bookings', id, toRow(done));
+       return done;
+     },
+   };
+--- before/bookings/test/index.test.mjs
++++ after/bookings/test/index.test.mjs
+@@ -58,6 +58,13 @@
+   assert.throws(() => bookings.open(req({ day: 'tomorrow' })), RangeError);
+ });
+ 
++test('the table keeps no first day; find works it out again', () => {
++  const { store, bookings } = system();
++  const b = bookings.open(req({ day: '2026-12-30', nights: 3 }));
++  assert.equal(/** @type {any} */ (store.get('bookings', b.id)?.value).day, undefined);
++  assert.equal(bookings.find(b.id)?.day, '2026-12-30');
++});
++
+ test('cancel closes an open booking once; unknown rooms and bookings are refused', () => {
+   const { bookings } = system();
+   const b = bookings.open(req());

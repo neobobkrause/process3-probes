@@ -1,0 +1,12 @@
+{
+  "title": "An unknown booking is refused with an Error, not a RangeError (kept for values out of bounds); the methods' comments say so",
+  "provider": "bookings",
+  "covers": [
+    "kind of error raised by a handle method and an operation changes",
+    "errors are part of what an entry hands back (second design, rule 1)"
+  ],
+  "before": [
+    "setups/Y01-front-names-unknown-booking"
+  ],
+  "note": "The Bookings handle and the BookingOps table are unchanged; the error kinds are written on the methods that raise them, where the tool does not read @throws."
+}

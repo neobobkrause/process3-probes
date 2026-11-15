@@ -1,0 +1,12 @@
+{
+  "title": "A Tally now starts from an amount (a deposit already paid, say), not from a currency",
+  "provider": "money",
+  "covers": [
+    "a class's constructor accepts a different kind (cannot stand in)",
+    "constructors are not in the listing"
+  ],
+  "before": [
+    "setups/Y13a-money-tally",
+    "setups/Y13b-billing-uses-tally"
+  ]
+}

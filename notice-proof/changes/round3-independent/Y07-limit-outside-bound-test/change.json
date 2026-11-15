@@ -1,0 +1,11 @@
+{
+  "title": "An amount may now be at most 500,000 cents; code and the tests' limit changed, the bound line forgotten",
+  "provider": "money",
+  "covers": [
+    "bound changed in code and tests, bound line not",
+    "the bound test's body is unchanged (its limit is a constant outside it)"
+  ],
+  "before": [
+    "setups/Y07-money-tests-name-the-limit"
+  ]
+}

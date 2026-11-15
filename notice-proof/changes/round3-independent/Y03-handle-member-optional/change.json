@@ -1,0 +1,9 @@
+{
+  "title": "Request lines become opt-in: only a door made with {lines: true} has get",
+  "provider": "door",
+  "covers": [
+    "a handle's method becomes optional (may be missing)",
+    "the factory gains an optional parameter (accepts more)"
+  ],
+  "note": "billing calls deps.door.get on a door its tests make with createDoor(handlers)."
+}

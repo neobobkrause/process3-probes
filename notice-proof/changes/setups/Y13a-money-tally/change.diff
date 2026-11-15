@@ -1,0 +1,50 @@
+--- before/money/src/index.mjs
++++ after/money/src/index.mjs
+@@ -72,3 +72,25 @@
+   for (let i = 0; i < parts; i++) out.push(amount(base + (i < extra ? 1 : 0), a.currency));
+   return out;
+ }
++
++/**
++ * A running total of amounts of one currency, for adding up many amounts as they come.
++ */
++export class Tally {
++  /**
++   * @param {Currency} currency the currency of every amount added
++   */
++  constructor(currency) {
++    /** @type {Amount} the total so far */
++    this.total = amount(0, currency);
++  }
++
++  /**
++   * Adds an amount of the tally's currency.
++   * @param {Amount} a
++   * @throws {RangeError} when the currency differs or the total would leave the bound of cents
++   */
++  add(a) {
++    this.total = add(this.total, a);
++  }
++}
+--- before/money/test/index.test.mjs
++++ after/money/test/index.test.mjs
+@@ -1,6 +1,6 @@
+ import { test } from 'node:test';
+ import assert from 'node:assert/strict';
+-import { amount, add, formatAmount, splitEvenly, CURRENCIES } from '../src/index.mjs';
++import { amount, add, formatAmount, splitEvenly, CURRENCIES, Tally } from '../src/index.mjs';
+ 
+ test('bound cents: whole number, 0 to 10,000,000 inclusive', () => {
+   assert.equal(amount(0, 'EUR').cents, 0);
+@@ -41,3 +41,11 @@
+   assert.ok(Math.max(...c) - Math.min(...c) <= 1);
+   assert.ok(parts.every((p) => p.currency === 'GBP'));
+ });
++
++test('a Tally adds up amounts of one currency', () => {
++  const t = new Tally('EUR');
++  t.add(amount(150, 'EUR'));
++  t.add(amount(250, 'EUR'));
++  assert.equal(t.total.cents, 400);
++  assert.throws(() => t.add(amount(1, 'USD')), RangeError);
++});

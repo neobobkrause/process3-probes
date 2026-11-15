@@ -1,0 +1,9 @@
+{
+  "title": "The meter writes refusals to standard error, as errors; the line is built first, then written; the @message tag is left as it was",
+  "provider": "meter",
+  "covers": [
+    "a message's channel changes; its @message channel is not updated",
+    "the write of JSON.stringify is split over two statements"
+  ],
+  "note": "MeterMsg keeps '@message stdout'. billing reads the meter's standard output only."
+}

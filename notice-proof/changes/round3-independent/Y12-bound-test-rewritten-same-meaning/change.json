@@ -1,0 +1,8 @@
+{
+  "title": "The test of the bound of cents is written as two loops; the same values, the same assertions",
+  "provider": "money",
+  "covers": [
+    "body of a test named for a bound changes; its meaning does not",
+    "the line is carried by entries of four modules"
+  ]
+}

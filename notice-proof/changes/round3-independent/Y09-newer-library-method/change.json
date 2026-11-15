@@ -1,0 +1,7 @@
+{
+  "title": "rooms sorts its list with toSorted, which leaves the list it sorts as it was",
+  "provider": "rooms",
+  "covers": [
+    "honest code using a method of the language newer than the reader's library (ES2023)"
+  ]
+}

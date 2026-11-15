@@ -1,0 +1,7 @@
+{
+  "title": "money gains Tally, a running total of amounts of one currency",
+  "provider": "money",
+  "covers": [
+    "an exported class (the standing state)"
+  ]
+}

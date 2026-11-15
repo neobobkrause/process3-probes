@@ -1,0 +1,9 @@
+{
+  "title": "The rooms table keeps seats under capacity, in a row kind of its own (RoomRow, @storedrows rooms); Room is unchanged",
+  "provider": "rooms",
+  "covers": [
+    "a table's row kind changes, honestly marked",
+    "a user writes the table's rows through the store's test helper (seededStore), named by an object key"
+  ],
+  "note": "front's tests seed the rooms table with seededStore({rooms: [{id, value: {id, name, kind, seats}}]})."
+}

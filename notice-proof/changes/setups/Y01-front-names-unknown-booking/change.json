@@ -1,0 +1,7 @@
+{
+  "title": "Front tells a person there is no such booking when bookings refuses an unknown one",
+  "provider": "front",
+  "covers": [
+    "a user that relies on the kind of error an operation raises (the standing state)"
+  ]
+}

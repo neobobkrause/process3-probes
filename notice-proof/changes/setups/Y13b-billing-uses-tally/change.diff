@@ -1,0 +1,35 @@
+--- before/billing/src/index.mjs
++++ after/billing/src/index.mjs
+@@ -2,7 +2,7 @@
+  * Invoices for bookings, and the price of metered use, worked out by the separately running meter.
+  */
+ import { spawn } from 'node:child_process';
+-import { amount, add, formatAmount, splitEvenly } from '../../money/src/index.mjs';
++import { amount, formatAmount, splitEvenly, Tally } from '../../money/src/index.mjs';
+ import { WORKER_FILE } from '../../meter/src/index.mjs';
+ /** @import { Amount } from '../../money/src/index.mjs' */
+ /** @import { MeterInput, MeterMsg } from '../../meter/src/index.mjs' */
+@@ -56,9 +56,10 @@
+     },
+     meterUsage(uses) {
+       return new Promise((resolve, reject) => {
++        // One running total for all the readings.
++        const tally = new Tally('EUR');
+         const child = spawn(process.execPath, [WORKER_FILE]);
+         let buffer = '';
+-        let total = amount(0, 'EUR');
+         child.on('error', reject);
+         child.stdout.on('data', (/** @type {any} */ chunk) => {
+           buffer += String(chunk);
+@@ -68,9 +69,9 @@
+             buffer = buffer.slice(nl + 1);
+             /** @type {MeterMsg} checks a MeterMsg by its kind */
+             const msg = JSON.parse(line);
+-            if (msg.kind === 'reading') total = add(total, msg.cost);
++            if (msg.kind === 'reading') tally.add(msg.cost);
+             else if (msg.kind === 'refused') reject(new RangeError(`billing: meter refused ${msg.room}: ${msg.reason}`));
+-            else if (msg.kind === 'done') resolve(total);
++            else if (msg.kind === 'done') resolve(tally.total);
+           }
+         });
+         child.stdin.end(uses.map((u) => JSON.stringify(u)).join('\n') + '\n');

@@ -1,0 +1,63 @@
+--- before/money/src/index.mjs
++++ after/money/src/index.mjs
+@@ -18,7 +18,31 @@
+ const MAX_CENTS = 10_000_000;
+ 
+ /**
+- * Makes an amount, refusing one outside its bound.
++ * An amount as money makes it: its cents and currency can be read, and nothing can change them afterwards.
++ */
++class FixedAmount {
++  /** @type {number} */
++  #cents;
++  /** @type {Currency} */
++  #currency;
++  /**
++   * @param {number} cents
++   * @param {Currency} currency
++   */
++  constructor(cents, currency) {
++    this.#cents = cents;
++    this.#currency = currency;
++  }
++  get cents() {
++    return this.#cents;
++  }
++  get currency() {
++    return this.#currency;
++  }
++}
++
++/**
++ * Makes an amount, refusing one outside its bound. The amount cannot be changed once made.
+  * @param {number} cents
+  * @param {Currency} currency
+  * @returns {Amount}
+@@ -29,8 +53,8 @@
+     throw new RangeError(`amount: cents out of bounds: ${cents}`);
+   }
+   if (!CURRENCIES.includes(currency)) throw new RangeError(`amount: unknown currency: ${currency}`);
+-  /** @type {Amount} builds an Amount */
+-  const out = { cents, currency };
++  /** @type {Amount} builds an Amount that cannot be changed */
++  const out = new FixedAmount(cents, currency);
+   return out;
+ }
+ 
+--- before/money/test/index.test.mjs
++++ after/money/test/index.test.mjs
+@@ -15,6 +15,14 @@
+   assert.throws(() => amount(1, /** @type {any} */ ('XXX')), RangeError);
+ });
+ 
++test('an amount cannot be changed once made', () => {
++  const a = amount(100, 'EUR');
++  assert.throws(() => {
++    /** @type {any} */ (a).cents = 5;
++  }, TypeError);
++  assert.equal(a.cents, 100);
++});
++
+ test('add sums amounts of one currency and refuses mixed ones', () => {
+   assert.equal(add(amount(150, 'EUR'), amount(250, 'EUR')).cents, 400);
+   assert.throws(() => add(amount(1, 'EUR'), amount(1, 'USD')), RangeError);

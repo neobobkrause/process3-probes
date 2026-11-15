@@ -1,0 +1,29 @@
+--- before/money/src/index.mjs
++++ after/money/src/index.mjs
+@@ -8,18 +8,23 @@
+ /** @typedef {typeof CURRENCIES[number]} Currency */
+ 
+ /**
++ * A number of whole cents.
++ * @typedef {number} Cents
++ * @bound cents: whole number, 0 to 10,000,000 inclusive
++ */
++
++/**
+  * An amount of money.
+  * @typedef {Object} Amount
+- * @property {number} cents the amount in whole cents
++ * @property {Cents} cents the amount in whole cents
+  * @property {Currency} currency
+- * @bound cents: whole number, 0 to 10,000,000 inclusive
+  */
+ 
+ const MAX_CENTS = 10_000_000;
+ 
+ /**
+  * Makes an amount, refusing one outside its bound.
+- * @param {number} cents
++ * @param {Cents} cents
+  * @param {Currency} currency
+  * @returns {Amount}
+  * @throws {RangeError} when cents is outside its bound or the currency is not one of CURRENCIES

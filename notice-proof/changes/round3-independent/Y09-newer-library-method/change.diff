@@ -1,0 +1,11 @@
+--- before/rooms/src/index.mjs
++++ after/rooms/src/index.mjs
+@@ -78,7 +78,7 @@
+         .list('rooms')
+         .map((r) => /** @type {Room} */ (r.value))
+         .filter((r) => kind === undefined || r.kind === kind)
+-        .sort((a, b) => a.name.localeCompare(b.name));
++        .toSorted((a, b) => a.name.localeCompare(b.name));
+     },
+   };
+ }

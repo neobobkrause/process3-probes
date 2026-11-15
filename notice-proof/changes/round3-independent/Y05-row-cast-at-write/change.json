@@ -1,0 +1,9 @@
+{
+  "title": "The bookings table keeps no first day (worked out from until and nights when read); the row is written as a Booking",
+  "provider": "bookings",
+  "covers": [
+    "rows written to a shared table no longer of the row kind",
+    "a comment cast at the write, which rule 2's check takes at its word"
+  ],
+  "note": "reports reads rows of the bookings table straight from the store (b.day)."
+}

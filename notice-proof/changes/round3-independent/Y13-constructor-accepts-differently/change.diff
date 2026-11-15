@@ -1,0 +1,36 @@
+--- before/money/src/index.mjs
++++ after/money/src/index.mjs
+@@ -74,15 +74,15 @@
+ }
+ 
+ /**
+- * A running total of amounts of one currency, for adding up many amounts as they come.
++ * A running total of amounts of one currency, for adding up many amounts as they come, from a given start.
+  */
+ export class Tally {
+   /**
+-   * @param {Currency} currency the currency of every amount added
++   * @param {Amount} start the amount to start from; its currency is the tally's
+    */
+-  constructor(currency) {
++  constructor(start) {
+     /** @type {Amount} the total so far */
+-    this.total = amount(0, currency);
++    this.total = amount(start.cents, start.currency);
+   }
+ 
+   /**
+--- before/money/test/index.test.mjs
++++ after/money/test/index.test.mjs
+@@ -43,9 +43,10 @@
+ });
+ 
+ test('a Tally adds up amounts of one currency', () => {
+-  const t = new Tally('EUR');
++  const t = new Tally(amount(0, 'EUR'));
+   t.add(amount(150, 'EUR'));
+   t.add(amount(250, 'EUR'));
+   assert.equal(t.total.cents, 400);
++  assert.equal(new Tally(amount(100, 'GBP')).total.cents, 100);
+   assert.throws(() => t.add(amount(1, 'USD')), RangeError);
+ });

@@ -1,0 +1,47 @@
+--- before/bookings/src/index.mjs
++++ after/bookings/src/index.mjs
+@@ -122,9 +122,13 @@
+       store.put('bookings', b.id, b);
+       return b;
+     },
++    /**
++     * @param {string} id
++     * @throws {Error} when no booking has the id (an unknown booking is not a value out of bounds), or it is not open
++     */
+     cancel(id) {
+       const b = find(id);
+-      if (!b) throw new RangeError(`bookings: unknown booking: ${id}`);
++      if (!b) throw new Error(`bookings: no booking ${id}`);
+       if (b.state !== 'open') throw new Error(`bookings: not open: ${id}`);
+       /** @type {Booking} builds a Booking */
+       const done = { ...b, state: 'cancelled' };
+@@ -143,9 +147,10 @@
+   return {
+     bookopen: (req) => bookings.open(req),
+     bookcancel: (req) => bookings.cancel(req.id),
++    /** @throws {Error} when no booking has the id */
+     bookstatus: (req) => {
+       const b = bookings.find(req.id);
+-      if (!b) throw new RangeError(`bookings: unknown booking: ${req.id}`);
++      if (!b) throw new Error(`bookings: no booking ${req.id}`);
+       return { state: b.state, total: b.total, room: b.room };
+     },
+     bookquote: (req) => ({ total: bookings.quote(req.room, req.party, req.nights) }),
+--- before/bookings/test/index.test.mjs
++++ after/bookings/test/index.test.mjs
+@@ -63,7 +63,7 @@
+   const b = bookings.open(req());
+   assert.equal(bookings.cancel(b.id).state, 'cancelled');
+   assert.throws(() => bookings.cancel(b.id));
+-  assert.throws(() => bookings.cancel('b-999'), RangeError);
++  assert.throws(() => bookings.cancel('b-999'), /no booking b-999/);
+   assert.throws(() => bookings.open(req({ room: 'attic' })), RangeError);
+ });
+ 
+@@ -81,5 +81,5 @@
+   assert.deepEqual(h.bookstatus({ id: b.id }), { state: 'open', total: b.total, room: 'hall' });
+   assert.deepEqual(h.bookquote({ room: 'hall', party: 10, nights: 2 }).total, b.total);
+   assert.equal(h.bookcancel({ id: b.id }).state, 'cancelled');
+-  assert.throws(() => h.bookstatus({ id: 'b-999' }), RangeError);
++  assert.throws(() => h.bookstatus({ id: 'b-999' }), /no booking b-999/);
+ });

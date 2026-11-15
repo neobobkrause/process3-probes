@@ -1,0 +1,11 @@
+{
+  "title": "An amount may now be at most 500,000 cents; code, the bound line of Cents and its test all changed",
+  "provider": "money",
+  "covers": [
+    "bound line changed honestly, on a kind that names a number",
+    "entries that hand back the kind do not carry its bound"
+  ],
+  "before": [
+    "setups/Y08-money-cents-kind"
+  ]
+}

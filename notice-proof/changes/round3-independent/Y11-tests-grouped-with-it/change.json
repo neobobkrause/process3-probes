@@ -1,0 +1,8 @@
+{
+  "title": "money's tests are grouped by function with describe and it; every assertion and every test name stays",
+  "provider": "money",
+  "covers": [
+    "tests named for bounds written with node:test's it",
+    "no change to running code or comments"
+  ]
+}

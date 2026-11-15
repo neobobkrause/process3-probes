@@ -1,0 +1,22 @@
+--- before/money/src/index.mjs
++++ after/money/src/index.mjs
+@@ -15,7 +15,7 @@
+  * @bound cents: whole number, 0 to 10,000,000 inclusive
+  */
+ 
+-const MAX_CENTS = 10_000_000;
++const MAX_CENTS = 500_000;
+ 
+ /**
+  * Makes an amount, refusing one outside its bound.
+--- before/money/test/index.test.mjs
++++ after/money/test/index.test.mjs
+@@ -3,7 +3,7 @@
+ import { amount, add, formatAmount, splitEvenly, CURRENCIES } from '../src/index.mjs';
+ 
+ /** The largest amount there may be, in cents. */
+-const MAX = 10_000_000;
++const MAX = 500_000;
+ 
+ test('bound cents: whole number, 0 to 10,000,000 inclusive', () => {
+   assert.equal(amount(0, 'EUR').cents, 0);

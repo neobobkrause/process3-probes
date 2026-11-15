@@ -1,0 +1,78 @@
+--- before/rooms/src/index.mjs
++++ after/rooms/src/index.mjs
+@@ -17,6 +17,16 @@
+  * @property {RoomKind} kind
+  * @property {number} seats
+  * @bound seats: whole number, 1 to 500
++ */
++
++/**
++ * A room as the rooms table holds it. The seats are kept under capacity, the name the venue's booking system gives
++ * them, so that the table can be handed to it as it is.
++ * @typedef {Object} RoomRow
++ * @property {string} id
++ * @property {string} name
++ * @property {RoomKind} kind
++ * @property {number} capacity the room's seats
+  * @storedrows rooms
+  */
+ 
+@@ -50,6 +60,15 @@
+  */
+ 
+ /**
++ * A room as rooms hands it back, from a row of the rooms table.
++ * @param {RoomRow} row
++ * @returns {Room}
++ */
++function toRoom(row) {
++  return { id: row.id, name: row.name, kind: row.kind, seats: row.capacity };
++}
++
++/**
+  * Makes the rooms' handle over a store.
+  * @param {{store: Store}} deps
+  * @returns {Rooms}
+@@ -64,19 +83,19 @@
+       }
+       const id = slugify(input.name);
+       if (store.get('rooms', id)) throw new Error(`rooms: already taken: ${id}`);
+-      /** @type {Room} builds a Room */
+-      const room = { id, name: input.name, kind: input.kind, seats: input.seats };
+-      store.put('rooms', id, room);
+-      return room;
++      /** @type {RoomRow} builds a RoomRow */
++      const row = { id, name: input.name, kind: input.kind, capacity: input.seats };
++      store.put('rooms', id, row);
++      return toRoom(row);
+     },
+     find(id) {
+       const rec = store.get('rooms', id);
+-      return rec ? /** @type {Room} checks nothing: the store holds only Rooms in this table */ (rec.value) : undefined;
++      return rec ? toRoom(/** @type {RoomRow} checks nothing: the store holds only RoomRows in this table */ (rec.value)) : undefined;
+     },
+     list(kind) {
+       return store
+         .list('rooms')
+-        .map((r) => /** @type {Room} */ (r.value))
++        .map((r) => toRoom(/** @type {RoomRow} */ (r.value)))
+         .filter((r) => kind === undefined || r.kind === kind)
+         .sort((a, b) => a.name.localeCompare(b.name));
+     },
+--- before/rooms/test/index.test.mjs
++++ after/rooms/test/index.test.mjs
+@@ -29,6 +29,14 @@
+   assert.throws(() => rooms.add({ name: 'Pool', kind: /** @type {any} */ ('pool'), seats: 10 }), RangeError);
+ });
+ 
++test('the rooms table keeps the seats under capacity', () => {
++  const store = createStore();
++  const rooms = createRooms({ store });
++  rooms.add({ name: 'Hall', kind: 'hall', seats: 80 });
++  assert.deepEqual(store.get('rooms', 'hall')?.value, { id: 'hall', name: 'Hall', kind: 'hall', capacity: 80 });
++  assert.equal(rooms.find('hall')?.seats, 80);
++});
++
+ test('list filters by kind and keeps name order', () => {
+   const rooms = fresh();
+   rooms.add({ name: 'B Hall', kind: 'hall', seats: 50 });

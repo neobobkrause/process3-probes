@@ -1,0 +1,42 @@
+--- before/front/src/index.mjs
++++ after/front/src/index.mjs
+@@ -21,7 +21,7 @@
+  * The front desk's handle.
+  * @typedef {Object} Front
+  * @property {(form: BookingForm) => Promise<{id: string, text: string}>} book refuses a form without a valid email
+- * @property {(id: string) => Promise<string>} cancel
++ * @property {(id: string) => Promise<string>} cancel says which booking was cancelled, or that there is no such booking
+  * @property {() => string[]} kindsMenu one line per kind of room
+  * @property {(kind?: RoomKind) => Promise<string[]>} roomMenu one line per room
+  */
+@@ -47,8 +47,14 @@
+       return { id: b.id, text: `Booked ${b.room} from ${b.day} to ${b.until} for ${b.party}: ${price}` };
+     },
+     async cancel(id) {
+-      const b = await door.call('bookcancel', { id });
+-      return `Cancelled ${b.id}`;
++      try {
++        const b = await door.call('bookcancel', { id });
++        return `Cancelled ${b.id}`;
++      } catch (e) {
++        // bookings refuses an unknown booking with a RangeError: the person is told there is no such booking
++        if (e instanceof RangeError) return `No booking ${id}`;
++        throw e;
++      }
+     },
+     kindsMenu() {
+       return ROOM_KINDS.map((k) => titleCase(k));
+--- before/front/test/index.test.mjs
++++ after/front/test/index.test.mjs
+@@ -43,6 +43,11 @@
+   assert.ok((await front.cancel(id)).includes(id));
+ });
+ 
++test('cancelling an unknown booking says there is no such booking', async () => {
++  const front = system();
++  assert.equal(await front.cancel('b-999'), 'No booking b-999');
++});
++
+ test('the kinds menu has one line per kind, each starting with a capital', () => {
+   const menu = system().kindsMenu();
+   assert.ok(menu.length >= 1);

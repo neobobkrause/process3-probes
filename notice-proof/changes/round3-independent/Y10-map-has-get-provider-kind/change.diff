@@ -1,0 +1,57 @@
+--- before/bookings/src/index.mjs
++++ after/bookings/src/index.mjs
+@@ -1,7 +1,7 @@
+ /**
+  * Bookings of rooms for one or more nights.
+  */
+-import { amount } from '../../money/src/index.mjs';
++import { amount, add } from '../../money/src/index.mjs';
+ import { parseDay, formatDay, addDays } from '../../calendar/src/index.mjs';
+ /** @import { Amount } from '../../money/src/index.mjs' */
+ /** @import { Store } from '../../store/src/index.mjs' */
+@@ -45,6 +45,7 @@
+  * @property {(id: string) => Booking} cancel cancels an open booking; refuses an unknown or already cancelled one
+  * @property {(id: string) => Booking | undefined} find
+  * @property {(room: string, party: number, nights: number) => Amount} quote what a booking would cost
++ * @property {() => Record<string, Amount>} takings what the open bookings of each room come to, by the room's id
+  */
+ 
+ /**
+@@ -131,6 +132,17 @@
+       store.put('bookings', id, done);
+       return done;
+     },
++    takings() {
++      /** @type {Map<string, Amount>} what the open bookings of each room come to */
++      const byRoom = new Map();
++      for (const rec of store.list('bookings')) {
++        const b = /** @type {Booking} */ (rec.value);
++        if (b.state !== 'open') continue;
++        if (!byRoom.has(b.room)) byRoom.set(b.room, amount(0, 'EUR'));
++        byRoom.set(b.room, add(byRoom.get(b.room), b.total));
++      }
++      return Object.fromEntries(byRoom);
++    },
+   };
+ }
+ 
+--- before/bookings/test/index.test.mjs
++++ after/bookings/test/index.test.mjs
+@@ -58,6 +58,17 @@
+   assert.throws(() => bookings.open(req({ day: 'tomorrow' })), RangeError);
+ });
+ 
++test('takings add up the open bookings of each room', () => {
++  const { bookings } = system();
++  const a = bookings.open(req({ party: 2, nights: 1 }));
++  const b = bookings.open(req({ party: 3, nights: 1 }));
++  const c = bookings.open(req({ room: 'studio', party: 1, nights: 1 }));
++  bookings.cancel(c.id);
++  const t = bookings.takings();
++  assert.equal(t.hall.cents, a.total.cents + b.total.cents);
++  assert.equal(t.studio, undefined);
++});
++
+ test('cancel closes an open booking once; unknown rooms and bookings are refused', () => {
+   const { bookings } = system();
+   const b = bookings.open(req());

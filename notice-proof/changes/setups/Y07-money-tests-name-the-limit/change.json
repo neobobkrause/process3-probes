@@ -1,0 +1,7 @@
+{
+  "title": "money's tests name the largest amount once, at the top",
+  "provider": "money",
+  "covers": [
+    "bound test reads its limit from outside its own body (the standing state)"
+  ]
+}
