@@ -1,0 +1,226 @@
+{
+  "id": "P27-test-helper-changed",
+  "title": "The store's test helper seededStore now takes a list of rows, each naming its table",
+  "provider": "store",
+  "covers": [
+    "test helper that a provider publishes and a user's tests import"
+  ],
+  "tool": {
+    "firstCommentsStep": false,
+    "interfaceChanged": true,
+    "summary": "1 module(s) changed their listing; 1 entry changed in a way that tells; 2 user(s) told.",
+    "entries": [
+      {
+        "module": "store",
+        "entry": "seededStore",
+        "changes": [
+          "cannot stand in"
+        ],
+        "tells": "users",
+        "before": {
+          "kind": "function",
+          "accepts": "(arg0: { [key: string]: { id: string; value: unknown }[] })",
+          "handsBack": "handle store.Store"
+        },
+        "after": {
+          "kind": "function",
+          "accepts": "(arg0: { id: string; table: string; value: unknown }[])",
+          "handsBack": "handle store.Store"
+        }
+      }
+    ],
+    "told": [
+      "front",
+      "reports"
+    ],
+    "toldDetail": [
+      {
+        "user": "front",
+        "reasons": [
+          {
+            "module": "store",
+            "entry": "seededStore",
+            "changes": [
+              "cannot stand in"
+            ],
+            "lines": [
+              "front/test/index.test.mjs:3",
+              "front/test/index.test.mjs:10",
+              "front/test/index.test.mjs:12",
+              "front/test/index.test.mjs:13"
+            ],
+            "through": null
+          }
+        ],
+        "undeclared": []
+      },
+      {
+        "user": "reports",
+        "reasons": [
+          {
+            "module": "store",
+            "notFollowed": [
+              "reads or calls values of unknown kind: reports/src/index.mjs:13 source.list('rooms').map; reports/src/index.mjs:13 source.list('rooms'); reports/src/index.mjs:13 source.list (+9)"
+            ],
+            "through": null
+          }
+        ],
+        "undeclared": []
+      }
+    ],
+    "notTold": [
+      {
+        "user": "rooms",
+        "why": "uses none of the entries that changed in a way that tells"
+      },
+      {
+        "user": "bookings",
+        "why": "uses none of the entries that changed in a way that tells"
+      },
+      {
+        "user": "billing",
+        "why": "uses none of the entries that changed in a way that tells"
+      }
+    ],
+    "warnings": [],
+    "commentsOnly": false,
+    "checks": {
+      "store": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 116
+      },
+      "rooms": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 107
+      },
+      "bookings": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 126
+      },
+      "door": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 86
+      },
+      "meter": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 95
+      },
+      "billing": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 103
+      },
+      "front": {
+        "refusedBefore": 0,
+        "refusedAfter": 1,
+        "refusals": [
+          {
+            "at": "front/test/index.test.mjs:11",
+            "code": 2353,
+            "text": "Object literal may only specify known properties, and 'rooms' does not exist in type '{ table: string; id: string; value: unknown; }[]'.",
+            "kind": "(b) code disagrees with the stated interface of store"
+          }
+        ],
+        "refusalsBefore": [],
+        "ms": 129
+      },
+      "reports": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 130
+      }
+    }
+  },
+  "groundTruth": {
+    "providerTests": {
+      "pass": true,
+      "failed": [],
+      "ran": 6
+    },
+    "testsBefore": {
+      "rooms": true,
+      "bookings": true,
+      "door": true,
+      "meter": true,
+      "billing": true,
+      "front": true,
+      "reports": true
+    },
+    "testsAfter": {
+      "rooms": {
+        "pass": true,
+        "failed": []
+      },
+      "bookings": {
+        "pass": true,
+        "failed": []
+      },
+      "door": {
+        "pass": true,
+        "failed": []
+      },
+      "meter": {
+        "pass": true,
+        "failed": []
+      },
+      "billing": {
+        "pass": true,
+        "failed": []
+      },
+      "front": {
+        "pass": false,
+        "failed": [
+          "booking with a valid form says what was booked",
+          "booking needs a valid email",
+          "a booking outside the bounds is refused",
+          "cancel names the cancelled booking",
+          "the kinds menu has one line per kind, each starting with a capital",
+          "the room menu lists rooms with their seats"
+        ]
+      },
+      "reports": {
+        "pass": true,
+        "failed": []
+      }
+    },
+    "broken": [
+      "front"
+    ]
+  },
+  "timing": {
+    "listingMs": {
+      "before": 51,
+      "after": 57
+    },
+    "noticeMs": 520,
+    "checkMs": {
+      "store": 116,
+      "rooms": 107,
+      "bookings": 126,
+      "door": 86,
+      "meter": 95,
+      "billing": 103,
+      "front": 129,
+      "reports": 130
+    }
+  }
+}

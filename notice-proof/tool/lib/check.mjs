@@ -115,6 +115,8 @@ export function check(tree, moduleId) {
       if (!unreadCalls.length || depth > 4) return false;
       if (unreadCalls.some((c) => within(node, c))) return true;
       let e = node;
+      // a complaint about a field (status.state) names the field: start from the whole expression
+      while (e.parent && (ts.isPropertyAccessExpression(e.parent) || ts.isElementAccessExpression(e.parent)) && e.parent.expression !== e) e = e.parent;
       while (e && (ts.isPropertyAccessExpression(e) || ts.isElementAccessExpression(e) || ts.isCallExpression(e) || ts.isAwaitExpression(e) || ts.isParenthesizedExpression(e))) e = e.expression;
       if (!e || !ts.isIdentifier(e)) return false;
       const s = checker.getSymbolAtLocation(e);
@@ -145,7 +147,7 @@ export function check(tree, moduleId) {
         continue;
       }
       // Asking a list or set whether it holds a value wider than its own kind: the reader types it too narrowly.
-      const call = ts.isCallExpression(node.parent?.parent) ? node.parent.parent : ts.isCallExpression(node.parent) ? node.parent : null;
+      const call = node.parent?.parent && ts.isCallExpression(node.parent.parent) ? node.parent.parent : node.parent && ts.isCallExpression(node.parent) ? node.parent : null;
       if (d.code === 2345 && call && ts.isPropertyAccessExpression(call.expression) && MEMBERSHIP.has(call.expression.name.text)) {
         cannotTell.push({ at, code: d.code, why: 'a membership question the reader types too narrowly', text });
         continue;

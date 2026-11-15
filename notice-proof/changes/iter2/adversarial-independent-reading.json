@@ -1,0 +1,51 @@
+{
+  "about": "Ground truth by reading under iteration 2, written by Claude AFTER the results were seen, independently of what the tool said. Fields as in round 1.",
+  "changes": {
+    "X01-optional-param-callback": {
+      "needs": [
+        "billing"
+      ]
+    },
+    "X02-opaque-id-digits": {
+      "needs": [],
+      "note": "With the door carrying text as text, nothing breaks."
+    },
+    "X03-port-bound-changed": {
+      "needs": [
+        "front"
+      ]
+    },
+    "X04-includes-on-literal-list": {
+      "needs": []
+    },
+    "X05-stale-write": {
+      "needs": []
+    },
+    "X06-bound-reworded": {
+      "needs": [],
+      "note": "Five notices for a rewording, by Bob's rule as written."
+    },
+    "X07-list-gains-name-lookup-table": {
+      "needs": [
+        "bookings"
+      ],
+      "note": "Told, and now its check points at the missing price."
+    },
+    "X08-new-op-name-clash": {
+      "needs": [
+        "billing"
+      ],
+      "note": "front's wiring of the door is refused by its check, but front runs correctly and was not told; the fault to fix is rooms' clashing name. Judged: front needs nothing."
+    },
+    "X09-message-channel": {
+      "needs": [
+        "billing"
+      ],
+      "guard": "meter's own check refuses the write of MeterMsg to stderr (rule 5)",
+      "note": "billing was also told, under rule 4."
+    },
+    "X10-node-timer": {
+      "needs": []
+    }
+  }
+}

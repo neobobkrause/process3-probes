@@ -1,0 +1,70 @@
+{
+  "about": "Ground truth by reading under iteration 2, written by Claude AFTER the results were seen, independently of what the tool said. Fields as in round 1.",
+  "changes": {
+    "A01-stored-row-shape": {
+      "needs": [
+        "reports"
+      ],
+      "guard": "bookings' own check refuses its rows (rule 2)"
+    },
+    "A03-reexported-function": {
+      "needs": [
+        "rooms",
+        "front"
+      ]
+    },
+    "A04-message-kind-not-shared": {
+      "needs": [
+        "billing"
+      ],
+      "guard": "billing's own check refuses its own copy of the message kind, before the change too: that state could not have been merged (rule 3)"
+    },
+    "A06-error-kind-changed": {
+      "needs": [
+        "billing"
+      ]
+    },
+    "A07-bound-test-moved-line-not": {
+      "needs": [
+        "front"
+      ]
+    },
+    "A08-request-line-built-in-steps": {
+      "needs": [],
+      "note": "First run of iteration 2: 5 false refusal lines (results/iter2/A08-before-fix.json); after the fix, none."
+    },
+    "A09-assert-narrowing": {
+      "needs": []
+    },
+    "A10-kind-split-same-shape": {
+      "needs": []
+    },
+    "A11-string-spelled-String": {
+      "needs": []
+    },
+    "A12-caught-error-makes-user-unfollowed": {
+      "needs": []
+    },
+    "A13-computed-member-renamed": {
+      "needs": [
+        "rooms",
+        "bookings"
+      ],
+      "throughOnly": [
+        "billing",
+        "front",
+        "reports"
+      ]
+    },
+    "A14-copy-of-kind-in-the-middle": {
+      "needs": [
+        "bookings",
+        "meter",
+        "billing"
+      ],
+      "throughOnly": [
+        "front"
+      ]
+    }
+  }
+}

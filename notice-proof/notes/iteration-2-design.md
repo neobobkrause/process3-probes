@@ -39,3 +39,9 @@ Only what the new rules require: `@storedrows` on the kinds rooms and bookings s
 2. Every earlier series is run again on iteration 2.
 3. A fresh adversarial round is written against iteration 2, by an independent helper that sees the rules and the tool but no results, with its expected answers written before it is run.
 4. Repeat while a round finds a hole or a false refusal that a change to the design can close. A hole the method cannot close by construction (a change of meaning that no comment or test records) is reported, not chased.
+
+## Defects met while running iteration 2
+
+- 15 Nov 2026: the check crashed on planned change 13 (a complaint about the first line of a file, which has no grandparent node, reached the new "membership question" test). Fixed by guarding the lookup; planned changes 13 to 28 were run after the fix. Recorded in the report.
+- 15 Nov 2026: in adversarial change 8 the check still refused 5 lines that read fields of the answer of a call it cannot read (it looked at the field's name, not the expression). Fixed; the first result is kept in `results/iter2/A08-before-fix.json`; adversarial change 8 was run again.
+- 15 Nov 2026: in independent change 9 my expected answer missed that the change also rewrote the meter's test named for its "minutes" bound; the tool told billing under rule 4, which is what the rules say. The expected answer is left as written.

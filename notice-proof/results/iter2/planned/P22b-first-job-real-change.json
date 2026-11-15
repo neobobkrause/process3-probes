@@ -1,0 +1,223 @@
+{
+  "id": "P22b-first-job-real-change",
+  "title": "calendar's first job, step two: addDays refuses a number of days that is not whole",
+  "provider": "calendar",
+  "covers": [
+    "the first job on the module without comments: the real change"
+  ],
+  "tool": {
+    "firstCommentsStep": false,
+    "interfaceChanged": true,
+    "summary": "1 module(s) changed their listing; 1 entry changed in a way that tells; 2 user(s) told.",
+    "entries": [
+      {
+        "module": "calendar",
+        "entry": "addDays",
+        "changes": [
+          "bound changed",
+          "hands back differently"
+        ],
+        "tells": "users",
+        "before": {
+          "kind": "function",
+          "accepts": "(arg0: Date, arg1: number)",
+          "handsBack": "Date"
+        },
+        "after": {
+          "kind": "function",
+          "accepts": "(arg0: Date, arg1: number)",
+          "handsBack": "Date",
+          "bounds": [
+            "n: a whole number of days"
+          ],
+          "throws": [
+            "RangeError"
+          ]
+        }
+      }
+    ],
+    "told": [
+      "bookings",
+      "reports"
+    ],
+    "toldDetail": [
+      {
+        "user": "bookings",
+        "reasons": [
+          {
+            "module": "calendar",
+            "entry": "addDays",
+            "changes": [
+              "bound changed",
+              "hands back differently"
+            ],
+            "lines": [
+              "bookings/src/index.mjs:5",
+              "bookings/src/index.mjs:115"
+            ],
+            "through": null
+          }
+        ],
+        "undeclared": []
+      },
+      {
+        "user": "reports",
+        "reasons": [
+          {
+            "module": "calendar",
+            "notFollowed": [
+              "reads or calls values of unknown kind: reports/src/index.mjs:13 source.list('rooms').map; reports/src/index.mjs:13 source.list('rooms'); reports/src/index.mjs:13 source.list (+9)"
+            ],
+            "through": null
+          }
+        ],
+        "undeclared": []
+      }
+    ],
+    "notTold": [],
+    "warnings": [],
+    "commentsOnly": false,
+    "checks": {
+      "calendar": {
+        "refusedBefore": 1,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [
+          {
+            "at": "calendar",
+            "code": "bound",
+            "text": "no test named 'bound text: a real calendar day written YYYY-MM-DD'",
+            "kind": "(d) a rule of form: each bound has a test named for it"
+          }
+        ],
+        "ms": 81
+      },
+      "store": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 69
+      },
+      "rooms": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 100
+      },
+      "bookings": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 108
+      },
+      "door": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 81
+      },
+      "meter": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 87
+      },
+      "billing": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 95
+      },
+      "front": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 117
+      },
+      "reports": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 120
+      }
+    }
+  },
+  "groundTruth": {
+    "providerTests": {
+      "pass": true,
+      "failed": [],
+      "ran": 5
+    },
+    "testsBefore": {
+      "store": true,
+      "rooms": true,
+      "bookings": true,
+      "door": true,
+      "meter": true,
+      "billing": true,
+      "front": true,
+      "reports": true
+    },
+    "testsAfter": {
+      "store": {
+        "pass": true,
+        "failed": []
+      },
+      "rooms": {
+        "pass": true,
+        "failed": []
+      },
+      "bookings": {
+        "pass": true,
+        "failed": []
+      },
+      "door": {
+        "pass": true,
+        "failed": []
+      },
+      "meter": {
+        "pass": true,
+        "failed": []
+      },
+      "billing": {
+        "pass": true,
+        "failed": []
+      },
+      "front": {
+        "pass": true,
+        "failed": []
+      },
+      "reports": {
+        "pass": true,
+        "failed": []
+      }
+    },
+    "broken": []
+  },
+  "timing": {
+    "listingMs": {
+      "before": 50,
+      "after": 56
+    },
+    "noticeMs": 512,
+    "checkMs": {
+      "calendar": 81,
+      "store": 69,
+      "rooms": 100,
+      "bookings": 108,
+      "door": 81,
+      "meter": 87,
+      "billing": 95,
+      "front": 117,
+      "reports": 120
+    }
+  }
+}
