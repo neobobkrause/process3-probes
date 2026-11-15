@@ -34,6 +34,17 @@ export function makeLister(program, tree) {
     return out;
   }
 
+  /** Iteration 3 (rule 10): `@throws {Kind} member ...` lines on a kind, split among its members like bound lines. */
+  function kindThrows(decl, member, memberNames) {
+    const out = [];
+    for (const tag of tagsOf(decl, 'throws')) {
+      const kindText = tag.typeExpression?.type?.getText?.() ?? '';
+      const subject = tagText(tag).split(/[:.\s]/)[0];
+      if (kindText && (subject === member || !memberNames.includes(subject))) out.push(kindText);
+    }
+    return [...new Set(out)].sort();
+  }
+
   function rangeOf(node, kind) {
     const sf = node.getSourceFile();
     if (kind === 'jsdoc') return { file: sf.fileName, start: node.pos, end: node.end };
@@ -81,6 +92,8 @@ export function makeLister(program, tree) {
               };
               note('accepts', a, e); note('handsBack', h, e);
               if (p.declarations?.[0]) ranges.push({ entry: e, ...rangeOf(p.declarations[0], 'jsdoc') });
+              const kt = kindThrows(decl, p.name, names);
+              if (kt.length) entries[e].throws = kt;
             }
           } else if (C.isHandle(t)) {
             const props = checker.getPropertiesOfType(t);
@@ -98,6 +111,10 @@ export function makeLister(program, tree) {
                 handsBack = c.ret;
               } else handsBack = C.canon(mt, h);
               entries[e] = { kind: 'method', accepts, handsBack, bounds: [...boundsFor(bounds, p.name, names), ...nestedBounds(a), ...nestedBounds(h)], where };
+              // Iteration 3: a member that may be missing says so (rule 12), and errors stated on the kind (rule 10).
+              if (p.flags & ts.SymbolFlags.Optional) entries[e].optional = true;
+              const kt = kindThrows(decl, p.name, names);
+              if (kt.length) entries[e].throws = kt;
               note('accepts', a, e); note('handsBack', h, e);
               if (p.declarations?.[0]) ranges.push({ entry: e, ...rangeOf(p.declarations[0], 'jsdoc') });
             }
@@ -125,7 +142,14 @@ export function makeLister(program, tree) {
         ranges.push({ entry: name, ...rangeOf(host) });
         const ownBounds = tagsOf(decl, 'bound').map(tagText);
         const a = newCtx(), h = newCtx();
-        if (sigs.length && checker.getPropertiesOfType(t).length === 0) {
+        const ctors = t.getConstructSignatures();
+        if (ctors.length) {
+          // Iteration 3 (rule 17): an exported class lists what its constructor accepts, and what it builds.
+          const c = C.canonSig(ctors[0], a, h);
+          entries[name] = { kind: 'class', accepts: { k: 'params', items: c.params }, handsBack: c.ret, bounds: [...ownBounds, ...nestedBounds(a), ...nestedBounds(h)], where };
+          const throws = tagsOf(ctors[0].declaration ?? decl, 'throws').map((tg) => tg.typeExpression?.type?.getText?.()).filter(Boolean).sort();
+          if (throws.length) entries[name].throws = throws;
+        } else if (sigs.length && checker.getPropertiesOfType(t).length === 0) {
           const c = C.canonSig(sigs[0], a, h);
           const items = c.params.map((p, i) => ({ ...p, name: sym.valueDeclaration?.parameters?.[i]?.name?.getText?.() }));
           for (const it of items) delete it.name; // names of parameters are not part of what stands in
@@ -159,6 +183,51 @@ export function makeLister(program, tree) {
       e.accepts = side === 'handsBack' ? null : e.shape;
       e.handsBack = side === 'accepts' ? null : e.shape;
       delete e.shape;
+    }
+    // Iteration 3 (rule 10): errors stated on the methods where the object is built, and errors inherited by a method
+    // or handler that only hands its call to another listed entry.
+    const entryOfDecl = (d) => {
+      if (!d) return null;
+      const f = d.getSourceFile().fileName, at = (d.name ?? d).end - 1;
+      let best = null;
+      for (const r of ranges) if (r.file === f && r.start <= at && at < r.end && (!best || r.end - r.start < best.end - best.start)) best = r;
+      return best?.entry ?? null;
+    };
+    const delegations = [];
+    for (const f of mod.src) {
+      const sf = program.getSourceFile(f);
+      if (!sf) continue;
+      const visit = (n) => {
+        if (ts.isObjectLiteralExpression(n)) {
+          const ct = checker.getContextualType(n);
+          for (const prop of n.properties) {
+            if (!ct || !prop.name || !(ts.isIdentifier(prop.name) || ts.isStringLiteral(prop.name))) continue;
+            const ps = checker.getPropertyOfType(ct, prop.name.text);
+            const target = entryOfDecl(ps?.declarations?.[0]);
+            if (!target || !entries[target]) continue;
+            const stated = tagsOf(prop, 'throws').map((tg) => tg.typeExpression?.type?.getText?.()).filter(Boolean);
+            if (stated.length) entries[target].throws = [...new Set([...(entries[target].throws ?? []), ...stated])].sort();
+            // A body that is one call: (req) => bookings.cancel(req.id), or a method whose only statement returns one.
+            const fn = ts.isMethodDeclaration(prop) ? prop : ts.isPropertyAssignment(prop) && (ts.isArrowFunction(prop.initializer) || ts.isFunctionExpression(prop.initializer)) ? prop.initializer : null;
+            let call = null;
+            if (fn?.body && ts.isCallExpression(fn.body)) call = fn.body;
+            else if (fn?.body && ts.isBlock(fn.body) && fn.body.statements.length === 1 && ts.isReturnStatement(fn.body.statements[0]) && fn.body.statements[0].expression && ts.isCallExpression(fn.body.statements[0].expression)) call = fn.body.statements[0].expression;
+            if (call) {
+              const callee = ts.isPropertyAccessExpression(call.expression) ? call.expression.name : call.expression;
+              let sym = checker.getSymbolAtLocation(callee);
+              if (sym && sym.flags & ts.SymbolFlags.Alias) { try { sym = checker.getAliasedSymbol(sym); } catch { sym = undefined; } }
+              const from = entryOfDecl(sym?.declarations?.[0]);
+              if (from && from !== target) delegations.push([target, from]);
+            }
+          }
+        }
+        ts.forEachChild(n, visit);
+      };
+      visit(sf);
+    }
+    for (let round = 0; round < 3; round++) for (const [to, from] of delegations) {
+      const inherited = entries[from]?.throws ?? [];
+      if (inherited.length) entries[to].throws = [...new Set([...(entries[to].throws ?? []), ...inherited])].sort();
     }
     for (const e of Object.values(entries)) e.bounds = [...new Set(e.bounds)].sort();
     const sorted = Object.fromEntries(Object.keys(entries).sort().map((k) => [k, entries[k]]));

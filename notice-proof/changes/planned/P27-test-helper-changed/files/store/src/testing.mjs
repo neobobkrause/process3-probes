@@ -4,6 +4,7 @@
 import { createStore } from './index.mjs';
 
 /**
+ * @carriestable keys
  * Makes a store already holding the given records, each written once, in the order given.
  * @param {Array<{table: string, id: string, value: unknown}>} rows the records to put
  * @returns {import('./index.mjs').Store}

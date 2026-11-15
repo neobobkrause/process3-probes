@@ -16,16 +16,16 @@ test('addDays and daysBetween agree', () => {
   assert.equal(daysBetween(b, a), -5);
 });
 
-test('bound n: a whole number of days', () => {
-  const a = parseDay('2026-03-01');
-  assert.equal(formatDay(addDays(a, -1)), '2026-02-28');
-  assert.throws(() => addDays(a, 0.5), RangeError);
-});
-
 test('bound text: a real calendar day written YYYY-MM-DD', () => {
   assert.equal(formatDay(parseDay('2028-02-29')), '2028-02-29');
   assert.throws(() => parseDay('2027-02-29'), RangeError);
   assert.throws(() => parseDay('2027-2-1'), RangeError);
+});
+
+test('bound n: a whole number of days', () => {
+  const a = parseDay('2026-03-01');
+  assert.equal(formatDay(addDays(a, -1)), '2026-02-28');
+  assert.throws(() => addDays(a, 0.5), RangeError);
 });
 
 test('weekday names the day of the week', () => {

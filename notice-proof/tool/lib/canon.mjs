@@ -111,6 +111,7 @@ export function makeCanon(checker, tree) {
       if (calls.length && !props.length) return calls.length === 1 ? canonSig(calls[0], ctx) : { k: 'overloads', of: calls.map((s) => canonSig(s, ctx)) };
       const out = { k: 'obj', props: {} };
       for (const p of [...props].sort((a, b) => (a.name < b.name ? -1 : 1))) {
+        notePrimitiveKind(p.declarations?.[0], ctx);
         const opt = !!(p.flags & ts.SymbolFlags.Optional);
         let pt = checker.getTypeOfSymbol(p);
         if (opt) pt = removeUndefined(pt);
@@ -122,6 +123,29 @@ export function makeCanon(checker, tree) {
       return out;
     } finally {
       ctx.stack.pop();
+    }
+  }
+
+  /**
+   * Iteration 3 (rule 16): a field or parameter written with a product kind that is just a number or text (the
+   * reader keeps no name for it) carries that kind's bound lines.
+   */
+  function notePrimitiveKind(decl, ctx) {
+    if (!decl) return;
+    let typeNode = decl.typeExpression?.type ?? decl.type;
+    if (!typeNode && ts.isParameter(decl)) typeNode = ts.getJSDocParameterTags(decl)[0]?.typeExpression?.type;
+    if (!typeNode) return;
+    const refs = [];
+    const collect = (n) => { if (ts.isTypeReferenceNode(n)) refs.push(n.typeName); ts.forEachChild(n, collect); };
+    collect(typeNode);
+    for (const ref of refs) {
+      let sym = checker.getSymbolAtLocation(ts.isQualifiedName(ref) ? ref.right : ref);
+      if (sym && sym.flags & ts.SymbolFlags.Alias) { try { sym = checker.getAliasedSymbol(sym); } catch { continue; } }
+      const d = sym?.declarations?.[0];
+      if (d && isProductDecl(d) && (ts.isJSDocTypedefTag(d) || ts.isTypeAliasDeclaration(d))) {
+        const declared = checker.getDeclaredTypeOfSymbol(sym);
+        if (!(declared.flags & ts.TypeFlags.Object)) ctx.kinds.set(`${tree.moduleOfFile(d.getSourceFile().fileName)}.${sym.name}`, d);
+      }
     }
   }
 
@@ -146,6 +170,7 @@ export function makeCanon(checker, tree) {
 
   function canonSig(sig, ctx, retCtx = ctx) {
     const params = sig.getParameters().map((p) => {
+      notePrimitiveKind(p.valueDeclaration, ctx);
       const opt = paramOptional(p);
       const rest = !!(p.valueDeclaration && ts.isParameter(p.valueDeclaration) && p.valueDeclaration.dotDotDotToken);
       let pt = checker.getTypeOfSymbol(p);

@@ -80,6 +80,8 @@ export function diffListings(moduleId, before, after) {
     if (!same(eb.bounds, ea.bounds)) changes.push('bound changed');
     // Iteration 2: the kinds of error raised, and a message's channel, are part of what is handed back.
     if ((!same(eb.throws ?? [], ea.throws ?? []) || (eb.channel ?? '') !== (ea.channel ?? '')) && !changes.includes('hands back differently')) changes.push('hands back differently');
+    // Iteration 3 (rule 12): a member that may now be missing hands back differently.
+    if (ea.optional && !eb.optional && !changes.includes('hands back differently')) changes.push('hands back differently');
     if (!changes.length) continue;
     out.push({
       entry: name,
@@ -101,6 +103,7 @@ export function describe(e) {
   if (e.side) d.side = e.side;
   if (e.throws?.length) d.throws = e.throws;
   if (e.channel) d.channel = e.channel;
+  if (e.optional) d.optional = true;
   return d;
 }
 

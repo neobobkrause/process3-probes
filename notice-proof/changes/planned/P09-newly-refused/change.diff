@@ -19,9 +19,9 @@
        /** @type {Stored} builds a Stored */
 --- before/store/src/testing.mjs
 +++ after/store/src/testing.mjs
-@@ -5,7 +5,7 @@
- 
+@@ -6,7 +6,7 @@
  /**
+  * @carriestable keys
   * Makes a store already holding the given records, each written once.
 - * @param {Object<string, Array<{id: string, value: unknown}>>} tables the records to put, by table name
 + * @param {Object<string, Array<{id: string, value: object}>>} tables the records to put, by table name

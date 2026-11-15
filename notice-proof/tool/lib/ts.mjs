@@ -20,7 +20,7 @@ export const OPTIONS = {
   moduleResolution: ts.ModuleResolutionKind.NodeNext,
   // The language's own library only; what the product uses of Node is described in node.d.ts (iteration 2: the
   // browser's description gave Node's timers the wrong kind).
-  lib: ['lib.es2022.d.ts'],
+  lib: ['lib.es2023.d.ts'], // iteration 3: the language library of the Node version the product runs on
   types: [],
   skipLibCheck: true,
 };

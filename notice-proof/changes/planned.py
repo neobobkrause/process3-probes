@@ -314,7 +314,15 @@ export function weekday(day) {
 
 change(S, 'P22a-first-job-comments-step', "calendar's first job, step one: interface comments added, describing the module as it stands", 'calendar',
        ['the first job on the module without comments: the comments-only step', 'module that starts with no interface comments'],
-       {CA: CAL_COMMENTED})
+       {CA: CAL_COMMENTED,
+        CAT: [("test('weekday names the day of the week'", """test('bound text: a real calendar day written YYYY-MM-DD', () => {
+  assert.equal(formatDay(parseDay('2028-02-29')), '2028-02-29');
+  assert.throws(() => parseDay('2027-02-29'), RangeError);
+  assert.throws(() => parseDay('2027-2-1'), RangeError);
+});
+
+test('weekday names the day of the week'""")]},
+       note='Iteration 3 (rule 9): the comments-only step adds the test named for the bound line it writes; in iterations 1 and 2 it did not, and the real change added it.')
 
 change(S, 'P22b-first-job-real-change', "calendar's first job, step two: addDays refuses a number of days that is not whole", 'calendar',
        ['the first job on the module without comments: the real change'],
@@ -334,12 +342,6 @@ export function addDays(day, n) {
   const a = parseDay('2026-03-01');
   assert.equal(formatDay(addDays(a, -1)), '2026-02-28');
   assert.throws(() => addDays(a, 0.5), RangeError);
-});
-
-test('bound text: a real calendar day written YYYY-MM-DD', () => {
-  assert.equal(formatDay(parseDay('2028-02-29')), '2028-02-29');
-  assert.throws(() => parseDay('2027-02-29'), RangeError);
-  assert.throws(() => parseDay('2027-2-1'), RangeError);
 });
 
 test('weekday names the day of the week'""")]},

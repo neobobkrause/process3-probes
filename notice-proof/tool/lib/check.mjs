@@ -96,6 +96,30 @@ export function check(tree, moduleId) {
     return null;
   };
   const messageChannelsOf = (t) => { const m = markOf(t); return m && m.channels.length ? m.channels : null; };
+  const productKind = (t) => [t.aliasSymbol, t.symbol].some((sym) => sym && !sym.name.startsWith('__') && (sym.declarations ?? []).some((d) => moduleOfDecl(d) && (ts.isJSDocTypedefTag(d) || ts.isTypeAliasDeclaration(d))));
+  const kindName = (t) => (t.aliasSymbol ?? t.symbol)?.name ?? checker.typeToString(t);
+  const plainDataKind = (t) => productKind(t) && !!(t.flags & ts.TypeFlags.Object) && checker.getPropertiesOfType(t).length > 0 &&
+    checker.getPropertiesOfType(t).every((p) => !checker.getNonNullableType(checker.getTypeOfSymbol(p)).getCallSignatures().length);
+  /** Is this complaint about X.get(K) inside a branch guarded by X.has(K)? */
+  const guardedGet = (node) => {
+    let top = node;
+    while (top.parent && !ts.isStatement(top)) top = top.parent;
+    const gets = [];
+    walk(top, (m) => { if (ts.isCallExpression(m) && ts.isPropertyAccessExpression(m.expression) && m.expression.name.text === 'get' && m.arguments.length === 1) gets.push(`${m.expression.expression.getText()}.has(${m.arguments[0].getText()})`); });
+    // a variable set from X.get(K) and used here
+    walk(top, (m) => {
+      if (!ts.isIdentifier(m)) return;
+      const d = checker.getSymbolAtLocation(m)?.declarations?.[0];
+      if (d && ts.isVariableDeclaration(d) && d.initializer && ts.isCallExpression(d.initializer) && ts.isPropertyAccessExpression(d.initializer.expression) && d.initializer.expression.name.text === 'get' && d.initializer.arguments.length === 1) gets.push(`${d.initializer.expression.expression.getText()}.has(${d.initializer.arguments[0].getText()})`);
+    });
+    if (!gets.length) return false;
+    for (let a = node.parent; a; a = a.parent) {
+      const cond = ts.isIfStatement(a) || ts.isWhileStatement(a) ? a.expression : ts.isConditionalExpression(a) ? a.condition : ts.isBinaryExpression(a) && a.operatorToken.kind === ts.SyntaxKind.AmpersandAmpersandToken ? a.left : null;
+      if (cond && gets.some((g) => cond.getText().replace(/\s+/g, '').includes(g.replace(/\s+/g, '')))) return true;
+      if (ts.isFunctionLike(a)) break;
+    }
+    return false;
+  };
   const rowTypeOf = (owner) => {
     const sf = program.getSourceFile(owner.file);
     let found;
@@ -146,6 +170,11 @@ export function check(tree, moduleId) {
         cannotTell.push({ at, code: d.code, why: 'a call by a name the reader cannot read, or the use of its answer', text });
         continue;
       }
+      // Iteration 3: Map.has(k) guarding Map.get(k) is "cannot tell", whatever module the value's kind comes from.
+      if (guardedGet(node)) {
+        cannotTell.push({ at, code: d.code, why: 'a get guarded by has, which the reader cannot see', text });
+        continue;
+      }
       // Asking a list or set whether it holds a value wider than its own kind: the reader types it too narrowly.
       const call = node.parent?.parent && ts.isCallExpression(node.parent.parent) ? node.parent.parent : node.parent && ts.isCallExpression(node.parent) ? node.parent : null;
       if (d.code === 2345 && call && ts.isPropertyAccessExpression(call.expression) && MEMBERSHIP.has(call.expression.name.text)) {
@@ -177,6 +206,25 @@ export function check(tree, moduleId) {
         kind: others.size ? `(b) code disagrees with the stated interface of ${[...others].join(', ')}` : `(a) a comment disagrees with ${isTest ? "this module's tests" : "this module's code"}`,
       });
     }
+
+    // Rules of form, iteration 3: a plain-data kind built as a class instance (rule 11); a cast that turns a value of
+    // a known kind into a product kind it is not (rule 14).
+    walk(sf, (n) => {
+      if (ts.isNewExpression(n)) {
+        const cls = checker.getSymbolAtLocation(n.expression)?.declarations?.find((d) => ts.isClassDeclaration(d) || ts.isClassExpression(d));
+        const ct = cls && moduleOfDecl(cls) ? checker.getContextualType(n) : undefined;
+        if (ct && plainDataKind(ct)) refusals.push({ at: lineAt(sf, n, tree.root), code: 'plain-data', text: `a value of the plain-data kind ${kindName(ct)} is built as an instance of a class: copies keep only its own fields`, kind: '(c) a rule of form: plain data is built as plain data' });
+      }
+      if (ts.isParenthesizedExpression(n)) {
+        const tn = ts.getJSDocType(n);
+        if (!tn) return;
+        const target = checker.getTypeFromTypeNode(tn);
+        if (!productKind(target)) return;
+        const source = checker.getTypeAtLocation(n.expression);
+        if (source.flags & (ts.TypeFlags.Any | ts.TypeFlags.Unknown)) return;
+        if (!checker.isTypeAssignableTo(source, target)) refusals.push({ at: lineAt(sf, n, tree.root), code: 'cast', text: `a cast makes a value of another kind pass as ${kindName(target)}`, kind: '(a) a comment (a cast) disagrees with the code' });
+      }
+    });
 
     // Rules of form, iteration 2.
     walk(sf, (n) => {
@@ -211,20 +259,33 @@ export function check(tree, moduleId) {
         const ok = typeNode && messageChannelsOf(checker.getTypeFromTypeNode(typeNode));
         if (!ok) refusals.push({ at: lineAt(sf, n, tree.root), code: 'message', text: 'a message is read without a kind its sender publishes (@message)', kind: '(c) a rule of form: a message is read with its sender\'s kind' });
       }
-      if (isJson('stringify')) {
-        // Written to a standard stream? Find the call that writes it.
-        let w = n.parent;
-        while (w && !(ts.isCallExpression(w) && ts.isPropertyAccessExpression(w.expression) && ['write', 'end'].includes(w.expression.name.text))) { if (ts.isStatement(w)) { w = null; break; } w = w.parent; }
-        if (!w) return;
+      // A write to a standard stream: every JSON.stringify in what is written, directly or through a variable set just
+      // before (iteration 3), must give a message kind published for that stream.
+      if (ts.isPropertyAccessExpression(callee) && ['write', 'end'].includes(callee.name.text)) {
+        const w = n;
         // Every stream the target may be (a stream chosen at run time names each of them) must be one of the
         // channels the message's kind is published for.
         const streams = [...new Set(w.expression.expression.getText(sf).match(/\b(stdout|stderr|stdin)\b/g) ?? [])];
         if (!streams.length) return;
-        const a0 = n.arguments[0];
-        const channels = a0 ? messageChannelsOf(checker.getTypeAtLocation(a0)) : null;
-        const wrong = streams.filter((x) => !channels || !channels.includes(x));
-        if (wrong.length) {
-          refusals.push({ at: lineAt(sf, n, tree.root), code: 'message', text: `a message written to ${wrong.join(' and ')} ${channels ? `has a kind published for ${channels.join(', ')}` : 'has no kind its sender publishes'}`, kind: '(c) a rule of form: a message is written with its kind, on its channel' });
+        const stringified = [];
+        const seenVars = new Set();
+        const find = (x, depth) => {
+          walk(x, (m) => {
+            if (ts.isCallExpression(m) && ts.isPropertyAccessExpression(m.expression) && ts.isIdentifier(m.expression.expression) && m.expression.expression.text === 'JSON' && m.expression.name.text === 'stringify') stringified.push(m);
+            if (depth < 3 && ts.isIdentifier(m) && !seenVars.has(m.text)) {
+              const d = checker.getSymbolAtLocation(m)?.declarations?.[0];
+              if (d && ts.isVariableDeclaration(d) && d.initializer && d.getSourceFile() === sf) { seenVars.add(m.text); find(d.initializer, depth + 1); }
+            }
+          });
+        };
+        for (const a of n.arguments) find(a, 0);
+        for (const js of stringified) {
+          const a0 = js.arguments[0];
+          const channels = a0 ? messageChannelsOf(checker.getTypeAtLocation(a0)) : null;
+          const wrong = streams.filter((x) => !channels || !channels.includes(x));
+          if (wrong.length) {
+            refusals.push({ at: lineAt(sf, js, tree.root), code: 'message', text: `a message written to ${wrong.join(' and ')} ${channels ? `has a kind published for ${channels.join(', ')}` : 'has no kind its sender publishes'}`, kind: '(c) a rule of form: a message is written with its kind, on its channel' });
+          }
         }
       }
     });
@@ -245,21 +306,66 @@ export function check(tree, moduleId) {
 // ---- comments-only verification ----
 
 /** A file's running code as a tree with comments and grouping parentheses left out. */
-function shape(file) {
+const isBoundTestStatement = (st) => ts.isExpressionStatement(st) && isTestCall(st.expression) && /^bound\s/.test(testName(st.expression) ?? '');
+
+/** A file's running code; with withoutBoundTests, its top-level tests named for a bound are left out. */
+function shape(file, withoutBoundTests = false) {
   const text = fs.readFileSync(file, 'utf8');
-  return shapeOfNode(ts.createSourceFile(file, text, ts.ScriptTarget.ES2022, true, ts.ScriptKind.JS));
+  const sf = ts.createSourceFile(file, text, ts.ScriptTarget.ES2022, true, ts.ScriptKind.JS);
+  if (!withoutBoundTests) return shapeOfNode(sf);
+  return sf.statements.filter((st) => !isBoundTestStatement(st)).map((st) => shapeOfNode(st)).join('');
+}
+
+/** The names (without 'bound ') of top-level tests named for a bound that are in the after file and not the before. */
+function addedBoundTests(before, after) {
+  const names = (file) => ts.createSourceFile(file, fs.readFileSync(file, 'utf8'), ts.ScriptTarget.ES2022, true, ts.ScriptKind.JS).statements
+    .filter(isBoundTestStatement).map((st) => st.expression.arguments[0].text.replace(/^bound\s+/, '').replace(/\s+/g, ' ').trim());
+  const b = new Set(names(before));
+  return names(after).filter((n) => !b.has(n));
 }
 
 /** The tests of a module named for a bound: "bound <words>" -> the shape of the test's code. */
+const TEST_CALLS = new Set(['test', 'it', 'describe', 'suite']);
+/** Is this a call that names a test or a group of tests (test, it, describe, or t.test)? */
+export const isTestCall = (n) => ts.isCallExpression(n) && (ts.isIdentifier(n.expression) ? TEST_CALLS.has(n.expression.text) : ts.isPropertyAccessExpression(n.expression) && TEST_CALLS.has(n.expression.name.text));
+const testName = (n) => { const a0 = n.arguments[0]; return a0 && (ts.isStringLiteral(a0) || ts.isNoSubstitutionTemplateLiteral(a0)) ? a0.text : null; };
+
+/**
+ * Iteration 3 (rule 15): what a test checks: the values it uses and the checks it calls, including named values and
+ * helpers from the top of its own file. Rewriting a test with the same values and checks gives the same answer;
+ * moving a limit held in a named value does not.
+ */
+function fingerprint(node, sf) {
+  const top = new Map();
+  for (const st of sf.statements) {
+    if (ts.isVariableStatement(st)) for (const d of st.declarationList.declarations) { if (ts.isIdentifier(d.name)) top.set(d.name.text, d); }
+    else if (ts.isFunctionDeclaration(st) && st.name) top.set(st.name.text, st);
+  }
+  const literals = new Set(), calls = new Set(), seen = new Set();
+  const visit = (n) => {
+    if (ts.isNumericLiteral(n)) literals.add('n:' + Number(n.text.replace(/_/g, '')));
+    else if (ts.isStringLiteral(n) || ts.isNoSubstitutionTemplateLiteral(n) || ts.isRegularExpressionLiteral(n)) literals.add('s:' + n.text);
+    else if (n.kind === ts.SyntaxKind.TemplateHead || n.kind === ts.SyntaxKind.TemplateMiddle || n.kind === ts.SyntaxKind.TemplateTail) literals.add('s:' + n.text);
+    else if (ts.isPrefixUnaryExpression(n) && n.operator === ts.SyntaxKind.MinusToken && ts.isNumericLiteral(n.operand)) { literals.add('n:-' + Number(n.operand.text.replace(/_/g, ''))); return; }
+    if (ts.isCallExpression(n)) calls.add(ts.isPropertyAccessExpression(n.expression) ? n.expression.name.text : n.expression.getText(sf));
+    if (ts.isBinaryExpression(n)) calls.add('op' + n.operatorToken.kind);
+    if (ts.isIdentifier(n) && top.has(n.text) && !seen.has(n.text) && !(n.parent && ts.isVariableDeclaration(n.parent) && n.parent.name === n)) { seen.add(n.text); visit(top.get(n.text)); }
+    ts.forEachChild(n, visit);
+  };
+  visit(node);
+  return JSON.stringify([[...literals].sort(), [...calls].sort()]);
+}
+
+/** The tests of a module named for a bound: "bound <words>" -> what the test checks. */
 export function boundTests(mod) {
   const out = new Map();
   for (const f of mod.tests) {
     const sf = ts.createSourceFile(f, fs.readFileSync(f, 'utf8'), ts.ScriptTarget.ES2022, true, ts.ScriptKind.JS);
     const visit = (n) => {
-      if (ts.isCallExpression(n) && ts.isIdentifier(n.expression) && n.expression.text === 'test') {
-        const a0 = n.arguments[0];
-        if (a0 && (ts.isStringLiteral(a0) || ts.isNoSubstitutionTemplateLiteral(a0)) && /^bound\s/.test(a0.text)) {
-          out.set(a0.text.replace(/^bound\s+/, '').replace(/\s+/g, ' ').trim(), { shape: shapeOfNode(n), at: `${path.basename(f)}:${sf.getLineAndCharacterOfPosition(n.getStart(sf)).line + 1}` });
+      if (isTestCall(n)) {
+        const name = testName(n);
+        if (name && /^bound\s/.test(name)) {
+          out.set(name.replace(/^bound\s+/, '').replace(/\s+/g, ' ').trim(), { shape: fingerprint(n, sf), at: `${path.basename(f)}:${sf.getLineAndCharacterOfPosition(n.getStart(sf)).line + 1}` });
         }
       }
       ts.forEachChild(n, visit);
@@ -297,6 +403,11 @@ function shapeOfNode(root) {
  */
 export function commentsOnly(beforeTree, afterTree, moduleId) {
   const mb = beforeTree.byId.get(moduleId), ma = afterTree.byId.get(moduleId);
+  const boundLinesAfter = new Set();
+  for (const f of ma.src) {
+    const sf = ts.createSourceFile(f, fs.readFileSync(f, 'utf8'), ts.ScriptTarget.ES2022, true, ts.ScriptKind.JS);
+    walk(sf, (n) => { for (const doc of n.jsDoc ?? []) for (const tag of doc.tags ?? []) if (tag.tagName.text === 'bound') boundLinesAfter.add(tagText(tag)); });
+  }
   const rel = (m, t) => m.files.map((f) => path.relative(t.root, f)).sort();
   const fb = rel(mb, beforeTree), fa = rel(ma, afterTree);
   const files = [];
@@ -304,9 +415,13 @@ export function commentsOnly(beforeTree, afterTree, moduleId) {
   for (const f of new Set([...fb, ...fa])) {
     const pb = path.join(beforeTree.root, f), pa = path.join(afterTree.root, f);
     if (!fs.existsSync(pb) || !fs.existsSync(pa)) { files.push({ file: f, same: false, why: 'file added or removed' }); ok = false; continue; }
-    const same = shape(pb) === shape(pa);
+    const isTest = ma.tests.includes(pa);
+    // Iteration 3: in a test file, tests named for a bound that this step adds are allowed (rule 4 needs them);
+    // everything else that runs must be unchanged.
+    const added = isTest ? addedBoundTests(pb, pa) : [];
+    const same = isTest ? shape(pb, true) === shape(pa, true) && added.every((t) => boundLinesAfter.has(t)) : shape(pb) === shape(pa);
     const textSame = fs.readFileSync(pb, 'utf8') === fs.readFileSync(pa, 'utf8');
-    files.push({ file: f, same, textChanged: !textSame });
+    files.push({ file: f, same, textChanged: !textSame, ...(added.length ? { addedBoundTests: added } : {}) });
     if (!same) ok = false;
   }
   return { module: moduleId, same: ok, files };

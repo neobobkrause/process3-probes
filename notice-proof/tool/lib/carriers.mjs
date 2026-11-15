@@ -30,6 +30,13 @@ export function carrierOf(checker, call) {
   }
   if (!kind) return undefined;
   // A table's name is read from the argument as written: the parameter's kind is only "text".
+  // Iteration 3 (rule 13): a helper marked "@carriestable keys" names its tables as the keys of its first argument.
+  const keysMode = ts.isFunctionDeclaration(prop) && tagsOf(prop, 'carriestable').some((t) => /\bkeys\b/.test(tagText(t)));
+  if (kind === 'table' && keysMode) {
+    const a0 = call.arguments[0];
+    if (a0 && ts.isObjectLiteralExpression(a0) && a0.properties.every((p) => p.name && (ts.isIdentifier(p.name) || ts.isStringLiteral(p.name)))) return { kind, member: memberName, names: a0.properties.map((p) => p.name.text), sig };
+    return { kind, member: memberName, names: null, sig };
+  }
   if (kind === 'table') {
     const a0 = call.arguments[0];
     if (a0 && (ts.isStringLiteral(a0) || ts.isNoSubstitutionTemplateLiteral(a0))) return { kind, member: memberName, names: [a0.text], sig };

@@ -4,5 +4,6 @@
   "covers": [
     "the first job on the module without comments: the comments-only step",
     "module that starts with no interface comments"
-  ]
+  ],
+  "note": "Iteration 3 (rule 9): the comments-only step adds the test named for the bound line it writes; in iterations 1 and 2 it did not, and the real change added it."
 }

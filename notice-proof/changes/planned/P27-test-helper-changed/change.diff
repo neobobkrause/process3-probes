@@ -1,9 +1,9 @@
 --- before/store/src/testing.mjs
 +++ after/store/src/testing.mjs
-@@ -4,14 +4,12 @@
- import { createStore } from './index.mjs';
+@@ -5,14 +5,12 @@
  
  /**
+  * @carriestable keys
 - * Makes a store already holding the given records, each written once.
 - * @param {Object<string, Array<{id: string, value: unknown}>>} tables the records to put, by table name
 + * Makes a store already holding the given records, each written once, in the order given.
