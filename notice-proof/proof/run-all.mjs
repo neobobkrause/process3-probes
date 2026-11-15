@@ -4,7 +4,7 @@
 import { execFileSync } from 'node:child_process';
 import fs from 'node:fs';
 import path from 'node:path';
-import { ROOT, PRODUCT } from './trees.mjs';
+import { ROOT, PRODUCT, answersFile } from './trees.mjs';
 import { testAll } from './groundtruth.mjs';
 import { loadTree } from '../tool/lib/model.mjs';
 import { check } from '../tool/lib/check.mjs';
@@ -27,7 +27,7 @@ for (const series of ['planned', 'adversarial', 'adversarial-independent']) {
   if (!fs.existsSync(path.join(ROOT, 'changes', series))) continue;
   step(`series ${series}`);
   node(['proof/run-series.mjs', series]);
-  if (fs.existsSync(path.join(ROOT, 'changes', `${series}-reading.json`))) node(['proof/compare.mjs', series]);
+  if (fs.existsSync(answersFile(series, 'reading'))) node(['proof/compare.mjs', series]);
 }
 
 step('measurements');

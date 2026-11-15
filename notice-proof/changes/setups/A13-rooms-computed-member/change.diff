@@ -1,6 +1,6 @@
 --- before/rooms/src/index.mjs
 +++ after/rooms/src/index.mjs
-@@ -62,14 +62,14 @@
+@@ -63,14 +63,14 @@
          throw new RangeError('rooms: seats out of bounds');
        }
        const id = slugify(input.name);

@@ -15,7 +15,7 @@ function runMeter(lines) {
     let out = '';
     child.stdout.on('data', (/** @type {any} */ d) => (out += d));
     child.on('error', reject);
-    child.on('close', () => resolve(out.trim().split('\n').filter(Boolean).map((l) => JSON.parse(l))));
+    child.on('close', () => resolve(out.trim().split('\n').filter(Boolean).map((l) => /** @type {MeterMsg} */ (JSON.parse(l)))));
     child.stdin.end(lines.join('\n') + '\n');
   });
 }

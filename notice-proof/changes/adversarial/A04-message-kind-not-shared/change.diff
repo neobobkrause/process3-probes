@@ -1,6 +1,6 @@
 --- before/meter/src/index.mjs
 +++ after/meter/src/index.mjs
-@@ -20,7 +20,7 @@
+@@ -21,7 +21,7 @@
  /**
   * What the meter sends back: a reading for each use it was sent, in the same order, then done once its input ends.
   * A use outside its bound gets a refusal in place of a reading.
@@ -8,7 +8,7 @@
 + * @typedef {{kind: 'reading', room: string, minutes: number, price: Amount}
   *   | {kind: 'refused', room: string, reason: string}
   *   | {kind: 'done', count: number}} MeterMsg
-  */
+  * @message stdout
 --- before/meter/src/worker.mjs
 +++ after/meter/src/worker.mjs
 @@ -21,6 +21,6 @@

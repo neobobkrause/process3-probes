@@ -1,5 +1,6 @@
 // The one place the tool asks TypeScript's reader to read plain JavaScript with its structured comments.
 import ts from 'typescript';
+import { fileURLToPath } from 'node:url';
 
 export { ts };
 
@@ -17,14 +18,18 @@ export const OPTIONS = {
   target: ts.ScriptTarget.ES2022,
   module: ts.ModuleKind.NodeNext,
   moduleResolution: ts.ModuleResolutionKind.NodeNext,
-  lib: ['lib.es2022.d.ts', 'lib.dom.d.ts', 'lib.dom.iterable.d.ts'],
+  // The language's own library only; what the product uses of Node is described in node.d.ts (iteration 2: the
+  // browser's description gave Node's timers the wrong kind).
+  lib: ['lib.es2022.d.ts'],
   types: [],
   skipLibCheck: true,
 };
 
 /** Reads the given files (and whatever they import) as one program. */
+export const NODE_DESCRIPTION = fileURLToPath(new URL('./node.d.ts', import.meta.url));
+
 export function makeProgram(files) {
-  return ts.createProgram(files, OPTIONS);
+  return ts.createProgram([...files, NODE_DESCRIPTION], OPTIONS);
 }
 
 export const TS_VERSION = ts.version;

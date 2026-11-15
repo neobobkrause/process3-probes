@@ -26,6 +26,8 @@ function listingText(l) {
     if (e.accepts) L.push(`      accepts: ${e.accepts}`);
     if (e.handsBack) L.push(`      hands back: ${e.handsBack}`);
     for (const b of e.bounds ?? []) L.push(`      bound: ${b}`);
+    if (e.throws) L.push(`      throws: ${e.throws.join(', ')}`);
+    if (e.channel) L.push(`      message on: ${e.channel}`);
   }
   return L.join('\n');
 }

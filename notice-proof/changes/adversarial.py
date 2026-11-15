@@ -127,6 +127,7 @@ change(S, 'A10-kind-split-same-shape', "Booking is rewritten as two parts joined
  * @bound day: a real calendar day written YYYY-MM-DD
  * @bound nights: whole number, 1 to 14
  * @bound party: whole number, 1 to 200, and no more than the room's seats
+ * @storedrows bookings
  */""", """/**
  * What a booking is for.
  * @typedef {Object} BookingCore
@@ -152,7 +153,9 @@ change(S, 'A10-kind-split-same-shape', "Booking is rewritten as two parts joined
 /**
  * A booking.
  * @typedef {BookingCore & BookingPrice} Booking
- */""")]})
+ * @storedrows bookings
+ */""")]},
+       note='Iteration 2: the @storedrows mark that the product now carries on Booking is kept on Booking.')
 
 change(S, 'A11-string-spelled-String', "slugify's comment writes String where it wrote string", 'text-rules',
        ['attack: make the tool tell for nothing, or refuse, over a spelling of the same kind'],

@@ -14,7 +14,7 @@
  /**
   * A booking.
   * @typedef {Object} Booking
-@@ -93,7 +96,7 @@
+@@ -94,7 +97,7 @@
      const room = rooms.find(roomId);
      if (!room) throw new RangeError(`bookings: unknown room: ${roomId}`);
      checkSize(party, nights, room.seats);

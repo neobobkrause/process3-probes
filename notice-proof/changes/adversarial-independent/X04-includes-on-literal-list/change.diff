@@ -16,7 +16,7 @@
   * A room.
   * @typedef {Object} Room
   * @property {string} id the room's slug, made from its name
-@@ -57,7 +66,7 @@
+@@ -58,7 +67,7 @@
    const { store } = deps;
    return {
      add(input) {

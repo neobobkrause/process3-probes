@@ -1,6 +1,6 @@
 --- before/bookings/src/index.mjs
 +++ after/bookings/src/index.mjs
-@@ -50,7 +50,6 @@
+@@ -51,7 +51,6 @@
   * The operations bookings answers by name through the door.
   * @typedef {{
   *   bookopen: {req: BookingRequest, res: Booking},
@@ -8,7 +8,7 @@
   *   bookstatus: {req: {id: string}, res: {state: Booking['state'], total: Amount, room: string}},
   *   bookquote: {req: {room: string, party: number, nights: number}, res: {total: Amount}}
   * }} BookingOps
-@@ -141,7 +140,6 @@
+@@ -142,7 +141,6 @@
  export function bookingHandlers(bookings) {
    return {
      bookopen: (req) => bookings.open(req),

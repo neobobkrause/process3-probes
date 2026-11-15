@@ -21,6 +21,7 @@
  * @property {(table: string, id: string) => boolean} remove says whether there was a record to remove
  * @bound table: 1 to 40 characters, each a-z, 0-9 or a hyphen
  * @bound id: 1 to 120 characters
+ * @carriestable get list put remove
  */
 
 const TABLE = /^[a-z0-9-]{1,40}$/;

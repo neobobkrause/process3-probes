@@ -106,7 +106,15 @@ export function makeLister(program, tree) {
             const shape = C.canon(t, k, true);
             k.kinds.delete(`${mod.id}.${name}`);
             entries[name] = { kind: 'kind', shape, bounds: [...bounds, ...nestedBounds(k)], where };
+            // Iteration 2: a message kind states its channel; the channel is part of what it hands back.
+            const msg = tagsOf(decl, 'message');
+            if (msg.length) entries[name].channel = msg.map((m) => tagText(m).split(/\s+/)[0] || '(none)').sort().join(' ');
             dataKinds.push(name);
+            // Iteration 2: the rows of a shared table, owned by this module.
+            for (const tag of tagsOf(decl, 'storedrows')) {
+              const table = tagText(tag).split(/\s+/)[0];
+              entries[`table:${table}`] = { kind: 'stored rows', accepts: shape, handsBack: shape, side: 'both', bounds: [...bounds, ...nestedBounds(k)], where, rowKind: name };
+            }
           }
           continue;
         }
@@ -128,6 +136,9 @@ export function makeLister(program, tree) {
             bounds: [...ownBounds, ...nestedBounds(a), ...nestedBounds(h)],
             where,
           };
+          // Iteration 2: the kinds of error it raises are part of what it hands back.
+          const throws = tagsOf(decl, 'throws').map((tg) => tg.typeExpression?.type?.getText?.() ?? tagText(tg).split(/\s+/)[0]).filter(Boolean).sort();
+          if (throws.length) entries[name].throws = throws;
         } else {
           // A plain constant's single value (a price, a limit) is content, not a kind: unless its comment states a
           // kind, a lone literal is widened to its base kind. A list or table marked as constant keeps its names.

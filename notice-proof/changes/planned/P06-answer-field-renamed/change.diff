@@ -8,10 +8,10 @@
 - * @bound seats: whole number, 1 to 500
 + * @property {number} capacity
 + * @bound capacity: whole number, 1 to 500
+  * @storedrows rooms
   */
  
- /**
-@@ -64,7 +64,7 @@
+@@ -65,7 +65,7 @@
        const id = slugify(input.name);
        if (store.get('rooms', id)) throw new Error(`rooms: already taken: ${id}`);
        /** @type {Room} builds a Room */

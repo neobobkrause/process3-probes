@@ -197,8 +197,9 @@ test('check refuses a comment that disagrees with code, and code that disagrees 
   });
   const t = loadTree(root);
   const p = check(t, 'p');
-  assert.equal(p.refusals.length, 1);
-  assert.match(p.refusals[0].kind, /^\(a\)/);
+  const disagreements = p.refusals.filter((x) => /^\([ab]\)/.test(x.kind));
+  assert.equal(disagreements.length, 1);
+  assert.match(disagreements[0].kind, /^\(a\)/);
   const u1 = check(t, 'u1');
   assert.equal(u1.refusals.length, 1);
   assert.match(u1.refusals[0].kind, /^\(b\)/);

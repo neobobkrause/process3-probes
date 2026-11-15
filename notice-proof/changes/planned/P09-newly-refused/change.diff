@@ -9,7 +9,7 @@
   * @property {(table: string, id: string) => Stored | undefined} get
   * @property {(table: string) => Stored[]} list all records of a table, in the order they were first written
   * @property {(table: string, id: string) => boolean} remove says whether there was a record to remove
-@@ -56,6 +56,7 @@
+@@ -57,6 +57,7 @@
    return {
      put(table, id, value) {
        checkNames(table, id);

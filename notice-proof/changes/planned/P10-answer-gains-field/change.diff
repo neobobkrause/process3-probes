@@ -8,7 +8,7 @@
   * @property {string} [note]
   * @bound day: a real calendar day written YYYY-MM-DD
   * @bound nights: whole number, 1 to 14
-@@ -116,6 +117,7 @@
+@@ -117,6 +118,7 @@
          party: req.party,
          state: 'open',
          total,

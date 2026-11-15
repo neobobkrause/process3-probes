@@ -1,6 +1,6 @@
 --- before/bookings/src/index.mjs
 +++ after/bookings/src/index.mjs
-@@ -95,10 +95,20 @@
+@@ -96,10 +96,20 @@
      checkSize(party, nights, room.seats);
      return amount(PRICE_PER_SEAT_NIGHT * party * nights, 'EUR');
    };
@@ -22,7 +22,7 @@
    };
    return {
      quote,
-@@ -118,7 +128,7 @@
+@@ -119,7 +129,7 @@
          total,
        };
        if (req.note !== undefined) b.note = req.note;
@@ -31,7 +31,7 @@
        return b;
      },
      cancel(id) {
-@@ -127,7 +137,7 @@
+@@ -128,7 +138,7 @@
        if (b.state !== 'open') throw new Error(`bookings: not open: ${id}`);
        /** @type {Booking} builds a Booking */
        const done = { ...b, state: 'cancelled' };

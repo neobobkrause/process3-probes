@@ -26,6 +26,7 @@ export function isRoomKind(text) {
  * @property {RoomKind} kind
  * @property {number} seats
  * @bound seats: whole number, 1 to 500
+ * @storedrows rooms
  */
 
 /**

@@ -1,6 +1,6 @@
 --- before/bookings/src/index.mjs
 +++ after/bookings/src/index.mjs
-@@ -35,6 +35,7 @@
+@@ -36,6 +36,7 @@
   * @property {number} nights
   * @property {number} party
   * @property {string} [note]
@@ -8,7 +8,7 @@
   */
  
  /**
-@@ -105,6 +106,9 @@
+@@ -106,6 +107,9 @@
      find,
      open(req) {
        const first = parseDay(req.day);

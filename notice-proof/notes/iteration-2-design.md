@@ -9,7 +9,11 @@ Written by Claude (the proof session), 15 Nov 2026, after the first round's resu
 | 1 | **Errors are part of what an entry hands back.** The kinds named by `@throws` are in the listing; a change to them is "hands back differently". | Adversarial change 6 (a changed kind of error broke billing unseen) | Listing |
 | 2 | **A shared table's rows have one written kind, owned by the module that writes them.** The owner marks it on the kind: `@storedrows <table>`. Every write to that table must give a value of that kind, and the check refuses one that does not. A module that reads a table it does not own uses the owner's entry `table:<name>` and is told when that kind changes. The store's handle marks which of its methods take a table name: `@carriestable get list put remove`. | Adversarial change 1 (rows read straight out of the store) | New route, like calls by name |
 | 3 | **A message between running parts is read with the kind its sender publishes.** The sender marks the kind `@message`. The check refuses a `JSON.parse` whose result is not given a `@message` kind (a `JSON.parse(JSON.stringify(x))` copy is not a message and is left alone). | Adversarial change 4 (billing kept its own copy of the message kind) | Enforces rule 8, which nothing checked |
-| 4 | **A bound and its test move together.** Every `@bound` line needs a test named `bound <the line's words>`, and every test named `bound ...` needs its line (the check refuses either missing). At the merge, if the body of a test named for a bound changed but the bound line did not, the merge is refused. | Planned change 15 and adversarial change 7 (a test moved, its bound line not) | New merge gate |
+| 4 | **A bound and its test move together.** Every `@bound` line needs a test named `bound <the line's words>`, and every test named `bound ...` needs its line (the check refuses either missing). If the body of a test named for a bound changes while its line does not, the notice treats that bound as changed and tells the users of every entry that carries it. (A merge gate refusing such a change was considered and rejected: it would have refused honest jobs in planned changes 9 and 19.) | Planned change 15 and adversarial change 7 (a test moved, its bound line not) | Listing |
+| 5 | **A message kind states its channel** (`@message stdout`), and the channel is part of the listing. The check refuses a write of `JSON.stringify(x)` to a standard stream unless `x` has a `@message` kind for that stream. | Independent change 9 (refusals moved to the error channel) | Enforces rule 8 |
+| 6 | **A function handed on as a value, not called** (as in `parts.map(formatAmount)`), counts as using all of what it accepts: for that user, accepting more is a change too. | Independent change 1 | Who is told |
+| 7 | **A new operation whose name another provider already answers** tells the users of that operation. | Independent change 8 | Who is told |
+| 8 | **A shared piece that carries calls by name carries values as they are.** The door no longer turns text of digits into numbers; a request line's values arrive as text. | Independent change 2 (a content change broke billing through the door's conversion) | Product rule |
 
 ## Changes to the tool only
 
@@ -17,13 +21,17 @@ Written by Claude (the proof session), 15 Nov 2026, after the first round's resu
 | --- | --- | --- |
 | 5 | A value caught in `catch (e)` is not a provider's value: reading `e.message` no longer makes the tool stop following the module. | Adversarial change 12 (told for nothing) |
 | 6 | A kind written as parts joined with `&` keeps the bound lines of its parts. | Adversarial change 10 (told for nothing) |
-| 7 | The reader is given a short hand-written description of Node's `assert` (`tool/lib/node-assert.d.ts`), so it sees `assert.equal(x.kind, 'reading')` and `assert.ok(...)` narrow a value. This is a file of the tool, not a new dependency. | Adversarial change 9 (7 false refusal lines) |
+| 7 | The reader is given a short hand-written description of Node's `assert` (`tool/lib/node-assert.d.ts`), so it sees `assert.equal(x.kind, 'reading')` and `assert.ok(...)` narrow a value. This is a file of the tool, not a new dependency. | Adversarial change 9 (7 false refusal lines) and independent change 5 |
 | 8 | A call by name whose name the reader cannot read (a request line built in steps) is "cannot tell": its own complaint, and complaints about uses of its answer, are not refused. The caller stays "not followed fully" for every provider with operations, so it is still told. | Adversarial change 8 (6 false refusal lines) |
 | 9 | A refusal is labelled "disagrees with a provider" when any value in the statement has a kind declared in another module, not only when a name in it is. | 22 mislabelled lines in the planned series |
+| 10 | Where a user's value is handed to a provider that expects one of its kinds (in a call, or as a field), the members the value fills count as used, whether or not the user names the kind. | Independent changes 3 and 8 |
+| 11 | Something newly accepted where nothing was accepted before is "accepts more", not "cannot stand in". | Independent change 5 (told for nothing) |
+| 12 | The reader is given a short description of the Node globals the product uses (process, timers, URL, structuredClone) in place of the browser's. | Independent change 10 (false refusals) |
+| 13 | "Cannot tell", not refused: `includes`, `indexOf` or `has` asked about a wider value than the list holds; and "possibly undefined" about a value that comes only from the module's own code. Refused, not "cannot tell": a missing key of a closed set of names. | Independent changes 4, 5 and 7 |
 
 ## Changes to the made-up product
 
-Only what the new rules require: `@storedrows` on the kinds rooms and bookings store, `@carriestable` on the store's handle, `@message` on the meter's kinds, a test named for every bound line that lacked one, and the meter's test reading its messages with the published kind. No behaviour changes.
+Only what the new rules require: `@storedrows` on the kinds rooms and bookings store, `@carriestable` on the store's handle, `@message stdout` and `@message stdin` on the meter's kinds, the door carrying request-line values as text, a test named for every bound line that lacked one, and the meter's test reading its messages with the published kind. No other behaviour changes.
 
 ## How iteration 2 is tested
 

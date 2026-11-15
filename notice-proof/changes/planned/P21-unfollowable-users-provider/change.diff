@@ -7,8 +7,8 @@
 + * @property {(table: string) => number} count how many records a table holds
   * @bound table: 1 to 40 characters, each a-z, 0-9 or a hyphen
   * @bound id: 1 to 120 characters
-  */
-@@ -76,5 +77,9 @@
+  * @carriestable get list put remove
+@@ -77,5 +78,9 @@
        checkNames(table, id);
        return tableOf(table).delete(id);
      },

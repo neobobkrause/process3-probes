@@ -25,6 +25,7 @@ export const PRICE_PER_SEAT_NIGHT = 1500;
  * @bound day: a real calendar day written YYYY-MM-DD
  * @bound nights: whole number, 1 to 14
  * @bound party: whole number, 1 to 200, and no more than the room's seats
+ * @storedrows bookings
  */
 
 /**

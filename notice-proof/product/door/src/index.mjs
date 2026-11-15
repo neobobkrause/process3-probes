@@ -19,7 +19,7 @@
  * The door's handle. The name of the operation selects what is handed and what comes back.
  * @typedef {Object} Door
  * @property {<K extends keyof AllOps>(op: K, body: AllOps[K]['req']) => Promise<AllOps[K]['res']>} call calls an operation by name with a body
- * @property {<K extends keyof AllOps>(line: `op=${K}&${string}`) => Promise<AllOps[K]['res']>} get calls an operation written as a request line, op=name&field=value; a value of digits only arrives as a number, every other value as text
+ * @property {<K extends keyof AllOps>(line: `op=${K}&${string}`) => Promise<AllOps[K]['res']>} get calls an operation written as a request line, op=name&field=value; every value arrives as text
  * @carriesop call get
  */
 
@@ -45,9 +45,9 @@ export function createDoor(handlers) {
       const params = new URLSearchParams(line);
       const op = params.get('op');
       if (!op) throw new Error('door: request line without op');
-      /** @type {Record<string, string | number>} */
+      /** @type {Record<string, string>} */
       const body = {};
-      for (const [k, v] of params) if (k !== 'op') body[k] = /^\d+$/.test(v) ? Number(v) : v;
+      for (const [k, v] of params) if (k !== 'op') body[k] = v;
       return dispatch(op, body);
     },
   };

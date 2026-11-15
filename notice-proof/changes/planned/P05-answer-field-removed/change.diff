@@ -1,6 +1,6 @@
 --- before/bookings/src/index.mjs
 +++ after/bookings/src/index.mjs
-@@ -51,7 +51,7 @@
+@@ -52,7 +52,7 @@
   * @typedef {{
   *   bookopen: {req: BookingRequest, res: Booking},
   *   bookcancel: {req: {id: string}, res: Booking},
@@ -9,7 +9,7 @@
   *   bookquote: {req: {room: string, party: number, nights: number}, res: {total: Amount}}
   * }} BookingOps
   * @optable
-@@ -145,7 +145,7 @@
+@@ -146,7 +146,7 @@
      bookstatus: (req) => {
        const b = bookings.find(req.id);
        if (!b) throw new RangeError(`bookings: unknown booking: ${req.id}`);

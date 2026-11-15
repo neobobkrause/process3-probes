@@ -35,6 +35,7 @@ export const PRICE_PER_SEAT_NIGHT = 1500;
 /**
  * A booking.
  * @typedef {BookingCore & BookingPrice} Booking
+ * @storedrows bookings
  */
 
 /**

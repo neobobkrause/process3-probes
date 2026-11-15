@@ -11,7 +11,7 @@
   * @property {string} id
   * @property {string} room the room's id
   * @property {string} day the first night, YYYY-MM-DD
-@@ -20,7 +20,6 @@
+@@ -20,11 +20,21 @@
   * @property {number} nights
   * @property {number} party how many people
   * @property {'open' | 'cancelled'} state
@@ -19,10 +19,10 @@
   * @property {string} [note]
   * @bound day: a real calendar day written YYYY-MM-DD
   * @bound nights: whole number, 1 to 14
-@@ -28,6 +27,17 @@
-  */
- 
- /**
+  * @bound party: whole number, 1 to 200, and no more than the room's seats
++ */
++
++/**
 + * What a booking costs.
 + * @typedef {Object} BookingPrice
 + * @property {Amount} total what the booking costs
@@ -31,9 +31,6 @@
 +/**
 + * A booking.
 + * @typedef {BookingCore & BookingPrice} Booking
-+ */
-+
-+/**
-  * What it takes to open a booking.
-  * @typedef {Object} BookingRequest
-  * @property {string} room the room's id
+  * @storedrows bookings
+  */
+ 

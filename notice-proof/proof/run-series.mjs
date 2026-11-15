@@ -4,7 +4,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { performance } from 'node:perf_hooks';
-import { ROOT, readChange, listChanges, buildTrees } from './trees.mjs';
+import { ROOT, ROUND, readChange, listChanges, buildTrees } from './trees.mjs';
 import { testAll } from './groundtruth.mjs';
 import { loadTree } from '../tool/lib/model.mjs';
 import { notice } from '../tool/lib/notice.mjs';
@@ -13,7 +13,7 @@ import { listingOf } from '../tool/p3tool.mjs';
 
 const series = process.argv[2];
 const only = process.argv.slice(3);
-const outDir = path.join(ROOT, 'results', series);
+const outDir = path.join(ROOT, 'results', ROUND, series);
 fs.mkdirSync(outDir, { recursive: true });
 
 const timed = (f) => { const t = performance.now(); const r = f(); return [r, Math.round(performance.now() - t)]; };

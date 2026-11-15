@@ -5,7 +5,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { performance } from 'node:perf_hooks';
 import ts from 'typescript';
-import { ROOT, PRODUCT } from './trees.mjs';
+import { ROOT, PRODUCT, ROUND } from './trees.mjs';
 import { loadTree } from '../tool/lib/model.mjs';
 import { check } from '../tool/lib/check.mjs';
 import { listingOf } from '../tool/p3tool.mjs';
@@ -49,12 +49,12 @@ for (const m of tree.modules) {
 }
 out.totals = { ...tot, srcCommentPerCodeLine: +(tot.srcComment / tot.srcCode).toFixed(2) };
 const notices = [];
-for (const s of fs.readdirSync(path.join(ROOT, 'results'), { withFileTypes: true }).filter((e) => e.isDirectory() && !e.name.endsWith('-run1'))) {
-  for (const f of fs.readdirSync(path.join(ROOT, 'results', s.name)).filter((x) => x.endsWith('.json'))) {
-    const r = JSON.parse(fs.readFileSync(path.join(ROOT, 'results', s.name, f), 'utf8'));
+for (const s of fs.readdirSync(path.join(ROOT, 'results', ROUND), { withFileTypes: true }).filter((e) => e.isDirectory() && !e.name.endsWith('-run1'))) {
+  for (const f of fs.readdirSync(path.join(ROOT, 'results', ROUND, s.name)).filter((x) => x.endsWith('.json'))) {
+    const r = JSON.parse(fs.readFileSync(path.join(ROOT, 'results', ROUND, s.name, f), 'utf8'));
     notices.push(r.timing.noticeMs);
   }
 }
 out.noticeMs = { changes: notices.length, median: median(notices), max: Math.max(...notices), min: Math.min(...notices) };
-fs.writeFileSync(path.join(ROOT, 'results', 'measurements.json'), JSON.stringify(out, null, 2) + '\n');
+fs.writeFileSync(path.join(ROOT, 'results', ROUND, 'measurements.json'), JSON.stringify(out, null, 2) + '\n');
 console.log(JSON.stringify(out, null, 2));

@@ -24,10 +24,10 @@ test('call carries the body to the named operation and hands back a copy', async
   assert.deepEqual(r.seen, { kind: 'hall' });
 });
 
-test('get reads a request line; digits arrive as numbers, other values as text', async () => {
+test('get reads a request line; every value arrives as text', async () => {
   const door = loose(createDoor(echo));
   const r = await door.get('op=bookquote&room=hall&party=12&nights=3');
-  assert.deepEqual(r.seen, { room: 'hall', party: 12, nights: 3 });
+  assert.deepEqual(r.seen, { room: 'hall', party: '12', nights: '3' });
 });
 
 test('an unknown operation is refused', async () => {

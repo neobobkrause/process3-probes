@@ -1,6 +1,6 @@
 --- before/rooms/src/index.mjs
 +++ after/rooms/src/index.mjs
-@@ -25,6 +25,7 @@
+@@ -26,6 +26,7 @@
   * @property {string} name
   * @property {RoomKind} kind
   * @property {number} seats
@@ -8,7 +8,7 @@
   */
  
  /**
-@@ -38,7 +39,7 @@
+@@ -39,7 +40,7 @@
  /**
   * The operations rooms answers by name through the door.
   * @typedef {{
@@ -17,7 +17,7 @@
   * }} RoomOps
   * @optable
   */
-@@ -58,6 +59,7 @@
+@@ -59,6 +60,7 @@
    return {
      add(input) {
        if (!ROOM_KINDS.includes(input.kind)) throw new RangeError(`rooms: unknown kind: ${input.kind}`);
@@ -25,7 +25,7 @@
        if (!Number.isInteger(input.seats) || input.seats < 1 || input.seats > 500) {
          throw new RangeError('rooms: seats out of bounds');
        }
-@@ -89,6 +91,6 @@
+@@ -90,6 +92,6 @@
   */
  export function roomHandlers(rooms) {
    return {

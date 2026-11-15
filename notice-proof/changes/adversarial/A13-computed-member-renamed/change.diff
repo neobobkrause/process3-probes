@@ -9,7 +9,7 @@
   * @property {(table: string) => Stored[]} list all records of a table, in the order they were first written
   * @property {(table: string, id: string) => boolean} remove says whether there was a record to remove
   * @bound table: 1 to 40 characters, each a-z, 0-9 or a hyphen
-@@ -63,7 +63,7 @@
+@@ -64,7 +64,7 @@
        t.set(id, rec);
        return structuredClone(rec);
      },

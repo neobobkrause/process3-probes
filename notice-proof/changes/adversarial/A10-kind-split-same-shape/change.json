@@ -3,5 +3,6 @@
   "provider": "bookings",
   "covers": [
     "attack: make the tool tell for nothing (a refactor of the comments with no change of shape)"
-  ]
+  ],
+  "note": "Iteration 2: the @storedrows mark that the product now carries on Booking is kept on Booking."
 }

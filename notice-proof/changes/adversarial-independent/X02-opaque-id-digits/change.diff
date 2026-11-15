@@ -9,7 +9,7 @@
   * @property {string} room the room's id
   * @property {string} day the first night, YYYY-MM-DD
   * @property {string} until the morning after the last night, YYYY-MM-DD
-@@ -108,7 +108,7 @@
+@@ -109,7 +109,7 @@
        const total = quote(req.room, req.party, req.nights);
        /** @type {Booking} builds a Booking */
        const b = {

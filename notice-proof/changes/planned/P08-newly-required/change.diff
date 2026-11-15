@@ -1,6 +1,6 @@
 --- before/bookings/src/index.mjs
 +++ after/bookings/src/index.mjs
-@@ -34,7 +34,9 @@
+@@ -35,7 +35,9 @@
   * @property {string} day
   * @property {number} nights
   * @property {number} party
@@ -10,7 +10,7 @@
   */
  
  /**
-@@ -104,6 +106,9 @@
+@@ -105,6 +107,9 @@
      quote,
      find,
      open(req) {

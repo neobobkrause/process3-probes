@@ -1,7 +1,8 @@
 // Which entries of which providers a user module uses, worked out from the user's own code and comments
 // (its source and its tests), never from a list kept by hand. Also: whether the tool can follow the user fully.
 import path from 'node:path';
-import { ts, tagsOf, tagText, lineOf } from './ts.mjs';
+import { ts, lineOf, NODE_DESCRIPTION } from './ts.mjs';
+import { carrierOf } from './carriers.mjs';
 
 /**
  * @param program a program that holds the user's files
@@ -13,7 +14,11 @@ export function makeUsage(program, tree, listings) {
 
   // operation name -> { module, entry }
   const opOwner = new Map();
-  for (const [id, l] of listings) for (const e of Object.keys(l.entries)) if (e.startsWith('op:')) opOwner.set(e.slice(3), { module: id, entry: e });
+  const tableOwner = new Map();
+  for (const [id, l] of listings) for (const e of Object.keys(l.entries)) {
+    if (e.startsWith('op:')) opOwner.set(e.slice(3), { module: id, entry: e });
+    if (e.startsWith('table:')) tableOwner.set(e.slice(6), { module: id, entry: e });
+  }
 
   /** The entry a declaration belongs to: the smallest range of a listed entry that holds it. */
   function entryOf(decl) {
@@ -43,9 +48,12 @@ export function makeUsage(program, tree, listings) {
     }
     if (!ts.isIdentifier(e)) return false;
     const sym = checker.getSymbolAtLocation(e);
-    if (!sym) return true; // a name the reader cannot find, such as Node's process
+    if (!sym) return true; // a name the reader cannot find
     const d = sym.declarations?.[0];
     if (!d) return true;
+    if (d.getSourceFile().fileName === NODE_DESCRIPTION) return true; // Node's own names, as the tool describes them
+    // Iteration 2: an error caught with catch is not a value of any provider.
+    if (ts.isVariableDeclaration(d) && d.parent && ts.isCatchClause(d.parent)) return true;
     if (sym.flags & ts.SymbolFlags.Alias) {
       const imp = findAncestor(d, (n) => ts.isImportDeclaration(n) || ts.isJSDocImportTag?.(n));
       const spec = imp?.moduleSpecifier && ts.isStringLiteral(imp.moduleSpecifier) ? imp.moduleSpecifier.text : '';
@@ -71,40 +79,6 @@ export function makeUsage(program, tree, listings) {
     return null;
   }
 
-  /** Is this call carried by a door that calls by name? If so, the operation names it selects (or null if unreadable). */
-  function carriedOps(call) {
-    const sig = checker.getResolvedSignature(call);
-    const decl = sig?.declaration;
-    if (!decl) return undefined;
-    // The carrier is a member of a kind whose comment says @carriesop <member names>, or a function tagged @carriesop.
-    const prop = findAncestor(decl, (n) => ts.isJSDocPropertyTag(n) || ts.isPropertySignature(n) || ts.isFunctionDeclaration(n));
-    if (!prop) return undefined;
-    let carries = false;
-    if (ts.isFunctionDeclaration(prop)) carries = tagsOf(prop, 'carriesop').length > 0;
-    else {
-      const td = findAncestor(prop, (n) => ts.isJSDocTypedefTag(n));
-      const memberName = prop.name?.getText?.() ?? prop.name?.escapedText;
-      if (td) for (const tag of tagsOf(td, 'carriesop')) if (tagText(tag).split(/[\s,]+/).includes(String(memberName))) carries = true;
-    }
-    if (!carries) return undefined;
-    const p0 = sig.getParameters()[0];
-    if (!p0) return null;
-    const t = checker.getTypeOfSymbolAtLocation(p0, call);
-    const names = [];
-    for (const m of t.flags & ts.TypeFlags.Union ? t.types : [t]) {
-      if (m.flags & ts.TypeFlags.StringLiteral) {
-        const v = m.value.startsWith('op=') ? /^op=([A-Za-z0-9_]+)/.exec(m.value)?.[1] : m.value;
-        if (!v) return null;
-        names.push(v);
-      } else if (m.flags & ts.TypeFlags.TemplateLiteral) {
-        const v = /^op=([A-Za-z0-9_]+)&/.exec(m.texts[0])?.[1];
-        if (!v) return null;
-        names.push(v);
-      } else return null; // the name is not written where the tool can read it
-    }
-    return names;
-  }
-
   /**
    * Uses of other modules by one user module.
    * @returns {{ uses: Map<provider, Map<entry, {lines: string[], named: boolean}>>, anything: string[], unreadOps: string[], undeclared: string[] }}
@@ -113,7 +87,8 @@ export function makeUsage(program, tree, listings) {
     const uses = new Map();
     const anything = [];
     const unreadOps = [];
-    const add = (target, node, named) => {
+    const unreadTables = [];
+    const add = (target, node, named, asValue = false) => {
       if (!target || target.module === mod.id) return;
       if (!uses.has(target.module)) uses.set(target.module, new Map());
       const m = uses.get(target.module);
@@ -122,6 +97,7 @@ export function makeUsage(program, tree, listings) {
       const at = `${path.relative(tree.root, node.getSourceFile().fileName)}:${lineOf(node)}`;
       if (!u.lines.includes(at)) u.lines.push(at);
       if (named) u.named = true;
+      if (asValue) u.asValue = true;
     };
     const fromSymbol = (sym, node) => {
       if (!sym) return;
@@ -131,10 +107,41 @@ export function makeUsage(program, tree, listings) {
       for (const d of sym.declarations ?? []) {
         if (d.getSourceFile().isDeclarationFile) continue;
         const target = entryOf(d);
-        if (target) add(target, node, ts.isIdentifier(node) && target.entry.split('.')[0] === node.text);
+        if (target) add(target, node, ts.isIdentifier(node) && target.entry.split('.')[0] === node.text, ts.isIdentifier(node) && handedOnAsValue(node, d));
       }
     };
     const isAny = (n) => !!(checker.getTypeAtLocation(n).flags & ts.TypeFlags.Any);
+    /** Iteration 2: a function named where it is not called (handed to map, kept in a variable) is handed on as a value. */
+    function handedOnAsValue(node, decl) {
+      if (!(ts.isFunctionDeclaration(decl) || (ts.isVariableDeclaration(decl) && decl.initializer && (ts.isArrowFunction(decl.initializer) || ts.isFunctionExpression(decl.initializer))))) return false;
+      let n = node;
+      while (n.parent && (ts.isPropertyAccessExpression(n.parent) && n.parent.name === n)) n = n.parent;
+      const p = n.parent;
+      if (!p) return false;
+      if ((ts.isCallExpression(p) || ts.isNewExpression(p)) && p.expression === n) return false;
+      if (ts.isImportSpecifier(p) || ts.isExportSpecifier(p) || ts.isImportClause(p) || ts.isNamespaceImport(p)) return false;
+      for (let q = p; q; q = q.parent) if (q.kind >= ts.SyntaxKind.FirstJSDocNode && q.kind <= ts.SyntaxKind.LastJSDocNode) return false;
+      return true;
+    }
+    /** Iteration 2: a value handed where a provider's kind is expected uses the members of that kind it fills. */
+    function matchMembers(valueNode, expected, built = false) {
+      if (!expected || expected.flags & ts.TypeFlags.Any) return;
+      const vt = checker.getTypeAtLocation(valueNode);
+      if (vt.flags & ts.TypeFlags.Any) return;
+      // A provider's own object passed along (the store from createStore handed to createRooms) is not built by
+      // this user: it fills nothing of its own. Objects merged with ... are built here.
+      if (!built) for (const sym of [vt.aliasSymbol, vt.symbol]) for (const d of sym?.declarations ?? []) {
+        const m = tree.moduleOfFile(d.getSourceFile().fileName);
+        if (m && m !== mod.id) return;
+      }
+      for (const want of expected.flags & ts.TypeFlags.Union ? expected.types : [expected]) {
+        if (!(want.flags & ts.TypeFlags.Object)) continue;
+        for (const p of checker.getPropertiesOfType(vt)) {
+          const wp = checker.getPropertyOfType(want, p.name);
+          if (wp) fromSymbol(wp, valueNode);
+        }
+      }
+    }
 
     const visit = (node) => {
       if (ts.isIdentifier(node)) {
@@ -143,10 +150,16 @@ export function makeUsage(program, tree, listings) {
         const ct = checker.getContextualType(node);
         if (ct) {
           for (const p of node.properties) {
+            if (ts.isSpreadAssignment(p)) { matchMembers(p.expression, ct, true); continue; }
             if (!p.name || !(ts.isIdentifier(p.name) || ts.isStringLiteral(p.name))) continue;
             for (const member of ct.flags & ts.TypeFlags.Union ? ct.types : [ct]) {
               const ps = checker.getPropertyOfType(member, p.name.text);
-              if (ps) fromSymbol(ps, p.name);
+              if (ps) {
+                fromSymbol(ps, p.name);
+                // the value given for this field, matched against the field's kind
+                const valueNode = ts.isShorthandPropertyAssignment(p) ? p.name : ts.isPropertyAssignment(p) ? p.initializer : null;
+                if (valueNode && !ts.isObjectLiteralExpression(valueNode)) matchMembers(valueNode, checker.getTypeOfSymbolAtLocation(ps, p));
+              }
             }
           }
         }
@@ -157,10 +170,24 @@ export function makeUsage(program, tree, listings) {
           if (ts.isIdentifier(nm)) { const ps = checker.getPropertyOfType(t, nm.text); if (ps) fromSymbol(ps, nm); }
         }
       }
-      if (ts.isCallExpression(node)) {
-        const ops = carriedOps(node);
-        if (ops === null) unreadOps.push(`${path.relative(tree.root, node.getSourceFile().fileName)}:${lineOf(node)}`);
-        else if (ops) for (const op of ops) add(opOwner.get(op) ?? { module: '(no such operation)', entry: `op:${op}` }, node, true);
+      if (ts.isCallExpression(node) || ts.isNewExpression(node)) {
+        const c = ts.isCallExpression(node) ? carrierOf(checker, node) : undefined;
+        const at = `${path.relative(tree.root, node.getSourceFile().fileName)}:${lineOf(node)}`;
+        if (c?.kind === 'op') {
+          if (c.names === null) unreadOps.push(at);
+          else for (const op of c.names) add(opOwner.get(op) ?? { module: '(no such operation)', entry: `op:${op}` }, node, true);
+        } else if (c?.kind === 'table') {
+          if (c.names === null) unreadTables.push(at);
+          else for (const t of c.names) if (tableOwner.has(t)) add(tableOwner.get(t), node, true);
+        }
+        // Iteration 2: each argument that is not written out in place, matched against the kind expected there.
+        let sig;
+        try { sig = checker.getResolvedSignature(node); } catch { sig = undefined; }
+        (node.arguments ?? []).forEach((arg, i) => {
+          if (ts.isObjectLiteralExpression(arg) || ts.isStringLiteral(arg) || ts.isNumericLiteral(arg) || ts.isTemplateExpression(arg)) return;
+          const p = sig?.getParameters()[i];
+          if (p) matchMembers(arg, checker.getTypeOfSymbolAtLocation(p, node));
+        });
       }
       // "anything" that is read from or called: the tool cannot tell what it is
       if ((ts.isPropertyAccessExpression(node) || ts.isElementAccessExpression(node) || ts.isCallExpression(node)) && !ts.isImportCall?.(node)) {
@@ -177,7 +204,7 @@ export function makeUsage(program, tree, listings) {
       if (sf) visit(sf);
     }
     const undeclared = [...uses.keys()].filter((p) => !mod.uses.includes(p));
-    return { uses, anything: [...new Set(anything)], unreadOps, undeclared };
+    return { uses, anything: [...new Set(anything)], unreadOps, unreadTables, undeclared };
   }
 
   return { usesOf };

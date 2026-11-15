@@ -3,12 +3,12 @@
 //   node proof/compare.mjs planned
 import fs from 'node:fs';
 import path from 'node:path';
-import { ROOT } from './trees.mjs';
+import { ROOT, ROUND, answersFile } from './trees.mjs';
 
 const series = process.argv[2];
-const expected = JSON.parse(fs.readFileSync(path.join(ROOT, 'changes', `${series}-expected.json`), 'utf8')).changes;
-const reading = JSON.parse(fs.readFileSync(path.join(ROOT, 'changes', `${series}-reading.json`), 'utf8')).changes;
-const dir = path.join(ROOT, 'results', series);
+const expected = JSON.parse(fs.readFileSync(answersFile(series, 'expected'), 'utf8')).changes;
+const reading = JSON.parse(fs.readFileSync(answersFile(series, 'reading'), 'utf8')).changes;
+const dir = path.join(ROOT, 'results', ROUND, series);
 const ids = fs.readdirSync(dir).filter((f) => f.endsWith('.json')).map((f) => f.slice(0, -5)).sort();
 const S = (a) => [...new Set(a)].sort();
 const list = (a) => (a.length ? a.join(', ') : 'none');
@@ -43,7 +43,7 @@ const T = ['| Change | Provider | Expected by the rules | Told by the tool | Tes
 for (const x of rows) {
   T.push(`| ${x.id}: ${x.title} | ${x.provider}${x.providerTests ? '' : ' (its own tests fail)'} | ${list(x.exp)} | ${list(x.told)}${x.matches ? '' : ' **(differs)**'}${x.firstCommentsStep ? ' (first comments step)' : ''} | ${list(x.broken)}${x.through.length ? ` (${x.through.join(', ')} only through a told module)` : ''} | ${list(x.needs)} | ${list(x.refusals)} | ${x.verdict} |`);
 }
-fs.writeFileSync(path.join(ROOT, 'results', `${series}-table.md`), T.join('\n') + '\n');
-fs.writeFileSync(path.join(ROOT, 'results', `${series}-summary.json`), JSON.stringify({ ...sum, rows }, null, 2) + '\n');
+fs.writeFileSync(path.join(ROOT, 'results', ROUND, `${series}-table.md`), T.join('\n') + '\n');
+fs.writeFileSync(path.join(ROOT, 'results', ROUND, `${series}-summary.json`), JSON.stringify({ ...sum, rows }, null, 2) + '\n');
 console.log(T.join('\n'));
 console.log(JSON.stringify({ changes: sum.changes, matchesRules: sum.matchesRules, notices: sum.notices, needed: sum.needed, holes: sum.holes, caughtByGuard: sum.caughtByGuard.map((c) => c.id), unneeded: sum.unneeded.length, refusals: sum.refusals, falseRefusals: sum.falseRefusals, differsFromRules: rows.filter((r) => !r.matches).map((r) => r.id) }));

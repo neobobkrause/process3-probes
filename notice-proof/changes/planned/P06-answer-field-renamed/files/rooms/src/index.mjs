@@ -17,6 +17,7 @@ export const ROOM_KINDS = Object.freeze(/** @type {const} */ (['hall', 'studio',
  * @property {RoomKind} kind
  * @property {number} capacity
  * @bound capacity: whole number, 1 to 500
+ * @storedrows rooms
  */
 
 /**

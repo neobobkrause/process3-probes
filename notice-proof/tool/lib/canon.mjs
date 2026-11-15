@@ -85,6 +85,8 @@ export function makeCanon(checker, tree) {
     if (alias && !isHandle(t)) ctx.kinds.set(`${alias.module}.${alias.name}`, alias.decl);
     ctx.stack.push(t);
     try {
+      // Iteration 2: a kind written as parts joined with & keeps the bound lines of its parts.
+      if (t.flags & ts.TypeFlags.Intersection) for (const part of t.types) { const a = productAlias(part); if (a && !isHandle(part)) ctx.kinds.set(`${a.module}.${a.name}`, a.decl); }
       if (checker.isArrayType(t)) {
         const ro = t.symbol?.name === 'ReadonlyArray';
         return { k: 'arr', ro, of: canon(checker.getTypeArguments(t)[0], ctx) };
@@ -167,8 +169,8 @@ export const same = (a, b) => JSON.stringify(a) === JSON.stringify(b);
  * the same way: nothing removed or renamed, nothing newly required, nothing newly refused.
  */
 export function standsIn(old, nu) {
-  if (old == null && nu == null) return true;
-  if (old == null || nu == null) return false;
+  if (old == null) return true; // nothing was accepted before: anything accepted now is more (iteration 2)
+  if (nu == null) return false; // nothing is accepted now: something was removed
   if (same(old, nu)) return true;
   if (nu.k === 'any' || (nu.k === 'prim' && nu.n === 'unknown')) return true;
   if (old.k === 'union') return old.of.every((m) => standsIn(m, nu));

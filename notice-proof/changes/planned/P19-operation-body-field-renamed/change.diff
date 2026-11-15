@@ -1,6 +1,6 @@
 --- before/bookings/src/index.mjs
 +++ after/bookings/src/index.mjs
-@@ -52,7 +52,7 @@
+@@ -53,7 +53,7 @@
   *   bookopen: {req: BookingRequest, res: Booking},
   *   bookcancel: {req: {id: string}, res: Booking},
   *   bookstatus: {req: {id: string}, res: {state: Booking['state'], total: Amount, room: string}},
@@ -9,7 +9,7 @@
   * }} BookingOps
   * @optable
   * @bound bookquote.total: what the whole stay costs, for the whole party and every night
-@@ -147,6 +147,6 @@
+@@ -148,6 +148,6 @@
        if (!b) throw new RangeError(`bookings: unknown booking: ${req.id}`);
        return { state: b.state, total: b.total, room: b.room };
      },

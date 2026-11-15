@@ -15,6 +15,7 @@ export const WORKER_FILE = new URL('./worker.mjs', import.meta.url).pathname;
  * What the meter is sent: one use of a room.
  * @typedef {{kind: 'use', room: string, minutes: number}} MeterInput
  * @bound minutes: whole number, 1 to 1440
+ * @message stdin
  */
 
 /**
@@ -23,4 +24,5 @@ export const WORKER_FILE = new URL('./worker.mjs', import.meta.url).pathname;
  * @typedef {{kind: 'reading', room: string, minutes: number, price: Amount}
  *   | {kind: 'refused', room: string, reason: string}
  *   | {kind: 'done', count: number}} MeterMsg
+ * @message stdout
  */

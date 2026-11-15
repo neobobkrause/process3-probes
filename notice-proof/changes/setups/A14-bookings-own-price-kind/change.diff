@@ -9,7 +9,7 @@
   * @property {string} [note]
   * @bound day: a real calendar day written YYYY-MM-DD
   * @bound nights: whole number, 1 to 14
-@@ -28,6 +28,11 @@
+@@ -29,6 +29,11 @@
   */
  
  /**
@@ -21,7 +21,7 @@
   * What it takes to open a booking.
   * @typedef {Object} BookingRequest
   * @property {string} room the room's id
-@@ -51,8 +56,8 @@
+@@ -52,8 +57,8 @@
   * @typedef {{
   *   bookopen: {req: BookingRequest, res: Booking},
   *   bookcancel: {req: {id: string}, res: Booking},

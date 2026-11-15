@@ -1,6 +1,6 @@
 --- before/bookings/src/index.mjs
 +++ after/bookings/src/index.mjs
-@@ -147,6 +147,6 @@
+@@ -148,6 +148,6 @@
        if (!b) throw new RangeError(`bookings: unknown booking: ${req.id}`);
        return { state: b.state, total: b.total, room: b.room };
      },

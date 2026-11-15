@@ -1,6 +1,6 @@
 --- before/rooms/src/index.mjs
 +++ after/rooms/src/index.mjs
-@@ -38,9 +38,11 @@
+@@ -39,9 +39,11 @@
  /**
   * The operations rooms answers by name through the door.
   * @typedef {{
@@ -13,7 +13,7 @@
   */
  
  /**
-@@ -90,5 +92,9 @@
+@@ -91,5 +93,9 @@
  export function roomHandlers(rooms) {
    return {
      roomlist: (req) => ({ rooms: rooms.list(req.kind) }),

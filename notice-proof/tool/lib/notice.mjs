@@ -6,7 +6,7 @@ import { makeProgram, TS_VERSION } from './ts.mjs';
 import { makeLister } from './listing.mjs';
 import { makeUsage } from './usage.mjs';
 import { same, standsIn, render } from './canon.mjs';
-import { commentsOnly } from './check.mjs';
+import { commentsOnly, boundTests } from './check.mjs';
 
 /** Reads a whole product once: every module's listing and every module's uses. */
 export function analyse(root) {
@@ -78,6 +78,8 @@ export function diffListings(moduleId, before, after) {
     if (!same(ba, ea.accepts)) changes.push(standsIn(ba, ea.accepts) ? 'accepts more' : 'cannot stand in');
     if (!same(bh, ea.handsBack)) changes.push('hands back differently');
     if (!same(eb.bounds, ea.bounds)) changes.push('bound changed');
+    // Iteration 2: the kinds of error raised, and a message's channel, are part of what is handed back.
+    if ((!same(eb.throws ?? [], ea.throws ?? []) || (eb.channel ?? '') !== (ea.channel ?? '')) && !changes.includes('hands back differently')) changes.push('hands back differently');
     if (!changes.length) continue;
     out.push({
       entry: name,
@@ -97,6 +99,8 @@ export function describe(e) {
   if (e.handsBack !== undefined && e.handsBack !== null) d.handsBack = render(e.handsBack);
   if (e.bounds?.length) d.bounds = e.bounds;
   if (e.side) d.side = e.side;
+  if (e.throws?.length) d.throws = e.throws;
+  if (e.channel) d.channel = e.channel;
   return d;
 }
 
@@ -150,6 +154,39 @@ export function notice(beforeRoot, afterRoot, provider) {
       for (const e of d) report.entries.push({ module: id, ...e });
     }
   }
+  // Iteration 2: a test named for a bound whose code changed while its bound line did not: that bound counts as
+  // changed, in every entry (of any module) that carries the line.
+  const btB = boundTests(B.tree.byId.get(provider)), btA = boundTests(A.tree.byId.get(provider));
+  const movedBounds = [...btB.keys()].filter((k) => btA.has(k) && btA.get(k).shape !== btB.get(k).shape);
+  if (movedBounds.length) {
+    report.boundTestsChanged = movedBounds;
+    for (const id of order.slice(pIndex)) {
+      const la = A.listings.get(id), lb = B.listings.get(id);
+      for (const [name, e] of Object.entries(la.entries)) {
+        if (!lb.entries[name] || !movedBounds.some((m) => (e.bounds ?? []).includes(m))) continue;
+        if (!changed.has(id)) { changed.set(id, []); report.changedModules.push({ module: id, through: id === provider ? null : provider }); }
+        const d = changed.get(id);
+        let x = d.find((y) => y.entry === name);
+        if (!x) { x = { entry: name, changes: [], tells: 'users', before: describe(lb.entries[name]), after: describe(e) }; d.push(x); report.entries.push({ module: id, ...x }); }
+        if (!x.changes.includes('bound test changed')) { x.changes.push('bound test changed'); x.tells = 'users'; }
+        const r = report.entries.find((y) => y.module === id && y.entry === name);
+        if (r && r !== x) { r.changes = x.changes; r.tells = 'users'; }
+      }
+    }
+  }
+  // Iteration 2: a new operation whose name another module already answers tells the users of that operation.
+  for (const [id, diff] of [...changed]) {
+    for (const e of diff) {
+      if (!e.entry.startsWith('op:') || !e.changes.includes('new entry')) continue;
+      for (const [other, l] of A.listings) {
+        if (other === id || !l.entries[e.entry]) continue;
+        if (!changed.has(other)) { changed.set(other, []); report.changedModules.push({ module: other, through: provider }); }
+        const x = { entry: e.entry, changes: [`${id} now answers the same name`], tells: 'users', before: describe(B.listings.get(other)?.entries[e.entry]), after: describe(l.entries[e.entry]) };
+        changed.get(other).push(x);
+        report.entries.push({ module: other, ...x });
+      }
+    }
+  }
   report.interfaceChanged = changed.has(provider);
 
   // Who is told.
@@ -166,9 +203,13 @@ export function notice(beforeRoot, afterRoot, provider) {
       // uses found against the provider after the change are added, so a by-name call to a new name is seen too.
       const useOf = (entry) => useB?.get(entry) ?? useA?.get(entry);
       for (const e of diff) {
-        if (e.tells === 'nobody') continue;
         const u = useOf(e.entry);
         if (!u) continue;
+        if (e.tells === 'nobody') {
+          // Iteration 2: a function handed on as a value is used with whatever it accepts: accepting more tells.
+          if (u.asValue && e.changes.includes('accepts more')) reasons.push({ module: m, entry: e.entry, changes: [...e.changes, 'handed on as a value'], lines: u.lines.slice(0, 6), through: m === provider ? null : provider });
+          continue;
+        }
         if (e.tells === 'users that name it' && !u.named) continue;
         reasons.push({ module: m, entry: e.entry, changes: e.changes, lines: u.lines.slice(0, 6), through: m === provider ? null : provider });
       }
@@ -178,6 +219,7 @@ export function notice(beforeRoot, afterRoot, provider) {
         if (!useB?.size && !useA?.size) why.push(`declares ${m} but no use of it is found in its code`);
         if (ub?.anything.length) why.push(`reads or calls values of unknown kind: ${ub.anything.slice(0, 3).join('; ')}${ub.anything.length > 3 ? ` (+${ub.anything.length - 3})` : ''}`);
         if (ub?.unreadOps.length && Object.keys(A.listings.get(m).entries).some((n) => n.startsWith('op:'))) why.push(`calls by a name the tool cannot read at ${ub.unreadOps.join(', ')}`);
+        if (ub?.unreadTables.length && Object.keys(A.listings.get(m).entries).some((n) => n.startsWith('table:'))) why.push(`names a table the tool cannot read at ${ub.unreadTables.join(', ')}`);
         if (why.length) reasons.push({ module: m, notFollowed: why, through: m === provider ? null : provider });
       }
     }

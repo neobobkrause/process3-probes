@@ -9,7 +9,7 @@
   * @bound day: a real calendar day written YYYY-MM-DD
   * @bound nights: whole number, 1 to 14
   * @bound party: whole number, 1 to 200, and no more than the room's seats
-@@ -41,8 +41,8 @@
+@@ -42,8 +42,8 @@
  /**
   * Where bookings learns the time. Handed in, so that tests can fix it.
   * @typedef {Object} Clock
@@ -20,7 +20,7 @@
   */
  
  /**
-@@ -85,7 +85,7 @@
+@@ -86,7 +86,7 @@
  }
  
  /** @type {Clock} the clock bookings uses when none is handed in */
@@ -29,7 +29,7 @@
  
  /**
   * Makes the bookings' handle.
-@@ -116,8 +116,7 @@
+@@ -117,8 +117,7 @@
      find,
      open(req) {
        const first = parseDay(req.day);

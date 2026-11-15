@@ -1,8 +1,8 @@
 // Prints a compact table of one series for the report, from results/<series>-summary.json.
 import fs from 'node:fs';
 import path from 'node:path';
-import { ROOT } from './trees.mjs';
-const s = JSON.parse(fs.readFileSync(path.join(ROOT, 'results', `${process.argv[2]}-summary.json`), 'utf8'));
+import { ROOT, ROUND } from './trees.mjs';
+const s = JSON.parse(fs.readFileSync(path.join(ROOT, 'results', ROUND, `${process.argv[2]}-summary.json`), 'utf8'));
 const L = (a) => (a.length ? a.join(', ') : '-');
 console.log('| No. | Change | Expected by the rules | Told by the tool | Tests that failed (measured) | Needed a change (judged) | Verdict |');
 console.log('|---|---|---|---|---|---|---|');
