@@ -1,0 +1,19 @@
+{
+ "provider": "wizard-scripts",
+ "reader": "TypeScript 5.6.3",
+ "firstCommentsStep": false,
+ "changedModules": [],
+ "entries": [],
+ "told": [],
+ "notTold": [],
+ "warnings": [],
+ "interfaceChanged": false,
+ "summary": "The listing before and after is the same. Nobody is told.",
+ "replay": {
+  "change": "wizard-scripts:253",
+  "ms": 126522,
+  "ranAt": "2026-11-15T17:19:51.475Z",
+  "tool": "notice-proof/tool/p3tool.mjs",
+  "commentedUsers": null
+ }
+}

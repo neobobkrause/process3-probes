@@ -1,0 +1,19 @@
+{
+ "provider": "ai-accounts",
+ "reader": "TypeScript 5.6.3",
+ "firstCommentsStep": false,
+ "changedModules": [],
+ "entries": [],
+ "told": [],
+ "notTold": [],
+ "warnings": [],
+ "interfaceChanged": false,
+ "summary": "The listing before and after is the same. Nobody is told.",
+ "replay": {
+  "change": "ai-accounts:316",
+  "ms": 146142,
+  "ranAt": "2026-11-15T17:01:10.599Z",
+  "tool": "notice-proof/tool/p3tool.mjs",
+  "commentedUsers": null
+ }
+}

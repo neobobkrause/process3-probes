@@ -1,0 +1,994 @@
+[
+ {
+  "change": "ai-accounts:124",
+  "expectedListingChanges": true,
+  "toolListingChanges": true,
+  "expectedTelling": 9,
+  "toolTelling": 8,
+  "telling": {
+   "both": 8,
+   "onlyTool": [],
+   "onlyExpected": [
+    "aiAccountsOf"
+   ]
+  },
+  "toolNothingTells": [
+   "AccountUsesOfAnswer: new entry",
+   "AiAccounts#_legacyHead: new entry",
+   "AiAccounts#_legacyKey: new entry",
+   "AiAccounts#_legacyKeyFacts: new entry",
+   "AiAccounts#_legacyKeySet: new entry",
+   "AiAccounts#_legacyNone: new entry",
+   "AiAccounts#_legacyNoticeSeen: new entry",
+   "AiAccounts#_legacyPlan: new entry",
+   "AiAccounts#_legacyRows: new entry",
+   "AiAccounts#_legacySignin: new entry",
+   "AiAccounts#accountReferenceRemove: new entry",
+   "AiAccounts#accountReferenceSet: new entry",
+   "AiAccounts#accountReferenceState: new entry",
+   "AiAccounts#accountUsesSet: accepts more",
+   "AiAccounts#groupKeyNoticeSeen: new entry",
+   "AiAccounts#groupKeySet: new entry",
+   "AiAccounts#groupKeyState: new entry",
+   "AiAccounts#groupKeySwitch: new entry",
+   "AiAccounts#groupKeySwitches: new entry",
+   "AiAccounts#projectAccountState: new entry",
+   "AiAccounts#projectAccountSwitch: new entry",
+   "AiAccounts#projectKeyNoticeSeen: new entry",
+   "AiAccounts#projectKeySet: new entry",
+   "AiAccounts#subscriptionConnected: new entry",
+   "AiAccounts#subscriptionTokenHold: new entry",
+   "AiAccounts._owner: new entry",
+   "AiAccounts._planId: new entry",
+   "LegacyAccounts: new entry",
+   "LegacyHeld: new entry",
+   "LegacyKeyFacts: new entry",
+   "LegacyReferenceState: new entry"
+  ],
+  "throughModules": [
+   "store-door"
+  ]
+ },
+ {
+  "change": "ai-accounts:188",
+  "expectedListingChanges": false,
+  "toolListingChanges": false,
+  "expectedTelling": 0,
+  "toolTelling": 0,
+  "telling": {
+   "both": 0,
+   "onlyTool": [],
+   "onlyExpected": []
+  },
+  "toolNothingTells": [],
+  "throughModules": []
+ },
+ {
+  "change": "ai-accounts:316",
+  "expectedListingChanges": false,
+  "toolListingChanges": false,
+  "expectedTelling": 0,
+  "toolTelling": 0,
+  "telling": {
+   "both": 0,
+   "onlyTool": [],
+   "onlyExpected": []
+  },
+  "toolNothingTells": [],
+  "throughModules": []
+ },
+ {
+  "change": "ai-accounts:483",
+  "expectedListingChanges": true,
+  "toolListingChanges": true,
+  "expectedTelling": 2,
+  "toolTelling": 2,
+  "telling": {
+   "both": 2,
+   "onlyTool": [],
+   "onlyExpected": []
+  },
+  "toolNothingTells": [],
+  "throughModules": [
+   "store-assembly"
+  ]
+ },
+ {
+  "change": "ai-accounts:1098",
+  "expectedListingChanges": true,
+  "toolListingChanges": true,
+  "expectedTelling": 11,
+  "toolTelling": 10,
+  "telling": {
+   "both": 9,
+   "onlyTool": [
+    "AiAccounts#_stateOf"
+   ],
+   "onlyExpected": [
+    "AiAccounts",
+    "aiAccountsOf"
+   ]
+  },
+  "toolNothingTells": [
+   "AccountHealth: new entry",
+   "AiAccounts#_healthOf: new entry",
+   "AiAccounts#aiKeyReference: new entry",
+   "AiAccounts#aiSignin: new entry",
+   "AiAccountsHandlers: new entry",
+   "AiAccountsHandlers.aikeyreference: new entry",
+   "AiAccountsHandlers.aisignin: new entry",
+   "AiAccountsOps: new entry",
+   "op:aikeyreference: new entry",
+   "op:aisignin: new entry"
+  ],
+  "throughModules": [
+   "store-assembly"
+  ]
+ },
+ {
+  "change": "ai-catalogue:194",
+  "expectedListingChanges": true,
+  "toolListingChanges": true,
+  "expectedTelling": 2,
+  "toolTelling": 68,
+  "telling": {
+   "both": 2,
+   "onlyTool": [
+    "ADVISORY_KINDS",
+    "ADVISORY_REASONS",
+    "AI_CATALOGUE_DECLARATIONS",
+    "AI_CATALOGUE_TABLES",
+    "BindingTerm",
+    "CATALOGUE_CHECKS",
+    "CATALOGUE_STATES",
+    "CHECK_IDS",
+    "Capabilities",
+    "CatalogueEntry",
+    "CatalogueEnv",
+    "CataloguePlan",
+    "CatalogueProvider",
+    "Characteristic",
+    "Characterization",
+    "CheckAnswer",
+    "CheckId",
+    "Claim",
+    "CombinedResult",
+    "ConnectionWay",
+    "CredentialKind",
+    "DISPLAY_NAME_MAX",
+    "EFFORT_WORD_MAX",
+    "ENTRY_ID_MAX",
+    "EntryPin",
+    "EntryPrices",
+    "Evidence",
+    "Figure",
+    "GRADES",
+    "GateLimit",
+    "GateRecord",
+    "Grade",
+    "Guidance",
+    "HostKind",
+    "HostProfile",
+    "LIFECYCLE",
+    "LIMIT_KINDS",
+    "LibraryRow",
+    "Lifecycle",
+    "LimitKind",
+    "MOVES",
+    "Means",
+    "Money",
+    "Open",
+    "PlanKind",
+    "PlanScope",
+    "PriceBasis",
+    "Restriction",
+    "Runtime",
+    "SHOWN_IDS",
+    "STATE_WORDS",
+    "ShownId",
+    "StandardTaskCosts",
+    "StepKind",
+    "SuiteVersion",
+    "TaskCost",
+    "TermKind",
+    "TestedAi",
+    "TokenStorage",
+    "VERDICTS",
+    "Verdict",
+    "Warning",
+    "Words",
+    "isDate",
+    "isInstant",
+    "validatePayload"
+   ],
+   "onlyExpected": []
+  },
+  "toolNothingTells": [
+   "AiCatalogue#seedAtStart: new entry",
+   "DEVELOPMENT_KEY_MARK: new entry",
+   "DEVELOPMENT_VAR: new entry",
+   "RELEASE_SEED: new entry",
+   "ReleaseSeed: new entry",
+   "SEED_PAYLOAD: new entry",
+   "SEED_SIGNATURE_VAR: new entry",
+   "SeedAnswer: new entry",
+   "SeedStatement: new entry",
+   "catalogueKeysFor: new entry",
+   "isDevelopmentKey: new entry",
+   "seedOf: new entry"
+  ],
+  "throughModules": []
+ },
+ {
+  "change": "ai-catalogue:204",
+  "expectedListingChanges": false,
+  "toolListingChanges": false,
+  "expectedTelling": 0,
+  "toolTelling": 0,
+  "telling": {
+   "both": 0,
+   "onlyTool": [],
+   "onlyExpected": []
+  },
+  "toolNothingTells": [],
+  "throughModules": []
+ },
+ {
+  "change": "ai-catalogue:317",
+  "expectedListingChanges": true,
+  "toolListingChanges": true,
+  "expectedTelling": 0,
+  "toolTelling": 31,
+  "telling": {
+   "both": 0,
+   "onlyTool": [
+    "ADVISORY_KINDS",
+    "ADVISORY_REASONS",
+    "AI_CATALOGUE_DECLARATIONS",
+    "AI_CATALOGUE_TABLES",
+    "AiCatalogue",
+    "CATALOGUE_CHECKS",
+    "CATALOGUE_STATES",
+    "CHECK_IDS",
+    "CatalogueEnv",
+    "DEVELOPMENT_KEY_MARK",
+    "DEVELOPMENT_VAR",
+    "DISPLAY_NAME_MAX",
+    "EFFORT_WORD_MAX",
+    "ENTRY_ID_MAX",
+    "GRADES",
+    "LIFECYCLE",
+    "LIMIT_KINDS",
+    "MOVES",
+    "RELEASE_SEED",
+    "SEED_PAYLOAD",
+    "SEED_SIGNATURE_VAR",
+    "SHOWN_IDS",
+    "STATE_WORDS",
+    "VERDICTS",
+    "aiCatalogueOf",
+    "catalogueKeysFor",
+    "isDate",
+    "isDevelopmentKey",
+    "isInstant",
+    "seedOf",
+    "validatePayload"
+   ],
+   "onlyExpected": []
+  },
+  "toolNothingTells": [
+   "DEVELOPMENT_KEY_VAR: new entry"
+  ],
+  "throughModules": []
+ },
+ {
+  "change": "ai-catalogue:336",
+  "expectedListingChanges": false,
+  "toolListingChanges": false,
+  "expectedTelling": 0,
+  "toolTelling": 0,
+  "telling": {
+   "both": 0,
+   "onlyTool": [],
+   "onlyExpected": []
+  },
+  "toolNothingTells": [],
+  "throughModules": []
+ },
+ {
+  "change": "ai-catalogue:484",
+  "expectedListingChanges": true,
+  "toolListingChanges": true,
+  "expectedTelling": 0,
+  "toolTelling": 17,
+  "telling": {
+   "both": 0,
+   "onlyTool": [
+    "AI_CATALOGUE_DECLARATIONS",
+    "AI_CATALOGUE_TABLES",
+    "CATALOGUE_CHECKS",
+    "CATALOGUE_STATES",
+    "CHECK_IDS",
+    "DISPLAY_NAME_MAX",
+    "EFFORT_WORD_MAX",
+    "ENTRY_ID_MAX",
+    "GRADES",
+    "LIFECYCLE",
+    "LIMIT_KINDS",
+    "SHOWN_IDS",
+    "STATE_WORDS",
+    "VERDICTS",
+    "isDate",
+    "isInstant",
+    "validatePayload"
+   ],
+   "onlyExpected": []
+  },
+  "toolNothingTells": [
+   "DEVELOPMENT_PLAN: new entry",
+   "DEVELOPMENT_PROVIDER: new entry",
+   "DEVELOPMENT_SEED: new entry",
+   "DEVELOPMENT_SEED_PAYLOAD: new entry",
+   "seedFor: new entry"
+  ],
+  "throughModules": []
+ },
+ {
+  "change": "ai-catalogue:611",
+  "expectedListingChanges": true,
+  "toolListingChanges": true,
+  "expectedTelling": 0,
+  "toolTelling": 17,
+  "telling": {
+   "both": 0,
+   "onlyTool": [
+    "AI_CATALOGUE_DECLARATIONS",
+    "AI_CATALOGUE_TABLES",
+    "CATALOGUE_CHECKS",
+    "CATALOGUE_STATES",
+    "CHECK_IDS",
+    "DISPLAY_NAME_MAX",
+    "EFFORT_WORD_MAX",
+    "ENTRY_ID_MAX",
+    "GRADES",
+    "LIFECYCLE",
+    "LIMIT_KINDS",
+    "SHOWN_IDS",
+    "STATE_WORDS",
+    "VERDICTS",
+    "isDate",
+    "isInstant",
+    "validatePayload"
+   ],
+   "onlyExpected": []
+  },
+  "toolNothingTells": [
+   "DEVELOPMENT_ADAPTERS: new entry"
+  ],
+  "throughModules": []
+ },
+ {
+  "change": "ai-catalogue:1097",
+  "expectedListingChanges": true,
+  "toolListingChanges": true,
+  "expectedTelling": 2,
+  "toolTelling": 11,
+  "telling": {
+   "both": 1,
+   "onlyTool": [
+    "AdvisoryKind",
+    "AdvisoryReason",
+    "CatalogueState",
+    "CatalogueStateView",
+    "CheckTrigger",
+    "LibraryRowView",
+    "OfferReason",
+    "PlanReason",
+    "PlanRow",
+    "UpcomingAdvisory"
+   ],
+   "onlyExpected": [
+    "aiCatalogueOf"
+   ]
+  },
+  "toolNothingTells": [
+   "AiCatalogue#catalogueRead: new entry",
+   "AiCatalogue#resultsRead: new entry",
+   "CATALOGUE_DECLARED_OPS: new entry",
+   "CatalogueHandlers: new entry",
+   "CatalogueHandlers.aicatalogueread: new entry",
+   "CatalogueHandlers.airesultsread: new entry",
+   "CatalogueOps: new entry",
+   "CatalogueReadAnswer: new entry",
+   "CatalogueReadEntry: new entry",
+   "ClaimView: new entry",
+   "Listing: new entry",
+   "OpDeclaration: new entry",
+   "ResultSubject: new entry",
+   "ResultsReadAnswer: new entry",
+   "aiCatalogueOps: new entry",
+   "op:aicatalogueread: new entry",
+   "op:airesultsread: new entry"
+  ],
+  "throughModules": []
+ },
+ {
+  "change": "ai-runs:96",
+  "expectedListingChanges": true,
+  "toolListingChanges": true,
+  "expectedTelling": 51,
+  "toolTelling": 52,
+  "telling": {
+   "both": 48,
+   "onlyTool": [
+    "AiRunHandlers.airun",
+    "AiRunHandlers.airunlog",
+    "AiRunHandlers.airuns",
+    "AiRunHandlers.airuntick"
+   ],
+   "onlyExpected": [
+    "AiRunOps",
+    "AiRunHandlers",
+    "aiRunsOps"
+   ]
+  },
+  "toolNothingTells": [
+   "AfterStop: new entry",
+   "AiRunHandlers: new entry",
+   "AiRunHandlers.aicontinue: new entry",
+   "AiRunHandlers.airunparts: new entry",
+   "AiRunHandlers.aisendrefuse: new entry",
+   "AiRunHandlers.aistop: new entry",
+   "AiRunHandlers.aiswitchaccount: new entry",
+   "AiRunHandlers.aiwait: new entry",
+   "AiRunHandlers.aiwaitswitch: new entry",
+   "AiRunHandlers.aiwithout: new entry",
+   "AiRunOps: new entry",
+   "AiRunProducerRow: new entry",
+   "AiRunSegmentRow: new entry",
+   "AiRuns#aiContinue: new entry",
+   "AiRuns#aiSendRefuse: new entry",
+   "AiRuns#aiStop: new entry",
+   "AiRuns#aiSwitchAccount: new entry",
+   "AiRuns#aiWait: new entry",
+   "AiRuns#aiWithout: new entry",
+   "AiRuns#healthProbe: new entry",
+   "AiRuns#partAdmitted: accepts more",
+   "AiRuns#registerGateVerdicts: new entry",
+   "AiRuns#registerHealthProbe: new entry",
+   "AiRuns#registerPathReady: new entry",
+   "AiRuns#runParts: new entry",
+   "AiRuns#waitThenSwitch: new entry",
+   "AiRuns.EFFORT_WORD_MAX: new entry",
+   "AiRuns.HOP_STOPS: new entry",
+   "AiRuns.LABEL_FIELDS: new entry",
+   "AiRuns.PAUSE_MAX_MS: new entry",
+   "AiRuns.PROBE_BATCH: new entry",
+   "AiRuns.PROBE_INTERVAL_MS: new entry",
+   "AiRuns.READY_STATES: new entry",
+   "AiRuns.RUN_LEASE_MS: new entry",
+   "AiRuns.RUN_PARTS_LIMIT: new entry",
+   "AiRuns.WAIT_THEN_SWITCH_CHOICES: new entry",
+   "AiStop: new entry",
+   "HealthProbe: new entry",
+   "HealthProbe.due: new entry",
+   "HealthProbe.key: new entry",
+   "HealthProbe.name: new entry",
+   "HealthProbe.tick: new entry",
+   "HealthProbe.wake: new entry",
+   "HopAnswered: new entry",
+   "HopSide: new entry",
+   "MemberChoiceAnswer: new entry",
+   "MemberChoiceRequest: new entry",
+   "PathState: new entry",
+   "RunHeld: new entry",
+   "RunPart: new entry",
+   "RunPartsAnswer: new entry",
+   "RunsDeps: accepts more",
+   "SegmentRead: new entry",
+   "UsageLabel: new entry",
+   "WaitChoice: new entry",
+   "op:aicontinue: new entry",
+   "op:airunparts: new entry",
+   "op:aisendrefuse: new entry",
+   "op:aistop: new entry",
+   "op:aiswitchaccount: new entry",
+   "op:aiwait: new entry",
+   "op:aiwaitswitch: new entry",
+   "op:aiwithout: new entry",
+   "table:ai_run_producers: new entry",
+   "table:ai_run_segments: new entry"
+  ],
+  "throughModules": [
+   "plane"
+  ]
+ },
+ {
+  "change": "ai-runs:213",
+  "expectedListingChanges": false,
+  "toolListingChanges": false,
+  "expectedTelling": 0,
+  "toolTelling": 0,
+  "telling": {
+   "both": 0,
+   "onlyTool": [],
+   "onlyExpected": []
+  },
+  "toolNothingTells": [],
+  "throughModules": []
+ },
+ {
+  "change": "ai-runs:323",
+  "expectedListingChanges": true,
+  "toolListingChanges": true,
+  "expectedTelling": 6,
+  "toolTelling": 4,
+  "telling": {
+   "both": 3,
+   "onlyTool": [
+    "AiRuns"
+   ],
+   "onlyExpected": [
+    "AiRunOps",
+    "AiRunHandlers",
+    "aiRunsOps"
+   ]
+  },
+  "toolNothingTells": [
+   "AiRunHandlers: new entry",
+   "AiRunHandlers.aipathready: new entry",
+   "AiRunOps: new entry",
+   "AiRuns#pathReadyRead: new entry",
+   "AiRuns.PATH_REASONS: new entry",
+   "PathReadyAnswer: new entry",
+   "op:aipathready: new entry"
+  ],
+  "throughModules": [
+   "store-assembly"
+  ]
+ },
+ {
+  "change": "ai-runs:348",
+  "expectedListingChanges": true,
+  "toolListingChanges": true,
+  "expectedTelling": 5,
+  "toolTelling": 5,
+  "telling": {
+   "both": 4,
+   "onlyTool": [
+    "AiRunHandlers.airunopen"
+   ],
+   "onlyExpected": [
+    "AiRuns#openMany"
+   ]
+  },
+  "toolNothingTells": [],
+  "throughModules": []
+ },
+ {
+  "change": "ai-runs:391",
+  "expectedListingChanges": true,
+  "toolListingChanges": true,
+  "expectedTelling": 2,
+  "toolTelling": 1,
+  "telling": {
+   "both": 1,
+   "onlyTool": [],
+   "onlyExpected": [
+    "aiRunsOf"
+   ]
+  },
+  "toolNothingTells": [
+   "AiRuns#gateVerdictRecord: new entry",
+   "AiRuns#gateVerdictRecords: new entry",
+   "GateRecordRow: new entry",
+   "table:ai_gate_records: new entry"
+  ],
+  "throughModules": []
+ },
+ {
+  "change": "ai-runs:485",
+  "expectedListingChanges": false,
+  "toolListingChanges": false,
+  "expectedTelling": 0,
+  "toolTelling": 0,
+  "telling": {
+   "both": 0,
+   "onlyTool": [],
+   "onlyExpected": []
+  },
+  "toolNothingTells": [],
+  "throughModules": []
+ },
+ {
+  "change": "ai-runs:1004",
+  "expectedListingChanges": true,
+  "toolListingChanges": true,
+  "expectedTelling": 8,
+  "toolTelling": 3,
+  "telling": {
+   "both": 3,
+   "onlyTool": [],
+   "onlyExpected": [
+    "AiRuns#gateVerdictRecord",
+    "AiRuns#pathReadyRead",
+    "op:aipathready",
+    "PathReadyAnswer",
+    "aiRunsOf"
+   ]
+  },
+  "toolNothingTells": [
+   "ANSWER_MARKS: new entry",
+   "AiRuns.CASCADE_PAIRS_MAX: new entry",
+   "AnswerKeyMarks: new entry",
+   "answerKeyMarks: new entry"
+  ],
+  "throughModules": []
+ },
+ {
+  "change": "ai-runs:1073",
+  "expectedListingChanges": false,
+  "toolListingChanges": false,
+  "expectedTelling": 0,
+  "toolTelling": 0,
+  "telling": {
+   "both": 0,
+   "onlyTool": [],
+   "onlyExpected": []
+  },
+  "toolNothingTells": [],
+  "throughModules": []
+ },
+ {
+  "change": "ai-use:105",
+  "expectedListingChanges": true,
+  "toolListingChanges": true,
+  "expectedTelling": 48,
+  "toolTelling": 74,
+  "telling": {
+   "both": 44,
+   "onlyTool": [
+    "AI_USE_SCHEMA",
+    "AI_USE_TABLES",
+    "AI_USE_WORDS",
+    "AccountLimitsAnswer",
+    "AccountUsageAnswer",
+    "ActRow",
+    "AiUse",
+    "AiUseHandlers.ailimits",
+    "AiUseHandlers.ailimitset",
+    "AiUseHandlers.aiusage",
+    "AiUseHandlers.aiuseovertime",
+    "AiUseHandlers.exploreapprove",
+    "ApproveAnswer",
+    "AskUsageEntry",
+    "EstimateRequest",
+    "LIMIT_FIELD_WORD",
+    "LIMIT_WORD_BY_SCOPE",
+    "LimitHistoryRow",
+    "LimitSetAnswer",
+    "MONTH_WORD",
+    "MyUsageAnswer",
+    "PERIOD_WORD",
+    "UNJUDGED_WORD",
+    "UsageRow",
+    "UseOverTimeAnswer",
+    "WHEN_WORD",
+    "WHOSE_WORD",
+    "fillWords",
+    "useInlineWord",
+    "useNameWord"
+   ],
+   "onlyExpected": [
+    "aiUseOps",
+    "AiUseHandlers",
+    "AiUseOpTable",
+    "AiUse#exploreAsk"
+   ]
+  },
+  "toolNothingTells": [
+   "AI_USE_ADDED_COLUMNS: new entry",
+   "AI_USE_NEW_WORDS: new entry",
+   "ActEntryRow: new entry",
+   "AiUse#accountUseByMember: new entry",
+   "AiUse#aiProviderLimits: new entry",
+   "AiUse#aiThresholdSet: new entry",
+   "AiUse#countHealth: new entry",
+   "AiUse#estimateSwitch: new entry",
+   "AiUse#exploreAsk: accepts more",
+   "AiUse#healthPreview: new entry",
+   "AiUse#healthReport: new entry",
+   "AiUse#healthSent: new entry",
+   "AiUse#healthShareSet: new entry",
+   "AiUse#healthShareState: new entry",
+   "AiUse#reconcile: new entry",
+   "AiUse#recordProviderLimit: new entry",
+   "AiUse#retestAllowed: new entry",
+   "AiUse#retestSet: new entry",
+   "AiUse#retestingOff: new entry",
+   "AiUse#thresholdsReached: new entry",
+   "AiUse#useEstimate: new entry",
+   "AiUseDeps: new entry",
+   "AiUseDeps.catalogue: new entry",
+   "AiUseHandlers: new entry",
+   "AiUseHandlers.aihealthpreview: new entry",
+   "AiUseHandlers.aihealthset: new entry",
+   "AiUseHandlers.airetestset: new entry",
+   "AiUseHandlers.aiusebymember: new entry",
+   "AiUseNewWordKey: new entry",
+   "AiUseOpTable: new entry",
+   "Comparison: new entry",
+   "EFFORT_WORD_MAX: new entry",
+   "ESTIMATE_MIN_ACTS: new entry",
+   "ESTIMATE_SAMPLE_SIZE: new entry",
+   "FieldRefusal: new entry",
+   "HEALTH_DAYS_MAX: new entry",
+   "HEALTH_ERROR_CLASSES: new entry",
+   "HEALTH_KEEP_DAYS: new entry",
+   "HEALTH_MIN_CALLS: new entry",
+   "HEALTH_OUTCOMES: new entry",
+   "HEALTH_REPORT_VERSION: new entry",
+   "HealthPreviewAnswer: new entry",
+   "HealthReport: new entry",
+   "HealthRow: new entry",
+   "HealthSentRow: new entry",
+   "HealthShareSetAnswer: new entry",
+   "HealthShareState: new entry",
+   "HealthSwitchRow: new entry",
+   "HealthTurn: new entry",
+   "LABEL_FIELDS: new entry",
+   "Label: new entry",
+   "LabelServed: new entry",
+   "MemberUse: new entry",
+   "MoneyByUnit: new entry",
+   "NotAPayingAccountRefusal: new entry",
+   "OwnLimitReached: new entry",
+   "PROVIDER_LIMIT_KINDS: new entry",
+   "PROVIDER_LIMIT_SCOPES: new entry",
+   "PROVIDER_REPROBE_MS: new entry",
+   "ProviderLimitRecorded: new entry",
+   "ProviderLimitRefusal: new entry",
+   "ProviderLimitRequest: new entry",
+   "ProviderLimitRow: new entry",
+   "ProviderLimitShown: new entry",
+   "ProviderLimitStanding: new entry",
+   "ProviderLimits: new entry",
+   "REASONING_FIGURE: new entry",
+   "RECONCILE_TOLERANCE: new entry",
+   "RETEST_MODE: new entry",
+   "ReconcileGapRow: new entry",
+   "ReconcileRequest: new entry",
+   "Reconciled: new entry",
+   "RetestCapReached: new entry",
+   "RetestRequest: new entry",
+   "RetestRow: new entry",
+   "RetestSetAnswer: new entry",
+   "RetestState: new entry",
+   "RetestingOff: new entry",
+   "SpanCost: new entry",
+   "SwitchEstimate: new entry",
+   "SwitchRequest: new entry",
+   "THRESHOLD_KINDS: new entry",
+   "THRESHOLD_PERCENT_MAX: new entry",
+   "THRESHOLD_PERCENT_MIN: new entry",
+   "ThresholdCrossed: new entry",
+   "ThresholdCrossedRow: new entry",
+   "ThresholdHistoryRow: new entry",
+   "ThresholdInvalidRefusal: new entry",
+   "ThresholdRequest: new entry",
+   "ThresholdRow: new entry",
+   "ThresholdSet: new entry",
+   "USE_DAYS: new entry",
+   "UsageCost: new entry",
+   "UsageEntryRow: new entry",
+   "UsageMoneyRow: new entry",
+   "UseByMember: new entry",
+   "UseByMemberAnswer: new entry",
+   "UseCheckRefusal: new entry",
+   "op:aihealthpreview: new entry",
+   "op:aihealthset: new entry",
+   "op:airetestset: new entry",
+   "op:aiusebymember: new entry",
+   "table:ai_health: new entry",
+   "table:ai_health_sent: new entry",
+   "table:ai_health_switch: new entry",
+   "table:ai_provider_limits: new entry",
+   "table:ai_reconcile_gaps: new entry",
+   "table:ai_retest: new entry",
+   "table:ai_threshold_crossed: new entry",
+   "table:ai_threshold_history: new entry",
+   "table:ai_thresholds: new entry",
+   "table:ai_usage_entries: new entry",
+   "table:ai_usage_money: new entry",
+   "table:ai_use_act_entries: new entry"
+  ],
+  "throughModules": [
+   "store-door"
+  ]
+ },
+ {
+  "change": "ai-use:378",
+  "expectedListingChanges": true,
+  "toolListingChanges": true,
+  "expectedTelling": 10,
+  "toolTelling": 14,
+  "telling": {
+   "both": 10,
+   "onlyTool": [
+    "AiUse",
+    "AiUse#aiProviderLimits",
+    "AiUse#aiThresholdSet",
+    "AiUse#reconcile"
+   ],
+   "onlyExpected": []
+  },
+  "toolNothingTells": [
+   "EstimateAnswer: new entry"
+  ],
+  "throughModules": [
+   "store-assembly"
+  ]
+ },
+ {
+  "change": "ai-use:613",
+  "expectedListingChanges": true,
+  "toolListingChanges": true,
+  "expectedTelling": 5,
+  "toolTelling": 3,
+  "telling": {
+   "both": 2,
+   "onlyTool": [
+    "AiUse"
+   ],
+   "onlyExpected": [
+    "AiUseOpTable",
+    "AiUseHandlers",
+    "aiUseOps"
+   ]
+  },
+  "toolNothingTells": [
+   "AiUse#budgetSet: new entry",
+   "AiUseHandlers: new entry",
+   "AiUseHandlers.aibudgetset: new entry",
+   "AiUseHandlers.aiprojectbudget: new entry",
+   "AiUseOpTable: new entry",
+   "BudgetAnswer: new entry",
+   "BudgetRequest: new entry",
+   "op:aibudgetset: new entry",
+   "op:aiprojectbudget: new entry"
+  ],
+  "throughModules": [
+   "store-assembly"
+  ]
+ },
+ {
+  "change": "op-declarations:95",
+  "expectedListingChanges": true,
+  "toolListingChanges": true,
+  "expectedTelling": 3,
+  "toolTelling": 3,
+  "telling": {
+   "both": 3,
+   "onlyTool": [],
+   "onlyExpected": []
+  },
+  "toolNothingTells": [],
+  "throughModules": []
+ },
+ {
+  "change": "op-declarations:167",
+  "expectedListingChanges": false,
+  "toolListingChanges": false,
+  "expectedTelling": 0,
+  "toolTelling": 0,
+  "telling": {
+   "both": 0,
+   "onlyTool": [],
+   "onlyExpected": []
+  },
+  "toolNothingTells": [],
+  "throughModules": []
+ },
+ {
+  "change": "op-declarations:289",
+  "expectedListingChanges": true,
+  "toolListingChanges": true,
+  "expectedTelling": 1,
+  "toolTelling": 1,
+  "telling": {
+   "both": 1,
+   "onlyTool": [],
+   "onlyExpected": []
+  },
+  "toolNothingTells": [],
+  "throughModules": []
+ },
+ {
+  "change": "op-declarations:321",
+  "expectedListingChanges": false,
+  "toolListingChanges": false,
+  "expectedTelling": 0,
+  "toolTelling": 0,
+  "telling": {
+   "both": 0,
+   "onlyTool": [],
+   "onlyExpected": []
+  },
+  "toolNothingTells": [],
+  "throughModules": []
+ },
+ {
+  "change": "wizard-scripts:98",
+  "expectedListingChanges": false,
+  "toolListingChanges": false,
+  "expectedTelling": 0,
+  "toolTelling": 0,
+  "telling": {
+   "both": 0,
+   "onlyTool": [],
+   "onlyExpected": []
+  },
+  "toolNothingTells": [],
+  "throughModules": []
+ },
+ {
+  "change": "wizard-scripts:163",
+  "expectedListingChanges": false,
+  "toolListingChanges": false,
+  "expectedTelling": 0,
+  "toolTelling": 0,
+  "telling": {
+   "both": 0,
+   "onlyTool": [],
+   "onlyExpected": []
+  },
+  "toolNothingTells": [],
+  "throughModules": []
+ },
+ {
+  "change": "wizard-scripts:253",
+  "expectedListingChanges": false,
+  "toolListingChanges": false,
+  "expectedTelling": 0,
+  "toolTelling": 0,
+  "telling": {
+   "both": 0,
+   "onlyTool": [],
+   "onlyExpected": []
+  },
+  "toolNothingTells": [],
+  "throughModules": []
+ },
+ {
+  "change": "wizard-scripts:255",
+  "expectedListingChanges": false,
+  "toolListingChanges": false,
+  "expectedTelling": 0,
+  "toolTelling": 0,
+  "telling": {
+   "both": 0,
+   "onlyTool": [],
+   "onlyExpected": []
+  },
+  "toolNothingTells": [],
+  "throughModules": [
+   "store-assembly"
+  ]
+ },
+ {
+  "change": "wizard-scripts:546",
+  "expectedListingChanges": false,
+  "toolListingChanges": true,
+  "expectedTelling": 0,
+  "toolTelling": 0,
+  "telling": {
+   "both": 0,
+   "onlyTool": [],
+   "onlyExpected": []
+  },
+  "toolNothingTells": [
+   "SCREEN_ACTS_ADDED: new entry"
+  ],
+  "throughModules": []
+ }
+]

@@ -91,7 +91,10 @@ export function declarationsOf(program, file, plainElsewhere = new Map()) {
         add(v.name.text, t);
       }
     } else if (ts.isExportDeclaration(st) && st.exportClause && ts.isNamedExports(st.exportClause)) {
-      for (const e of st.exportClause.elements) add(e.name.text, print(st));
+      // Replay change R3: each name of an export list is its own declaration (the list's other names are not part of
+      // it), so adding a name to a list does not change the declaration of every name already in it.
+      const from = st.moduleSpecifier && ts.isStringLiteral(st.moduleSpecifier) ? ` from "${st.moduleSpecifier.text}"` : '';
+      for (const e of st.exportClause.elements) add(e.name.text, `export { ${e.propertyName ? `${e.propertyName.text} as ` : ''}${e.name.text} }${from};`);
     }
   }
   const unbracket = (t) => { let prev; do { prev = t; t = t.replace(/\(([^()]*\|[^()]*)\)/g, '$1'); } while (t !== prev); return t; };

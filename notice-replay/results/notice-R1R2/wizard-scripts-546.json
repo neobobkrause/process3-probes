@@ -1,0 +1,288 @@
+{
+ "provider": "wizard-scripts",
+ "reader": "TypeScript 5.6.3",
+ "firstCommentsStep": false,
+ "changedModules": [
+  {
+   "module": "wizard-scripts",
+   "through": null
+  }
+ ],
+ "entries": [
+  {
+   "module": "wizard-scripts",
+   "entry": "SCREEN_ACTS_ADDED",
+   "changes": [
+    "new entry"
+   ],
+   "after": {
+    "kind": "value",
+    "handsBack": "{ aimine: readonly string[]; aiproject: readonly string[]; aiproviders: readonly string[] }"
+   },
+   "tells": "nobody"
+  }
+ ],
+ "told": [
+  {
+   "user": "affordances",
+   "reasons": [
+    {
+     "module": "wizard-scripts",
+     "notFollowed": [
+      "reads or calls values of unknown kind: affordances/src/act-help.mjs:174 T53_DECLARED_BY_OWNER[op]; affordances/src/act-help.mjs:302 MEMBERSHIP_CHECKS.HANDLE_FIXED; affordances/src/act-help.mjs:304 ACT_HELP_KEYS (+3183)"
+     ],
+     "through": null
+    }
+   ],
+   "undeclared": []
+  },
+  {
+   "user": "queue-producers",
+   "reasons": [
+    {
+     "module": "wizard-scripts",
+     "notFollowed": [
+      "reads or calls values of unknown kind: queue-producers/src/index.mjs:89 r; queue-producers/src/index.mjs:102 storage; queue-producers/src/index.mjs:108 make (+4145)"
+     ],
+     "through": null
+    }
+   ],
+   "undeclared": []
+  },
+  {
+   "user": "translations",
+   "reasons": [
+    {
+     "module": "wizard-scripts",
+     "notFollowed": [
+      "reads or calls values of unknown kind: translations/src/index.mjs:38 WORD_ROWS.map; translations/src/index.mjs:38 WORD_ROWS; translations/src/index.mjs:42 interfaceWords().map (+1896)"
+     ],
+     "through": null
+    }
+   ],
+   "undeclared": []
+  },
+  {
+   "user": "instance-setup",
+   "reasons": [
+    {
+     "module": "wizard-scripts",
+     "notFollowed": [
+      "reads or calls values of unknown kind: instance-setup/src/livefire.mjs:30 env; instance-setup/src/livefire.mjs:39 stub.fetch; instance-setup/src/livefire.mjs:39 stub (+3670)"
+     ],
+     "through": null
+    }
+   ],
+   "undeclared": []
+  },
+  {
+   "user": "op-declarations",
+   "reasons": [
+    {
+     "module": "wizard-scripts",
+     "notFollowed": [
+      "reads or calls values of unknown kind: op-declarations/src/compose.mjs:10 composed; op-declarations/src/compose.mjs:16 composed; op-declarations/src/declared.mjs:15 a (+3648)"
+     ],
+     "through": null
+    }
+   ],
+   "undeclared": []
+  },
+  {
+   "user": "answer-envelope",
+   "reasons": [
+    {
+     "module": "wizard-scripts",
+     "notFollowed": [
+      "declares wizard-scripts but no use of it is found in its code",
+      "reads or calls values of unknown kind: answer-envelope/src/families.mjs:181 fill; answer-envelope/src/families.mjs:182 Reflect[op]; answer-envelope/src/families.mjs:287 t.push (+1167)"
+     ],
+     "through": null
+    }
+   ],
+   "undeclared": []
+  },
+  {
+   "user": "store-door",
+   "reasons": [
+    {
+     "module": "wizard-scripts",
+     "notFollowed": [
+      "reads or calls values of unknown kind: store-door/src/dispatch.mjs:202 url.searchParams.get; store-door/src/dispatch.mjs:202 url.searchParams; store-door/src/dispatch.mjs:202 url (+1418)"
+     ],
+     "through": null
+    }
+   ],
+   "undeclared": []
+  },
+  {
+   "user": "store-assembly",
+   "reasons": [
+    {
+     "module": "wizard-scripts",
+     "notFollowed": [
+      "reads or calls values of unknown kind: store-assembly/src/acquire-timings.mjs:25 host; store-assembly/src/acquire-timings.mjs:25 host.storage; store-assembly/src/acquire-timings.mjs:25 host.storage.sql (+7128)"
+     ],
+     "through": null
+    }
+   ],
+   "undeclared": []
+  },
+  {
+   "user": "interface-shell",
+   "reasons": [
+    {
+     "module": "wizard-scripts",
+     "notFollowed": [
+      "reads or calls values of unknown kind: interface-shell/src/browser.mjs:10 win; interface-shell/src/browser.mjs:12 win[name].getItem; interface-shell/src/browser.mjs:12 win[name] (+9011)"
+     ],
+     "through": null
+    }
+   ],
+   "undeclared": []
+  },
+  {
+   "user": "screens-wizards",
+   "reasons": [
+    {
+     "module": "wizard-scripts",
+     "notFollowed": [
+      "reads or calls values of unknown kind: screens-wizards/src/guide.mjs:34 given; screens-wizards/src/guide.mjs:35 given; screens-wizards/src/guide.mjs:36 given (+2349)"
+     ],
+     "through": null
+    }
+   ],
+   "undeclared": []
+  },
+  {
+   "user": "screens-intake",
+   "reasons": [
+    {
+     "module": "wizard-scripts",
+     "notFollowed": [
+      "reads or calls values of unknown kind: screens-intake/src/about-knocker.mjs:10 view; screens-intake/src/about-knocker.mjs:10 view.subject.toLowerCase; screens-intake/src/about-knocker.mjs:10 view.subject (+8975)"
+     ],
+     "through": null
+    }
+   ],
+   "undeclared": []
+  },
+  {
+   "user": "screens-inquiry",
+   "reasons": [
+    {
+     "module": "wizard-scripts",
+     "notFollowed": [
+      "reads or calls values of unknown kind: screens-inquiry/src/admit.mjs:12 SCREEN_REGISTRY.find; screens-inquiry/src/admit.mjs:12 SCREEN_REGISTRY; screens-inquiry/src/admit.mjs:12 r (+17533)"
+     ],
+     "through": null
+    }
+   ],
+   "undeclared": []
+  },
+  {
+   "user": "screens-document",
+   "reasons": [
+    {
+     "module": "wizard-scripts",
+     "notFollowed": [
+      "declares wizard-scripts but no use of it is found in its code"
+     ],
+     "through": null
+    }
+   ],
+   "undeclared": []
+  },
+  {
+   "user": "screens-publish",
+   "reasons": [
+    {
+     "module": "wizard-scripts",
+     "notFollowed": [
+      "declares wizard-scripts but no use of it is found in its code",
+      "reads or calls values of unknown kind: screens-publish/src/case-editor.mjs:15 view.parts.subject; screens-publish/src/case-editor.mjs:15 view.parts; screens-publish/src/case-editor.mjs:15 view (+7645)"
+     ],
+     "through": null
+    }
+   ],
+   "undeclared": []
+  },
+  {
+   "user": "screens-action",
+   "reasons": [
+    {
+     "module": "wizard-scripts",
+     "notFollowed": [
+      "declares wizard-scripts but no use of it is found in its code",
+      "reads or calls values of unknown kind: screens-action/src/action.mjs:14 spec; screens-action/src/action.mjs:22 view.data; screens-action/src/action.mjs:22 view (+9727)"
+     ],
+     "through": null
+    }
+   ],
+   "undeclared": []
+  },
+  {
+   "user": "screens-plan",
+   "reasons": [
+    {
+     "module": "wizard-scripts",
+     "notFollowed": [
+      "declares wizard-scripts but no use of it is found in its code"
+     ],
+     "through": null
+    }
+   ],
+   "undeclared": []
+  },
+  {
+   "user": "screens-matter",
+   "reasons": [
+    {
+     "module": "wizard-scripts",
+     "notFollowed": [
+      "declares wizard-scripts but no use of it is found in its code"
+     ],
+     "through": null
+    }
+   ],
+   "undeclared": []
+  },
+  {
+   "user": "control-plane",
+   "reasons": [
+    {
+     "module": "wizard-scripts",
+     "notFollowed": [
+      "reads or calls values of unknown kind: control-plane/src/app.mjs:29 req; control-plane/src/app.mjs:30 url; control-plane/src/app.mjs:31 p.startsWith (+12201)"
+     ],
+     "through": null
+    }
+   ],
+   "undeclared": []
+  },
+  {
+   "user": "plane",
+   "reasons": [
+    {
+     "module": "wizard-scripts",
+     "notFollowed": [
+      "reads or calls values of unknown kind: plane/src/arrival.mjs:8 headers.get; plane/src/arrival.mjs:8 headers; plane/src/arrival.mjs:9 raw.trim (+3427)"
+     ],
+     "through": null
+    }
+   ],
+   "undeclared": []
+  }
+ ],
+ "notTold": [],
+ "warnings": [],
+ "interfaceChanged": true,
+ "summary": "1 module(s) changed their listing; 0 entries changed in a way that tells; 19 user(s) told.",
+ "replay": {
+  "change": "wizard-scripts:546",
+  "ms": 97326,
+  "ranAt": "2026-11-15T17:21:36.827Z",
+  "tool": "notice-proof/tool/p3tool.mjs",
+  "commentedUsers": null
+ }
+}

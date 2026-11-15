@@ -1,0 +1,575 @@
+{
+ "provider": "ai-catalogue",
+ "reader": "TypeScript 5.6.3",
+ "firstCommentsStep": false,
+ "changedModules": [
+  {
+   "module": "ai-catalogue",
+   "through": null
+  }
+ ],
+ "entries": [
+  {
+   "module": "ai-catalogue",
+   "entry": "AI_CATALOGUE_DECLARATIONS",
+   "changes": [
+    "declaration changed (not classified)"
+   ],
+   "tells": "users",
+   "before": {
+    "kind": "value",
+    "handsBack": "readonly { derive: \"stored\"; export: \"admin-only\"; expunge: \"none\"; name: string; purge: \"exempt\"; sight: \"group\"; version_chain: true }[]"
+   },
+   "after": {
+    "kind": "value",
+    "handsBack": "readonly { derive: \"stored\"; export: \"admin-only\"; expunge: \"none\"; name: string; purge: \"exempt\"; sight: \"group\"; version_chain: true }[]"
+   }
+  },
+  {
+   "module": "ai-catalogue",
+   "entry": "AI_CATALOGUE_TABLES",
+   "changes": [
+    "declaration changed (not classified)"
+   ],
+   "tells": "users",
+   "before": {
+    "kind": "value",
+    "handsBack": "readonly string[]"
+   },
+   "after": {
+    "kind": "value",
+    "handsBack": "readonly string[]"
+   }
+  },
+  {
+   "module": "ai-catalogue",
+   "entry": "CATALOGUE_CHECKS",
+   "changes": [
+    "declaration changed (not classified)"
+   ],
+   "tells": "users",
+   "before": {
+    "kind": "value",
+    "handsBack": "{ ADVISORY_BAD_MOVE: { check: string; where: string; word: string }; ADVISORY_REASON_UNKNOWN: { check: string; where: string; word: string }; CATALOGUE_ENTRY_INVALID: { check: string; where: string; word: string }; CATALOGUE_EVIDENCE_MISSING: { check: string; where: string; word: string }; CATALOGUE_PATH_INVALID: { check: string; where: string; word: string }; CATALOGUE_PAYLOAD_INVALID: { check: string; where: string; word: string }; CATALOGUE_PLAN_INVALID: { check: string; where: string; word: string }; CATALOGUE_ROLLBACK_UNKNOWN: { check: string; where: string; word: string }; CATALOGUE_UNAVAILABLE: { check: string; where: string; word: string }; CHECK_UNKNOWN: { check: string; where: string; word: string }; DIGEST_MISMATCH: { check: string; where: string; word: string }; NOT_NEWER: { check: string; where: string; word: string }; PART_UNKNOWN: { check: string; where: string; word: string } }",
+    "bounds": [
+     "check: `C-156.` and the row's number, 1 to 13",
+     "where: `src/ai-catalogue/<file> <function> > <region>`",
+     "word: `ai.refused.` and the code in lower case without underscores"
+    ]
+   },
+   "after": {
+    "kind": "value",
+    "handsBack": "{ ADVISORY_BAD_MOVE: { check: string; where: string; word: string }; ADVISORY_REASON_UNKNOWN: { check: string; where: string; word: string }; CATALOGUE_ENTRY_INVALID: { check: string; where: string; word: string }; CATALOGUE_EVIDENCE_MISSING: { check: string; where: string; word: string }; CATALOGUE_PATH_INVALID: { check: string; where: string; word: string }; CATALOGUE_PAYLOAD_INVALID: { check: string; where: string; word: string }; CATALOGUE_PLAN_INVALID: { check: string; where: string; word: string }; CATALOGUE_ROLLBACK_UNKNOWN: { check: string; where: string; word: string }; CATALOGUE_UNAVAILABLE: { check: string; where: string; word: string }; CHECK_UNKNOWN: { check: string; where: string; word: string }; DIGEST_MISMATCH: { check: string; where: string; word: string }; NOT_NEWER: { check: string; where: string; word: string }; PART_UNKNOWN: { check: string; where: string; word: string } }",
+    "bounds": [
+     "check: `C-156.` and the row's number, 1 to 13",
+     "where: `src/ai-catalogue/<file> <function> > <region>`",
+     "word: `ai.refused.` and the code in lower case without underscores"
+    ]
+   }
+  },
+  {
+   "module": "ai-catalogue",
+   "entry": "CATALOGUE_STATES",
+   "changes": [
+    "declaration changed (not classified)"
+   ],
+   "tells": "users",
+   "before": {
+    "kind": "value",
+    "handsBack": "readonly (\"current\" | \"needs_newer_release\" | \"stale\" | \"unavailable\")[]"
+   },
+   "after": {
+    "kind": "value",
+    "handsBack": "readonly (\"current\" | \"needs_newer_release\" | \"stale\" | \"unavailable\")[]"
+   }
+  },
+  {
+   "module": "ai-catalogue",
+   "entry": "CHECK_IDS",
+   "changes": [
+    "declaration changed (not classified)"
+   ],
+   "tells": "users",
+   "before": {
+    "kind": "value",
+    "handsBack": "readonly (\"P1\" | \"P2\" | \"P3\" | \"P4\" | \"P5\" | \"P6\" | \"P7\")[]"
+   },
+   "after": {
+    "kind": "value",
+    "handsBack": "readonly (\"P1\" | \"P2\" | \"P3\" | \"P4\" | \"P5\" | \"P6\" | \"P7\")[]"
+   }
+  },
+  {
+   "module": "ai-catalogue",
+   "entry": "DEVELOPMENT_PLAN",
+   "changes": [
+    "new entry"
+   ],
+   "after": {
+    "kind": "value",
+    "handsBack": "string"
+   },
+   "tells": "nobody"
+  },
+  {
+   "module": "ai-catalogue",
+   "entry": "DEVELOPMENT_PROVIDER",
+   "changes": [
+    "new entry"
+   ],
+   "after": {
+    "kind": "value",
+    "handsBack": "string"
+   },
+   "tells": "nobody"
+  },
+  {
+   "module": "ai-catalogue",
+   "entry": "DEVELOPMENT_SEED",
+   "changes": [
+    "new entry"
+   ],
+   "after": {
+    "kind": "value",
+    "handsBack": "{ armored: null | string; body: string; statement: { bytes: number; issued_at: string; schema_version: number; seq: number; sha256: string } }",
+    "bounds": [
+     "bytes: the body's length in UTF-8 bytes",
+     "sha256: 64 lowercase hex digits, the SHA-256 of the body's UTF-8 bytes"
+    ]
+   },
+   "tells": "nobody"
+  },
+  {
+   "module": "ai-catalogue",
+   "entry": "DEVELOPMENT_SEED_PAYLOAD",
+   "changes": [
+    "new entry"
+   ],
+   "after": {
+    "kind": "value",
+    "handsBack": "{ combined: never[]; entries: { adapter_type: string; capabilities: { batch: { ev: { date: string; grade: string; source: string }; value: anything }; caching: { ev: { date: string; grade: string; source: string }; value: anything }; image_input: { ev: { date: string; grade: string; source: string }; value: anything }; parallel_tools: { ev: { date: string; grade: string; source: string }; value: anything }; schema_output: { ev: { date: string; grade: string; source: string }; value: anything }; schema_with_tools: { ev: { date: string; grade: string; source: string }; value: anything }; session: { ev: { date: string; grade: string; source: string }; value: anything }; streaming: { ev: { date: string; grade: string; source: string }; value: anything }; tools: { ev: { date: string; grade: string; source: string }; value: anything } }; characterization: { CH10: { ref: string }; CH4: { conditions: string; ev: { date: string; grade: string; source: string }; method: string; reviewer: string; samples: number; value: anything } }; checks: { [key: string]: { answer: string; ev: { date: string; grade: string; page: string; quote: string; source: string } } }; confirmed_at: string; developer: { jurisdiction: string; name: string }; display_name: string; effort_classes: { ev: { date: string; grade: string; source: string }; low: string; medium: string }; effort_set: { default: string; ev: { date: string; grade: string; source: string }; values: string[] }; entry_id: string; gate: { [key: string]: { at: string; ev: { date: string; grade: string; source: string }; limits: never[]; partial_coverage: boolean; run_ref: string; suiteVersions: { bank: string; image: string; scorer: string; thresholds: string }; tier: null; verdict: string } }; host: string; lifecycle: string; limits: { context_effective: { ev: { date: string; grade: string; source: string }; value: anything }; context_stated: { ev: { date: string; grade: string; source: string }; value: anything }; image_max_bytes: { open: boolean }; max_output: { ev: { date: string; grade: string; source: string }; value: anything } }; model: string; plan_ids: string[]; prices: { cache_read: number; cache_write: null; date: string; ev: { date: string; grade: string; source: string }; input: number; output: number; unit: string }; profile: { id: string; min_version: number }; provider: string; served_ids: string[]; shown: { breach_notification: { answer: string }; terms_permit_use: { answer: string; ev: { date: string; grade: string; page: string; quote: string; source: string } } }; standard_task_costs: { open: boolean }; version: string; version_kind: string; zero_retention: { ev: { date: string; grade: string; source: string }; value: anything } }[]; guidance: { ev: { date: string; grade: string; source: string }; guidance_id: string; plan_id: string; steps: { kind: string; text: { en: string }; url: string }[] }[]; issued_at: \"2026-11-05T00:00:00Z\"; library: never[]; parts: string[]; plans: { binding_terms: never[]; confirmed_at: string; connection_ways: string[]; credential_kind: string; free_tier_trains: { ev: { date: string; grade: string; source: string }; value: anything }; guidance_id: string; kind: string; lifecycle: string; means_allowed: { ev: { date: string; grade: string; source: string }; value: anything }; money: { ev: { date: string; grade: string; source: string }; value: anything }; plan_id: string; price_basis: { basis: string; date: string; ev: { date: string; grade: string; source: string }; includes: never[]; limits: never[] }; provider: string; restrictions: never[]; runtimes: { ev: { date: string; grade: string; source: string }; value: anything }; scope: { ev: { date: string; grade: string; source: string }; value: anything }; token_storage: { ev: { date: string; grade: string; source: string }; value: anything } }[]; policy: { origin: { barred: never[]; check: string }; review_period_days: number; stale_after_days: number }; profiles: { adapter_type: string; allowed_hosts: string[]; auth_style: string; base_url: string; features: never[]; id: string; idempotency: null; key_shapes: never[]; mappings: {  }; pin_map: null; quirks: never[]; reasoning_billing: string; served_report: null; version: number }[]; providers: { id: string; kind: string; name: string }[]; schema_version: 1; seq: 2; tested: never[]; warnings: never[] }"
+   },
+   "tells": "nobody"
+  },
+  {
+   "module": "ai-catalogue",
+   "entry": "DISPLAY_NAME_MAX",
+   "changes": [
+    "declaration changed (not classified)"
+   ],
+   "tells": "users",
+   "before": {
+    "kind": "value",
+    "handsBack": "number"
+   },
+   "after": {
+    "kind": "value",
+    "handsBack": "number"
+   }
+  },
+  {
+   "module": "ai-catalogue",
+   "entry": "EFFORT_WORD_MAX",
+   "changes": [
+    "declaration changed (not classified)"
+   ],
+   "tells": "users",
+   "before": {
+    "kind": "value",
+    "handsBack": "number"
+   },
+   "after": {
+    "kind": "value",
+    "handsBack": "number"
+   }
+  },
+  {
+   "module": "ai-catalogue",
+   "entry": "ENTRY_ID_MAX",
+   "changes": [
+    "declaration changed (not classified)"
+   ],
+   "tells": "users",
+   "before": {
+    "kind": "value",
+    "handsBack": "number"
+   },
+   "after": {
+    "kind": "value",
+    "handsBack": "number"
+   }
+  },
+  {
+   "module": "ai-catalogue",
+   "entry": "GRADES",
+   "changes": [
+    "declaration changed (not classified)"
+   ],
+   "tells": "users",
+   "before": {
+    "kind": "value",
+    "handsBack": "readonly (\"REPORTED\" | \"REPRODUCED\" | \"STATED\")[]"
+   },
+   "after": {
+    "kind": "value",
+    "handsBack": "readonly (\"REPORTED\" | \"REPRODUCED\" | \"STATED\")[]"
+   }
+  },
+  {
+   "module": "ai-catalogue",
+   "entry": "LIFECYCLE",
+   "changes": [
+    "declaration changed (not classified)"
+   ],
+   "tells": "users",
+   "before": {
+    "kind": "value",
+    "handsBack": "readonly (\"lapsed\" | \"listed\" | \"retired\" | \"watch\")[]"
+   },
+   "after": {
+    "kind": "value",
+    "handsBack": "readonly (\"lapsed\" | \"listed\" | \"retired\" | \"watch\")[]"
+   }
+  },
+  {
+   "module": "ai-catalogue",
+   "entry": "LIMIT_KINDS",
+   "changes": [
+    "declaration changed (not classified)"
+   ],
+   "tells": "users",
+   "before": {
+    "kind": "value",
+    "handsBack": "readonly (\"context_depth\" | \"no_image_input\" | \"no_parallel_tools\" | \"no_streaming\" | \"output_cap\")[]"
+   },
+   "after": {
+    "kind": "value",
+    "handsBack": "readonly (\"context_depth\" | \"no_image_input\" | \"no_parallel_tools\" | \"no_streaming\" | \"output_cap\")[]"
+   }
+  },
+  {
+   "module": "ai-catalogue",
+   "entry": "SHOWN_IDS",
+   "changes": [
+    "declaration changed (not classified)"
+   ],
+   "tells": "users",
+   "before": {
+    "kind": "value",
+    "handsBack": "readonly (\"breach_notification\" | \"terms_permit_use\")[]"
+   },
+   "after": {
+    "kind": "value",
+    "handsBack": "readonly (\"breach_notification\" | \"terms_permit_use\")[]"
+   }
+  },
+  {
+   "module": "ai-catalogue",
+   "entry": "STATE_WORDS",
+   "changes": [
+    "declaration changed (not classified)"
+   ],
+   "tells": "users",
+   "before": {
+    "kind": "value",
+    "handsBack": "{ current: string; needs_newer_release: string; stale: string; unavailable: string }"
+   },
+   "after": {
+    "kind": "value",
+    "handsBack": "{ current: string; needs_newer_release: string; stale: string; unavailable: string }"
+   }
+  },
+  {
+   "module": "ai-catalogue",
+   "entry": "VERDICTS",
+   "changes": [
+    "declaration changed (not classified)"
+   ],
+   "tells": "users",
+   "before": {
+    "kind": "value",
+    "handsBack": "readonly (\"not_suitable\" | \"not_yet_rated\" | \"passes\" | \"passes_with_limits\")[]"
+   },
+   "after": {
+    "kind": "value",
+    "handsBack": "readonly (\"not_suitable\" | \"not_yet_rated\" | \"passes\" | \"passes_with_limits\")[]"
+   }
+  },
+  {
+   "module": "ai-catalogue",
+   "entry": "isDate",
+   "changes": [
+    "declaration changed (not classified)"
+   ],
+   "tells": "users",
+   "before": {
+    "kind": "function",
+    "accepts": "(arg0: unknown)",
+    "handsBack": "boolean"
+   },
+   "after": {
+    "kind": "function",
+    "accepts": "(arg0: unknown)",
+    "handsBack": "boolean"
+   }
+  },
+  {
+   "module": "ai-catalogue",
+   "entry": "isInstant",
+   "changes": [
+    "declaration changed (not classified)"
+   ],
+   "tells": "users",
+   "before": {
+    "kind": "function",
+    "accepts": "(arg0: unknown)",
+    "handsBack": "boolean"
+   },
+   "after": {
+    "kind": "function",
+    "accepts": "(arg0: unknown)",
+    "handsBack": "boolean"
+   }
+  },
+  {
+   "module": "ai-catalogue",
+   "entry": "seedFor",
+   "changes": [
+    "new entry"
+   ],
+   "after": {
+    "kind": "function",
+    "accepts": "(arg0?: { AI_CATALOGUE_DEVELOPMENT?: string; AI_CATALOGUE_DEVELOPMENT_KEY?: unknown; AI_CATALOGUE_SEED_SIGNATURE?: string; BIO_NOW_MS?: number | string })",
+    "handsBack": "{ armored: null | string; body: string; statement: { bytes: number; issued_at: string; schema_version: number; seq: number; sha256: string } }",
+    "bounds": [
+     "AI_CATALOGUE_DEVELOPMENT: exactly \"1\" to trust development key lines; any other value trusts none",
+     "AI_CATALOGUE_DEVELOPMENT_KEY: one ssh-ed25519 line whose comment ends `-development`, not one of Bob's; trusted only where AI_CATALOGUE_DEVELOPMENT is \"1\"",
+     "bytes: the body's length in UTF-8 bytes",
+     "sha256: 64 lowercase hex digits, the SHA-256 of the body's UTF-8 bytes"
+    ]
+   },
+   "tells": "nobody"
+  },
+  {
+   "module": "ai-catalogue",
+   "entry": "validatePayload",
+   "changes": [
+    "declaration changed (not classified)"
+   ],
+   "tells": "users",
+   "before": {
+    "kind": "function",
+    "accepts": "(arg0: unknown, arg1?: { supported?: readonly number[] })",
+    "handsBack": "{ check?: string; code?: \"CATALOGUE_PAYLOAD_INVALID\"; ok: boolean; path?: string; reason?: \"CATALOGUE_ENTRY_INVALID\" | \"CATALOGUE_EVIDENCE_MISSING\" | \"CATALOGUE_PAYLOAD_INVALID\" | \"CATALOGUE_PLAN_INVALID\"; word?: string }",
+    "bounds": [
+     "path: the first offending path, written as `entries[0].checks.P1`"
+    ]
+   },
+   "after": {
+    "kind": "function",
+    "accepts": "(arg0: unknown, arg1?: { supported?: readonly number[] })",
+    "handsBack": "{ check?: string; code?: \"CATALOGUE_PAYLOAD_INVALID\"; ok: boolean; path?: string; reason?: \"CATALOGUE_ENTRY_INVALID\" | \"CATALOGUE_EVIDENCE_MISSING\" | \"CATALOGUE_PAYLOAD_INVALID\" | \"CATALOGUE_PLAN_INVALID\"; word?: string }",
+    "bounds": [
+     "path: the first offending path, written as `entries[0].checks.P1`"
+    ]
+   }
+  }
+ ],
+ "told": [
+  {
+   "user": "ai-accounts",
+   "reasons": [
+    {
+     "module": "ai-catalogue",
+     "notFollowed": [
+      "reads or calls values of unknown kind: ai-accounts/src/accounts.mjs:28 row; ai-accounts/src/accounts.mjs:34 s; ai-accounts/src/accounts.mjs:40 plan (+4396)"
+     ],
+     "through": null
+    }
+   ],
+   "undeclared": []
+  },
+  {
+   "user": "agent-model",
+   "reasons": [
+    {
+     "module": "ai-catalogue",
+     "notFollowed": [
+      "declares ai-catalogue but no use of it is found in its code",
+      "reads or calls values of unknown kind: agent-model/src/src/apikey.mjs:34 m; agent-model/src/src/apikey.mjs:34 m.content.map; agent-model/src/src/apikey.mjs:34 m.content (+2439)"
+     ],
+     "through": null
+    }
+   ],
+   "undeclared": []
+  },
+  {
+   "user": "ai-use",
+   "reasons": [
+    {
+     "module": "ai-catalogue",
+     "notFollowed": [
+      "reads or calls values of unknown kind: ai-use/src/checks.mjs:110 s.split(`{${k}}`).join; ai-use/src/checks.mjs:110 s.split(`{${k}}`); ai-use/src/checks.mjs:110 s.split (+2011)"
+     ],
+     "through": null
+    }
+   ],
+   "undeclared": []
+  },
+  {
+   "user": "ai-runs",
+   "reasons": [
+    {
+     "module": "ai-catalogue",
+     "entry": "EFFORT_WORD_MAX",
+     "changes": [
+      "declaration changed (not classified)"
+     ],
+     "lines": [
+      "ai-runs/src/index.mjs:34",
+      "ai-runs/src/index.mjs:3452"
+     ],
+     "through": null
+    },
+    {
+     "module": "ai-catalogue",
+     "notFollowed": [
+      "reads or calls values of unknown kind: ai-runs/src/index.mjs:91 gate; ai-runs/src/index.mjs:92 gate; ai-runs/src/index.mjs:95 gate (+4925)"
+     ],
+     "through": null
+    }
+   ],
+   "undeclared": []
+  },
+  {
+   "user": "agent-runner",
+   "reasons": [
+    {
+     "module": "ai-catalogue",
+     "notFollowed": [
+      "declares ai-catalogue but no use of it is found in its code",
+      "reads or calls values of unknown kind: agent-runner/src/dist/agent-runner.bundled.mjs:1 cooked.slice; agent-runner/src/dist/agent-runner.bundled.mjs:1 cooked; agent-runner/src/dist/agent-runner.bundled.mjs:1 existingSignal (+1444)"
+     ],
+     "through": null
+    }
+   ],
+   "undeclared": []
+  },
+  {
+   "user": "agent-worker",
+   "reasons": [
+    {
+     "module": "ai-catalogue",
+     "notFollowed": [
+      "declares ai-catalogue but no use of it is found in its code",
+      "reads or calls values of unknown kind: agent-worker/src/scripts/build.mjs:41 member.bundle; agent-worker/src/scripts/build.mjs:42 built.bytes; agent-worker/src/scripts/build.mjs:43 member.bundle (+5401)"
+     ],
+     "through": null
+    }
+   ],
+   "undeclared": []
+  },
+  {
+   "user": "ai-gate",
+   "reasons": [
+    {
+     "module": "ai-catalogue",
+     "notFollowed": [
+      "reads or calls values of unknown kind: ai-gate/src/bank.mjs:37 o; ai-gate/src/bank.mjs:40 G9_TOPICS; ai-gate/src/bank.mjs:55 GROUP_NEEDS (+1646)"
+     ],
+     "through": null
+    }
+   ],
+   "undeclared": []
+  },
+  {
+   "user": "surface-declarations",
+   "reasons": [
+    {
+     "module": "ai-catalogue",
+     "notFollowed": [
+      "declares ai-catalogue but no use of it is found in its code"
+     ],
+     "through": null
+    }
+   ],
+   "undeclared": []
+  },
+  {
+   "user": "op-declarations",
+   "reasons": [
+    {
+     "module": "ai-catalogue",
+     "notFollowed": [
+      "declares ai-catalogue but no use of it is found in its code",
+      "reads or calls values of unknown kind: op-declarations/src/compose.mjs:10 composed; op-declarations/src/compose.mjs:16 composed; op-declarations/src/declared.mjs:15 a (+3653)"
+     ],
+     "through": null
+    }
+   ],
+   "undeclared": []
+  },
+  {
+   "user": "answer-envelope",
+   "reasons": [
+    {
+     "module": "ai-catalogue",
+     "entry": "CATALOGUE_CHECKS",
+     "changes": [
+      "declaration changed (not classified)"
+     ],
+     "lines": [
+      "answer-envelope/test/r19-mail-door.test.mjs:56",
+      "answer-envelope/test/r19-mail-door.test.mjs:59"
+     ],
+     "through": null
+    },
+    {
+     "module": "ai-catalogue",
+     "notFollowed": [
+      "reads or calls values of unknown kind: answer-envelope/src/families.mjs:181 fill; answer-envelope/src/families.mjs:182 Reflect[op]; answer-envelope/src/families.mjs:287 t.push (+1167)"
+     ],
+     "through": null
+    }
+   ],
+   "undeclared": []
+  },
+  {
+   "user": "store-assembly",
+   "reasons": [
+    {
+     "module": "ai-catalogue",
+     "notFollowed": [
+      "reads or calls values of unknown kind: store-assembly/src/acquire-timings.mjs:25 host; store-assembly/src/acquire-timings.mjs:25 host.storage; store-assembly/src/acquire-timings.mjs:25 host.storage.sql (+7141)"
+     ],
+     "through": null
+    }
+   ],
+   "undeclared": []
+  },
+  {
+   "user": "ai-issuer",
+   "reasons": [
+    {
+     "module": "ai-catalogue",
+     "notFollowed": [
+      "declares ai-catalogue but no use of it is found in its code"
+     ],
+     "through": null
+    }
+   ],
+   "undeclared": []
+  }
+ ],
+ "notTold": [],
+ "warnings": [],
+ "interfaceChanged": true,
+ "summary": "1 module(s) changed their listing; 17 entries changed in a way that tells; 12 user(s) told.",
+ "replay": {
+  "change": "ai-catalogue:484",
+  "ms": 78364,
+  "ranAt": "2026-11-15T17:11:25.100Z",
+  "tool": "notice-proof/tool/p3tool.mjs",
+  "commentedUsers": null
+ }
+}

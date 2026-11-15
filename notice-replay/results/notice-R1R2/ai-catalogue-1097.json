@@ -1,0 +1,850 @@
+{
+ "provider": "ai-catalogue",
+ "reader": "TypeScript 5.6.3",
+ "firstCommentsStep": false,
+ "changedModules": [
+  {
+   "module": "ai-catalogue",
+   "through": null
+  }
+ ],
+ "entries": [
+  {
+   "module": "ai-catalogue",
+   "entry": "AdvisoryKind",
+   "changes": [
+    "cannot stand in"
+   ],
+   "tells": "users",
+   "before": {
+    "kind": "kind",
+    "accepts": "\"clear\" | \"lapse\" | \"retire\" | \"watch\"",
+    "handsBack": "\"clear\" | \"lapse\" | \"retire\" | \"watch\"",
+    "side": "both"
+   },
+   "after": {
+    "kind": "kind",
+    "handsBack": "\"clear\" | \"lapse\" | \"retire\" | \"watch\"",
+    "side": "handsBack"
+   }
+  },
+  {
+   "module": "ai-catalogue",
+   "entry": "AdvisoryReason",
+   "changes": [
+    "cannot stand in"
+   ],
+   "tells": "users",
+   "before": {
+    "kind": "kind",
+    "accepts": "\"canary_drift\" | \"deprecation\" | \"health\" | \"other\" | \"served_mismatch\" | \"team_divergence\" | \"terms_change\"",
+    "handsBack": "\"canary_drift\" | \"deprecation\" | \"health\" | \"other\" | \"served_mismatch\" | \"team_divergence\" | \"terms_change\"",
+    "side": "both"
+   },
+   "after": {
+    "kind": "kind",
+    "handsBack": "\"canary_drift\" | \"deprecation\" | \"health\" | \"other\" | \"served_mismatch\" | \"team_divergence\" | \"terms_change\"",
+    "side": "handsBack"
+   }
+  },
+  {
+   "module": "ai-catalogue",
+   "entry": "AiCatalogue",
+   "changes": [
+    "declaration changed (not classified)"
+   ],
+   "tells": "users",
+   "before": {
+    "kind": "class",
+    "accepts": "(arg0?: { clock?: () => number | null; core?: handle ai-catalogue.RecordCoreUse | null; env?: { AI_CATALOGUE_DEVELOPMENT?: string; AI_CATALOGUE_DEVELOPMENT_KEY?: unknown; AI_CATALOGUE_SEED_SIGNATURE?: string; BIO_NOW_MS?: number | string }; keys?: readonly string[]; seed?: { armored: null | string; body: string; statement: { bytes: number; issued_at: string; schema_version: number; seq: number; sha256: string } } | null; sql?: handle ai-catalogue.SqlStorage; supported?: readonly number[] })",
+    "handsBack": "handle ai-catalogue.AiCatalogue",
+    "bounds": [
+     "AI_CATALOGUE_DEVELOPMENT: exactly \"1\" to trust development key lines; any other value trusts none",
+     "AI_CATALOGUE_DEVELOPMENT_KEY: one ssh-ed25519 line whose comment ends `-development`, not one of Bob's; trusted only where AI_CATALOGUE_DEVELOPMENT is \"1\"",
+     "bytes: the body's length in UTF-8 bytes",
+     "sha256: 64 lowercase hex digits, the SHA-256 of the body's UTF-8 bytes"
+    ]
+   },
+   "after": {
+    "kind": "class",
+    "accepts": "(arg0?: { clock?: () => number | null; core?: handle ai-catalogue.RecordCoreUse | null; env?: { AI_CATALOGUE_DEVELOPMENT?: string; AI_CATALOGUE_DEVELOPMENT_KEY?: unknown; AI_CATALOGUE_SEED_SIGNATURE?: string; BIO_NOW_MS?: number | string }; keys?: readonly string[]; seed?: { armored: null | string; body: string; statement: { bytes: number; issued_at: string; schema_version: number; seq: number; sha256: string } } | null; sql?: handle ai-catalogue.SqlStorage; supported?: readonly number[] })",
+    "handsBack": "handle ai-catalogue.AiCatalogue",
+    "bounds": [
+     "AI_CATALOGUE_DEVELOPMENT: exactly \"1\" to trust development key lines; any other value trusts none",
+     "AI_CATALOGUE_DEVELOPMENT_KEY: one ssh-ed25519 line whose comment ends `-development`, not one of Bob's; trusted only where AI_CATALOGUE_DEVELOPMENT is \"1\"",
+     "bytes: the body's length in UTF-8 bytes",
+     "sha256: 64 lowercase hex digits, the SHA-256 of the body's UTF-8 bytes"
+    ]
+   }
+  },
+  {
+   "module": "ai-catalogue",
+   "entry": "AiCatalogue#catalogueRead",
+   "changes": [
+    "new entry"
+   ],
+   "after": {
+    "kind": "class member",
+    "accepts": "(arg0?: { at?: number | string; checksInForce?: string[] })",
+    "handsBack": "{ catalogue?: { advisories_seq?: null | number; age_days?: null | number; entries?: { needing_release: number; total: number }; held_back_seq?: null | number; issued_at?: null | string; last_check?: { at: string; outcome: string; trigger: \"manual\" | \"schedule\" } | null; last_good_seq?: null | number; rolled_back?: boolean; schema_version?: null | number; seq?: null | number; source?: \"pulled\" | \"seed\" | null; state: \"current\" | \"needs_newer_release\" | \"stale\" | \"unavailable\"; upcoming?: { effective_at: string; kind: \"clear\" | \"lapse\" | \"retire\" | \"watch\"; reason: \"canary_drift\" | \"deprecation\" | \"health\" | \"other\" | \"served_mismatch\" | \"team_divergence\" | \"terms_change\"; seq: number; target: { entry_id: string } | { plan_id: string } }[]; word: string }; check?: string; check_id?: null | string; code?: \"ADVISORY_BAD_MOVE\" | \"ADVISORY_REASON_UNKNOWN\" | \"CATALOGUE_ENTRY_INVALID\" | \"CATALOGUE_EVIDENCE_MISSING\" | \"CATALOGUE_PATH_INVALID\" | \"CATALOGUE_PAYLOAD_INVALID\" | \"CATALOGUE_PLAN_INVALID\" | \"CATALOGUE_ROLLBACK_UNKNOWN\" | \"CATALOGUE_UNAVAILABLE\" | \"CHECK_UNKNOWN\" | \"DIGEST_MISMATCH\" | \"NOT_NEWER\" | \"PART_UNKNOWN\"; entries?: { checks: { [key: string]: { answer: \"OPEN\" | \"met\" | \"not_met\"; date: null | string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\" | null; page: null | string; quote: null | string; source: null | string } }; developer: { jurisdiction: { open: true } | string; name: string }; display_name: string; entry_id: string; gate: { [key: string]: { at: null | string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\" | null; limits: { kind: \"context_depth\" | \"no_image_input\" | \"no_parallel_tools\" | \"no_streaming\" | \"output_cap\"; value: unknown }[]; verdict: \"not_suitable\" | \"not_yet_rated\" | \"passes\" | \"passes_with_limits\" } }; host: string; listing: { reason: \"canary_drift\" | \"deprecation\" | \"health\" | \"other\" | \"served_mismatch\" | \"team_divergence\" | \"terms_change\" | null; since_seq: number; state: \"lapsed\" | \"listed\" | \"retired\" | \"watch\" } | null; needs_newer_release: boolean; offered: { [key: string]: { offered: boolean; reasons: ({ check: \"P1\" | \"P2\" | \"P3\" | \"P4\" | \"P5\" | \"P6\" | \"P7\"; code: \"CHECK_NOT_MET\" | \"CHECK_OPEN\" } | { code: \"NO_PLAN_OFFERED\"; plans: { plan_id: string; reasons: (\"PLAN_LAPSED\" | \"PLAN_NO_GUIDANCE\" | \"PLAN_NO_MEANS\" | \"PLAN_RETIRED\")[] }[] } | { code: \"PART_NOT_PASSED\"; verdict: \"not_suitable\" | \"not_yet_rated\" | \"passes\" | \"passes_with_limits\" } | { code: \"CATALOGUE_UNAVAILABLE\" | \"ENTRY_LAPSED\" | \"ENTRY_RETIRED\" | \"ENTRY_UNKNOWN\" | \"NEEDS_NEWER_RELEASE\" | \"PART_NOT_RATED\" })[] } }; omitted_since: null | number; plan_ids: string[]; provider: string; recipient: { host: string; provider: string }; shown: { [key: string]: { answer: \"OPEN\" | \"met\" | \"not_met\"; date: null | string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\" | null; page: null | string; quote: null | string; source: null | string } | null }; state: \"lapsed\" | \"listed\" | \"retired\" | \"watch\"; watch: boolean; zero_retention: { open: true } | boolean }[]; ok: boolean; parts?: string[]; plans?: { plans: { binding_terms: { doc: string; effective_from: string; effective_to?: string; ev: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string }; kind: \"deprecation_notice\" | \"high_risk_review\" | \"indemnity\" | \"no_sla\" | \"other\" | \"political_use\"; quote: string; section: string; version: number | string }[]; connection_ways: (\"built_in\" | \"pasted_key\" | \"provider_signin\")[]; constraints: { enforce: \"deployment\" | \"level_rule_only\"; runtimes: (\"member_device\" | \"member_runtime\" | \"shared_worker\")[] | { open: true }; token_storage: \"member_device\" | \"reference_only\" | \"sealed\" | { open: true } }; credential_kind: \"api_key\" | \"none\" | \"signin_token\"; free_tier_trains: { open: true } | boolean; free_tier_unconfirmed: boolean; guidance_id: string; kind: \"aggregator\" | \"api\" | \"builtin\" | \"custom\" | \"gateway\" | \"subscription\"; levels: (\"group\" | \"member\" | \"project\")[]; listing: { reason: \"canary_drift\" | \"deprecation\" | \"health\" | \"other\" | \"served_mismatch\" | \"team_divergence\" | \"terms_change\" | null; since_seq: number; state: \"lapsed\" | \"listed\" | \"retired\" | \"watch\" } | null; means_allowed: (\"gateway\" | \"issued\" | \"none\" | \"reference\" | \"sealed\")[] | { open: true }; money: \"none\" | \"priced\" | \"reported\" | { open: true }; needs_reconfirmation: boolean; offered: boolean; omitted_since: null | number; plan_id: string; price_basis: { amount?: null | number; basis: string; currency?: unknown; date: string; ev: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string }; includes: unknown; limits: unknown; period?: unknown } | { open: true }; provider: string; reasons: (\"PLAN_LAPSED\" | \"PLAN_NO_GUIDANCE\" | \"PLAN_NO_MEANS\" | \"PLAN_RETIRED\")[]; restrictions: ({ date: string; kind: string; page: string; quote: string } | { open: true })[]; scope: \"member\" | \"project\" | \"team\" | \"unconfirmed\"; state: \"lapsed\" | \"listed\" | \"retired\" | \"watch\"; terms_pending: { days_until: number; doc: string; effective_from: string; version: number | string }[]; terms_version: string; token_bounds: { max_length: number; min_length: number } | null; unconfirmed: boolean; warning_id: null | string; warning_version: null | string }[]; provider: string }[]; providers?: { id: string; kind: \"aggregator\" | \"builtin\" | \"custom\" | \"direct\" | \"gateway\"; name: string }[]; reason?: \"ADVISORY_BAD_MOVE\" | \"ADVISORY_REASON_UNKNOWN\" | \"CATALOGUE_ENTRY_INVALID\" | \"CATALOGUE_EVIDENCE_MISSING\" | \"CATALOGUE_PATH_INVALID\" | \"CATALOGUE_PAYLOAD_INVALID\" | \"CATALOGUE_PLAN_INVALID\" | \"CATALOGUE_ROLLBACK_UNKNOWN\" | \"CATALOGUE_UNAVAILABLE\" | \"CHECK_UNKNOWN\" | \"DIGEST_MISMATCH\" | \"NOT_NEWER\" | \"PART_UNKNOWN\"; word?: string }",
+    "bounds": [
+     "amount: a finite number, 0 or more",
+     "basis: text, not blank, at most 64 characters",
+     "date: a real calendar day written YYYY-MM-DD",
+     "doc: text, not blank, at most 400 characters",
+     "effective_from: a real calendar day written YYYY-MM-DD",
+     "effective_to: a real calendar day written YYYY-MM-DD",
+     "kind: text, not blank, at most 64 characters",
+     "name: text, not blank, at most 200 characters",
+     "page: text, not blank, at most 2000 characters; with quote, required on a check answer",
+     "quote: text, not blank, at most 8000 characters",
+     "quote: text, not blank, at most 8000 characters; with page, required on a check answer",
+     "section: text, not blank, at most 200 characters",
+     "source: text, not blank, at most 2000 characters",
+     "terms_pending: ordered by effective_from, each after the day asked about",
+     "terms_version: 64 lowercase hex digits, the SHA-256 of the restrictions and binding terms",
+     "version: as text, not blank, at most 64 characters",
+     "warning_version: 64 lowercase hex digits, the SHA-256 of the warning's text"
+    ]
+   },
+   "tells": "nobody"
+  },
+  {
+   "module": "ai-catalogue",
+   "entry": "AiCatalogue#resultsRead",
+   "changes": [
+    "new entry"
+   ],
+   "after": {
+    "kind": "class member",
+    "accepts": "(arg0?: { at?: number | string; part?: string; subject_id?: string })",
+    "handsBack": "{ catalogue?: { advisories_seq?: null | number; age_days?: null | number; entries?: { needing_release: number; total: number }; held_back_seq?: null | number; issued_at?: null | string; last_check?: { at: string; outcome: string; trigger: \"manual\" | \"schedule\" } | null; last_good_seq?: null | number; rolled_back?: boolean; schema_version?: null | number; seq?: null | number; source?: \"pulled\" | \"seed\" | null; state: \"current\" | \"needs_newer_release\" | \"stale\" | \"unavailable\"; upcoming?: { effective_at: string; kind: \"clear\" | \"lapse\" | \"retire\" | \"watch\"; reason: \"canary_drift\" | \"deprecation\" | \"health\" | \"other\" | \"served_mismatch\" | \"team_divergence\" | \"terms_change\"; seq: number; target: { entry_id: string } | { plan_id: string } }[]; word: string }; check?: string; code?: \"ADVISORY_BAD_MOVE\" | \"ADVISORY_REASON_UNKNOWN\" | \"CATALOGUE_ENTRY_INVALID\" | \"CATALOGUE_EVIDENCE_MISSING\" | \"CATALOGUE_PATH_INVALID\" | \"CATALOGUE_PAYLOAD_INVALID\" | \"CATALOGUE_PLAN_INVALID\" | \"CATALOGUE_ROLLBACK_UNKNOWN\" | \"CATALOGUE_UNAVAILABLE\" | \"CHECK_UNKNOWN\" | \"DIGEST_MISMATCH\" | \"NOT_NEWER\" | \"PART_UNKNOWN\"; combined?: { age_days: number; as_of: string; confirmed: boolean; groups: { [key: string]: { k: number; n: number; wilson_high: unknown; wilson_low: unknown } }; left_out: number; limits: unknown[]; part: string; results: { reported: number; reproduced: number; total: number }; speed: { median_ms: { open: true } | null | number; p90_ms: { open: true } | null | number } | { open: true }; subject_id: string; suiteVersions: Object; task_cost: { high: { open: true } | null | number; low: { open: true } | null | number; price_date: string; unit: string } | { open: true }; verdict: \"not_suitable\" | \"not_yet_rated\" | \"passes\" | \"passes_with_limits\"; window: { from: unknown; to: unknown } }[]; ok: boolean; reason?: \"ADVISORY_BAD_MOVE\" | \"ADVISORY_REASON_UNKNOWN\" | \"CATALOGUE_ENTRY_INVALID\" | \"CATALOGUE_EVIDENCE_MISSING\" | \"CATALOGUE_PATH_INVALID\" | \"CATALOGUE_PAYLOAD_INVALID\" | \"CATALOGUE_PLAN_INVALID\" | \"CATALOGUE_ROLLBACK_UNKNOWN\" | \"CATALOGUE_UNAVAILABLE\" | \"CHECK_UNKNOWN\" | \"DIGEST_MISMATCH\" | \"NOT_NEWER\" | \"PART_UNKNOWN\"; rows?: { age_days: number; confirmed: boolean; consent_ref?: string; grade: \"REPORTED\" | \"REPRODUCED\"; on_list: \"lapsed\" | \"listed\" | \"not_listed\" | \"retired\" | \"watch\"; parts: { [key: string]: { limits: unknown[]; verdict: \"not_suitable\" | \"not_yet_rated\" | \"passes\" | \"passes_with_limits\" } }; repeated_by_civicsmith: boolean; row_id: string; speed: { median_ms: { open: true } | null | number; p90_ms: { open: true } | null | number; window: unknown } | { open: true }; subject_id: string; suiteVersions: Object; task_cost: { high: { open: true } | null | number; low: { open: true } | null | number; price_date: string; unit: string } | { open: true }; team_name?: string; tested_at: string; tested_by: \"civicsmith\" | \"team\" }[]; subjects?: { display_name: null | string; host?: string; host_name?: null | string; on_list: \"lapsed\" | \"listed\" | \"not_listed\" | \"retired\" | \"watch\" | null; provider?: string; provider_name?: null | string; subject_id: string }[]; word?: string }",
+    "bounds": [
+     "age_days: whole days from tested_at to the day asked about, less than RESULT_ACTIVE_MONTHS months",
+     "as_of: a real calendar day written YYYY-MM-DD",
+     "confirmed: true exactly when total is above 0 and reported is 0",
+     "grade: REPRODUCED when tested_by civicsmith, else REPORTED",
+     "groups: k and n whole, k no more than n",
+     "left_out: whole number, 0 or more",
+     "parts: each key a part of the payload",
+     "price_date: a real calendar day written YYYY-MM-DD",
+     "results: whole numbers; total is reproduced plus reported",
+     "subject_id: an entry's or a tested AI's id",
+     "team_name: only a team's row, with its consent_ref; text of at most 120 characters",
+     "tested_at: a real calendar day written YYYY-MM-DD",
+     "unit: text, not blank, at most 64 characters"
+    ]
+   },
+   "tells": "nobody"
+  },
+  {
+   "module": "ai-catalogue",
+   "entry": "CATALOGUE_DECLARED_OPS",
+   "changes": [
+    "new entry"
+   ],
+   "after": {
+    "kind": "value",
+    "handsBack": "{ aicatalogueread: { classes: readonly string[]; description: string; machineClasses: readonly string[]; mutating: boolean; weight: \"read\" }; airesultsread: { classes: readonly string[]; description: string; machineClasses: readonly string[]; mutating: boolean; weight: \"read\" } }",
+    "bounds": [
+     "classes: each admin or member"
+    ]
+   },
+   "tells": "nobody"
+  },
+  {
+   "module": "ai-catalogue",
+   "entry": "CatalogueHandlers",
+   "changes": [
+    "new entry"
+   ],
+   "after": {
+    "kind": "handle kind",
+    "handsBack": "names: aicatalogueread, airesultsread"
+   },
+   "tells": "nobody"
+  },
+  {
+   "module": "ai-catalogue",
+   "entry": "CatalogueHandlers.aicatalogueread",
+   "changes": [
+    "new entry"
+   ],
+   "after": {
+    "kind": "method",
+    "accepts": "()",
+    "handsBack": "Promise<{ catalogue?: { advisories_seq?: null | number; age_days?: null | number; entries?: { needing_release: number; total: number }; held_back_seq?: null | number; issued_at?: null | string; last_check?: { at: string; outcome: string; trigger: \"manual\" | \"schedule\" } | null; last_good_seq?: null | number; rolled_back?: boolean; schema_version?: null | number; seq?: null | number; source?: \"pulled\" | \"seed\" | null; state: \"current\" | \"needs_newer_release\" | \"stale\" | \"unavailable\"; upcoming?: { effective_at: string; kind: \"clear\" | \"lapse\" | \"retire\" | \"watch\"; reason: \"canary_drift\" | \"deprecation\" | \"health\" | \"other\" | \"served_mismatch\" | \"team_divergence\" | \"terms_change\"; seq: number; target: { entry_id: string } | { plan_id: string } }[]; word: string }; check?: string; check_id?: null | string; code?: \"ADVISORY_BAD_MOVE\" | \"ADVISORY_REASON_UNKNOWN\" | \"CATALOGUE_ENTRY_INVALID\" | \"CATALOGUE_EVIDENCE_MISSING\" | \"CATALOGUE_PATH_INVALID\" | \"CATALOGUE_PAYLOAD_INVALID\" | \"CATALOGUE_PLAN_INVALID\" | \"CATALOGUE_ROLLBACK_UNKNOWN\" | \"CATALOGUE_UNAVAILABLE\" | \"CHECK_UNKNOWN\" | \"DIGEST_MISMATCH\" | \"NOT_NEWER\" | \"PART_UNKNOWN\"; entries?: { checks: { [key: string]: { answer: \"OPEN\" | \"met\" | \"not_met\"; date: null | string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\" | null; page: null | string; quote: null | string; source: null | string } }; developer: { jurisdiction: { open: true } | string; name: string }; display_name: string; entry_id: string; gate: { [key: string]: { at: null | string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\" | null; limits: { kind: \"context_depth\" | \"no_image_input\" | \"no_parallel_tools\" | \"no_streaming\" | \"output_cap\"; value: unknown }[]; verdict: \"not_suitable\" | \"not_yet_rated\" | \"passes\" | \"passes_with_limits\" } }; host: string; listing: { reason: \"canary_drift\" | \"deprecation\" | \"health\" | \"other\" | \"served_mismatch\" | \"team_divergence\" | \"terms_change\" | null; since_seq: number; state: \"lapsed\" | \"listed\" | \"retired\" | \"watch\" } | null; needs_newer_release: boolean; offered: { [key: string]: { offered: boolean; reasons: ({ check: \"P1\" | \"P2\" | \"P3\" | \"P4\" | \"P5\" | \"P6\" | \"P7\"; code: \"CHECK_NOT_MET\" | \"CHECK_OPEN\" } | { code: \"NO_PLAN_OFFERED\"; plans: { plan_id: string; reasons: (\"PLAN_LAPSED\" | \"PLAN_NO_GUIDANCE\" | \"PLAN_NO_MEANS\" | \"PLAN_RETIRED\")[] }[] } | { code: \"PART_NOT_PASSED\"; verdict: \"not_suitable\" | \"not_yet_rated\" | \"passes\" | \"passes_with_limits\" } | { code: \"CATALOGUE_UNAVAILABLE\" | \"ENTRY_LAPSED\" | \"ENTRY_RETIRED\" | \"ENTRY_UNKNOWN\" | \"NEEDS_NEWER_RELEASE\" | \"PART_NOT_RATED\" })[] } }; omitted_since: null | number; plan_ids: string[]; provider: string; recipient: { host: string; provider: string }; shown: { [key: string]: { answer: \"OPEN\" | \"met\" | \"not_met\"; date: null | string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\" | null; page: null | string; quote: null | string; source: null | string } | null }; state: \"lapsed\" | \"listed\" | \"retired\" | \"watch\"; watch: boolean; zero_retention: { open: true } | boolean }[]; ok: boolean; parts?: string[]; plans?: { plans: { binding_terms: { doc: string; effective_from: string; effective_to?: string; ev: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string }; kind: \"deprecation_notice\" | \"high_risk_review\" | \"indemnity\" | \"no_sla\" | \"other\" | \"political_use\"; quote: string; section: string; version: number | string }[]; connection_ways: (\"built_in\" | \"pasted_key\" | \"provider_signin\")[]; constraints: { enforce: \"deployment\" | \"level_rule_only\"; runtimes: (\"member_device\" | \"member_runtime\" | \"shared_worker\")[] | { open: true }; token_storage: \"member_device\" | \"reference_only\" | \"sealed\" | { open: true } }; credential_kind: \"api_key\" | \"none\" | \"signin_token\"; free_tier_trains: { open: true } | boolean; free_tier_unconfirmed: boolean; guidance_id: string; kind: \"aggregator\" | \"api\" | \"builtin\" | \"custom\" | \"gateway\" | \"subscription\"; levels: (\"group\" | \"member\" | \"project\")[]; listing: { reason: \"canary_drift\" | \"deprecation\" | \"health\" | \"other\" | \"served_mismatch\" | \"team_divergence\" | \"terms_change\" | null; since_seq: number; state: \"lapsed\" | \"listed\" | \"retired\" | \"watch\" } | null; means_allowed: (\"gateway\" | \"issued\" | \"none\" | \"reference\" | \"sealed\")[] | { open: true }; money: \"none\" | \"priced\" | \"reported\" | { open: true }; needs_reconfirmation: boolean; offered: boolean; omitted_since: null | number; plan_id: string; price_basis: { amount?: null | number; basis: string; currency?: unknown; date: string; ev: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string }; includes: unknown; limits: unknown; period?: unknown } | { open: true }; provider: string; reasons: (\"PLAN_LAPSED\" | \"PLAN_NO_GUIDANCE\" | \"PLAN_NO_MEANS\" | \"PLAN_RETIRED\")[]; restrictions: ({ date: string; kind: string; page: string; quote: string } | { open: true })[]; scope: \"member\" | \"project\" | \"team\" | \"unconfirmed\"; state: \"lapsed\" | \"listed\" | \"retired\" | \"watch\"; terms_pending: { days_until: number; doc: string; effective_from: string; version: number | string }[]; terms_version: string; token_bounds: { max_length: number; min_length: number } | null; unconfirmed: boolean; warning_id: null | string; warning_version: null | string }[]; provider: string }[]; providers?: { id: string; kind: \"aggregator\" | \"builtin\" | \"custom\" | \"direct\" | \"gateway\"; name: string }[]; reason?: \"ADVISORY_BAD_MOVE\" | \"ADVISORY_REASON_UNKNOWN\" | \"CATALOGUE_ENTRY_INVALID\" | \"CATALOGUE_EVIDENCE_MISSING\" | \"CATALOGUE_PATH_INVALID\" | \"CATALOGUE_PAYLOAD_INVALID\" | \"CATALOGUE_PLAN_INVALID\" | \"CATALOGUE_ROLLBACK_UNKNOWN\" | \"CATALOGUE_UNAVAILABLE\" | \"CHECK_UNKNOWN\" | \"DIGEST_MISMATCH\" | \"NOT_NEWER\" | \"PART_UNKNOWN\"; word?: string }>",
+    "bounds": [
+     "amount: a finite number, 0 or more",
+     "basis: text, not blank, at most 64 characters",
+     "date: a real calendar day written YYYY-MM-DD",
+     "doc: text, not blank, at most 400 characters",
+     "effective_from: a real calendar day written YYYY-MM-DD",
+     "effective_to: a real calendar day written YYYY-MM-DD",
+     "kind: text, not blank, at most 64 characters",
+     "name: text, not blank, at most 200 characters",
+     "page: text, not blank, at most 2000 characters; with quote, required on a check answer",
+     "quote: text, not blank, at most 8000 characters",
+     "quote: text, not blank, at most 8000 characters; with page, required on a check answer",
+     "section: text, not blank, at most 200 characters",
+     "source: text, not blank, at most 2000 characters",
+     "terms_pending: ordered by effective_from, each after the day asked about",
+     "terms_version: 64 lowercase hex digits, the SHA-256 of the restrictions and binding terms",
+     "version: as text, not blank, at most 64 characters",
+     "warning_version: 64 lowercase hex digits, the SHA-256 of the warning's text"
+    ]
+   },
+   "tells": "nobody"
+  },
+  {
+   "module": "ai-catalogue",
+   "entry": "CatalogueHandlers.airesultsread",
+   "changes": [
+    "new entry"
+   ],
+   "after": {
+    "kind": "method",
+    "accepts": "()",
+    "handsBack": "Promise<{ catalogue?: { advisories_seq?: null | number; age_days?: null | number; entries?: { needing_release: number; total: number }; held_back_seq?: null | number; issued_at?: null | string; last_check?: { at: string; outcome: string; trigger: \"manual\" | \"schedule\" } | null; last_good_seq?: null | number; rolled_back?: boolean; schema_version?: null | number; seq?: null | number; source?: \"pulled\" | \"seed\" | null; state: \"current\" | \"needs_newer_release\" | \"stale\" | \"unavailable\"; upcoming?: { effective_at: string; kind: \"clear\" | \"lapse\" | \"retire\" | \"watch\"; reason: \"canary_drift\" | \"deprecation\" | \"health\" | \"other\" | \"served_mismatch\" | \"team_divergence\" | \"terms_change\"; seq: number; target: { entry_id: string } | { plan_id: string } }[]; word: string }; check?: string; code?: \"ADVISORY_BAD_MOVE\" | \"ADVISORY_REASON_UNKNOWN\" | \"CATALOGUE_ENTRY_INVALID\" | \"CATALOGUE_EVIDENCE_MISSING\" | \"CATALOGUE_PATH_INVALID\" | \"CATALOGUE_PAYLOAD_INVALID\" | \"CATALOGUE_PLAN_INVALID\" | \"CATALOGUE_ROLLBACK_UNKNOWN\" | \"CATALOGUE_UNAVAILABLE\" | \"CHECK_UNKNOWN\" | \"DIGEST_MISMATCH\" | \"NOT_NEWER\" | \"PART_UNKNOWN\"; combined?: { age_days: number; as_of: string; confirmed: boolean; groups: { [key: string]: { k: number; n: number; wilson_high: unknown; wilson_low: unknown } }; left_out: number; limits: unknown[]; part: string; results: { reported: number; reproduced: number; total: number }; speed: { median_ms: { open: true } | null | number; p90_ms: { open: true } | null | number } | { open: true }; subject_id: string; suiteVersions: Object; task_cost: { high: { open: true } | null | number; low: { open: true } | null | number; price_date: string; unit: string } | { open: true }; verdict: \"not_suitable\" | \"not_yet_rated\" | \"passes\" | \"passes_with_limits\"; window: { from: unknown; to: unknown } }[]; ok: boolean; reason?: \"ADVISORY_BAD_MOVE\" | \"ADVISORY_REASON_UNKNOWN\" | \"CATALOGUE_ENTRY_INVALID\" | \"CATALOGUE_EVIDENCE_MISSING\" | \"CATALOGUE_PATH_INVALID\" | \"CATALOGUE_PAYLOAD_INVALID\" | \"CATALOGUE_PLAN_INVALID\" | \"CATALOGUE_ROLLBACK_UNKNOWN\" | \"CATALOGUE_UNAVAILABLE\" | \"CHECK_UNKNOWN\" | \"DIGEST_MISMATCH\" | \"NOT_NEWER\" | \"PART_UNKNOWN\"; rows?: { age_days: number; confirmed: boolean; consent_ref?: string; grade: \"REPORTED\" | \"REPRODUCED\"; on_list: \"lapsed\" | \"listed\" | \"not_listed\" | \"retired\" | \"watch\"; parts: { [key: string]: { limits: unknown[]; verdict: \"not_suitable\" | \"not_yet_rated\" | \"passes\" | \"passes_with_limits\" } }; repeated_by_civicsmith: boolean; row_id: string; speed: { median_ms: { open: true } | null | number; p90_ms: { open: true } | null | number; window: unknown } | { open: true }; subject_id: string; suiteVersions: Object; task_cost: { high: { open: true } | null | number; low: { open: true } | null | number; price_date: string; unit: string } | { open: true }; team_name?: string; tested_at: string; tested_by: \"civicsmith\" | \"team\" }[]; subjects?: { display_name: null | string; host?: string; host_name?: null | string; on_list: \"lapsed\" | \"listed\" | \"not_listed\" | \"retired\" | \"watch\" | null; provider?: string; provider_name?: null | string; subject_id: string }[]; word?: string }>",
+    "bounds": [
+     "age_days: whole days from tested_at to the day asked about, less than RESULT_ACTIVE_MONTHS months",
+     "as_of: a real calendar day written YYYY-MM-DD",
+     "confirmed: true exactly when total is above 0 and reported is 0",
+     "grade: REPRODUCED when tested_by civicsmith, else REPORTED",
+     "groups: k and n whole, k no more than n",
+     "left_out: whole number, 0 or more",
+     "parts: each key a part of the payload",
+     "price_date: a real calendar day written YYYY-MM-DD",
+     "results: whole numbers; total is reproduced plus reported",
+     "subject_id: an entry's or a tested AI's id",
+     "team_name: only a team's row, with its consent_ref; text of at most 120 characters",
+     "tested_at: a real calendar day written YYYY-MM-DD",
+     "unit: text, not blank, at most 64 characters"
+    ]
+   },
+   "tells": "nobody"
+  },
+  {
+   "module": "ai-catalogue",
+   "entry": "CatalogueOps",
+   "changes": [
+    "new entry"
+   ],
+   "after": {
+    "kind": "operation table",
+    "handsBack": "names: aicatalogueread, airesultsread"
+   },
+   "tells": "nobody"
+  },
+  {
+   "module": "ai-catalogue",
+   "entry": "CatalogueReadAnswer",
+   "changes": [
+    "new entry"
+   ],
+   "after": {
+    "kind": "kind",
+    "handsBack": "{ catalogue?: { advisories_seq?: null | number; age_days?: null | number; entries?: { needing_release: number; total: number }; held_back_seq?: null | number; issued_at?: null | string; last_check?: { at: string; outcome: string; trigger: \"manual\" | \"schedule\" } | null; last_good_seq?: null | number; rolled_back?: boolean; schema_version?: null | number; seq?: null | number; source?: \"pulled\" | \"seed\" | null; state: \"current\" | \"needs_newer_release\" | \"stale\" | \"unavailable\"; upcoming?: { effective_at: string; kind: \"clear\" | \"lapse\" | \"retire\" | \"watch\"; reason: \"canary_drift\" | \"deprecation\" | \"health\" | \"other\" | \"served_mismatch\" | \"team_divergence\" | \"terms_change\"; seq: number; target: { entry_id: string } | { plan_id: string } }[]; word: string }; check?: string; check_id?: null | string; code?: \"ADVISORY_BAD_MOVE\" | \"ADVISORY_REASON_UNKNOWN\" | \"CATALOGUE_ENTRY_INVALID\" | \"CATALOGUE_EVIDENCE_MISSING\" | \"CATALOGUE_PATH_INVALID\" | \"CATALOGUE_PAYLOAD_INVALID\" | \"CATALOGUE_PLAN_INVALID\" | \"CATALOGUE_ROLLBACK_UNKNOWN\" | \"CATALOGUE_UNAVAILABLE\" | \"CHECK_UNKNOWN\" | \"DIGEST_MISMATCH\" | \"NOT_NEWER\" | \"PART_UNKNOWN\"; entries?: { checks: { [key: string]: { answer: \"OPEN\" | \"met\" | \"not_met\"; date: null | string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\" | null; page: null | string; quote: null | string; source: null | string } }; developer: { jurisdiction: { open: true } | string; name: string }; display_name: string; entry_id: string; gate: { [key: string]: { at: null | string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\" | null; limits: { kind: \"context_depth\" | \"no_image_input\" | \"no_parallel_tools\" | \"no_streaming\" | \"output_cap\"; value: unknown }[]; verdict: \"not_suitable\" | \"not_yet_rated\" | \"passes\" | \"passes_with_limits\" } }; host: string; listing: { reason: \"canary_drift\" | \"deprecation\" | \"health\" | \"other\" | \"served_mismatch\" | \"team_divergence\" | \"terms_change\" | null; since_seq: number; state: \"lapsed\" | \"listed\" | \"retired\" | \"watch\" } | null; needs_newer_release: boolean; offered: { [key: string]: { offered: boolean; reasons: ({ check: \"P1\" | \"P2\" | \"P3\" | \"P4\" | \"P5\" | \"P6\" | \"P7\"; code: \"CHECK_NOT_MET\" | \"CHECK_OPEN\" } | { code: \"NO_PLAN_OFFERED\"; plans: { plan_id: string; reasons: (\"PLAN_LAPSED\" | \"PLAN_NO_GUIDANCE\" | \"PLAN_NO_MEANS\" | \"PLAN_RETIRED\")[] }[] } | { code: \"PART_NOT_PASSED\"; verdict: \"not_suitable\" | \"not_yet_rated\" | \"passes\" | \"passes_with_limits\" } | { code: \"CATALOGUE_UNAVAILABLE\" | \"ENTRY_LAPSED\" | \"ENTRY_RETIRED\" | \"ENTRY_UNKNOWN\" | \"NEEDS_NEWER_RELEASE\" | \"PART_NOT_RATED\" })[] } }; omitted_since: null | number; plan_ids: string[]; provider: string; recipient: { host: string; provider: string }; shown: { [key: string]: { answer: \"OPEN\" | \"met\" | \"not_met\"; date: null | string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\" | null; page: null | string; quote: null | string; source: null | string } | null }; state: \"lapsed\" | \"listed\" | \"retired\" | \"watch\"; watch: boolean; zero_retention: { open: true } | boolean }[]; ok: boolean; parts?: string[]; plans?: { plans: { binding_terms: { doc: string; effective_from: string; effective_to?: string; ev: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string }; kind: \"deprecation_notice\" | \"high_risk_review\" | \"indemnity\" | \"no_sla\" | \"other\" | \"political_use\"; quote: string; section: string; version: number | string }[]; connection_ways: (\"built_in\" | \"pasted_key\" | \"provider_signin\")[]; constraints: { enforce: \"deployment\" | \"level_rule_only\"; runtimes: (\"member_device\" | \"member_runtime\" | \"shared_worker\")[] | { open: true }; token_storage: \"member_device\" | \"reference_only\" | \"sealed\" | { open: true } }; credential_kind: \"api_key\" | \"none\" | \"signin_token\"; free_tier_trains: { open: true } | boolean; free_tier_unconfirmed: boolean; guidance_id: string; kind: \"aggregator\" | \"api\" | \"builtin\" | \"custom\" | \"gateway\" | \"subscription\"; levels: (\"group\" | \"member\" | \"project\")[]; listing: { reason: \"canary_drift\" | \"deprecation\" | \"health\" | \"other\" | \"served_mismatch\" | \"team_divergence\" | \"terms_change\" | null; since_seq: number; state: \"lapsed\" | \"listed\" | \"retired\" | \"watch\" } | null; means_allowed: (\"gateway\" | \"issued\" | \"none\" | \"reference\" | \"sealed\")[] | { open: true }; money: \"none\" | \"priced\" | \"reported\" | { open: true }; needs_reconfirmation: boolean; offered: boolean; omitted_since: null | number; plan_id: string; price_basis: { amount?: null | number; basis: string; currency?: unknown; date: string; ev: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string }; includes: unknown; limits: unknown; period?: unknown } | { open: true }; provider: string; reasons: (\"PLAN_LAPSED\" | \"PLAN_NO_GUIDANCE\" | \"PLAN_NO_MEANS\" | \"PLAN_RETIRED\")[]; restrictions: ({ date: string; kind: string; page: string; quote: string } | { open: true })[]; scope: \"member\" | \"project\" | \"team\" | \"unconfirmed\"; state: \"lapsed\" | \"listed\" | \"retired\" | \"watch\"; terms_pending: { days_until: number; doc: string; effective_from: string; version: number | string }[]; terms_version: string; token_bounds: { max_length: number; min_length: number } | null; unconfirmed: boolean; warning_id: null | string; warning_version: null | string }[]; provider: string }[]; providers?: { id: string; kind: \"aggregator\" | \"builtin\" | \"custom\" | \"direct\" | \"gateway\"; name: string }[]; reason?: \"ADVISORY_BAD_MOVE\" | \"ADVISORY_REASON_UNKNOWN\" | \"CATALOGUE_ENTRY_INVALID\" | \"CATALOGUE_EVIDENCE_MISSING\" | \"CATALOGUE_PATH_INVALID\" | \"CATALOGUE_PAYLOAD_INVALID\" | \"CATALOGUE_PLAN_INVALID\" | \"CATALOGUE_ROLLBACK_UNKNOWN\" | \"CATALOGUE_UNAVAILABLE\" | \"CHECK_UNKNOWN\" | \"DIGEST_MISMATCH\" | \"NOT_NEWER\" | \"PART_UNKNOWN\"; word?: string }",
+    "bounds": [
+     "amount: a finite number, 0 or more",
+     "basis: text, not blank, at most 64 characters",
+     "date: a real calendar day written YYYY-MM-DD",
+     "doc: text, not blank, at most 400 characters",
+     "effective_from: a real calendar day written YYYY-MM-DD",
+     "effective_to: a real calendar day written YYYY-MM-DD",
+     "kind: text, not blank, at most 64 characters",
+     "name: text, not blank, at most 200 characters",
+     "page: text, not blank, at most 2000 characters; with quote, required on a check answer",
+     "quote: text, not blank, at most 8000 characters",
+     "quote: text, not blank, at most 8000 characters; with page, required on a check answer",
+     "section: text, not blank, at most 200 characters",
+     "source: text, not blank, at most 2000 characters",
+     "terms_pending: ordered by effective_from, each after the day asked about",
+     "terms_version: 64 lowercase hex digits, the SHA-256 of the restrictions and binding terms",
+     "version: as text, not blank, at most 64 characters",
+     "warning_version: 64 lowercase hex digits, the SHA-256 of the warning's text"
+    ],
+    "side": "handsBack"
+   },
+   "tells": "nobody"
+  },
+  {
+   "module": "ai-catalogue",
+   "entry": "CatalogueReadEntry",
+   "changes": [
+    "new entry"
+   ],
+   "after": {
+    "kind": "kind",
+    "handsBack": "{ checks: { [key: string]: { answer: \"OPEN\" | \"met\" | \"not_met\"; date: null | string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\" | null; page: null | string; quote: null | string; source: null | string } }; developer: { jurisdiction: { open: true } | string; name: string }; display_name: string; entry_id: string; gate: { [key: string]: { at: null | string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\" | null; limits: { kind: \"context_depth\" | \"no_image_input\" | \"no_parallel_tools\" | \"no_streaming\" | \"output_cap\"; value: unknown }[]; verdict: \"not_suitable\" | \"not_yet_rated\" | \"passes\" | \"passes_with_limits\" } }; host: string; listing: { reason: \"canary_drift\" | \"deprecation\" | \"health\" | \"other\" | \"served_mismatch\" | \"team_divergence\" | \"terms_change\" | null; since_seq: number; state: \"lapsed\" | \"listed\" | \"retired\" | \"watch\" } | null; needs_newer_release: boolean; offered: { [key: string]: { offered: boolean; reasons: ({ check: \"P1\" | \"P2\" | \"P3\" | \"P4\" | \"P5\" | \"P6\" | \"P7\"; code: \"CHECK_NOT_MET\" | \"CHECK_OPEN\" } | { code: \"NO_PLAN_OFFERED\"; plans: { plan_id: string; reasons: (\"PLAN_LAPSED\" | \"PLAN_NO_GUIDANCE\" | \"PLAN_NO_MEANS\" | \"PLAN_RETIRED\")[] }[] } | { code: \"PART_NOT_PASSED\"; verdict: \"not_suitable\" | \"not_yet_rated\" | \"passes\" | \"passes_with_limits\" } | { code: \"CATALOGUE_UNAVAILABLE\" | \"ENTRY_LAPSED\" | \"ENTRY_RETIRED\" | \"ENTRY_UNKNOWN\" | \"NEEDS_NEWER_RELEASE\" | \"PART_NOT_RATED\" })[] } }; omitted_since: null | number; plan_ids: string[]; provider: string; recipient: { host: string; provider: string }; shown: { [key: string]: { answer: \"OPEN\" | \"met\" | \"not_met\"; date: null | string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\" | null; page: null | string; quote: null | string; source: null | string } | null }; state: \"lapsed\" | \"listed\" | \"retired\" | \"watch\"; watch: boolean; zero_retention: { open: true } | boolean }",
+    "side": "handsBack"
+   },
+   "tells": "nobody"
+  },
+  {
+   "module": "ai-catalogue",
+   "entry": "CatalogueState",
+   "changes": [
+    "cannot stand in"
+   ],
+   "tells": "users",
+   "before": {
+    "kind": "kind",
+    "accepts": "\"current\" | \"needs_newer_release\" | \"stale\" | \"unavailable\"",
+    "handsBack": "\"current\" | \"needs_newer_release\" | \"stale\" | \"unavailable\"",
+    "side": "both"
+   },
+   "after": {
+    "kind": "kind",
+    "handsBack": "\"current\" | \"needs_newer_release\" | \"stale\" | \"unavailable\"",
+    "side": "handsBack"
+   }
+  },
+  {
+   "module": "ai-catalogue",
+   "entry": "CatalogueStateView",
+   "changes": [
+    "cannot stand in"
+   ],
+   "tells": "users",
+   "before": {
+    "kind": "kind",
+    "accepts": "{ advisories_seq?: null | number; age_days?: null | number; entries?: { needing_release: number; total: number }; held_back_seq?: null | number; issued_at?: null | string; last_check?: { at: string; outcome: string; trigger: \"manual\" | \"schedule\" } | null; last_good_seq?: null | number; rolled_back?: boolean; schema_version?: null | number; seq?: null | number; source?: \"pulled\" | \"seed\" | null; state: \"current\" | \"needs_newer_release\" | \"stale\" | \"unavailable\"; upcoming?: { effective_at: string; kind: \"clear\" | \"lapse\" | \"retire\" | \"watch\"; reason: \"canary_drift\" | \"deprecation\" | \"health\" | \"other\" | \"served_mismatch\" | \"team_divergence\" | \"terms_change\"; seq: number; target: { entry_id: string } | { plan_id: string } }[]; word: string }",
+    "handsBack": "{ advisories_seq?: null | number; age_days?: null | number; entries?: { needing_release: number; total: number }; held_back_seq?: null | number; issued_at?: null | string; last_check?: { at: string; outcome: string; trigger: \"manual\" | \"schedule\" } | null; last_good_seq?: null | number; rolled_back?: boolean; schema_version?: null | number; seq?: null | number; source?: \"pulled\" | \"seed\" | null; state: \"current\" | \"needs_newer_release\" | \"stale\" | \"unavailable\"; upcoming?: { effective_at: string; kind: \"clear\" | \"lapse\" | \"retire\" | \"watch\"; reason: \"canary_drift\" | \"deprecation\" | \"health\" | \"other\" | \"served_mismatch\" | \"team_divergence\" | \"terms_change\"; seq: number; target: { entry_id: string } | { plan_id: string } }[]; word: string }",
+    "side": "both"
+   },
+   "after": {
+    "kind": "kind",
+    "handsBack": "{ advisories_seq?: null | number; age_days?: null | number; entries?: { needing_release: number; total: number }; held_back_seq?: null | number; issued_at?: null | string; last_check?: { at: string; outcome: string; trigger: \"manual\" | \"schedule\" } | null; last_good_seq?: null | number; rolled_back?: boolean; schema_version?: null | number; seq?: null | number; source?: \"pulled\" | \"seed\" | null; state: \"current\" | \"needs_newer_release\" | \"stale\" | \"unavailable\"; upcoming?: { effective_at: string; kind: \"clear\" | \"lapse\" | \"retire\" | \"watch\"; reason: \"canary_drift\" | \"deprecation\" | \"health\" | \"other\" | \"served_mismatch\" | \"team_divergence\" | \"terms_change\"; seq: number; target: { entry_id: string } | { plan_id: string } }[]; word: string }",
+    "side": "handsBack"
+   }
+  },
+  {
+   "module": "ai-catalogue",
+   "entry": "CheckTrigger",
+   "changes": [
+    "cannot stand in"
+   ],
+   "tells": "users",
+   "before": {
+    "kind": "kind",
+    "accepts": "\"manual\" | \"schedule\"",
+    "handsBack": "\"manual\" | \"schedule\"",
+    "side": "both"
+   },
+   "after": {
+    "kind": "kind",
+    "handsBack": "\"manual\" | \"schedule\"",
+    "side": "handsBack"
+   }
+  },
+  {
+   "module": "ai-catalogue",
+   "entry": "ClaimView",
+   "changes": [
+    "new entry"
+   ],
+   "after": {
+    "kind": "kind",
+    "handsBack": "{ answer: \"OPEN\" | \"met\" | \"not_met\"; date: null | string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\" | null; page: null | string; quote: null | string; source: null | string }",
+    "side": "handsBack"
+   },
+   "tells": "nobody"
+  },
+  {
+   "module": "ai-catalogue",
+   "entry": "LibraryRowView",
+   "changes": [
+    "cannot stand in"
+   ],
+   "tells": "users",
+   "before": {
+    "kind": "kind",
+    "accepts": "{ age_days: number; confirmed: boolean; consent_ref?: string; grade: \"REPORTED\" | \"REPRODUCED\"; on_list: \"lapsed\" | \"listed\" | \"not_listed\" | \"retired\" | \"watch\"; parts: { [key: string]: { limits: unknown[]; verdict: \"not_suitable\" | \"not_yet_rated\" | \"passes\" | \"passes_with_limits\" } }; repeated_by_civicsmith: boolean; row_id: string; speed: { median_ms: { open: true } | null | number; p90_ms: { open: true } | null | number; window: unknown } | { open: true }; subject_id: string; suiteVersions: Object; task_cost: { high: { open: true } | null | number; low: { open: true } | null | number; price_date: string; unit: string } | { open: true }; team_name?: string; tested_at: string; tested_by: \"civicsmith\" | \"team\" }",
+    "handsBack": "{ age_days: number; confirmed: boolean; consent_ref?: string; grade: \"REPORTED\" | \"REPRODUCED\"; on_list: \"lapsed\" | \"listed\" | \"not_listed\" | \"retired\" | \"watch\"; parts: { [key: string]: { limits: unknown[]; verdict: \"not_suitable\" | \"not_yet_rated\" | \"passes\" | \"passes_with_limits\" } }; repeated_by_civicsmith: boolean; row_id: string; speed: { median_ms: { open: true } | null | number; p90_ms: { open: true } | null | number; window: unknown } | { open: true }; subject_id: string; suiteVersions: Object; task_cost: { high: { open: true } | null | number; low: { open: true } | null | number; price_date: string; unit: string } | { open: true }; team_name?: string; tested_at: string; tested_by: \"civicsmith\" | \"team\" }",
+    "bounds": [
+     "age_days: whole days from tested_at to the day asked about, less than RESULT_ACTIVE_MONTHS months",
+     "grade: REPRODUCED when tested_by civicsmith, else REPORTED",
+     "parts: each key a part of the payload",
+     "price_date: a real calendar day written YYYY-MM-DD",
+     "subject_id: an entry's or a tested AI's id",
+     "team_name: only a team's row, with its consent_ref; text of at most 120 characters",
+     "tested_at: a real calendar day written YYYY-MM-DD",
+     "unit: text, not blank, at most 64 characters"
+    ],
+    "side": "both"
+   },
+   "after": {
+    "kind": "kind",
+    "handsBack": "{ age_days: number; confirmed: boolean; consent_ref?: string; grade: \"REPORTED\" | \"REPRODUCED\"; on_list: \"lapsed\" | \"listed\" | \"not_listed\" | \"retired\" | \"watch\"; parts: { [key: string]: { limits: unknown[]; verdict: \"not_suitable\" | \"not_yet_rated\" | \"passes\" | \"passes_with_limits\" } }; repeated_by_civicsmith: boolean; row_id: string; speed: { median_ms: { open: true } | null | number; p90_ms: { open: true } | null | number; window: unknown } | { open: true }; subject_id: string; suiteVersions: Object; task_cost: { high: { open: true } | null | number; low: { open: true } | null | number; price_date: string; unit: string } | { open: true }; team_name?: string; tested_at: string; tested_by: \"civicsmith\" | \"team\" }",
+    "bounds": [
+     "age_days: whole days from tested_at to the day asked about, less than RESULT_ACTIVE_MONTHS months",
+     "grade: REPRODUCED when tested_by civicsmith, else REPORTED",
+     "parts: each key a part of the payload",
+     "price_date: a real calendar day written YYYY-MM-DD",
+     "subject_id: an entry's or a tested AI's id",
+     "team_name: only a team's row, with its consent_ref; text of at most 120 characters",
+     "tested_at: a real calendar day written YYYY-MM-DD",
+     "unit: text, not blank, at most 64 characters"
+    ],
+    "side": "handsBack"
+   }
+  },
+  {
+   "module": "ai-catalogue",
+   "entry": "Listing",
+   "changes": [
+    "new entry"
+   ],
+   "after": {
+    "kind": "kind",
+    "handsBack": "{ reason: \"canary_drift\" | \"deprecation\" | \"health\" | \"other\" | \"served_mismatch\" | \"team_divergence\" | \"terms_change\" | null; since_seq: number; state: \"lapsed\" | \"listed\" | \"retired\" | \"watch\" }",
+    "side": "handsBack"
+   },
+   "tells": "nobody"
+  },
+  {
+   "module": "ai-catalogue",
+   "entry": "OfferReason",
+   "changes": [
+    "cannot stand in"
+   ],
+   "tells": "users",
+   "before": {
+    "kind": "kind",
+    "accepts": "{ check: \"P1\" | \"P2\" | \"P3\" | \"P4\" | \"P5\" | \"P6\" | \"P7\"; code: \"CHECK_NOT_MET\" | \"CHECK_OPEN\" } | { code: \"NO_PLAN_OFFERED\"; plans: { plan_id: string; reasons: (\"PLAN_LAPSED\" | \"PLAN_NO_GUIDANCE\" | \"PLAN_NO_MEANS\" | \"PLAN_RETIRED\")[] }[] } | { code: \"PART_NOT_PASSED\"; verdict: \"not_suitable\" | \"not_yet_rated\" | \"passes\" | \"passes_with_limits\" } | { code: \"CATALOGUE_UNAVAILABLE\" | \"ENTRY_LAPSED\" | \"ENTRY_RETIRED\" | \"ENTRY_UNKNOWN\" | \"NEEDS_NEWER_RELEASE\" | \"PART_NOT_RATED\" }",
+    "handsBack": "{ check: \"P1\" | \"P2\" | \"P3\" | \"P4\" | \"P5\" | \"P6\" | \"P7\"; code: \"CHECK_NOT_MET\" | \"CHECK_OPEN\" } | { code: \"NO_PLAN_OFFERED\"; plans: { plan_id: string; reasons: (\"PLAN_LAPSED\" | \"PLAN_NO_GUIDANCE\" | \"PLAN_NO_MEANS\" | \"PLAN_RETIRED\")[] }[] } | { code: \"PART_NOT_PASSED\"; verdict: \"not_suitable\" | \"not_yet_rated\" | \"passes\" | \"passes_with_limits\" } | { code: \"CATALOGUE_UNAVAILABLE\" | \"ENTRY_LAPSED\" | \"ENTRY_RETIRED\" | \"ENTRY_UNKNOWN\" | \"NEEDS_NEWER_RELEASE\" | \"PART_NOT_RATED\" }",
+    "side": "both"
+   },
+   "after": {
+    "kind": "kind",
+    "handsBack": "{ check: \"P1\" | \"P2\" | \"P3\" | \"P4\" | \"P5\" | \"P6\" | \"P7\"; code: \"CHECK_NOT_MET\" | \"CHECK_OPEN\" } | { code: \"NO_PLAN_OFFERED\"; plans: { plan_id: string; reasons: (\"PLAN_LAPSED\" | \"PLAN_NO_GUIDANCE\" | \"PLAN_NO_MEANS\" | \"PLAN_RETIRED\")[] }[] } | { code: \"PART_NOT_PASSED\"; verdict: \"not_suitable\" | \"not_yet_rated\" | \"passes\" | \"passes_with_limits\" } | { code: \"CATALOGUE_UNAVAILABLE\" | \"ENTRY_LAPSED\" | \"ENTRY_RETIRED\" | \"ENTRY_UNKNOWN\" | \"NEEDS_NEWER_RELEASE\" | \"PART_NOT_RATED\" }",
+    "side": "handsBack"
+   }
+  },
+  {
+   "module": "ai-catalogue",
+   "entry": "OpDeclaration",
+   "changes": [
+    "new entry"
+   ],
+   "after": {
+    "kind": "kind",
+    "handsBack": "{ classes: readonly string[]; description: string; machineClasses: readonly string[]; mutating: boolean; weight: \"read\" }",
+    "bounds": [
+     "classes: each admin or member"
+    ],
+    "side": "handsBack"
+   },
+   "tells": "nobody"
+  },
+  {
+   "module": "ai-catalogue",
+   "entry": "PlanReason",
+   "changes": [
+    "cannot stand in"
+   ],
+   "tells": "users",
+   "before": {
+    "kind": "kind",
+    "accepts": "\"PLAN_LAPSED\" | \"PLAN_NO_GUIDANCE\" | \"PLAN_NO_MEANS\" | \"PLAN_RETIRED\"",
+    "handsBack": "\"PLAN_LAPSED\" | \"PLAN_NO_GUIDANCE\" | \"PLAN_NO_MEANS\" | \"PLAN_RETIRED\"",
+    "side": "both"
+   },
+   "after": {
+    "kind": "kind",
+    "handsBack": "\"PLAN_LAPSED\" | \"PLAN_NO_GUIDANCE\" | \"PLAN_NO_MEANS\" | \"PLAN_RETIRED\"",
+    "side": "handsBack"
+   }
+  },
+  {
+   "module": "ai-catalogue",
+   "entry": "PlanRow",
+   "changes": [
+    "cannot stand in"
+   ],
+   "tells": "users",
+   "before": {
+    "kind": "kind",
+    "accepts": "{ binding_terms: { doc: string; effective_from: string; effective_to?: string; ev: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string }; kind: \"deprecation_notice\" | \"high_risk_review\" | \"indemnity\" | \"no_sla\" | \"other\" | \"political_use\"; quote: string; section: string; version: number | string }[]; connection_ways: (\"built_in\" | \"pasted_key\" | \"provider_signin\")[]; constraints: { enforce: \"deployment\" | \"level_rule_only\"; runtimes: (\"member_device\" | \"member_runtime\" | \"shared_worker\")[] | { open: true }; token_storage: \"member_device\" | \"reference_only\" | \"sealed\" | { open: true } }; credential_kind: \"api_key\" | \"none\" | \"signin_token\"; free_tier_trains: { open: true } | boolean; free_tier_unconfirmed: boolean; guidance_id: string; kind: \"aggregator\" | \"api\" | \"builtin\" | \"custom\" | \"gateway\" | \"subscription\"; levels: (\"group\" | \"member\" | \"project\")[]; means_allowed: (\"gateway\" | \"issued\" | \"none\" | \"reference\" | \"sealed\")[] | { open: true }; money: \"none\" | \"priced\" | \"reported\" | { open: true }; needs_reconfirmation: boolean; offered: boolean; omitted_since: null | number; plan_id: string; price_basis: { amount?: null | number; basis: string; currency?: unknown; date: string; ev: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string }; includes: unknown; limits: unknown; period?: unknown } | { open: true }; provider: string; reasons: (\"PLAN_LAPSED\" | \"PLAN_NO_GUIDANCE\" | \"PLAN_NO_MEANS\" | \"PLAN_RETIRED\")[]; restrictions: ({ date: string; kind: string; page: string; quote: string } | { open: true })[]; scope: \"member\" | \"project\" | \"team\" | \"unconfirmed\"; state: \"lapsed\" | \"listed\" | \"retired\" | \"watch\"; terms_pending: { days_until: number; doc: string; effective_from: string; version: number | string }[]; terms_version: string; token_bounds: { max_length: number; min_length: number } | null; unconfirmed: boolean; warning_id: null | string; warning_version: null | string }",
+    "handsBack": "{ binding_terms: { doc: string; effective_from: string; effective_to?: string; ev: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string }; kind: \"deprecation_notice\" | \"high_risk_review\" | \"indemnity\" | \"no_sla\" | \"other\" | \"political_use\"; quote: string; section: string; version: number | string }[]; connection_ways: (\"built_in\" | \"pasted_key\" | \"provider_signin\")[]; constraints: { enforce: \"deployment\" | \"level_rule_only\"; runtimes: (\"member_device\" | \"member_runtime\" | \"shared_worker\")[] | { open: true }; token_storage: \"member_device\" | \"reference_only\" | \"sealed\" | { open: true } }; credential_kind: \"api_key\" | \"none\" | \"signin_token\"; free_tier_trains: { open: true } | boolean; free_tier_unconfirmed: boolean; guidance_id: string; kind: \"aggregator\" | \"api\" | \"builtin\" | \"custom\" | \"gateway\" | \"subscription\"; levels: (\"group\" | \"member\" | \"project\")[]; means_allowed: (\"gateway\" | \"issued\" | \"none\" | \"reference\" | \"sealed\")[] | { open: true }; money: \"none\" | \"priced\" | \"reported\" | { open: true }; needs_reconfirmation: boolean; offered: boolean; omitted_since: null | number; plan_id: string; price_basis: { amount?: null | number; basis: string; currency?: unknown; date: string; ev: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string }; includes: unknown; limits: unknown; period?: unknown } | { open: true }; provider: string; reasons: (\"PLAN_LAPSED\" | \"PLAN_NO_GUIDANCE\" | \"PLAN_NO_MEANS\" | \"PLAN_RETIRED\")[]; restrictions: ({ date: string; kind: string; page: string; quote: string } | { open: true })[]; scope: \"member\" | \"project\" | \"team\" | \"unconfirmed\"; state: \"lapsed\" | \"listed\" | \"retired\" | \"watch\"; terms_pending: { days_until: number; doc: string; effective_from: string; version: number | string }[]; terms_version: string; token_bounds: { max_length: number; min_length: number } | null; unconfirmed: boolean; warning_id: null | string; warning_version: null | string }",
+    "bounds": [
+     "amount: a finite number, 0 or more",
+     "basis: text, not blank, at most 64 characters",
+     "date: a real calendar day written YYYY-MM-DD",
+     "doc: text, not blank, at most 400 characters",
+     "effective_from: a real calendar day written YYYY-MM-DD",
+     "effective_to: a real calendar day written YYYY-MM-DD",
+     "kind: text, not blank, at most 64 characters",
+     "page: text, not blank, at most 2000 characters; with quote, required on a check answer",
+     "quote: text, not blank, at most 8000 characters",
+     "quote: text, not blank, at most 8000 characters; with page, required on a check answer",
+     "section: text, not blank, at most 200 characters",
+     "source: text, not blank, at most 2000 characters",
+     "terms_pending: ordered by effective_from, each after the day asked about",
+     "terms_version: 64 lowercase hex digits, the SHA-256 of the restrictions and binding terms",
+     "version: as text, not blank, at most 64 characters",
+     "warning_version: 64 lowercase hex digits, the SHA-256 of the warning's text"
+    ],
+    "side": "both"
+   },
+   "after": {
+    "kind": "kind",
+    "handsBack": "{ binding_terms: { doc: string; effective_from: string; effective_to?: string; ev: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string }; kind: \"deprecation_notice\" | \"high_risk_review\" | \"indemnity\" | \"no_sla\" | \"other\" | \"political_use\"; quote: string; section: string; version: number | string }[]; connection_ways: (\"built_in\" | \"pasted_key\" | \"provider_signin\")[]; constraints: { enforce: \"deployment\" | \"level_rule_only\"; runtimes: (\"member_device\" | \"member_runtime\" | \"shared_worker\")[] | { open: true }; token_storage: \"member_device\" | \"reference_only\" | \"sealed\" | { open: true } }; credential_kind: \"api_key\" | \"none\" | \"signin_token\"; free_tier_trains: { open: true } | boolean; free_tier_unconfirmed: boolean; guidance_id: string; kind: \"aggregator\" | \"api\" | \"builtin\" | \"custom\" | \"gateway\" | \"subscription\"; levels: (\"group\" | \"member\" | \"project\")[]; means_allowed: (\"gateway\" | \"issued\" | \"none\" | \"reference\" | \"sealed\")[] | { open: true }; money: \"none\" | \"priced\" | \"reported\" | { open: true }; needs_reconfirmation: boolean; offered: boolean; omitted_since: null | number; plan_id: string; price_basis: { amount?: null | number; basis: string; currency?: unknown; date: string; ev: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string }; includes: unknown; limits: unknown; period?: unknown } | { open: true }; provider: string; reasons: (\"PLAN_LAPSED\" | \"PLAN_NO_GUIDANCE\" | \"PLAN_NO_MEANS\" | \"PLAN_RETIRED\")[]; restrictions: ({ date: string; kind: string; page: string; quote: string } | { open: true })[]; scope: \"member\" | \"project\" | \"team\" | \"unconfirmed\"; state: \"lapsed\" | \"listed\" | \"retired\" | \"watch\"; terms_pending: { days_until: number; doc: string; effective_from: string; version: number | string }[]; terms_version: string; token_bounds: { max_length: number; min_length: number } | null; unconfirmed: boolean; warning_id: null | string; warning_version: null | string }",
+    "bounds": [
+     "amount: a finite number, 0 or more",
+     "basis: text, not blank, at most 64 characters",
+     "date: a real calendar day written YYYY-MM-DD",
+     "doc: text, not blank, at most 400 characters",
+     "effective_from: a real calendar day written YYYY-MM-DD",
+     "effective_to: a real calendar day written YYYY-MM-DD",
+     "kind: text, not blank, at most 64 characters",
+     "page: text, not blank, at most 2000 characters; with quote, required on a check answer",
+     "quote: text, not blank, at most 8000 characters",
+     "quote: text, not blank, at most 8000 characters; with page, required on a check answer",
+     "section: text, not blank, at most 200 characters",
+     "source: text, not blank, at most 2000 characters",
+     "terms_pending: ordered by effective_from, each after the day asked about",
+     "terms_version: 64 lowercase hex digits, the SHA-256 of the restrictions and binding terms",
+     "version: as text, not blank, at most 64 characters",
+     "warning_version: 64 lowercase hex digits, the SHA-256 of the warning's text"
+    ],
+    "side": "handsBack"
+   }
+  },
+  {
+   "module": "ai-catalogue",
+   "entry": "ResultSubject",
+   "changes": [
+    "new entry"
+   ],
+   "after": {
+    "kind": "kind",
+    "handsBack": "{ display_name: null | string; host?: string; host_name?: null | string; on_list: \"lapsed\" | \"listed\" | \"not_listed\" | \"retired\" | \"watch\" | null; provider?: string; provider_name?: null | string; subject_id: string }",
+    "side": "handsBack"
+   },
+   "tells": "nobody"
+  },
+  {
+   "module": "ai-catalogue",
+   "entry": "ResultsReadAnswer",
+   "changes": [
+    "new entry"
+   ],
+   "after": {
+    "kind": "kind",
+    "handsBack": "{ catalogue?: { advisories_seq?: null | number; age_days?: null | number; entries?: { needing_release: number; total: number }; held_back_seq?: null | number; issued_at?: null | string; last_check?: { at: string; outcome: string; trigger: \"manual\" | \"schedule\" } | null; last_good_seq?: null | number; rolled_back?: boolean; schema_version?: null | number; seq?: null | number; source?: \"pulled\" | \"seed\" | null; state: \"current\" | \"needs_newer_release\" | \"stale\" | \"unavailable\"; upcoming?: { effective_at: string; kind: \"clear\" | \"lapse\" | \"retire\" | \"watch\"; reason: \"canary_drift\" | \"deprecation\" | \"health\" | \"other\" | \"served_mismatch\" | \"team_divergence\" | \"terms_change\"; seq: number; target: { entry_id: string } | { plan_id: string } }[]; word: string }; check?: string; code?: \"ADVISORY_BAD_MOVE\" | \"ADVISORY_REASON_UNKNOWN\" | \"CATALOGUE_ENTRY_INVALID\" | \"CATALOGUE_EVIDENCE_MISSING\" | \"CATALOGUE_PATH_INVALID\" | \"CATALOGUE_PAYLOAD_INVALID\" | \"CATALOGUE_PLAN_INVALID\" | \"CATALOGUE_ROLLBACK_UNKNOWN\" | \"CATALOGUE_UNAVAILABLE\" | \"CHECK_UNKNOWN\" | \"DIGEST_MISMATCH\" | \"NOT_NEWER\" | \"PART_UNKNOWN\"; combined?: { age_days: number; as_of: string; confirmed: boolean; groups: { [key: string]: { k: number; n: number; wilson_high: unknown; wilson_low: unknown } }; left_out: number; limits: unknown[]; part: string; results: { reported: number; reproduced: number; total: number }; speed: { median_ms: { open: true } | null | number; p90_ms: { open: true } | null | number } | { open: true }; subject_id: string; suiteVersions: Object; task_cost: { high: { open: true } | null | number; low: { open: true } | null | number; price_date: string; unit: string } | { open: true }; verdict: \"not_suitable\" | \"not_yet_rated\" | \"passes\" | \"passes_with_limits\"; window: { from: unknown; to: unknown } }[]; ok: boolean; reason?: \"ADVISORY_BAD_MOVE\" | \"ADVISORY_REASON_UNKNOWN\" | \"CATALOGUE_ENTRY_INVALID\" | \"CATALOGUE_EVIDENCE_MISSING\" | \"CATALOGUE_PATH_INVALID\" | \"CATALOGUE_PAYLOAD_INVALID\" | \"CATALOGUE_PLAN_INVALID\" | \"CATALOGUE_ROLLBACK_UNKNOWN\" | \"CATALOGUE_UNAVAILABLE\" | \"CHECK_UNKNOWN\" | \"DIGEST_MISMATCH\" | \"NOT_NEWER\" | \"PART_UNKNOWN\"; rows?: { age_days: number; confirmed: boolean; consent_ref?: string; grade: \"REPORTED\" | \"REPRODUCED\"; on_list: \"lapsed\" | \"listed\" | \"not_listed\" | \"retired\" | \"watch\"; parts: { [key: string]: { limits: unknown[]; verdict: \"not_suitable\" | \"not_yet_rated\" | \"passes\" | \"passes_with_limits\" } }; repeated_by_civicsmith: boolean; row_id: string; speed: { median_ms: { open: true } | null | number; p90_ms: { open: true } | null | number; window: unknown } | { open: true }; subject_id: string; suiteVersions: Object; task_cost: { high: { open: true } | null | number; low: { open: true } | null | number; price_date: string; unit: string } | { open: true }; team_name?: string; tested_at: string; tested_by: \"civicsmith\" | \"team\" }[]; subjects?: { display_name: null | string; host?: string; host_name?: null | string; on_list: \"lapsed\" | \"listed\" | \"not_listed\" | \"retired\" | \"watch\" | null; provider?: string; provider_name?: null | string; subject_id: string }[]; word?: string }",
+    "bounds": [
+     "age_days: whole days from tested_at to the day asked about, less than RESULT_ACTIVE_MONTHS months",
+     "as_of: a real calendar day written YYYY-MM-DD",
+     "confirmed: true exactly when total is above 0 and reported is 0",
+     "grade: REPRODUCED when tested_by civicsmith, else REPORTED",
+     "groups: k and n whole, k no more than n",
+     "left_out: whole number, 0 or more",
+     "parts: each key a part of the payload",
+     "price_date: a real calendar day written YYYY-MM-DD",
+     "results: whole numbers; total is reproduced plus reported",
+     "subject_id: an entry's or a tested AI's id",
+     "team_name: only a team's row, with its consent_ref; text of at most 120 characters",
+     "tested_at: a real calendar day written YYYY-MM-DD",
+     "unit: text, not blank, at most 64 characters"
+    ],
+    "side": "handsBack"
+   },
+   "tells": "nobody"
+  },
+  {
+   "module": "ai-catalogue",
+   "entry": "UpcomingAdvisory",
+   "changes": [
+    "cannot stand in"
+   ],
+   "tells": "users",
+   "before": {
+    "kind": "kind",
+    "accepts": "{ effective_at: string; kind: \"clear\" | \"lapse\" | \"retire\" | \"watch\"; reason: \"canary_drift\" | \"deprecation\" | \"health\" | \"other\" | \"served_mismatch\" | \"team_divergence\" | \"terms_change\"; seq: number; target: { entry_id: string } | { plan_id: string } }",
+    "handsBack": "{ effective_at: string; kind: \"clear\" | \"lapse\" | \"retire\" | \"watch\"; reason: \"canary_drift\" | \"deprecation\" | \"health\" | \"other\" | \"served_mismatch\" | \"team_divergence\" | \"terms_change\"; seq: number; target: { entry_id: string } | { plan_id: string } }",
+    "side": "both"
+   },
+   "after": {
+    "kind": "kind",
+    "handsBack": "{ effective_at: string; kind: \"clear\" | \"lapse\" | \"retire\" | \"watch\"; reason: \"canary_drift\" | \"deprecation\" | \"health\" | \"other\" | \"served_mismatch\" | \"team_divergence\" | \"terms_change\"; seq: number; target: { entry_id: string } | { plan_id: string } }",
+    "side": "handsBack"
+   }
+  },
+  {
+   "module": "ai-catalogue",
+   "entry": "aiCatalogueOps",
+   "changes": [
+    "new entry"
+   ],
+   "after": {
+    "kind": "function",
+    "accepts": "(arg0: handle ai-catalogue.AiCatalogue | null, arg1: null | undefined | URL, arg2: unknown)",
+    "handsBack": "handle ai-catalogue.CatalogueHandlers"
+   },
+   "tells": "nobody"
+  },
+  {
+   "module": "ai-catalogue",
+   "entry": "op:aicatalogueread",
+   "changes": [
+    "new entry"
+   ],
+   "after": {
+    "kind": "operation",
+    "accepts": "{ checks?: string[] | string }",
+    "handsBack": "{ catalogue?: { advisories_seq?: null | number; age_days?: null | number; entries?: { needing_release: number; total: number }; held_back_seq?: null | number; issued_at?: null | string; last_check?: { at: string; outcome: string; trigger: \"manual\" | \"schedule\" } | null; last_good_seq?: null | number; rolled_back?: boolean; schema_version?: null | number; seq?: null | number; source?: \"pulled\" | \"seed\" | null; state: \"current\" | \"needs_newer_release\" | \"stale\" | \"unavailable\"; upcoming?: { effective_at: string; kind: \"clear\" | \"lapse\" | \"retire\" | \"watch\"; reason: \"canary_drift\" | \"deprecation\" | \"health\" | \"other\" | \"served_mismatch\" | \"team_divergence\" | \"terms_change\"; seq: number; target: { entry_id: string } | { plan_id: string } }[]; word: string }; check?: string; check_id?: null | string; code?: \"ADVISORY_BAD_MOVE\" | \"ADVISORY_REASON_UNKNOWN\" | \"CATALOGUE_ENTRY_INVALID\" | \"CATALOGUE_EVIDENCE_MISSING\" | \"CATALOGUE_PATH_INVALID\" | \"CATALOGUE_PAYLOAD_INVALID\" | \"CATALOGUE_PLAN_INVALID\" | \"CATALOGUE_ROLLBACK_UNKNOWN\" | \"CATALOGUE_UNAVAILABLE\" | \"CHECK_UNKNOWN\" | \"DIGEST_MISMATCH\" | \"NOT_NEWER\" | \"PART_UNKNOWN\"; entries?: { checks: { [key: string]: { answer: \"OPEN\" | \"met\" | \"not_met\"; date: null | string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\" | null; page: null | string; quote: null | string; source: null | string } }; developer: { jurisdiction: { open: true } | string; name: string }; display_name: string; entry_id: string; gate: { [key: string]: { at: null | string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\" | null; limits: { kind: \"context_depth\" | \"no_image_input\" | \"no_parallel_tools\" | \"no_streaming\" | \"output_cap\"; value: unknown }[]; verdict: \"not_suitable\" | \"not_yet_rated\" | \"passes\" | \"passes_with_limits\" } }; host: string; listing: { reason: \"canary_drift\" | \"deprecation\" | \"health\" | \"other\" | \"served_mismatch\" | \"team_divergence\" | \"terms_change\" | null; since_seq: number; state: \"lapsed\" | \"listed\" | \"retired\" | \"watch\" } | null; needs_newer_release: boolean; offered: { [key: string]: { offered: boolean; reasons: ({ check: \"P1\" | \"P2\" | \"P3\" | \"P4\" | \"P5\" | \"P6\" | \"P7\"; code: \"CHECK_NOT_MET\" | \"CHECK_OPEN\" } | { code: \"NO_PLAN_OFFERED\"; plans: { plan_id: string; reasons: (\"PLAN_LAPSED\" | \"PLAN_NO_GUIDANCE\" | \"PLAN_NO_MEANS\" | \"PLAN_RETIRED\")[] }[] } | { code: \"PART_NOT_PASSED\"; verdict: \"not_suitable\" | \"not_yet_rated\" | \"passes\" | \"passes_with_limits\" } | { code: \"CATALOGUE_UNAVAILABLE\" | \"ENTRY_LAPSED\" | \"ENTRY_RETIRED\" | \"ENTRY_UNKNOWN\" | \"NEEDS_NEWER_RELEASE\" | \"PART_NOT_RATED\" })[] } }; omitted_since: null | number; plan_ids: string[]; provider: string; recipient: { host: string; provider: string }; shown: { [key: string]: { answer: \"OPEN\" | \"met\" | \"not_met\"; date: null | string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\" | null; page: null | string; quote: null | string; source: null | string } | null }; state: \"lapsed\" | \"listed\" | \"retired\" | \"watch\"; watch: boolean; zero_retention: { open: true } | boolean }[]; ok: boolean; parts?: string[]; plans?: { plans: { binding_terms: { doc: string; effective_from: string; effective_to?: string; ev: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string }; kind: \"deprecation_notice\" | \"high_risk_review\" | \"indemnity\" | \"no_sla\" | \"other\" | \"political_use\"; quote: string; section: string; version: number | string }[]; connection_ways: (\"built_in\" | \"pasted_key\" | \"provider_signin\")[]; constraints: { enforce: \"deployment\" | \"level_rule_only\"; runtimes: (\"member_device\" | \"member_runtime\" | \"shared_worker\")[] | { open: true }; token_storage: \"member_device\" | \"reference_only\" | \"sealed\" | { open: true } }; credential_kind: \"api_key\" | \"none\" | \"signin_token\"; free_tier_trains: { open: true } | boolean; free_tier_unconfirmed: boolean; guidance_id: string; kind: \"aggregator\" | \"api\" | \"builtin\" | \"custom\" | \"gateway\" | \"subscription\"; levels: (\"group\" | \"member\" | \"project\")[]; listing: { reason: \"canary_drift\" | \"deprecation\" | \"health\" | \"other\" | \"served_mismatch\" | \"team_divergence\" | \"terms_change\" | null; since_seq: number; state: \"lapsed\" | \"listed\" | \"retired\" | \"watch\" } | null; means_allowed: (\"gateway\" | \"issued\" | \"none\" | \"reference\" | \"sealed\")[] | { open: true }; money: \"none\" | \"priced\" | \"reported\" | { open: true }; needs_reconfirmation: boolean; offered: boolean; omitted_since: null | number; plan_id: string; price_basis: { amount?: null | number; basis: string; currency?: unknown; date: string; ev: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string }; includes: unknown; limits: unknown; period?: unknown } | { open: true }; provider: string; reasons: (\"PLAN_LAPSED\" | \"PLAN_NO_GUIDANCE\" | \"PLAN_NO_MEANS\" | \"PLAN_RETIRED\")[]; restrictions: ({ date: string; kind: string; page: string; quote: string } | { open: true })[]; scope: \"member\" | \"project\" | \"team\" | \"unconfirmed\"; state: \"lapsed\" | \"listed\" | \"retired\" | \"watch\"; terms_pending: { days_until: number; doc: string; effective_from: string; version: number | string }[]; terms_version: string; token_bounds: { max_length: number; min_length: number } | null; unconfirmed: boolean; warning_id: null | string; warning_version: null | string }[]; provider: string }[]; providers?: { id: string; kind: \"aggregator\" | \"builtin\" | \"custom\" | \"direct\" | \"gateway\"; name: string }[]; reason?: \"ADVISORY_BAD_MOVE\" | \"ADVISORY_REASON_UNKNOWN\" | \"CATALOGUE_ENTRY_INVALID\" | \"CATALOGUE_EVIDENCE_MISSING\" | \"CATALOGUE_PATH_INVALID\" | \"CATALOGUE_PAYLOAD_INVALID\" | \"CATALOGUE_PLAN_INVALID\" | \"CATALOGUE_ROLLBACK_UNKNOWN\" | \"CATALOGUE_UNAVAILABLE\" | \"CHECK_UNKNOWN\" | \"DIGEST_MISMATCH\" | \"NOT_NEWER\" | \"PART_UNKNOWN\"; word?: string }",
+    "bounds": [
+     "aicatalogueread.checks: each one of CHECK_IDS; in a query, a comma list",
+     "amount: a finite number, 0 or more",
+     "basis: text, not blank, at most 64 characters",
+     "date: a real calendar day written YYYY-MM-DD",
+     "doc: text, not blank, at most 400 characters",
+     "effective_from: a real calendar day written YYYY-MM-DD",
+     "effective_to: a real calendar day written YYYY-MM-DD",
+     "kind: text, not blank, at most 64 characters",
+     "name: text, not blank, at most 200 characters",
+     "page: text, not blank, at most 2000 characters; with quote, required on a check answer",
+     "quote: text, not blank, at most 8000 characters",
+     "quote: text, not blank, at most 8000 characters; with page, required on a check answer",
+     "section: text, not blank, at most 200 characters",
+     "source: text, not blank, at most 2000 characters",
+     "terms_pending: ordered by effective_from, each after the day asked about",
+     "terms_version: 64 lowercase hex digits, the SHA-256 of the restrictions and binding terms",
+     "version: as text, not blank, at most 64 characters",
+     "warning_version: 64 lowercase hex digits, the SHA-256 of the warning's text"
+    ]
+   },
+   "tells": "nobody"
+  },
+  {
+   "module": "ai-catalogue",
+   "entry": "op:airesultsread",
+   "changes": [
+    "new entry"
+   ],
+   "after": {
+    "kind": "operation",
+    "accepts": "{ part?: string; subject_id?: string }",
+    "handsBack": "{ catalogue?: { advisories_seq?: null | number; age_days?: null | number; entries?: { needing_release: number; total: number }; held_back_seq?: null | number; issued_at?: null | string; last_check?: { at: string; outcome: string; trigger: \"manual\" | \"schedule\" } | null; last_good_seq?: null | number; rolled_back?: boolean; schema_version?: null | number; seq?: null | number; source?: \"pulled\" | \"seed\" | null; state: \"current\" | \"needs_newer_release\" | \"stale\" | \"unavailable\"; upcoming?: { effective_at: string; kind: \"clear\" | \"lapse\" | \"retire\" | \"watch\"; reason: \"canary_drift\" | \"deprecation\" | \"health\" | \"other\" | \"served_mismatch\" | \"team_divergence\" | \"terms_change\"; seq: number; target: { entry_id: string } | { plan_id: string } }[]; word: string }; check?: string; code?: \"ADVISORY_BAD_MOVE\" | \"ADVISORY_REASON_UNKNOWN\" | \"CATALOGUE_ENTRY_INVALID\" | \"CATALOGUE_EVIDENCE_MISSING\" | \"CATALOGUE_PATH_INVALID\" | \"CATALOGUE_PAYLOAD_INVALID\" | \"CATALOGUE_PLAN_INVALID\" | \"CATALOGUE_ROLLBACK_UNKNOWN\" | \"CATALOGUE_UNAVAILABLE\" | \"CHECK_UNKNOWN\" | \"DIGEST_MISMATCH\" | \"NOT_NEWER\" | \"PART_UNKNOWN\"; combined?: { age_days: number; as_of: string; confirmed: boolean; groups: { [key: string]: { k: number; n: number; wilson_high: unknown; wilson_low: unknown } }; left_out: number; limits: unknown[]; part: string; results: { reported: number; reproduced: number; total: number }; speed: { median_ms: { open: true } | null | number; p90_ms: { open: true } | null | number } | { open: true }; subject_id: string; suiteVersions: Object; task_cost: { high: { open: true } | null | number; low: { open: true } | null | number; price_date: string; unit: string } | { open: true }; verdict: \"not_suitable\" | \"not_yet_rated\" | \"passes\" | \"passes_with_limits\"; window: { from: unknown; to: unknown } }[]; ok: boolean; reason?: \"ADVISORY_BAD_MOVE\" | \"ADVISORY_REASON_UNKNOWN\" | \"CATALOGUE_ENTRY_INVALID\" | \"CATALOGUE_EVIDENCE_MISSING\" | \"CATALOGUE_PATH_INVALID\" | \"CATALOGUE_PAYLOAD_INVALID\" | \"CATALOGUE_PLAN_INVALID\" | \"CATALOGUE_ROLLBACK_UNKNOWN\" | \"CATALOGUE_UNAVAILABLE\" | \"CHECK_UNKNOWN\" | \"DIGEST_MISMATCH\" | \"NOT_NEWER\" | \"PART_UNKNOWN\"; rows?: { age_days: number; confirmed: boolean; consent_ref?: string; grade: \"REPORTED\" | \"REPRODUCED\"; on_list: \"lapsed\" | \"listed\" | \"not_listed\" | \"retired\" | \"watch\"; parts: { [key: string]: { limits: unknown[]; verdict: \"not_suitable\" | \"not_yet_rated\" | \"passes\" | \"passes_with_limits\" } }; repeated_by_civicsmith: boolean; row_id: string; speed: { median_ms: { open: true } | null | number; p90_ms: { open: true } | null | number; window: unknown } | { open: true }; subject_id: string; suiteVersions: Object; task_cost: { high: { open: true } | null | number; low: { open: true } | null | number; price_date: string; unit: string } | { open: true }; team_name?: string; tested_at: string; tested_by: \"civicsmith\" | \"team\" }[]; subjects?: { display_name: null | string; host?: string; host_name?: null | string; on_list: \"lapsed\" | \"listed\" | \"not_listed\" | \"retired\" | \"watch\" | null; provider?: string; provider_name?: null | string; subject_id: string }[]; word?: string }",
+    "bounds": [
+     "age_days: whole days from tested_at to the day asked about, less than RESULT_ACTIVE_MONTHS months",
+     "as_of: a real calendar day written YYYY-MM-DD",
+     "confirmed: true exactly when total is above 0 and reported is 0",
+     "grade: REPRODUCED when tested_by civicsmith, else REPORTED",
+     "groups: k and n whole, k no more than n",
+     "left_out: whole number, 0 or more",
+     "parts: each key a part of the payload",
+     "price_date: a real calendar day written YYYY-MM-DD",
+     "results: whole numbers; total is reproduced plus reported",
+     "subject_id: an entry's or a tested AI's id",
+     "team_name: only a team's row, with its consent_ref; text of at most 120 characters",
+     "tested_at: a real calendar day written YYYY-MM-DD",
+     "unit: text, not blank, at most 64 characters"
+    ]
+   },
+   "tells": "nobody"
+  }
+ ],
+ "told": [
+  {
+   "user": "ai-accounts",
+   "reasons": [
+    {
+     "module": "ai-catalogue",
+     "entry": "PlanRow",
+     "changes": [
+      "cannot stand in"
+     ],
+     "lines": [
+      "ai-accounts/test/plans.test.mjs:221",
+      "ai-accounts/test/serving.test.mjs:149"
+     ],
+     "through": null
+    },
+    {
+     "module": "ai-catalogue",
+     "notFollowed": [
+      "reads or calls values of unknown kind: ai-accounts/src/accounts.mjs:28 row; ai-accounts/src/accounts.mjs:34 s; ai-accounts/src/accounts.mjs:40 plan (+4396)"
+     ],
+     "through": null
+    }
+   ],
+   "undeclared": []
+  },
+  {
+   "user": "agent-model",
+   "reasons": [
+    {
+     "module": "ai-catalogue",
+     "notFollowed": [
+      "declares ai-catalogue but no use of it is found in its code",
+      "reads or calls values of unknown kind: agent-model/src/src/apikey.mjs:34 m; agent-model/src/src/apikey.mjs:34 m.content.map; agent-model/src/src/apikey.mjs:34 m.content (+2439)"
+     ],
+     "through": null
+    }
+   ],
+   "undeclared": []
+  },
+  {
+   "user": "ai-use",
+   "reasons": [
+    {
+     "module": "ai-catalogue",
+     "notFollowed": [
+      "reads or calls values of unknown kind: ai-use/src/checks.mjs:110 s.split(`{${k}}`).join; ai-use/src/checks.mjs:110 s.split(`{${k}}`); ai-use/src/checks.mjs:110 s.split (+2068)"
+     ],
+     "through": null
+    }
+   ],
+   "undeclared": []
+  },
+  {
+   "user": "ai-runs",
+   "reasons": [
+    {
+     "module": "ai-catalogue",
+     "notFollowed": [
+      "reads or calls values of unknown kind: ai-runs/src/index.mjs:91 gate; ai-runs/src/index.mjs:92 gate; ai-runs/src/index.mjs:95 gate (+5027)"
+     ],
+     "through": null
+    }
+   ],
+   "undeclared": []
+  },
+  {
+   "user": "agent-runner",
+   "reasons": [
+    {
+     "module": "ai-catalogue",
+     "notFollowed": [
+      "reads or calls values of unknown kind: agent-runner/src/scripts/build-image.mjs:24 b.onResolve; agent-runner/src/scripts/build-image.mjs:24 b; agent-runner/src/scripts/build-image.mjs:24 a (+959)"
+     ],
+     "through": null
+    }
+   ],
+   "undeclared": []
+  },
+  {
+   "user": "agent-worker",
+   "reasons": [
+    {
+     "module": "ai-catalogue",
+     "notFollowed": [
+      "declares ai-catalogue but no use of it is found in its code",
+      "reads or calls values of unknown kind: agent-worker/src/scripts/build.mjs:41 member.bundle; agent-worker/src/scripts/build.mjs:42 built.bytes; agent-worker/src/scripts/build.mjs:43 member.bundle (+5502)"
+     ],
+     "through": null
+    }
+   ],
+   "undeclared": []
+  },
+  {
+   "user": "ai-gate",
+   "reasons": [
+    {
+     "module": "ai-catalogue",
+     "notFollowed": [
+      "reads or calls values of unknown kind: ai-gate/src/bank.mjs:37 o; ai-gate/src/bank.mjs:40 G9_TOPICS; ai-gate/src/bank.mjs:55 GROUP_NEEDS (+1646)"
+     ],
+     "through": null
+    }
+   ],
+   "undeclared": []
+  },
+  {
+   "user": "surface-declarations",
+   "reasons": [
+    {
+     "module": "ai-catalogue",
+     "notFollowed": [
+      "declares ai-catalogue but no use of it is found in its code"
+     ],
+     "through": null
+    }
+   ],
+   "undeclared": []
+  },
+  {
+   "user": "op-declarations",
+   "reasons": [
+    {
+     "module": "ai-catalogue",
+     "notFollowed": [
+      "declares ai-catalogue but no use of it is found in its code",
+      "reads or calls values of unknown kind: op-declarations/src/compose.mjs:10 composed; op-declarations/src/compose.mjs:16 composed; op-declarations/src/compose.mjs:37 OPS (+3834)"
+     ],
+     "through": null
+    }
+   ],
+   "undeclared": []
+  },
+  {
+   "user": "answer-envelope",
+   "reasons": [
+    {
+     "module": "ai-catalogue",
+     "notFollowed": [
+      "reads or calls values of unknown kind: answer-envelope/src/families.mjs:181 fill; answer-envelope/src/families.mjs:182 Reflect[op]; answer-envelope/src/families.mjs:287 t.push (+1266)"
+     ],
+     "through": null
+    }
+   ],
+   "undeclared": []
+  },
+  {
+   "user": "store-assembly",
+   "reasons": [
+    {
+     "module": "ai-catalogue",
+     "entry": "CatalogueStateView",
+     "changes": [
+      "cannot stand in"
+     ],
+     "lines": [
+      "store-assembly/test/catalogue.test.mjs:60",
+      "store-assembly/test/catalogue.test.mjs:82",
+      "store-assembly/test/catalogue.test.mjs:83",
+      "store-assembly/test/catalogue.test.mjs:85",
+      "store-assembly/test/notice-ai-catalogue-317.test.mjs:46",
+      "store-assembly/test/notice-ai-catalogue-317.test.mjs:47"
+     ],
+     "through": null
+    },
+    {
+     "module": "ai-catalogue",
+     "notFollowed": [
+      "reads or calls values of unknown kind: store-assembly/src/acquire-timings.mjs:25 host; store-assembly/src/acquire-timings.mjs:25 host.storage; store-assembly/src/acquire-timings.mjs:25 host.storage.sql (+7206)"
+     ],
+     "through": null
+    }
+   ],
+   "undeclared": []
+  },
+  {
+   "user": "ai-issuer",
+   "reasons": [
+    {
+     "module": "ai-catalogue",
+     "notFollowed": [
+      "declares ai-catalogue but no use of it is found in its code"
+     ],
+     "through": null
+    }
+   ],
+   "undeclared": []
+  }
+ ],
+ "notTold": [],
+ "warnings": [],
+ "interfaceChanged": true,
+ "summary": "1 module(s) changed their listing; 11 entries changed in a way that tells; 12 user(s) told.",
+ "replay": {
+  "change": "ai-catalogue:1097",
+  "ms": 77773,
+  "ranAt": "2026-11-15T17:12:53.556Z",
+  "tool": "notice-proof/tool/p3tool.mjs",
+  "commentedUsers": null
+ }
+}

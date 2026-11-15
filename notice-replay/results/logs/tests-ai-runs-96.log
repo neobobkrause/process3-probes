@@ -64,3 +64,6 @@
 16:42:18 after store-request 7 pass 110 fail 0 new
 16:43:25 after screens-inquiry 0 pass 69 fail 0 new
 16:43:25 after screens-document undefined pass undefined fail 0 new
+17:03:25 after control-plane 0 pass 0 fail 0 new
+17:23:25 after plane 0 pass 0 fail 1 new
+17:23:34 done ai-runs:96

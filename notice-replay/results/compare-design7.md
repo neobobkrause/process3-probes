@@ -1,6 +1,6 @@
 # Replay: the tool against the record, change by change
 
-Written by `replay/compare.mjs` at 2026-11-15T16:41:07.900Z, from `results/notice-design7`. Measured, except "broken" and "adopted", which are the study session's judged reading of the record.
+Written by `replay/compare.mjs` at 2026-11-15T17:21:58.819Z, from `results/notice-design7`. Measured, except "broken" and "adopted", which are the study session's judged reading of the record.
 
 | Change | Record told | Listing changed | Tool told | of them for an entry | Tool for nothing | Broken (missed by tool) | Adopted (missed by tool) | Users whose tests newly fail | Broken caught by tests |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
@@ -29,10 +29,10 @@ Written by `replay/compare.mjs` at 2026-11-15T16:41:07.900Z, from `results/notic
 | ai-catalogue:611 | 12 | yes | 12 | 4 | 12 | 0 | 0 | not run | - |
 | ai-catalogue:1097 | 11 | yes | 12 | 5 | 12 | 0 | 0 | not run | - |
 | ai-use:105 | 18 | yes | 18 | 10 | 12 | 1 | 5 | not run | - |
-| ai-use:378 | 19 | error | - | - | - | 0 | 1 | not run | - |
-| ai-use:613 | 19 | error | - | - | - | 0 | 0 | not run | - |
+| ai-use:378 | 19 | yes | 19 | 12 | 18 | 0 | 1 | not run | - |
+| ai-use:613 | 19 | yes | 19 | 11 | 19 | 0 | 0 | not run | - |
 | wizard-scripts:98 | 19 | yes | 19 | 0 | 17 | 0 | 2 | not run | - |
-| wizard-scripts:163 | 19 | error | - | - | - | 2 | 0 | not run | - |
+| wizard-scripts:163 | 19 | yes | 19 | 0 | 17 | 2 | 0 | not run | - |
 | wizard-scripts:253 | 19 | yes | 19 | 0 | 19 | 0 | 0 | not run | - |
 | wizard-scripts:255 | 19 | yes | 19 | 0 | 19 | 0 | 0 | not run | - |
 | wizard-scripts:546 | 19 | yes | 19 | 0 | 19 | 0 | 0 | not run | - |
@@ -42,23 +42,23 @@ Written by `replay/compare.mjs` at 2026-11-15T16:41:07.900Z, from `results/notic
 ```
 {
  "changes": 32,
- "replayed": 29,
+ "replayed": 32,
  "recordTold": 665,
  "recordForNothing": 629,
  "broken": 23,
  "adopted": 13,
  "listingUnchanged": 4,
- "toolTold": 611,
- "toolForNothing": 578,
+ "toolTold": 668,
+ "toolForNothing": 632,
  "toolBrokenMissed": 0,
  "toolAdoptedMissed": 0,
- "narrowTold": 611,
- "narrowForNothing": 578,
+ "narrowTold": 668,
+ "narrowForNothing": 632,
  "narrowBrokenMissed": 0,
  "narrowAdoptedMissed": 0,
- "entryTold": 253,
- "entryForNothing": 226,
- "entryBrokenMissed": 4,
+ "entryTold": 276,
+ "entryForNothing": 248,
+ "entryBrokenMissed": 6,
  "entryAdoptedMissed": 2,
  "testsChanges": 0,
  "testsUserRuns": 0,

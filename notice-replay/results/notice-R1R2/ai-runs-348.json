@@ -1,0 +1,954 @@
+{
+ "provider": "ai-runs",
+ "reader": "TypeScript 5.6.3",
+ "firstCommentsStep": false,
+ "changedModules": [
+  {
+   "module": "ai-runs",
+   "through": null
+  }
+ ],
+ "entries": [
+  {
+   "module": "ai-runs",
+   "entry": "AiRunHandlers.airunopen",
+   "changes": [
+    "hands back differently"
+   ],
+   "tells": "users",
+   "before": {
+    "kind": "method",
+    "accepts": "()",
+    "handsBack": "{ bound?: string; bytes?: number; check?: null | string; code?: string; created?: string; deployed?: string[]; detail?: null | string; expires?: string; limit?: number; mode?: string; name?: string; note?: string; origin?: string; period?: anything; plan?: string; project?: null | string; projectGate?: { applied: boolean; ground: \"INQUIRY\" | \"NO_MEMBER_BEHIND_CALLER\" | \"PARTICIPANT\"; projects: number; why: string }; rerun_of?: string; response?: string; run: null | string | undefined; scope?: anything; started: boolean; status?: \"running\"; step?: string; ticks?: number; translation?: null | string; unit?: anything; untested?: { kind: \"untested\"; part: string; set: string; set_version: number; words: string } | null; use?: anything; whose?: anything } | Promise<{ bound?: string; bytes?: number; check?: null | string; code?: string; created?: string; deployed?: string[]; detail?: null | string; expires?: string; limit?: number; mode?: string; name?: string; note?: string; origin?: string; period?: anything; plan?: string; project?: null | string; projectGate?: { applied: boolean; ground: \"INQUIRY\" | \"NO_MEMBER_BEHIND_CALLER\" | \"PARTICIPANT\"; projects: number; why: string }; rerun_of?: string; response?: string; run: null | string | undefined; scope?: anything; started: boolean; status?: \"running\"; step?: string; ticks?: number; translation?: null | string; unit?: anything; untested?: { kind: \"untested\"; part: string; set: string; set_version: number; words: string } | null; use?: anything; whose?: anything }>",
+    "bounds": [
+     "part: one of run-rules' TEST_BAR_PARTS"
+    ]
+   },
+   "after": {
+    "kind": "method",
+    "accepts": "()",
+    "handsBack": "{ bound?: string; bytes?: number; check?: null | string; code?: string; created?: string; deployed?: string[]; detail?: null | string; expires?: string; exploring?: string; limit?: number; mode?: string; name?: string; note?: string; origin?: string; period?: anything; plan?: string; project?: null | string; projectGate?: { applied: boolean; ground: \"INQUIRY\" | \"NO_MEMBER_BEHIND_CALLER\" | \"PARTICIPANT\"; projects: number; why: string }; rerun_of?: string; response?: string; run: null | string | undefined; scope?: anything; started: boolean; status?: \"running\"; step?: string; ticks?: number; translation?: null | string; unit?: anything; untested?: { kind: \"untested\"; part: string; set: string; set_version: number; words: string } | null; use?: anything; whose?: anything } | Promise<{ bound?: string; bytes?: number; check?: null | string; code?: string; created?: string; deployed?: string[]; detail?: null | string; expires?: string; exploring?: string; limit?: number; mode?: string; name?: string; note?: string; origin?: string; period?: anything; plan?: string; project?: null | string; projectGate?: { applied: boolean; ground: \"INQUIRY\" | \"NO_MEMBER_BEHIND_CALLER\" | \"PARTICIPANT\"; projects: number; why: string }; rerun_of?: string; response?: string; run: null | string | undefined; scope?: anything; started: boolean; status?: \"running\"; step?: string; ticks?: number; translation?: null | string; unit?: anything; untested?: { kind: \"untested\"; part: string; set: string; set_version: number; words: string } | null; use?: anything; whose?: anything }>",
+    "bounds": [
+     "part: one of run-rules' TEST_BAR_PARTS"
+    ]
+   }
+  },
+  {
+   "module": "ai-runs",
+   "entry": "AiRuns#open",
+   "changes": [
+    "accepts more",
+    "hands back differently",
+    "bound changed"
+   ],
+   "tells": "users",
+   "before": {
+    "kind": "class member",
+    "accepts": "(arg0?: { actor?: null | string; at?: null | string; biasManifest?: null | string; bounds?: { allowed: number; bound: string; consumed?: number; unit?: null | string }[] | null; contextId?: string; contextType?: string; label?: null | string; leaseMs?: null | number; mode?: null | string; origin?: null | string; place?: anything; plan?: null | string; principalAi?: null | string; principalAiRef?: null | string; principalClaude?: anything; principalClaudeRef?: anything; principalPlane?: null | string; project?: null | string; rerunOf?: null | string; response?: null | string; run?: string; skillVersion?: null | string; standardPair?: null | string; state?: anything; step?: null | string; viewer?: null | string; work?: null | string })",
+    "handsBack": "Promise<{ bound?: string; bytes?: number; check?: null | string; code?: string; created?: string; deployed?: string[]; detail?: null | string; expires?: string; limit?: number; mode?: string; name?: string; note?: string; origin?: string; period?: anything; plan?: string; project?: null | string; projectGate?: { applied: boolean; ground: \"INQUIRY\" | \"NO_MEMBER_BEHIND_CALLER\" | \"PARTICIPANT\"; projects: number; why: string }; rerun_of?: string; response?: string; run: null | string | undefined; scope?: anything; started: boolean; status?: \"running\"; step?: string; ticks?: number; translation?: null | string; unit?: anything; untested?: { kind: \"untested\"; part: string; set: string; set_version: number; words: string } | null; use?: anything; whose?: anything }>",
+    "bounds": [
+     "allowed: whole number, 1 or more",
+     "at: an instant Date.parse reads",
+     "bound: a name of run-rules' RUN_BOUNDS other than lease",
+     "consumed: whole number, 0 or more",
+     "contextType: a name of run-rules' RUN_CONTEXTS (inquiry, project), and the kind of the bundle contextId names",
+     "mode: one of run-rules' RUN_MODES deployed here and admitted (partAdmitted); absent is DEFAULT_MODE",
+     "origin: member (the default), explore or reexamination, as run-rules' originAllowed judges it",
+     "part: one of run-rules' TEST_BAR_PARTS",
+     "plan: named exactly when mode is plan; a planning run is over a project, by a member, with no fetches or subsessions allowance",
+     "principalClaude, principalClaudeRef: absent (AI_RUN_CAPABILITY_UNAVAILABLE whenever either is sent)",
+     "principalPlane, principalAi: both required",
+     "response: required for a reexamination run",
+     "run, contextType, contextId: each required, non-empty",
+     "skillVersion: required, as run-rules' checkSkillVersion judges it",
+     "state: at most 262144 bytes as JSON (run-rules' AI_RUN_STATE_MAX_BYTES)"
+    ]
+   },
+   "after": {
+    "kind": "class member",
+    "accepts": "(arg0?: { actor?: null | string; at?: null | string; biasManifest?: null | string; bounds?: { allowed: number; bound: string; consumed?: number; unit?: null | string }[] | null; contextId?: string; contextType?: string; enabledBy?: null | string; label?: null | string; leaseMs?: null | number; mode?: null | string; origin?: null | string; place?: anything; plan?: null | string; principalAi?: null | string; principalAiRef?: null | string; principalClaude?: anything; principalClaudeRef?: anything; principalPlane?: null | string; project?: null | string; rerunOf?: null | string; response?: null | string; run?: string; skillVersion?: null | string; standardPair?: null | string; state?: anything; step?: null | string; viewer?: null | string; work?: null | string })",
+    "handsBack": "Promise<{ bound?: string; bytes?: number; check?: null | string; code?: string; created?: string; deployed?: string[]; detail?: null | string; expires?: string; exploring?: string; limit?: number; mode?: string; name?: string; note?: string; origin?: string; period?: anything; plan?: string; project?: null | string; projectGate?: { applied: boolean; ground: \"INQUIRY\" | \"NO_MEMBER_BEHIND_CALLER\" | \"PARTICIPANT\"; projects: number; why: string }; rerun_of?: string; response?: string; run: null | string | undefined; scope?: anything; started: boolean; status?: \"running\"; step?: string; ticks?: number; translation?: null | string; unit?: anything; untested?: { kind: \"untested\"; part: string; set: string; set_version: number; words: string } | null; use?: anything; whose?: anything }>",
+    "bounds": [
+     "allowed: whole number, 1 or more",
+     "at: an instant Date.parse reads",
+     "bound: a name of run-rules' RUN_BOUNDS other than lease",
+     "consumed: whole number, 0 or more",
+     "contextType: a name of run-rules' RUN_CONTEXTS (inquiry, project), and the kind of the bundle contextId names",
+     "enabledBy: an exploring run's accountable member, absent meaning the actor's; she must be an active member, as run-rules' startAllowed judges it",
+     "mode: one of run-rules' RUN_MODES deployed here and admitted (partAdmitted); absent is DEFAULT_MODE",
+     "origin: member (the default), explore or reexamination, as run-rules' originAllowed judges it",
+     "part: one of run-rules' TEST_BAR_PARTS",
+     "plan: named exactly when mode is plan; a planning run is over a project, by a member, with no fetches or subsessions allowance",
+     "principalClaude, principalClaudeRef: absent (AI_RUN_CAPABILITY_UNAVAILABLE whenever either is sent)",
+     "principalPlane, principalAi: both required",
+     "response: required for a reexamination run",
+     "run, contextType, contextId: each required, non-empty",
+     "skillVersion: required, as run-rules' checkSkillVersion judges it",
+     "state: at most 262144 bytes as JSON (run-rules' AI_RUN_STATE_MAX_BYTES)"
+    ]
+   }
+  },
+  {
+   "module": "ai-runs",
+   "entry": "OpenAnswer",
+   "changes": [
+    "hands back differently"
+   ],
+   "tells": "users",
+   "before": {
+    "kind": "kind",
+    "handsBack": "{ bound?: string; bytes?: number; check?: null | string; code?: string; created?: string; deployed?: string[]; detail?: null | string; expires?: string; limit?: number; mode?: string; name?: string; note?: string; origin?: string; period?: anything; plan?: string; project?: null | string; projectGate?: { applied: boolean; ground: \"INQUIRY\" | \"NO_MEMBER_BEHIND_CALLER\" | \"PARTICIPANT\"; projects: number; why: string }; rerun_of?: string; response?: string; run: null | string | undefined; scope?: anything; started: boolean; status?: \"running\"; step?: string; ticks?: number; translation?: null | string; unit?: anything; untested?: { kind: \"untested\"; part: string; set: string; set_version: number; words: string } | null; use?: anything; whose?: anything }",
+    "bounds": [
+     "part: one of run-rules' TEST_BAR_PARTS"
+    ],
+    "side": "handsBack"
+   },
+   "after": {
+    "kind": "kind",
+    "handsBack": "{ bound?: string; bytes?: number; check?: null | string; code?: string; created?: string; deployed?: string[]; detail?: null | string; expires?: string; exploring?: string; limit?: number; mode?: string; name?: string; note?: string; origin?: string; period?: anything; plan?: string; project?: null | string; projectGate?: { applied: boolean; ground: \"INQUIRY\" | \"NO_MEMBER_BEHIND_CALLER\" | \"PARTICIPANT\"; projects: number; why: string }; rerun_of?: string; response?: string; run: null | string | undefined; scope?: anything; started: boolean; status?: \"running\"; step?: string; ticks?: number; translation?: null | string; unit?: anything; untested?: { kind: \"untested\"; part: string; set: string; set_version: number; words: string } | null; use?: anything; whose?: anything }",
+    "bounds": [
+     "part: one of run-rules' TEST_BAR_PARTS"
+    ],
+    "side": "handsBack"
+   }
+  },
+  {
+   "module": "ai-runs",
+   "entry": "OpenRequest",
+   "changes": [
+    "accepts more",
+    "bound changed"
+   ],
+   "tells": "users",
+   "before": {
+    "kind": "kind",
+    "accepts": "{ actor?: null | string; at?: null | string; biasManifest?: null | string; bounds?: { allowed: number; bound: string; consumed?: number; unit?: null | string }[] | null; contextId?: string; contextType?: string; label?: null | string; leaseMs?: null | number; mode?: null | string; origin?: null | string; place?: anything; plan?: null | string; principalAi?: null | string; principalAiRef?: null | string; principalClaude?: anything; principalClaudeRef?: anything; principalPlane?: null | string; project?: null | string; rerunOf?: null | string; response?: null | string; run?: string; skillVersion?: null | string; standardPair?: null | string; state?: anything; step?: null | string; viewer?: null | string; work?: null | string }",
+    "bounds": [
+     "allowed: whole number, 1 or more",
+     "at: an instant Date.parse reads",
+     "bound: a name of run-rules' RUN_BOUNDS other than lease",
+     "consumed: whole number, 0 or more",
+     "contextType: a name of run-rules' RUN_CONTEXTS (inquiry, project), and the kind of the bundle contextId names",
+     "mode: one of run-rules' RUN_MODES deployed here and admitted (partAdmitted); absent is DEFAULT_MODE",
+     "origin: member (the default), explore or reexamination, as run-rules' originAllowed judges it",
+     "plan: named exactly when mode is plan; a planning run is over a project, by a member, with no fetches or subsessions allowance",
+     "principalClaude, principalClaudeRef: absent (AI_RUN_CAPABILITY_UNAVAILABLE whenever either is sent)",
+     "principalPlane, principalAi: both required",
+     "response: required for a reexamination run",
+     "run, contextType, contextId: each required, non-empty",
+     "skillVersion: required, as run-rules' checkSkillVersion judges it",
+     "state: at most 262144 bytes as JSON (run-rules' AI_RUN_STATE_MAX_BYTES)"
+    ],
+    "side": "accepts"
+   },
+   "after": {
+    "kind": "kind",
+    "accepts": "{ actor?: null | string; at?: null | string; biasManifest?: null | string; bounds?: { allowed: number; bound: string; consumed?: number; unit?: null | string }[] | null; contextId?: string; contextType?: string; enabledBy?: null | string; label?: null | string; leaseMs?: null | number; mode?: null | string; origin?: null | string; place?: anything; plan?: null | string; principalAi?: null | string; principalAiRef?: null | string; principalClaude?: anything; principalClaudeRef?: anything; principalPlane?: null | string; project?: null | string; rerunOf?: null | string; response?: null | string; run?: string; skillVersion?: null | string; standardPair?: null | string; state?: anything; step?: null | string; viewer?: null | string; work?: null | string }",
+    "bounds": [
+     "allowed: whole number, 1 or more",
+     "at: an instant Date.parse reads",
+     "bound: a name of run-rules' RUN_BOUNDS other than lease",
+     "consumed: whole number, 0 or more",
+     "contextType: a name of run-rules' RUN_CONTEXTS (inquiry, project), and the kind of the bundle contextId names",
+     "enabledBy: an exploring run's accountable member, absent meaning the actor's; she must be an active member, as run-rules' startAllowed judges it",
+     "mode: one of run-rules' RUN_MODES deployed here and admitted (partAdmitted); absent is DEFAULT_MODE",
+     "origin: member (the default), explore or reexamination, as run-rules' originAllowed judges it",
+     "plan: named exactly when mode is plan; a planning run is over a project, by a member, with no fetches or subsessions allowance",
+     "principalClaude, principalClaudeRef: absent (AI_RUN_CAPABILITY_UNAVAILABLE whenever either is sent)",
+     "principalPlane, principalAi: both required",
+     "response: required for a reexamination run",
+     "run, contextType, contextId: each required, non-empty",
+     "skillVersion: required, as run-rules' checkSkillVersion judges it",
+     "state: at most 262144 bytes as JSON (run-rules' AI_RUN_STATE_MAX_BYTES)"
+    ],
+    "side": "accepts"
+   }
+  },
+  {
+   "module": "ai-runs",
+   "entry": "op:airunopen",
+   "changes": [
+    "accepts more",
+    "hands back differently",
+    "bound changed"
+   ],
+   "tells": "users",
+   "before": {
+    "kind": "operation",
+    "accepts": "{ actor?: null | string; at?: null | string; biasManifest?: null | string; bounds?: { allowed: number; bound: string; consumed?: number; unit?: null | string }[] | null; contextId?: string; contextType?: string; label?: null | string; leaseMs?: null | number; mode?: null | string; origin?: null | string; place?: anything; plan?: null | string; principalAi?: null | string; principalAiRef?: null | string; principalClaude?: anything; principalClaudeRef?: anything; principalPlane?: null | string; project?: null | string; rerunOf?: null | string; response?: null | string; run?: string; skillVersion?: null | string; standardPair?: null | string; state?: anything; step?: null | string; viewer?: null | string; work?: null | string }",
+    "handsBack": "{ bound?: string; bytes?: number; check?: null | string; code?: string; created?: string; deployed?: string[]; detail?: null | string; expires?: string; limit?: number; mode?: string; name?: string; note?: string; origin?: string; period?: anything; plan?: string; project?: null | string; projectGate?: { applied: boolean; ground: \"INQUIRY\" | \"NO_MEMBER_BEHIND_CALLER\" | \"PARTICIPANT\"; projects: number; why: string }; rerun_of?: string; response?: string; run: null | string | undefined; scope?: anything; started: boolean; status?: \"running\"; step?: string; ticks?: number; translation?: null | string; unit?: anything; untested?: { kind: \"untested\"; part: string; set: string; set_version: number; words: string } | null; use?: anything; whose?: anything }",
+    "bounds": [
+     "allowed: whole number, 1 or more",
+     "at: an instant Date.parse reads",
+     "bound: a name of run-rules' RUN_BOUNDS other than lease",
+     "consumed: whole number, 0 or more",
+     "contextType: a name of run-rules' RUN_CONTEXTS (inquiry, project), and the kind of the bundle contextId names",
+     "mode: one of run-rules' RUN_MODES deployed here and admitted (partAdmitted); absent is DEFAULT_MODE",
+     "origin: member (the default), explore or reexamination, as run-rules' originAllowed judges it",
+     "part: one of run-rules' TEST_BAR_PARTS",
+     "plan: named exactly when mode is plan; a planning run is over a project, by a member, with no fetches or subsessions allowance",
+     "principalClaude, principalClaudeRef: absent (AI_RUN_CAPABILITY_UNAVAILABLE whenever either is sent)",
+     "principalPlane, principalAi: both required",
+     "response: required for a reexamination run",
+     "run, contextType, contextId: each required, non-empty",
+     "skillVersion: required, as run-rules' checkSkillVersion judges it",
+     "state: at most 262144 bytes as JSON (run-rules' AI_RUN_STATE_MAX_BYTES)"
+    ]
+   },
+   "after": {
+    "kind": "operation",
+    "accepts": "{ actor?: null | string; at?: null | string; biasManifest?: null | string; bounds?: { allowed: number; bound: string; consumed?: number; unit?: null | string }[] | null; contextId?: string; contextType?: string; enabledBy?: null | string; label?: null | string; leaseMs?: null | number; mode?: null | string; origin?: null | string; place?: anything; plan?: null | string; principalAi?: null | string; principalAiRef?: null | string; principalClaude?: anything; principalClaudeRef?: anything; principalPlane?: null | string; project?: null | string; rerunOf?: null | string; response?: null | string; run?: string; skillVersion?: null | string; standardPair?: null | string; state?: anything; step?: null | string; viewer?: null | string; work?: null | string }",
+    "handsBack": "{ bound?: string; bytes?: number; check?: null | string; code?: string; created?: string; deployed?: string[]; detail?: null | string; expires?: string; exploring?: string; limit?: number; mode?: string; name?: string; note?: string; origin?: string; period?: anything; plan?: string; project?: null | string; projectGate?: { applied: boolean; ground: \"INQUIRY\" | \"NO_MEMBER_BEHIND_CALLER\" | \"PARTICIPANT\"; projects: number; why: string }; rerun_of?: string; response?: string; run: null | string | undefined; scope?: anything; started: boolean; status?: \"running\"; step?: string; ticks?: number; translation?: null | string; unit?: anything; untested?: { kind: \"untested\"; part: string; set: string; set_version: number; words: string } | null; use?: anything; whose?: anything }",
+    "bounds": [
+     "allowed: whole number, 1 or more",
+     "at: an instant Date.parse reads",
+     "bound: a name of run-rules' RUN_BOUNDS other than lease",
+     "consumed: whole number, 0 or more",
+     "contextType: a name of run-rules' RUN_CONTEXTS (inquiry, project), and the kind of the bundle contextId names",
+     "enabledBy: an exploring run's accountable member, absent meaning the actor's; she must be an active member, as run-rules' startAllowed judges it",
+     "mode: one of run-rules' RUN_MODES deployed here and admitted (partAdmitted); absent is DEFAULT_MODE",
+     "origin: member (the default), explore or reexamination, as run-rules' originAllowed judges it",
+     "part: one of run-rules' TEST_BAR_PARTS",
+     "plan: named exactly when mode is plan; a planning run is over a project, by a member, with no fetches or subsessions allowance",
+     "principalClaude, principalClaudeRef: absent (AI_RUN_CAPABILITY_UNAVAILABLE whenever either is sent)",
+     "principalPlane, principalAi: both required",
+     "response: required for a reexamination run",
+     "run, contextType, contextId: each required, non-empty",
+     "skillVersion: required, as run-rules' checkSkillVersion judges it",
+     "state: at most 262144 bytes as JSON (run-rules' AI_RUN_STATE_MAX_BYTES)"
+    ]
+   }
+  }
+ ],
+ "told": [
+  {
+   "user": "run-productions",
+   "reasons": [
+    {
+     "module": "ai-runs",
+     "notFollowed": [
+      "reads or calls values of unknown kind: run-productions/src/checks.mjs:412 keys.map; run-productions/src/checks.mjs:412 keys; run-productions/src/checks.mjs:412 family (+1578)"
+     ],
+     "through": null
+    }
+   ],
+   "undeclared": []
+  },
+  {
+   "user": "capture-requests",
+   "reasons": [
+    {
+     "module": "ai-runs",
+     "entry": "AiRuns#open",
+     "changes": [
+      "accepts more",
+      "hands back differently",
+      "bound changed"
+     ],
+     "lines": [
+      "capture-requests/test/notice-ai-runs-96.test.mjs:15"
+     ],
+     "through": null
+    },
+    {
+     "module": "ai-runs",
+     "entry": "OpenAnswer",
+     "changes": [
+      "hands back differently"
+     ],
+     "lines": [
+      "capture-requests/test/notice-ai-runs-96.test.mjs:16"
+     ],
+     "through": null
+    },
+    {
+     "module": "ai-runs",
+     "notFollowed": [
+      "reads or calls values of unknown kind: capture-requests/src/index.mjs:120 fam; capture-requests/src/index.mjs:124 row; capture-requests/src/index.mjs:139 row (+2964)"
+     ],
+     "through": null
+    }
+   ],
+   "undeclared": []
+  },
+  {
+   "user": "skills",
+   "reasons": [
+    {
+     "module": "ai-runs",
+     "notFollowed": [
+      "reads or calls values of unknown kind: skills/src/skilldoctrine.mjs:260 SUGGEST_CHECKS.SUGGEST_BOILERPLATE; skills/src/skilldoctrine.mjs:261 SUGGEST_CHECKS.SUGGEST_UNWRITABLE_STATE; skills/src/skilldoctrine.mjs:262 SUGGEST_CHECKS.SUGGEST_NOT_DIFFERENT (+468)"
+     ],
+     "through": null
+    }
+   ],
+   "undeclared": []
+  },
+  {
+   "user": "question-explorer",
+   "reasons": [
+    {
+     "module": "ai-runs",
+     "entry": "AiRuns#open",
+     "changes": [
+      "accepts more",
+      "hands back differently",
+      "bound changed"
+     ],
+     "lines": [
+      "question-explorer/test/notice-ai-runs-213.test.mjs:34",
+      "question-explorer/test/notice-ai-runs-213.test.mjs:49",
+      "question-explorer/test/notice-ai-runs-213.test.mjs:52",
+      "question-explorer/test/notice-ai-runs-213.test.mjs:62",
+      "question-explorer/test/notice-ai-runs-96.test.mjs:26",
+      "question-explorer/test/notice-ai-runs-96.test.mjs:40"
+     ],
+     "through": null
+    },
+    {
+     "module": "ai-runs",
+     "entry": "OpenAnswer",
+     "changes": [
+      "hands back differently"
+     ],
+     "lines": [
+      "question-explorer/test/notice-ai-runs-213.test.mjs:35",
+      "question-explorer/test/notice-ai-runs-213.test.mjs:50",
+      "question-explorer/test/notice-ai-runs-213.test.mjs:53",
+      "question-explorer/test/notice-ai-runs-213.test.mjs:63",
+      "question-explorer/test/notice-ai-runs-96.test.mjs:41",
+      "question-explorer/test/notice-ai-runs-96.test.mjs:44"
+     ],
+     "through": null
+    },
+    {
+     "module": "ai-runs",
+     "entry": "OpenRequest",
+     "changes": [
+      "accepts more",
+      "bound changed"
+     ],
+     "lines": [
+      "question-explorer/test/notice-ai-runs-213.test.mjs:49",
+      "question-explorer/test/notice-ai-runs-213.test.mjs:52",
+      "question-explorer/test/notice-ai-runs-213.test.mjs:62",
+      "question-explorer/test/notice-ai-runs-96.test.mjs:40",
+      "question-explorer/test/notice-ai-runs-96.test.mjs:43",
+      "question-explorer/test/notice-ai-runs-96.test.mjs:48"
+     ],
+     "through": null
+    },
+    {
+     "module": "ai-runs",
+     "notFollowed": [
+      "reads or calls values of unknown kind: question-explorer/src/index.mjs:99 storage; question-explorer/src/index.mjs:119 aiRuns; question-explorer/src/index.mjs:119 aiRuns.verifications (+2387)"
+     ],
+     "through": null
+    }
+   ],
+   "undeclared": []
+  },
+  {
+   "user": "agent-steps",
+   "reasons": [
+    {
+     "module": "ai-runs",
+     "entry": "AiRuns#open",
+     "changes": [
+      "accepts more",
+      "hands back differently",
+      "bound changed"
+     ],
+     "lines": [
+      "agent-steps/test/notice-ai-runs-96.test.mjs:21",
+      "agent-steps/test/t53-account.test.mjs:31"
+     ],
+     "through": null
+    },
+    {
+     "module": "ai-runs",
+     "entry": "OpenAnswer",
+     "changes": [
+      "hands back differently"
+     ],
+     "lines": [
+      "agent-steps/test/notice-ai-runs-96.test.mjs:22",
+      "agent-steps/test/t53-account.test.mjs:32"
+     ],
+     "through": null
+    },
+    {
+     "module": "ai-runs",
+     "notFollowed": [
+      "reads or calls values of unknown kind: agent-steps/src/drive.mjs:26 env; agent-steps/src/drive.mjs:26 env.CLOCK; agent-steps/src/drive.mjs:49 askPlane (+1617)"
+     ],
+     "through": null
+    }
+   ],
+   "undeclared": []
+  },
+  {
+   "user": "agent-worker",
+   "reasons": [
+    {
+     "module": "ai-runs",
+     "entry": "AiRuns#open",
+     "changes": [
+      "accepts more",
+      "hands back differently",
+      "bound changed"
+     ],
+     "lines": [
+      "agent-worker/test/notice-ai-runs-323.test.mjs:37",
+      "agent-worker/test/notice-ai-runs-96.test.mjs:41"
+     ],
+     "through": null
+    },
+    {
+     "module": "ai-runs",
+     "entry": "OpenAnswer",
+     "changes": [
+      "hands back differently"
+     ],
+     "lines": [
+      "agent-worker/test/notice-ai-runs-323.test.mjs:39",
+      "agent-worker/test/notice-ai-runs-96.test.mjs:43"
+     ],
+     "through": null
+    },
+    {
+     "module": "ai-runs",
+     "notFollowed": [
+      "reads or calls values of unknown kind: agent-worker/src/scripts/build.mjs:41 member.bundle; agent-worker/src/scripts/build.mjs:42 built.bytes; agent-worker/src/scripts/build.mjs:43 member.bundle (+5599)"
+     ],
+     "through": null
+    }
+   ],
+   "undeclared": []
+  },
+  {
+   "user": "ai-gate",
+   "reasons": [
+    {
+     "module": "ai-runs",
+     "notFollowed": [
+      "declares ai-runs but no use of it is found in its code"
+     ],
+     "through": null
+    }
+   ],
+   "undeclared": []
+  },
+  {
+   "user": "intent",
+   "reasons": [
+    {
+     "module": "ai-runs",
+     "notFollowed": [
+      "reads or calls values of unknown kind: intent/src/checks.mjs:149 row; intent/src/doc.mjs:31 lines; intent/src/doc.mjs:32 lines.indexOf (+3367)"
+     ],
+     "through": null
+    }
+   ],
+   "undeclared": []
+  },
+  {
+   "user": "case-account",
+   "reasons": [
+    {
+     "module": "ai-runs",
+     "notFollowed": [
+      "reads or calls values of unknown kind: case-account/src/document.mjs:14 given; case-account/src/document.mjs:15 given; case-account/src/document.mjs:17 comments (+1247)"
+     ],
+     "through": null
+    }
+   ],
+   "undeclared": []
+  },
+  {
+   "user": "action-plans",
+   "reasons": [
+    {
+     "module": "ai-runs",
+     "entry": "AiRuns#open",
+     "changes": [
+      "accepts more",
+      "hands back differently",
+      "bound changed"
+     ],
+     "lines": [
+      "action-plans/test/notice-ai-runs-213.test.mjs:43",
+      "action-plans/test/notice-ai-runs-96.test.mjs:32",
+      "action-plans/test/notice-ai-runs-96.test.mjs:39"
+     ],
+     "through": null
+    },
+    {
+     "module": "ai-runs",
+     "entry": "OpenAnswer",
+     "changes": [
+      "hands back differently"
+     ],
+     "lines": [
+      "action-plans/test/notice-ai-runs-213.test.mjs:47",
+      "action-plans/test/notice-ai-runs-213.test.mjs:52",
+      "action-plans/test/notice-ai-runs-96.test.mjs:33",
+      "action-plans/test/notice-ai-runs-96.test.mjs:34",
+      "action-plans/test/notice-ai-runs-96.test.mjs:40",
+      "action-plans/test/notice-ai-runs-96.test.mjs:41"
+     ],
+     "through": null
+    },
+    {
+     "module": "ai-runs",
+     "entry": "OpenRequest",
+     "changes": [
+      "accepts more",
+      "bound changed"
+     ],
+     "lines": [
+      "action-plans/test/notice-ai-runs-213.test.mjs:43",
+      "action-plans/test/notice-ai-runs-96.test.mjs:32",
+      "action-plans/test/notice-ai-runs-96.test.mjs:39"
+     ],
+     "through": null
+    },
+    {
+     "module": "ai-runs",
+     "notFollowed": [
+      "reads or calls values of unknown kind: action-plans/src/checks.mjs:321 row; action-plans/src/doc.mjs:40 entry; action-plans/src/doc.mjs:69 lines (+4116)"
+     ],
+     "through": null
+    }
+   ],
+   "undeclared": []
+  },
+  {
+   "user": "plan-work",
+   "reasons": [
+    {
+     "module": "ai-runs",
+     "entry": "AiRuns#open",
+     "changes": [
+      "accepts more",
+      "hands back differently",
+      "bound changed"
+     ],
+     "lines": [
+      "plan-work/test/notice-ai-runs-96.test.mjs:28",
+      "plan-work/test/notice-ai-runs-96.test.mjs:43"
+     ],
+     "through": null
+    },
+    {
+     "module": "ai-runs",
+     "entry": "OpenAnswer",
+     "changes": [
+      "hands back differently"
+     ],
+     "lines": [
+      "plan-work/test/notice-ai-runs-96.test.mjs:29",
+      "plan-work/test/notice-ai-runs-96.test.mjs:44"
+     ],
+     "through": null
+    },
+    {
+     "module": "ai-runs",
+     "entry": "OpenRequest",
+     "changes": [
+      "accepts more",
+      "bound changed"
+     ],
+     "lines": [
+      "plan-work/test/notice-ai-runs-96.test.mjs:28",
+      "plan-work/test/notice-ai-runs-96.test.mjs:43"
+     ],
+     "through": null
+    },
+    {
+     "module": "ai-runs",
+     "notFollowed": [
+      "reads or calls values of unknown kind: plan-work/src/checks.mjs:53 row; plan-work/src/index.mjs:101 r; plan-work/src/index.mjs:105 a (+1886)"
+     ],
+     "through": null
+    }
+   ],
+   "undeclared": []
+  },
+  {
+   "user": "scheduler",
+   "reasons": [
+    {
+     "module": "ai-runs",
+     "entry": "AiRuns#open",
+     "changes": [
+      "accepts more",
+      "hands back differently",
+      "bound changed"
+     ],
+     "lines": [
+      "scheduler/test/notice-ai-runs-323.test.mjs:36",
+      "scheduler/test/notice-ai-runs-96.test.mjs:28"
+     ],
+     "through": null
+    },
+    {
+     "module": "ai-runs",
+     "entry": "OpenAnswer",
+     "changes": [
+      "hands back differently"
+     ],
+     "lines": [
+      "scheduler/test/notice-ai-runs-323.test.mjs:36",
+      "scheduler/test/notice-ai-runs-96.test.mjs:29"
+     ],
+     "through": null
+    },
+    {
+     "module": "ai-runs",
+     "notFollowed": [
+      "reads or calls values of unknown kind: scheduler/src/index.mjs:165 e; scheduler/src/index.mjs:194 record; scheduler/src/index.mjs:194 record.getSetting (+1325)"
+     ],
+     "through": null
+    }
+   ],
+   "undeclared": []
+  },
+  {
+   "user": "wizard-scripts",
+   "reasons": [
+    {
+     "module": "ai-runs",
+     "notFollowed": [
+      "reads or calls values of unknown kind: wizard-scripts/src/build-data.mjs:25 list.map((x) => `  ${JSON.stringify(x)},; wizard-scripts/src/build-data.mjs:25 list.map; wizard-scripts/src/build-data.mjs:25 list (+5568)"
+     ],
+     "through": null
+    }
+   ],
+   "undeclared": []
+  },
+  {
+   "user": "affordances",
+   "reasons": [
+    {
+     "module": "ai-runs",
+     "notFollowed": [
+      "reads or calls values of unknown kind: affordances/src/act-help.mjs:292 MEMBERSHIP_CHECKS.HANDLE_FIXED; affordances/src/act-help.mjs:293 ACT_HELP_KEYS; affordances/src/affordances.mjs:603 p.proceeding_kinds.filter((k) => k && ty (+3175)"
+     ],
+     "through": null
+    }
+   ],
+   "undeclared": []
+  },
+  {
+   "user": "queue-producers",
+   "reasons": [
+    {
+     "module": "ai-runs",
+     "entry": "AiRuns#open",
+     "changes": [
+      "accepts more",
+      "hands back differently",
+      "bound changed"
+     ],
+     "lines": [
+      "queue-producers/test/notice-capture-requests-182.test.mjs:22"
+     ],
+     "through": null
+    },
+    {
+     "module": "ai-runs",
+     "entry": "OpenAnswer",
+     "changes": [
+      "hands back differently"
+     ],
+     "lines": [
+      "queue-producers/test/notice-capture-requests-182.test.mjs:23"
+     ],
+     "through": null
+    },
+    {
+     "module": "ai-runs",
+     "notFollowed": [
+      "reads or calls values of unknown kind: queue-producers/src/index.mjs:89 r; queue-producers/src/index.mjs:102 storage; queue-producers/src/index.mjs:108 make (+4115)"
+     ],
+     "through": null
+    }
+   ],
+   "undeclared": []
+  },
+  {
+   "user": "instance-setup",
+   "reasons": [
+    {
+     "module": "ai-runs",
+     "notFollowed": [
+      "reads or calls values of unknown kind: instance-setup/src/livefire.mjs:30 env; instance-setup/src/livefire.mjs:39 stub.fetch; instance-setup/src/livefire.mjs:39 stub (+3670)"
+     ],
+     "through": null
+    }
+   ],
+   "undeclared": []
+  },
+  {
+   "user": "instance-reports",
+   "reasons": [
+    {
+     "module": "ai-runs",
+     "notFollowed": [
+      "declares ai-runs but no use of it is found in its code"
+     ],
+     "through": null
+    }
+   ],
+   "undeclared": []
+  },
+  {
+   "user": "surface-declarations",
+   "reasons": [
+    {
+     "module": "ai-runs",
+     "notFollowed": [
+      "declares ai-runs but no use of it is found in its code"
+     ],
+     "through": null
+    }
+   ],
+   "undeclared": []
+  },
+  {
+   "user": "op-specs-late",
+   "reasons": [
+    {
+     "module": "ai-runs",
+     "notFollowed": [
+      "declares ai-runs but no use of it is found in its code"
+     ],
+     "through": null
+    }
+   ],
+   "undeclared": []
+  },
+  {
+   "user": "op-declarations",
+   "reasons": [
+    {
+     "module": "ai-runs",
+     "notFollowed": [
+      "reads or calls values of unknown kind: op-declarations/src/compose.mjs:10 composed; op-declarations/src/compose.mjs:16 composed; op-declarations/src/declared.mjs:15 a (+3653)"
+     ],
+     "through": null
+    }
+   ],
+   "undeclared": []
+  },
+  {
+   "user": "store-door",
+   "reasons": [
+    {
+     "module": "ai-runs",
+     "notFollowed": [
+      "reads or calls values of unknown kind: store-door/src/dispatch.mjs:202 url.searchParams.get; store-door/src/dispatch.mjs:202 url.searchParams; store-door/src/dispatch.mjs:202 url (+1431)"
+     ],
+     "through": null
+    }
+   ],
+   "undeclared": []
+  },
+  {
+   "user": "store-jobs",
+   "reasons": [
+    {
+     "module": "ai-runs",
+     "notFollowed": [
+      "declares ai-runs but no use of it is found in its code"
+     ],
+     "through": null
+    }
+   ],
+   "undeclared": []
+  },
+  {
+   "user": "store-ask",
+   "reasons": [
+    {
+     "module": "ai-runs",
+     "notFollowed": [
+      "declares ai-runs but no use of it is found in its code"
+     ],
+     "through": null
+    }
+   ],
+   "undeclared": []
+  },
+  {
+   "user": "store-assembly",
+   "reasons": [
+    {
+     "module": "ai-runs",
+     "entry": "AiRuns#open",
+     "changes": [
+      "accepts more",
+      "hands back differently",
+      "bound changed"
+     ],
+     "lines": [
+      "store-assembly/test/notice-ai-runs-213.test.mjs:10"
+     ],
+     "through": null
+    },
+    {
+     "module": "ai-runs",
+     "entry": "OpenAnswer",
+     "changes": [
+      "hands back differently"
+     ],
+     "lines": [
+      "store-assembly/test/notice-ai-runs-213.test.mjs:17",
+      "store-assembly/test/notice-ai-runs-213.test.mjs:20"
+     ],
+     "through": null
+    },
+    {
+     "module": "ai-runs",
+     "entry": "OpenRequest",
+     "changes": [
+      "accepts more",
+      "bound changed"
+     ],
+     "lines": [
+      "store-assembly/test/notice-ai-runs-213.test.mjs:10",
+      "store-assembly/test/notice-ai-runs-213.test.mjs:11"
+     ],
+     "through": null
+    },
+    {
+     "module": "ai-runs",
+     "notFollowed": [
+      "reads or calls values of unknown kind: store-assembly/src/acquire-timings.mjs:25 host; store-assembly/src/acquire-timings.mjs:25 host.storage; store-assembly/src/acquire-timings.mjs:25 host.storage.sql (+7066)"
+     ],
+     "through": null
+    }
+   ],
+   "undeclared": []
+  },
+  {
+   "user": "store-request",
+   "reasons": [
+    {
+     "module": "ai-runs",
+     "notFollowed": [
+      "reads or calls values of unknown kind: store-request/src/door-ops.mjs:23 res.clone().json; store-request/src/door-ops.mjs:23 res.clone(); store-request/src/door-ops.mjs:23 res.clone (+2454)"
+     ],
+     "through": null
+    }
+   ],
+   "undeclared": []
+  },
+  {
+   "user": "screens-inquiry",
+   "reasons": [
+    {
+     "module": "ai-runs",
+     "entry": "AiRuns#open",
+     "changes": [
+      "accepts more",
+      "hands back differently",
+      "bound changed"
+     ],
+     "lines": [
+      "screens-inquiry/test/notice-ai-runs-96.test.mjs:29",
+      "screens-inquiry/test/notice-ai-runs-96.test.mjs:62"
+     ],
+     "through": null
+    },
+    {
+     "module": "ai-runs",
+     "entry": "OpenAnswer",
+     "changes": [
+      "hands back differently"
+     ],
+     "lines": [
+      "screens-inquiry/test/assistant.test.mjs:238",
+      "screens-inquiry/test/notice-ai-runs-96.test.mjs:41",
+      "screens-inquiry/test/notice-ai-runs-96.test.mjs:42",
+      "screens-inquiry/test/notice-ai-runs-96.test.mjs:56",
+      "screens-inquiry/test/notice-ai-runs-96.test.mjs:62"
+     ],
+     "through": null
+    },
+    {
+     "module": "ai-runs",
+     "entry": "OpenRequest",
+     "changes": [
+      "accepts more",
+      "bound changed"
+     ],
+     "lines": [
+      "screens-inquiry/test/notice-ai-runs-96.test.mjs:29",
+      "screens-inquiry/test/notice-ai-runs-96.test.mjs:62"
+     ],
+     "through": null
+    },
+    {
+     "module": "ai-runs",
+     "notFollowed": [
+      "reads or calls values of unknown kind: screens-inquiry/src/admit.mjs:12 SCREEN_REGISTRY.find; screens-inquiry/src/admit.mjs:12 SCREEN_REGISTRY; screens-inquiry/src/admit.mjs:12 r (+17484)"
+     ],
+     "through": null
+    }
+   ],
+   "undeclared": []
+  },
+  {
+   "user": "screens-document",
+   "reasons": [
+    {
+     "module": "ai-runs",
+     "notFollowed": [
+      "declares ai-runs but no use of it is found in its code"
+     ],
+     "through": null
+    }
+   ],
+   "undeclared": []
+  },
+  {
+   "user": "control-plane",
+   "reasons": [
+    {
+     "module": "ai-runs",
+     "notFollowed": [
+      "reads or calls values of unknown kind: control-plane/src/app.mjs:29 req; control-plane/src/app.mjs:30 url; control-plane/src/app.mjs:31 p.startsWith (+12144)"
+     ],
+     "through": null
+    }
+   ],
+   "undeclared": []
+  },
+  {
+   "user": "plane",
+   "reasons": [
+    {
+     "module": "ai-runs",
+     "notFollowed": [
+      "reads or calls values of unknown kind: plane/src/arrival.mjs:8 headers.get; plane/src/arrival.mjs:8 headers; plane/src/arrival.mjs:9 raw.trim (+3305)"
+     ],
+     "through": null
+    }
+   ],
+   "undeclared": []
+  }
+ ],
+ "notTold": [],
+ "warnings": [],
+ "interfaceChanged": true,
+ "summary": "1 module(s) changed their listing; 5 entries changed in a way that tells; 29 user(s) told.",
+ "replay": {
+  "change": "ai-runs:348",
+  "ms": 135503,
+  "ranAt": "2026-11-15T16:50:55.177Z",
+  "tool": "notice-proof/tool/p3tool.mjs",
+  "commentedUsers": null
+ }
+}

@@ -1,0 +1,1238 @@
+{
+ "provider": "ai-accounts",
+ "reader": "TypeScript 5.6.3",
+ "firstCommentsStep": false,
+ "changedModules": [
+  {
+   "module": "ai-accounts",
+   "through": null
+  },
+  {
+   "module": "store-door",
+   "through": "ai-accounts"
+  }
+ ],
+ "entries": [
+  {
+   "module": "ai-accounts",
+   "entry": "AccountForAnswer",
+   "changes": [
+    "accepts more",
+    "hands back differently"
+   ],
+   "tells": "users",
+   "before": {
+    "kind": "kind",
+    "accepts": "{ account_id: string; disclosed: { host: string; provider: string }[]; entries: string[]; entry_id: string; gateway_id?: null | string; level: \"group\" | \"member\" | \"project\"; means: \"gateway\" | \"issued\" | \"none\" | \"reference\" | \"sealed\"; member: string; ok: true; owner: string; personal: boolean; plan: string; project?: null | string; provider: string; reference?: { locator: string; store: string } | null; secret?: string; suggestions: boolean }",
+    "handsBack": "{ account_id: string; disclosed: { host: string; provider: string }[]; entries: string[]; entry_id: string; gateway_id?: null | string; level: \"group\" | \"member\" | \"project\"; means: \"gateway\" | \"issued\" | \"none\" | \"reference\" | \"sealed\"; member: string; ok: true; owner: string; personal: boolean; plan: string; project?: null | string; provider: string; reference?: { locator: string; store: string } | null; secret?: string; suggestions: boolean }",
+    "side": "both"
+   },
+   "after": {
+    "kind": "kind",
+    "accepts": "{ account_id: string; disclosed: { host: string; provider: string }[]; entries: string[]; entry_id: string; gateway_id?: null | string; key?: string; kind?: \"apikey\" | \"signin\"; level: \"group\" | \"member\" | \"project\"; means: \"gateway\" | \"issued\" | \"none\" | \"reference\" | \"sealed\"; member: string; ok: true; owner: string; personal: boolean; plan: string; project?: null | string; provider: string; reference?: { locator: string; store: string } | null; secret?: string; suggestions: boolean }",
+    "handsBack": "{ account_id: string; disclosed: { host: string; provider: string }[]; entries: string[]; entry_id: string; gateway_id?: null | string; key?: string; kind?: \"apikey\" | \"signin\"; level: \"group\" | \"member\" | \"project\"; means: \"gateway\" | \"issued\" | \"none\" | \"reference\" | \"sealed\"; member: string; ok: true; owner: string; personal: boolean; plan: string; project?: null | string; provider: string; reference?: { locator: string; store: string } | null; secret?: string; suggestions: boolean }",
+    "side": "both"
+   }
+  },
+  {
+   "module": "ai-accounts",
+   "entry": "AccountUsesAnswer",
+   "changes": [
+    "hands back differently"
+   ],
+   "tells": "users",
+   "before": {
+    "kind": "kind",
+    "handsBack": "{ account_id: null | string; held: boolean | null; keptAway: { on: boolean | null; project?: string; reason: null | string; scope: \"group\" | \"project\"; set_at: null | string; set_by: null | string; uses: string[] | null }[] | null; ok: true; owner: null | string; unreadable?: true; uses: { [key: string]: boolean | string } | null }",
+    "side": "handsBack"
+   },
+   "after": {
+    "kind": "kind",
+    "handsBack": "{ account_id: null | string; accounts?: { reference: { held: boolean; uses: { [key: string]: boolean | string } | null }; signin: { held: boolean; uses: { [key: string]: boolean | string } | null } }; held: boolean | null; keptAway: { on: boolean | null; project?: string; reason: null | string; scope: \"group\" | \"project\"; set_at: null | string; set_by: null | string; uses: string[] | null }[] | null; kind?: \"apikey\" | \"signin\" | null; ok: true; owner: null | string; unreadable?: true; uses: { [key: string]: boolean | string } | null }",
+    "side": "handsBack"
+   }
+  },
+  {
+   "module": "ai-accounts",
+   "entry": "AccountUsesOfAnswer",
+   "changes": [
+    "new entry"
+   ],
+   "after": {
+    "kind": "kind",
+    "accepts": "{ account_id?: null | string; accounts?: { reference: { held: boolean; uses: { [key: string]: boolean | string } | null }; signin: { held: boolean; uses: { [key: string]: boolean | string } | null } }; held: boolean | null; ok: true; owner: null | string; unreadable?: true; uses: { [key: string]: boolean | string } | null }",
+    "handsBack": "{ account_id?: null | string; accounts?: { reference: { held: boolean; uses: { [key: string]: boolean | string } | null }; signin: { held: boolean; uses: { [key: string]: boolean | string } | null } }; held: boolean | null; ok: true; owner: null | string; unreadable?: true; uses: { [key: string]: boolean | string } | null }",
+    "side": "both"
+   },
+   "tells": "nobody"
+  },
+  {
+   "module": "ai-accounts",
+   "entry": "AiAccounts",
+   "changes": [
+    "declaration changed (not classified)"
+   ],
+   "tells": "users",
+   "before": {
+    "kind": "class",
+    "accepts": "(arg0?: handle ai-accounts.AiAccountsDeps)",
+    "handsBack": "handle ai-accounts.AiAccounts"
+   },
+   "after": {
+    "kind": "class",
+    "accepts": "(arg0?: handle ai-accounts.AiAccountsDeps)",
+    "handsBack": "handle ai-accounts.AiAccounts"
+   }
+  },
+  {
+   "module": "ai-accounts",
+   "entry": "AiAccounts#_legacyHead",
+   "changes": [
+    "new entry"
+   ],
+   "after": {
+    "kind": "class member",
+    "accepts": "(arg0: anything)",
+    "handsBack": "anything"
+   },
+   "tells": "nobody"
+  },
+  {
+   "module": "ai-accounts",
+   "entry": "AiAccounts#_legacyKey",
+   "changes": [
+    "new entry"
+   ],
+   "after": {
+    "kind": "class member",
+    "accepts": "(arg0: anything)",
+    "handsBack": "anything"
+   },
+   "tells": "nobody"
+  },
+  {
+   "module": "ai-accounts",
+   "entry": "AiAccounts#_legacyKeyFacts",
+   "changes": [
+    "new entry"
+   ],
+   "after": {
+    "kind": "class member",
+    "accepts": "()",
+    "handsBack": "{ account_id: null | string; by: null | string; held: boolean; on: boolean; set_at: null | string; standing: boolean; suggestions: boolean; uses: { [key: string]: boolean | string } }"
+   },
+   "tells": "nobody"
+  },
+  {
+   "module": "ai-accounts",
+   "entry": "AiAccounts#_legacyKeySet",
+   "changes": [
+    "new entry"
+   ],
+   "after": {
+    "kind": "class member",
+    "accepts": "(arg0: anything, arg1: anything, arg2: anything, arg3?: { on?: boolean })",
+    "handsBack": "Promise<{ account_id: string; entries: string[]; held: boolean; means: \"gateway\" | \"issued\" | \"none\" | \"reference\" | \"sealed\"; ok: true; on: boolean; owner: null | string; plan: null | string; provider: null | string; set_at: string } | { account_id?: null | string; cause?: null | string; check?: string; check_id?: null | string; code: string; count?: number; detail?: string; entry?: null | string; entry_id?: null | string; extra?: { grant_by: string }; hop_reason?: null | string; keep_away?: { reason: null | string; set_at: null | string; set_by: null | string }; level?: string; max?: number; means?: null | string; member?: null | string; min?: number; ok: false; part?: null | string; plan?: null | string; position?: null | number; project?: null | string; provider?: null | string; reason: string; reasons?: string[]; recipient?: { host: string; provider: string }; switch?: null | string; translation?: anything; unreadable?: true; use?: null | string; values?: (boolean | string)[]; verdict?: anything; who?: \"administrators\" | \"member\" | \"owners\"; whose?: \"group\" | \"own\" | \"project\"; word?: anything; [key: string]: anything }>",
+    "bounds": [
+     "code: a code of AI_ACCOUNT_CHECKS, or of membership's or ai-catalogue's rows",
+     "detail: the row's translation with its placeholders filled"
+    ]
+   },
+   "tells": "nobody"
+  },
+  {
+   "module": "ai-accounts",
+   "entry": "AiAccounts#_legacyNone",
+   "changes": [
+    "new entry"
+   ],
+   "after": {
+    "kind": "class member",
+    "accepts": "(arg0: anything, arg1: anything, arg2: anything)",
+    "handsBack": "anything"
+   },
+   "tells": "nobody"
+  },
+  {
+   "module": "ai-accounts",
+   "entry": "AiAccounts#_legacyNoticeSeen",
+   "changes": [
+    "new entry"
+   ],
+   "after": {
+    "kind": "class member",
+    "accepts": "(arg0: anything, arg1: anything)",
+    "handsBack": "{ account_id?: null | string; cause?: null | string; check?: string; check_id?: null | string; code: string; count?: number; detail?: string; entry?: null | string; entry_id?: null | string; extra?: { grant_by: string }; hop_reason?: null | string; keep_away?: { reason: null | string; set_at: null | string; set_by: null | string }; level?: string; max?: number; means?: null | string; member?: null | string; min?: number; ok: false; part?: null | string; plan?: null | string; position?: null | number; project?: null | string; provider?: null | string; reason: string; reasons?: string[]; recipient?: { host: string; provider: string }; switch?: null | string; translation?: anything; unreadable?: true; use?: null | string; values?: (boolean | string)[]; verdict?: anything; who?: \"administrators\" | \"member\" | \"owners\"; whose?: \"group\" | \"own\" | \"project\"; word?: anything; [key: string]: anything } | { ok: true; recipients: { host: string; provider: string }[]; seen: true }",
+    "bounds": [
+     "code: a code of AI_ACCOUNT_CHECKS, or of membership's or ai-catalogue's rows",
+     "detail: the row's translation with its placeholders filled"
+    ]
+   },
+   "tells": "nobody"
+  },
+  {
+   "module": "ai-accounts",
+   "entry": "AiAccounts#_legacyPlan",
+   "changes": [
+    "new entry"
+   ],
+   "after": {
+    "kind": "class member",
+    "accepts": "(arg0: anything)",
+    "handsBack": "anything"
+   },
+   "tells": "nobody"
+  },
+  {
+   "module": "ai-accounts",
+   "entry": "AiAccounts#_legacyRows",
+   "changes": [
+    "new entry"
+   ],
+   "after": {
+    "kind": "class member",
+    "accepts": "(arg0: anything)",
+    "handsBack": "anything[]"
+   },
+   "tells": "nobody"
+  },
+  {
+   "module": "ai-accounts",
+   "entry": "AiAccounts#_legacySignin",
+   "changes": [
+    "new entry"
+   ],
+   "after": {
+    "kind": "class member",
+    "accepts": "(arg0: anything)",
+    "handsBack": "anything"
+   },
+   "tells": "nobody"
+  },
+  {
+   "module": "ai-accounts",
+   "entry": "AiAccounts#accountFor",
+   "changes": [
+    "hands back differently"
+   ],
+   "tells": "users",
+   "before": {
+    "kind": "class member",
+    "accepts": "(arg0?: { act?: { interactive?: boolean; kind?: anything; member?: string; project?: null | string } | null; member?: null | string })",
+    "handsBack": "Promise<{ account_id: string; disclosed: { host: string; provider: string }[]; entries: string[]; entry_id: string; gateway_id?: null | string; level: \"group\" | \"member\" | \"project\"; means: \"gateway\" | \"issued\" | \"none\" | \"reference\" | \"sealed\"; member: string; ok: true; owner: string; personal: boolean; plan: string; project?: null | string; provider: string; reference?: { locator: string; store: string } | null; secret?: string; suggestions: boolean } | { account_id?: null | string; cause?: null | string; check?: string; check_id?: null | string; code: string; count?: number; detail?: string; entry?: null | string; entry_id?: null | string; extra?: { grant_by: string }; hop_reason?: null | string; keep_away?: { reason: null | string; set_at: null | string; set_by: null | string }; level?: string; max?: number; means?: null | string; member?: null | string; min?: number; ok: false; part?: null | string; plan?: null | string; position?: null | number; project?: null | string; provider?: null | string; reason: string; reasons?: string[]; recipient?: { host: string; provider: string }; switch?: null | string; translation?: anything; unreadable?: true; use?: null | string; values?: (boolean | string)[]; verdict?: anything; who?: \"administrators\" | \"member\" | \"owners\"; whose?: \"group\" | \"own\" | \"project\"; word?: anything; [key: string]: anything }>",
+    "bounds": [
+     "code: a code of AI_ACCOUNT_CHECKS, or of membership's or ai-catalogue's rows",
+     "detail: the row's translation with its placeholders filled",
+     "kind: one of USE_KINDS but explore"
+    ]
+   },
+   "after": {
+    "kind": "class member",
+    "accepts": "(arg0?: { act?: { interactive?: boolean; kind?: anything; member?: string; project?: null | string } | null; member?: null | string })",
+    "handsBack": "Promise<{ account_id: string; disclosed: { host: string; provider: string }[]; entries: string[]; entry_id: string; gateway_id?: null | string; key?: string; kind?: \"apikey\" | \"signin\"; level: \"group\" | \"member\" | \"project\"; means: \"gateway\" | \"issued\" | \"none\" | \"reference\" | \"sealed\"; member: string; ok: true; owner: string; personal: boolean; plan: string; project?: null | string; provider: string; reference?: { locator: string; store: string } | null; secret?: string; suggestions: boolean } | { account_id?: null | string; cause?: null | string; check?: string; check_id?: null | string; code: string; count?: number; detail?: string; entry?: null | string; entry_id?: null | string; extra?: { grant_by: string }; hop_reason?: null | string; keep_away?: { reason: null | string; set_at: null | string; set_by: null | string }; level?: string; max?: number; means?: null | string; member?: null | string; min?: number; ok: false; part?: null | string; plan?: null | string; position?: null | number; project?: null | string; provider?: null | string; reason: string; reasons?: string[]; recipient?: { host: string; provider: string }; switch?: null | string; translation?: anything; unreadable?: true; use?: null | string; values?: (boolean | string)[]; verdict?: anything; who?: \"administrators\" | \"member\" | \"owners\"; whose?: \"group\" | \"own\" | \"project\"; word?: anything; [key: string]: anything }>",
+    "bounds": [
+     "code: a code of AI_ACCOUNT_CHECKS, or of membership's or ai-catalogue's rows",
+     "detail: the row's translation with its placeholders filled",
+     "kind: one of USE_KINDS but explore"
+    ]
+   }
+  },
+  {
+   "module": "ai-accounts",
+   "entry": "AiAccounts#accountReferenceRemove",
+   "changes": [
+    "new entry"
+   ],
+   "after": {
+    "kind": "class member",
+    "accepts": "(arg0?: { by?: null | string; member?: null | string })",
+    "handsBack": "{ account_id: string; ok: true; removed: true } | { account_id?: null | string; cause?: null | string; check?: string; check_id?: null | string; code: string; count?: number; detail?: string; entry?: null | string; entry_id?: null | string; extra?: { grant_by: string }; hop_reason?: null | string; keep_away?: { reason: null | string; set_at: null | string; set_by: null | string }; level?: string; max?: number; means?: null | string; member?: null | string; min?: number; ok: false; part?: null | string; plan?: null | string; position?: null | number; project?: null | string; provider?: null | string; reason: string; reasons?: string[]; recipient?: { host: string; provider: string }; switch?: null | string; translation?: anything; unreadable?: true; use?: null | string; values?: (boolean | string)[]; verdict?: anything; who?: \"administrators\" | \"member\" | \"owners\"; whose?: \"group\" | \"own\" | \"project\"; word?: anything; [key: string]: anything }",
+    "bounds": [
+     "code: a code of AI_ACCOUNT_CHECKS, or of membership's or ai-catalogue's rows",
+     "detail: the row's translation with its placeholders filled"
+    ]
+   },
+   "tells": "nobody"
+  },
+  {
+   "module": "ai-accounts",
+   "entry": "AiAccounts#accountReferenceSet",
+   "changes": [
+    "new entry"
+   ],
+   "after": {
+    "kind": "class member",
+    "accepts": "(arg0?: { by?: null | string; kind?: null | string; member?: null | string; secret?: null | string })",
+    "handsBack": "Promise<{ account_id: string; kind: \"apikey\"; ok: true; set_at: string } | { account_id?: null | string; cause?: null | string; check?: string; check_id?: null | string; code: string; count?: number; detail?: string; entry?: null | string; entry_id?: null | string; extra?: { grant_by: string }; hop_reason?: null | string; keep_away?: { reason: null | string; set_at: null | string; set_by: null | string }; level?: string; max?: number; means?: null | string; member?: null | string; min?: number; ok: false; part?: null | string; plan?: null | string; position?: null | number; project?: null | string; provider?: null | string; reason: string; reasons?: string[]; recipient?: { host: string; provider: string }; switch?: null | string; translation?: anything; unreadable?: true; use?: null | string; values?: (boolean | string)[]; verdict?: anything; who?: \"administrators\" | \"member\" | \"owners\"; whose?: \"group\" | \"own\" | \"project\"; word?: anything; [key: string]: anything }>",
+    "bounds": [
+     "code: a code of AI_ACCOUNT_CHECKS, or of membership's or ai-catalogue's rows",
+     "detail: the row's translation with its placeholders filled"
+    ]
+   },
+   "tells": "nobody"
+  },
+  {
+   "module": "ai-accounts",
+   "entry": "AiAccounts#accountReferenceState",
+   "changes": [
+    "new entry"
+   ],
+   "after": {
+    "kind": "class member",
+    "accepts": "(arg0?: { member?: null | string; viewer?: null | string })",
+    "handsBack": "{ account_id: null | string; held: boolean; kind: \"apikey\" | null; ok: true; set_at: null | string; standing: boolean; subscription: { account_id: null | string; connected: boolean; held: boolean; refused_at?: string; since: null | string; uses: { [key: string]: boolean | string } | null; valid_until?: string }; suggestions: boolean; uses: { [key: string]: boolean | string } | null } | { account_id?: null | string; cause?: null | string; check?: string; check_id?: null | string; code: string; count?: number; detail?: string; entry?: null | string; entry_id?: null | string; extra?: { grant_by: string }; hop_reason?: null | string; keep_away?: { reason: null | string; set_at: null | string; set_by: null | string }; level?: string; max?: number; means?: null | string; member?: null | string; min?: number; ok: false; part?: null | string; plan?: null | string; position?: null | number; project?: null | string; provider?: null | string; reason: string; reasons?: string[]; recipient?: { host: string; provider: string }; switch?: null | string; translation?: anything; unreadable?: true; use?: null | string; values?: (boolean | string)[]; verdict?: anything; who?: \"administrators\" | \"member\" | \"owners\"; whose?: \"group\" | \"own\" | \"project\"; word?: anything; [key: string]: anything }",
+    "bounds": [
+     "code: a code of AI_ACCOUNT_CHECKS, or of membership's or ai-catalogue's rows",
+     "detail: the row's translation with its placeholders filled"
+    ]
+   },
+   "tells": "nobody"
+  },
+  {
+   "module": "ai-accounts",
+   "entry": "AiAccounts#accountUses",
+   "changes": [
+    "accepts more",
+    "hands back differently"
+   ],
+   "tells": "users",
+   "before": {
+    "kind": "class member",
+    "accepts": "(arg0?: { account_id?: null | string; viewer?: null | string })",
+    "handsBack": "{ account_id: null | string; held: boolean | null; keptAway: { on: boolean | null; project?: string; reason: null | string; scope: \"group\" | \"project\"; set_at: null | string; set_by: null | string; uses: string[] | null }[] | null; ok: true; owner: null | string; unreadable?: true; uses: { [key: string]: boolean | string } | null } | { account_id?: null | string; cause?: null | string; check?: string; check_id?: null | string; code: string; count?: number; detail?: string; entry?: null | string; entry_id?: null | string; extra?: { grant_by: string }; hop_reason?: null | string; keep_away?: { reason: null | string; set_at: null | string; set_by: null | string }; level?: string; max?: number; means?: null | string; member?: null | string; min?: number; ok: false; part?: null | string; plan?: null | string; position?: null | number; project?: null | string; provider?: null | string; reason: string; reasons?: string[]; recipient?: { host: string; provider: string }; switch?: null | string; translation?: anything; unreadable?: true; use?: null | string; values?: (boolean | string)[]; verdict?: anything; who?: \"administrators\" | \"member\" | \"owners\"; whose?: \"group\" | \"own\" | \"project\"; word?: anything; [key: string]: anything }",
+    "bounds": [
+     "code: a code of AI_ACCOUNT_CHECKS, or of membership's or ai-catalogue's rows",
+     "detail: the row's translation with its placeholders filled"
+    ]
+   },
+   "after": {
+    "kind": "class member",
+    "accepts": "(arg0?: { account_id?: null | string; owner?: null | string; viewer?: null | string })",
+    "handsBack": "{ account_id: null | string; accounts?: { reference: { held: boolean; uses: { [key: string]: boolean | string } | null }; signin: { held: boolean; uses: { [key: string]: boolean | string } | null } }; held: boolean | null; keptAway: { on: boolean | null; project?: string; reason: null | string; scope: \"group\" | \"project\"; set_at: null | string; set_by: null | string; uses: string[] | null }[] | null; kind?: \"apikey\" | \"signin\" | null; ok: true; owner: null | string; unreadable?: true; uses: { [key: string]: boolean | string } | null } | { account_id?: null | string; cause?: null | string; check?: string; check_id?: null | string; code: string; count?: number; detail?: string; entry?: null | string; entry_id?: null | string; extra?: { grant_by: string }; hop_reason?: null | string; keep_away?: { reason: null | string; set_at: null | string; set_by: null | string }; level?: string; max?: number; means?: null | string; member?: null | string; min?: number; ok: false; part?: null | string; plan?: null | string; position?: null | number; project?: null | string; provider?: null | string; reason: string; reasons?: string[]; recipient?: { host: string; provider: string }; switch?: null | string; translation?: anything; unreadable?: true; use?: null | string; values?: (boolean | string)[]; verdict?: anything; who?: \"administrators\" | \"member\" | \"owners\"; whose?: \"group\" | \"own\" | \"project\"; word?: anything; [key: string]: anything }",
+    "bounds": [
+     "code: a code of AI_ACCOUNT_CHECKS, or of membership's or ai-catalogue's rows",
+     "detail: the row's translation with its placeholders filled"
+    ]
+   }
+  },
+  {
+   "module": "ai-accounts",
+   "entry": "AiAccounts#accountUsesOf",
+   "changes": [
+    "accepts more",
+    "hands back differently"
+   ],
+   "tells": "users",
+   "before": {
+    "kind": "class member",
+    "accepts": "(arg0?: { account_id?: null | string })",
+    "handsBack": "{ account_id: null | string; held: boolean | null; ok: true; owner: null | string; unreadable?: true; uses: { [key: string]: boolean | string } | null }"
+   },
+   "after": {
+    "kind": "class member",
+    "accepts": "(arg0?: { account_id?: null | string; owner?: null | string })",
+    "handsBack": "{ account_id?: null | string; accounts?: { reference: { held: boolean; uses: { [key: string]: boolean | string } | null }; signin: { held: boolean; uses: { [key: string]: boolean | string } | null } }; held: boolean | null; ok: true; owner: null | string; unreadable?: true; uses: { [key: string]: boolean | string } | null }"
+   }
+  },
+  {
+   "module": "ai-accounts",
+   "entry": "AiAccounts#accountUsesSet",
+   "changes": [
+    "accepts more"
+   ],
+   "tells": "nobody",
+   "before": {
+    "kind": "class member",
+    "accepts": "(arg0?: { account_id?: null | string; by?: null | string; on?: boolean | string; switch?: null | string })",
+    "handsBack": "{ account_id: string; ok: true; on?: boolean | string; switch: null | string } | { account_id?: null | string; cause?: null | string; check?: string; check_id?: null | string; code: string; count?: number; detail?: string; entry?: null | string; entry_id?: null | string; extra?: { grant_by: string }; hop_reason?: null | string; keep_away?: { reason: null | string; set_at: null | string; set_by: null | string }; level?: string; max?: number; means?: null | string; member?: null | string; min?: number; ok: false; part?: null | string; plan?: null | string; position?: null | number; project?: null | string; provider?: null | string; reason: string; reasons?: string[]; recipient?: { host: string; provider: string }; switch?: null | string; translation?: anything; unreadable?: true; use?: null | string; values?: (boolean | string)[]; verdict?: anything; who?: \"administrators\" | \"member\" | \"owners\"; whose?: \"group\" | \"own\" | \"project\"; word?: anything; [key: string]: anything }",
+    "bounds": [
+     "code: a code of AI_ACCOUNT_CHECKS, or of membership's or ai-catalogue's rows",
+     "detail: the row's translation with its placeholders filled"
+    ]
+   },
+   "after": {
+    "kind": "class member",
+    "accepts": "(arg0?: { account_id?: null | string; by?: null | string; on?: boolean | string; owner?: null | string; switch?: null | string })",
+    "handsBack": "{ account_id: string; ok: true; on?: boolean | string; switch: null | string } | { account_id?: null | string; cause?: null | string; check?: string; check_id?: null | string; code: string; count?: number; detail?: string; entry?: null | string; entry_id?: null | string; extra?: { grant_by: string }; hop_reason?: null | string; keep_away?: { reason: null | string; set_at: null | string; set_by: null | string }; level?: string; max?: number; means?: null | string; member?: null | string; min?: number; ok: false; part?: null | string; plan?: null | string; position?: null | number; project?: null | string; provider?: null | string; reason: string; reasons?: string[]; recipient?: { host: string; provider: string }; switch?: null | string; translation?: anything; unreadable?: true; use?: null | string; values?: (boolean | string)[]; verdict?: anything; who?: \"administrators\" | \"member\" | \"owners\"; whose?: \"group\" | \"own\" | \"project\"; word?: anything; [key: string]: anything }",
+    "bounds": [
+     "code: a code of AI_ACCOUNT_CHECKS, or of membership's or ai-catalogue's rows",
+     "detail: the row's translation with its placeholders filled"
+    ]
+   }
+  },
+  {
+   "module": "ai-accounts",
+   "entry": "AiAccounts#groupKeyNoticeSeen",
+   "changes": [
+    "new entry"
+   ],
+   "after": {
+    "kind": "class member",
+    "accepts": "(arg0?: { by?: null | string; member?: null | string })",
+    "handsBack": "{ account_id?: null | string; cause?: null | string; check?: string; check_id?: null | string; code: string; count?: number; detail?: string; entry?: null | string; entry_id?: null | string; extra?: { grant_by: string }; hop_reason?: null | string; keep_away?: { reason: null | string; set_at: null | string; set_by: null | string }; level?: string; max?: number; means?: null | string; member?: null | string; min?: number; ok: false; part?: null | string; plan?: null | string; position?: null | number; project?: null | string; provider?: null | string; reason: string; reasons?: string[]; recipient?: { host: string; provider: string }; switch?: null | string; translation?: anything; unreadable?: true; use?: null | string; values?: (boolean | string)[]; verdict?: anything; who?: \"administrators\" | \"member\" | \"owners\"; whose?: \"group\" | \"own\" | \"project\"; word?: anything; [key: string]: anything } | { ok: true; recipients: { host: string; provider: string }[]; seen: true }",
+    "bounds": [
+     "code: a code of AI_ACCOUNT_CHECKS, or of membership's or ai-catalogue's rows",
+     "detail: the row's translation with its placeholders filled"
+    ]
+   },
+   "tells": "nobody"
+  },
+  {
+   "module": "ai-accounts",
+   "entry": "AiAccounts#groupKeySet",
+   "changes": [
+    "new entry"
+   ],
+   "after": {
+    "kind": "class member",
+    "accepts": "(arg0?: { by?: null | string; key?: null | string })",
+    "handsBack": "Promise<{ account_id: string; ok: true; set_at: string } | { account_id?: null | string; cause?: null | string; check?: string; check_id?: null | string; code: string; count?: number; detail?: string; entry?: null | string; entry_id?: null | string; extra?: { grant_by: string }; hop_reason?: null | string; keep_away?: { reason: null | string; set_at: null | string; set_by: null | string }; level?: string; max?: number; means?: null | string; member?: null | string; min?: number; ok: false; part?: null | string; plan?: null | string; position?: null | number; project?: null | string; provider?: null | string; reason: string; reasons?: string[]; recipient?: { host: string; provider: string }; switch?: null | string; translation?: anything; unreadable?: true; use?: null | string; values?: (boolean | string)[]; verdict?: anything; who?: \"administrators\" | \"member\" | \"owners\"; whose?: \"group\" | \"own\" | \"project\"; word?: anything; [key: string]: anything }>",
+    "bounds": [
+     "code: a code of AI_ACCOUNT_CHECKS, or of membership's or ai-catalogue's rows",
+     "detail: the row's translation with its placeholders filled"
+    ]
+   },
+   "tells": "nobody"
+  },
+  {
+   "module": "ai-accounts",
+   "entry": "AiAccounts#groupKeyState",
+   "changes": [
+    "new entry"
+   ],
+   "after": {
+    "kind": "class member",
+    "accepts": "(arg0?: { viewer?: null | string })",
+    "handsBack": "{ account_id: null | string; by: null | string; held: boolean; ok: true; on: boolean; set_at: null | string; standing: boolean; suggestions: boolean; uses: { [key: string]: boolean | string } } | { check: anything; code: string; detail: anything; ok: boolean; reason: string; translation: anything; [key: string]: anything } | { ok: true; on: boolean }"
+   },
+   "tells": "nobody"
+  },
+  {
+   "module": "ai-accounts",
+   "entry": "AiAccounts#groupKeySwitch",
+   "changes": [
+    "new entry"
+   ],
+   "after": {
+    "kind": "class member",
+    "accepts": "(arg0?: { by?: null | string; on?: boolean })",
+    "handsBack": "{ account_id: string; ok: true; on: boolean } | { account_id?: null | string; cause?: null | string; check?: string; check_id?: null | string; code: string; count?: number; detail?: string; entry?: null | string; entry_id?: null | string; extra?: { grant_by: string }; hop_reason?: null | string; keep_away?: { reason: null | string; set_at: null | string; set_by: null | string }; level?: string; max?: number; means?: null | string; member?: null | string; min?: number; ok: false; part?: null | string; plan?: null | string; position?: null | number; project?: null | string; provider?: null | string; reason: string; reasons?: string[]; recipient?: { host: string; provider: string }; switch?: null | string; translation?: anything; unreadable?: true; use?: null | string; values?: (boolean | string)[]; verdict?: anything; who?: \"administrators\" | \"member\" | \"owners\"; whose?: \"group\" | \"own\" | \"project\"; word?: anything; [key: string]: anything }",
+    "bounds": [
+     "code: a code of AI_ACCOUNT_CHECKS, or of membership's or ai-catalogue's rows",
+     "detail: the row's translation with its placeholders filled"
+    ]
+   },
+   "tells": "nobody"
+  },
+  {
+   "module": "ai-accounts",
+   "entry": "AiAccounts#groupKeySwitches",
+   "changes": [
+    "new entry"
+   ],
+   "after": {
+    "kind": "class member",
+    "accepts": "()",
+    "handsBack": "{ on: boolean; standing: boolean; suggestions: boolean }"
+   },
+   "tells": "nobody"
+  },
+  {
+   "module": "ai-accounts",
+   "entry": "AiAccounts#projectAccountState",
+   "changes": [
+    "new entry"
+   ],
+   "after": {
+    "kind": "class member",
+    "accepts": "(arg0?: { project?: null | string; viewer?: null | string })",
+    "handsBack": "{ account_id: null | string; held: boolean; kind: \"apikey\" | \"signin\" | null; ok: true; on: boolean; project: null | string; set_at: null | string } | { account_id: null | string; ok: true; on: boolean; project: null | string } | { account_id?: null | string; cause?: null | string; check?: string; check_id?: null | string; code: string; count?: number; detail?: string; entry?: null | string; entry_id?: null | string; extra?: { grant_by: string }; hop_reason?: null | string; keep_away?: { reason: null | string; set_at: null | string; set_by: null | string }; level?: string; max?: number; means?: null | string; member?: null | string; min?: number; ok: false; part?: null | string; plan?: null | string; position?: null | number; project?: null | string; provider?: null | string; reason: string; reasons?: string[]; recipient?: { host: string; provider: string }; switch?: null | string; translation?: anything; unreadable?: true; use?: null | string; values?: (boolean | string)[]; verdict?: anything; who?: \"administrators\" | \"member\" | \"owners\"; whose?: \"group\" | \"own\" | \"project\"; word?: anything; [key: string]: anything } | { check: anything; code: string; detail: anything; ok: boolean; reason: string; translation: anything; [key: string]: anything }",
+    "bounds": [
+     "code: a code of AI_ACCOUNT_CHECKS, or of membership's or ai-catalogue's rows",
+     "detail: the row's translation with its placeholders filled"
+    ]
+   },
+   "tells": "nobody"
+  },
+  {
+   "module": "ai-accounts",
+   "entry": "AiAccounts#projectAccountSwitch",
+   "changes": [
+    "new entry"
+   ],
+   "after": {
+    "kind": "class member",
+    "accepts": "(arg0?: { by?: null | string; on?: boolean; project?: null | string })",
+    "handsBack": "{ account_id: string; ok: true; on: boolean } | { account_id?: null | string; cause?: null | string; check?: string; check_id?: null | string; code: string; count?: number; detail?: string; entry?: null | string; entry_id?: null | string; extra?: { grant_by: string }; hop_reason?: null | string; keep_away?: { reason: null | string; set_at: null | string; set_by: null | string }; level?: string; max?: number; means?: null | string; member?: null | string; min?: number; ok: false; part?: null | string; plan?: null | string; position?: null | number; project?: null | string; provider?: null | string; reason: string; reasons?: string[]; recipient?: { host: string; provider: string }; switch?: null | string; translation?: anything; unreadable?: true; use?: null | string; values?: (boolean | string)[]; verdict?: anything; who?: \"administrators\" | \"member\" | \"owners\"; whose?: \"group\" | \"own\" | \"project\"; word?: anything; [key: string]: anything }",
+    "bounds": [
+     "code: a code of AI_ACCOUNT_CHECKS, or of membership's or ai-catalogue's rows",
+     "detail: the row's translation with its placeholders filled"
+    ]
+   },
+   "tells": "nobody"
+  },
+  {
+   "module": "ai-accounts",
+   "entry": "AiAccounts#projectKeyNoticeSeen",
+   "changes": [
+    "new entry"
+   ],
+   "after": {
+    "kind": "class member",
+    "accepts": "(arg0?: { by?: null | string; member?: null | string; project?: null | string })",
+    "handsBack": "{ account_id?: null | string; cause?: null | string; check?: string; check_id?: null | string; code: string; count?: number; detail?: string; entry?: null | string; entry_id?: null | string; extra?: { grant_by: string }; hop_reason?: null | string; keep_away?: { reason: null | string; set_at: null | string; set_by: null | string }; level?: string; max?: number; means?: null | string; member?: null | string; min?: number; ok: false; part?: null | string; plan?: null | string; position?: null | number; project?: null | string; provider?: null | string; reason: string; reasons?: string[]; recipient?: { host: string; provider: string }; switch?: null | string; translation?: anything; unreadable?: true; use?: null | string; values?: (boolean | string)[]; verdict?: anything; who?: \"administrators\" | \"member\" | \"owners\"; whose?: \"group\" | \"own\" | \"project\"; word?: anything; [key: string]: anything } | { ok: true; recipients: { host: string; provider: string }[]; seen: true }",
+    "bounds": [
+     "code: a code of AI_ACCOUNT_CHECKS, or of membership's or ai-catalogue's rows",
+     "detail: the row's translation with its placeholders filled"
+    ]
+   },
+   "tells": "nobody"
+  },
+  {
+   "module": "ai-accounts",
+   "entry": "AiAccounts#projectKeySet",
+   "changes": [
+    "new entry"
+   ],
+   "after": {
+    "kind": "class member",
+    "accepts": "(arg0?: { by?: null | string; key?: null | string; project?: null | string })",
+    "handsBack": "Promise<{ account_id: string; kind: \"apikey\"; ok: true; project: null | string; set_at: string } | { account_id?: null | string; cause?: null | string; check?: string; check_id?: null | string; code: string; count?: number; detail?: string; entry?: null | string; entry_id?: null | string; extra?: { grant_by: string }; hop_reason?: null | string; keep_away?: { reason: null | string; set_at: null | string; set_by: null | string }; level?: string; max?: number; means?: null | string; member?: null | string; min?: number; ok: false; part?: null | string; plan?: null | string; position?: null | number; project?: null | string; provider?: null | string; reason: string; reasons?: string[]; recipient?: { host: string; provider: string }; switch?: null | string; translation?: anything; unreadable?: true; use?: null | string; values?: (boolean | string)[]; verdict?: anything; who?: \"administrators\" | \"member\" | \"owners\"; whose?: \"group\" | \"own\" | \"project\"; word?: anything; [key: string]: anything }>",
+    "bounds": [
+     "code: a code of AI_ACCOUNT_CHECKS, or of membership's or ai-catalogue's rows",
+     "detail: the row's translation with its placeholders filled"
+    ]
+   },
+   "tells": "nobody"
+  },
+  {
+   "module": "ai-accounts",
+   "entry": "AiAccounts#subscriptionConnected",
+   "changes": [
+    "new entry"
+   ],
+   "after": {
+    "kind": "class member",
+    "accepts": "(arg0?: { member?: null | string })",
+    "handsBack": "{ account_id: null | string; connected: true; held: boolean; ok: true } | { account_id?: null | string; cause?: null | string; check?: string; check_id?: null | string; code: string; count?: number; detail?: string; entry?: null | string; entry_id?: null | string; extra?: { grant_by: string }; hop_reason?: null | string; keep_away?: { reason: null | string; set_at: null | string; set_by: null | string }; level?: string; max?: number; means?: null | string; member?: null | string; min?: number; ok: false; part?: null | string; plan?: null | string; position?: null | number; project?: null | string; provider?: null | string; reason: string; reasons?: string[]; recipient?: { host: string; provider: string }; switch?: null | string; translation?: anything; unreadable?: true; use?: null | string; values?: (boolean | string)[]; verdict?: anything; who?: \"administrators\" | \"member\" | \"owners\"; whose?: \"group\" | \"own\" | \"project\"; word?: anything; [key: string]: anything }",
+    "bounds": [
+     "code: a code of AI_ACCOUNT_CHECKS, or of membership's or ai-catalogue's rows",
+     "detail: the row's translation with its placeholders filled"
+    ]
+   },
+   "tells": "nobody"
+  },
+  {
+   "module": "ai-accounts",
+   "entry": "AiAccounts#subscriptionTokenHold",
+   "changes": [
+    "new entry"
+   ],
+   "after": {
+    "kind": "class member",
+    "accepts": "(arg0?: { member?: null | string; token?: null | string; validFor?: null | number | string })",
+    "handsBack": "Promise<{ account_id: string; ok: true; since: string } | { account_id?: null | string; cause?: null | string; check?: string; check_id?: null | string; code: string; count?: number; detail?: string; entry?: null | string; entry_id?: null | string; extra?: { grant_by: string }; hop_reason?: null | string; keep_away?: { reason: null | string; set_at: null | string; set_by: null | string }; level?: string; max?: number; means?: null | string; member?: null | string; min?: number; ok: false; part?: null | string; plan?: null | string; position?: null | number; project?: null | string; provider?: null | string; reason: string; reasons?: string[]; recipient?: { host: string; provider: string }; switch?: null | string; translation?: anything; unreadable?: true; use?: null | string; values?: (boolean | string)[]; verdict?: anything; who?: \"administrators\" | \"member\" | \"owners\"; whose?: \"group\" | \"own\" | \"project\"; word?: anything; [key: string]: anything }>",
+    "bounds": [
+     "code: a code of AI_ACCOUNT_CHECKS, or of membership's or ai-catalogue's rows",
+     "detail: the row's translation with its placeholders filled"
+    ]
+   },
+   "tells": "nobody"
+  },
+  {
+   "module": "ai-accounts",
+   "entry": "AiAccounts._owner",
+   "changes": [
+    "new entry"
+   ],
+   "after": {
+    "kind": "class member",
+    "accepts": "(arg0: anything, arg1: anything)",
+    "handsBack": "null | string"
+   },
+   "tells": "nobody"
+  },
+  {
+   "module": "ai-accounts",
+   "entry": "AiAccounts._planId",
+   "changes": [
+    "new entry"
+   ],
+   "after": {
+    "kind": "class member",
+    "accepts": "(arg0: anything)",
+    "handsBack": "anything"
+   },
+   "tells": "nobody"
+  },
+  {
+   "module": "ai-accounts",
+   "entry": "AiAccountsHandlers.accountuses",
+   "changes": [
+    "hands back differently"
+   ],
+   "tells": "users",
+   "before": {
+    "kind": "method",
+    "accepts": "()",
+    "handsBack": "{ account_id: null | string; held: boolean | null; keptAway: { on: boolean | null; project?: string; reason: null | string; scope: \"group\" | \"project\"; set_at: null | string; set_by: null | string; uses: string[] | null }[] | null; ok: true; owner: null | string; unreadable?: true; uses: { [key: string]: boolean | string } | null } | { account_id?: null | string; cause?: null | string; check?: string; check_id?: null | string; code: string; count?: number; detail?: string; entry?: null | string; entry_id?: null | string; extra?: { grant_by: string }; hop_reason?: null | string; keep_away?: { reason: null | string; set_at: null | string; set_by: null | string }; level?: string; max?: number; means?: null | string; member?: null | string; min?: number; ok: false; part?: null | string; plan?: null | string; position?: null | number; project?: null | string; provider?: null | string; reason: string; reasons?: string[]; recipient?: { host: string; provider: string }; switch?: null | string; translation?: anything; unreadable?: true; use?: null | string; values?: (boolean | string)[]; verdict?: anything; who?: \"administrators\" | \"member\" | \"owners\"; whose?: \"group\" | \"own\" | \"project\"; word?: anything; [key: string]: anything }",
+    "bounds": [
+     "code: a code of AI_ACCOUNT_CHECKS, or of membership's or ai-catalogue's rows",
+     "detail: the row's translation with its placeholders filled"
+    ]
+   },
+   "after": {
+    "kind": "method",
+    "accepts": "()",
+    "handsBack": "{ account_id: null | string; accounts?: { reference: { held: boolean; uses: { [key: string]: boolean | string } | null }; signin: { held: boolean; uses: { [key: string]: boolean | string } | null } }; held: boolean | null; keptAway: { on: boolean | null; project?: string; reason: null | string; scope: \"group\" | \"project\"; set_at: null | string; set_by: null | string; uses: string[] | null }[] | null; kind?: \"apikey\" | \"signin\" | null; ok: true; owner: null | string; unreadable?: true; uses: { [key: string]: boolean | string } | null } | { account_id?: null | string; cause?: null | string; check?: string; check_id?: null | string; code: string; count?: number; detail?: string; entry?: null | string; entry_id?: null | string; extra?: { grant_by: string }; hop_reason?: null | string; keep_away?: { reason: null | string; set_at: null | string; set_by: null | string }; level?: string; max?: number; means?: null | string; member?: null | string; min?: number; ok: false; part?: null | string; plan?: null | string; position?: null | number; project?: null | string; provider?: null | string; reason: string; reasons?: string[]; recipient?: { host: string; provider: string }; switch?: null | string; translation?: anything; unreadable?: true; use?: null | string; values?: (boolean | string)[]; verdict?: anything; who?: \"administrators\" | \"member\" | \"owners\"; whose?: \"group\" | \"own\" | \"project\"; word?: anything; [key: string]: anything }",
+    "bounds": [
+     "code: a code of AI_ACCOUNT_CHECKS, or of membership's or ai-catalogue's rows",
+     "detail: the row's translation with its placeholders filled"
+    ]
+   }
+  },
+  {
+   "module": "ai-accounts",
+   "entry": "LegacyAccounts",
+   "changes": [
+    "new entry"
+   ],
+   "after": {
+    "kind": "kind",
+    "handsBack": "{ reference: { held: boolean; uses: { [key: string]: boolean | string } | null }; signin: { held: boolean; uses: { [key: string]: boolean | string } | null } }",
+    "side": "handsBack"
+   },
+   "tells": "nobody"
+  },
+  {
+   "module": "ai-accounts",
+   "entry": "LegacyHeld",
+   "changes": [
+    "new entry"
+   ],
+   "after": {
+    "kind": "kind",
+    "handsBack": "{ held: boolean; uses: { [key: string]: boolean | string } | null }",
+    "side": "handsBack"
+   },
+   "tells": "nobody"
+  },
+  {
+   "module": "ai-accounts",
+   "entry": "LegacyKeyFacts",
+   "changes": [
+    "new entry"
+   ],
+   "after": {
+    "kind": "kind",
+    "accepts": "{ account_id: null | string; by: null | string; held: boolean; on: boolean; set_at: null | string; standing: boolean; suggestions: boolean; uses: { [key: string]: boolean | string } }",
+    "handsBack": "{ account_id: null | string; by: null | string; held: boolean; on: boolean; set_at: null | string; standing: boolean; suggestions: boolean; uses: { [key: string]: boolean | string } }",
+    "side": "both"
+   },
+   "tells": "nobody"
+  },
+  {
+   "module": "ai-accounts",
+   "entry": "LegacyReferenceState",
+   "changes": [
+    "new entry"
+   ],
+   "after": {
+    "kind": "kind",
+    "accepts": "{ account_id: null | string; held: boolean; kind: \"apikey\" | null; ok: true; set_at: null | string; standing: boolean; subscription: { account_id: null | string; connected: boolean; held: boolean; refused_at?: string; since: null | string; uses: { [key: string]: boolean | string } | null; valid_until?: string }; suggestions: boolean; uses: { [key: string]: boolean | string } | null }",
+    "handsBack": "{ account_id: null | string; held: boolean; kind: \"apikey\" | null; ok: true; set_at: null | string; standing: boolean; subscription: { account_id: null | string; connected: boolean; held: boolean; refused_at?: string; since: null | string; uses: { [key: string]: boolean | string } | null; valid_until?: string }; suggestions: boolean; uses: { [key: string]: boolean | string } | null }",
+    "side": "both"
+   },
+   "tells": "nobody"
+  },
+  {
+   "module": "ai-accounts",
+   "entry": "op:accountuses",
+   "changes": [
+    "hands back differently"
+   ],
+   "tells": "users",
+   "before": {
+    "kind": "operation",
+    "accepts": "{ account_id: string; viewer: null | string }",
+    "handsBack": "{ account_id: null | string; held: boolean | null; keptAway: { on: boolean | null; project?: string; reason: null | string; scope: \"group\" | \"project\"; set_at: null | string; set_by: null | string; uses: string[] | null }[] | null; ok: true; owner: null | string; unreadable?: true; uses: { [key: string]: boolean | string } | null } | { account_id?: null | string; cause?: null | string; check?: string; check_id?: null | string; code: string; count?: number; detail?: string; entry?: null | string; entry_id?: null | string; extra?: { grant_by: string }; hop_reason?: null | string; keep_away?: { reason: null | string; set_at: null | string; set_by: null | string }; level?: string; max?: number; means?: null | string; member?: null | string; min?: number; ok: false; part?: null | string; plan?: null | string; position?: null | number; project?: null | string; provider?: null | string; reason: string; reasons?: string[]; recipient?: { host: string; provider: string }; switch?: null | string; translation?: anything; unreadable?: true; use?: null | string; values?: (boolean | string)[]; verdict?: anything; who?: \"administrators\" | \"member\" | \"owners\"; whose?: \"group\" | \"own\" | \"project\"; word?: anything; [key: string]: anything }",
+    "bounds": [
+     "by: the control plane's stamp, read from the query after the body, never the body's own",
+     "code: a code of AI_ACCOUNT_CHECKS, or of membership's or ai-catalogue's rows",
+     "detail: the row's translation with its placeholders filled"
+    ]
+   },
+   "after": {
+    "kind": "operation",
+    "accepts": "{ account_id: string; viewer: null | string }",
+    "handsBack": "{ account_id: null | string; accounts?: { reference: { held: boolean; uses: { [key: string]: boolean | string } | null }; signin: { held: boolean; uses: { [key: string]: boolean | string } | null } }; held: boolean | null; keptAway: { on: boolean | null; project?: string; reason: null | string; scope: \"group\" | \"project\"; set_at: null | string; set_by: null | string; uses: string[] | null }[] | null; kind?: \"apikey\" | \"signin\" | null; ok: true; owner: null | string; unreadable?: true; uses: { [key: string]: boolean | string } | null } | { account_id?: null | string; cause?: null | string; check?: string; check_id?: null | string; code: string; count?: number; detail?: string; entry?: null | string; entry_id?: null | string; extra?: { grant_by: string }; hop_reason?: null | string; keep_away?: { reason: null | string; set_at: null | string; set_by: null | string }; level?: string; max?: number; means?: null | string; member?: null | string; min?: number; ok: false; part?: null | string; plan?: null | string; position?: null | number; project?: null | string; provider?: null | string; reason: string; reasons?: string[]; recipient?: { host: string; provider: string }; switch?: null | string; translation?: anything; unreadable?: true; use?: null | string; values?: (boolean | string)[]; verdict?: anything; who?: \"administrators\" | \"member\" | \"owners\"; whose?: \"group\" | \"own\" | \"project\"; word?: anything; [key: string]: anything }",
+    "bounds": [
+     "by: the control plane's stamp, read from the query after the body, never the body's own",
+     "code: a code of AI_ACCOUNT_CHECKS, or of membership's or ai-catalogue's rows",
+     "detail: the row's translation with its placeholders filled"
+    ]
+   }
+  },
+  {
+   "module": "store-door",
+   "entry": "controlPlaneRoutes",
+   "changes": [
+    "hands back differently"
+   ],
+   "tells": "users",
+   "before": {
+    "kind": "function",
+    "accepts": "(arg0: anything, arg1: anything, arg2: anything, arg3?: null)",
+    "handsBack": "{ aigrantadmit: () => anything; aikeptaway: () => { account_id?: null | string; cause?: null | string; check?: string; check_id?: null | string; code: string; count?: number; detail?: string; entry?: null | string; entry_id?: null | string; extra?: { grant_by: string }; hop_reason?: null | string; keep_away?: { reason: null | string; set_at: null | string; set_by: null | string }; level?: string; max?: number; means?: null | string; member?: null | string; min?: number; ok: false; part?: null | string; plan?: null | string; position?: null | number; project?: null | string; provider?: null | string; reason: string; reasons?: string[]; recipient?: { host: string; provider: string }; switch?: null | string; translation?: anything; unreadable?: true; use?: null | string; values?: (boolean | string)[]; verdict?: anything; who?: \"administrators\" | \"member\" | \"owners\"; whose?: \"group\" | \"own\" | \"project\"; word?: anything; [key: string]: anything } | { ok: true }; askceiling: () => Promise<anything>; askcheck: () => anything; askusage: () => Promise<anything>; groupdescriptiondraft: () => Promise<anything>; inboxpullfile: () => Promise<anything>; reauthdue: () => { due: anything }; signerregister: () => anything; signerrevoke: () => anything; subscriptionconnected: () => anything; translationdraft: () => Promise<anything>; wizardrefusaltally: () => anything; writinghelp: () => Promise<anything> }",
+    "bounds": [
+     "code: a code of AI_ACCOUNT_CHECKS, or of membership's or ai-catalogue's rows",
+     "detail: the row's translation with its placeholders filled"
+    ]
+   },
+   "after": {
+    "kind": "function",
+    "accepts": "(arg0: anything, arg1: anything, arg2: anything, arg3?: null)",
+    "handsBack": "{ aigrantadmit: () => anything; aikeptaway: () => { account_id?: null | string; cause?: null | string; check?: string; check_id?: null | string; code: string; count?: number; detail?: string; entry?: null | string; entry_id?: null | string; extra?: { grant_by: string }; hop_reason?: null | string; keep_away?: { reason: null | string; set_at: null | string; set_by: null | string }; level?: string; max?: number; means?: null | string; member?: null | string; min?: number; ok: false; part?: null | string; plan?: null | string; position?: null | number; project?: null | string; provider?: null | string; reason: string; reasons?: string[]; recipient?: { host: string; provider: string }; switch?: null | string; translation?: anything; unreadable?: true; use?: null | string; values?: (boolean | string)[]; verdict?: anything; who?: \"administrators\" | \"member\" | \"owners\"; whose?: \"group\" | \"own\" | \"project\"; word?: anything; [key: string]: anything } | { ok: true }; askceiling: () => Promise<anything>; askcheck: () => anything; askusage: () => Promise<anything>; groupdescriptiondraft: () => Promise<anything>; inboxpullfile: () => Promise<anything>; reauthdue: () => { due: anything }; signerregister: () => anything; signerrevoke: () => anything; subscriptionconnected: () => { account_id: null | string; connected: true; held: boolean; ok: true } | { account_id?: null | string; cause?: null | string; check?: string; check_id?: null | string; code: string; count?: number; detail?: string; entry?: null | string; entry_id?: null | string; extra?: { grant_by: string }; hop_reason?: null | string; keep_away?: { reason: null | string; set_at: null | string; set_by: null | string }; level?: string; max?: number; means?: null | string; member?: null | string; min?: number; ok: false; part?: null | string; plan?: null | string; position?: null | number; project?: null | string; provider?: null | string; reason: string; reasons?: string[]; recipient?: { host: string; provider: string }; switch?: null | string; translation?: anything; unreadable?: true; use?: null | string; values?: (boolean | string)[]; verdict?: anything; who?: \"administrators\" | \"member\" | \"owners\"; whose?: \"group\" | \"own\" | \"project\"; word?: anything; [key: string]: anything }; translationdraft: () => Promise<anything>; wizardrefusaltally: () => anything; writinghelp: () => Promise<anything> }",
+    "bounds": [
+     "code: a code of AI_ACCOUNT_CHECKS, or of membership's or ai-catalogue's rows",
+     "detail: the row's translation with its placeholders filled"
+    ]
+   }
+  }
+ ],
+ "told": [
+  {
+   "user": "credentials",
+   "reasons": [
+    {
+     "module": "ai-accounts",
+     "entry": "AiAccounts",
+     "changes": [
+      "declaration changed (not classified)"
+     ],
+     "lines": [
+      "credentials/test/t48.test.mjs:31"
+     ],
+     "through": null
+    },
+    {
+     "module": "ai-accounts",
+     "notFollowed": [
+      "reads or calls values of unknown kind: credentials/src/index.mjs:138 this.sql.exec; credentials/src/index.mjs:138 this.sql; credentials/src/index.mjs:147 this.now (+4757)"
+     ],
+     "through": null
+    }
+   ],
+   "undeclared": []
+  },
+  {
+   "user": "reading-pipeline",
+   "reasons": [
+    {
+     "module": "ai-accounts",
+     "entry": "AccountForAnswer",
+     "changes": [
+      "accepts more",
+      "hands back differently"
+     ],
+     "lines": [
+      "reading-pipeline/test/transcribe.test.mjs:271",
+      "reading-pipeline/test/transcribe.test.mjs:307",
+      "reading-pipeline/test/transcribe.test.mjs:310",
+      "reading-pipeline/test/transcribe.test.mjs:364",
+      "reading-pipeline/test/transcribe.test.mjs:365"
+     ],
+     "through": null
+    },
+    {
+     "module": "ai-accounts",
+     "entry": "AiAccounts#accountFor",
+     "changes": [
+      "hands back differently"
+     ],
+     "lines": [
+      "reading-pipeline/test/transcribe.test.mjs:211",
+      "reading-pipeline/test/transcribe.test.mjs:306",
+      "reading-pipeline/test/transcribe.test.mjs:359",
+      "reading-pipeline/test/transcribe.test.mjs:363",
+      "reading-pipeline/test/transcribe.test.mjs:370",
+      "reading-pipeline/test/transcribe.test.mjs:406"
+     ],
+     "through": null
+    },
+    {
+     "module": "ai-accounts",
+     "notFollowed": [
+      "reads or calls values of unknown kind: reading-pipeline/src/hooks.mjs:14 e; reading-pipeline/src/hooks.mjs:34 a; reading-pipeline/src/hooks.mjs:34 b (+6869)"
+     ],
+     "through": null
+    }
+   ],
+   "undeclared": []
+  },
+  {
+   "user": "extraction",
+   "reasons": [
+    {
+     "module": "ai-accounts",
+     "notFollowed": [
+      "reads or calls values of unknown kind: extraction/src/checks.mjs:129 row; extraction/src/checks.mjs:132 row; extraction/src/checks.mjs:158 detail.trim (+5193)"
+     ],
+     "through": null
+    }
+   ],
+   "undeclared": []
+  },
+  {
+   "user": "agent-model",
+   "reasons": [
+    {
+     "module": "ai-accounts",
+     "notFollowed": [
+      "reads or calls values of unknown kind: agent-model/src/src/apikey.mjs:34 m; agent-model/src/src/apikey.mjs:34 m.content.map; agent-model/src/src/apikey.mjs:34 m.content (+1137)"
+     ],
+     "through": null
+    }
+   ],
+   "undeclared": []
+  },
+  {
+   "user": "ai-use",
+   "reasons": [
+    {
+     "module": "ai-accounts",
+     "entry": "AiAccounts#accountUses",
+     "changes": [
+      "accepts more",
+      "hands back differently"
+     ],
+     "lines": [
+      "ai-use/test/limits.test.mjs:73",
+      "ai-use/test/reads.test.mjs:133",
+      "ai-use/test/t48.test.mjs:123"
+     ],
+     "through": null
+    },
+    {
+     "module": "ai-accounts",
+     "entry": "AiAccounts#accountUsesOf",
+     "changes": [
+      "accepts more",
+      "hands back differently"
+     ],
+     "lines": [
+      "ai-use/test/t42.test.mjs:100",
+      "ai-use/test/t42.test.mjs:101"
+     ],
+     "through": null
+    },
+    {
+     "module": "ai-accounts",
+     "notFollowed": [
+      "reads or calls values of unknown kind: ai-use/src/checks.mjs:101 s.split(`{${k}}`).join; ai-use/src/checks.mjs:101 s.split(`{${k}}`); ai-use/src/checks.mjs:101 s.split (+1280)"
+     ],
+     "through": null
+    }
+   ],
+   "undeclared": []
+  },
+  {
+   "user": "ai-runs",
+   "reasons": [
+    {
+     "module": "ai-accounts",
+     "entry": "AiAccounts#accountFor",
+     "changes": [
+      "hands back differently"
+     ],
+     "lines": [
+      "ai-runs/test/t48.test.mjs:63"
+     ],
+     "through": null
+    },
+    {
+     "module": "ai-accounts",
+     "notFollowed": [
+      "reads or calls values of unknown kind: ai-runs/src/index.mjs:90 gate; ai-runs/src/index.mjs:91 gate; ai-runs/src/index.mjs:94 gate (+3774)"
+     ],
+     "through": null
+    }
+   ],
+   "undeclared": []
+  },
+  {
+   "user": "run-productions",
+   "reasons": [
+    {
+     "module": "ai-accounts",
+     "notFollowed": [
+      "reads or calls values of unknown kind: run-productions/src/checks.mjs:412 keys.map; run-productions/src/checks.mjs:412 keys; run-productions/src/checks.mjs:412 family (+1443)"
+     ],
+     "through": null
+    }
+   ],
+   "undeclared": []
+  },
+  {
+   "user": "question-explorer",
+   "reasons": [
+    {
+     "module": "ai-accounts",
+     "notFollowed": [
+      "reads or calls values of unknown kind: question-explorer/src/index.mjs:99 storage; question-explorer/src/index.mjs:119 aiRuns; question-explorer/src/index.mjs:119 aiRuns.verifications (+2050)"
+     ],
+     "through": null
+    }
+   ],
+   "undeclared": []
+  },
+  {
+   "user": "answers",
+   "reasons": [
+    {
+     "module": "ai-accounts",
+     "notFollowed": [
+      "reads or calls values of unknown kind: answers/src/check.mjs:34 keys.includes; answers/src/check.mjs:34 keys; answers/src/check.mjs:43 a (+2825)"
+     ],
+     "through": null
+    }
+   ],
+   "undeclared": []
+  },
+  {
+   "user": "wizard-scripts",
+   "reasons": [
+    {
+     "module": "ai-accounts",
+     "notFollowed": [
+      "reads or calls values of unknown kind: wizard-scripts/src/build-data.mjs:25 list.map((x) => `  ${JSON.stringify(x)},; wizard-scripts/src/build-data.mjs:25 list.map; wizard-scripts/src/build-data.mjs:25 list (+5455)"
+     ],
+     "through": null
+    }
+   ],
+   "undeclared": []
+  },
+  {
+   "user": "affordances",
+   "reasons": [
+    {
+     "module": "ai-accounts",
+     "notFollowed": [
+      "reads or calls values of unknown kind: affordances/src/act-help.mjs:292 MEMBERSHIP_CHECKS.HANDLE_FIXED; affordances/src/act-help.mjs:293 ACT_HELP_KEYS; affordances/src/affordances.mjs:603 p.proceeding_kinds.filter((k) => k && ty (+3069)"
+     ],
+     "through": null
+    }
+   ],
+   "undeclared": []
+  },
+  {
+   "user": "queue-producers",
+   "reasons": [
+    {
+     "module": "ai-accounts",
+     "notFollowed": [
+      "declares ai-accounts but no use of it is found in its code",
+      "reads or calls values of unknown kind: queue-producers/src/index.mjs:87 r; queue-producers/src/index.mjs:100 storage; queue-producers/src/index.mjs:106 make (+3821)"
+     ],
+     "through": null
+    }
+   ],
+   "undeclared": []
+  },
+  {
+   "user": "notice-producers",
+   "reasons": [
+    {
+     "module": "ai-accounts",
+     "notFollowed": [
+      "reads or calls values of unknown kind: notice-producers/src/index.mjs:211 list.slice; notice-producers/src/index.mjs:211 list; notice-producers/src/index.mjs:242 storage (+2653)"
+     ],
+     "through": null
+    }
+   ],
+   "undeclared": []
+  },
+  {
+   "user": "translations",
+   "reasons": [
+    {
+     "module": "ai-accounts",
+     "notFollowed": [
+      "reads or calls values of unknown kind: translations/src/index.mjs:38 WORD_ROWS.map; translations/src/index.mjs:38 WORD_ROWS; translations/src/index.mjs:42 interfaceWords().map (+1890)"
+     ],
+     "through": null
+    }
+   ],
+   "undeclared": []
+  },
+  {
+   "user": "instance-setup",
+   "reasons": [
+    {
+     "module": "ai-accounts",
+     "notFollowed": [
+      "reads or calls values of unknown kind: instance-setup/src/livefire.mjs:30 env; instance-setup/src/livefire.mjs:39 stub.fetch; instance-setup/src/livefire.mjs:39 stub (+3623)"
+     ],
+     "through": null
+    }
+   ],
+   "undeclared": []
+  },
+  {
+   "user": "op-specs-late",
+   "reasons": [
+    {
+     "module": "ai-accounts",
+     "notFollowed": [
+      "declares ai-accounts but no use of it is found in its code"
+     ],
+     "through": null
+    }
+   ],
+   "undeclared": []
+  },
+  {
+   "user": "op-declarations",
+   "reasons": [
+    {
+     "module": "ai-accounts",
+     "notFollowed": [
+      "reads or calls values of unknown kind: op-declarations/src/compose.mjs:10 composed; op-declarations/src/compose.mjs:16 composed; op-declarations/src/declared.mjs:15 a (+3494)"
+     ],
+     "through": null
+    }
+   ],
+   "undeclared": []
+  },
+  {
+   "user": "answer-envelope",
+   "reasons": [
+    {
+     "module": "ai-accounts",
+     "notFollowed": [
+      "reads or calls values of unknown kind: answer-envelope/src/families.mjs:171 fill; answer-envelope/src/families.mjs:172 Reflect[op]; answer-envelope/src/families.mjs:275 t.push (+976)"
+     ],
+     "through": null
+    }
+   ],
+   "undeclared": []
+  },
+  {
+   "user": "store-door",
+   "reasons": [
+    {
+     "module": "ai-accounts",
+     "entry": "AccountForAnswer",
+     "changes": [
+      "accepts more",
+      "hands back differently"
+     ],
+     "lines": [
+      "store-door/src/dispatch.mjs:361"
+     ],
+     "through": null
+    },
+    {
+     "module": "ai-accounts",
+     "entry": "AiAccounts#accountFor",
+     "changes": [
+      "hands back differently"
+     ],
+     "lines": [
+      "store-door/src/dispatch.mjs:360"
+     ],
+     "through": null
+    },
+    {
+     "module": "ai-accounts",
+     "notFollowed": [
+      "reads or calls values of unknown kind: store-door/src/dispatch.mjs:202 url.searchParams.get; store-door/src/dispatch.mjs:202 url.searchParams; store-door/src/dispatch.mjs:202 url (+1262)"
+     ],
+     "through": null
+    }
+   ],
+   "undeclared": []
+  },
+  {
+   "user": "signin-door",
+   "reasons": [
+    {
+     "module": "ai-accounts",
+     "notFollowed": [
+      "declares ai-accounts but no use of it is found in its code",
+      "reads or calls values of unknown kind: signin-door/src/index.mjs:78 b; signin-door/src/index.mjs:84 env; signin-door/src/index.mjs:99 env (+185)"
+     ],
+     "through": null
+    }
+   ],
+   "undeclared": []
+  },
+  {
+   "user": "store-ask",
+   "reasons": [
+    {
+     "module": "ai-accounts",
+     "notFollowed": [
+      "declares ai-accounts but no use of it is found in its code"
+     ],
+     "through": null
+    }
+   ],
+   "undeclared": []
+  },
+  {
+   "user": "store-assembly",
+   "reasons": [
+    {
+     "module": "ai-accounts",
+     "notFollowed": [
+      "reads or calls values of unknown kind: store-assembly/src/acquire-timings.mjs:25 host; store-assembly/src/acquire-timings.mjs:25 host.storage; store-assembly/src/acquire-timings.mjs:25 host.storage.sql (+6738)"
+     ],
+     "through": null
+    },
+    {
+     "module": "store-door",
+     "entry": "controlPlaneRoutes",
+     "changes": [
+      "hands back differently"
+     ],
+     "lines": [
+      "store-assembly/src/assemble.mjs:102",
+      "store-assembly/src/assemble.mjs:912",
+      "store-assembly/test/maps.mjs:71",
+      "store-assembly/test/maps.mjs:208",
+      "store-assembly/test/owner-map-spread.test.mjs:14",
+      "store-assembly/test/owner-map-spread.test.mjs:65"
+     ],
+     "through": "ai-accounts"
+    },
+    {
+     "module": "store-door",
+     "notFollowed": [
+      "reads or calls values of unknown kind: store-assembly/src/acquire-timings.mjs:25 host; store-assembly/src/acquire-timings.mjs:25 host.storage; store-assembly/src/acquire-timings.mjs:25 host.storage.sql (+6738)"
+     ],
+     "through": "ai-accounts"
+    }
+   ],
+   "undeclared": []
+  },
+  {
+   "user": "screens-inquiry",
+   "reasons": [
+    {
+     "module": "ai-accounts",
+     "notFollowed": [
+      "reads or calls values of unknown kind: screens-inquiry/src/admit.mjs:12 SCREEN_REGISTRY.find; screens-inquiry/src/admit.mjs:12 SCREEN_REGISTRY; screens-inquiry/src/admit.mjs:12 r (+17771)"
+     ],
+     "through": null
+    }
+   ],
+   "undeclared": []
+  },
+  {
+   "user": "screens-document",
+   "reasons": [
+    {
+     "module": "ai-accounts",
+     "notFollowed": [
+      "declares ai-accounts but no use of it is found in its code"
+     ],
+     "through": null
+    }
+   ],
+   "undeclared": []
+  },
+  {
+   "user": "control-plane",
+   "reasons": [
+    {
+     "module": "ai-accounts",
+     "entry": "AiAccounts",
+     "changes": [
+      "declaration changed (not classified)"
+     ],
+     "lines": [
+      "control-plane/test/envelope.test.mjs:9",
+      "control-plane/test/envelope.test.mjs:439"
+     ],
+     "through": null
+    },
+    {
+     "module": "ai-accounts",
+     "notFollowed": [
+      "reads or calls values of unknown kind: control-plane/src/app.mjs:29 req; control-plane/src/app.mjs:30 url; control-plane/src/app.mjs:31 p.startsWith (+12141)"
+     ],
+     "through": null
+    },
+    {
+     "module": "store-door",
+     "entry": "controlPlaneRoutes",
+     "changes": [
+      "hands back differently"
+     ],
+     "lines": [
+      "control-plane/test/r49-case-inputs-public.test.mjs:31",
+      "control-plane/test/r49-routes.test.mjs:173",
+      "control-plane/test/r50-routes.test.mjs:123",
+      "control-plane/test/r52-routes.test.mjs:26",
+      "control-plane/test/record.mjs:14",
+      "control-plane/test/record.mjs:141"
+     ],
+     "through": "ai-accounts"
+    },
+    {
+     "module": "store-door",
+     "notFollowed": [
+      "reads or calls values of unknown kind: control-plane/src/app.mjs:29 req; control-plane/src/app.mjs:30 url; control-plane/src/app.mjs:31 p.startsWith (+12141)"
+     ],
+     "through": "ai-accounts"
+    }
+   ],
+   "undeclared": []
+  },
+  {
+   "user": "plane",
+   "reasons": [
+    {
+     "module": "ai-accounts",
+     "notFollowed": [
+      "reads or calls values of unknown kind: plane/src/arrival.mjs:8 headers.get; plane/src/arrival.mjs:8 headers; plane/src/arrival.mjs:9 raw.trim (+3324)"
+     ],
+     "through": null
+    },
+    {
+     "module": "store-door",
+     "entry": "controlPlaneRoutes",
+     "changes": [
+      "hands back differently"
+     ],
+     "lines": [
+      "plane/test/door.test.mjs:259",
+      "plane/test/maps.mjs:71",
+      "plane/test/maps.mjs:208"
+     ],
+     "through": "ai-accounts"
+    },
+    {
+     "module": "store-door",
+     "notFollowed": [
+      "reads or calls values of unknown kind: plane/src/arrival.mjs:8 headers.get; plane/src/arrival.mjs:8 headers; plane/src/arrival.mjs:9 raw.trim (+3324)"
+     ],
+     "through": "ai-accounts"
+    }
+   ],
+   "undeclared": []
+  }
+ ],
+ "notTold": [],
+ "warnings": [],
+ "interfaceChanged": true,
+ "summary": "2 module(s) changed their listing; 9 entries changed in a way that tells; 26 user(s) told.",
+ "replay": {
+  "change": "ai-accounts:124",
+  "ms": 128078,
+  "ranAt": "2026-11-15T16:58:37.261Z",
+  "tool": "notice-proof/tool/p3tool.mjs",
+  "commentedUsers": null
+ }
+}

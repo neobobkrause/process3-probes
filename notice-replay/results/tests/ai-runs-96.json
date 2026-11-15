@@ -1,0 +1,1364 @@
+{
+ "change": "ai-runs:96",
+ "provider": "ai-runs",
+ "before": "2d52c515fae9c04c6f8ff5164660be226edb491a",
+ "after": "b7426ef99a6201d16b6e81c713cb5e6305f2a71a",
+ "node": "v22.23.4",
+ "started": "2026-11-15T15:23:35.515Z",
+ "users": {
+  "run-productions": {
+   "before": {
+    "files": 8,
+    "pass": 68,
+    "fail": 0,
+    "failed": [],
+    "ms": 2657,
+    "status": [
+     0
+    ]
+   },
+   "after": {
+    "files": 8,
+    "pass": 68,
+    "fail": 0,
+    "failed": [],
+    "ms": 3365,
+    "status": [
+     0
+    ]
+   },
+   "newFailures": []
+  },
+  "capture-requests": {
+   "before": {
+    "files": 15,
+    "pass": 125,
+    "fail": 7,
+    "failed": [
+     "bio-plane: R30 capturerequest: admin, member with contribute and probe; capturerequestdrain: admin, probe and daemon, no member class; capturerequests: admin, member and probe; the daemon reaches no read of the queue; no op admits the ai class by name",
+     "bio-plane: R16 R31 R14 the spine in the plane: the member's run requests (as civicsmith by default) and nothing is fetched; op=acquire refuses the capture-request arm from every caller; only the daemon's drain fetches, with the Civicsmith agent, and the capture lands",
+     "bio-plane: R19 R42 R38 in the plane: a source's 500 holds the row under CAPTURE_FETCH_FAILED (C-28.17), read back through op=capturerequests; op=capturerequestretry refuses it CAPTURE_REQUEST_NOT_RETRYABLE (C-28.18) and writes nothing; a new capture drained is promoted",
+     "bio-plane: R14 in the plane (N295): a member-browser request under an inquiry created through a member's session is fetched with the agent the control plane stamped and inquiry records (its R44), not refused CAPTURE_CONDUCT_UA_UNRECORDED",
+     "bio-plane: R48 in the plane: a requested capture, drained and promoted, is listed by capture's op=heldcaptures with the question it was captured for and its asker, read through the reader this module registered (capture R77, R83)",
+     "bio-plane: R48 in the plane (T50): a capture a member made with acquire's `for` and no request is listed by op=heldcaptures with the question and its asker, read through this module's reader and capture's asks (capture R83, R94); a `for` naming no question is refused BAD_FOR (control-plane R105, acquisition R47) before any fetch, and nothing is held for it; a capture with no `for` answers questions: []",
+     "bio-plane: R56 in the plane: a member's session asks for an address with no run (\"Ask for this later\"); the request is hers, drained by the daemon as any is; the same ask through an ai credential is refused CAPTURE_REQUEST_NO_RUN"
+    ],
+    "ms": 25748,
+    "status": [
+     1
+    ]
+   },
+   "after": {
+    "files": 15,
+    "pass": 125,
+    "fail": 7,
+    "failed": [
+     "bio-plane: R30 capturerequest: admin, member with contribute and probe; capturerequestdrain: admin, probe and daemon, no member class; capturerequests: admin, member and probe; the daemon reaches no read of the queue; no op admits the ai class by name",
+     "bio-plane: R16 R31 R14 the spine in the plane: the member's run requests (as civicsmith by default) and nothing is fetched; op=acquire refuses the capture-request arm from every caller; only the daemon's drain fetches, with the Civicsmith agent, and the capture lands",
+     "bio-plane: R19 R42 R38 in the plane: a source's 500 holds the row under CAPTURE_FETCH_FAILED (C-28.17), read back through op=capturerequests; op=capturerequestretry refuses it CAPTURE_REQUEST_NOT_RETRYABLE (C-28.18) and writes nothing; a new capture drained is promoted",
+     "bio-plane: R14 in the plane (N295): a member-browser request under an inquiry created through a member's session is fetched with the agent the control plane stamped and inquiry records (its R44), not refused CAPTURE_CONDUCT_UA_UNRECORDED",
+     "bio-plane: R48 in the plane: a requested capture, drained and promoted, is listed by capture's op=heldcaptures with the question it was captured for and its asker, read through the reader this module registered (capture R77, R83)",
+     "bio-plane: R48 in the plane (T50): a capture a member made with acquire's `for` and no request is listed by op=heldcaptures with the question and its asker, read through this module's reader and capture's asks (capture R83, R94); a `for` naming no question is refused BAD_FOR (control-plane R105, acquisition R47) before any fetch, and nothing is held for it; a capture with no `for` answers questions: []",
+     "bio-plane: R56 in the plane: a member's session asks for an address with no run (\"Ask for this later\"); the request is hers, drained by the daemon as any is; the same ask through an ai credential is refused CAPTURE_REQUEST_NO_RUN"
+    ],
+    "ms": 38054,
+    "status": [
+     1
+    ]
+   },
+   "newFailures": []
+  },
+  "skills": {
+   "before": {
+    "files": 17,
+    "pass": 133,
+    "fail": 0,
+    "failed": [],
+    "ms": 13820,
+    "status": [
+     0
+    ]
+   },
+   "after": {
+    "files": 17,
+    "pass": 133,
+    "fail": 0,
+    "failed": [],
+    "ms": 22358,
+    "status": [
+     0
+    ]
+   },
+   "newFailures": []
+  },
+  "question-explorer": {
+   "before": {
+    "files": 9,
+    "pass": 50,
+    "fail": 0,
+    "failed": [],
+    "ms": 4128,
+    "status": [
+     0
+    ]
+   },
+   "after": {
+    "files": 9,
+    "pass": 50,
+    "fail": 0,
+    "failed": [],
+    "ms": 6052,
+    "status": [
+     0
+    ]
+   },
+   "newFailures": []
+  },
+  "agent-steps": {
+   "before": {
+    "files": 10,
+    "pass": 9,
+    "fail": 1,
+    "failed": [
+     "agent-steps: test/interface.test.mjs"
+    ],
+    "ms": 2102,
+    "status": [
+     1
+    ]
+   },
+   "after": {
+    "files": 10,
+    "pass": 10,
+    "fail": 0,
+    "failed": [],
+    "ms": 4513,
+    "status": [
+     0
+    ]
+   },
+   "newFailures": []
+  },
+  "agent-worker": {
+   "before": {
+    "files": 23,
+    "pass": 20,
+    "fail": 3,
+    "failed": [
+     "agent-worker: test/ask.test.mjs",
+     "agent-worker: test/harness.test.mjs",
+     "agent-worker: test/requirements.test.mjs"
+    ],
+    "ms": 209609,
+    "status": [
+     1
+    ]
+   },
+   "after": {
+    "files": 23,
+    "pass": 21,
+    "fail": 2,
+    "failed": [
+     "agent-worker: test/ask.test.mjs",
+     "agent-worker: test/harness.test.mjs"
+    ],
+    "ms": 356561,
+    "status": [
+     1
+    ]
+   },
+   "newFailures": []
+  },
+  "ai-gate": {
+   "before": {
+    "files": 0
+   },
+   "after": {
+    "files": 0
+   },
+   "newFailures": []
+  },
+  "intent": {
+   "before": {
+    "files": 12,
+    "pass": 99,
+    "fail": 1,
+    "failed": [
+     "bio-plane: R18 a reasoned run is opened through ai-runs with the reason recorded on its opening: carried in its instructions and as the run's label, which ai-runs' read and context list answer with the run's budget and scope (real ai-runs)"
+    ],
+    "ms": 77865,
+    "status": [
+     1
+    ]
+   },
+   "after": {
+    "files": 12,
+    "pass": 99,
+    "fail": 1,
+    "failed": [
+     "bio-plane: R18 a reasoned run is opened through ai-runs with the reason recorded on its opening: carried in its instructions and as the run's label, which ai-runs' read and context list answer with the run's budget and scope (real ai-runs)"
+    ],
+    "ms": 75728,
+    "status": [
+     1
+    ]
+   },
+   "newFailures": []
+  },
+  "case-account": {
+   "before": {
+    "files": 10,
+    "pass": 49,
+    "fail": 0,
+    "failed": [],
+    "ms": 6503,
+    "status": [
+     0
+    ]
+   },
+   "after": {
+    "files": 10,
+    "pass": 49,
+    "fail": 0,
+    "failed": [],
+    "ms": 7571,
+    "status": [
+     0
+    ]
+   },
+   "newFailures": []
+  },
+  "action-plans": {
+   "before": {
+    "files": 20,
+    "pass": 113,
+    "fail": 0,
+    "failed": [],
+    "ms": 12614,
+    "status": [
+     0
+    ]
+   },
+   "after": {
+    "files": 20,
+    "pass": 113,
+    "fail": 0,
+    "failed": [],
+    "ms": 16371,
+    "status": [
+     0
+    ]
+   },
+   "newFailures": []
+  },
+  "plan-work": {
+   "before": {
+    "files": 10,
+    "pass": 52,
+    "fail": 0,
+    "failed": [],
+    "ms": 12346,
+    "status": [
+     0
+    ]
+   },
+   "after": {
+    "files": 10,
+    "pass": 52,
+    "fail": 0,
+    "failed": [],
+    "ms": 12087,
+    "status": [
+     0
+    ]
+   },
+   "newFailures": []
+  },
+  "scheduler": {
+   "before": {
+    "files": 20,
+    "pass": 184,
+    "fail": 1,
+    "failed": [
+     "bio-plane: R12: a run waiting on a request that reaches expired is woken on the alarm that expires it, exactly once"
+    ],
+    "ms": 32775,
+    "status": [
+     1
+    ]
+   },
+   "after": {
+    "files": 20,
+    "pass": 184,
+    "fail": 1,
+    "failed": [
+     "bio-plane: R12: a run waiting on a request that reaches expired is woken on the alarm that expires it, exactly once"
+    ],
+    "ms": 45345,
+    "status": [
+     1
+    ]
+   },
+   "newFailures": []
+  },
+  "wizard-scripts": {
+   "before": {
+    "files": 26,
+    "pass": 153,
+    "fail": 0,
+    "failed": [],
+    "ms": 15023,
+    "status": [
+     0
+    ]
+   },
+   "after": {
+    "files": 26,
+    "pass": 153,
+    "fail": 0,
+    "failed": [],
+    "ms": 14756,
+    "status": [
+     0
+    ]
+   },
+   "newFailures": []
+  },
+  "affordances": {
+   "before": {
+    "files": 35,
+    "pass": 302,
+    "fail": 0,
+    "failed": [],
+    "ms": 106124,
+    "status": [
+     0
+    ]
+   },
+   "after": {
+    "files": 35,
+    "pass": 302,
+    "fail": 0,
+    "failed": [],
+    "ms": 102828,
+    "status": [
+     0
+    ]
+   },
+   "newFailures": []
+  },
+  "queue-producers": {
+   "before": {
+    "files": 24,
+    "pass": 163,
+    "fail": 0,
+    "failed": [],
+    "ms": 14378,
+    "status": [
+     0
+    ]
+   },
+   "after": {
+    "files": 24,
+    "pass": 163,
+    "fail": 0,
+    "failed": [],
+    "ms": 15380,
+    "status": [
+     0
+    ]
+   },
+   "newFailures": []
+  },
+  "instance-setup": {
+   "before": {
+    "files": 33,
+    "pass": 256,
+    "fail": 0,
+    "failed": [],
+    "ms": 213019,
+    "status": [
+     0
+    ]
+   },
+   "after": {
+    "files": 33,
+    "pass": 256,
+    "fail": 0,
+    "failed": [],
+    "ms": 187027,
+    "status": [
+     0
+    ]
+   },
+   "newFailures": []
+  },
+  "instance-reports": {
+   "before": {
+    "files": 0
+   },
+   "after": {
+    "files": 0
+   },
+   "newFailures": []
+  },
+  "surface-declarations": {
+   "before": {
+    "files": 0
+   },
+   "after": {
+    "files": 0
+   },
+   "newFailures": []
+  },
+  "op-specs-late": {
+   "before": {
+    "files": 0
+   },
+   "after": {
+    "files": 0
+   },
+   "newFailures": []
+  },
+  "op-declarations": {
+   "before": {
+    "files": 30,
+    "pass": 257,
+    "fail": 3,
+    "failed": [
+     "bio-plane: R34, R5: ACT_HELP_ABSENT is frozen data grouping op names under their grounds, each ground one sentence, each group's names distinct, sorted and named by no other group, and it names no op OPS does not hold (negative control: an unheld name is seen)",
+     "bio-plane: R34 (affordances R48): every op in SESSION_OPS.member has an explanation in affordances' ACT_HELP under its own name or is named in ACT_HELP_ABSENT, and no op is both — the partition both ways (negative control: a member op dropped from both is seen)",
+     "bio-plane: R47, R34 (N862; T43: DEC-190, K2725): pagetranscribe, and content's manual transcribe beside it, are explained in affordances' ACT_HELP since its T43-17 (the design's texts) and so named under no ground of ACT_HELP_ABSENT, the last ground they held until then; every member-session op is explained or named, never both, and every named op is held by OPS (negative control: an explained op is named under no ground)"
+    ],
+    "ms": 19427,
+    "status": [
+     1
+    ]
+   },
+   "after": {
+    "files": 30,
+    "pass": 256,
+    "fail": 4,
+    "failed": [
+     "bio-plane: R20 (T41; DEC-188 (8); K2484): ask a member's own session only (machineClasses []), viewer and member stamped; aiusage ai-use's session read, with and without owner; the account-reference ops a member's own session only, by stamped from the query — no bearer, so no administrator token acts for another member; the switches set only by R41's accountusesset (accountswitchset retired, no spec); no spec admits a group subscription, and a project's account is reached only through R41's ops (negative control: a retired name is in no table)",
+     "bio-plane: R34, R5: ACT_HELP_ABSENT is frozen data grouping op names under their grounds, each ground one sentence, each group's names distinct, sorted and named by no other group, and it names no op OPS does not hold (negative control: an unheld name is seen)",
+     "bio-plane: R34 (affordances R48): every op in SESSION_OPS.member has an explanation in affordances' ACT_HELP under its own name or is named in ACT_HELP_ABSENT, and no op is both — the partition both ways (negative control: a member op dropped from both is seen)",
+     "bio-plane: R47, R34 (N862; T43: DEC-190, K2725): pagetranscribe, and content's manual transcribe beside it, are explained in affordances' ACT_HELP since its T43-17 (the design's texts) and so named under no ground of ACT_HELP_ABSENT, the last ground they held until then; every member-session op is explained or named, never both, and every named op is held by OPS (negative control: an explained op is named under no ground)"
+    ],
+    "ms": 18273,
+    "status": [
+     1
+    ]
+   },
+   "newFailures": [
+    "bio-plane: R20 (T41; DEC-188 (8); K2484): ask a member's own session only (machineClasses []), viewer and member stamped; aiusage ai-use's session read, with and without owner; the account-reference ops a member's own session only, by stamped from the query — no bearer, so no administrator token acts for another member; the switches set only by R41's accountusesset (accountswitchset retired, no spec); no spec admits a group subscription, and a project's account is reached only through R41's ops (negative control: a retired name is in no table)"
+   ]
+  },
+  "store-door": {
+   "before": {
+    "files": 10,
+    "pass": 63,
+    "fail": 0,
+    "failed": [],
+    "ms": 12969,
+    "status": [
+     0
+    ]
+   },
+   "after": {
+    "files": 10,
+    "pass": 63,
+    "fail": 0,
+    "failed": [],
+    "ms": 12010,
+    "status": [
+     0
+    ]
+   },
+   "newFailures": []
+  },
+  "store-jobs": {
+   "before": {
+    "files": 0
+   },
+   "after": {
+    "files": 0
+   },
+   "newFailures": []
+  },
+  "store-ask": {
+   "before": {
+    "files": 0
+   },
+   "after": {
+    "files": 0
+   },
+   "newFailures": []
+  },
+  "store-assembly": {
+   "before": {
+    "files": 69,
+    "pass": 338,
+    "fail": 82,
+    "failed": [
+     "bio-plane: R49, B2 (K1674): the assembled store's `ask(args)` (`askOnObject`): a member's ask mints their grant, unseals their own account and carries both to agent-worker's /ask, whose stream comes back unchanged",
+     "bio-plane: B2 (agent-worker R56): the member's suggestions switch is carried as they set it",
+     "bio-plane: B2 (K1684): a presented grant is carried as given and no grant is minted",
+     "bio-plane: B2 negative controls: no account, another's session, and no assistant member are each refused in their owner's words, and nothing is asked",
+     "bio-plane: B7 (K1690, K2162; N765: instance-setup R55, credentials R35, R51): while the group keeps its material away, an ask is refused AI_KEPT_AWAY, carrying the administrator's reason, before any grant is minted or any account read; switched back, it is asked",
+     "bio-plane: K1806, R49 (agent-worker R6, R54; credentials R35; K1755; T46: N897 (3)): a member with no account of their own is served by the group's API key while it is held and on, carried as level `group` with the group key's own suggestions switch; with it off, or its notice unread, nothing is asked",
+     "bio-plane: R49 (N686; K2062; agent-worker R59): the assembled store's `draft(args)` (`draftOnObject`): a member's draft carries their account in R6's shape and the door's pack to agent-worker's /draft, with no grant while their suggestions switch is off; agent-worker's answer comes back at its status with the switch and an empty read log",
+     "bio-plane: R49 (N686; DEC-153 (2), K1841 (2), K2041): with the member's suggestions on, a grant is minted and sent in place of the pack, and its read log's strings come back; a firsthand field never gets one",
+     "bio-plane: R49 (T37; K2238; agent-worker R68, run-rules R22): a translation draft carries its task {op, direction, language, words}, the account and the door's pack to /draft, and no told, grant or firsthand, even with the member's suggestions on",
+     "bio-plane: R49 (N686; credentials R35, R37): a member with no account of their own is served by the group's key, carried as level `group` with the group's suggestions switch",
+     "bio-plane: R49 negative controls (N686; N765): no assistant member, the group keeping its material away (AI_KEPT_AWAY), no account, a session not the member's, and a member that does not answer each end the draft in their owner's words at their status, nothing asked or nothing kept",
+     "bio-plane: R5 (K5200): ai-use's first construction takes the store's clock: a limit set and a use counted on a pinned world read the pin, and `tick` moves them; with the clock unpinned the wall answers",
+     "bio-plane: R5 (K5200): file-safety and capture take the store's clock: a file queued for the scan, and a parted upload begun, on a pinned world carry the pin, and `tick` moves them",
+     "bio-plane: R5 (K5200): corpus-export takes the store's clock through publication: an export on a pinned world is logged at the pin, and `exportlog` reads it back",
+     "bio-plane: R5 (K5200; diagnosis A3): action-clocks takes the store's clock: on a pinned world `remindersfor` is judged on the pinned day, and a reminder is set at the pin, `tick` moving both",
+     "bio-plane: R5 (K5200; diagnosis A3): action-plans and filings take the store's clock: each instance's instants read the pin to the second, and two plans opened a minute apart tell their instants apart",
+     "bio-plane: R1 R5 (K5200): a second assembly over one storage hands capture the same clock: capture refuses a different `now` (its R58), so the assembly refuses nothing and builds nothing twice, and capture's clock stays the store's",
+     "bio-plane: R83 the assembly started over the real modules holds, for every module whose source exports DECLARED_OPS, each of its ops in the assembled table with the module's values; a module missing from the assembly is named; the copy window's only one is control-plane, whose four rows store-assembly holds as its own",
+     "bio-plane: R84 the assembly declares ask: its requires (none) raise no refusal naming a field, and a field outside accepts is dropped or refused naming it",
+     "bio-plane: R84 the assembly declares readtranslate: its requires alone raise no refusal naming a field, a call without subject is refused naming it, and a field outside accepts is dropped or refused naming it",
+     "bio-plane: R75 R2 (capture R113, K4899): the composition assigns capture's `evidenceKey`, record-core's key for a digest, so through the assembled store a parted upload's begin answers `ok` with its parts, never PARTED_UPLOAD_UNAVAILABLE",
+     "bio-plane: R17 (K1869 (2)): every required script of the bundled Civicsmith library passes the checks against the bundled registration, the registry's screens among it (requiredFailures is empty)",
+     "bio-plane: R17: the suite fails when a required script fails, and only a required one counts (negative control)",
+     "bio-plane: R23 (T51; K3807): the one registry is wizard-scripts' `SCREEN_REGISTRY`, every screen `{id, name, purpose, acts, owed}`, its count read from the design's file, and the release suite's `screenFailures` is empty for it",
+     "bio-plane: R23 negative control: an entry naming an op no spec holds, a repeated id, or a missing purpose or name fails the suite; an owed act with no op is no failure; none of the 21 old screens that the registry lacks is invented",
+     "bio-plane: R1: two calls over one storage start instance-setup once and migrate idempotently; a second object over the same database adds no row and no table",
+     "bio-plane: test/m/store-assembly/sa-world.test.mjs",
+     "bio-plane: R20 (K1541): credentials holds the deployment's seal secret, so a member's reference is sealed; unbound, it is refused ACCOUNT_SEAL_UNAVAILABLE",
+     "bio-plane: R20 (queue R51; K1683): notice-producers is built over the plane's instances, and op=queue reads it beside queue-producers",
+     "bio-plane: R49 (K2500; answers R30): answers is handed no ceilingRefusal; the ask and the draft take their account and limit from answers.askAccount (kind `ask`, kind `draft`), and its refusal is answered as given before anything is posted",
+     "bio-plane: R49 (K2500; store-door R11): a read under a grant the draft path minted is recorded in its read log with use `draft`; a read under an ask's grant with use `ask`",
+     "bio-plane: R32 (was plane R37; N826; K2630): doorbell is the plane's one instance per host, built at boot; each of its nine routes in the route map is answered by that instance, never by capture's doorbell copy",
+     "bio-plane: R57 (was plane R36) (run-rules R19; ai-runs R75): deployable() is run-rules' bar for `transcribe` on ai-runs' records, on Civicsmith's set unless the composition is handed another; a failed record, another set's, and a throw answer false",
+     "bio-plane: R57 (was plane R36) (credentials R57): keptAway({project, use}) is credentials.aiKeptAway relayed as given: the refusal while the group keeps material away, null once it does not",
+     "bio-plane: R57 (was plane R36): transcription({member, project, at}) answers the object's own ai-accounts (R53, was credentials) and ai-use's useCheck, the act minted for it (`transcribe:<capture prefix>:<instant>`), and the AI path; with no AGENT_WORKER binding the path answers AGENT_WORKER_UNBOUND and reads nothing",
+     "bio-plane: R57 R106 transcribe-answer: the answer a user module (extraction's t48) hands for `transcribe` is the real one's: the same keys and values for the same pages",
+     "bio-plane: R57 (was plane R36) (agent-worker R6, R63, R72; ai-use R1, R11): the AI path renders the asked pages with pdf-pixels (decodeDct) as PNGs, posts {capture_sha, pages, account} in R6's wire shape to /transcribe, the secret only in that body, counts the usage under the act in one transaction, and answers agent-worker's answer",
+     "bio-plane: R57 (was plane R36): a project's account is counted under `project:<id>` and named in the wire; an ending that carries usage is counted and answered ok:false with its reason; a binding that throws or answers no JSON is AGENT_WORKER_SILENT, nothing counted",
+     "bio-plane: R57 (was plane R36) (K2611): the pages are rendered one at a time in ascending order, at most TRANSCRIBE_PAGES_MAX; a page the renderer refuses or throws on, a picture that is not a PNG, or a PNG over TRANSCRIBE_IMAGE_MAX_BYTES is not sent; with none left NO_PAGE_RENDERED and with no bytes EVIDENCE_ABSENT, nothing posted",
+     "bio-plane: R57 (was plane R36) (N832; D21, D12): end to end on the object, a member's pagetranscribe of a stored scan reaches the registered transcriber: the page is rendered and sent, the AI's words written into the reading under the act, and its usage counted for that act; on Civicsmith's empty set it is refused TRANSCRIBE_NOT_DEPLOYED and nothing is sent",
+     "bio-plane: R57 (was plane R36): with no AGENT_WORKER bound, the act answers 200 with performed: false and why naming the unbound assistant; nothing is counted or written",
+     "bio-plane: R58 (was plane R106) G126e: on a 24 MiB PDF and a 300-page scan the press loads no object in the request (no get of the evidence store at all), owes every asked page as a job row, and names the pages asked, sent (none) and owed",
+     "bio-plane: R58 (was plane R106) (control): a 3-page file under the ceiling is read in the request by ranges as before; the answer names the pages filled; a page asked beyond TRANSCRIBE_PAGES_MAX is named unread and owed, never dropped",
+     "bio-plane: R23 (T43; N862; DEC-190 (1); T51): the registry's `document` screen's acts hold `pagetranscribe` and `transcribe`, each an op op-declarations declares, and the registry still passes the release suite's check",
+     "bio-plane: R57 (T43; N853b; extraction R73): end to end on the object, a member's pagetranscribe of an uploaded JPEG posts its page 0 to agent-worker as one grey PNG whose long edge is at most 1,568 px; control: a PDF scan's page is posted as before, byte for byte",
+     "bio-plane: R50 (K2853; run-rules R16, R19, R30; T46): the ask door refuses AI_RUN_MODE_NOT_DEPLOYED (403, run-rules' C-109.1 row, mode `ask`) while `ask`'s flag is off, and AI_PART_NOT_DEPLOYED (run-rules' partRefusal, 403) while its flag is on and ai-runs' partAdmitted does not admit it, before the keep-away read, any account read or grant, nothing posted; deployed and admitted, it is asked",
+     "bio-plane: R50 (K2853; run-rules R21, R22, R27, R30; T46): the draft door refuses each kind while its flag (draft's for own words, translation and the status report; draft's and action_drafts' for the three action drafts) does not deploy it (AI_RUN_MODE_NOT_DEPLOYED), or ai-runs' partAdmitted(`draft:<kind>`) does not admit it (AI_PART_NOT_DEPLOYED), before anything is read or minted; an op of no kind is refused; admitted, it is posted",
+     "bio-plane: R51 (K2824; agent-worker R76; run-rules R27): a text check is posted as {task: {op, text}, account, pack}, reading nothing: no grant even with the member's suggestions on",
+     "bio-plane: R51 (K2824): an infraction or bearing draft whose records the member cannot read ends with that read's refusal, or BAD_TASK for a task naming none, before any grant is minted or anything posted",
+     "bio-plane: R50 (was plane R40; T46; N897 (2); run-rules R29, R30; ai-runs R78; agent-worker R79): on Civicsmith's empty set with no test instance, an ask and a writing-help draft are refused AI_PART_NOT_DEPLOYED as run-rules' partRefusal answers it, nothing posted; control: with CIVICSMITH_TEST_INSTANCE equal to INSTANCE_NAME the same posts are made, the ask's request carrying the label and the draft's answer carrying it beside grant, suggestions and read",
+     "bio-plane: R50 (was plane R40; T46; run-rules R29): admitted by the bar, neither the ask nor the draft carries a label, on a test instance or not; the exception never lifts a flag: with the flag off a test instance is refused AI_RUN_MODE_NOT_DEPLOYED",
+     "bio-plane: R50, R57 (was plane R40, R36; T46; extraction R74): the transcriber's deployable() is partAdmitted(\"transcribe\").admitted and its transcription() answers `untested`, the label, when the part runs on the test instance; off it, not deployable and no label",
+     "bio-plane: R50 (was plane R40; T46; N920; study-T46-assistant §2): a status-report draft for a plan whose project is kept away from drafts is refused as credentials.aiKeptAway answers it, asked with the plan's project and use `draft`, before any account is read, nothing posted and no grant; control: not kept away, it is posted as {task: {op, plan, items}, account}, with no told and no grant",
+     "bio-plane: R50 (was plane R40; T46; N920): a status-report draft is refused AI_PART_NOT_DEPLOYED while partAdmitted(\"draft:statusreport\") does not admit it, before the plan, the keep-away or any account is read; a plan the member cannot read ends it with that read's refusal, and a task naming no plan or items is BAD_TASK, each before any account is read",
+     "bio-plane: R49, R52 (was plane R33, R47; T47; K3084; credentials R55, R70; agent-worker R6, R82): a member served by her own sign-in is sent as {kind: signin, level: member, secret, member, suggestions}, `secret` the token credentials holds for her, on the ask and the draft path alike, the token reaching only the binding's request; its suggestions the sign-in's own switch, with it on a draft gets a grant; control: off, false; an API-key reference's switch and key are read as before",
+     "bio-plane: R52 (was plane R47; T47; K3084; credentials R70): an answer SIGNIN_TOKEN_REFUSED to an ask, a draft or a transcription served by a sign-in has credentials drop the held token (subscriptionTokenRefused): the answer is relayed unchanged, and her next act finds no sign-in; control: the same refusal to an API-key reference drops nothing",
+     "bio-plane: R57 (was plane R36; T46; N886; K2940; extraction R75; agent-worker R72): a refusal agent-worker answers after the post is relayed with its own HTTP status: a stub answering 400 BAD_PAGES is answered 400 with that code, and 409 NO_ACCOUNT 409; control: an answer of 200 is performed",
+     "bio-plane: R35 (T47; N981; credentials R64, R22; instance-setup R54): at start the plane registers instance-setup's disclosureOf with credentials once, so through the door a member with no disclosure recorded is refused DISCLOSURE_DUE at accountreferenceset and admitted once disclosureshown records it; a second registration is refused LISTENER_DECLARED",
+     "bio-plane: R49 (T47; K3089; answers R35, R30): a grant the draft path minted whose first read is op=rule opens its read log with use `draft`, the plane's stamp, whatever use the caller's address names; control: an ask's grant opens it with `ask`",
+     "bio-plane: R37 (T47; K3143; signin-door R2, R4, R5): signin-door's store-internal map is spread whole directly after credentials' map, over the plane's one credentials instance: signindisclosuredue answers credentials' DISCLOSURE_DUE through the door (R35's registration in force), signintokenhold holds a token without answering it, and none of the five has an op spec, so no caller is served one; control: an op neither map holds is no route",
+     "bio-plane: R53 (T48; N670; DEC-127 (3)): the draft door takes readtranslate for the asking member's own note: the subject read as she may, the language instance-setup gives, one post to agent-worker's /draft with the task {op, language, text}, no grant and no told, and the answer a machine's translation beside the original; it writes nothing; controls: another member's note is NO_SUCH_NOTE as an absent one is, with nothing posted",
+     "bio-plane: R53, R54 (T48; N670; K4124): the language is translations' readingLanguage (its R10), a language asked passes through and its refusal is answered as given; a passage over the limit is refused before any account is read with the owner's text shown; a malformed subject is BAD_TASK; each posts nothing",
+     "bio-plane: R53 (T48; N670): a question or finding is read only as she may see it: an absent one and one outside her sight answer NO_SUCH_BUNDLE alike, before any account is read; one she sees is translated and the post carries its text",
+     "bio-plane: R53 (T48; N670): a notice is read through network-notices for her, the project named by the subject, and its refusal for an absent project is answered as given; the gate is R50's: a part not admitted, or a flag not deployed, is refused before any read; the project's keep-away from drafts is refused before any account is read",
+     "bio-plane: R53, R50 (T48): readtranslate is refused AI_RUN_MODE_NOT_DEPLOYED while draft's flag is off, and AI_PART_NOT_DEPLOYED while ai-runs does not admit draft:reading, before the subject is read, with nothing posted; control: with both, it runs",
+     "bio-plane: R38 (T48; N847): the front door's pointer reads record-core's jurisdiction_profiles at each call and answers {places, pointers} over jurisdictions.combine; the test profile's pointers reach startfrom's elsewhere route through the door; control: no active profile gives places []",
+     "bio-plane: R39 (T48; N1047; machinery-producers R11, R12): the update notice read is handed to machinery-producers as deps.updateNotice, a function that calls instance-setup's updateNoticeState on the object's own instance at each call: the administrators' conditions carry the to-do for a stored ready notice, the state read afresh each time; controls: a member who is no administrator is not an asking, and a notice no newer than the running version yields none",
+     "bio-plane: R39 (T48; N1047): through op=queue the administrators' to-do for a ready release reaches the list; control: a member who is no administrator has none",
+     "bio-plane: R40 (T48; N996): the route map spreads ai-accounts' ops directly before credentials', and each reaches its handler once with credentials' delegates removed; control: a second disclosure registration is refused LISTENER_DECLARED, ai-accounts' registration being the plane's",
+     "bio-plane: R55 (T48; N1015): the door's trace and member ref reach agent-worker as x-civicsmith-trace and x-civicsmith-member-ref on an ask and on a draft (the RPC and the action-draft arm), in no body or address; a call with none handed sends neither",
+     "bio-plane: R55 (T48): the Worker's ask arm passes the door's trace and member ref on to the ask on the bio object, and the transcriber's call to /transcribe carries them; control: the Worker arm sends none of its own when the door handed none",
+     "bio-plane: R56 (T50; N1195; agent-worker R113; amends plane R6, R114): a producer that writes its first line then waits 2 s delivers that line to the reader before the wait ends, through the Store's RPC and through the door's arm; the whole stream arrives unchanged; control: a short answer arrives whole and unchanged",
+     "bio-plane: R19: monitoring is handed the plane's case-import instance: a watch set through the door is due to its cadence, read on its tick and recorded through recordDocketRead",
+     "bio-plane: R19: case-import's accepted-work registration carries moves, filled before the first request, so accepted-work's publisherMoves reads the moves the watch saw",
+     "bio-plane: R19: queue is handed the plane's case-import, so the producers it reads answer the watch's items to the member who set it and nobody else",
+     "bio-plane: R17 (T34; DEC-152, DEC-153; K1818): before the first request it is registered once with the bundle's screens and library, the member op table, the acts a machine is refused, the labelled machine drafts (groupdescriptiondraft and writinghelp among them) and the irreversible acts",
+     "bio-plane: R95 (T49; K3366): every key the plane reads is one the words list holds (`hasWord`), and each is one of the keys `words-reads.json` lists for plane; control: a key no list holds is not",
+     "bio-plane: R94 (K5200; SCREENS-ENTRY \\#13 J15): a world's network script answers that world alone: another world made after it is refused, its own scheduler's firing and `within` reach it, and a bare call reaches the latest world's",
+     "bio-plane: R94 (K5200; SCREENS-ENTRY \\#13 J15): no script of an earlier test answers a later test's world",
+     "bio-plane: R90 (K5200; STORE-REQUEST \\#6 J17 (2)): `instanceName: null` is a first boot with no name bound, as an older installation had: no producing team is recorded and a promote that names the team is refused GROUP_UNDETERMINED; the default world, and one that names its team, record it",
+     "bio-plane: R1 R90 (K5200; STORE-REQUEST \\#6 J17 (3a)): `storeWorld({deliver})` hands the delivery to the owed-work ledger as the class does: an owed render's run is handed it and it reaches the delivery with the answer and the session; a world given none hands the run none",
+     "bio-plane: R1 R90 (K5200; STORE-REQUEST \\#6 J18 (c)): `storeWorld({releaseKeys})` is the list of keys instance-setup verifies a release notice against: a notice signed with the test's key is stored by the daily check, one signed with another key is refused, and a world with no keys verifies against the product's, which refuse both"
+    ],
+    "ms": 212301,
+    "status": [
+     1
+    ]
+   },
+   "after": {
+    "files": 69,
+    "pass": 335,
+    "fail": 85,
+    "failed": [
+     "bio-plane: R49, B2 (K1674): the assembled store's `ask(args)` (`askOnObject`): a member's ask mints their grant, unseals their own account and carries both to agent-worker's /ask, whose stream comes back unchanged",
+     "bio-plane: B2 (agent-worker R56): the member's suggestions switch is carried as they set it",
+     "bio-plane: B2 (K1684): a presented grant is carried as given and no grant is minted",
+     "bio-plane: B2 negative controls: no account, another's session, and no assistant member are each refused in their owner's words, and nothing is asked",
+     "bio-plane: B7 (K1690, K2162; N765: instance-setup R55, credentials R35, R51): while the group keeps its material away, an ask is refused AI_KEPT_AWAY, carrying the administrator's reason, before any grant is minted or any account read; switched back, it is asked",
+     "bio-plane: K1806, R49 (agent-worker R6, R54; credentials R35; K1755; T46: N897 (3)): a member with no account of their own is served by the group's API key while it is held and on, carried as level `group` with the group key's own suggestions switch; with it off, or its notice unread, nothing is asked",
+     "bio-plane: R49 (N686; K2062; agent-worker R59): the assembled store's `draft(args)` (`draftOnObject`): a member's draft carries their account in R6's shape and the door's pack to agent-worker's /draft, with no grant while their suggestions switch is off; agent-worker's answer comes back at its status with the switch and an empty read log",
+     "bio-plane: R49 (N686; DEC-153 (2), K1841 (2), K2041): with the member's suggestions on, a grant is minted and sent in place of the pack, and its read log's strings come back; a firsthand field never gets one",
+     "bio-plane: R49 (T37; K2238; agent-worker R68, run-rules R22): a translation draft carries its task {op, direction, language, words}, the account and the door's pack to /draft, and no told, grant or firsthand, even with the member's suggestions on",
+     "bio-plane: R49 (N686; credentials R35, R37): a member with no account of their own is served by the group's key, carried as level `group` with the group's suggestions switch",
+     "bio-plane: R49 negative controls (N686; N765): no assistant member, the group keeping its material away (AI_KEPT_AWAY), no account, a session not the member's, and a member that does not answer each end the draft in their owner's words at their status, nothing asked or nothing kept",
+     "bio-plane: R5 (K5200): ai-use's first construction takes the store's clock: a limit set and a use counted on a pinned world read the pin, and `tick` moves them; with the clock unpinned the wall answers",
+     "bio-plane: R5 (K5200): file-safety and capture take the store's clock: a file queued for the scan, and a parted upload begun, on a pinned world carry the pin, and `tick` moves them",
+     "bio-plane: R5 (K5200): corpus-export takes the store's clock through publication: an export on a pinned world is logged at the pin, and `exportlog` reads it back",
+     "bio-plane: R5 (K5200; diagnosis A3): action-clocks takes the store's clock: on a pinned world `remindersfor` is judged on the pinned day, and a reminder is set at the pin, `tick` moving both",
+     "bio-plane: R5 (K5200; diagnosis A3): action-plans and filings take the store's clock: each instance's instants read the pin to the second, and two plans opened a minute apart tell their instants apart",
+     "bio-plane: R1 R5 (K5200): a second assembly over one storage hands capture the same clock: capture refuses a different `now` (its R58), so the assembly refuses nothing and builds nothing twice, and capture's clock stays the store's",
+     "bio-plane: R83 the assembly started over the real modules holds, for every module whose source exports DECLARED_OPS, each of its ops in the assembled table with the module's values; a module missing from the assembly is named; the copy window's only one is control-plane, whose four rows store-assembly holds as its own",
+     "bio-plane: R84 the assembly declares ask: its requires (none) raise no refusal naming a field, and a field outside accepts is dropped or refused naming it",
+     "bio-plane: R84 the assembly declares readtranslate: its requires alone raise no refusal naming a field, a call without subject is refused naming it, and a field outside accepts is dropped or refused naming it",
+     "bio-plane: R75 R2 (capture R113, K4899): the composition assigns capture's `evidenceKey`, record-core's key for a digest, so through the assembled store a parted upload's begin answers `ok` with its parts, never PARTED_UPLOAD_UNAVAILABLE",
+     "bio-plane: R17 (K1869 (2)): every required script of the bundled Civicsmith library passes the checks against the bundled registration, the registry's screens among it (requiredFailures is empty)",
+     "bio-plane: R17: the suite fails when a required script fails, and only a required one counts (negative control)",
+     "bio-plane: R23 (T51; K3807): the one registry is wizard-scripts' `SCREEN_REGISTRY`, every screen `{id, name, purpose, acts, owed}`, its count read from the design's file, and the release suite's `screenFailures` is empty for it",
+     "bio-plane: R23 negative control: an entry naming an op no spec holds, a repeated id, or a missing purpose or name fails the suite; an owed act with no op is no failure; none of the 21 old screens that the registry lacks is invented",
+     "bio-plane: R1: two calls over one storage start instance-setup once and migrate idempotently; a second object over the same database adds no row and no table",
+     "bio-plane: test/m/store-assembly/sa-world.test.mjs",
+     "bio-plane: R2 (N506, K1163; link-sweep R12): link-sweep is handed the composed capture-requests, so its sweep scope check is held under its name on a fresh instance before any sweep service runs, and a sweep-named request is judged by it at the drain",
+     "bio-plane: R2 negative control (K1163): link-sweep built before the plane without capture-requests holds no scope check until a sweep service runs, so the same request is refused for want of one",
+     "bio-plane: R20 (K1541): credentials holds the deployment's seal secret, so a member's reference is sealed; unbound, it is refused ACCOUNT_SEAL_UNAVAILABLE",
+     "bio-plane: R20 (queue R51; K1683): notice-producers is built over the plane's instances, and op=queue reads it beside queue-producers",
+     "bio-plane: R28 (K2525; investigation R20): ai-runs' run holder is registered with investigation, so a running run's own system identity reaches planPropose past PLAN_NOT_YOUR_RUN; a run that is not running, and a host with no holder, are refused it",
+     "bio-plane: R49 (K2500; answers R30): answers is handed no ceilingRefusal; the ask and the draft take their account and limit from answers.askAccount (kind `ask`, kind `draft`), and its refusal is answered as given before anything is posted",
+     "bio-plane: R49 (K2500; store-door R11): a read under a grant the draft path minted is recorded in its read log with use `draft`; a read under an ask's grant with use `ask`",
+     "bio-plane: R32 (was plane R37; N826; K2630): doorbell is the plane's one instance per host, built at boot; each of its nine routes in the route map is answered by that instance, never by capture's doorbell copy",
+     "bio-plane: R57 (was plane R36) (run-rules R19; ai-runs R75): deployable() is run-rules' bar for `transcribe` on ai-runs' records, on Civicsmith's set unless the composition is handed another; a failed record, another set's, and a throw answer false",
+     "bio-plane: R57 (was plane R36) (credentials R57): keptAway({project, use}) is credentials.aiKeptAway relayed as given: the refusal while the group keeps material away, null once it does not",
+     "bio-plane: R57 (was plane R36): transcription({member, project, at}) answers the object's own ai-accounts (R53, was credentials) and ai-use's useCheck, the act minted for it (`transcribe:<capture prefix>:<instant>`), and the AI path; with no AGENT_WORKER binding the path answers AGENT_WORKER_UNBOUND and reads nothing",
+     "bio-plane: R57 R106 transcribe-answer: the answer a user module (extraction's t48) hands for `transcribe` is the real one's: the same keys and values for the same pages",
+     "bio-plane: R57 (was plane R36) (agent-worker R6, R63, R72; ai-use R1, R11): the AI path renders the asked pages with pdf-pixels (decodeDct) as PNGs, posts {capture_sha, pages, account} in R6's wire shape to /transcribe, the secret only in that body, counts the usage under the act in one transaction, and answers agent-worker's answer",
+     "bio-plane: R57 (was plane R36): a project's account is counted under `project:<id>` and named in the wire; an ending that carries usage is counted and answered ok:false with its reason; a binding that throws or answers no JSON is AGENT_WORKER_SILENT, nothing counted",
+     "bio-plane: R57 (was plane R36) (K2611): the pages are rendered one at a time in ascending order, at most TRANSCRIBE_PAGES_MAX; a page the renderer refuses or throws on, a picture that is not a PNG, or a PNG over TRANSCRIBE_IMAGE_MAX_BYTES is not sent; with none left NO_PAGE_RENDERED and with no bytes EVIDENCE_ABSENT, nothing posted",
+     "bio-plane: R57 (was plane R36) (N832; D21, D12): end to end on the object, a member's pagetranscribe of a stored scan reaches the registered transcriber: the page is rendered and sent, the AI's words written into the reading under the act, and its usage counted for that act; on Civicsmith's empty set it is refused TRANSCRIBE_NOT_DEPLOYED and nothing is sent",
+     "bio-plane: R57 (was plane R36): with no AGENT_WORKER bound, the act answers 200 with performed: false and why naming the unbound assistant; nothing is counted or written",
+     "bio-plane: R58 (was plane R106) G126e: on a 24 MiB PDF and a 300-page scan the press loads no object in the request (no get of the evidence store at all), owes every asked page as a job row, and names the pages asked, sent (none) and owed",
+     "bio-plane: R58 (was plane R106) (control): a 3-page file under the ceiling is read in the request by ranges as before; the answer names the pages filled; a page asked beyond TRANSCRIBE_PAGES_MAX is named unread and owed, never dropped",
+     "bio-plane: R23 (T43; N862; DEC-190 (1); T51): the registry's `document` screen's acts hold `pagetranscribe` and `transcribe`, each an op op-declarations declares, and the registry still passes the release suite's check",
+     "bio-plane: R57 (T43; N853b; extraction R73): end to end on the object, a member's pagetranscribe of an uploaded JPEG posts its page 0 to agent-worker as one grey PNG whose long edge is at most 1,568 px; control: a PDF scan's page is posted as before, byte for byte",
+     "bio-plane: R50 (K2853; run-rules R16, R19, R30; T46): the ask door refuses AI_RUN_MODE_NOT_DEPLOYED (403, run-rules' C-109.1 row, mode `ask`) while `ask`'s flag is off, and AI_PART_NOT_DEPLOYED (run-rules' partRefusal, 403) while its flag is on and ai-runs' partAdmitted does not admit it, before the keep-away read, any account read or grant, nothing posted; deployed and admitted, it is asked",
+     "bio-plane: R50 (K2853; run-rules R21, R22, R27, R30; T46): the draft door refuses each kind while its flag (draft's for own words, translation and the status report; draft's and action_drafts' for the three action drafts) does not deploy it (AI_RUN_MODE_NOT_DEPLOYED), or ai-runs' partAdmitted(`draft:<kind>`) does not admit it (AI_PART_NOT_DEPLOYED), before anything is read or minted; an op of no kind is refused; admitted, it is posted",
+     "bio-plane: R51 (K2824; agent-worker R76; run-rules R27): a text check is posted as {task: {op, text}, account, pack}, reading nothing: no grant even with the member's suggestions on",
+     "bio-plane: R51 (K2824): an infraction or bearing draft whose records the member cannot read ends with that read's refusal, or BAD_TASK for a task naming none, before any grant is minted or anything posted",
+     "bio-plane: R50 (was plane R40; T46; N897 (2); run-rules R29, R30; ai-runs R78; agent-worker R79): on Civicsmith's empty set with no test instance, an ask and a writing-help draft are refused AI_PART_NOT_DEPLOYED as run-rules' partRefusal answers it, nothing posted; control: with CIVICSMITH_TEST_INSTANCE equal to INSTANCE_NAME the same posts are made, the ask's request carrying the label and the draft's answer carrying it beside grant, suggestions and read",
+     "bio-plane: R50 (was plane R40; T46; run-rules R29): admitted by the bar, neither the ask nor the draft carries a label, on a test instance or not; the exception never lifts a flag: with the flag off a test instance is refused AI_RUN_MODE_NOT_DEPLOYED",
+     "bio-plane: R50, R57 (was plane R40, R36; T46; extraction R74): the transcriber's deployable() is partAdmitted(\"transcribe\").admitted and its transcription() answers `untested`, the label, when the part runs on the test instance; off it, not deployable and no label",
+     "bio-plane: R50 (was plane R40; T46; N920; study-T46-assistant §2): a status-report draft for a plan whose project is kept away from drafts is refused as credentials.aiKeptAway answers it, asked with the plan's project and use `draft`, before any account is read, nothing posted and no grant; control: not kept away, it is posted as {task: {op, plan, items}, account}, with no told and no grant",
+     "bio-plane: R50 (was plane R40; T46; N920): a status-report draft is refused AI_PART_NOT_DEPLOYED while partAdmitted(\"draft:statusreport\") does not admit it, before the plan, the keep-away or any account is read; a plan the member cannot read ends it with that read's refusal, and a task naming no plan or items is BAD_TASK, each before any account is read",
+     "bio-plane: R49, R52 (was plane R33, R47; T47; K3084; credentials R55, R70; agent-worker R6, R82): a member served by her own sign-in is sent as {kind: signin, level: member, secret, member, suggestions}, `secret` the token credentials holds for her, on the ask and the draft path alike, the token reaching only the binding's request; its suggestions the sign-in's own switch, with it on a draft gets a grant; control: off, false; an API-key reference's switch and key are read as before",
+     "bio-plane: R52 (was plane R47; T47; K3084; credentials R70): an answer SIGNIN_TOKEN_REFUSED to an ask, a draft or a transcription served by a sign-in has credentials drop the held token (subscriptionTokenRefused): the answer is relayed unchanged, and her next act finds no sign-in; control: the same refusal to an API-key reference drops nothing",
+     "bio-plane: R57 (was plane R36; T46; N886; K2940; extraction R75; agent-worker R72): a refusal agent-worker answers after the post is relayed with its own HTTP status: a stub answering 400 BAD_PAGES is answered 400 with that code, and 409 NO_ACCOUNT 409; control: an answer of 200 is performed",
+     "bio-plane: R35 (T47; N981; credentials R64, R22; instance-setup R54): at start the plane registers instance-setup's disclosureOf with credentials once, so through the door a member with no disclosure recorded is refused DISCLOSURE_DUE at accountreferenceset and admitted once disclosureshown records it; a second registration is refused LISTENER_DECLARED",
+     "bio-plane: R49 (T47; K3089; answers R35, R30): a grant the draft path minted whose first read is op=rule opens its read log with use `draft`, the plane's stamp, whatever use the caller's address names; control: an ask's grant opens it with `ask`",
+     "bio-plane: R37 (T47; K3143; signin-door R2, R4, R5): signin-door's store-internal map is spread whole directly after credentials' map, over the plane's one credentials instance: signindisclosuredue answers credentials' DISCLOSURE_DUE through the door (R35's registration in force), signintokenhold holds a token without answering it, and none of the five has an op spec, so no caller is served one; control: an op neither map holds is no route",
+     "bio-plane: R53 (T48; N670; DEC-127 (3)): the draft door takes readtranslate for the asking member's own note: the subject read as she may, the language instance-setup gives, one post to agent-worker's /draft with the task {op, language, text}, no grant and no told, and the answer a machine's translation beside the original; it writes nothing; controls: another member's note is NO_SUCH_NOTE as an absent one is, with nothing posted",
+     "bio-plane: R53, R54 (T48; N670; K4124): the language is translations' readingLanguage (its R10), a language asked passes through and its refusal is answered as given; a passage over the limit is refused before any account is read with the owner's text shown; a malformed subject is BAD_TASK; each posts nothing",
+     "bio-plane: R53 (T48; N670): a question or finding is read only as she may see it: an absent one and one outside her sight answer NO_SUCH_BUNDLE alike, before any account is read; one she sees is translated and the post carries its text",
+     "bio-plane: R53 (T48; N670): a notice is read through network-notices for her, the project named by the subject, and its refusal for an absent project is answered as given; the gate is R50's: a part not admitted, or a flag not deployed, is refused before any read; the project's keep-away from drafts is refused before any account is read",
+     "bio-plane: R53, R50 (T48): readtranslate is refused AI_RUN_MODE_NOT_DEPLOYED while draft's flag is off, and AI_PART_NOT_DEPLOYED while ai-runs does not admit draft:reading, before the subject is read, with nothing posted; control: with both, it runs",
+     "bio-plane: R38 (T48; N847): the front door's pointer reads record-core's jurisdiction_profiles at each call and answers {places, pointers} over jurisdictions.combine; the test profile's pointers reach startfrom's elsewhere route through the door; control: no active profile gives places []",
+     "bio-plane: R39 (T48; N1047; machinery-producers R11, R12): the update notice read is handed to machinery-producers as deps.updateNotice, a function that calls instance-setup's updateNoticeState on the object's own instance at each call: the administrators' conditions carry the to-do for a stored ready notice, the state read afresh each time; controls: a member who is no administrator is not an asking, and a notice no newer than the running version yields none",
+     "bio-plane: R39 (T48; N1047): through op=queue the administrators' to-do for a ready release reaches the list; control: a member who is no administrator has none",
+     "bio-plane: R40 (T48; N996): the route map spreads ai-accounts' ops directly before credentials', and each reaches its handler once with credentials' delegates removed; control: a second disclosure registration is refused LISTENER_DECLARED, ai-accounts' registration being the plane's",
+     "bio-plane: R55 (T48; N1015): the door's trace and member ref reach agent-worker as x-civicsmith-trace and x-civicsmith-member-ref on an ask and on a draft (the RPC and the action-draft arm), in no body or address; a call with none handed sends neither",
+     "bio-plane: R55 (T48): the Worker's ask arm passes the door's trace and member ref on to the ask on the bio object, and the transcriber's call to /transcribe carries them; control: the Worker arm sends none of its own when the door handed none",
+     "bio-plane: R56 (T50; N1195; agent-worker R113; amends plane R6, R114): a producer that writes its first line then waits 2 s delivers that line to the reader before the wait ends, through the Store's RPC and through the door's arm; the whole stream arrives unchanged; control: a short answer arrives whole and unchanged",
+     "bio-plane: R19: monitoring is handed the plane's case-import instance: a watch set through the door is due to its cadence, read on its tick and recorded through recordDocketRead",
+     "bio-plane: R19: case-import's accepted-work registration carries moves, filled before the first request, so accepted-work's publisherMoves reads the moves the watch saw",
+     "bio-plane: R19: queue is handed the plane's case-import, so the producers it reads answer the watch's items to the member who set it and nobody else",
+     "bio-plane: R17 (T34; DEC-152, DEC-153; K1818): before the first request it is registered once with the bundle's screens and library, the member op table, the acts a machine is refused, the labelled machine drafts (groupdescriptiondraft and writinghelp among them) and the irreversible acts",
+     "bio-plane: R95 (T49; K3366): every key the plane reads is one the words list holds (`hasWord`), and each is one of the keys `words-reads.json` lists for plane; control: a key no list holds is not",
+     "bio-plane: R94 (K5200; SCREENS-ENTRY \\#13 J15): a world's network script answers that world alone: another world made after it is refused, its own scheduler's firing and `within` reach it, and a bare call reaches the latest world's",
+     "bio-plane: R94 (K5200; SCREENS-ENTRY \\#13 J15): no script of an earlier test answers a later test's world",
+     "bio-plane: R90 (K5200; STORE-REQUEST \\#6 J17 (2)): `instanceName: null` is a first boot with no name bound, as an older installation had: no producing team is recorded and a promote that names the team is refused GROUP_UNDETERMINED; the default world, and one that names its team, record it",
+     "bio-plane: R1 R90 (K5200; STORE-REQUEST \\#6 J17 (3a)): `storeWorld({deliver})` hands the delivery to the owed-work ledger as the class does: an owed render's run is handed it and it reaches the delivery with the answer and the session; a world given none hands the run none",
+     "bio-plane: R1 R90 (K5200; STORE-REQUEST \\#6 J18 (c)): `storeWorld({releaseKeys})` is the list of keys instance-setup verifies a release notice against: a notice signed with the test's key is stored by the daily check, one signed with another key is refused, and a world with no keys verifies against the product's, which refuse both"
+    ],
+    "ms": 193071,
+    "status": [
+     1
+    ]
+   },
+   "newFailures": [
+    "bio-plane: R2 (N506, K1163; link-sweep R12): link-sweep is handed the composed capture-requests, so its sweep scope check is held under its name on a fresh instance before any sweep service runs, and a sweep-named request is judged by it at the drain",
+    "bio-plane: R2 negative control (K1163): link-sweep built before the plane without capture-requests holds no scope check until a sweep service runs, so the same request is refused for want of one",
+    "bio-plane: R28 (K2525; investigation R20): ai-runs' run holder is registered with investigation, so a running run's own system identity reaches planPropose past PLAN_NOT_YOUR_RUN; a run that is not running, and a host with no holder, are refused it"
+   ]
+  },
+  "store-request": {
+   "before": {
+    "files": 23,
+    "pass": 7,
+    "fail": 110,
+    "failed": [
+     "bio-plane: R7 (ai-accounts R38): a member sets, reads and removes their own reference with a body naming no member; control: a body naming another member acts on the caller's own reference only",
+     "bio-plane: R7: adminremovalsopen and expertisewithdraw carry `by` as the session's bare member id, a forged one dropped",
+     "bio-plane: R7 (door): a non-founder administrator, active by the real acts, is answered by adminremovalsopen and expertisewithdraw, never NOT_AN_ADMIN; a member who is no administrator is refused it (control)",
+     "bio-plane: R16: after the world's clock moves a day, signIn of a new member works by a fresh founder session, and the session read before the tick is refused as lapsed, as the real door refuses it",
+     "bio-plane: R4 (capture-sources R72): a member who is not the founder supplies, lists and withdraws a capture credential through the door; the secret is never in an answer",
+     "bio-plane: R7 (capture-sources R72): another member neither sees nor withdraws a member's credential; a body naming a supplier is not read",
+     "bio-plane: R7 (capture-sources R72): the founder supplies and lists as before; a machine credential is refused at the door",
+     "bio-plane: R26: a refusal or an answer that is not ok is answered as the handler gives it; no hook or no answer is the store's silence",
+     "bio-plane: R26: through the world, agentpack answers the fences and the pack the untargeted affordances answer renders",
+     "bio-plane: R27: through the world, a member's airundispatch of an absent run is the owner's own answer (no such run)",
+     "bio-plane: R28: through the world, textcheck and readtranslate reach the plane's draft door and answer its own refusal",
+     "bio-plane: R1, R14: for every op OPS declares and each kind of caller the answer is made, synchronously, the same for the same arguments, and no forged stamp survives in the address or the body",
+     "bio-plane: R1: a body that is not JSON text of an object passes as it came; bytes and streams pass untouched; an absent body stays absent; never throws",
+     "bio-plane: R2: the store route is the op's own name but inbox, publish, inboxpull; the address keeps the page's other parameters",
+     "bio-plane: R3: the caller's stamps, the body-only fields, an act's own clock and opencaptures' instants leave the address; another op's date stays",
+     "bio-plane: R4: each declared stamp is set from the admitted caller, and a stamp the op does not declare is never present",
+     "bio-plane: R5: a stamped session and an ai caller's grant travel in headers, never the address",
+     "bio-plane: R6: a read is stamped with its caller's sight: one op of each family and of the named set, for each kind of caller; a caller's viewer is gone",
+     "bio-plane: R7: who acted, one op of each row, for each kind of caller; the caller's value of each key is gone",
+     "bio-plane: R8: the facts the door states, per op",
+     "bio-plane: R9: nothing the caller names survives in the body; a body is serialised again only when a key was deleted",
+     "bio-plane: R10: an op declaring bodyBy has the actor as the body's by on a POST, an empty body stamped too",
+     "bio-plane: R11: a promotion's body: each key for each kind of caller, every forged value deleted, the project gate, surfaced_by and the digest rule both ways",
+     "bio-plane: R12: the actor in the body, per op: a forged value replaced; an absent body stamped where the rule says; a non-object body unchanged",
+     "bio-plane: R13: taskdecide takes the body actor the task acts take: a forged actor overwritten",
+     "bio-plane: R14: an op named in no rule of R6 to R12 gets only R2 to R5, R9, R10 and R23: its address is the page's less R3's keys plus its declared stamps",
+     "bio-plane: R23: a grant's digest crosses in the body; the secret-presenting ops both ways; forged digests replaced or absent; the digest in no address",
+     "bio-plane: R24: each constant equals its list; each family equals op-declarations' export; every op named in R3 to R12 is in OPS",
+     "bio-plane: R25: the ops graded as publish are those of publish's spec and capability that declare `author`, and include publishcheck",
+     "bio-plane: R25: for the founder, a member, an administrator token and a probe, every op graded as publish carries publishpreflight's author, a forged one dropped",
+     "bio-plane: R25: an agent's op graded as publish carries aiCred as publishpreflight does; a caller that is no agent carries none",
+     "bio-plane: R25: the walker's case in a world: the project's owner, holding the publish capability, is answered by the pre-flight on `publishcheck` as on `publishpreflight`, never NOT_THE_PROJECT_OWNER; nothing is held for a target that is no finding",
+     "bio-plane: R19 recipes.parted: a file past one part is held by the real upload in parts, filed by the real promotion, and the whole reads back by its digest; a smaller file is refused as not in parts",
+     "bio-plane: R19 recipes.largeSheet: the store's own acquire reads the served sheet into a document whose provenance file is over what a promotion takes inline, and the whole promotion is refused OVERSIZE_INLINE",
+     "bio-plane: R19 recipes.credential: a member stores a credential by the real act; the entry lists for her and never carries the secret; a world without the instance's key is refused naming how to make it",
+     "bio-plane: R19 recipes.projects: a team of 201 projects made by the real promotions: the store answers the first 200 and says it is cut, and the cursor reaches the last",
+     "bio-plane: R19 recipes.draftOnly: a draft shared on a case with no edition: the published list holds none of it, the draft is listed, the reader's comment is the reader's own; control: a published case has an edition",
+     "bio-plane: R19 recipes.register: a followed register is read by the real consumer; `follows` carries its last_read and `captured`; a source that answers nothing throws",
+     "bio-plane: R19 recipes.page and recipes.pdf hold a file whose reading carries text units; a question promotes legs at a paragraph, a page and a footnote over them, and the same legs over a text/plain hold are refused CONTENT_EXTENT_NO_CHAIN",
+     "bio-plane: R19 recipes.hold with a type and read: true holds a web page's bytes as a file whose reading is held; without read the file is held unread, as before",
+     "bio-plane: R19 recipes.contradiction makes a contradiction candidate by real acts: a team key, an open run, two projects' documents, a question resting on both, the pair the pairing forms, proposed over; contradictioncandidates reads it",
+     "bio-plane: R19 recipes.setAside makes a request captured by the daemon for a question and its document set aside by a member; heldrestore then restores it",
+     "bio-plane: R19 recipes.questions(as, project, n) draws n questions into a project by real acts, fast enough for a test (120 for the batch bound)",
+     "bio-plane: R19 recipes.finding makes a concluded finding by real acts: the pre-flight is ready and publishcheck holds a check the case-check reads as held; each authored field is the pre-flight's",
+     "bio-plane: R19 recipes.published ratifies a case by the real ceremony and answers its case file's parts as anyone fetches them; a member without the publish capability is refused naming publish (control)",
+     "bio-plane: R19 recipes.imported makes another team's published case, imports its case file by the real act and accepts its finding; without accept the edition stays unaccepted and a question cannot rest on it (control)",
+     "bio-plane: R19 recipes.cited rests a question on another team's accepted finding by the real act and answers its leg; the question's basis names the import and the edition",
+     "bio-plane: R19 recipes.rerun declares a project a re-run of an accepted import and pairs a finding of its own with the source's; through started stops at the declaration; rerunread shows both",
+     "bio-plane: R19 recipes.conflict makes a conflict between two hidden projects by real acts: each project's members are told of an unseen record on their own side, and the member of both sees it whole",
+     "bio-plane: R19 recipes.conflict goes on by the real acts: the first project asks (the second is told only that another asked), the second asks (the projects are named to each other) and a member responds (the other project receives only what she shared)",
+     "bio-plane: R19 recipes.assistant sets up the team's Claude account by an administrator's real acts and recipes.writingHelp answers as the door does: no account, nothing told, an act never helped, and past every refusal the draft the world cannot ask for",
+     "bio-plane: R18 world.route answers a browser page's /api/ requests from the world's door, as the member signed in: a read, an act that changes the world, a refusal, and the file the store serves",
+     "bio-plane: R19 recipes.grantAdmit: the grant is minted under the member's own session and the model's count of its call is recorded for that member, shown in that member's own use",
+     "bio-plane: R17: the door admits an ask's grant for the ask's own calls and its listed reads, and keeps admission's NOT_AUTHENTICATED for any other op and for a token that is no live grant (control)",
+     "bio-plane: R19 rendered: the capture of a page as a visitor saw it: the renderer was asked and the document is the rendered one beside its shell; control: a plain capture keeps the shell and asks no renderer; a world with no renderer refuses the render",
+     "bio-plane: R19 renderPending: a render still being made is left pending with its session, the open captures list it; released, 'Finish it' answers the visitor copy and the session leaves the list; a failed render is refused RENDER_FAILED and files nothing",
+     "bio-plane: R19 renderPending (alarm): the first capture filed under a project, released, the store's alarm finishes the render and the delivery files the visitor copy as a second document, and the session leaves the list; control: with no delivery nothing is filed",
+     "bio-plane: R19 unfinished: a capture left with its supporting files outstanding: the platform stops the call, the open captures list the session, and each 'Finish it' fetches more until none is owed; control: a plain capture of the same page keeps no session; a ceiling past the pictures leaves none",
+     "bio-plane: R19 partedAddress: the alarm's fetch of a file over what the call reads holds the capture in parts, the record's image lists them in order; control: acquire alone answers no document (the source is owed), and a file the call reads whole is no recipe state",
+     "bio-plane: R17 R19 followed: a world made with follow: true follows a promotion with its reading: a file read at once is read, a file over the inline ceiling stands by its job row and the promotion says reading_pending until the alarm reads it; controls: a document that brings its own reading is not followed, and without follow nothing follows",
+     "bio-plane: R17 R19 delivered (follow): the alarm's delivery promotes through the door, so a world that follows reads a small file at once and leaves a file over the inline ceiling to its job row until the alarm reads it; control: a world that does not follow has no reading for the small file either",
+     "bio-plane: R19 recipes.holdAt: a page captured at its address is filed at collected and `heldat` finds it by the address; control: another address is not held",
+     "bio-plane: R19 recipes.newerCapture: a changed source monitored raises an open notice for the question citing it and the queue's finding; keep and adopt answer it; control: a question citing an unchanged page raises none",
+     "bio-plane: R19 recipes.connection: two captures naming one ordinance form a connection with a mention; the member chooses it and a progression threads both; control: the entity of one capture alone has none",
+     "bio-plane: R19 recipes.partialPdf: the reading holds pages 0 and 2 and names page 1 unread; the member's transcription mints it; control: the default PDF reads no page",
+     "bio-plane: R19 recipes.unmatchedPerson: one row of the directory matches an entity and five names stay unresolved; her testimony resolves one and the identity claim is made; control: without testimony no claim",
+     "bio-plane: R19 recipes.attested: with the authority and the archive up the attestation carries both; asked again with the network changed it answers each case; control: neither is NO_ATTESTATION",
+     "bio-plane: R19 recipes.paperFile: a route that cannot be shown is looked at and found indeterminate, marked; control: a held page's route is present",
+     "bio-plane: R19 recipes.unretirable: retiring a copy never vouched for is refused ILLEGAL_TRANSITION naming it; control: the refusal is the owner's, not the door's",
+     "bio-plane: R16: signIn({admin: true}) makes an active administrator by the real acts, the third and the fourth too (every administrator endorses); the second is refused by nothing",
+     "bio-plane: R16: signIn answers the member's password: the claim's for the founder, the chosen one for any other, and it is the one that signs in again",
+     "bio-plane: R19: recipes.queue({obligations}) makes the founder's queue hold that many obligations by real acts; findings or conditions are refused naming them",
+     "bio-plane: R19 olderInstallation: no producing team is recorded: `groupidentity` answers group null and the team's website claim has no file; a world that names its team answers both",
+     "bio-plane: R19 owed: the real acquire parks a large capture; the member's open captures list it as an owed fetch; with no delivery the tick leaves it owed",
+     "bio-plane: R19 lapsed: the store's clock moves past the session and it leaves the list; control: before the clock moved it was listed",
+     "bio-plane: R19 delivered: a world made with deliver: true runs the owed fetch on a tick: the real owedFetch drops the session and the delivery filed the document under the project; control: a world with none leaves it owed; the recipe refuses a world without it",
+     "bio-plane: R19 releaseNotice: a notice signed with the world's key is stored by the daily check and an administrator reads it as ready; control: signed with another key it is not; a world without the key refuses the recipe",
+     "bio-plane: R19 recipes.readings: a question holds one reading in each of the states accepted, considering, rejected and suggested; control: a question with none holds none",
+     "bio-plane: R19 recipes.machineReading: the reading is suggested by the credential of a run, not by a member; the member may reject it; control: a member's own suggest names the member; a world without the test instance refuses",
+     "bio-plane: R19 recipes.graded: the question's connection axis is graded B by resolution and the capture axis is not; control: an ungraded leg leaves the connection unrated",
+     "bio-plane: R19 recipes.sharedOrigin: the two parts of the partition share their issuer; control: two pages with no issuer share nothing",
+     "bio-plane: R19 question `extent_rect` and pdf `fonts`: a decoded PDF (type0 with a ToUnicode map) reads as page units and a leg carries its rect into the record; the default font decodes none",
+     "bio-plane: R19 unnamedFounderWorld: the founder holds no handle and a project names her so; control: the default founder has one",
+     "bio-plane: R19 timeline: the world's items carry EDTF, day, minute and second precision, two EDTF items are of undetermined order, and the action advancing the question is in `ours`; control: a set of the question alone has no action",
+     "bio-plane: R19 titlelessProject: `image` states no title line and `projectlist` names the project from the promotion's meta; control: a recipe project's image states its title",
+     "bio-plane: R19 deepChain: the ninth question's connection axis is undetermined; control: the third's is unrated",
+     "bio-plane: R19 connectedSignIn: the member's sign-in is connected and her account reference says so; control: before it she is not connected",
+     "bio-plane: R19 investigating: a project reads forming and, once a question rests on a held document, investigating",
+     "bio-plane: R19 mentionedTogether: `explore` from one agenda has a mentioned_together hop to the other; control: a document naming no entity has none",
+     "bio-plane: R23 (door): a project's owner reads a draft's review copy through the door; a member with no standing and a caller with no session are given the one dead answer, the same bytes",
+     "bio-plane: R23 (door): a member's `reviewcomment` and a list of `drafts` are read as the member's; a grant's secret still opens the one copy for a recipient with no session",
+     "bio-plane: R23: a secret-presenting op's request carries neither the secret nor a stamp the caller named, in the address and the body; the digest stays",
+     "bio-plane: R23, R4: a member's session at the template doors is stamped viewer and author as the door stamps it; a recipient, and any caller that is no session, carries none",
+     "bio-plane: R12, R3: a LOCAL_FACTS op's body keeps the correction's own `source`, drops every stamp a caller names, and its address takes no `source`",
+     "bio-plane: R12 (door): the founder's correction of a local fact with its source is accepted by the owner, and the same without a source is refused FACT_VALUE_REFUSED (control)",
+     "bio-plane: R23, R4 (door): a member's session at templatereview is stamped, so the owner does not say the call carries nobody",
+     "bio-plane: R23 (door): a caller with no secret and no session at a template door is given the one dead answer NO_TEMPLATE_GRANT at 404, as a presented secret no live grant holds is",
+     "bio-plane: R17: selftest through the door: the captures bucket unbound answers ok and says the optional storage is off; both bound answers ok; one without the other is the owner's refusal",
+     "bio-plane: R17: selftest is a read of the founder and an administrator's session, and the published recipe leaves the pair bound",
+     "bio-plane: R7: the translation acts carry `by` and `translations` carries `viewer` as the session's member id, a forged one dropped; a non-session caller carries `class:<cls>`",
+     "bio-plane: R7: in a world, a second administrator grants a language and reads `translations` for it; a member holding no grant is refused (control)",
+     "bio-plane: storeWorld (fixture): the real store with its producing team recorded by the real act, the door, sign-ins, boot and recipes; two worlds share nothing",
+     "bio-plane: R16: real sign-ins: the founder by login; a member by memberadd, enroll and login; admin and capabilities by the real acts; a refused act throws naming the op",
+     "bio-plane: R17: the door's families: unknown op, admission, a store route per stamp kind, the sign-in door, a public read, attest, the module arms, the re-made relays, and WORLD_NO_DOOR_ARM",
+     "bio-plane: R15: the world's door makes every store request by innerRequest and by no rule of its own: one op of each row, for each kind of caller",
+     "bio-plane: R18: bootOf answers the door bound to the member and the session record interface-shell's boot takes",
+     "bio-plane: R19: the recipes perform real acts and answer what the acts answered",
+     "bio-plane: R20: every declared op is a key of the route map or answered by the world's door; the unreachable set is closed, each with its cause",
+     "bio-plane: R17: the binding classes the world's env holds are admitted as the Worker admits them",
+     "bio-plane: storeWorld (fixture), R17: the world binds the published plane as plane's Worker does, so R70's case-file sweep builds an edition's case file in a world"
+    ],
+    "ms": 19408,
+    "status": [
+     1
+    ]
+   },
+   "after": {
+    "files": 23,
+    "pass": 7,
+    "fail": 110,
+    "failed": [
+     "bio-plane: R7 (ai-accounts R38): a member sets, reads and removes their own reference with a body naming no member; control: a body naming another member acts on the caller's own reference only",
+     "bio-plane: R7: adminremovalsopen and expertisewithdraw carry `by` as the session's bare member id, a forged one dropped",
+     "bio-plane: R7 (door): a non-founder administrator, active by the real acts, is answered by adminremovalsopen and expertisewithdraw, never NOT_AN_ADMIN; a member who is no administrator is refused it (control)",
+     "bio-plane: R16: after the world's clock moves a day, signIn of a new member works by a fresh founder session, and the session read before the tick is refused as lapsed, as the real door refuses it",
+     "bio-plane: R4 (capture-sources R72): a member who is not the founder supplies, lists and withdraws a capture credential through the door; the secret is never in an answer",
+     "bio-plane: R7 (capture-sources R72): another member neither sees nor withdraws a member's credential; a body naming a supplier is not read",
+     "bio-plane: R7 (capture-sources R72): the founder supplies and lists as before; a machine credential is refused at the door",
+     "bio-plane: R26: a refusal or an answer that is not ok is answered as the handler gives it; no hook or no answer is the store's silence",
+     "bio-plane: R26: through the world, agentpack answers the fences and the pack the untargeted affordances answer renders",
+     "bio-plane: R27: through the world, a member's airundispatch of an absent run is the owner's own answer (no such run)",
+     "bio-plane: R28: through the world, textcheck and readtranslate reach the plane's draft door and answer its own refusal",
+     "bio-plane: R1, R14: for every op OPS declares and each kind of caller the answer is made, synchronously, the same for the same arguments, and no forged stamp survives in the address or the body",
+     "bio-plane: R1: a body that is not JSON text of an object passes as it came; bytes and streams pass untouched; an absent body stays absent; never throws",
+     "bio-plane: R2: the store route is the op's own name but inbox, publish, inboxpull; the address keeps the page's other parameters",
+     "bio-plane: R3: the caller's stamps, the body-only fields, an act's own clock and opencaptures' instants leave the address; another op's date stays",
+     "bio-plane: R4: each declared stamp is set from the admitted caller, and a stamp the op does not declare is never present",
+     "bio-plane: R5: a stamped session and an ai caller's grant travel in headers, never the address",
+     "bio-plane: R6: a read is stamped with its caller's sight: one op of each family and of the named set, for each kind of caller; a caller's viewer is gone",
+     "bio-plane: R7: who acted, one op of each row, for each kind of caller; the caller's value of each key is gone",
+     "bio-plane: R8: the facts the door states, per op",
+     "bio-plane: R9: nothing the caller names survives in the body; a body is serialised again only when a key was deleted",
+     "bio-plane: R10: an op declaring bodyBy has the actor as the body's by on a POST, an empty body stamped too",
+     "bio-plane: R11: a promotion's body: each key for each kind of caller, every forged value deleted, the project gate, surfaced_by and the digest rule both ways",
+     "bio-plane: R12: the actor in the body, per op: a forged value replaced; an absent body stamped where the rule says; a non-object body unchanged",
+     "bio-plane: R13: taskdecide takes the body actor the task acts take: a forged actor overwritten",
+     "bio-plane: R14: an op named in no rule of R6 to R12 gets only R2 to R5, R9, R10 and R23: its address is the page's less R3's keys plus its declared stamps",
+     "bio-plane: R23: a grant's digest crosses in the body; the secret-presenting ops both ways; forged digests replaced or absent; the digest in no address",
+     "bio-plane: R24: each constant equals its list; each family equals op-declarations' export; every op named in R3 to R12 is in OPS",
+     "bio-plane: R25: the ops graded as publish are those of publish's spec and capability that declare `author`, and include publishcheck",
+     "bio-plane: R25: for the founder, a member, an administrator token and a probe, every op graded as publish carries publishpreflight's author, a forged one dropped",
+     "bio-plane: R25: an agent's op graded as publish carries aiCred as publishpreflight does; a caller that is no agent carries none",
+     "bio-plane: R25: the walker's case in a world: the project's owner, holding the publish capability, is answered by the pre-flight on `publishcheck` as on `publishpreflight`, never NOT_THE_PROJECT_OWNER; nothing is held for a target that is no finding",
+     "bio-plane: R19 recipes.parted: a file past one part is held by the real upload in parts, filed by the real promotion, and the whole reads back by its digest; a smaller file is refused as not in parts",
+     "bio-plane: R19 recipes.largeSheet: the store's own acquire reads the served sheet into a document whose provenance file is over what a promotion takes inline, and the whole promotion is refused OVERSIZE_INLINE",
+     "bio-plane: R19 recipes.credential: a member stores a credential by the real act; the entry lists for her and never carries the secret; a world without the instance's key is refused naming how to make it",
+     "bio-plane: R19 recipes.projects: a team of 201 projects made by the real promotions: the store answers the first 200 and says it is cut, and the cursor reaches the last",
+     "bio-plane: R19 recipes.draftOnly: a draft shared on a case with no edition: the published list holds none of it, the draft is listed, the reader's comment is the reader's own; control: a published case has an edition",
+     "bio-plane: R19 recipes.register: a followed register is read by the real consumer; `follows` carries its last_read and `captured`; a source that answers nothing throws",
+     "bio-plane: R19 recipes.page and recipes.pdf hold a file whose reading carries text units; a question promotes legs at a paragraph, a page and a footnote over them, and the same legs over a text/plain hold are refused CONTENT_EXTENT_NO_CHAIN",
+     "bio-plane: R19 recipes.hold with a type and read: true holds a web page's bytes as a file whose reading is held; without read the file is held unread, as before",
+     "bio-plane: R19 recipes.contradiction makes a contradiction candidate by real acts: a team key, an open run, two projects' documents, a question resting on both, the pair the pairing forms, proposed over; contradictioncandidates reads it",
+     "bio-plane: R19 recipes.setAside makes a request captured by the daemon for a question and its document set aside by a member; heldrestore then restores it",
+     "bio-plane: R19 recipes.questions(as, project, n) draws n questions into a project by real acts, fast enough for a test (120 for the batch bound)",
+     "bio-plane: R19 recipes.finding makes a concluded finding by real acts: the pre-flight is ready and publishcheck holds a check the case-check reads as held; each authored field is the pre-flight's",
+     "bio-plane: R19 recipes.published ratifies a case by the real ceremony and answers its case file's parts as anyone fetches them; a member without the publish capability is refused naming publish (control)",
+     "bio-plane: R19 recipes.imported makes another team's published case, imports its case file by the real act and accepts its finding; without accept the edition stays unaccepted and a question cannot rest on it (control)",
+     "bio-plane: R19 recipes.cited rests a question on another team's accepted finding by the real act and answers its leg; the question's basis names the import and the edition",
+     "bio-plane: R19 recipes.rerun declares a project a re-run of an accepted import and pairs a finding of its own with the source's; through started stops at the declaration; rerunread shows both",
+     "bio-plane: R19 recipes.conflict makes a conflict between two hidden projects by real acts: each project's members are told of an unseen record on their own side, and the member of both sees it whole",
+     "bio-plane: R19 recipes.conflict goes on by the real acts: the first project asks (the second is told only that another asked), the second asks (the projects are named to each other) and a member responds (the other project receives only what she shared)",
+     "bio-plane: R19 recipes.assistant sets up the team's Claude account by an administrator's real acts and recipes.writingHelp answers as the door does: no account, nothing told, an act never helped, and past every refusal the draft the world cannot ask for",
+     "bio-plane: R18 world.route answers a browser page's /api/ requests from the world's door, as the member signed in: a read, an act that changes the world, a refusal, and the file the store serves",
+     "bio-plane: R19 recipes.grantAdmit: the grant is minted under the member's own session and the model's count of its call is recorded for that member, shown in that member's own use",
+     "bio-plane: R17: the door admits an ask's grant for the ask's own calls and its listed reads, and keeps admission's NOT_AUTHENTICATED for any other op and for a token that is no live grant (control)",
+     "bio-plane: R19 rendered: the capture of a page as a visitor saw it: the renderer was asked and the document is the rendered one beside its shell; control: a plain capture keeps the shell and asks no renderer; a world with no renderer refuses the render",
+     "bio-plane: R19 renderPending: a render still being made is left pending with its session, the open captures list it; released, 'Finish it' answers the visitor copy and the session leaves the list; a failed render is refused RENDER_FAILED and files nothing",
+     "bio-plane: R19 renderPending (alarm): the first capture filed under a project, released, the store's alarm finishes the render and the delivery files the visitor copy as a second document, and the session leaves the list; control: with no delivery nothing is filed",
+     "bio-plane: R19 unfinished: a capture left with its supporting files outstanding: the platform stops the call, the open captures list the session, and each 'Finish it' fetches more until none is owed; control: a plain capture of the same page keeps no session; a ceiling past the pictures leaves none",
+     "bio-plane: R19 partedAddress: the alarm's fetch of a file over what the call reads holds the capture in parts, the record's image lists them in order; control: acquire alone answers no document (the source is owed), and a file the call reads whole is no recipe state",
+     "bio-plane: R17 R19 followed: a world made with follow: true follows a promotion with its reading: a file read at once is read, a file over the inline ceiling stands by its job row and the promotion says reading_pending until the alarm reads it; controls: a document that brings its own reading is not followed, and without follow nothing follows",
+     "bio-plane: R17 R19 delivered (follow): the alarm's delivery promotes through the door, so a world that follows reads a small file at once and leaves a file over the inline ceiling to its job row until the alarm reads it; control: a world that does not follow has no reading for the small file either",
+     "bio-plane: R19 recipes.holdAt: a page captured at its address is filed at collected and `heldat` finds it by the address; control: another address is not held",
+     "bio-plane: R19 recipes.newerCapture: a changed source monitored raises an open notice for the question citing it and the queue's finding; keep and adopt answer it; control: a question citing an unchanged page raises none",
+     "bio-plane: R19 recipes.connection: two captures naming one ordinance form a connection with a mention; the member chooses it and a progression threads both; control: the entity of one capture alone has none",
+     "bio-plane: R19 recipes.partialPdf: the reading holds pages 0 and 2 and names page 1 unread; the member's transcription mints it; control: the default PDF reads no page",
+     "bio-plane: R19 recipes.unmatchedPerson: one row of the directory matches an entity and five names stay unresolved; her testimony resolves one and the identity claim is made; control: without testimony no claim",
+     "bio-plane: R19 recipes.attested: with the authority and the archive up the attestation carries both; asked again with the network changed it answers each case; control: neither is NO_ATTESTATION",
+     "bio-plane: R19 recipes.paperFile: a route that cannot be shown is looked at and found indeterminate, marked; control: a held page's route is present",
+     "bio-plane: R19 recipes.unretirable: retiring a copy never vouched for is refused ILLEGAL_TRANSITION naming it; control: the refusal is the owner's, not the door's",
+     "bio-plane: R16: signIn({admin: true}) makes an active administrator by the real acts, the third and the fourth too (every administrator endorses); the second is refused by nothing",
+     "bio-plane: R16: signIn answers the member's password: the claim's for the founder, the chosen one for any other, and it is the one that signs in again",
+     "bio-plane: R19: recipes.queue({obligations}) makes the founder's queue hold that many obligations by real acts; findings or conditions are refused naming them",
+     "bio-plane: R19 olderInstallation: no producing team is recorded: `groupidentity` answers group null and the team's website claim has no file; a world that names its team answers both",
+     "bio-plane: R19 owed: the real acquire parks a large capture; the member's open captures list it as an owed fetch; with no delivery the tick leaves it owed",
+     "bio-plane: R19 lapsed: the store's clock moves past the session and it leaves the list; control: before the clock moved it was listed",
+     "bio-plane: R19 delivered: a world made with deliver: true runs the owed fetch on a tick: the real owedFetch drops the session and the delivery filed the document under the project; control: a world with none leaves it owed; the recipe refuses a world without it",
+     "bio-plane: R19 releaseNotice: a notice signed with the world's key is stored by the daily check and an administrator reads it as ready; control: signed with another key it is not; a world without the key refuses the recipe",
+     "bio-plane: R19 recipes.readings: a question holds one reading in each of the states accepted, considering, rejected and suggested; control: a question with none holds none",
+     "bio-plane: R19 recipes.machineReading: the reading is suggested by the credential of a run, not by a member; the member may reject it; control: a member's own suggest names the member; a world without the test instance refuses",
+     "bio-plane: R19 recipes.graded: the question's connection axis is graded B by resolution and the capture axis is not; control: an ungraded leg leaves the connection unrated",
+     "bio-plane: R19 recipes.sharedOrigin: the two parts of the partition share their issuer; control: two pages with no issuer share nothing",
+     "bio-plane: R19 question `extent_rect` and pdf `fonts`: a decoded PDF (type0 with a ToUnicode map) reads as page units and a leg carries its rect into the record; the default font decodes none",
+     "bio-plane: R19 unnamedFounderWorld: the founder holds no handle and a project names her so; control: the default founder has one",
+     "bio-plane: R19 timeline: the world's items carry EDTF, day, minute and second precision, two EDTF items are of undetermined order, and the action advancing the question is in `ours`; control: a set of the question alone has no action",
+     "bio-plane: R19 titlelessProject: `image` states no title line and `projectlist` names the project from the promotion's meta; control: a recipe project's image states its title",
+     "bio-plane: R19 deepChain: the ninth question's connection axis is undetermined; control: the third's is unrated",
+     "bio-plane: R19 connectedSignIn: the member's sign-in is connected and her account reference says so; control: before it she is not connected",
+     "bio-plane: R19 investigating: a project reads forming and, once a question rests on a held document, investigating",
+     "bio-plane: R19 mentionedTogether: `explore` from one agenda has a mentioned_together hop to the other; control: a document naming no entity has none",
+     "bio-plane: R23 (door): a project's owner reads a draft's review copy through the door; a member with no standing and a caller with no session are given the one dead answer, the same bytes",
+     "bio-plane: R23 (door): a member's `reviewcomment` and a list of `drafts` are read as the member's; a grant's secret still opens the one copy for a recipient with no session",
+     "bio-plane: R23: a secret-presenting op's request carries neither the secret nor a stamp the caller named, in the address and the body; the digest stays",
+     "bio-plane: R23, R4: a member's session at the template doors is stamped viewer and author as the door stamps it; a recipient, and any caller that is no session, carries none",
+     "bio-plane: R12, R3: a LOCAL_FACTS op's body keeps the correction's own `source`, drops every stamp a caller names, and its address takes no `source`",
+     "bio-plane: R12 (door): the founder's correction of a local fact with its source is accepted by the owner, and the same without a source is refused FACT_VALUE_REFUSED (control)",
+     "bio-plane: R23, R4 (door): a member's session at templatereview is stamped, so the owner does not say the call carries nobody",
+     "bio-plane: R23 (door): a caller with no secret and no session at a template door is given the one dead answer NO_TEMPLATE_GRANT at 404, as a presented secret no live grant holds is",
+     "bio-plane: R17: selftest through the door: the captures bucket unbound answers ok and says the optional storage is off; both bound answers ok; one without the other is the owner's refusal",
+     "bio-plane: R17: selftest is a read of the founder and an administrator's session, and the published recipe leaves the pair bound",
+     "bio-plane: R7: the translation acts carry `by` and `translations` carries `viewer` as the session's member id, a forged one dropped; a non-session caller carries `class:<cls>`",
+     "bio-plane: R7: in a world, a second administrator grants a language and reads `translations` for it; a member holding no grant is refused (control)",
+     "bio-plane: storeWorld (fixture): the real store with its producing team recorded by the real act, the door, sign-ins, boot and recipes; two worlds share nothing",
+     "bio-plane: R16: real sign-ins: the founder by login; a member by memberadd, enroll and login; admin and capabilities by the real acts; a refused act throws naming the op",
+     "bio-plane: R17: the door's families: unknown op, admission, a store route per stamp kind, the sign-in door, a public read, attest, the module arms, the re-made relays, and WORLD_NO_DOOR_ARM",
+     "bio-plane: R15: the world's door makes every store request by innerRequest and by no rule of its own: one op of each row, for each kind of caller",
+     "bio-plane: R18: bootOf answers the door bound to the member and the session record interface-shell's boot takes",
+     "bio-plane: R19: the recipes perform real acts and answer what the acts answered",
+     "bio-plane: R20: every declared op is a key of the route map or answered by the world's door; the unreachable set is closed, each with its cause",
+     "bio-plane: R17: the binding classes the world's env holds are admitted as the Worker admits them",
+     "bio-plane: storeWorld (fixture), R17: the world binds the published plane as plane's Worker does, so R70's case-file sweep builds an edition's case file in a world"
+    ],
+    "ms": 15803,
+    "status": [
+     1
+    ]
+   },
+   "newFailures": []
+  },
+  "screens-inquiry": {
+   "before": {
+    "files": 69,
+    "pass": 0,
+    "fail": 69,
+    "failed": [
+     "bio-plane: test/m/screens-inquiry/assistant.test.mjs",
+     "bio-plane: test/m/screens-inquiry/b22-question.test.mjs",
+     "bio-plane: test/m/screens-inquiry/common.test.mjs",
+     "bio-plane: test/m/screens-inquiry/cr19-document.test.mjs",
+     "bio-plane: test/m/screens-inquiry/document.test.mjs",
+     "bio-plane: test/m/screens-inquiry/fr2-document.test.mjs",
+     "bio-plane: test/m/screens-inquiry/fr2-objective.test.mjs",
+     "bio-plane: test/m/screens-inquiry/fr2-project.test.mjs",
+     "bio-plane: test/m/screens-inquiry/fr2-question.test.mjs",
+     "bio-plane: test/m/screens-inquiry/fr28-contradiction.test.mjs",
+     "bio-plane: test/m/screens-inquiry/fr28-document-acts.test.mjs",
+     "bio-plane: test/m/screens-inquiry/fr28-document.test.mjs",
+     "bio-plane: test/m/screens-inquiry/fr28-objective.test.mjs",
+     "bio-plane: test/m/screens-inquiry/fr28-project-owners.test.mjs",
+     "bio-plane: test/m/screens-inquiry/fr28-project-rerun.test.mjs",
+     "bio-plane: test/m/screens-inquiry/fr28-project.test.mjs",
+     "bio-plane: test/m/screens-inquiry/fr28-question-acts.test.mjs",
+     "bio-plane: test/m/screens-inquiry/fr28-question.test.mjs",
+     "bio-plane: test/m/screens-inquiry/fr3-contradiction.test.mjs",
+     "bio-plane: test/m/screens-inquiry/fr3-dashproject.test.mjs",
+     "bio-plane: test/m/screens-inquiry/fr3-document.test.mjs",
+     "bio-plane: test/m/screens-inquiry/fr3-project.test.mjs",
+     "bio-plane: test/m/screens-inquiry/fr3-question.test.mjs",
+     "bio-plane: test/m/screens-inquiry/fr4-document.test.mjs",
+     "bio-plane: test/m/screens-inquiry/fr4-project.test.mjs",
+     "bio-plane: test/m/screens-inquiry/fr4-question.test.mjs",
+     "bio-plane: test/m/screens-inquiry/fr5-document.test.mjs",
+     "bio-plane: test/m/screens-inquiry/fr5-question.test.mjs",
+     "bio-plane: test/m/screens-inquiry/fr5-reads.test.mjs",
+     "bio-plane: test/m/screens-inquiry/fr5-seam.test.mjs",
+     "bio-plane: test/m/screens-inquiry/fr6-document.test.mjs",
+     "bio-plane: test/m/screens-inquiry/fr6-pages.test.mjs",
+     "bio-plane: test/m/screens-inquiry/fr6-project.test.mjs",
+     "bio-plane: test/m/screens-inquiry/fr6-seam.test.mjs",
+     "bio-plane: test/m/screens-inquiry/g128i-c30-cite.test.mjs",
+     "bio-plane: test/m/screens-inquiry/g41-document.test.mjs",
+     "bio-plane: test/m/screens-inquiry/project.test.mjs",
+     "bio-plane: test/m/screens-inquiry/projectai.test.mjs",
+     "bio-plane: test/m/screens-inquiry/question.test.mjs",
+     "bio-plane: test/m/screens-inquiry/r10-document.test.mjs",
+     "bio-plane: test/m/screens-inquiry/r10-publishedcase.test.mjs",
+     "bio-plane: test/m/screens-inquiry/r10-question-seam.test.mjs",
+     "bio-plane: test/m/screens-inquiry/r10-question.test.mjs",
+     "bio-plane: test/m/screens-inquiry/r10-stated.test.mjs",
+     "bio-plane: test/m/screens-inquiry/r137-document.test.mjs",
+     "bio-plane: test/m/screens-inquiry/r45.test.mjs",
+     "bio-plane: test/m/screens-inquiry/r46.test.mjs",
+     "bio-plane: test/m/screens-inquiry/r47.test.mjs",
+     "bio-plane: test/m/screens-inquiry/r49.test.mjs",
+     "bio-plane: test/m/screens-inquiry/r50-own-reading.test.mjs",
+     "bio-plane: test/m/screens-inquiry/r9-document.test.mjs",
+     "bio-plane: test/m/screens-inquiry/r9-refusal.test.mjs",
+     "bio-plane: test/m/screens-inquiry/r9-seam.test.mjs",
+     "bio-plane: test/m/screens-inquiry/r9-supporting.test.mjs",
+     "bio-plane: test/m/screens-inquiry/t48.test.mjs",
+     "bio-plane: test/m/screens-inquiry/t50-project.test.mjs",
+     "bio-plane: test/m/screens-inquiry/t50.test.mjs",
+     "bio-plane: test/m/screens-inquiry/t51-dashproject.test.mjs",
+     "bio-plane: test/m/screens-inquiry/t51-document.test.mjs",
+     "bio-plane: test/m/screens-inquiry/t51-final.test.mjs",
+     "bio-plane: test/m/screens-inquiry/t51-fix10-question.test.mjs",
+     "bio-plane: test/m/screens-inquiry/t51-fix11-b89.test.mjs",
+     "bio-plane: test/m/screens-inquiry/t51-fix12-b90.test.mjs",
+     "bio-plane: test/m/screens-inquiry/t51-fix13-b92.test.mjs",
+     "bio-plane: test/m/screens-inquiry/t51-fix14-r139.test.mjs",
+     "bio-plane: test/m/screens-inquiry/t51-project-notice.test.mjs",
+     "bio-plane: test/m/screens-inquiry/t51-project.test.mjs",
+     "bio-plane: test/m/screens-inquiry/t51-question.test.mjs",
+     "bio-plane: test/m/screens-inquiry/words.test.mjs"
+    ],
+    "ms": 99200,
+    "status": [
+     1
+    ]
+   },
+   "after": {
+    "files": 69,
+    "pass": 0,
+    "fail": 69,
+    "failed": [
+     "bio-plane: test/m/screens-inquiry/assistant.test.mjs",
+     "bio-plane: test/m/screens-inquiry/b22-question.test.mjs",
+     "bio-plane: test/m/screens-inquiry/common.test.mjs",
+     "bio-plane: test/m/screens-inquiry/cr19-document.test.mjs",
+     "bio-plane: test/m/screens-inquiry/document.test.mjs",
+     "bio-plane: test/m/screens-inquiry/fr2-document.test.mjs",
+     "bio-plane: test/m/screens-inquiry/fr2-objective.test.mjs",
+     "bio-plane: test/m/screens-inquiry/fr2-project.test.mjs",
+     "bio-plane: test/m/screens-inquiry/fr2-question.test.mjs",
+     "bio-plane: test/m/screens-inquiry/fr28-contradiction.test.mjs",
+     "bio-plane: test/m/screens-inquiry/fr28-document-acts.test.mjs",
+     "bio-plane: test/m/screens-inquiry/fr28-document.test.mjs",
+     "bio-plane: test/m/screens-inquiry/fr28-objective.test.mjs",
+     "bio-plane: test/m/screens-inquiry/fr28-project-owners.test.mjs",
+     "bio-plane: test/m/screens-inquiry/fr28-project-rerun.test.mjs",
+     "bio-plane: test/m/screens-inquiry/fr28-project.test.mjs",
+     "bio-plane: test/m/screens-inquiry/fr28-question-acts.test.mjs",
+     "bio-plane: test/m/screens-inquiry/fr28-question.test.mjs",
+     "bio-plane: test/m/screens-inquiry/fr3-contradiction.test.mjs",
+     "bio-plane: test/m/screens-inquiry/fr3-dashproject.test.mjs",
+     "bio-plane: test/m/screens-inquiry/fr3-document.test.mjs",
+     "bio-plane: test/m/screens-inquiry/fr3-project.test.mjs",
+     "bio-plane: test/m/screens-inquiry/fr3-question.test.mjs",
+     "bio-plane: test/m/screens-inquiry/fr4-document.test.mjs",
+     "bio-plane: test/m/screens-inquiry/fr4-project.test.mjs",
+     "bio-plane: test/m/screens-inquiry/fr4-question.test.mjs",
+     "bio-plane: test/m/screens-inquiry/fr5-document.test.mjs",
+     "bio-plane: test/m/screens-inquiry/fr5-question.test.mjs",
+     "bio-plane: test/m/screens-inquiry/fr5-reads.test.mjs",
+     "bio-plane: test/m/screens-inquiry/fr5-seam.test.mjs",
+     "bio-plane: test/m/screens-inquiry/fr6-document.test.mjs",
+     "bio-plane: test/m/screens-inquiry/fr6-pages.test.mjs",
+     "bio-plane: test/m/screens-inquiry/fr6-project.test.mjs",
+     "bio-plane: test/m/screens-inquiry/fr6-seam.test.mjs",
+     "bio-plane: test/m/screens-inquiry/g128i-c30-cite.test.mjs",
+     "bio-plane: test/m/screens-inquiry/g41-document.test.mjs",
+     "bio-plane: test/m/screens-inquiry/project.test.mjs",
+     "bio-plane: test/m/screens-inquiry/projectai.test.mjs",
+     "bio-plane: test/m/screens-inquiry/question.test.mjs",
+     "bio-plane: test/m/screens-inquiry/r10-document.test.mjs",
+     "bio-plane: test/m/screens-inquiry/r10-publishedcase.test.mjs",
+     "bio-plane: test/m/screens-inquiry/r10-question-seam.test.mjs",
+     "bio-plane: test/m/screens-inquiry/r10-question.test.mjs",
+     "bio-plane: test/m/screens-inquiry/r10-stated.test.mjs",
+     "bio-plane: test/m/screens-inquiry/r137-document.test.mjs",
+     "bio-plane: test/m/screens-inquiry/r45.test.mjs",
+     "bio-plane: test/m/screens-inquiry/r46.test.mjs",
+     "bio-plane: test/m/screens-inquiry/r47.test.mjs",
+     "bio-plane: test/m/screens-inquiry/r49.test.mjs",
+     "bio-plane: test/m/screens-inquiry/r50-own-reading.test.mjs",
+     "bio-plane: test/m/screens-inquiry/r9-document.test.mjs",
+     "bio-plane: test/m/screens-inquiry/r9-refusal.test.mjs",
+     "bio-plane: test/m/screens-inquiry/r9-seam.test.mjs",
+     "bio-plane: test/m/screens-inquiry/r9-supporting.test.mjs",
+     "bio-plane: test/m/screens-inquiry/t48.test.mjs",
+     "bio-plane: test/m/screens-inquiry/t50-project.test.mjs",
+     "bio-plane: test/m/screens-inquiry/t50.test.mjs",
+     "bio-plane: test/m/screens-inquiry/t51-dashproject.test.mjs",
+     "bio-plane: test/m/screens-inquiry/t51-document.test.mjs",
+     "bio-plane: test/m/screens-inquiry/t51-final.test.mjs",
+     "bio-plane: test/m/screens-inquiry/t51-fix10-question.test.mjs",
+     "bio-plane: test/m/screens-inquiry/t51-fix11-b89.test.mjs",
+     "bio-plane: test/m/screens-inquiry/t51-fix12-b90.test.mjs",
+     "bio-plane: test/m/screens-inquiry/t51-fix13-b92.test.mjs",
+     "bio-plane: test/m/screens-inquiry/t51-fix14-r139.test.mjs",
+     "bio-plane: test/m/screens-inquiry/t51-project-notice.test.mjs",
+     "bio-plane: test/m/screens-inquiry/t51-project.test.mjs",
+     "bio-plane: test/m/screens-inquiry/t51-question.test.mjs",
+     "bio-plane: test/m/screens-inquiry/words.test.mjs"
+    ],
+    "ms": 66613,
+    "status": [
+     1
+    ]
+   },
+   "newFailures": []
+  },
+  "screens-document": {
+   "before": {
+    "files": 0
+   },
+   "after": {
+    "files": 0
+   },
+   "newFailures": []
+  },
+  "control-plane": {
+   "before": {
+    "files": 135,
+    "pass": 0,
+    "fail": 0,
+    "failed": [
+     "bio-plane: R109 (T51-123; K3807, K3814, K3835; amends R1, R104): the signing page is not served: `/sign` and `/sign/` answer as any unknown address does (R104's page, 404, no-store, the page policy), `/api/sign` and `/?op=sign` answer UNKNOWN_OP as JSON (R2), the deleted files are found nowhere in this module's paths; controls: `/version` and `/app` answer as before, an address under `/app/` that begins with `sign` is the interface's page",
+     "bio-plane: R1, R82 (T47; N1002): GET / with no op answers interface-shell's page (`interfacePage` over the screen modules' screens, the page `/app` answers), text/html, cache-control: no-store, under the page policy, whatever namespace it names (R1's gate first) and with no store asked; no route serves the setup page (control: none of setupPage's text)",
+     "bio-plane: R51 (answer-envelope R6): the page at `/` (bio's and scratch's; the interface page since T47, R82) and the page an unknown address draws (`/sign` since T51, R109, R104; 404) are served with a policy that admits no other origin for any script, style, font, image, connection, frame or worker, posts forms only here and fixes the base (negative control: a policy naming another origin is caught by the judge)",
+     "bio-plane: R51 (answer-envelope R6; F17, K1881): the interface page at `/` and the page an unknown address draws are served under the hash of their one external script from this origin, with no nonce and no inline script; a page a module's hook answers keeps the nonce rule: two fetches carry two different nonces, at least 128 bits each, and every script element of each body carries its own response's nonce (negative control: a body's script without it is seen)",
+     "bio-plane: R123 (captureupload, F2; fix round 5, E3): a 22 MiB upload kept in three parts is not read inline (the whole is read by the alarm): its digest is written down, the answer says `reading_pending`, and the document is answered unread, ready to be filed; a 40 MB upload, over the whole-read ceiling, is read inline as the statement it is",
+     "bio-plane: R132 (G124a): a CSV and a text take their own whole-read rows (the light kinds' standard): stated one byte over `csv.bytes` / `text.bytes`, deferred at it and between the alpha ceiling and the standard",
+     "bio-plane: R137 (R136; store-request R15): for one op of each family the store request the Worker's door makes equals the world's door's: address, body and the internal headers; a forged stamp reaches the store through neither",
+     "bio-plane: R47, R48, R27: `projectholds` is among the reads naming no project, with the reason, so its existence answer is not run (DEC-36: a project not seen whole is `held: null`); docket's reads name a case or an entry; the hold preview's `target` names an action and none is classified as naming a project (negative control: a read that names a project still is asked)",
+     "bio-plane: R128 control (review G4): an answer that states nothing carries only the door's own metrics and the two it adds; a refusal and a page carry the header as before",
+     "bio-plane: R127 (G114): a translation kept mid-release changes the stamp bootstrap states; the key of the old stamp is no longer kept, the new key is, and the kept word is in the answer (fallback false)",
+     "bio-plane: R56, R30 (credentials R33, R34, R36; admission R19): the group key's six ops reach credentials' map from a session only (`groupswitchset` retired, T41: R56's clause, tested in `t41-door`), `groupkeyset`'s key from the body alone — one sent in the query never reaches the store's address — and no answer or refusal carries the key, `groupkeyset`'s own included (negative control: the key is looked for in every answer and inner request)",
+     "bio-plane: R57 (instance-setup R55, R65; run-rules R20; ai-use R3; credentials R35, R36; T37: N765, K231): before either draft's handler the door answers, in order, `groupdescriptiondraft`'s NOT_AN_ADMIN, AI_KEPT_AWAY (credentials' one row, in place of ASSISTANT_OFF), NO_ACCOUNT (credentials R35, was AI_NO_ACCOUNT), the paying account's limit (ai-use R3's AI_LIMIT_REACHED, the retired ceilings' place), and credentials' own refusal of the account (the group key's notice unread), each before any handler is asked (negative control: once every one is cleared the handler is reached)",
+     "bio-plane: R57, R29, R30 (K1755): a draft's handler receives `assistant` as the door resolved it — `{on: true, account: {kind, level}}`, the member's own account or the group's key, never the key — its own arguments from the body and `by` and `viewer` as stamped; a caller's `assistant` is never read (negative control: no secret appears in anything handed over or answered)",
+     "bio-plane: R28, R54, R56 (admission R17, R19; K1861 (6)): admission's query gate runs after R1 and before anything reads the URL — a public door's `token` is never looked up and its key, link and cover never reach the store from the query; `groupkeyset`'s key in the query never does — and a `store=` naming no namespace is still R1's refusal first (negative control: the session's token on `groupkeyset` is still read)",
+     "bio-plane: R2, R17, R29 (T47; K3167; signin-door R1–R3): `subscriptionsignin` is answered by signin-door with the member the session names (`by`), never one the caller sends, the body's `step`: its store-internal questions asked of the store addressed with that member, the runner sent that member with signin-door's trace header, the answer signin-door's (carrying `trace`)",
+     "bio-plane: R2 (T47; K3167; signin-door R1, R4): `subscriptiondisconnect` reaches credentials' act through signin-door with `by` the session's member, then `signout` is sent for that member; a member's revocation (`memberset` to `revoked`) signs that member out through signin-door, the act's answer unchanged (control: an act that is not a leaving sends nothing)",
+     "bio-plane: R69, R30 (credentials R54): a project key passes from the body alone: one in the address never reaches the store's address or body, the body's reaches the owner, and no answer echoes either (negative control: the body's key is passed)",
+     "bio-plane: R75, R81 (T46, T47; N897 (1); K3137; fix round 3, C15, P2.4): `GET /app` and `GET /app/<path>` answer interface-shell's page over the nine screen modules' screens (entry, settings, intake, daily, inquiry, wizards, investigate, publish, action) with screens-wizards' guide, `text/html`, `cache-control: no-store`, under a page policy that names the shell's script by its hash in place of a nonce; the page loads one external script at the release's address, carries no inline script and no nonce, and is the same for every path below `/app` (the routing is the page's own); no store is asked and no credential read, a presented session changing nothing",
+     "bio-plane: R75 (fix round 3, C15, P2.4; interface-shell R1): the shell's script is served at the address that carries the release version, `text/javascript` with `cache-control: public, max-age=31536000, immutable`; its bytes are interface-shell's `interfaceScript` and hash to the value the page policy names; a second load is served the same bytes with the same `immutable` header (a caller that holds it is not sent it again); the page itself keeps `no-store`, and the assets and an op's answer carry no `immutable` (negative controls: another release's address is 404, a HEAD has no body, a POST is no script)",
+     "bio-plane: R81 (T47; interface-shell R30): a public-frame screen's address — `/app/doorbell`, `/app/published/<case>` — is served the same page, no credential read and no store asked, with or without a session presented; every screen id the nine modules register is drawn by the page's script",
+     "bio-plane: R75: `/app` takes the namespace and address gates `/` takes (admission R1, R20): an unknown `store=` is NAMESPACE_UNKNOWN (C-78.1) and a credential in the address CREDENTIAL_IN_ADDRESS (C-38.10), on the page and on an asset, nothing served; `store=scratch` serves the same page (negative control); a POST to `/app` is no page (it reaches the op door, an op named `app` there being unknown)",
+     "bio-plane: R75 (R25): a page that cannot be built (`interfacePage` throws for a broken screen) is never served: the throw leaves `appPage` (negative control: the real screens build)",
+     "bio-plane: R75 end to end (Miniflare, the real plane; fix round 3, C15): `GET /app` and `/app/<path>` serve the page with a policy that names the shell's script by its hash, in place of a nonce; the script is served at the release's address, `immutable`, and hashes to what the policy and the page's `integrity` name; `/app/assets/*` serve every file with its type and bytes, 304 on its etag",
+     "bio-plane: R75, R82, R83 end to end (T47): `GET /` answers the interface's page (the page `/app` answers), and the founder signs in through the real plane's `login` by the handle `admin`, the password and the device, no role sent; the session it answers is the one the interface keeps",
+     "bio-plane: R75 end to end: `home` reads its world from the real plane under the member's session (whoami, the queue, the group), and draws it",
+     "bio-plane: R75 end to end: `capture` uploads a file's raw bytes with its statement through `captureupload`; the capture is read back through the real ops; `held` lists what the member holds and `release` vouches for it, read back as no longer held",
+     "bio-plane: R81 end to end: Home draws the group's projects from the real `projectlist`, each with its question count from the roster row's own `question_count` (C14: no per-project `projectquestions` read), every read under the founder's session",
+     "bio-plane: R81 end to end: a wizard started from one of Home's front doors: the doors drawn from the real `startfrom`, the script read through the real `wizardread`, its start counted by the real `wizardprogress`, and the guide running in the dock on the step's own screen",
+     "bio-plane: R81 end to end: the doorbell's page at `/app/doorbell`, booted with no session, hands a file and a note over through the real `knock` with no credential; the plane answers it received, and the founder reads it in the real inbox",
+     "bio-plane: R92 (T48; N1026, N1027, N1029, N1030, N1034, N1035, N1038, N1043; K3203, K3206, K3207, K3211; op-declarations R67): `aiuseovertime` (through `aiUseOps`), `exploregraph`, `standardproposals`, `filingread`, `pressurefor`, `planask`, `lookedsince`, `stepsource` and `stepsourcewithdraw` each reach its route with the stamps it declares from the session and none from the caller, its request fields as sent",
+     "bio-plane: R94 (T48; N996; K3101; amends R53, R56, R63, R69): the 24 account ops `op-declarations` R68 moves are each a route of `ai-accounts`' own map (`aiAccountsOps`), and each reaches the store's route of its own name for a member's session with its declared stamps and none from the caller; `groupkeystate` and `accountreferenceset` answer as before with nothing of `credentials` in the fixture",
+     "bio-plane: R95 (T48; K3250, K3254; walk C2 (a); `interface-shell` R58): a test instance's `/app` (and `/`) HTML holds the test-instance band as served, before any script runs",
+     "bio-plane: R95 (control; T48): a non-test instance's `/app` HTML holds no band; neither does an environment whose two names differ, or one that names only one of them",
+     "bio-plane: R95 (T48; K3254): a read of the test-instance fact that throws passes `false`: the page is served with no band, never an error",
+     "bio-plane: R90, R91, R92 (T48): this module's own owner-ops map holds none of T48's ops (each is its owner's own arm, R26's pattern)",
+     "bio-plane: R96 (T49; D1 B, N1095; K3320, K3321 (A); amends R17, R29, R92): through the real door a member connects her own API key (`accountreferenceset`, `member` her own) and removes it, and so does the founder; the body's `member` reaches `ai-accounts` as given and the address's is the session's own",
+     "bio-plane: R96 (controls; ai-accounts R38): a body `member` naming another member is dropped by `ai-accounts`: the act lands on the caller's own reference (the stamped `by`), for `accountreferenceset` and `accountreferenceremove` alike, a session's own and the founder's, and no other member's reference is written; a forged `member` in the address is replaced by the session's",
+     "bio-plane: R96 (R29): an op that declares `member` in the address has the caller's copy there deleted and the session's set, whether or not its body `member` is kept: `accountreference`, `accountreferenceset`, `accountreferenceremove`, `stepsource`, `stepsourcewithdraw`",
+     "bio-plane: R104 (T50; N1174, B-14; DEC-299 (11), DEC-301 (3); R2, R82): an address outside the team's pages that names no op draws the interface's page with status 404 under the page policy and `no-store` (the same page `/app` serves), `/doorbell` and `/tour` the same page at 200, and a HEAD the same status with no body; an `op=` request, a path below `/api/` and any other method still answer `UNKNOWN_OP` as JSON, byte for byte (control: `/tour` and `/doorbell` are 200, `/bootstrap` is an op named by its path, `/` and the routes already served are as they were)",
+     "bio-plane: R122 (the page's bootstrap is read once per load): Home, the Queue and a Project each send exactly one `op=bootstrap`; a new load sends one again (control)",
+     "bio-plane: R116 control (R75): the interface's page keeps `cache-control: no-store`",
+     "bio-plane: R126 (G30): twenty front pages through `GET /` log twenty `control-plane.page` lines whose counts of scripts composed and hashes taken stay at one after the first; control: `/version`, the favicon and an unknown op log no page line",
+     "bio-plane: R123 F2 (captureupload; fix round 5, E3): a 40 MB file uploaded in five parts is over reading-pipeline R37's whole ceiling, so its reading is the statement of its size, made at the door (no whole is needed) and stored when the capture screen files it",
+     "bio-plane: R100 (csv-reader R26): prose with commas on most lines, uploaded as comma-minutes.txt (text/plain), is read as prose: no cells, no dialect (controls: a real CSV named .txt and the prose declared text/csv are tables)",
+     "bio-plane: R123 E3: a capture over the whole-read ceiling is never deferred (its reading is a statement of its size); 20 to 24 MiB follows by the alarm; the ceiling itself is a reading",
+     "bio-plane: R123 E3 (promote): a 40 MB five-part document promoted with no reading is asked of `readHeld` at once, not written down first",
+     "bio-plane: R123 E3 (captureupload): a 40 MB five-part upload is read as its statement at the door (no whole to read from is needed); a 22 MiB PDF upload is owed",
+     "bio-plane: R125 E2: \"Read it\" on a 16 MB PDF whole is asked of the owner with `defer=1`; its `READING_PENDING` writes the entry down and the answer is at once; a small whole, a text whole under 20 MiB and no whole are asked without it",
+     "bio-plane: E1 (controls): a 3 MB PDF is read as before; a 30 MB PDF states the ceiling with its size",
+     "bio-plane: E3 (a 52 MB (over the 50 MiB whole-read ceiling of text, R132; a 40 MB text is deferred, not stated) five-part upload): filed, it states its size as a final reading before any keep has run, and \"Read it\" answers `read: true`",
+     "bio-plane: E3 (a 41.5 MB five-part address capture): stated final with its size at once, before any keep",
+     "bio-plane: R123, R125 (G7): a 40 MB five-part upload with the clock spent answers its `final` reading with the size, no `reading_pending`, no row owed",
+     "bio-plane: R123, R125 (G7): a 41.5 MB five-part capture answered after the bound is nearly spent carries no `reading_pending` and owes no row; the statement is `readHeld`'s, asked for the digest",
+     "bio-plane: R123 (G7, the promotion): a promoted 41.5 MB capture with the clock spent asks for its statement and owes no row",
+     "bio-plane: R123, R125 (G7): a 52 MB (over the 50 MiB whole-read ceiling of text, R132; a 40 MB text is deferred, not stated) five-part upload states its size as a `final` reading with no `reading_pending` and no row owed",
+     "bio-plane: R105 (G60): a case whose cited document the case gate finds a problem in passes the pre-flight, is refused at `caseratify` with GATE_REFUSED and its findings, and the ceremony, given that answer, draws the refusal and each finding's check, text and repairs"
+    ],
+    "ms": 1200038,
+    "status": [
+     1
+    ]
+   },
+   "after": {
+    "files": 135,
+    "pass": 0,
+    "fail": 0,
+    "failed": [
+     "bio-plane: R109 (T51-123; K3807, K3814, K3835; amends R1, R104): the signing page is not served: `/sign` and `/sign/` answer as any unknown address does (R104's page, 404, no-store, the page policy), `/api/sign` and `/?op=sign` answer UNKNOWN_OP as JSON (R2), the deleted files are found nowhere in this module's paths; controls: `/version` and `/app` answer as before, an address under `/app/` that begins with `sign` is the interface's page",
+     "bio-plane: R1, R82 (T47; N1002): GET / with no op answers interface-shell's page (`interfacePage` over the screen modules' screens, the page `/app` answers), text/html, cache-control: no-store, under the page policy, whatever namespace it names (R1's gate first) and with no store asked; no route serves the setup page (control: none of setupPage's text)",
+     "bio-plane: R51 (answer-envelope R6): the page at `/` (bio's and scratch's; the interface page since T47, R82) and the page an unknown address draws (`/sign` since T51, R109, R104; 404) are served with a policy that admits no other origin for any script, style, font, image, connection, frame or worker, posts forms only here and fixes the base (negative control: a policy naming another origin is caught by the judge)",
+     "bio-plane: R51 (answer-envelope R6; F17, K1881): the interface page at `/` and the page an unknown address draws are served under the hash of their one external script from this origin, with no nonce and no inline script; a page a module's hook answers keeps the nonce rule: two fetches carry two different nonces, at least 128 bits each, and every script element of each body carries its own response's nonce (negative control: a body's script without it is seen)",
+     "bio-plane: R123 (captureupload, F2; fix round 5, E3): a 22 MiB upload kept in three parts is not read inline (the whole is read by the alarm): its digest is written down, the answer says `reading_pending`, and the document is answered unread, ready to be filed; a 40 MB upload, over the whole-read ceiling, is read inline as the statement it is",
+     "bio-plane: R132 (G124a): a CSV and a text take their own whole-read rows (the light kinds' standard): stated one byte over `csv.bytes` / `text.bytes`, deferred at it and between the alpha ceiling and the standard",
+     "bio-plane: R137 (R136; store-request R15): for one op of each family the store request the Worker's door makes equals the world's door's: address, body and the internal headers; a forged stamp reaches the store through neither",
+     "bio-plane: R47, R48, R27: `projectholds` is among the reads naming no project, with the reason, so its existence answer is not run (DEC-36: a project not seen whole is `held: null`); docket's reads name a case or an entry; the hold preview's `target` names an action and none is classified as naming a project (negative control: a read that names a project still is asked)",
+     "bio-plane: R128 control (review G4): an answer that states nothing carries only the door's own metrics and the two it adds; a refusal and a page carry the header as before",
+     "bio-plane: R127 (G114): a translation kept mid-release changes the stamp bootstrap states; the key of the old stamp is no longer kept, the new key is, and the kept word is in the answer (fallback false)",
+     "bio-plane: R56, R30 (credentials R33, R34, R36; admission R19): the group key's six ops reach credentials' map from a session only (`groupswitchset` retired, T41: R56's clause, tested in `t41-door`), `groupkeyset`'s key from the body alone — one sent in the query never reaches the store's address — and no answer or refusal carries the key, `groupkeyset`'s own included (negative control: the key is looked for in every answer and inner request)",
+     "bio-plane: R57 (instance-setup R55, R65; run-rules R20; ai-use R3; credentials R35, R36; T37: N765, K231): before either draft's handler the door answers, in order, `groupdescriptiondraft`'s NOT_AN_ADMIN, AI_KEPT_AWAY (credentials' one row, in place of ASSISTANT_OFF), NO_ACCOUNT (credentials R35, was AI_NO_ACCOUNT), the paying account's limit (ai-use R3's AI_LIMIT_REACHED, the retired ceilings' place), and credentials' own refusal of the account (the group key's notice unread), each before any handler is asked (negative control: once every one is cleared the handler is reached)",
+     "bio-plane: R57, R29, R30 (K1755): a draft's handler receives `assistant` as the door resolved it — `{on: true, account: {kind, level}}`, the member's own account or the group's key, never the key — its own arguments from the body and `by` and `viewer` as stamped; a caller's `assistant` is never read (negative control: no secret appears in anything handed over or answered)",
+     "bio-plane: R28, R54, R56 (admission R17, R19; K1861 (6)): admission's query gate runs after R1 and before anything reads the URL — a public door's `token` is never looked up and its key, link and cover never reach the store from the query; `groupkeyset`'s key in the query never does — and a `store=` naming no namespace is still R1's refusal first (negative control: the session's token on `groupkeyset` is still read)",
+     "bio-plane: R2, R17, R29 (T47; K3167; signin-door R1–R3): `subscriptionsignin` is answered by signin-door with the member the session names (`by`), never one the caller sends, the body's `step`: its store-internal questions asked of the store addressed with that member, the runner sent that member with signin-door's trace header, the answer signin-door's (carrying `trace`)",
+     "bio-plane: R2 (T47; K3167; signin-door R1, R4): `subscriptiondisconnect` reaches credentials' act through signin-door with `by` the session's member, then `signout` is sent for that member; a member's revocation (`memberset` to `revoked`) signs that member out through signin-door, the act's answer unchanged (control: an act that is not a leaving sends nothing)",
+     "bio-plane: R69, R30 (credentials R54): a project key passes from the body alone: one in the address never reaches the store's address or body, the body's reaches the owner, and no answer echoes either (negative control: the body's key is passed)",
+     "bio-plane: R75, R81 (T46, T47; N897 (1); K3137; fix round 3, C15, P2.4): `GET /app` and `GET /app/<path>` answer interface-shell's page over the nine screen modules' screens (entry, settings, intake, daily, inquiry, wizards, investigate, publish, action) with screens-wizards' guide, `text/html`, `cache-control: no-store`, under a page policy that names the shell's script by its hash in place of a nonce; the page loads one external script at the release's address, carries no inline script and no nonce, and is the same for every path below `/app` (the routing is the page's own); no store is asked and no credential read, a presented session changing nothing",
+     "bio-plane: R75 (fix round 3, C15, P2.4; interface-shell R1): the shell's script is served at the address that carries the release version, `text/javascript` with `cache-control: public, max-age=31536000, immutable`; its bytes are interface-shell's `interfaceScript` and hash to the value the page policy names; a second load is served the same bytes with the same `immutable` header (a caller that holds it is not sent it again); the page itself keeps `no-store`, and the assets and an op's answer carry no `immutable` (negative controls: another release's address is 404, a HEAD has no body, a POST is no script)",
+     "bio-plane: R81 (T47; interface-shell R30): a public-frame screen's address — `/app/doorbell`, `/app/published/<case>` — is served the same page, no credential read and no store asked, with or without a session presented; every screen id the nine modules register is drawn by the page's script",
+     "bio-plane: R75: `/app` takes the namespace and address gates `/` takes (admission R1, R20): an unknown `store=` is NAMESPACE_UNKNOWN (C-78.1) and a credential in the address CREDENTIAL_IN_ADDRESS (C-38.10), on the page and on an asset, nothing served; `store=scratch` serves the same page (negative control); a POST to `/app` is no page (it reaches the op door, an op named `app` there being unknown)",
+     "bio-plane: R75 (R25): a page that cannot be built (`interfacePage` throws for a broken screen) is never served: the throw leaves `appPage` (negative control: the real screens build)",
+     "bio-plane: R75 end to end (Miniflare, the real plane; fix round 3, C15): `GET /app` and `/app/<path>` serve the page with a policy that names the shell's script by its hash, in place of a nonce; the script is served at the release's address, `immutable`, and hashes to what the policy and the page's `integrity` name; `/app/assets/*` serve every file with its type and bytes, 304 on its etag",
+     "bio-plane: R75, R82, R83 end to end (T47): `GET /` answers the interface's page (the page `/app` answers), and the founder signs in through the real plane's `login` by the handle `admin`, the password and the device, no role sent; the session it answers is the one the interface keeps",
+     "bio-plane: R75 end to end: `home` reads its world from the real plane under the member's session (whoami, the queue, the group), and draws it",
+     "bio-plane: R75 end to end: `capture` uploads a file's raw bytes with its statement through `captureupload`; the capture is read back through the real ops; `held` lists what the member holds and `release` vouches for it, read back as no longer held",
+     "bio-plane: R81 end to end: Home draws the group's projects from the real `projectlist`, each with its question count from the roster row's own `question_count` (C14: no per-project `projectquestions` read), every read under the founder's session",
+     "bio-plane: R81 end to end: a wizard started from one of Home's front doors: the doors drawn from the real `startfrom`, the script read through the real `wizardread`, its start counted by the real `wizardprogress`, and the guide running in the dock on the step's own screen",
+     "bio-plane: R81 end to end: the doorbell's page at `/app/doorbell`, booted with no session, hands a file and a note over through the real `knock` with no credential; the plane answers it received, and the founder reads it in the real inbox",
+     "bio-plane: R92 (T48; N1026, N1027, N1029, N1030, N1034, N1035, N1038, N1043; K3203, K3206, K3207, K3211; op-declarations R67): `aiuseovertime` (through `aiUseOps`), `exploregraph`, `standardproposals`, `filingread`, `pressurefor`, `planask`, `lookedsince`, `stepsource` and `stepsourcewithdraw` each reach its route with the stamps it declares from the session and none from the caller, its request fields as sent",
+     "bio-plane: R94 (T48; N996; K3101; amends R53, R56, R63, R69): the 24 account ops `op-declarations` R68 moves are each a route of `ai-accounts`' own map (`aiAccountsOps`), and each reaches the store's route of its own name for a member's session with its declared stamps and none from the caller; `groupkeystate` and `accountreferenceset` answer as before with nothing of `credentials` in the fixture",
+     "bio-plane: R95 (T48; K3250, K3254; walk C2 (a); `interface-shell` R58): a test instance's `/app` (and `/`) HTML holds the test-instance band as served, before any script runs",
+     "bio-plane: R95 (control; T48): a non-test instance's `/app` HTML holds no band; neither does an environment whose two names differ, or one that names only one of them",
+     "bio-plane: R95 (T48; K3254): a read of the test-instance fact that throws passes `false`: the page is served with no band, never an error",
+     "bio-plane: R90, R91, R92 (T48): this module's own owner-ops map holds none of T48's ops (each is its owner's own arm, R26's pattern)",
+     "bio-plane: R96 (T49; D1 B, N1095; K3320, K3321 (A); amends R17, R29, R92): through the real door a member connects her own API key (`accountreferenceset`, `member` her own) and removes it, and so does the founder; the body's `member` reaches `ai-accounts` as given and the address's is the session's own",
+     "bio-plane: R96 (controls; ai-accounts R38): a body `member` naming another member is dropped by `ai-accounts`: the act lands on the caller's own reference (the stamped `by`), for `accountreferenceset` and `accountreferenceremove` alike, a session's own and the founder's, and no other member's reference is written; a forged `member` in the address is replaced by the session's",
+     "bio-plane: R96 (R29): an op that declares `member` in the address has the caller's copy there deleted and the session's set, whether or not its body `member` is kept: `accountreference`, `accountreferenceset`, `accountreferenceremove`, `stepsource`, `stepsourcewithdraw`",
+     "bio-plane: R104 (T50; N1174, B-14; DEC-299 (11), DEC-301 (3); R2, R82): an address outside the team's pages that names no op draws the interface's page with status 404 under the page policy and `no-store` (the same page `/app` serves), `/doorbell` and `/tour` the same page at 200, and a HEAD the same status with no body; an `op=` request, a path below `/api/` and any other method still answer `UNKNOWN_OP` as JSON, byte for byte (control: `/tour` and `/doorbell` are 200, `/bootstrap` is an op named by its path, `/` and the routes already served are as they were)",
+     "bio-plane: R122 (the page's bootstrap is read once per load): Home, the Queue and a Project each send exactly one `op=bootstrap`; a new load sends one again (control)",
+     "bio-plane: R116 control (R75): the interface's page keeps `cache-control: no-store`",
+     "bio-plane: R126 (G30): twenty front pages through `GET /` log twenty `control-plane.page` lines whose counts of scripts composed and hashes taken stay at one after the first; control: `/version`, the favicon and an unknown op log no page line",
+     "bio-plane: R123 F2 (captureupload; fix round 5, E3): a 40 MB file uploaded in five parts is over reading-pipeline R37's whole ceiling, so its reading is the statement of its size, made at the door (no whole is needed) and stored when the capture screen files it",
+     "bio-plane: R100 (csv-reader R26): prose with commas on most lines, uploaded as comma-minutes.txt (text/plain), is read as prose: no cells, no dialect (controls: a real CSV named .txt and the prose declared text/csv are tables)",
+     "bio-plane: R123 E3: a capture over the whole-read ceiling is never deferred (its reading is a statement of its size); 20 to 24 MiB follows by the alarm; the ceiling itself is a reading",
+     "bio-plane: R123 E3 (promote): a 40 MB five-part document promoted with no reading is asked of `readHeld` at once, not written down first",
+     "bio-plane: R123 E3 (captureupload): a 40 MB five-part upload is read as its statement at the door (no whole to read from is needed); a 22 MiB PDF upload is owed",
+     "bio-plane: R125 E2: \"Read it\" on a 16 MB PDF whole is asked of the owner with `defer=1`; its `READING_PENDING` writes the entry down and the answer is at once; a small whole, a text whole under 20 MiB and no whole are asked without it",
+     "bio-plane: E1 (controls): a 3 MB PDF is read as before; a 30 MB PDF states the ceiling with its size",
+     "bio-plane: E3 (a 52 MB (over the 50 MiB whole-read ceiling of text, R132; a 40 MB text is deferred, not stated) five-part upload): filed, it states its size as a final reading before any keep has run, and \"Read it\" answers `read: true`",
+     "bio-plane: E3 (a 41.5 MB five-part address capture): stated final with its size at once, before any keep",
+     "bio-plane: R123, R125 (G7): a 40 MB five-part upload with the clock spent answers its `final` reading with the size, no `reading_pending`, no row owed",
+     "bio-plane: R123, R125 (G7): a 41.5 MB five-part capture answered after the bound is nearly spent carries no `reading_pending` and owes no row; the statement is `readHeld`'s, asked for the digest",
+     "bio-plane: R123 (G7, the promotion): a promoted 41.5 MB capture with the clock spent asks for its statement and owes no row",
+     "bio-plane: R123, R125 (G7): a 52 MB (over the 50 MiB whole-read ceiling of text, R132; a 40 MB text is deferred, not stated) five-part upload states its size as a `final` reading with no `reading_pending` and no row owed",
+     "bio-plane: R105 (G60): a case whose cited document the case gate finds a problem in passes the pre-flight, is refused at `caseratify` with GATE_REFUSED and its findings, and the ceremony, given that answer, draws the refusal and each finding's check, text and repairs"
+    ],
+    "ms": 1200135,
+    "status": [
+     1
+    ]
+   },
+   "newFailures": []
+  },
+  "plane": {
+   "before": {
+    "files": 56,
+    "pass": 0,
+    "fail": 0,
+    "failed": [
+     "bio-plane: R85 G123f: a 30,000-row xlsx (90,003 cells with its header row) is refused WORKBOOK_TOO_LARGE with its count and the add's bound when the bound is under it, added when the bound is over it (250,000 once workbooks R20 merges), never silently cut; its table is declared either way",
+     "bio-plane: G124f SHEET C05 xlsx declared text: 25000000 + 1 is refused with its size and its limit",
+     "bio-plane: G124f SHEET C03 ods declared content.xml: 52428800 - 2 is read whole",
+     "bio-plane: G124f SHEET C04 ods declared content.xml: the bound 52428800 itself is read whole",
+     "bio-plane: G124f SHEET C05 ods declared content.xml: 52428800 + 1 is refused with its size and its limit",
+     "bio-plane: G124f SHEET C03 entry file bytes: 104857600 - 2 is read whole",
+     "bio-plane: G124f SHEET C04 entry file bytes: the bound 104857600 itself is read whole",
+     "bio-plane: G124f SHEET C05 entry file bytes: 104857600 + 1 is refused with its size and its limit",
+     "bio-plane: G124f SHEET C06: a 30,000,000 B XLSX of 1,048,576 narrow rows is refused with its size and the entry's limit",
+     "bio-plane: G124f SHEET C07r: 1048576 rows x one narrow column with references (XLSX) is refused with its declared size and the xlsx limit",
+     "bio-plane: G124f SHEET C08r: 1048577 rows x one narrow column with references (XLSX) is refused with its declared size and the xlsx limit",
+     "bio-plane: G124f SHEET X05: a 33 MiB declared XLSX is refused with its size and limit, never worded 'undecodable' (S-8)",
+     "bio-plane: G128i over-24MiB: a text one byte over the whole-read ceiling is under the text tier, so it is read whole and its last line is found, never stated 'not read'",
+     "bio-plane: G128i over-24MiB: a CSV one byte over the whole-read ceiling is under the CSV tier, so it is read whole and its last row is found",
+     "bio-plane: G128i over-24MiB: a PDF one byte over the heavy kinds' ceiling is stated at once with its size and its limit, nothing owed",
+     "bio-plane: G128i over-24MiB: a text one byte over the text tier is stated with its size and its limit",
+     "bio-plane: R84 G41 K4855: a 200,000-row xlsx, over the alpha's declared-text bound, is refused at the platform's shape: final in one tick, its size (the generator's declared sheet text) and the bound stated as data, nothing owed, the child alive",
+     "bio-plane: R79 G42 (S): the administering member's screen, through the real door and the real record, shows the size floored to 100 MB at every edge",
+     "bio-plane: R79 G42 (S): the founder is shown the exact figure through the same door",
+     "bio-plane: R79 G42 (S) control: a member's session is answered no figure by the door, the screen sends no `stats` and draws nothing",
+     "bio-plane: R79 G42 (S): an object that states no size (null) is drawn `not stated`, through the door",
+     "bio-plane: R85 G44: the add of the 10 MiB-declared short-row workbook (221,529 cells, a 1.4 MB file) is held whole, the child alive (WORKBOOKS, G137e; K4945)",
+     "bio-plane: R88 G55 L: 25,000 resolving rows started by a member through the door are run to the end by the object's own alarm, no tick fired by hand: 25,000 facts, no source row twice, the marker closed, the read complete, the viewer's done notice raised, the ingest wants no alarm",
+     "bio-plane: R88 G55 L: an object killed after two slices is restarted over the same storage: it re-arms its alarm by itself and finishes, 25,000 facts and no source row twice",
+     "bio-plane: R24 b2 L (HEAVY: run alone): with the reading stubbed to answer at once, a 7.9 MB text uploaded and filed stalls no whoami asked every 20 ms for 2 s beyond 150 ms",
+     "bio-plane: R24 b L (HEAVY: run alone): a 7.9 MB text read by the object's own alarm keeps twelve whoami through the real door under 100 ms at p95 and 250 ms at most"
+    ],
+    "ms": 1200037,
+    "status": [
+     1
+    ]
+   },
+   "after": {
+    "files": 56,
+    "pass": 0,
+    "fail": 0,
+    "failed": [
+     "bio-plane: R85 G123f: a 30,000-row xlsx (90,003 cells with its header row) is refused WORKBOOK_TOO_LARGE with its count and the add's bound when the bound is under it, added when the bound is over it (250,000 once workbooks R20 merges), never silently cut; its table is declared either way",
+     "bio-plane: G124f SHEET C05 xlsx declared text: 25000000 + 1 is refused with its size and its limit",
+     "bio-plane: G124f SHEET C03 ods declared content.xml: 52428800 - 2 is read whole",
+     "bio-plane: G124f SHEET C04 ods declared content.xml: the bound 52428800 itself is read whole",
+     "bio-plane: G124f SHEET C05 ods declared content.xml: 52428800 + 1 is refused with its size and its limit",
+     "bio-plane: G124f SHEET C03 entry file bytes: 104857600 - 2 is read whole",
+     "bio-plane: G124f SHEET C04 entry file bytes: the bound 104857600 itself is read whole",
+     "bio-plane: G124f SHEET C05 entry file bytes: 104857600 + 1 is refused with its size and its limit",
+     "bio-plane: G124f SHEET C06: a 30,000,000 B XLSX of 1,048,576 narrow rows is refused with its size and the entry's limit",
+     "bio-plane: G124f SHEET C07r: 1048576 rows x one narrow column with references (XLSX) is refused with its declared size and the xlsx limit",
+     "bio-plane: G124f SHEET C08r: 1048577 rows x one narrow column with references (XLSX) is refused with its declared size and the xlsx limit",
+     "bio-plane: G124f SHEET X05: a 33 MiB declared XLSX is refused with its size and limit, never worded 'undecodable' (S-8)",
+     "bio-plane: G128i over-24MiB: a text one byte over the whole-read ceiling is under the text tier, so it is read whole and its last line is found, never stated 'not read'",
+     "bio-plane: G128i over-24MiB: a CSV one byte over the whole-read ceiling is under the CSV tier, so it is read whole and its last row is found",
+     "bio-plane: G128i over-24MiB: a PDF one byte over the heavy kinds' ceiling is stated at once with its size and its limit, nothing owed",
+     "bio-plane: G128i over-24MiB: a text one byte over the text tier is stated with its size and its limit",
+     "bio-plane: R84 G41 K4855: a 200,000-row xlsx, over the alpha's declared-text bound, is refused at the platform's shape: final in one tick, its size (the generator's declared sheet text) and the bound stated as data, nothing owed, the child alive",
+     "bio-plane: R79 G42 (S): the administering member's screen, through the real door and the real record, shows the size floored to 100 MB at every edge",
+     "bio-plane: R79 G42 (S): the founder is shown the exact figure through the same door",
+     "bio-plane: R79 G42 (S) control: a member's session is answered no figure by the door, the screen sends no `stats` and draws nothing",
+     "bio-plane: R79 G42 (S): an object that states no size (null) is drawn `not stated`, through the door",
+     "bio-plane: R85 G44: the add of the 10 MiB-declared short-row workbook (221,529 cells, a 1.4 MB file) is held whole, the child alive (WORKBOOKS, G137e; K4945)",
+     "bio-plane: R88 G55 L: 25,000 resolving rows started by a member through the door are run to the end by the object's own alarm, no tick fired by hand: 25,000 facts, no source row twice, the marker closed, the read complete, the viewer's done notice raised, the ingest wants no alarm",
+     "bio-plane: R88 G55 L: an object killed after two slices is restarted over the same storage: it re-arms its alarm by itself and finishes, 25,000 facts and no source row twice",
+     "bio-plane: R102 G93 L: a row owed and the alarm deleted, one ordinary read by the founder (op=owedwork) through the real door sets the alarm"
+    ],
+    "ms": 1200111,
+    "status": [
+     1
+    ]
+   },
+   "newFailures": [
+    "bio-plane: R102 G93 L: a row owed and the alarm deleted, one ordinary read by the founder (op=owedwork) through the real door sets the alarm"
+   ]
+  }
+ },
+ "pretestBefore": [
+  {
+   "step": "docs/development/ux-substrate/screens/build_words.mjs",
+   "status": 0
+  },
+  {
+   "step": "bio-plane/src/setup-words/build.mjs",
+   "status": 0
+  },
+  {
+   "step": "bio-plane/src/case-checker/build-program.mjs",
+   "status": 0
+  },
+  {
+   "step": "bio-plane/scripts/bundles.mjs",
+   "status": 0
+  }
+ ],
+ "pretestAfter": [
+  {
+   "step": "docs/development/ux-substrate/screens/build_words.mjs",
+   "status": 0
+  },
+  {
+   "step": "bio-plane/src/setup-words/build.mjs",
+   "status": 0
+  },
+  {
+   "step": "bio-plane/src/case-checker/build-program.mjs",
+   "status": 0
+  },
+  {
+   "step": "bio-plane/scripts/bundles.mjs",
+   "status": 0
+  }
+ ],
+ "finished": "2026-11-15T17:23:25.684Z"
+}

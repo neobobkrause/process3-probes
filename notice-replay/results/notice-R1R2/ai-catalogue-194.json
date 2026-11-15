@@ -1,0 +1,2178 @@
+{
+ "provider": "ai-catalogue",
+ "reader": "TypeScript 5.6.3",
+ "firstCommentsStep": false,
+ "changedModules": [
+  {
+   "module": "ai-catalogue",
+   "through": null
+  }
+ ],
+ "entries": [
+  {
+   "module": "ai-catalogue",
+   "entry": "ADVISORY_KINDS",
+   "changes": [
+    "declaration changed (not classified)"
+   ],
+   "tells": "users",
+   "before": {
+    "kind": "value",
+    "handsBack": "{ clear: \"listed\"; lapse: \"lapsed\"; retire: \"retired\"; watch: \"watch\" }"
+   },
+   "after": {
+    "kind": "value",
+    "handsBack": "{ clear: \"listed\"; lapse: \"lapsed\"; retire: \"retired\"; watch: \"watch\" }"
+   }
+  },
+  {
+   "module": "ai-catalogue",
+   "entry": "ADVISORY_REASONS",
+   "changes": [
+    "declaration changed (not classified)"
+   ],
+   "tells": "users",
+   "before": {
+    "kind": "value",
+    "handsBack": "readonly (\"canary_drift\" | \"deprecation\" | \"health\" | \"other\" | \"served_mismatch\" | \"team_divergence\" | \"terms_change\")[]"
+   },
+   "after": {
+    "kind": "value",
+    "handsBack": "readonly (\"canary_drift\" | \"deprecation\" | \"health\" | \"other\" | \"served_mismatch\" | \"team_divergence\" | \"terms_change\")[]"
+   }
+  },
+  {
+   "module": "ai-catalogue",
+   "entry": "AI_CATALOGUE_DECLARATIONS",
+   "changes": [
+    "declaration changed (not classified)"
+   ],
+   "tells": "users",
+   "before": {
+    "kind": "value",
+    "handsBack": "readonly { derive: \"stored\"; export: \"admin-only\"; expunge: \"none\"; name: string; purge: \"exempt\"; sight: \"group\"; version_chain: true }[]"
+   },
+   "after": {
+    "kind": "value",
+    "handsBack": "readonly { derive: \"stored\"; export: \"admin-only\"; expunge: \"none\"; name: string; purge: \"exempt\"; sight: \"group\"; version_chain: true }[]"
+   }
+  },
+  {
+   "module": "ai-catalogue",
+   "entry": "AI_CATALOGUE_TABLES",
+   "changes": [
+    "declaration changed (not classified)"
+   ],
+   "tells": "users",
+   "before": {
+    "kind": "value",
+    "handsBack": "readonly string[]"
+   },
+   "after": {
+    "kind": "value",
+    "handsBack": "readonly string[]"
+   }
+  },
+  {
+   "module": "ai-catalogue",
+   "entry": "AiCatalogue",
+   "changes": [
+    "accepts more",
+    "bound changed"
+   ],
+   "tells": "users",
+   "before": {
+    "kind": "class",
+    "accepts": "(arg0?: { clock?: () => number | null; core?: handle ai-catalogue.RecordCoreUse | null; env?: { BIO_NOW_MS?: number | string }; keys?: readonly string[]; sql?: handle ai-catalogue.SqlStorage; supported?: readonly number[] })",
+    "handsBack": "handle ai-catalogue.AiCatalogue"
+   },
+   "after": {
+    "kind": "class",
+    "accepts": "(arg0?: { clock?: () => number | null; core?: handle ai-catalogue.RecordCoreUse | null; env?: { AI_CATALOGUE_DEVELOPMENT?: string; AI_CATALOGUE_SEED_SIGNATURE?: string; BIO_NOW_MS?: number | string }; keys?: readonly string[]; seed?: { armored: null | string; body: string; statement: { bytes: number; issued_at: string; schema_version: number; seq: number; sha256: string } } | null; sql?: handle ai-catalogue.SqlStorage; supported?: readonly number[] })",
+    "handsBack": "handle ai-catalogue.AiCatalogue",
+    "bounds": [
+     "AI_CATALOGUE_DEVELOPMENT: exactly \"1\" to trust development key lines; any other value trusts none",
+     "bytes: the body's length in UTF-8 bytes",
+     "sha256: 64 lowercase hex digits, the SHA-256 of the body's UTF-8 bytes"
+    ]
+   }
+  },
+  {
+   "module": "ai-catalogue",
+   "entry": "AiCatalogue#seedAtStart",
+   "changes": [
+    "new entry"
+   ],
+   "after": {
+    "kind": "class member",
+    "handsBack": "{ code?: string; ok: boolean; outcome?: string; seq?: null | number } | null | undefined"
+   },
+   "tells": "nobody"
+  },
+  {
+   "module": "ai-catalogue",
+   "entry": "BindingTerm",
+   "changes": [
+    "cannot stand in"
+   ],
+   "tells": "users",
+   "before": {
+    "kind": "kind",
+    "accepts": "{ doc: string; effective_from: string; effective_to?: string; ev: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string }; kind: \"deprecation_notice\" | \"high_risk_review\" | \"indemnity\" | \"no_sla\" | \"other\" | \"political_use\"; quote: string; section: string; version: number | string }",
+    "handsBack": "{ doc: string; effective_from: string; effective_to?: string; ev: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string }; kind: \"deprecation_notice\" | \"high_risk_review\" | \"indemnity\" | \"no_sla\" | \"other\" | \"political_use\"; quote: string; section: string; version: number | string }",
+    "bounds": [
+     "date: a real calendar day written YYYY-MM-DD",
+     "doc: text, not blank, at most 400 characters",
+     "effective_from: a real calendar day written YYYY-MM-DD",
+     "effective_to: a real calendar day written YYYY-MM-DD",
+     "page: text, not blank, at most 2000 characters; with quote, required on a check answer",
+     "quote: text, not blank, at most 8000 characters",
+     "quote: text, not blank, at most 8000 characters; with page, required on a check answer",
+     "section: text, not blank, at most 200 characters",
+     "source: text, not blank, at most 2000 characters",
+     "version: as text, not blank, at most 64 characters"
+    ],
+    "side": "both"
+   },
+   "after": {
+    "kind": "kind",
+    "handsBack": "{ doc: string; effective_from: string; effective_to?: string; ev: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string }; kind: \"deprecation_notice\" | \"high_risk_review\" | \"indemnity\" | \"no_sla\" | \"other\" | \"political_use\"; quote: string; section: string; version: number | string }",
+    "bounds": [
+     "date: a real calendar day written YYYY-MM-DD",
+     "doc: text, not blank, at most 400 characters",
+     "effective_from: a real calendar day written YYYY-MM-DD",
+     "effective_to: a real calendar day written YYYY-MM-DD",
+     "page: text, not blank, at most 2000 characters; with quote, required on a check answer",
+     "quote: text, not blank, at most 8000 characters",
+     "quote: text, not blank, at most 8000 characters; with page, required on a check answer",
+     "section: text, not blank, at most 200 characters",
+     "source: text, not blank, at most 2000 characters",
+     "version: as text, not blank, at most 64 characters"
+    ],
+    "side": "handsBack"
+   }
+  },
+  {
+   "module": "ai-catalogue",
+   "entry": "CATALOGUE_CHECKS",
+   "changes": [
+    "declaration changed (not classified)"
+   ],
+   "tells": "users",
+   "before": {
+    "kind": "value",
+    "handsBack": "{ ADVISORY_BAD_MOVE: { check: string; where: string; word: string }; ADVISORY_REASON_UNKNOWN: { check: string; where: string; word: string }; CATALOGUE_ENTRY_INVALID: { check: string; where: string; word: string }; CATALOGUE_EVIDENCE_MISSING: { check: string; where: string; word: string }; CATALOGUE_PATH_INVALID: { check: string; where: string; word: string }; CATALOGUE_PAYLOAD_INVALID: { check: string; where: string; word: string }; CATALOGUE_PLAN_INVALID: { check: string; where: string; word: string }; CATALOGUE_ROLLBACK_UNKNOWN: { check: string; where: string; word: string }; CATALOGUE_UNAVAILABLE: { check: string; where: string; word: string }; CHECK_UNKNOWN: { check: string; where: string; word: string }; DIGEST_MISMATCH: { check: string; where: string; word: string }; NOT_NEWER: { check: string; where: string; word: string }; PART_UNKNOWN: { check: string; where: string; word: string } }",
+    "bounds": [
+     "check: `C-156.` and the row's number, 1 to 13",
+     "where: `src/ai-catalogue/<file> <function> > <region>`",
+     "word: `ai.refused.` and the code in lower case without underscores"
+    ]
+   },
+   "after": {
+    "kind": "value",
+    "handsBack": "{ ADVISORY_BAD_MOVE: { check: string; where: string; word: string }; ADVISORY_REASON_UNKNOWN: { check: string; where: string; word: string }; CATALOGUE_ENTRY_INVALID: { check: string; where: string; word: string }; CATALOGUE_EVIDENCE_MISSING: { check: string; where: string; word: string }; CATALOGUE_PATH_INVALID: { check: string; where: string; word: string }; CATALOGUE_PAYLOAD_INVALID: { check: string; where: string; word: string }; CATALOGUE_PLAN_INVALID: { check: string; where: string; word: string }; CATALOGUE_ROLLBACK_UNKNOWN: { check: string; where: string; word: string }; CATALOGUE_UNAVAILABLE: { check: string; where: string; word: string }; CHECK_UNKNOWN: { check: string; where: string; word: string }; DIGEST_MISMATCH: { check: string; where: string; word: string }; NOT_NEWER: { check: string; where: string; word: string }; PART_UNKNOWN: { check: string; where: string; word: string } }",
+    "bounds": [
+     "check: `C-156.` and the row's number, 1 to 13",
+     "where: `src/ai-catalogue/<file> <function> > <region>`",
+     "word: `ai.refused.` and the code in lower case without underscores"
+    ]
+   }
+  },
+  {
+   "module": "ai-catalogue",
+   "entry": "CATALOGUE_STATES",
+   "changes": [
+    "declaration changed (not classified)"
+   ],
+   "tells": "users",
+   "before": {
+    "kind": "value",
+    "handsBack": "readonly (\"current\" | \"needs_newer_release\" | \"stale\" | \"unavailable\")[]"
+   },
+   "after": {
+    "kind": "value",
+    "handsBack": "readonly (\"current\" | \"needs_newer_release\" | \"stale\" | \"unavailable\")[]"
+   }
+  },
+  {
+   "module": "ai-catalogue",
+   "entry": "CHECK_IDS",
+   "changes": [
+    "declaration changed (not classified)"
+   ],
+   "tells": "users",
+   "before": {
+    "kind": "value",
+    "handsBack": "readonly (\"P1\" | \"P2\" | \"P3\" | \"P4\" | \"P5\" | \"P6\" | \"P7\")[]"
+   },
+   "after": {
+    "kind": "value",
+    "handsBack": "readonly (\"P1\" | \"P2\" | \"P3\" | \"P4\" | \"P5\" | \"P6\" | \"P7\")[]"
+   }
+  },
+  {
+   "module": "ai-catalogue",
+   "entry": "Capabilities",
+   "changes": [
+    "cannot stand in"
+   ],
+   "tells": "users",
+   "before": {
+    "kind": "kind",
+    "accepts": "{ batch: { ev: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string }; value: boolean } | { open: true }; caching: { ev: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string }; value: \"automatic\" | \"explicit\" | \"none\" } | { open: true }; image_input: { ev: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string }; value: boolean } | { open: true }; parallel_tools: { ev: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string }; value: boolean } | { open: true }; schema_output: { ev: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string }; value: boolean } | { open: true }; schema_with_tools: { ev: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string }; value: boolean } | { open: true }; session: { ev: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string }; value: \"none\" | \"provider_state\" | \"resend_only\" } | { open: true }; streaming: { ev: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string }; value: \"none\" | \"text\" | \"tool_calls\" } | { open: true }; tools: { ev: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string }; value: boolean } | { open: true } }",
+    "handsBack": "{ batch: { ev: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string }; value: boolean } | { open: true }; caching: { ev: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string }; value: \"automatic\" | \"explicit\" | \"none\" } | { open: true }; image_input: { ev: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string }; value: boolean } | { open: true }; parallel_tools: { ev: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string }; value: boolean } | { open: true }; schema_output: { ev: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string }; value: boolean } | { open: true }; schema_with_tools: { ev: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string }; value: boolean } | { open: true }; session: { ev: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string }; value: \"none\" | \"provider_state\" | \"resend_only\" } | { open: true }; streaming: { ev: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string }; value: \"none\" | \"text\" | \"tool_calls\" } | { open: true }; tools: { ev: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string }; value: boolean } | { open: true } }",
+    "bounds": [
+     "date: a real calendar day written YYYY-MM-DD",
+     "page: text, not blank, at most 2000 characters; with quote, required on a check answer",
+     "quote: text, not blank, at most 8000 characters; with page, required on a check answer",
+     "source: text, not blank, at most 2000 characters"
+    ],
+    "side": "both"
+   },
+   "after": {
+    "kind": "kind",
+    "handsBack": "{ batch: { ev: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string }; value: boolean } | { open: true }; caching: { ev: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string }; value: \"automatic\" | \"explicit\" | \"none\" } | { open: true }; image_input: { ev: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string }; value: boolean } | { open: true }; parallel_tools: { ev: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string }; value: boolean } | { open: true }; schema_output: { ev: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string }; value: boolean } | { open: true }; schema_with_tools: { ev: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string }; value: boolean } | { open: true }; session: { ev: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string }; value: \"none\" | \"provider_state\" | \"resend_only\" } | { open: true }; streaming: { ev: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string }; value: \"none\" | \"text\" | \"tool_calls\" } | { open: true }; tools: { ev: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string }; value: boolean } | { open: true } }",
+    "bounds": [
+     "date: a real calendar day written YYYY-MM-DD",
+     "page: text, not blank, at most 2000 characters; with quote, required on a check answer",
+     "quote: text, not blank, at most 8000 characters; with page, required on a check answer",
+     "source: text, not blank, at most 2000 characters"
+    ],
+    "side": "handsBack"
+   }
+  },
+  {
+   "module": "ai-catalogue",
+   "entry": "CatalogueEntry",
+   "changes": [
+    "cannot stand in"
+   ],
+   "tells": "users",
+   "before": {
+    "kind": "kind",
+    "accepts": "{ adapter_type: string; capabilities: { batch: { ev: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string }; value: boolean } | { open: true }; caching: { ev: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string }; value: \"automatic\" | \"explicit\" | \"none\" } | { open: true }; image_input: { ev: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string }; value: boolean } | { open: true }; parallel_tools: { ev: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string }; value: boolean } | { open: true }; schema_output: { ev: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string }; value: boolean } | { open: true }; schema_with_tools: { ev: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string }; value: boolean } | { open: true }; session: { ev: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string }; value: \"none\" | \"provider_state\" | \"resend_only\" } | { open: true }; streaming: { ev: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string }; value: \"none\" | \"text\" | \"tool_calls\" } | { open: true }; tools: { ev: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string }; value: boolean } | { open: true } }; characterization?: { CH1: { conditions: unknown; ev: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string }; method: string; reviewer?: string; samples: null | number; value: unknown } | { open: true }; CH10: { ref: \"checks\" }; CH2: { conditions: unknown; ev: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string }; method: string; reviewer?: string; samples: null | number; value: unknown } | { open: true }; CH3: { conditions: unknown; ev: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string }; method: string; reviewer?: string; samples: null | number; value: unknown } | { open: true }; CH4: { conditions: unknown; ev: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string }; method: string; reviewer?: string; samples: null | number; value: unknown } | { open: true }; CH5: { conditions: unknown; ev: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string }; method: string; reviewer?: string; samples: null | number; value: unknown } | { open: true }; CH6: { conditions: unknown; ev: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string }; method: string; reviewer?: string; samples: null | number; value: unknown } | { open: true }; CH7: { conditions: unknown; ev: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string }; method: string; reviewer?: string; samples: null | number; value: unknown } | { open: true }; CH8: { conditions: unknown; ev: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string }; method: string; reviewer?: string; samples: null | number; value: unknown } | { open: true }; CH9: { conditions: unknown; ev: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string }; method: string; reviewer?: string; samples: null | number; value: unknown } | { open: true } } | null; checks: { P1: { answer: \"OPEN\"; ev?: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string } } | { answer: \"met\" | \"not_met\"; ev: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string } } | { open: true }; P2: { answer: \"OPEN\"; ev?: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string } } | { answer: \"met\" | \"not_met\"; ev: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string } } | { open: true }; P3: { answer: \"OPEN\"; ev?: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string } } | { answer: \"met\" | \"not_met\"; ev: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string } } | { open: true }; P4: { answer: \"OPEN\"; ev?: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string } } | { answer: \"met\" | \"not_met\"; ev: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string } } | { open: true }; P5: { answer: \"OPEN\"; ev?: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string } } | { answer: \"met\" | \"not_met\"; ev: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string } } | { open: true }; P6: { answer: \"OPEN\"; ev?: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string } } | { answer: \"met\" | \"not_met\"; ev: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string } } | { open: true }; P7: { answer: \"OPEN\"; ev?: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string } } | { answer: \"met\" | \"not_met\"; ev: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string } } | { open: true } }; confirmed_at: string; developer: { jurisdiction: { open: true } | string; name: string }; display_name: string; effort_classes?: { ev: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string }; low: string; medium: string }; effort_set: { default?: null | string; ev: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string }; values: string[] }; entry_id: string; gate: { [key: string]: { at: string; ev: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string }; limits: { kind: \"context_depth\" | \"no_image_input\" | \"no_parallel_tools\" | \"no_streaming\" | \"output_cap\"; value: unknown }[]; partial_coverage: boolean; run_ref: null | string; suiteVersions: { bank: null | number | string; image: null | number | string; scorer: null | number | string; thresholds: null | number | string }; tier: null | string; verdict: \"not_suitable\" | \"not_yet_rated\" | \"passes\" | \"passes_with_limits\" } }; host: string; lifecycle: \"lapsed\" | \"listed\" | \"retired\" | \"watch\"; limits: { context_effective: { ev: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string }; value: number } | { open: true }; context_stated: { ev: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string }; value: number } | { open: true }; image_max_bytes: { ev: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string }; value: number } | { open: true }; max_output: { ev: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string }; value: number } | { open: true } }; model: string; pin?: { allow_fallbacks: false; deny_collection: true; only: string[]; require_parameters: boolean; zero_retention?: boolean } | null; plan_ids: string[]; prices: { cache_read: null | number; cache_write: null | number; date: string; ev: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string }; input: null | number; output: null | number; tiers?: Object[]; unit: \"usd_per_million_tokens\" } | { open: true }; profile: { id: string; min_version: number }; provider: string; served_ids: string[]; shown: { breach_notification: { answer: \"OPEN\"; ev?: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string } } | { answer: \"met\" | \"not_met\"; ev: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string } } | { open: true }; terms_permit_use: { answer: \"OPEN\"; ev?: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string } } | { answer: \"met\" | \"not_met\"; ev: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string } } | { open: true } }; shutdown_date?: string; standard_task_costs: { by_part: { [key: string]: { high: number; low: number } }; ev: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string }; price_date: string; unit: string } | { open: true }; version: string; version_kind: \"dated\" | \"fixed\"; zero_retention: { ev: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string }; value: boolean } | { open: true } }",
+    "handsBack": "{ adapter_type: string; capabilities: { batch: { ev: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string }; value: boolean } | { open: true }; caching: { ev: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string }; value: \"automatic\" | \"explicit\" | \"none\" } | { open: true }; image_input: { ev: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string }; value: boolean } | { open: true }; parallel_tools: { ev: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string }; value: boolean } | { open: true }; schema_output: { ev: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string }; value: boolean } | { open: true }; schema_with_tools: { ev: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string }; value: boolean } | { open: true }; session: { ev: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string }; value: \"none\" | \"provider_state\" | \"resend_only\" } | { open: true }; streaming: { ev: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string }; value: \"none\" | \"text\" | \"tool_calls\" } | { open: true }; tools: { ev: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string }; value: boolean } | { open: true } }; characterization?: { CH1: { conditions: unknown; ev: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string }; method: string; reviewer?: string; samples: null | number; value: unknown } | { open: true }; CH10: { ref: \"checks\" }; CH2: { conditions: unknown; ev: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string }; method: string; reviewer?: string; samples: null | number; value: unknown } | { open: true }; CH3: { conditions: unknown; ev: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string }; method: string; reviewer?: string; samples: null | number; value: unknown } | { open: true }; CH4: { conditions: unknown; ev: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string }; method: string; reviewer?: string; samples: null | number; value: unknown } | { open: true }; CH5: { conditions: unknown; ev: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string }; method: string; reviewer?: string; samples: null | number; value: unknown } | { open: true }; CH6: { conditions: unknown; ev: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string }; method: string; reviewer?: string; samples: null | number; value: unknown } | { open: true }; CH7: { conditions: unknown; ev: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string }; method: string; reviewer?: string; samples: null | number; value: unknown } | { open: true }; CH8: { conditions: unknown; ev: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string }; method: string; reviewer?: string; samples: null | number; value: unknown } | { open: true }; CH9: { conditions: unknown; ev: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string }; method: string; reviewer?: string; samples: null | number; value: unknown } | { open: true } } | null; checks: { P1: { answer: \"OPEN\"; ev?: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string } } | { answer: \"met\" | \"not_met\"; ev: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string } } | { open: true }; P2: { answer: \"OPEN\"; ev?: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string } } | { answer: \"met\" | \"not_met\"; ev: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string } } | { open: true }; P3: { answer: \"OPEN\"; ev?: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string } } | { answer: \"met\" | \"not_met\"; ev: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string } } | { open: true }; P4: { answer: \"OPEN\"; ev?: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string } } | { answer: \"met\" | \"not_met\"; ev: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string } } | { open: true }; P5: { answer: \"OPEN\"; ev?: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string } } | { answer: \"met\" | \"not_met\"; ev: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string } } | { open: true }; P6: { answer: \"OPEN\"; ev?: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string } } | { answer: \"met\" | \"not_met\"; ev: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string } } | { open: true }; P7: { answer: \"OPEN\"; ev?: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string } } | { answer: \"met\" | \"not_met\"; ev: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string } } | { open: true } }; confirmed_at: string; developer: { jurisdiction: { open: true } | string; name: string }; display_name: string; effort_classes?: { ev: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string }; low: string; medium: string }; effort_set: { default?: null | string; ev: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string }; values: string[] }; entry_id: string; gate: { [key: string]: { at: string; ev: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string }; limits: { kind: \"context_depth\" | \"no_image_input\" | \"no_parallel_tools\" | \"no_streaming\" | \"output_cap\"; value: unknown }[]; partial_coverage: boolean; run_ref: null | string; suiteVersions: { bank: null | number | string; image: null | number | string; scorer: null | number | string; thresholds: null | number | string }; tier: null | string; verdict: \"not_suitable\" | \"not_yet_rated\" | \"passes\" | \"passes_with_limits\" } }; host: string; lifecycle: \"lapsed\" | \"listed\" | \"retired\" | \"watch\"; limits: { context_effective: { ev: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string }; value: number } | { open: true }; context_stated: { ev: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string }; value: number } | { open: true }; image_max_bytes: { ev: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string }; value: number } | { open: true }; max_output: { ev: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string }; value: number } | { open: true } }; model: string; pin?: { allow_fallbacks: false; deny_collection: true; only: string[]; require_parameters: boolean; zero_retention?: boolean } | null; plan_ids: string[]; prices: { cache_read: null | number; cache_write: null | number; date: string; ev: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string }; input: null | number; output: null | number; tiers?: Object[]; unit: \"usd_per_million_tokens\" } | { open: true }; profile: { id: string; min_version: number }; provider: string; served_ids: string[]; shown: { breach_notification: { answer: \"OPEN\"; ev?: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string } } | { answer: \"met\" | \"not_met\"; ev: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string } } | { open: true }; terms_permit_use: { answer: \"OPEN\"; ev?: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string } } | { answer: \"met\" | \"not_met\"; ev: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string } } | { open: true } }; shutdown_date?: string; standard_task_costs: { by_part: { [key: string]: { high: number; low: number } }; ev: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string }; price_date: string; unit: string } | { open: true }; version: string; version_kind: \"dated\" | \"fixed\"; zero_retention: { ev: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string }; value: boolean } | { open: true } }",
+    "bounds": [
+     "adapter_type: 1 to 64 characters, each a-z, 0-9, `.`, `_`, `:` or `-`",
+     "at: a real instant YYYY-MM-DDTHH:MM:SSZ or a real day YYYY-MM-DD",
+     "by_part: each key a part of the payload; low and high finite, 0 or more, low no more than high",
+     "cache_read: a finite number, 0 or more",
+     "cache_write: a finite number, 0 or more",
+     "characterization: present when the lifecycle is listed or watch",
+     "checks: P7 never met when the developer's jurisdiction is barred by the payload's policy",
+     "confirmed_at: a real calendar day written YYYY-MM-DD",
+     "date: a real calendar day written YYYY-MM-DD",
+     "developer: name text of at most 200 characters; jurisdiction 1 to 16 letters, digits or hyphens, or OPEN",
+     "display_name: text, not blank, at most 60 characters",
+     "effort_classes: low and medium each one of effort_set's values; only when there are values",
+     "effort_set: values distinct lowercase words of at most 16 letters; default one of them, none when there are none",
+     "entry_id: 1 to 96 characters, each a-z, 0-9, `.`, `_`, `:` or `-`",
+     "ev: graded REPRODUCED or REPORTED; CH4's REPORTED, with its reviewer",
+     "ev: graded REPRODUCED or REPORTED; REPRODUCED names its run_ref",
+     "gate: each key a part of the payload",
+     "host: the id of one of the payload's providers; a pin when its kind is aggregator or gateway, else none",
+     "input: a finite number, 0 or more",
+     "limits: each value a finite number, 0 or more",
+     "limits: none unless the verdict is passes_with_limits, then at least one",
+     "method: text, not blank, at most 400 characters",
+     "model: text, not blank, at most 200 characters",
+     "only: at least one, each a provider of the payload",
+     "output: a finite number, 0 or more",
+     "page: text, not blank, at most 2000 characters; with quote, required on a check answer",
+     "plan_ids: at least one, distinct, each a plan of the payload whose provider is the host",
+     "price_date: a real calendar day written YYYY-MM-DD",
+     "profile: id a profile of the payload of the same adapter_type; min_version whole, 1 to that profile's version",
+     "provider: the id of one of the payload's providers",
+     "quote: text, not blank, at most 8000 characters; with page, required on a check answer",
+     "run_ref: at most 200 characters, not blank",
+     "samples: whole number, 0 or more",
+     "served_ids: at least one, each text of at most 200 characters",
+     "shutdown_date: a real calendar day written YYYY-MM-DD",
+     "source: text, not blank, at most 2000 characters",
+     "tier: at most 64 characters, not blank",
+     "unit: text, not blank, at most 64 characters",
+     "version: text, not blank, at most 200 characters",
+     "zero_retention: true when the entry's zero_retention is true"
+    ],
+    "side": "both"
+   },
+   "after": {
+    "kind": "kind",
+    "handsBack": "{ adapter_type: string; capabilities: { batch: { ev: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string }; value: boolean } | { open: true }; caching: { ev: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string }; value: \"automatic\" | \"explicit\" | \"none\" } | { open: true }; image_input: { ev: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string }; value: boolean } | { open: true }; parallel_tools: { ev: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string }; value: boolean } | { open: true }; schema_output: { ev: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string }; value: boolean } | { open: true }; schema_with_tools: { ev: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string }; value: boolean } | { open: true }; session: { ev: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string }; value: \"none\" | \"provider_state\" | \"resend_only\" } | { open: true }; streaming: { ev: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string }; value: \"none\" | \"text\" | \"tool_calls\" } | { open: true }; tools: { ev: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string }; value: boolean } | { open: true } }; characterization?: { CH1: { conditions: unknown; ev: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string }; method: string; reviewer?: string; samples: null | number; value: unknown } | { open: true }; CH10: { ref: \"checks\" }; CH2: { conditions: unknown; ev: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string }; method: string; reviewer?: string; samples: null | number; value: unknown } | { open: true }; CH3: { conditions: unknown; ev: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string }; method: string; reviewer?: string; samples: null | number; value: unknown } | { open: true }; CH4: { conditions: unknown; ev: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string }; method: string; reviewer?: string; samples: null | number; value: unknown } | { open: true }; CH5: { conditions: unknown; ev: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string }; method: string; reviewer?: string; samples: null | number; value: unknown } | { open: true }; CH6: { conditions: unknown; ev: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string }; method: string; reviewer?: string; samples: null | number; value: unknown } | { open: true }; CH7: { conditions: unknown; ev: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string }; method: string; reviewer?: string; samples: null | number; value: unknown } | { open: true }; CH8: { conditions: unknown; ev: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string }; method: string; reviewer?: string; samples: null | number; value: unknown } | { open: true }; CH9: { conditions: unknown; ev: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string }; method: string; reviewer?: string; samples: null | number; value: unknown } | { open: true } } | null; checks: { P1: { answer: \"OPEN\"; ev?: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string } } | { answer: \"met\" | \"not_met\"; ev: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string } } | { open: true }; P2: { answer: \"OPEN\"; ev?: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string } } | { answer: \"met\" | \"not_met\"; ev: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string } } | { open: true }; P3: { answer: \"OPEN\"; ev?: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string } } | { answer: \"met\" | \"not_met\"; ev: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string } } | { open: true }; P4: { answer: \"OPEN\"; ev?: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string } } | { answer: \"met\" | \"not_met\"; ev: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string } } | { open: true }; P5: { answer: \"OPEN\"; ev?: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string } } | { answer: \"met\" | \"not_met\"; ev: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string } } | { open: true }; P6: { answer: \"OPEN\"; ev?: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string } } | { answer: \"met\" | \"not_met\"; ev: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string } } | { open: true }; P7: { answer: \"OPEN\"; ev?: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string } } | { answer: \"met\" | \"not_met\"; ev: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string } } | { open: true } }; confirmed_at: string; developer: { jurisdiction: { open: true } | string; name: string }; display_name: string; effort_classes?: { ev: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string }; low: string; medium: string }; effort_set: { default?: null | string; ev: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string }; values: string[] }; entry_id: string; gate: { [key: string]: { at: string; ev: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string }; limits: { kind: \"context_depth\" | \"no_image_input\" | \"no_parallel_tools\" | \"no_streaming\" | \"output_cap\"; value: unknown }[]; partial_coverage: boolean; run_ref: null | string; suiteVersions: { bank: null | number | string; image: null | number | string; scorer: null | number | string; thresholds: null | number | string }; tier: null | string; verdict: \"not_suitable\" | \"not_yet_rated\" | \"passes\" | \"passes_with_limits\" } }; host: string; lifecycle: \"lapsed\" | \"listed\" | \"retired\" | \"watch\"; limits: { context_effective: { ev: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string }; value: number } | { open: true }; context_stated: { ev: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string }; value: number } | { open: true }; image_max_bytes: { ev: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string }; value: number } | { open: true }; max_output: { ev: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string }; value: number } | { open: true } }; model: string; pin?: { allow_fallbacks: false; deny_collection: true; only: string[]; require_parameters: boolean; zero_retention?: boolean } | null; plan_ids: string[]; prices: { cache_read: null | number; cache_write: null | number; date: string; ev: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string }; input: null | number; output: null | number; tiers?: Object[]; unit: \"usd_per_million_tokens\" } | { open: true }; profile: { id: string; min_version: number }; provider: string; served_ids: string[]; shown: { breach_notification: { answer: \"OPEN\"; ev?: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string } } | { answer: \"met\" | \"not_met\"; ev: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string } } | { open: true }; terms_permit_use: { answer: \"OPEN\"; ev?: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string } } | { answer: \"met\" | \"not_met\"; ev: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string } } | { open: true } }; shutdown_date?: string; standard_task_costs: { by_part: { [key: string]: { high: number; low: number } }; ev: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string }; price_date: string; unit: string } | { open: true }; version: string; version_kind: \"dated\" | \"fixed\"; zero_retention: { ev: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string }; value: boolean } | { open: true } }",
+    "bounds": [
+     "adapter_type: 1 to 64 characters, each a-z, 0-9, `.`, `_`, `:` or `-`",
+     "at: a real instant YYYY-MM-DDTHH:MM:SSZ or a real day YYYY-MM-DD",
+     "by_part: each key a part of the payload; low and high finite, 0 or more, low no more than high",
+     "cache_read: a finite number, 0 or more",
+     "cache_write: a finite number, 0 or more",
+     "characterization: present when the lifecycle is listed or watch",
+     "checks: P7 never met when the developer's jurisdiction is barred by the payload's policy",
+     "confirmed_at: a real calendar day written YYYY-MM-DD",
+     "date: a real calendar day written YYYY-MM-DD",
+     "developer: name text of at most 200 characters; jurisdiction 1 to 16 letters, digits or hyphens, or OPEN",
+     "display_name: text, not blank, at most 60 characters",
+     "effort_classes: low and medium each one of effort_set's values; only when there are values",
+     "effort_set: values distinct lowercase words of at most 16 letters; default one of them, none when there are none",
+     "entry_id: 1 to 96 characters, each a-z, 0-9, `.`, `_`, `:` or `-`",
+     "ev: graded REPRODUCED or REPORTED; CH4's REPORTED, with its reviewer",
+     "ev: graded REPRODUCED or REPORTED; REPRODUCED names its run_ref",
+     "gate: each key a part of the payload",
+     "host: the id of one of the payload's providers; a pin when its kind is aggregator or gateway, else none",
+     "input: a finite number, 0 or more",
+     "limits: each value a finite number, 0 or more",
+     "limits: none unless the verdict is passes_with_limits, then at least one",
+     "method: text, not blank, at most 400 characters",
+     "model: text, not blank, at most 200 characters",
+     "only: at least one, each a provider of the payload",
+     "output: a finite number, 0 or more",
+     "page: text, not blank, at most 2000 characters; with quote, required on a check answer",
+     "plan_ids: at least one, distinct, each a plan of the payload whose provider is the host",
+     "price_date: a real calendar day written YYYY-MM-DD",
+     "profile: id a profile of the payload of the same adapter_type; min_version whole, 1 to that profile's version",
+     "provider: the id of one of the payload's providers",
+     "quote: text, not blank, at most 8000 characters; with page, required on a check answer",
+     "run_ref: at most 200 characters, not blank",
+     "samples: whole number, 0 or more",
+     "served_ids: at least one, each text of at most 200 characters",
+     "shutdown_date: a real calendar day written YYYY-MM-DD",
+     "source: text, not blank, at most 2000 characters",
+     "tier: at most 64 characters, not blank",
+     "unit: text, not blank, at most 64 characters",
+     "version: text, not blank, at most 200 characters",
+     "zero_retention: true when the entry's zero_retention is true"
+    ],
+    "side": "handsBack"
+   }
+  },
+  {
+   "module": "ai-catalogue",
+   "entry": "CatalogueEnv",
+   "changes": [
+    "accepts more",
+    "bound changed"
+   ],
+   "tells": "users",
+   "before": {
+    "kind": "kind",
+    "accepts": "{ BIO_NOW_MS?: number | string }",
+    "side": "accepts"
+   },
+   "after": {
+    "kind": "kind",
+    "accepts": "{ AI_CATALOGUE_DEVELOPMENT?: string; AI_CATALOGUE_SEED_SIGNATURE?: string; BIO_NOW_MS?: number | string }",
+    "bounds": [
+     "AI_CATALOGUE_DEVELOPMENT: exactly \"1\" to trust development key lines; any other value trusts none"
+    ],
+    "side": "accepts"
+   }
+  },
+  {
+   "module": "ai-catalogue",
+   "entry": "CataloguePlan",
+   "changes": [
+    "cannot stand in"
+   ],
+   "tells": "users",
+   "before": {
+    "kind": "kind",
+    "accepts": "{ binding_terms: { doc: string; effective_from: string; effective_to?: string; ev: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string }; kind: \"deprecation_notice\" | \"high_risk_review\" | \"indemnity\" | \"no_sla\" | \"other\" | \"political_use\"; quote: string; section: string; version: number | string }[]; confirmed_at: string; connection_ways: (\"built_in\" | \"pasted_key\" | \"provider_signin\")[]; credential_kind: \"api_key\" | \"none\" | \"signin_token\"; free_tier_trains: { ev: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string }; value: boolean } | { open: true }; guidance_id: string; kind: \"aggregator\" | \"api\" | \"builtin\" | \"custom\" | \"gateway\" | \"subscription\"; lifecycle: \"lapsed\" | \"listed\" | \"retired\" | \"watch\"; means_allowed: { ev: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string }; value: (\"gateway\" | \"issued\" | \"none\" | \"reference\" | \"sealed\")[] } | { open: true }; money: { ev: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string }; value: \"none\" | \"priced\" | \"reported\" } | { open: true }; plan_id: string; price_basis: { amount?: null | number; basis: string; currency?: unknown; date: string; ev: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string }; includes: unknown; limits: unknown; period?: unknown } | { open: true }; provider: string; restrictions: ({ date: string; kind: string; page: string; quote: string } | { open: true })[]; runtimes: { ev: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string }; value: (\"member_device\" | \"member_runtime\" | \"shared_worker\")[] } | { open: true }; scope: { ev: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string }; value: \"member\" | \"project\" | \"team\" | \"unconfirmed\" } | { open: true }; token_bounds?: { max_length: number; min_length: number }; token_storage: { ev: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string }; value: \"member_device\" | \"reference_only\" | \"sealed\" } | { open: true }; warning_id?: string }",
+    "handsBack": "{ binding_terms: { doc: string; effective_from: string; effective_to?: string; ev: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string }; kind: \"deprecation_notice\" | \"high_risk_review\" | \"indemnity\" | \"no_sla\" | \"other\" | \"political_use\"; quote: string; section: string; version: number | string }[]; confirmed_at: string; connection_ways: (\"built_in\" | \"pasted_key\" | \"provider_signin\")[]; credential_kind: \"api_key\" | \"none\" | \"signin_token\"; free_tier_trains: { ev: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string }; value: boolean } | { open: true }; guidance_id: string; kind: \"aggregator\" | \"api\" | \"builtin\" | \"custom\" | \"gateway\" | \"subscription\"; lifecycle: \"lapsed\" | \"listed\" | \"retired\" | \"watch\"; means_allowed: { ev: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string }; value: (\"gateway\" | \"issued\" | \"none\" | \"reference\" | \"sealed\")[] } | { open: true }; money: { ev: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string }; value: \"none\" | \"priced\" | \"reported\" } | { open: true }; plan_id: string; price_basis: { amount?: null | number; basis: string; currency?: unknown; date: string; ev: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string }; includes: unknown; limits: unknown; period?: unknown } | { open: true }; provider: string; restrictions: ({ date: string; kind: string; page: string; quote: string } | { open: true })[]; runtimes: { ev: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string }; value: (\"member_device\" | \"member_runtime\" | \"shared_worker\")[] } | { open: true }; scope: { ev: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string }; value: \"member\" | \"project\" | \"team\" | \"unconfirmed\" } | { open: true }; token_bounds?: { max_length: number; min_length: number }; token_storage: { ev: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string }; value: \"member_device\" | \"reference_only\" | \"sealed\" } | { open: true }; warning_id?: string }",
+    "bounds": [
+     "amount: a finite number, 0 or more",
+     "basis: text, not blank, at most 64 characters",
+     "confirmed_at: a real calendar day written YYYY-MM-DD",
+     "connection_ways: at least one, distinct",
+     "date: a real calendar day written YYYY-MM-DD",
+     "doc: text, not blank, at most 400 characters",
+     "effective_from: a real calendar day written YYYY-MM-DD",
+     "effective_to: a real calendar day written YYYY-MM-DD",
+     "guidance_id: 1 to 96 characters, each a-z, 0-9, `.`, `_`, `:` or `-`",
+     "kind: text, not blank, at most 64 characters",
+     "means_allowed: at least one, distinct; `none` alone and only for credential kind none; gateway only for api_key; issued only for signin_token",
+     "page: text, not blank, at most 2000 characters; with quote, required on a check answer",
+     "plan_id: 1 to 96 characters, each a-z, 0-9, `.`, `_`, `:` or `-`",
+     "provider: the id of one of the payload's providers",
+     "quote: text, not blank, at most 8000 characters",
+     "quote: text, not blank, at most 8000 characters; with page, required on a check answer",
+     "runtimes: at least one, distinct",
+     "section: text, not blank, at most 200 characters",
+     "source: text, not blank, at most 2000 characters",
+     "token_bounds: only for credential kind signin_token; whole numbers, 1 or more, min_length no more than max_length",
+     "version: as text, not blank, at most 64 characters",
+     "warning_id: a warning of the payload, required when free_tier_trains is true"
+    ],
+    "side": "both"
+   },
+   "after": {
+    "kind": "kind",
+    "handsBack": "{ binding_terms: { doc: string; effective_from: string; effective_to?: string; ev: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string }; kind: \"deprecation_notice\" | \"high_risk_review\" | \"indemnity\" | \"no_sla\" | \"other\" | \"political_use\"; quote: string; section: string; version: number | string }[]; confirmed_at: string; connection_ways: (\"built_in\" | \"pasted_key\" | \"provider_signin\")[]; credential_kind: \"api_key\" | \"none\" | \"signin_token\"; free_tier_trains: { ev: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string }; value: boolean } | { open: true }; guidance_id: string; kind: \"aggregator\" | \"api\" | \"builtin\" | \"custom\" | \"gateway\" | \"subscription\"; lifecycle: \"lapsed\" | \"listed\" | \"retired\" | \"watch\"; means_allowed: { ev: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string }; value: (\"gateway\" | \"issued\" | \"none\" | \"reference\" | \"sealed\")[] } | { open: true }; money: { ev: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string }; value: \"none\" | \"priced\" | \"reported\" } | { open: true }; plan_id: string; price_basis: { amount?: null | number; basis: string; currency?: unknown; date: string; ev: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string }; includes: unknown; limits: unknown; period?: unknown } | { open: true }; provider: string; restrictions: ({ date: string; kind: string; page: string; quote: string } | { open: true })[]; runtimes: { ev: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string }; value: (\"member_device\" | \"member_runtime\" | \"shared_worker\")[] } | { open: true }; scope: { ev: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string }; value: \"member\" | \"project\" | \"team\" | \"unconfirmed\" } | { open: true }; token_bounds?: { max_length: number; min_length: number }; token_storage: { ev: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string }; value: \"member_device\" | \"reference_only\" | \"sealed\" } | { open: true }; warning_id?: string }",
+    "bounds": [
+     "amount: a finite number, 0 or more",
+     "basis: text, not blank, at most 64 characters",
+     "confirmed_at: a real calendar day written YYYY-MM-DD",
+     "connection_ways: at least one, distinct",
+     "date: a real calendar day written YYYY-MM-DD",
+     "doc: text, not blank, at most 400 characters",
+     "effective_from: a real calendar day written YYYY-MM-DD",
+     "effective_to: a real calendar day written YYYY-MM-DD",
+     "guidance_id: 1 to 96 characters, each a-z, 0-9, `.`, `_`, `:` or `-`",
+     "kind: text, not blank, at most 64 characters",
+     "means_allowed: at least one, distinct; `none` alone and only for credential kind none; gateway only for api_key; issued only for signin_token",
+     "page: text, not blank, at most 2000 characters; with quote, required on a check answer",
+     "plan_id: 1 to 96 characters, each a-z, 0-9, `.`, `_`, `:` or `-`",
+     "provider: the id of one of the payload's providers",
+     "quote: text, not blank, at most 8000 characters",
+     "quote: text, not blank, at most 8000 characters; with page, required on a check answer",
+     "runtimes: at least one, distinct",
+     "section: text, not blank, at most 200 characters",
+     "source: text, not blank, at most 2000 characters",
+     "token_bounds: only for credential kind signin_token; whole numbers, 1 or more, min_length no more than max_length",
+     "version: as text, not blank, at most 64 characters",
+     "warning_id: a warning of the payload, required when free_tier_trains is true"
+    ],
+    "side": "handsBack"
+   }
+  },
+  {
+   "module": "ai-catalogue",
+   "entry": "CatalogueProvider",
+   "changes": [
+    "cannot stand in"
+   ],
+   "tells": "users",
+   "before": {
+    "kind": "kind",
+    "accepts": "{ id: string; kind: \"aggregator\" | \"builtin\" | \"custom\" | \"direct\" | \"gateway\"; name: string }",
+    "handsBack": "{ id: string; kind: \"aggregator\" | \"builtin\" | \"custom\" | \"direct\" | \"gateway\"; name: string }",
+    "bounds": [
+     "name: text, not blank, at most 200 characters"
+    ],
+    "side": "both"
+   },
+   "after": {
+    "kind": "kind",
+    "handsBack": "{ id: string; kind: \"aggregator\" | \"builtin\" | \"custom\" | \"direct\" | \"gateway\"; name: string }",
+    "bounds": [
+     "name: text, not blank, at most 200 characters"
+    ],
+    "side": "handsBack"
+   }
+  },
+  {
+   "module": "ai-catalogue",
+   "entry": "Characteristic",
+   "changes": [
+    "cannot stand in"
+   ],
+   "tells": "users",
+   "before": {
+    "kind": "kind",
+    "accepts": "{ conditions: unknown; ev: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string }; method: string; reviewer?: string; samples: null | number; value: unknown }",
+    "handsBack": "{ conditions: unknown; ev: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string }; method: string; reviewer?: string; samples: null | number; value: unknown }",
+    "bounds": [
+     "date: a real calendar day written YYYY-MM-DD",
+     "ev: graded REPRODUCED or REPORTED; CH4's REPORTED, with its reviewer",
+     "method: text, not blank, at most 400 characters",
+     "page: text, not blank, at most 2000 characters; with quote, required on a check answer",
+     "quote: text, not blank, at most 8000 characters; with page, required on a check answer",
+     "samples: whole number, 0 or more",
+     "source: text, not blank, at most 2000 characters"
+    ],
+    "side": "both"
+   },
+   "after": {
+    "kind": "kind",
+    "handsBack": "{ conditions: unknown; ev: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string }; method: string; reviewer?: string; samples: null | number; value: unknown }",
+    "bounds": [
+     "date: a real calendar day written YYYY-MM-DD",
+     "ev: graded REPRODUCED or REPORTED; CH4's REPORTED, with its reviewer",
+     "method: text, not blank, at most 400 characters",
+     "page: text, not blank, at most 2000 characters; with quote, required on a check answer",
+     "quote: text, not blank, at most 8000 characters; with page, required on a check answer",
+     "samples: whole number, 0 or more",
+     "source: text, not blank, at most 2000 characters"
+    ],
+    "side": "handsBack"
+   }
+  },
+  {
+   "module": "ai-catalogue",
+   "entry": "Characterization",
+   "changes": [
+    "cannot stand in"
+   ],
+   "tells": "users",
+   "before": {
+    "kind": "kind",
+    "accepts": "{ CH1: { conditions: unknown; ev: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string }; method: string; reviewer?: string; samples: null | number; value: unknown } | { open: true }; CH10: { ref: \"checks\" }; CH2: { conditions: unknown; ev: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string }; method: string; reviewer?: string; samples: null | number; value: unknown } | { open: true }; CH3: { conditions: unknown; ev: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string }; method: string; reviewer?: string; samples: null | number; value: unknown } | { open: true }; CH4: { conditions: unknown; ev: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string }; method: string; reviewer?: string; samples: null | number; value: unknown } | { open: true }; CH5: { conditions: unknown; ev: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string }; method: string; reviewer?: string; samples: null | number; value: unknown } | { open: true }; CH6: { conditions: unknown; ev: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string }; method: string; reviewer?: string; samples: null | number; value: unknown } | { open: true }; CH7: { conditions: unknown; ev: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string }; method: string; reviewer?: string; samples: null | number; value: unknown } | { open: true }; CH8: { conditions: unknown; ev: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string }; method: string; reviewer?: string; samples: null | number; value: unknown } | { open: true }; CH9: { conditions: unknown; ev: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string }; method: string; reviewer?: string; samples: null | number; value: unknown } | { open: true } }",
+    "handsBack": "{ CH1: { conditions: unknown; ev: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string }; method: string; reviewer?: string; samples: null | number; value: unknown } | { open: true }; CH10: { ref: \"checks\" }; CH2: { conditions: unknown; ev: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string }; method: string; reviewer?: string; samples: null | number; value: unknown } | { open: true }; CH3: { conditions: unknown; ev: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string }; method: string; reviewer?: string; samples: null | number; value: unknown } | { open: true }; CH4: { conditions: unknown; ev: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string }; method: string; reviewer?: string; samples: null | number; value: unknown } | { open: true }; CH5: { conditions: unknown; ev: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string }; method: string; reviewer?: string; samples: null | number; value: unknown } | { open: true }; CH6: { conditions: unknown; ev: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string }; method: string; reviewer?: string; samples: null | number; value: unknown } | { open: true }; CH7: { conditions: unknown; ev: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string }; method: string; reviewer?: string; samples: null | number; value: unknown } | { open: true }; CH8: { conditions: unknown; ev: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string }; method: string; reviewer?: string; samples: null | number; value: unknown } | { open: true }; CH9: { conditions: unknown; ev: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string }; method: string; reviewer?: string; samples: null | number; value: unknown } | { open: true } }",
+    "bounds": [
+     "date: a real calendar day written YYYY-MM-DD",
+     "ev: graded REPRODUCED or REPORTED; CH4's REPORTED, with its reviewer",
+     "method: text, not blank, at most 400 characters",
+     "page: text, not blank, at most 2000 characters; with quote, required on a check answer",
+     "quote: text, not blank, at most 8000 characters; with page, required on a check answer",
+     "samples: whole number, 0 or more",
+     "source: text, not blank, at most 2000 characters"
+    ],
+    "side": "both"
+   },
+   "after": {
+    "kind": "kind",
+    "handsBack": "{ CH1: { conditions: unknown; ev: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string }; method: string; reviewer?: string; samples: null | number; value: unknown } | { open: true }; CH10: { ref: \"checks\" }; CH2: { conditions: unknown; ev: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string }; method: string; reviewer?: string; samples: null | number; value: unknown } | { open: true }; CH3: { conditions: unknown; ev: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string }; method: string; reviewer?: string; samples: null | number; value: unknown } | { open: true }; CH4: { conditions: unknown; ev: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string }; method: string; reviewer?: string; samples: null | number; value: unknown } | { open: true }; CH5: { conditions: unknown; ev: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string }; method: string; reviewer?: string; samples: null | number; value: unknown } | { open: true }; CH6: { conditions: unknown; ev: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string }; method: string; reviewer?: string; samples: null | number; value: unknown } | { open: true }; CH7: { conditions: unknown; ev: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string }; method: string; reviewer?: string; samples: null | number; value: unknown } | { open: true }; CH8: { conditions: unknown; ev: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string }; method: string; reviewer?: string; samples: null | number; value: unknown } | { open: true }; CH9: { conditions: unknown; ev: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string }; method: string; reviewer?: string; samples: null | number; value: unknown } | { open: true } }",
+    "bounds": [
+     "date: a real calendar day written YYYY-MM-DD",
+     "ev: graded REPRODUCED or REPORTED; CH4's REPORTED, with its reviewer",
+     "method: text, not blank, at most 400 characters",
+     "page: text, not blank, at most 2000 characters; with quote, required on a check answer",
+     "quote: text, not blank, at most 8000 characters; with page, required on a check answer",
+     "samples: whole number, 0 or more",
+     "source: text, not blank, at most 2000 characters"
+    ],
+    "side": "handsBack"
+   }
+  },
+  {
+   "module": "ai-catalogue",
+   "entry": "CheckAnswer",
+   "changes": [
+    "cannot stand in"
+   ],
+   "tells": "users",
+   "before": {
+    "kind": "kind",
+    "accepts": "{ answer: \"OPEN\"; ev?: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string } } | { answer: \"met\" | \"not_met\"; ev: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string } } | { open: true }",
+    "handsBack": "{ answer: \"OPEN\"; ev?: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string } } | { answer: \"met\" | \"not_met\"; ev: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string } } | { open: true }",
+    "bounds": [
+     "date: a real calendar day written YYYY-MM-DD",
+     "page: text, not blank, at most 2000 characters; with quote, required on a check answer",
+     "quote: text, not blank, at most 8000 characters; with page, required on a check answer",
+     "source: text, not blank, at most 2000 characters"
+    ],
+    "side": "both"
+   },
+   "after": {
+    "kind": "kind",
+    "handsBack": "{ answer: \"OPEN\"; ev?: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string } } | { answer: \"met\" | \"not_met\"; ev: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string } } | { open: true }",
+    "bounds": [
+     "date: a real calendar day written YYYY-MM-DD",
+     "page: text, not blank, at most 2000 characters; with quote, required on a check answer",
+     "quote: text, not blank, at most 8000 characters; with page, required on a check answer",
+     "source: text, not blank, at most 2000 characters"
+    ],
+    "side": "handsBack"
+   }
+  },
+  {
+   "module": "ai-catalogue",
+   "entry": "CheckId",
+   "changes": [
+    "cannot stand in"
+   ],
+   "tells": "users",
+   "before": {
+    "kind": "kind",
+    "accepts": "\"P1\" | \"P2\" | \"P3\" | \"P4\" | \"P5\" | \"P6\" | \"P7\"",
+    "handsBack": "\"P1\" | \"P2\" | \"P3\" | \"P4\" | \"P5\" | \"P6\" | \"P7\"",
+    "side": "both"
+   },
+   "after": {
+    "kind": "kind",
+    "handsBack": "\"P1\" | \"P2\" | \"P3\" | \"P4\" | \"P5\" | \"P6\" | \"P7\"",
+    "side": "handsBack"
+   }
+  },
+  {
+   "module": "ai-catalogue",
+   "entry": "Claim",
+   "changes": [
+    "cannot stand in"
+   ],
+   "tells": "users",
+   "before": {
+    "kind": "kind",
+    "accepts": "{ ev: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string }; value: T } | { open: true }",
+    "handsBack": "{ ev: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string }; value: T } | { open: true }",
+    "bounds": [
+     "date: a real calendar day written YYYY-MM-DD",
+     "page: text, not blank, at most 2000 characters; with quote, required on a check answer",
+     "quote: text, not blank, at most 8000 characters; with page, required on a check answer",
+     "source: text, not blank, at most 2000 characters"
+    ],
+    "side": "both"
+   },
+   "after": {
+    "kind": "kind",
+    "handsBack": "{ ev: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string }; value: T } | { open: true }",
+    "bounds": [
+     "date: a real calendar day written YYYY-MM-DD",
+     "page: text, not blank, at most 2000 characters; with quote, required on a check answer",
+     "quote: text, not blank, at most 8000 characters; with page, required on a check answer",
+     "source: text, not blank, at most 2000 characters"
+    ],
+    "side": "handsBack"
+   }
+  },
+  {
+   "module": "ai-catalogue",
+   "entry": "CombinedResult",
+   "changes": [
+    "cannot stand in"
+   ],
+   "tells": "users",
+   "before": {
+    "kind": "kind",
+    "accepts": "{ as_of: string; confirmed: boolean; groups: { [key: string]: { k: number; n: number; wilson_high: unknown; wilson_low: unknown } }; left_out: number; limits: unknown[]; part: string; results: { reported: number; reproduced: number; total: number }; speed: { median_ms: { open: true } | null | number; p90_ms: { open: true } | null | number } | { open: true }; subject_id: string; suiteVersions: Object; task_cost: { high: { open: true } | null | number; low: { open: true } | null | number; price_date: string; unit: string } | { open: true }; verdict: \"not_suitable\" | \"not_yet_rated\" | \"passes\" | \"passes_with_limits\"; window: { from: unknown; to: unknown } }",
+    "handsBack": "{ as_of: string; confirmed: boolean; groups: { [key: string]: { k: number; n: number; wilson_high: unknown; wilson_low: unknown } }; left_out: number; limits: unknown[]; part: string; results: { reported: number; reproduced: number; total: number }; speed: { median_ms: { open: true } | null | number; p90_ms: { open: true } | null | number } | { open: true }; subject_id: string; suiteVersions: Object; task_cost: { high: { open: true } | null | number; low: { open: true } | null | number; price_date: string; unit: string } | { open: true }; verdict: \"not_suitable\" | \"not_yet_rated\" | \"passes\" | \"passes_with_limits\"; window: { from: unknown; to: unknown } }",
+    "bounds": [
+     "as_of: a real calendar day written YYYY-MM-DD",
+     "confirmed: true exactly when total is above 0 and reported is 0",
+     "groups: k and n whole, k no more than n",
+     "left_out: whole number, 0 or more",
+     "price_date: a real calendar day written YYYY-MM-DD",
+     "results: whole numbers; total is reproduced plus reported",
+     "subject_id: an entry's or a tested AI's id",
+     "unit: text, not blank, at most 64 characters"
+    ],
+    "side": "both"
+   },
+   "after": {
+    "kind": "kind",
+    "handsBack": "{ as_of: string; confirmed: boolean; groups: { [key: string]: { k: number; n: number; wilson_high: unknown; wilson_low: unknown } }; left_out: number; limits: unknown[]; part: string; results: { reported: number; reproduced: number; total: number }; speed: { median_ms: { open: true } | null | number; p90_ms: { open: true } | null | number } | { open: true }; subject_id: string; suiteVersions: Object; task_cost: { high: { open: true } | null | number; low: { open: true } | null | number; price_date: string; unit: string } | { open: true }; verdict: \"not_suitable\" | \"not_yet_rated\" | \"passes\" | \"passes_with_limits\"; window: { from: unknown; to: unknown } }",
+    "bounds": [
+     "as_of: a real calendar day written YYYY-MM-DD",
+     "confirmed: true exactly when total is above 0 and reported is 0",
+     "groups: k and n whole, k no more than n",
+     "left_out: whole number, 0 or more",
+     "price_date: a real calendar day written YYYY-MM-DD",
+     "results: whole numbers; total is reproduced plus reported",
+     "subject_id: an entry's or a tested AI's id",
+     "unit: text, not blank, at most 64 characters"
+    ],
+    "side": "handsBack"
+   }
+  },
+  {
+   "module": "ai-catalogue",
+   "entry": "ConnectionWay",
+   "changes": [
+    "cannot stand in"
+   ],
+   "tells": "users",
+   "before": {
+    "kind": "kind",
+    "accepts": "\"built_in\" | \"pasted_key\" | \"provider_signin\"",
+    "handsBack": "\"built_in\" | \"pasted_key\" | \"provider_signin\"",
+    "side": "both"
+   },
+   "after": {
+    "kind": "kind",
+    "handsBack": "\"built_in\" | \"pasted_key\" | \"provider_signin\"",
+    "side": "handsBack"
+   }
+  },
+  {
+   "module": "ai-catalogue",
+   "entry": "CredentialKind",
+   "changes": [
+    "cannot stand in"
+   ],
+   "tells": "users",
+   "before": {
+    "kind": "kind",
+    "accepts": "\"api_key\" | \"none\" | \"signin_token\"",
+    "handsBack": "\"api_key\" | \"none\" | \"signin_token\"",
+    "side": "both"
+   },
+   "after": {
+    "kind": "kind",
+    "handsBack": "\"api_key\" | \"none\" | \"signin_token\"",
+    "side": "handsBack"
+   }
+  },
+  {
+   "module": "ai-catalogue",
+   "entry": "DEVELOPMENT_KEY_MARK",
+   "changes": [
+    "new entry"
+   ],
+   "after": {
+    "kind": "value",
+    "handsBack": "string"
+   },
+   "tells": "nobody"
+  },
+  {
+   "module": "ai-catalogue",
+   "entry": "DEVELOPMENT_VAR",
+   "changes": [
+    "new entry"
+   ],
+   "after": {
+    "kind": "value",
+    "handsBack": "string"
+   },
+   "tells": "nobody"
+  },
+  {
+   "module": "ai-catalogue",
+   "entry": "DISPLAY_NAME_MAX",
+   "changes": [
+    "declaration changed (not classified)"
+   ],
+   "tells": "users",
+   "before": {
+    "kind": "value",
+    "handsBack": "number"
+   },
+   "after": {
+    "kind": "value",
+    "handsBack": "number"
+   }
+  },
+  {
+   "module": "ai-catalogue",
+   "entry": "EFFORT_WORD_MAX",
+   "changes": [
+    "declaration changed (not classified)"
+   ],
+   "tells": "users",
+   "before": {
+    "kind": "value",
+    "handsBack": "number"
+   },
+   "after": {
+    "kind": "value",
+    "handsBack": "number"
+   }
+  },
+  {
+   "module": "ai-catalogue",
+   "entry": "ENTRY_ID_MAX",
+   "changes": [
+    "declaration changed (not classified)"
+   ],
+   "tells": "users",
+   "before": {
+    "kind": "value",
+    "handsBack": "number"
+   },
+   "after": {
+    "kind": "value",
+    "handsBack": "number"
+   }
+  },
+  {
+   "module": "ai-catalogue",
+   "entry": "EntryPin",
+   "changes": [
+    "cannot stand in"
+   ],
+   "tells": "users",
+   "before": {
+    "kind": "kind",
+    "accepts": "{ allow_fallbacks: false; deny_collection: true; only: string[]; require_parameters: boolean; zero_retention?: boolean }",
+    "handsBack": "{ allow_fallbacks: false; deny_collection: true; only: string[]; require_parameters: boolean; zero_retention?: boolean }",
+    "bounds": [
+     "only: at least one, each a provider of the payload",
+     "zero_retention: true when the entry's zero_retention is true"
+    ],
+    "side": "both"
+   },
+   "after": {
+    "kind": "kind",
+    "handsBack": "{ allow_fallbacks: false; deny_collection: true; only: string[]; require_parameters: boolean; zero_retention?: boolean }",
+    "bounds": [
+     "only: at least one, each a provider of the payload",
+     "zero_retention: true when the entry's zero_retention is true"
+    ],
+    "side": "handsBack"
+   }
+  },
+  {
+   "module": "ai-catalogue",
+   "entry": "EntryPrices",
+   "changes": [
+    "cannot stand in"
+   ],
+   "tells": "users",
+   "before": {
+    "kind": "kind",
+    "accepts": "{ cache_read: null | number; cache_write: null | number; date: string; ev: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string }; input: null | number; output: null | number; tiers?: Object[]; unit: \"usd_per_million_tokens\" }",
+    "handsBack": "{ cache_read: null | number; cache_write: null | number; date: string; ev: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string }; input: null | number; output: null | number; tiers?: Object[]; unit: \"usd_per_million_tokens\" }",
+    "bounds": [
+     "cache_read: a finite number, 0 or more",
+     "cache_write: a finite number, 0 or more",
+     "date: a real calendar day written YYYY-MM-DD",
+     "input: a finite number, 0 or more",
+     "output: a finite number, 0 or more",
+     "page: text, not blank, at most 2000 characters; with quote, required on a check answer",
+     "quote: text, not blank, at most 8000 characters; with page, required on a check answer",
+     "source: text, not blank, at most 2000 characters"
+    ],
+    "side": "both"
+   },
+   "after": {
+    "kind": "kind",
+    "handsBack": "{ cache_read: null | number; cache_write: null | number; date: string; ev: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string }; input: null | number; output: null | number; tiers?: Object[]; unit: \"usd_per_million_tokens\" }",
+    "bounds": [
+     "cache_read: a finite number, 0 or more",
+     "cache_write: a finite number, 0 or more",
+     "date: a real calendar day written YYYY-MM-DD",
+     "input: a finite number, 0 or more",
+     "output: a finite number, 0 or more",
+     "page: text, not blank, at most 2000 characters; with quote, required on a check answer",
+     "quote: text, not blank, at most 8000 characters; with page, required on a check answer",
+     "source: text, not blank, at most 2000 characters"
+    ],
+    "side": "handsBack"
+   }
+  },
+  {
+   "module": "ai-catalogue",
+   "entry": "Evidence",
+   "changes": [
+    "cannot stand in"
+   ],
+   "tells": "users",
+   "before": {
+    "kind": "kind",
+    "accepts": "{ date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string }",
+    "handsBack": "{ date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string }",
+    "bounds": [
+     "date: a real calendar day written YYYY-MM-DD",
+     "page: text, not blank, at most 2000 characters; with quote, required on a check answer",
+     "quote: text, not blank, at most 8000 characters; with page, required on a check answer",
+     "source: text, not blank, at most 2000 characters"
+    ],
+    "side": "both"
+   },
+   "after": {
+    "kind": "kind",
+    "handsBack": "{ date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string }",
+    "bounds": [
+     "date: a real calendar day written YYYY-MM-DD",
+     "page: text, not blank, at most 2000 characters; with quote, required on a check answer",
+     "quote: text, not blank, at most 8000 characters; with page, required on a check answer",
+     "source: text, not blank, at most 2000 characters"
+    ],
+    "side": "handsBack"
+   }
+  },
+  {
+   "module": "ai-catalogue",
+   "entry": "Figure",
+   "changes": [
+    "cannot stand in"
+   ],
+   "tells": "users",
+   "before": {
+    "kind": "kind",
+    "accepts": "{ open: true } | null | number",
+    "handsBack": "{ open: true } | null | number",
+    "side": "both"
+   },
+   "after": {
+    "kind": "kind",
+    "handsBack": "{ open: true } | null | number",
+    "side": "handsBack"
+   }
+  },
+  {
+   "module": "ai-catalogue",
+   "entry": "GRADES",
+   "changes": [
+    "declaration changed (not classified)"
+   ],
+   "tells": "users",
+   "before": {
+    "kind": "value",
+    "handsBack": "readonly (\"REPORTED\" | \"REPRODUCED\" | \"STATED\")[]"
+   },
+   "after": {
+    "kind": "value",
+    "handsBack": "readonly (\"REPORTED\" | \"REPRODUCED\" | \"STATED\")[]"
+   }
+  },
+  {
+   "module": "ai-catalogue",
+   "entry": "GateLimit",
+   "changes": [
+    "cannot stand in"
+   ],
+   "tells": "users",
+   "before": {
+    "kind": "kind",
+    "accepts": "{ kind: \"context_depth\" | \"no_image_input\" | \"no_parallel_tools\" | \"no_streaming\" | \"output_cap\"; value: unknown }",
+    "handsBack": "{ kind: \"context_depth\" | \"no_image_input\" | \"no_parallel_tools\" | \"no_streaming\" | \"output_cap\"; value: unknown }",
+    "side": "both"
+   },
+   "after": {
+    "kind": "kind",
+    "handsBack": "{ kind: \"context_depth\" | \"no_image_input\" | \"no_parallel_tools\" | \"no_streaming\" | \"output_cap\"; value: unknown }",
+    "side": "handsBack"
+   }
+  },
+  {
+   "module": "ai-catalogue",
+   "entry": "GateRecord",
+   "changes": [
+    "cannot stand in"
+   ],
+   "tells": "users",
+   "before": {
+    "kind": "kind",
+    "accepts": "{ at: string; ev: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string }; limits: { kind: \"context_depth\" | \"no_image_input\" | \"no_parallel_tools\" | \"no_streaming\" | \"output_cap\"; value: unknown }[]; partial_coverage: boolean; run_ref: null | string; suiteVersions: { bank: null | number | string; image: null | number | string; scorer: null | number | string; thresholds: null | number | string }; tier: null | string; verdict: \"not_suitable\" | \"not_yet_rated\" | \"passes\" | \"passes_with_limits\" }",
+    "handsBack": "{ at: string; ev: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string }; limits: { kind: \"context_depth\" | \"no_image_input\" | \"no_parallel_tools\" | \"no_streaming\" | \"output_cap\"; value: unknown }[]; partial_coverage: boolean; run_ref: null | string; suiteVersions: { bank: null | number | string; image: null | number | string; scorer: null | number | string; thresholds: null | number | string }; tier: null | string; verdict: \"not_suitable\" | \"not_yet_rated\" | \"passes\" | \"passes_with_limits\" }",
+    "bounds": [
+     "at: a real instant YYYY-MM-DDTHH:MM:SSZ or a real day YYYY-MM-DD",
+     "date: a real calendar day written YYYY-MM-DD",
+     "ev: graded REPRODUCED or REPORTED; REPRODUCED names its run_ref",
+     "limits: none unless the verdict is passes_with_limits, then at least one",
+     "page: text, not blank, at most 2000 characters; with quote, required on a check answer",
+     "quote: text, not blank, at most 8000 characters; with page, required on a check answer",
+     "run_ref: at most 200 characters, not blank",
+     "source: text, not blank, at most 2000 characters",
+     "tier: at most 64 characters, not blank"
+    ],
+    "side": "both"
+   },
+   "after": {
+    "kind": "kind",
+    "handsBack": "{ at: string; ev: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string }; limits: { kind: \"context_depth\" | \"no_image_input\" | \"no_parallel_tools\" | \"no_streaming\" | \"output_cap\"; value: unknown }[]; partial_coverage: boolean; run_ref: null | string; suiteVersions: { bank: null | number | string; image: null | number | string; scorer: null | number | string; thresholds: null | number | string }; tier: null | string; verdict: \"not_suitable\" | \"not_yet_rated\" | \"passes\" | \"passes_with_limits\" }",
+    "bounds": [
+     "at: a real instant YYYY-MM-DDTHH:MM:SSZ or a real day YYYY-MM-DD",
+     "date: a real calendar day written YYYY-MM-DD",
+     "ev: graded REPRODUCED or REPORTED; REPRODUCED names its run_ref",
+     "limits: none unless the verdict is passes_with_limits, then at least one",
+     "page: text, not blank, at most 2000 characters; with quote, required on a check answer",
+     "quote: text, not blank, at most 8000 characters; with page, required on a check answer",
+     "run_ref: at most 200 characters, not blank",
+     "source: text, not blank, at most 2000 characters",
+     "tier: at most 64 characters, not blank"
+    ],
+    "side": "handsBack"
+   }
+  },
+  {
+   "module": "ai-catalogue",
+   "entry": "Grade",
+   "changes": [
+    "cannot stand in"
+   ],
+   "tells": "users",
+   "before": {
+    "kind": "kind",
+    "accepts": "\"REPORTED\" | \"REPRODUCED\" | \"STATED\"",
+    "handsBack": "\"REPORTED\" | \"REPRODUCED\" | \"STATED\"",
+    "side": "both"
+   },
+   "after": {
+    "kind": "kind",
+    "handsBack": "\"REPORTED\" | \"REPRODUCED\" | \"STATED\"",
+    "side": "handsBack"
+   }
+  },
+  {
+   "module": "ai-catalogue",
+   "entry": "Guidance",
+   "changes": [
+    "cannot stand in"
+   ],
+   "tells": "users",
+   "before": {
+    "kind": "kind",
+    "accepts": "{ ev: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string }; guidance_id: string; plan_id: string; steps: { kind: \"approve\" | \"choose\" | \"confirm\" | \"copy\" | \"link\"; text: { en: string; [key: string]: string }; url?: string }[] }",
+    "handsBack": "{ ev: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string }; guidance_id: string; plan_id: string; steps: { kind: \"approve\" | \"choose\" | \"confirm\" | \"copy\" | \"link\"; text: { en: string; [key: string]: string }; url?: string }[] }",
+    "bounds": [
+     "date: a real calendar day written YYYY-MM-DD",
+     "each tag a language tag (`en`, `pt-BR`); each text not blank, at most 8000 characters",
+     "page: text, not blank, at most 2000 characters; with quote, required on a check answer",
+     "quote: text, not blank, at most 8000 characters; with page, required on a check answer",
+     "source: text, not blank, at most 2000 characters",
+     "steps: at least one; a url is https"
+    ],
+    "side": "both"
+   },
+   "after": {
+    "kind": "kind",
+    "handsBack": "{ ev: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string }; guidance_id: string; plan_id: string; steps: { kind: \"approve\" | \"choose\" | \"confirm\" | \"copy\" | \"link\"; text: { en: string; [key: string]: string }; url?: string }[] }",
+    "bounds": [
+     "date: a real calendar day written YYYY-MM-DD",
+     "each tag a language tag (`en`, `pt-BR`); each text not blank, at most 8000 characters",
+     "page: text, not blank, at most 2000 characters; with quote, required on a check answer",
+     "quote: text, not blank, at most 8000 characters; with page, required on a check answer",
+     "source: text, not blank, at most 2000 characters",
+     "steps: at least one; a url is https"
+    ],
+    "side": "handsBack"
+   }
+  },
+  {
+   "module": "ai-catalogue",
+   "entry": "HostKind",
+   "changes": [
+    "cannot stand in"
+   ],
+   "tells": "users",
+   "before": {
+    "kind": "kind",
+    "accepts": "\"aggregator\" | \"builtin\" | \"custom\" | \"direct\" | \"gateway\"",
+    "handsBack": "\"aggregator\" | \"builtin\" | \"custom\" | \"direct\" | \"gateway\"",
+    "side": "both"
+   },
+   "after": {
+    "kind": "kind",
+    "handsBack": "\"aggregator\" | \"builtin\" | \"custom\" | \"direct\" | \"gateway\"",
+    "side": "handsBack"
+   }
+  },
+  {
+   "module": "ai-catalogue",
+   "entry": "HostProfile",
+   "changes": [
+    "cannot stand in"
+   ],
+   "tells": "users",
+   "before": {
+    "kind": "kind",
+    "accepts": "{ adapter_type: string; allowed_hosts: string[]; auth_style: string; base_url: string; features: unknown[] | Object; id: string; idempotency: null | string | Object; key_shapes: string[]; mappings: Object; pin_map: null | Object; quirks: string[]; reasoning_billing: \"apart\" | \"in_output\" | { open: true }; served_report: null | string | Object; version: number }",
+    "handsBack": "{ adapter_type: string; allowed_hosts: string[]; auth_style: string; base_url: string; features: unknown[] | Object; id: string; idempotency: null | string | Object; key_shapes: string[]; mappings: Object; pin_map: null | Object; quirks: string[]; reasoning_billing: \"apart\" | \"in_output\" | { open: true }; served_report: null | string | Object; version: number }",
+    "bounds": [
+     "allowed_hosts: each a-z, 0-9, `.` or `-`",
+     "auth_style: `bearer`, `header:<1 to 64 letters, digits or hyphens>`, `binding` or `none`",
+     "base_url: https, no white space",
+     "key_shapes: each a regular expression of 1 to 400 characters",
+     "quirks: each a-z or `_`",
+     "version: whole number, 1 or more"
+    ],
+    "side": "both"
+   },
+   "after": {
+    "kind": "kind",
+    "handsBack": "{ adapter_type: string; allowed_hosts: string[]; auth_style: string; base_url: string; features: unknown[] | Object; id: string; idempotency: null | string | Object; key_shapes: string[]; mappings: Object; pin_map: null | Object; quirks: string[]; reasoning_billing: \"apart\" | \"in_output\" | { open: true }; served_report: null | string | Object; version: number }",
+    "bounds": [
+     "allowed_hosts: each a-z, 0-9, `.` or `-`",
+     "auth_style: `bearer`, `header:<1 to 64 letters, digits or hyphens>`, `binding` or `none`",
+     "base_url: https, no white space",
+     "key_shapes: each a regular expression of 1 to 400 characters",
+     "quirks: each a-z or `_`",
+     "version: whole number, 1 or more"
+    ],
+    "side": "handsBack"
+   }
+  },
+  {
+   "module": "ai-catalogue",
+   "entry": "LIFECYCLE",
+   "changes": [
+    "declaration changed (not classified)"
+   ],
+   "tells": "users",
+   "before": {
+    "kind": "value",
+    "handsBack": "readonly (\"lapsed\" | \"listed\" | \"retired\" | \"watch\")[]"
+   },
+   "after": {
+    "kind": "value",
+    "handsBack": "readonly (\"lapsed\" | \"listed\" | \"retired\" | \"watch\")[]"
+   }
+  },
+  {
+   "module": "ai-catalogue",
+   "entry": "LIMIT_KINDS",
+   "changes": [
+    "declaration changed (not classified)"
+   ],
+   "tells": "users",
+   "before": {
+    "kind": "value",
+    "handsBack": "readonly (\"context_depth\" | \"no_image_input\" | \"no_parallel_tools\" | \"no_streaming\" | \"output_cap\")[]"
+   },
+   "after": {
+    "kind": "value",
+    "handsBack": "readonly (\"context_depth\" | \"no_image_input\" | \"no_parallel_tools\" | \"no_streaming\" | \"output_cap\")[]"
+   }
+  },
+  {
+   "module": "ai-catalogue",
+   "entry": "LibraryRow",
+   "changes": [
+    "cannot stand in"
+   ],
+   "tells": "users",
+   "before": {
+    "kind": "kind",
+    "accepts": "{ consent_ref?: string; grade: \"REPORTED\" | \"REPRODUCED\"; parts: { [key: string]: { limits: unknown[]; verdict: \"not_suitable\" | \"not_yet_rated\" | \"passes\" | \"passes_with_limits\" } }; repeated_by_civicsmith: boolean; row_id: string; speed: { median_ms: { open: true } | null | number; p90_ms: { open: true } | null | number; window: unknown } | { open: true }; subject_id: string; suiteVersions: Object; task_cost: { high: { open: true } | null | number; low: { open: true } | null | number; price_date: string; unit: string } | { open: true }; team_name?: string; tested_at: string; tested_by: \"civicsmith\" | \"team\" }",
+    "handsBack": "{ consent_ref?: string; grade: \"REPORTED\" | \"REPRODUCED\"; parts: { [key: string]: { limits: unknown[]; verdict: \"not_suitable\" | \"not_yet_rated\" | \"passes\" | \"passes_with_limits\" } }; repeated_by_civicsmith: boolean; row_id: string; speed: { median_ms: { open: true } | null | number; p90_ms: { open: true } | null | number; window: unknown } | { open: true }; subject_id: string; suiteVersions: Object; task_cost: { high: { open: true } | null | number; low: { open: true } | null | number; price_date: string; unit: string } | { open: true }; team_name?: string; tested_at: string; tested_by: \"civicsmith\" | \"team\" }",
+    "bounds": [
+     "grade: REPRODUCED when tested_by civicsmith, else REPORTED",
+     "parts: each key a part of the payload",
+     "price_date: a real calendar day written YYYY-MM-DD",
+     "subject_id: an entry's or a tested AI's id",
+     "team_name: only a team's row, with its consent_ref; text of at most 120 characters",
+     "tested_at: a real calendar day written YYYY-MM-DD",
+     "unit: text, not blank, at most 64 characters"
+    ],
+    "side": "both"
+   },
+   "after": {
+    "kind": "kind",
+    "handsBack": "{ consent_ref?: string; grade: \"REPORTED\" | \"REPRODUCED\"; parts: { [key: string]: { limits: unknown[]; verdict: \"not_suitable\" | \"not_yet_rated\" | \"passes\" | \"passes_with_limits\" } }; repeated_by_civicsmith: boolean; row_id: string; speed: { median_ms: { open: true } | null | number; p90_ms: { open: true } | null | number; window: unknown } | { open: true }; subject_id: string; suiteVersions: Object; task_cost: { high: { open: true } | null | number; low: { open: true } | null | number; price_date: string; unit: string } | { open: true }; team_name?: string; tested_at: string; tested_by: \"civicsmith\" | \"team\" }",
+    "bounds": [
+     "grade: REPRODUCED when tested_by civicsmith, else REPORTED",
+     "parts: each key a part of the payload",
+     "price_date: a real calendar day written YYYY-MM-DD",
+     "subject_id: an entry's or a tested AI's id",
+     "team_name: only a team's row, with its consent_ref; text of at most 120 characters",
+     "tested_at: a real calendar day written YYYY-MM-DD",
+     "unit: text, not blank, at most 64 characters"
+    ],
+    "side": "handsBack"
+   }
+  },
+  {
+   "module": "ai-catalogue",
+   "entry": "Lifecycle",
+   "changes": [
+    "cannot stand in"
+   ],
+   "tells": "users",
+   "before": {
+    "kind": "kind",
+    "accepts": "\"lapsed\" | \"listed\" | \"retired\" | \"watch\"",
+    "handsBack": "\"lapsed\" | \"listed\" | \"retired\" | \"watch\"",
+    "side": "both"
+   },
+   "after": {
+    "kind": "kind",
+    "handsBack": "\"lapsed\" | \"listed\" | \"retired\" | \"watch\"",
+    "side": "handsBack"
+   }
+  },
+  {
+   "module": "ai-catalogue",
+   "entry": "LimitKind",
+   "changes": [
+    "cannot stand in"
+   ],
+   "tells": "users",
+   "before": {
+    "kind": "kind",
+    "accepts": "\"context_depth\" | \"no_image_input\" | \"no_parallel_tools\" | \"no_streaming\" | \"output_cap\"",
+    "handsBack": "\"context_depth\" | \"no_image_input\" | \"no_parallel_tools\" | \"no_streaming\" | \"output_cap\"",
+    "side": "both"
+   },
+   "after": {
+    "kind": "kind",
+    "handsBack": "\"context_depth\" | \"no_image_input\" | \"no_parallel_tools\" | \"no_streaming\" | \"output_cap\"",
+    "side": "handsBack"
+   }
+  },
+  {
+   "module": "ai-catalogue",
+   "entry": "MOVES",
+   "changes": [
+    "declaration changed (not classified)"
+   ],
+   "tells": "users",
+   "before": {
+    "kind": "value",
+    "handsBack": "{ lapsed: readonly string[]; listed: readonly string[]; retired: readonly never[]; watch: readonly string[] }"
+   },
+   "after": {
+    "kind": "value",
+    "handsBack": "{ lapsed: readonly string[]; listed: readonly string[]; retired: readonly never[]; watch: readonly string[] }"
+   }
+  },
+  {
+   "module": "ai-catalogue",
+   "entry": "Means",
+   "changes": [
+    "cannot stand in"
+   ],
+   "tells": "users",
+   "before": {
+    "kind": "kind",
+    "accepts": "\"gateway\" | \"issued\" | \"none\" | \"reference\" | \"sealed\"",
+    "handsBack": "\"gateway\" | \"issued\" | \"none\" | \"reference\" | \"sealed\"",
+    "side": "both"
+   },
+   "after": {
+    "kind": "kind",
+    "handsBack": "\"gateway\" | \"issued\" | \"none\" | \"reference\" | \"sealed\"",
+    "side": "handsBack"
+   }
+  },
+  {
+   "module": "ai-catalogue",
+   "entry": "Money",
+   "changes": [
+    "cannot stand in"
+   ],
+   "tells": "users",
+   "before": {
+    "kind": "kind",
+    "accepts": "\"none\" | \"priced\" | \"reported\"",
+    "handsBack": "\"none\" | \"priced\" | \"reported\"",
+    "side": "both"
+   },
+   "after": {
+    "kind": "kind",
+    "handsBack": "\"none\" | \"priced\" | \"reported\"",
+    "side": "handsBack"
+   }
+  },
+  {
+   "module": "ai-catalogue",
+   "entry": "Open",
+   "changes": [
+    "cannot stand in"
+   ],
+   "tells": "users",
+   "before": {
+    "kind": "kind",
+    "accepts": "{ open: true }",
+    "handsBack": "{ open: true }",
+    "side": "both"
+   },
+   "after": {
+    "kind": "kind",
+    "handsBack": "{ open: true }",
+    "side": "handsBack"
+   }
+  },
+  {
+   "module": "ai-catalogue",
+   "entry": "PlanKind",
+   "changes": [
+    "cannot stand in"
+   ],
+   "tells": "users",
+   "before": {
+    "kind": "kind",
+    "accepts": "\"aggregator\" | \"api\" | \"builtin\" | \"custom\" | \"gateway\" | \"subscription\"",
+    "handsBack": "\"aggregator\" | \"api\" | \"builtin\" | \"custom\" | \"gateway\" | \"subscription\"",
+    "side": "both"
+   },
+   "after": {
+    "kind": "kind",
+    "handsBack": "\"aggregator\" | \"api\" | \"builtin\" | \"custom\" | \"gateway\" | \"subscription\"",
+    "side": "handsBack"
+   }
+  },
+  {
+   "module": "ai-catalogue",
+   "entry": "PlanScope",
+   "changes": [
+    "cannot stand in"
+   ],
+   "tells": "users",
+   "before": {
+    "kind": "kind",
+    "accepts": "\"member\" | \"project\" | \"team\" | \"unconfirmed\"",
+    "handsBack": "\"member\" | \"project\" | \"team\" | \"unconfirmed\"",
+    "side": "both"
+   },
+   "after": {
+    "kind": "kind",
+    "handsBack": "\"member\" | \"project\" | \"team\" | \"unconfirmed\"",
+    "side": "handsBack"
+   }
+  },
+  {
+   "module": "ai-catalogue",
+   "entry": "PriceBasis",
+   "changes": [
+    "cannot stand in"
+   ],
+   "tells": "users",
+   "before": {
+    "kind": "kind",
+    "accepts": "{ amount?: null | number; basis: string; currency?: unknown; date: string; ev: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string }; includes: unknown; limits: unknown; period?: unknown }",
+    "handsBack": "{ amount?: null | number; basis: string; currency?: unknown; date: string; ev: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string }; includes: unknown; limits: unknown; period?: unknown }",
+    "bounds": [
+     "amount: a finite number, 0 or more",
+     "basis: text, not blank, at most 64 characters",
+     "date: a real calendar day written YYYY-MM-DD",
+     "page: text, not blank, at most 2000 characters; with quote, required on a check answer",
+     "quote: text, not blank, at most 8000 characters; with page, required on a check answer",
+     "source: text, not blank, at most 2000 characters"
+    ],
+    "side": "both"
+   },
+   "after": {
+    "kind": "kind",
+    "handsBack": "{ amount?: null | number; basis: string; currency?: unknown; date: string; ev: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string }; includes: unknown; limits: unknown; period?: unknown }",
+    "bounds": [
+     "amount: a finite number, 0 or more",
+     "basis: text, not blank, at most 64 characters",
+     "date: a real calendar day written YYYY-MM-DD",
+     "page: text, not blank, at most 2000 characters; with quote, required on a check answer",
+     "quote: text, not blank, at most 8000 characters; with page, required on a check answer",
+     "source: text, not blank, at most 2000 characters"
+    ],
+    "side": "handsBack"
+   }
+  },
+  {
+   "module": "ai-catalogue",
+   "entry": "RELEASE_SEED",
+   "changes": [
+    "new entry"
+   ],
+   "after": {
+    "kind": "value",
+    "handsBack": "{ armored: null | string; body: string; statement: { bytes: number; issued_at: string; schema_version: number; seq: number; sha256: string } }",
+    "bounds": [
+     "bytes: the body's length in UTF-8 bytes",
+     "sha256: 64 lowercase hex digits, the SHA-256 of the body's UTF-8 bytes"
+    ]
+   },
+   "tells": "nobody"
+  },
+  {
+   "module": "ai-catalogue",
+   "entry": "ReleaseSeed",
+   "changes": [
+    "new entry"
+   ],
+   "after": {
+    "kind": "kind",
+    "accepts": "{ armored: null | string; body: string; statement: { bytes: number; issued_at: string; schema_version: number; seq: number; sha256: string } }",
+    "handsBack": "{ armored: null | string; body: string; statement: { bytes: number; issued_at: string; schema_version: number; seq: number; sha256: string } }",
+    "bounds": [
+     "bytes: the body's length in UTF-8 bytes",
+     "sha256: 64 lowercase hex digits, the SHA-256 of the body's UTF-8 bytes"
+    ],
+    "side": "both"
+   },
+   "tells": "nobody"
+  },
+  {
+   "module": "ai-catalogue",
+   "entry": "Restriction",
+   "changes": [
+    "cannot stand in"
+   ],
+   "tells": "users",
+   "before": {
+    "kind": "kind",
+    "accepts": "{ date: string; kind: string; page: string; quote: string }",
+    "handsBack": "{ date: string; kind: string; page: string; quote: string }",
+    "bounds": [
+     "date: a real calendar day written YYYY-MM-DD",
+     "kind: text, not blank, at most 64 characters",
+     "quote: text, not blank, at most 8000 characters"
+    ],
+    "side": "both"
+   },
+   "after": {
+    "kind": "kind",
+    "handsBack": "{ date: string; kind: string; page: string; quote: string }",
+    "bounds": [
+     "date: a real calendar day written YYYY-MM-DD",
+     "kind: text, not blank, at most 64 characters",
+     "quote: text, not blank, at most 8000 characters"
+    ],
+    "side": "handsBack"
+   }
+  },
+  {
+   "module": "ai-catalogue",
+   "entry": "Runtime",
+   "changes": [
+    "cannot stand in"
+   ],
+   "tells": "users",
+   "before": {
+    "kind": "kind",
+    "accepts": "\"member_device\" | \"member_runtime\" | \"shared_worker\"",
+    "handsBack": "\"member_device\" | \"member_runtime\" | \"shared_worker\"",
+    "side": "both"
+   },
+   "after": {
+    "kind": "kind",
+    "handsBack": "\"member_device\" | \"member_runtime\" | \"shared_worker\"",
+    "side": "handsBack"
+   }
+  },
+  {
+   "module": "ai-catalogue",
+   "entry": "SEED_PAYLOAD",
+   "changes": [
+    "new entry"
+   ],
+   "after": {
+    "kind": "value",
+    "handsBack": "{ combined: { as_of: string; confirmed: boolean; groups: { [key: string]: { k: number; n: number; wilson_high: unknown; wilson_low: unknown } }; left_out: number; limits: unknown[]; part: string; results: { reported: number; reproduced: number; total: number }; speed: { median_ms: { open: true } | null | number; p90_ms: { open: true } | null | number } | { open: true }; subject_id: string; suiteVersions: Object; task_cost: { high: { open: true } | null | number; low: { open: true } | null | number; price_date: string; unit: string } | { open: true }; verdict: \"not_suitable\" | \"not_yet_rated\" | \"passes\" | \"passes_with_limits\"; window: { from: unknown; to: unknown } }[]; entries: { adapter_type: string; capabilities: { batch: { ev: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string }; value: boolean } | { open: true }; caching: { ev: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string }; value: \"automatic\" | \"explicit\" | \"none\" } | { open: true }; image_input: { ev: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string }; value: boolean } | { open: true }; parallel_tools: { ev: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string }; value: boolean } | { open: true }; schema_output: { ev: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string }; value: boolean } | { open: true }; schema_with_tools: { ev: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string }; value: boolean } | { open: true }; session: { ev: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string }; value: \"none\" | \"provider_state\" | \"resend_only\" } | { open: true }; streaming: { ev: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string }; value: \"none\" | \"text\" | \"tool_calls\" } | { open: true }; tools: { ev: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string }; value: boolean } | { open: true } }; characterization?: { CH1: { conditions: unknown; ev: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string }; method: string; reviewer?: string; samples: null | number; value: unknown } | { open: true }; CH10: { ref: \"checks\" }; CH2: { conditions: unknown; ev: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string }; method: string; reviewer?: string; samples: null | number; value: unknown } | { open: true }; CH3: { conditions: unknown; ev: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string }; method: string; reviewer?: string; samples: null | number; value: unknown } | { open: true }; CH4: { conditions: unknown; ev: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string }; method: string; reviewer?: string; samples: null | number; value: unknown } | { open: true }; CH5: { conditions: unknown; ev: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string }; method: string; reviewer?: string; samples: null | number; value: unknown } | { open: true }; CH6: { conditions: unknown; ev: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string }; method: string; reviewer?: string; samples: null | number; value: unknown } | { open: true }; CH7: { conditions: unknown; ev: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string }; method: string; reviewer?: string; samples: null | number; value: unknown } | { open: true }; CH8: { conditions: unknown; ev: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string }; method: string; reviewer?: string; samples: null | number; value: unknown } | { open: true }; CH9: { conditions: unknown; ev: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string }; method: string; reviewer?: string; samples: null | number; value: unknown } | { open: true } } | null; checks: { P1: { answer: \"OPEN\"; ev?: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string } } | { answer: \"met\" | \"not_met\"; ev: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string } } | { open: true }; P2: { answer: \"OPEN\"; ev?: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string } } | { answer: \"met\" | \"not_met\"; ev: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string } } | { open: true }; P3: { answer: \"OPEN\"; ev?: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string } } | { answer: \"met\" | \"not_met\"; ev: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string } } | { open: true }; P4: { answer: \"OPEN\"; ev?: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string } } | { answer: \"met\" | \"not_met\"; ev: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string } } | { open: true }; P5: { answer: \"OPEN\"; ev?: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string } } | { answer: \"met\" | \"not_met\"; ev: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string } } | { open: true }; P6: { answer: \"OPEN\"; ev?: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string } } | { answer: \"met\" | \"not_met\"; ev: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string } } | { open: true }; P7: { answer: \"OPEN\"; ev?: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string } } | { answer: \"met\" | \"not_met\"; ev: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string } } | { open: true } }; confirmed_at: string; developer: { jurisdiction: { open: true } | string; name: string }; display_name: string; effort_classes?: { ev: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string }; low: string; medium: string }; effort_set: { default?: null | string; ev: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string }; values: string[] }; entry_id: string; gate: { [key: string]: { at: string; ev: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string }; limits: { kind: \"context_depth\" | \"no_image_input\" | \"no_parallel_tools\" | \"no_streaming\" | \"output_cap\"; value: unknown }[]; partial_coverage: boolean; run_ref: null | string; suiteVersions: { bank: null | number | string; image: null | number | string; scorer: null | number | string; thresholds: null | number | string }; tier: null | string; verdict: \"not_suitable\" | \"not_yet_rated\" | \"passes\" | \"passes_with_limits\" } }; host: string; lifecycle: \"lapsed\" | \"listed\" | \"retired\" | \"watch\"; limits: { context_effective: { ev: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string }; value: number } | { open: true }; context_stated: { ev: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string }; value: number } | { open: true }; image_max_bytes: { ev: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string }; value: number } | { open: true }; max_output: { ev: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string }; value: number } | { open: true } }; model: string; pin?: { allow_fallbacks: false; deny_collection: true; only: string[]; require_parameters: boolean; zero_retention?: boolean } | null; plan_ids: string[]; prices: { cache_read: null | number; cache_write: null | number; date: string; ev: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string }; input: null | number; output: null | number; tiers?: Object[]; unit: \"usd_per_million_tokens\" } | { open: true }; profile: { id: string; min_version: number }; provider: string; served_ids: string[]; shown: { breach_notification: { answer: \"OPEN\"; ev?: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string } } | { answer: \"met\" | \"not_met\"; ev: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string } } | { open: true }; terms_permit_use: { answer: \"OPEN\"; ev?: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string } } | { answer: \"met\" | \"not_met\"; ev: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string } } | { open: true } }; shutdown_date?: string; standard_task_costs: { by_part: { [key: string]: { high: number; low: number } }; ev: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string }; price_date: string; unit: string } | { open: true }; version: string; version_kind: \"dated\" | \"fixed\"; zero_retention: { ev: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string }; value: boolean } | { open: true } }[]; guidance: { ev: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string }; guidance_id: string; plan_id: string; steps: { kind: \"approve\" | \"choose\" | \"confirm\" | \"copy\" | \"link\"; text: { en: string; [key: string]: string }; url?: string }[] }[]; issued_at: string; library: { consent_ref?: string; grade: \"REPORTED\" | \"REPRODUCED\"; parts: { [key: string]: { limits: unknown[]; verdict: \"not_suitable\" | \"not_yet_rated\" | \"passes\" | \"passes_with_limits\" } }; repeated_by_civicsmith: boolean; row_id: string; speed: { median_ms: { open: true } | null | number; p90_ms: { open: true } | null | number; window: unknown } | { open: true }; subject_id: string; suiteVersions: Object; task_cost: { high: { open: true } | null | number; low: { open: true } | null | number; price_date: string; unit: string } | { open: true }; team_name?: string; tested_at: string; tested_by: \"civicsmith\" | \"team\" }[]; parts: string[]; plans: { binding_terms: { doc: string; effective_from: string; effective_to?: string; ev: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string }; kind: \"deprecation_notice\" | \"high_risk_review\" | \"indemnity\" | \"no_sla\" | \"other\" | \"political_use\"; quote: string; section: string; version: number | string }[]; confirmed_at: string; connection_ways: (\"built_in\" | \"pasted_key\" | \"provider_signin\")[]; credential_kind: \"api_key\" | \"none\" | \"signin_token\"; free_tier_trains: { ev: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string }; value: boolean } | { open: true }; guidance_id: string; kind: \"aggregator\" | \"api\" | \"builtin\" | \"custom\" | \"gateway\" | \"subscription\"; lifecycle: \"lapsed\" | \"listed\" | \"retired\" | \"watch\"; means_allowed: { ev: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string }; value: (\"gateway\" | \"issued\" | \"none\" | \"reference\" | \"sealed\")[] } | { open: true }; money: { ev: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string }; value: \"none\" | \"priced\" | \"reported\" } | { open: true }; plan_id: string; price_basis: { amount?: null | number; basis: string; currency?: unknown; date: string; ev: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string }; includes: unknown; limits: unknown; period?: unknown } | { open: true }; provider: string; restrictions: ({ date: string; kind: string; page: string; quote: string } | { open: true })[]; runtimes: { ev: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string }; value: (\"member_device\" | \"member_runtime\" | \"shared_worker\")[] } | { open: true }; scope: { ev: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string }; value: \"member\" | \"project\" | \"team\" | \"unconfirmed\" } | { open: true }; token_bounds?: { max_length: number; min_length: number }; token_storage: { ev: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string }; value: \"member_device\" | \"reference_only\" | \"sealed\" } | { open: true }; warning_id?: string }[]; policy: { origin: { barred: string[]; check: \"P7\" }; review_period_days: number; stale_after_days: number }; profiles: { adapter_type: string; allowed_hosts: string[]; auth_style: string; base_url: string; features: unknown[] | Object; id: string; idempotency: null | string | Object; key_shapes: string[]; mappings: Object; pin_map: null | Object; quirks: string[]; reasoning_billing: \"apart\" | \"in_output\" | { open: true }; served_report: null | string | Object; version: number }[]; providers: { id: string; kind: \"aggregator\" | \"builtin\" | \"custom\" | \"direct\" | \"gateway\"; name: string }[]; schema_version: number; seq: number; tested: { developer: { jurisdiction: unknown; name: unknown }; display_name: string; host_name: string; model: string; provider_name: string; subject_id: string; version: string }[]; warnings: { ev: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string }; text: { en: string; [key: string]: string }; warning_id: string }[] }",
+    "bounds": [
+     "adapter_type: 1 to 64 characters, each a-z, 0-9, `.`, `_`, `:` or `-`",
+     "allowed_hosts: each a-z, 0-9, `.` or `-`",
+     "amount: a finite number, 0 or more",
+     "as_of: a real calendar day written YYYY-MM-DD",
+     "at: a real instant YYYY-MM-DDTHH:MM:SSZ or a real day YYYY-MM-DD",
+     "auth_style: `bearer`, `header:<1 to 64 letters, digits or hyphens>`, `binding` or `none`",
+     "base_url: https, no white space",
+     "basis: text, not blank, at most 64 characters",
+     "by_part: each key a part of the payload; low and high finite, 0 or more, low no more than high",
+     "cache_read: a finite number, 0 or more",
+     "cache_write: a finite number, 0 or more",
+     "characterization: present when the lifecycle is listed or watch",
+     "checks: P7 never met when the developer's jurisdiction is barred by the payload's policy",
+     "confirmed: true exactly when total is above 0 and reported is 0",
+     "confirmed_at: a real calendar day written YYYY-MM-DD",
+     "connection_ways: at least one, distinct",
+     "date: a real calendar day written YYYY-MM-DD",
+     "developer: name text of at most 200 characters; jurisdiction 1 to 16 letters, digits or hyphens, or OPEN",
+     "display_name: text, not blank, at most 60 characters",
+     "doc: text, not blank, at most 400 characters",
+     "each tag a language tag (`en`, `pt-BR`); each text not blank, at most 8000 characters",
+     "effective_from: a real calendar day written YYYY-MM-DD",
+     "effective_to: a real calendar day written YYYY-MM-DD",
+     "effort_classes: low and medium each one of effort_set's values; only when there are values",
+     "effort_set: values distinct lowercase words of at most 16 letters; default one of them, none when there are none",
+     "entry_id: 1 to 96 characters, each a-z, 0-9, `.`, `_`, `:` or `-`",
+     "ev: graded REPRODUCED or REPORTED; CH4's REPORTED, with its reviewer",
+     "ev: graded REPRODUCED or REPORTED; REPRODUCED names its run_ref",
+     "gate: each key a part of the payload",
+     "grade: REPRODUCED when tested_by civicsmith, else REPORTED",
+     "groups: k and n whole, k no more than n",
+     "guidance_id: 1 to 96 characters, each a-z, 0-9, `.`, `_`, `:` or `-`",
+     "host: the id of one of the payload's providers; a pin when its kind is aggregator or gateway, else none",
+     "input: a finite number, 0 or more",
+     "key_shapes: each a regular expression of 1 to 400 characters",
+     "kind: text, not blank, at most 64 characters",
+     "left_out: whole number, 0 or more",
+     "limits: each value a finite number, 0 or more",
+     "limits: none unless the verdict is passes_with_limits, then at least one",
+     "means_allowed: at least one, distinct; `none` alone and only for credential kind none; gateway only for api_key; issued only for signin_token",
+     "method: text, not blank, at most 400 characters",
+     "model: text, not blank, at most 200 characters",
+     "name: text, not blank, at most 200 characters",
+     "only: at least one, each a provider of the payload",
+     "output: a finite number, 0 or more",
+     "page: text, not blank, at most 2000 characters; with quote, required on a check answer",
+     "parts: each key a part of the payload",
+     "plan_id: 1 to 96 characters, each a-z, 0-9, `.`, `_`, `:` or `-`",
+     "plan_ids: at least one, distinct, each a plan of the payload whose provider is the host",
+     "price_date: a real calendar day written YYYY-MM-DD",
+     "profile: id a profile of the payload of the same adapter_type; min_version whole, 1 to that profile's version",
+     "provider: the id of one of the payload's providers",
+     "quirks: each a-z or `_`",
+     "quote: text, not blank, at most 8000 characters",
+     "quote: text, not blank, at most 8000 characters; with page, required on a check answer",
+     "results: whole numbers; total is reproduced plus reported",
+     "run_ref: at most 200 characters, not blank",
+     "runtimes: at least one, distinct",
+     "samples: whole number, 0 or more",
+     "section: text, not blank, at most 200 characters",
+     "served_ids: at least one, each text of at most 200 characters",
+     "shutdown_date: a real calendar day written YYYY-MM-DD",
+     "source: text, not blank, at most 2000 characters",
+     "steps: at least one; a url is https",
+     "subject_id: an entry's form of id, never an entry's id",
+     "subject_id: an entry's or a tested AI's id",
+     "team_name: only a team's row, with its consent_ref; text of at most 120 characters",
+     "tested_at: a real calendar day written YYYY-MM-DD",
+     "tier: at most 64 characters, not blank",
+     "token_bounds: only for credential kind signin_token; whole numbers, 1 or more, min_length no more than max_length",
+     "unit: text, not blank, at most 64 characters",
+     "version: as text, not blank, at most 64 characters",
+     "version: text, not blank, at most 200 characters",
+     "version: whole number, 1 or more",
+     "warning_id: a warning of the payload, required when free_tier_trains is true",
+     "zero_retention: true when the entry's zero_retention is true"
+    ]
+   },
+   "tells": "nobody"
+  },
+  {
+   "module": "ai-catalogue",
+   "entry": "SEED_SIGNATURE_VAR",
+   "changes": [
+    "new entry"
+   ],
+   "after": {
+    "kind": "value",
+    "handsBack": "string"
+   },
+   "tells": "nobody"
+  },
+  {
+   "module": "ai-catalogue",
+   "entry": "SHOWN_IDS",
+   "changes": [
+    "declaration changed (not classified)"
+   ],
+   "tells": "users",
+   "before": {
+    "kind": "value",
+    "handsBack": "readonly (\"breach_notification\" | \"terms_permit_use\")[]"
+   },
+   "after": {
+    "kind": "value",
+    "handsBack": "readonly (\"breach_notification\" | \"terms_permit_use\")[]"
+   }
+  },
+  {
+   "module": "ai-catalogue",
+   "entry": "STATE_WORDS",
+   "changes": [
+    "declaration changed (not classified)"
+   ],
+   "tells": "users",
+   "before": {
+    "kind": "value",
+    "handsBack": "{ current: string; needs_newer_release: string; stale: string; unavailable: string }"
+   },
+   "after": {
+    "kind": "value",
+    "handsBack": "{ current: string; needs_newer_release: string; stale: string; unavailable: string }"
+   }
+  },
+  {
+   "module": "ai-catalogue",
+   "entry": "SeedAnswer",
+   "changes": [
+    "new entry"
+   ],
+   "after": {
+    "kind": "kind",
+    "accepts": "{ code?: string; ok: boolean; outcome?: string; seq?: null | number }",
+    "handsBack": "{ code?: string; ok: boolean; outcome?: string; seq?: null | number }",
+    "side": "both"
+   },
+   "tells": "nobody"
+  },
+  {
+   "module": "ai-catalogue",
+   "entry": "SeedStatement",
+   "changes": [
+    "new entry"
+   ],
+   "after": {
+    "kind": "kind",
+    "accepts": "{ bytes: number; issued_at: string; schema_version: number; seq: number; sha256: string }",
+    "handsBack": "{ bytes: number; issued_at: string; schema_version: number; seq: number; sha256: string }",
+    "bounds": [
+     "bytes: the body's length in UTF-8 bytes",
+     "sha256: 64 lowercase hex digits, the SHA-256 of the body's UTF-8 bytes"
+    ],
+    "side": "both"
+   },
+   "tells": "nobody"
+  },
+  {
+   "module": "ai-catalogue",
+   "entry": "ShownId",
+   "changes": [
+    "cannot stand in"
+   ],
+   "tells": "users",
+   "before": {
+    "kind": "kind",
+    "accepts": "\"breach_notification\" | \"terms_permit_use\"",
+    "handsBack": "\"breach_notification\" | \"terms_permit_use\"",
+    "side": "both"
+   },
+   "after": {
+    "kind": "kind",
+    "handsBack": "\"breach_notification\" | \"terms_permit_use\"",
+    "side": "handsBack"
+   }
+  },
+  {
+   "module": "ai-catalogue",
+   "entry": "StandardTaskCosts",
+   "changes": [
+    "cannot stand in"
+   ],
+   "tells": "users",
+   "before": {
+    "kind": "kind",
+    "accepts": "{ by_part: { [key: string]: { high: number; low: number } }; ev: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string }; price_date: string; unit: string }",
+    "handsBack": "{ by_part: { [key: string]: { high: number; low: number } }; ev: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string }; price_date: string; unit: string }",
+    "bounds": [
+     "by_part: each key a part of the payload; low and high finite, 0 or more, low no more than high",
+     "date: a real calendar day written YYYY-MM-DD",
+     "page: text, not blank, at most 2000 characters; with quote, required on a check answer",
+     "price_date: a real calendar day written YYYY-MM-DD",
+     "quote: text, not blank, at most 8000 characters; with page, required on a check answer",
+     "source: text, not blank, at most 2000 characters",
+     "unit: text, not blank, at most 64 characters"
+    ],
+    "side": "both"
+   },
+   "after": {
+    "kind": "kind",
+    "handsBack": "{ by_part: { [key: string]: { high: number; low: number } }; ev: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string }; price_date: string; unit: string }",
+    "bounds": [
+     "by_part: each key a part of the payload; low and high finite, 0 or more, low no more than high",
+     "date: a real calendar day written YYYY-MM-DD",
+     "page: text, not blank, at most 2000 characters; with quote, required on a check answer",
+     "price_date: a real calendar day written YYYY-MM-DD",
+     "quote: text, not blank, at most 8000 characters; with page, required on a check answer",
+     "source: text, not blank, at most 2000 characters",
+     "unit: text, not blank, at most 64 characters"
+    ],
+    "side": "handsBack"
+   }
+  },
+  {
+   "module": "ai-catalogue",
+   "entry": "StepKind",
+   "changes": [
+    "cannot stand in"
+   ],
+   "tells": "users",
+   "before": {
+    "kind": "kind",
+    "accepts": "\"approve\" | \"choose\" | \"confirm\" | \"copy\" | \"link\"",
+    "handsBack": "\"approve\" | \"choose\" | \"confirm\" | \"copy\" | \"link\"",
+    "side": "both"
+   },
+   "after": {
+    "kind": "kind",
+    "handsBack": "\"approve\" | \"choose\" | \"confirm\" | \"copy\" | \"link\"",
+    "side": "handsBack"
+   }
+  },
+  {
+   "module": "ai-catalogue",
+   "entry": "SuiteVersion",
+   "changes": [
+    "cannot stand in"
+   ],
+   "tells": "users",
+   "before": {
+    "kind": "kind",
+    "accepts": "null | number | string",
+    "handsBack": "null | number | string",
+    "side": "both"
+   },
+   "after": {
+    "kind": "kind",
+    "handsBack": "null | number | string",
+    "side": "handsBack"
+   }
+  },
+  {
+   "module": "ai-catalogue",
+   "entry": "TaskCost",
+   "changes": [
+    "cannot stand in"
+   ],
+   "tells": "users",
+   "before": {
+    "kind": "kind",
+    "accepts": "{ high: { open: true } | null | number; low: { open: true } | null | number; price_date: string; unit: string }",
+    "handsBack": "{ high: { open: true } | null | number; low: { open: true } | null | number; price_date: string; unit: string }",
+    "bounds": [
+     "price_date: a real calendar day written YYYY-MM-DD",
+     "unit: text, not blank, at most 64 characters"
+    ],
+    "side": "both"
+   },
+   "after": {
+    "kind": "kind",
+    "handsBack": "{ high: { open: true } | null | number; low: { open: true } | null | number; price_date: string; unit: string }",
+    "bounds": [
+     "price_date: a real calendar day written YYYY-MM-DD",
+     "unit: text, not blank, at most 64 characters"
+    ],
+    "side": "handsBack"
+   }
+  },
+  {
+   "module": "ai-catalogue",
+   "entry": "TermKind",
+   "changes": [
+    "cannot stand in"
+   ],
+   "tells": "users",
+   "before": {
+    "kind": "kind",
+    "accepts": "\"deprecation_notice\" | \"high_risk_review\" | \"indemnity\" | \"no_sla\" | \"other\" | \"political_use\"",
+    "handsBack": "\"deprecation_notice\" | \"high_risk_review\" | \"indemnity\" | \"no_sla\" | \"other\" | \"political_use\"",
+    "side": "both"
+   },
+   "after": {
+    "kind": "kind",
+    "handsBack": "\"deprecation_notice\" | \"high_risk_review\" | \"indemnity\" | \"no_sla\" | \"other\" | \"political_use\"",
+    "side": "handsBack"
+   }
+  },
+  {
+   "module": "ai-catalogue",
+   "entry": "TestedAi",
+   "changes": [
+    "cannot stand in"
+   ],
+   "tells": "users",
+   "before": {
+    "kind": "kind",
+    "accepts": "{ developer: { jurisdiction: unknown; name: unknown }; display_name: string; host_name: string; model: string; provider_name: string; subject_id: string; version: string }",
+    "handsBack": "{ developer: { jurisdiction: unknown; name: unknown }; display_name: string; host_name: string; model: string; provider_name: string; subject_id: string; version: string }",
+    "bounds": [
+     "display_name: text, not blank, at most 60 characters",
+     "subject_id: an entry's form of id, never an entry's id"
+    ],
+    "side": "both"
+   },
+   "after": {
+    "kind": "kind",
+    "handsBack": "{ developer: { jurisdiction: unknown; name: unknown }; display_name: string; host_name: string; model: string; provider_name: string; subject_id: string; version: string }",
+    "bounds": [
+     "display_name: text, not blank, at most 60 characters",
+     "subject_id: an entry's form of id, never an entry's id"
+    ],
+    "side": "handsBack"
+   }
+  },
+  {
+   "module": "ai-catalogue",
+   "entry": "TokenStorage",
+   "changes": [
+    "cannot stand in"
+   ],
+   "tells": "users",
+   "before": {
+    "kind": "kind",
+    "accepts": "\"member_device\" | \"reference_only\" | \"sealed\"",
+    "handsBack": "\"member_device\" | \"reference_only\" | \"sealed\"",
+    "side": "both"
+   },
+   "after": {
+    "kind": "kind",
+    "handsBack": "\"member_device\" | \"reference_only\" | \"sealed\"",
+    "side": "handsBack"
+   }
+  },
+  {
+   "module": "ai-catalogue",
+   "entry": "VERDICTS",
+   "changes": [
+    "declaration changed (not classified)"
+   ],
+   "tells": "users",
+   "before": {
+    "kind": "value",
+    "handsBack": "readonly (\"not_suitable\" | \"not_yet_rated\" | \"passes\" | \"passes_with_limits\")[]"
+   },
+   "after": {
+    "kind": "value",
+    "handsBack": "readonly (\"not_suitable\" | \"not_yet_rated\" | \"passes\" | \"passes_with_limits\")[]"
+   }
+  },
+  {
+   "module": "ai-catalogue",
+   "entry": "Verdict",
+   "changes": [
+    "cannot stand in"
+   ],
+   "tells": "users",
+   "before": {
+    "kind": "kind",
+    "accepts": "\"not_suitable\" | \"not_yet_rated\" | \"passes\" | \"passes_with_limits\"",
+    "handsBack": "\"not_suitable\" | \"not_yet_rated\" | \"passes\" | \"passes_with_limits\"",
+    "side": "both"
+   },
+   "after": {
+    "kind": "kind",
+    "handsBack": "\"not_suitable\" | \"not_yet_rated\" | \"passes\" | \"passes_with_limits\"",
+    "side": "handsBack"
+   }
+  },
+  {
+   "module": "ai-catalogue",
+   "entry": "Warning",
+   "changes": [
+    "cannot stand in"
+   ],
+   "tells": "users",
+   "before": {
+    "kind": "kind",
+    "accepts": "{ ev: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string }; text: { en: string; [key: string]: string }; warning_id: string }",
+    "handsBack": "{ ev: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string }; text: { en: string; [key: string]: string }; warning_id: string }",
+    "bounds": [
+     "date: a real calendar day written YYYY-MM-DD",
+     "each tag a language tag (`en`, `pt-BR`); each text not blank, at most 8000 characters",
+     "page: text, not blank, at most 2000 characters; with quote, required on a check answer",
+     "quote: text, not blank, at most 8000 characters; with page, required on a check answer",
+     "source: text, not blank, at most 2000 characters"
+    ],
+    "side": "both"
+   },
+   "after": {
+    "kind": "kind",
+    "handsBack": "{ ev: { date: string; grade: \"REPORTED\" | \"REPRODUCED\" | \"STATED\"; page?: string; quote?: string; source: string }; text: { en: string; [key: string]: string }; warning_id: string }",
+    "bounds": [
+     "date: a real calendar day written YYYY-MM-DD",
+     "each tag a language tag (`en`, `pt-BR`); each text not blank, at most 8000 characters",
+     "page: text, not blank, at most 2000 characters; with quote, required on a check answer",
+     "quote: text, not blank, at most 8000 characters; with page, required on a check answer",
+     "source: text, not blank, at most 2000 characters"
+    ],
+    "side": "handsBack"
+   }
+  },
+  {
+   "module": "ai-catalogue",
+   "entry": "Words",
+   "changes": [
+    "cannot stand in"
+   ],
+   "tells": "users",
+   "before": {
+    "kind": "kind",
+    "accepts": "{ en: string; [key: string]: string }",
+    "handsBack": "{ en: string; [key: string]: string }",
+    "bounds": [
+     "each tag a language tag (`en`, `pt-BR`); each text not blank, at most 8000 characters"
+    ],
+    "side": "both"
+   },
+   "after": {
+    "kind": "kind",
+    "handsBack": "{ en: string; [key: string]: string }",
+    "bounds": [
+     "each tag a language tag (`en`, `pt-BR`); each text not blank, at most 8000 characters"
+    ],
+    "side": "handsBack"
+   }
+  },
+  {
+   "module": "ai-catalogue",
+   "entry": "aiCatalogueOf",
+   "changes": [
+    "accepts more",
+    "bound changed"
+   ],
+   "tells": "users",
+   "before": {
+    "kind": "function",
+    "accepts": "(arg0: { sql: handle ai-catalogue.SqlStorage; storage?: undefined } | { sql?: undefined; storage: { sql: handle ai-catalogue.SqlStorage } }, arg1?: { clock?: () => number | null; env?: { BIO_NOW_MS?: number | string }; keys?: readonly string[]; record?: handle ai-catalogue.RecordCoreUse | null; supported?: readonly number[] })",
+    "handsBack": "handle ai-catalogue.AiCatalogue"
+   },
+   "after": {
+    "kind": "function",
+    "accepts": "(arg0: { sql: handle ai-catalogue.SqlStorage; storage?: undefined } | { sql?: undefined; storage: { sql: handle ai-catalogue.SqlStorage } }, arg1?: { clock?: () => number | null; env?: { AI_CATALOGUE_DEVELOPMENT?: string; AI_CATALOGUE_SEED_SIGNATURE?: string; BIO_NOW_MS?: number | string }; keys?: readonly string[]; record?: handle ai-catalogue.RecordCoreUse | null; seed?: { armored: null | string; body: string; statement: { bytes: number; issued_at: string; schema_version: number; seq: number; sha256: string } } | null; supported?: readonly number[] })",
+    "handsBack": "handle ai-catalogue.AiCatalogue",
+    "bounds": [
+     "AI_CATALOGUE_DEVELOPMENT: exactly \"1\" to trust development key lines; any other value trusts none",
+     "bytes: the body's length in UTF-8 bytes",
+     "sha256: 64 lowercase hex digits, the SHA-256 of the body's UTF-8 bytes"
+    ]
+   }
+  },
+  {
+   "module": "ai-catalogue",
+   "entry": "catalogueKeysFor",
+   "changes": [
+    "new entry"
+   ],
+   "after": {
+    "kind": "function",
+    "accepts": "(arg0: readonly string[], arg1?: { AI_CATALOGUE_DEVELOPMENT?: string; AI_CATALOGUE_SEED_SIGNATURE?: string; BIO_NOW_MS?: number | string })",
+    "handsBack": "readonly string[]",
+    "bounds": [
+     "AI_CATALOGUE_DEVELOPMENT: exactly \"1\" to trust development key lines; any other value trusts none"
+    ]
+   },
+   "tells": "nobody"
+  },
+  {
+   "module": "ai-catalogue",
+   "entry": "isDate",
+   "changes": [
+    "declaration changed (not classified)"
+   ],
+   "tells": "users",
+   "before": {
+    "kind": "function",
+    "accepts": "(arg0: unknown)",
+    "handsBack": "boolean"
+   },
+   "after": {
+    "kind": "function",
+    "accepts": "(arg0: unknown)",
+    "handsBack": "boolean"
+   }
+  },
+  {
+   "module": "ai-catalogue",
+   "entry": "isDevelopmentKey",
+   "changes": [
+    "new entry"
+   ],
+   "after": {
+    "kind": "function",
+    "accepts": "(arg0: unknown)",
+    "handsBack": "boolean"
+   },
+   "tells": "nobody"
+  },
+  {
+   "module": "ai-catalogue",
+   "entry": "isInstant",
+   "changes": [
+    "declaration changed (not classified)"
+   ],
+   "tells": "users",
+   "before": {
+    "kind": "function",
+    "accepts": "(arg0: unknown)",
+    "handsBack": "boolean"
+   },
+   "after": {
+    "kind": "function",
+    "accepts": "(arg0: unknown)",
+    "handsBack": "boolean"
+   }
+  },
+  {
+   "module": "ai-catalogue",
+   "entry": "seedOf",
+   "changes": [
+    "new entry"
+   ],
+   "after": {
+    "kind": "function",
+    "accepts": "(arg0: { issued_at: string; schema_version: number; seq: number }, arg1?: null | string)",
+    "handsBack": "{ armored: null | string; body: string; statement: { bytes: number; issued_at: string; schema_version: number; seq: number; sha256: string } }",
+    "bounds": [
+     "bytes: the body's length in UTF-8 bytes",
+     "sha256: 64 lowercase hex digits, the SHA-256 of the body's UTF-8 bytes"
+    ]
+   },
+   "tells": "nobody"
+  },
+  {
+   "module": "ai-catalogue",
+   "entry": "validatePayload",
+   "changes": [
+    "declaration changed (not classified)"
+   ],
+   "tells": "users",
+   "before": {
+    "kind": "function",
+    "accepts": "(arg0: unknown, arg1?: { supported?: readonly number[] })",
+    "handsBack": "{ check?: string; code?: \"CATALOGUE_PAYLOAD_INVALID\"; ok: boolean; path?: string; reason?: \"CATALOGUE_ENTRY_INVALID\" | \"CATALOGUE_EVIDENCE_MISSING\" | \"CATALOGUE_PAYLOAD_INVALID\" | \"CATALOGUE_PLAN_INVALID\"; word?: string }",
+    "bounds": [
+     "path: the first offending path, written as `entries[0].checks.P1`"
+    ]
+   },
+   "after": {
+    "kind": "function",
+    "accepts": "(arg0: unknown, arg1?: { supported?: readonly number[] })",
+    "handsBack": "{ check?: string; code?: \"CATALOGUE_PAYLOAD_INVALID\"; ok: boolean; path?: string; reason?: \"CATALOGUE_ENTRY_INVALID\" | \"CATALOGUE_EVIDENCE_MISSING\" | \"CATALOGUE_PAYLOAD_INVALID\" | \"CATALOGUE_PLAN_INVALID\"; word?: string }",
+    "bounds": [
+     "path: the first offending path, written as `entries[0].checks.P1`"
+    ]
+   }
+  }
+ ],
+ "told": [
+  {
+   "user": "ai-accounts",
+   "reasons": [
+    {
+     "module": "ai-catalogue",
+     "entry": "aiCatalogueOf",
+     "changes": [
+      "accepts more",
+      "bound changed"
+     ],
+     "lines": [
+      "ai-accounts/test/catalogue.mjs:7",
+      "ai-accounts/test/catalogue.mjs:51",
+      "ai-accounts/test/catalogue.mjs:76"
+     ],
+     "through": null
+    },
+    {
+     "module": "ai-catalogue",
+     "notFollowed": [
+      "reads or calls values of unknown kind: ai-accounts/src/accounts.mjs:28 row; ai-accounts/src/accounts.mjs:34 s; ai-accounts/src/accounts.mjs:40 plan (+4330)"
+     ],
+     "through": null
+    }
+   ],
+   "undeclared": []
+  },
+  {
+   "user": "agent-model",
+   "reasons": [
+    {
+     "module": "ai-catalogue",
+     "notFollowed": [
+      "declares ai-catalogue but no use of it is found in its code",
+      "reads or calls values of unknown kind: agent-model/src/src/apikey.mjs:34 m; agent-model/src/src/apikey.mjs:34 m.content.map; agent-model/src/src/apikey.mjs:34 m.content (+1137)"
+     ],
+     "through": null
+    }
+   ],
+   "undeclared": []
+  },
+  {
+   "user": "ai-use",
+   "reasons": [
+    {
+     "module": "ai-catalogue",
+     "entry": "aiCatalogueOf",
+     "changes": [
+      "accepts more",
+      "bound changed"
+     ],
+     "lines": [
+      "ai-use/src/index.mjs:24",
+      "ai-use/src/index.mjs:135"
+     ],
+     "through": null
+    },
+    {
+     "module": "ai-catalogue",
+     "notFollowed": [
+      "reads or calls values of unknown kind: ai-use/src/checks.mjs:110 s.split(`{${k}}`).join; ai-use/src/checks.mjs:110 s.split(`{${k}}`); ai-use/src/checks.mjs:110 s.split (+1933)"
+     ],
+     "through": null
+    }
+   ],
+   "undeclared": []
+  },
+  {
+   "user": "ai-runs",
+   "reasons": [
+    {
+     "module": "ai-catalogue",
+     "entry": "CatalogueEntry",
+     "changes": [
+      "cannot stand in"
+     ],
+     "lines": [
+      "ai-runs/src/index.mjs:3405",
+      "ai-runs/src/index.mjs:3445",
+      "ai-runs/src/index.mjs:3919",
+      "ai-runs/test/segments.test.mjs:152",
+      "ai-runs/test/t53.test.mjs:135"
+     ],
+     "through": null
+    },
+    {
+     "module": "ai-catalogue",
+     "entry": "EFFORT_WORD_MAX",
+     "changes": [
+      "declaration changed (not classified)"
+     ],
+     "lines": [
+      "ai-runs/src/index.mjs:34",
+      "ai-runs/src/index.mjs:3392"
+     ],
+     "through": null
+    },
+    {
+     "module": "ai-catalogue",
+     "entry": "aiCatalogueOf",
+     "changes": [
+      "accepts more",
+      "bound changed"
+     ],
+     "lines": [
+      "ai-runs/src/index.mjs:34",
+      "ai-runs/src/index.mjs:3405",
+      "ai-runs/src/index.mjs:3445",
+      "ai-runs/src/index.mjs:3915"
+     ],
+     "through": null
+    },
+    {
+     "module": "ai-catalogue",
+     "notFollowed": [
+      "reads or calls values of unknown kind: ai-runs/src/index.mjs:91 gate; ai-runs/src/index.mjs:92 gate; ai-runs/src/index.mjs:95 gate (+4716)"
+     ],
+     "through": null
+    }
+   ],
+   "undeclared": []
+  },
+  {
+   "user": "ai-gate",
+   "reasons": [
+    {
+     "module": "ai-catalogue",
+     "notFollowed": [
+      "declares ai-catalogue but no use of it is found in its code"
+     ],
+     "through": null
+    }
+   ],
+   "undeclared": []
+  },
+  {
+   "user": "surface-declarations",
+   "reasons": [
+    {
+     "module": "ai-catalogue",
+     "notFollowed": [
+      "declares ai-catalogue but no use of it is found in its code"
+     ],
+     "through": null
+    }
+   ],
+   "undeclared": []
+  },
+  {
+   "user": "op-declarations",
+   "reasons": [
+    {
+     "module": "ai-catalogue",
+     "notFollowed": [
+      "declares ai-catalogue but no use of it is found in its code",
+      "reads or calls values of unknown kind: op-declarations/src/compose.mjs:10 composed; op-declarations/src/compose.mjs:16 composed; op-declarations/src/declared.mjs:15 a (+3634)"
+     ],
+     "through": null
+    }
+   ],
+   "undeclared": []
+  },
+  {
+   "user": "store-assembly",
+   "reasons": [
+    {
+     "module": "ai-catalogue",
+     "notFollowed": [
+      "declares ai-catalogue but no use of it is found in its code",
+      "reads or calls values of unknown kind: store-assembly/src/acquire-timings.mjs:25 host; store-assembly/src/acquire-timings.mjs:25 host.storage; store-assembly/src/acquire-timings.mjs:25 host.storage.sql (+6766)"
+     ],
+     "through": null
+    }
+   ],
+   "undeclared": []
+  },
+  {
+   "user": "ai-issuer",
+   "reasons": [
+    {
+     "module": "ai-catalogue",
+     "notFollowed": [
+      "declares ai-catalogue but no use of it is found in its code"
+     ],
+     "through": null
+    }
+   ],
+   "undeclared": []
+  }
+ ],
+ "notTold": [],
+ "warnings": [],
+ "interfaceChanged": true,
+ "summary": "1 module(s) changed their listing; 68 entries changed in a way that tells; 9 user(s) told.",
+ "replay": {
+  "change": "ai-catalogue:194",
+  "ms": 46261,
+  "ranAt": "2026-11-15T17:07:47.387Z",
+  "tool": "notice-proof/tool/p3tool.mjs",
+  "commentedUsers": null
+ }
+}
