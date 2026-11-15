@@ -1,0 +1,16 @@
+{
+  "name": "notice-proof",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "description": "A proof run of the method for deciding which user modules are told when a provider module changes. Throwaway.",
+  "engines": { "node": ">=22" },
+  "scripts": {
+    "tool-tests": "node --test tool/test/*.test.mjs",
+    "product-tests": "node proof/run-product-tests.mjs",
+    "proof": "node proof/run-all.mjs"
+  },
+  "devDependencies": {
+    "typescript": "5.6.3"
+  }
+}

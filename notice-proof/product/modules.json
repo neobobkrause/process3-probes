@@ -1,0 +1,16 @@
+{
+  "about": "The made-up product: one ordered list of modules. A module may use only modules before it. 'uses' is each module's declared list of the modules it uses. 'public' is the module's interface files.",
+  "modules": [
+    { "id": "text-rules", "public": ["src/index.mjs"], "uses": [] },
+    { "id": "money", "public": ["src/index.mjs"], "uses": [] },
+    { "id": "calendar", "public": ["src/index.mjs"], "uses": [] },
+    { "id": "store", "public": ["src/index.mjs", "src/testing.mjs"], "uses": [] },
+    { "id": "rooms", "public": ["src/index.mjs"], "uses": ["text-rules", "store"] },
+    { "id": "bookings", "public": ["src/index.mjs"], "uses": ["money", "calendar", "store", "rooms"] },
+    { "id": "door", "public": ["src/index.mjs"], "uses": ["rooms", "bookings"] },
+    { "id": "meter", "public": ["src/index.mjs"], "uses": ["money"] },
+    { "id": "billing", "public": ["src/index.mjs"], "uses": ["money", "store", "rooms", "bookings", "door", "meter"] },
+    { "id": "front", "public": ["src/index.mjs"], "uses": ["text-rules", "store", "rooms", "bookings", "door"] },
+    { "id": "reports", "public": ["src/index.mjs"], "uses": ["calendar", "store", "rooms", "bookings"] }
+  ]
+}
