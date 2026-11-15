@@ -1,0 +1,20 @@
+{
+  "about": "Ground truth by reading for round 5 (fresh independent attacks) run on iteration 4, written by Claude AFTER the results were seen, independently of what the tool said.",
+  "changes": {
+    "V01-accepts-more-hides-static": { "needs": ["billing"], "note": "Tally's constructor only accepts more, so the backstop (which runs only where the comparison finds nothing) did not look; the static method's change rode along unseen." },
+    "V02-bound-values-in-mapped-list": { "needs": ["billing"], "note": "The meter now refuses 601 to 1440 minutes; billing still states 1 to 1440 for what it accepts. No test of billing fails (its tests use 10, 20 and 2000). The bound test's values sit in a list before .map, which the fingerprint did not read." },
+    "V03-refusals-through-console-error": { "needs": ["billing"], "note": "console.error writes to standard error; the message rules looked only at write and end." },
+    "V04-instance-built-in-a-conditional": { "needs": [], "note": "money's change is wrong (Amounts become class instances, built inside a conditional); bookings, meter, billing and front fail, untold, and money's check did not see it." },
+    "V05-error-kind-in-bound-test": { "needs": ["billing"], "note": "The error kind changed in code and in the bound test, not in @throws; error kinds named in a test were not counted, and nothing compares a thrown kind with the stated one." },
+    "V06-non-interface-file-renamed": { "needs": ["front"], "note": "front imports a file of bookings that is not one of its interface files; no rule forbids it, and the listing does not cover it." },
+    "V07-write-with-callback": { "needs": [], "falseRefusals": { "meter": 2 }, "note": "write(line, callback) is right; the tool's description of Node gave write one parameter, and the one-per-line rule looked at every argument." },
+    "V08-limit-read-from-json": { "needs": [], "falseRefusals": { "money": 1 }, "note": "Importing JSON is right on Node 22; the reader was not set to read JSON." },
+    "V09-pop-after-length-check": { "needs": [], "falseRefusals": { "bookings": 1 }, "note": "pop() after a length check: right; the reader cannot tell, and the value's kind came from another module." },
+    "V10-checked-cast-to-kind": { "needs": [], "note": "No refusal: the cast follows a check the reader understands." },
+    "V11-door-copy-in-two-steps": { "needs": [], "falseRefusals": { "door": 1 }, "note": "A copy made by stringify then parse in two statements is not a message; the exemption knew only the one-expression form. billing and front were rightly told of Door's new stated errors." },
+    "V12-destructured-parameter": { "needs": [], "note": "Four notices for nothing: the printed declaration changed only by the parameter's written form." },
+    "V13-states-named": { "needs": [], "note": "Three notices for nothing: an inline union given a name changes the printed declaration only." },
+    "V14-overload-added": { "needs": [], "note": "One notice for nothing: an added overload that keeps the old one only accepts more." },
+    "V15-bound-test-through-helper": { "needs": [], "note": "One notice for nothing: values passed to a test helper's parameters were not followed." }
+  }
+}

@@ -1,0 +1,237 @@
+{
+  "id": "V12-destructured-parameter",
+  "title": "createRooms takes its dependencies apart in its parameter list",
+  "provider": "rooms",
+  "covers": [
+    "a parameter written as a destructuring pattern; kinds and behaviour unchanged"
+  ],
+  "tool": {
+    "firstCommentsStep": false,
+    "interfaceChanged": true,
+    "summary": "1 module(s) changed their listing; 1 entry changed in a way that tells; 4 user(s) told.",
+    "entries": [
+      {
+        "module": "rooms",
+        "entry": "createRooms",
+        "changes": [
+          "declaration changed (not classified)"
+        ],
+        "tells": "users",
+        "before": {
+          "kind": "function",
+          "accepts": "(arg0: { store: handle store.Store })",
+          "handsBack": "handle rooms.Rooms"
+        },
+        "after": {
+          "kind": "function",
+          "accepts": "(arg0: { store: handle store.Store })",
+          "handsBack": "handle rooms.Rooms"
+        }
+      }
+    ],
+    "told": [
+      "bookings",
+      "billing",
+      "front",
+      "reports"
+    ],
+    "toldDetail": [
+      {
+        "user": "bookings",
+        "reasons": [
+          {
+            "module": "rooms",
+            "entry": "createRooms",
+            "changes": [
+              "declaration changed (not classified)"
+            ],
+            "lines": [
+              "bookings/test/index.test.mjs:4",
+              "bookings/test/index.test.mjs:9"
+            ],
+            "through": null
+          }
+        ],
+        "undeclared": []
+      },
+      {
+        "user": "billing",
+        "reasons": [
+          {
+            "module": "rooms",
+            "entry": "createRooms",
+            "changes": [
+              "declaration changed (not classified)"
+            ],
+            "lines": [
+              "billing/test/index.test.mjs:4",
+              "billing/test/index.test.mjs:11"
+            ],
+            "through": null
+          }
+        ],
+        "undeclared": []
+      },
+      {
+        "user": "front",
+        "reasons": [
+          {
+            "module": "rooms",
+            "entry": "createRooms",
+            "changes": [
+              "declaration changed (not classified)"
+            ],
+            "lines": [
+              "front/test/index.test.mjs:4",
+              "front/test/index.test.mjs:16"
+            ],
+            "through": null
+          }
+        ],
+        "undeclared": []
+      },
+      {
+        "user": "reports",
+        "reasons": [
+          {
+            "module": "rooms",
+            "entry": "createRooms",
+            "changes": [
+              "declaration changed (not classified)"
+            ],
+            "lines": [
+              "reports/test/index.test.mjs:4",
+              "reports/test/index.test.mjs:10"
+            ],
+            "through": null
+          },
+          {
+            "module": "rooms",
+            "notFollowed": [
+              "reads or calls values of unknown kind: reports/src/index.mjs:13 source.list('rooms').map; reports/src/index.mjs:13 source.list('rooms'); reports/src/index.mjs:13 source.list (+9)"
+            ],
+            "through": null
+          }
+        ],
+        "undeclared": []
+      }
+    ],
+    "notTold": [
+      {
+        "user": "door",
+        "why": "uses none of the entries that changed in a way that tells"
+      }
+    ],
+    "warnings": [],
+    "commentsOnly": false,
+    "checks": {
+      "rooms": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 65
+      },
+      "bookings": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 101
+      },
+      "door": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 74
+      },
+      "meter": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 73
+      },
+      "billing": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 82
+      },
+      "front": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 69
+      },
+      "reports": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 89
+      }
+    }
+  },
+  "groundTruth": {
+    "providerTests": {
+      "pass": true,
+      "failed": [],
+      "ran": 5
+    },
+    "testsBefore": {
+      "bookings": true,
+      "door": true,
+      "meter": true,
+      "billing": true,
+      "front": true,
+      "reports": true
+    },
+    "testsAfter": {
+      "bookings": {
+        "pass": true,
+        "failed": []
+      },
+      "door": {
+        "pass": true,
+        "failed": []
+      },
+      "meter": {
+        "pass": true,
+        "failed": []
+      },
+      "billing": {
+        "pass": true,
+        "failed": []
+      },
+      "front": {
+        "pass": true,
+        "failed": []
+      },
+      "reports": {
+        "pass": true,
+        "failed": []
+      }
+    },
+    "broken": []
+  },
+  "timing": {
+    "listingMs": {
+      "before": 79,
+      "after": 57
+    },
+    "noticeMs": 489,
+    "checkMs": {
+      "rooms": 65,
+      "bookings": 101,
+      "door": 74,
+      "meter": 73,
+      "billing": 82,
+      "front": 69,
+      "reports": 89
+    }
+  }
+}

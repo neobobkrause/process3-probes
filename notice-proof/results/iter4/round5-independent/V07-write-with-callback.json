@@ -1,0 +1,103 @@
+{
+  "id": "V07-write-with-callback",
+  "title": "The meter exits as soon as its closing message is written, so that nothing left open can keep a finished meter running",
+  "provider": "meter",
+  "covers": [
+    "honest code using Node's write with a callback, which the tool's description of Node does not have",
+    "a message written one per line, with a callback"
+  ],
+  "tool": {
+    "firstCommentsStep": false,
+    "interfaceChanged": false,
+    "summary": "The listing before and after is the same. Nobody is told.",
+    "entries": [],
+    "told": [],
+    "toldDetail": [],
+    "notTold": [],
+    "warnings": [],
+    "commentsOnly": false,
+    "checks": {
+      "meter": {
+        "refusedBefore": 0,
+        "refusedAfter": 2,
+        "refusals": [
+          {
+            "at": "meter/src/worker.mjs:16",
+            "code": 2554,
+            "text": "Expected 1 arguments, but got 2.",
+            "kind": "(a) a comment disagrees with this module's code"
+          },
+          {
+            "at": "meter/src/worker.mjs:16",
+            "code": "message",
+            "text": "messages on a channel are written one per line: JSON.stringify(message) + newline",
+            "kind": "(c) a rule of form: one message per line"
+          }
+        ],
+        "refusalsBefore": [],
+        "ms": 77
+      },
+      "billing": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 103
+      },
+      "front": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 78
+      },
+      "reports": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 82
+      }
+    }
+  },
+  "groundTruth": {
+    "providerTests": {
+      "pass": true,
+      "failed": [],
+      "ran": 2
+    },
+    "testsBefore": {
+      "billing": true,
+      "front": true,
+      "reports": true
+    },
+    "testsAfter": {
+      "billing": {
+        "pass": true,
+        "failed": []
+      },
+      "front": {
+        "pass": true,
+        "failed": []
+      },
+      "reports": {
+        "pass": true,
+        "failed": []
+      }
+    },
+    "broken": []
+  },
+  "timing": {
+    "listingMs": {
+      "before": 51,
+      "after": 49
+    },
+    "noticeMs": 615,
+    "checkMs": {
+      "meter": 77,
+      "billing": 103,
+      "front": 78,
+      "reports": 82
+    }
+  }
+}
