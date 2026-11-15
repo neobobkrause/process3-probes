@@ -113,6 +113,20 @@ export function check(tree, moduleId) {
       if (d && ts.isVariableDeclaration(d) && d.initializer && ts.isCallExpression(d.initializer) && ts.isPropertyAccessExpression(d.initializer.expression) && d.initializer.expression.name.text === 'get' && d.initializer.arguments.length === 1) gets.push(`${d.initializer.expression.expression.getText()}.has(${d.initializer.arguments[0].getText()})`);
     });
     if (!gets.length) return false;
+    // set when missing, just before: if (!X.has(K)) X.set(K, ...);
+    const block = top.parent;
+    if (block && (ts.isBlock(block) || ts.isSourceFile(block))) {
+      for (const st of block.statements) {
+        if (st === top) break;
+        if (ts.isIfStatement(st) && /^!/.test(st.expression.getText().trim())) {
+          const cond = st.expression.getText().replace(/\s+/g, '');
+          for (const g of gets) {
+            const [x, k] = g.replace(/\s+/g, '').split('.has(');
+            if (cond.includes(`!${x}.has(${k}`) && st.thenStatement.getText().replace(/\s+/g, '').includes(`${x}.set(${k.replace(/\)$/, '')}`)) return true;
+          }
+        }
+      }
+    }
     for (let a = node.parent; a; a = a.parent) {
       const cond = ts.isIfStatement(a) || ts.isWhileStatement(a) ? a.expression : ts.isConditionalExpression(a) ? a.condition : ts.isBinaryExpression(a) && a.operatorToken.kind === ts.SyntaxKind.AmpersandAmpersandToken ? a.left : null;
       if (cond && gets.some((g) => cond.getText().replace(/\s+/g, '').includes(g.replace(/\s+/g, '')))) return true;
@@ -365,7 +379,9 @@ export function boundTests(mod) {
       if (isTestCall(n)) {
         const name = testName(n);
         if (name && /^bound\s/.test(name)) {
-          out.set(name.replace(/^bound\s+/, '').replace(/\s+/g, ' ').trim(), { shape: fingerprint(n, sf), at: `${path.basename(f)}:${sf.getLineAndCharacterOfPosition(n.getStart(sf)).line + 1}` });
+          // what the test does, not how it is grouped or named: only the arguments after its name
+          const fp = n.arguments.slice(1).map((a) => fingerprint(a, sf));
+          out.set(name.replace(/^bound\s+/, '').replace(/\s+/g, ' ').trim(), { shape: JSON.stringify(fp), at: `${path.basename(f)}:${sf.getLineAndCharacterOfPosition(n.getStart(sf)).line + 1}` });
         }
       }
       ts.forEachChild(n, visit);

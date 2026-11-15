@@ -1,0 +1,101 @@
+{
+  "id": "Y06-channel-line-built-first",
+  "title": "The meter writes refusals to standard error, as errors; the line is built first, then written; the @message tag is left as it was",
+  "provider": "meter",
+  "covers": [
+    "a message's channel changes; its @message channel is not updated",
+    "the write of JSON.stringify is split over two statements"
+  ],
+  "tool": {
+    "firstCommentsStep": false,
+    "interfaceChanged": false,
+    "summary": "The listing before and after is the same. Nobody is told.",
+    "entries": [],
+    "told": [],
+    "toldDetail": [],
+    "notTold": [],
+    "warnings": [],
+    "commentsOnly": false,
+    "checks": {
+      "meter": {
+        "refusedBefore": 0,
+        "refusedAfter": 1,
+        "refusals": [
+          {
+            "at": "meter/src/worker.mjs:16",
+            "code": "message",
+            "text": "a message written to stderr has a kind published for stdout",
+            "kind": "(c) a rule of form: a message is written with its kind, on its channel"
+          }
+        ],
+        "refusalsBefore": [],
+        "ms": 67
+      },
+      "billing": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 88
+      },
+      "front": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 105
+      },
+      "reports": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 74
+      }
+    }
+  },
+  "groundTruth": {
+    "providerTests": {
+      "pass": true,
+      "failed": [],
+      "ran": 2
+    },
+    "testsBefore": {
+      "billing": true,
+      "front": true,
+      "reports": true
+    },
+    "testsAfter": {
+      "billing": {
+        "pass": false,
+        "failed": [
+          "metered use outside the meter's bound is refused"
+        ]
+      },
+      "front": {
+        "pass": true,
+        "failed": []
+      },
+      "reports": {
+        "pass": true,
+        "failed": []
+      }
+    },
+    "broken": [
+      "billing"
+    ]
+  },
+  "timing": {
+    "listingMs": {
+      "before": 52,
+      "after": 61
+    },
+    "noticeMs": 682,
+    "checkMs": {
+      "meter": 67,
+      "billing": 88,
+      "front": 105,
+      "reports": 74
+    }
+  }
+}

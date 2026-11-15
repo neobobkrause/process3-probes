@@ -1,0 +1,619 @@
+{
+  "id": "X07-list-gains-name-lookup-table",
+  "title": "A new kind of room: garden (a user keeps a price for each kind)",
+  "provider": "rooms",
+  "covers": [
+    "list gains a name",
+    "user indexes its own table by the provider's kind"
+  ],
+  "tool": {
+    "firstCommentsStep": false,
+    "interfaceChanged": true,
+    "summary": "3 module(s) changed their listing; 10 entries changed in a way that tells; 4 user(s) told.",
+    "entries": [
+      {
+        "module": "rooms",
+        "entry": "NewRoom",
+        "changes": [
+          "accepts more"
+        ],
+        "tells": "nobody",
+        "before": {
+          "kind": "kind",
+          "accepts": "{ kind: \"hall\" | \"kitchen\" | \"studio\"; name: string; seats: number }",
+          "side": "accepts"
+        },
+        "after": {
+          "kind": "kind",
+          "accepts": "{ kind: \"garden\" | \"hall\" | \"kitchen\" | \"studio\"; name: string; seats: number }",
+          "side": "accepts"
+        }
+      },
+      {
+        "module": "rooms",
+        "entry": "ROOM_KINDS",
+        "changes": [
+          "hands back differently"
+        ],
+        "tells": "users",
+        "before": {
+          "kind": "value",
+          "handsBack": "readonly [\"hall\", \"studio\", \"kitchen\"]"
+        },
+        "after": {
+          "kind": "value",
+          "handsBack": "readonly [\"hall\", \"studio\", \"kitchen\", \"garden\"]"
+        }
+      },
+      {
+        "module": "rooms",
+        "entry": "Room",
+        "changes": [
+          "hands back differently"
+        ],
+        "tells": "users",
+        "before": {
+          "kind": "kind",
+          "handsBack": "{ id: string; kind: \"hall\" | \"kitchen\" | \"studio\"; name: string; seats: number }",
+          "bounds": [
+            "seats: whole number, 1 to 500"
+          ],
+          "side": "handsBack"
+        },
+        "after": {
+          "kind": "kind",
+          "handsBack": "{ id: string; kind: \"garden\" | \"hall\" | \"kitchen\" | \"studio\"; name: string; seats: number }",
+          "bounds": [
+            "seats: whole number, 1 to 500"
+          ],
+          "side": "handsBack"
+        }
+      },
+      {
+        "module": "rooms",
+        "entry": "RoomHandlers.roomlist",
+        "changes": [
+          "accepts more",
+          "hands back differently"
+        ],
+        "tells": "users",
+        "before": {
+          "kind": "method",
+          "accepts": "(arg0: { kind?: \"hall\" | \"kitchen\" | \"studio\" })",
+          "handsBack": "{ rooms: { id: string; kind: \"hall\" | \"kitchen\" | \"studio\"; name: string; seats: number }[] }",
+          "bounds": [
+            "seats: whole number, 1 to 500"
+          ]
+        },
+        "after": {
+          "kind": "method",
+          "accepts": "(arg0: { kind?: \"garden\" | \"hall\" | \"kitchen\" | \"studio\" })",
+          "handsBack": "{ rooms: { id: string; kind: \"garden\" | \"hall\" | \"kitchen\" | \"studio\"; name: string; seats: number }[] }",
+          "bounds": [
+            "seats: whole number, 1 to 500"
+          ]
+        }
+      },
+      {
+        "module": "rooms",
+        "entry": "RoomKind",
+        "changes": [
+          "accepts more",
+          "hands back differently"
+        ],
+        "tells": "users",
+        "before": {
+          "kind": "kind",
+          "accepts": "\"hall\" | \"kitchen\" | \"studio\"",
+          "handsBack": "\"hall\" | \"kitchen\" | \"studio\"",
+          "side": "both"
+        },
+        "after": {
+          "kind": "kind",
+          "accepts": "\"garden\" | \"hall\" | \"kitchen\" | \"studio\"",
+          "handsBack": "\"garden\" | \"hall\" | \"kitchen\" | \"studio\"",
+          "side": "both"
+        }
+      },
+      {
+        "module": "rooms",
+        "entry": "Rooms.add",
+        "changes": [
+          "accepts more",
+          "hands back differently"
+        ],
+        "tells": "users",
+        "before": {
+          "kind": "method",
+          "accepts": "(arg0: { kind: \"hall\" | \"kitchen\" | \"studio\"; name: string; seats: number })",
+          "handsBack": "{ id: string; kind: \"hall\" | \"kitchen\" | \"studio\"; name: string; seats: number }",
+          "bounds": [
+            "seats: whole number, 1 to 500"
+          ]
+        },
+        "after": {
+          "kind": "method",
+          "accepts": "(arg0: { kind: \"garden\" | \"hall\" | \"kitchen\" | \"studio\"; name: string; seats: number })",
+          "handsBack": "{ id: string; kind: \"garden\" | \"hall\" | \"kitchen\" | \"studio\"; name: string; seats: number }",
+          "bounds": [
+            "seats: whole number, 1 to 500"
+          ]
+        }
+      },
+      {
+        "module": "rooms",
+        "entry": "Rooms.find",
+        "changes": [
+          "hands back differently"
+        ],
+        "tells": "users",
+        "before": {
+          "kind": "method",
+          "accepts": "(arg0: string)",
+          "handsBack": "{ id: string; kind: \"hall\" | \"kitchen\" | \"studio\"; name: string; seats: number } | undefined",
+          "bounds": [
+            "seats: whole number, 1 to 500"
+          ]
+        },
+        "after": {
+          "kind": "method",
+          "accepts": "(arg0: string)",
+          "handsBack": "{ id: string; kind: \"garden\" | \"hall\" | \"kitchen\" | \"studio\"; name: string; seats: number } | undefined",
+          "bounds": [
+            "seats: whole number, 1 to 500"
+          ]
+        }
+      },
+      {
+        "module": "rooms",
+        "entry": "Rooms.list",
+        "changes": [
+          "accepts more",
+          "hands back differently"
+        ],
+        "tells": "users",
+        "before": {
+          "kind": "method",
+          "accepts": "(arg0?: \"hall\" | \"kitchen\" | \"studio\")",
+          "handsBack": "{ id: string; kind: \"hall\" | \"kitchen\" | \"studio\"; name: string; seats: number }[]",
+          "bounds": [
+            "seats: whole number, 1 to 500"
+          ]
+        },
+        "after": {
+          "kind": "method",
+          "accepts": "(arg0?: \"garden\" | \"hall\" | \"kitchen\" | \"studio\")",
+          "handsBack": "{ id: string; kind: \"garden\" | \"hall\" | \"kitchen\" | \"studio\"; name: string; seats: number }[]",
+          "bounds": [
+            "seats: whole number, 1 to 500"
+          ]
+        }
+      },
+      {
+        "module": "rooms",
+        "entry": "op:roomlist",
+        "changes": [
+          "accepts more",
+          "hands back differently"
+        ],
+        "tells": "users",
+        "before": {
+          "kind": "operation",
+          "accepts": "{ kind?: \"hall\" | \"kitchen\" | \"studio\" }",
+          "handsBack": "{ rooms: { id: string; kind: \"hall\" | \"kitchen\" | \"studio\"; name: string; seats: number }[] }",
+          "bounds": [
+            "seats: whole number, 1 to 500"
+          ]
+        },
+        "after": {
+          "kind": "operation",
+          "accepts": "{ kind?: \"garden\" | \"hall\" | \"kitchen\" | \"studio\" }",
+          "handsBack": "{ rooms: { id: string; kind: \"garden\" | \"hall\" | \"kitchen\" | \"studio\"; name: string; seats: number }[] }",
+          "bounds": [
+            "seats: whole number, 1 to 500"
+          ]
+        }
+      },
+      {
+        "module": "rooms",
+        "entry": "table:rooms",
+        "changes": [
+          "accepts more",
+          "hands back differently"
+        ],
+        "tells": "users",
+        "before": {
+          "kind": "stored rows",
+          "accepts": "{ id: string; kind: \"hall\" | \"kitchen\" | \"studio\"; name: string; seats: number }",
+          "handsBack": "{ id: string; kind: \"hall\" | \"kitchen\" | \"studio\"; name: string; seats: number }",
+          "bounds": [
+            "seats: whole number, 1 to 500"
+          ],
+          "side": "both"
+        },
+        "after": {
+          "kind": "stored rows",
+          "accepts": "{ id: string; kind: \"garden\" | \"hall\" | \"kitchen\" | \"studio\"; name: string; seats: number }",
+          "handsBack": "{ id: string; kind: \"garden\" | \"hall\" | \"kitchen\" | \"studio\"; name: string; seats: number }",
+          "bounds": [
+            "seats: whole number, 1 to 500"
+          ],
+          "side": "both"
+        }
+      },
+      {
+        "module": "door",
+        "entry": "AllOps",
+        "changes": [
+          "accepts more"
+        ],
+        "tells": "nobody",
+        "before": {
+          "kind": "kind",
+          "accepts": "{ bookcancel: { req: { id: string }; res: { day: string; id: string; nights: number; note?: string; party: number; room: string; state: \"cancelled\" | \"open\"; total: { cents: number; currency: \"EUR\" | \"GBP\" | \"USD\" }; until: string } }; bookopen: { req: { day: string; nights: number; note?: string; party: number; room: string }; res: { day: string; id: string; nights: number; note?: string; party: number; room: string; state: \"cancelled\" | \"open\"; total: { cents: number; currency: \"EUR\" | \"GBP\" | \"USD\" }; until: string } }; bookquote: { req: { nights: number; party: number; room: string }; res: { total: { cents: number; currency: \"EUR\" | \"GBP\" | \"USD\" } } }; bookstatus: { req: { id: string }; res: { room: string; state: \"cancelled\" | \"open\"; total: { cents: number; currency: \"EUR\" | \"GBP\" | \"USD\" } } }; roomlist: { req: { kind?: \"hall\" | \"kitchen\" | \"studio\" }; res: { rooms: { id: string; kind: \"hall\" | \"kitchen\" | \"studio\"; name: string; seats: number }[] } } }",
+          "bounds": [
+            "bookquote.total: what the whole stay costs, for the whole party and every night",
+            "cents: whole number, 0 to 10,000,000 inclusive",
+            "day: a real calendar day written YYYY-MM-DD",
+            "nights: whole number, 1 to 14",
+            "party: whole number, 1 to 200, and no more than the room's seats",
+            "seats: whole number, 1 to 500"
+          ],
+          "side": "accepts"
+        },
+        "after": {
+          "kind": "kind",
+          "accepts": "{ bookcancel: { req: { id: string }; res: { day: string; id: string; nights: number; note?: string; party: number; room: string; state: \"cancelled\" | \"open\"; total: { cents: number; currency: \"EUR\" | \"GBP\" | \"USD\" }; until: string } }; bookopen: { req: { day: string; nights: number; note?: string; party: number; room: string }; res: { day: string; id: string; nights: number; note?: string; party: number; room: string; state: \"cancelled\" | \"open\"; total: { cents: number; currency: \"EUR\" | \"GBP\" | \"USD\" }; until: string } }; bookquote: { req: { nights: number; party: number; room: string }; res: { total: { cents: number; currency: \"EUR\" | \"GBP\" | \"USD\" } } }; bookstatus: { req: { id: string }; res: { room: string; state: \"cancelled\" | \"open\"; total: { cents: number; currency: \"EUR\" | \"GBP\" | \"USD\" } } }; roomlist: { req: { kind?: \"garden\" | \"hall\" | \"kitchen\" | \"studio\" }; res: { rooms: { id: string; kind: \"garden\" | \"hall\" | \"kitchen\" | \"studio\"; name: string; seats: number }[] } } }",
+          "bounds": [
+            "bookquote.total: what the whole stay costs, for the whole party and every night",
+            "cents: whole number, 0 to 10,000,000 inclusive",
+            "day: a real calendar day written YYYY-MM-DD",
+            "nights: whole number, 1 to 14",
+            "party: whole number, 1 to 200, and no more than the room's seats",
+            "seats: whole number, 1 to 500"
+          ],
+          "side": "accepts"
+        }
+      },
+      {
+        "module": "door",
+        "entry": "Handlers.roomlist",
+        "changes": [
+          "accepts more",
+          "hands back differently"
+        ],
+        "tells": "users",
+        "before": {
+          "kind": "method",
+          "accepts": "(arg0: { kind?: \"hall\" | \"kitchen\" | \"studio\" })",
+          "handsBack": "{ rooms: { id: string; kind: \"hall\" | \"kitchen\" | \"studio\"; name: string; seats: number }[] }",
+          "bounds": [
+            "seats: whole number, 1 to 500"
+          ]
+        },
+        "after": {
+          "kind": "method",
+          "accepts": "(arg0: { kind?: \"garden\" | \"hall\" | \"kitchen\" | \"studio\" })",
+          "handsBack": "{ rooms: { id: string; kind: \"garden\" | \"hall\" | \"kitchen\" | \"studio\"; name: string; seats: number }[] }",
+          "bounds": [
+            "seats: whole number, 1 to 500"
+          ]
+        }
+      },
+      {
+        "module": "front",
+        "entry": "Front.roomMenu",
+        "changes": [
+          "accepts more"
+        ],
+        "tells": "nobody",
+        "before": {
+          "kind": "method",
+          "accepts": "(arg0?: \"hall\" | \"kitchen\" | \"studio\")",
+          "handsBack": "Promise<string[]>"
+        },
+        "after": {
+          "kind": "method",
+          "accepts": "(arg0?: \"garden\" | \"hall\" | \"kitchen\" | \"studio\")",
+          "handsBack": "Promise<string[]>"
+        }
+      }
+    ],
+    "told": [
+      "bookings",
+      "billing",
+      "front",
+      "reports"
+    ],
+    "toldDetail": [
+      {
+        "user": "bookings",
+        "reasons": [
+          {
+            "module": "rooms",
+            "entry": "Room",
+            "changes": [
+              "hands back differently"
+            ],
+            "lines": [
+              "bookings/src/index.mjs:99",
+              "bookings/src/index.mjs:100"
+            ],
+            "through": null
+          },
+          {
+            "module": "rooms",
+            "entry": "Rooms.add",
+            "changes": [
+              "accepts more",
+              "hands back differently"
+            ],
+            "lines": [
+              "bookings/test/index.test.mjs:10",
+              "bookings/test/index.test.mjs:11"
+            ],
+            "through": null
+          },
+          {
+            "module": "rooms",
+            "entry": "Rooms.find",
+            "changes": [
+              "hands back differently"
+            ],
+            "lines": [
+              "bookings/src/index.mjs:97"
+            ],
+            "through": null
+          }
+        ],
+        "undeclared": []
+      },
+      {
+        "user": "billing",
+        "reasons": [
+          {
+            "module": "rooms",
+            "entry": "Rooms.add",
+            "changes": [
+              "accepts more",
+              "hands back differently"
+            ],
+            "lines": [
+              "billing/test/index.test.mjs:12"
+            ],
+            "through": null
+          }
+        ],
+        "undeclared": []
+      },
+      {
+        "user": "front",
+        "reasons": [
+          {
+            "module": "rooms",
+            "entry": "ROOM_KINDS",
+            "changes": [
+              "hands back differently"
+            ],
+            "lines": [
+              "front/src/index.mjs:5",
+              "front/src/index.mjs:54"
+            ],
+            "through": null
+          },
+          {
+            "module": "rooms",
+            "entry": "Room",
+            "changes": [
+              "hands back differently"
+            ],
+            "lines": [
+              "front/src/index.mjs:58"
+            ],
+            "through": null
+          },
+          {
+            "module": "rooms",
+            "entry": "RoomKind",
+            "changes": [
+              "accepts more",
+              "hands back differently"
+            ],
+            "lines": [
+              "front/src/index.mjs:6",
+              "front/src/index.mjs:26"
+            ],
+            "through": null
+          },
+          {
+            "module": "rooms",
+            "entry": "op:roomlist",
+            "changes": [
+              "accepts more",
+              "hands back differently"
+            ],
+            "lines": [
+              "front/src/index.mjs:57"
+            ],
+            "through": null
+          },
+          {
+            "module": "rooms",
+            "entry": "table:rooms",
+            "changes": [
+              "accepts more",
+              "hands back differently"
+            ],
+            "lines": [
+              "front/test/index.test.mjs:10"
+            ],
+            "through": null
+          }
+        ],
+        "undeclared": []
+      },
+      {
+        "user": "reports",
+        "reasons": [
+          {
+            "module": "rooms",
+            "entry": "ROOM_KINDS",
+            "changes": [
+              "hands back differently"
+            ],
+            "lines": [
+              "reports/src/index.mjs:4",
+              "reports/src/index.mjs:17"
+            ],
+            "through": null
+          },
+          {
+            "module": "rooms",
+            "entry": "Rooms.add",
+            "changes": [
+              "accepts more",
+              "hands back differently"
+            ],
+            "lines": [
+              "reports/test/index.test.mjs:11",
+              "reports/test/index.test.mjs:12"
+            ],
+            "through": null
+          },
+          {
+            "module": "rooms",
+            "notFollowed": [
+              "reads or calls values of unknown kind: reports/src/index.mjs:13 source.list('rooms').map; reports/src/index.mjs:13 source.list('rooms'); reports/src/index.mjs:13 source.list (+9)"
+            ],
+            "through": null
+          }
+        ],
+        "undeclared": []
+      }
+    ],
+    "notTold": [
+      {
+        "user": "door",
+        "why": "uses none of the entries that changed in a way that tells"
+      }
+    ],
+    "warnings": [],
+    "commentsOnly": false,
+    "checks": {
+      "rooms": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 59
+      },
+      "bookings": {
+        "refusedBefore": 0,
+        "refusedAfter": 1,
+        "refusals": [
+          {
+            "at": "bookings/src/index.mjs:100",
+            "code": 7053,
+            "text": "Element implicitly has an 'any' type because expression of type '\"hall\" | \"studio\" | \"kitchen\" | \"garden\"' can't be used to index type '{ hall: number; studio: number; kitchen: number; }'.   Property 'garden' does not exist on type '{ hall: number; studio: number; kitchen: number; }'.",
+            "kind": "(b) code disagrees with the stated interface of money, rooms"
+          }
+        ],
+        "refusalsBefore": [],
+        "ms": 119
+      },
+      "door": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 86
+      },
+      "meter": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 68
+      },
+      "billing": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 79
+      },
+      "front": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 75
+      },
+      "reports": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 73
+      }
+    }
+  },
+  "groundTruth": {
+    "providerTests": {
+      "pass": true,
+      "failed": [],
+      "ran": 6
+    },
+    "testsBefore": {
+      "bookings": true,
+      "door": true,
+      "meter": true,
+      "billing": true,
+      "front": true,
+      "reports": true
+    },
+    "testsAfter": {
+      "bookings": {
+        "pass": true,
+        "failed": []
+      },
+      "door": {
+        "pass": true,
+        "failed": []
+      },
+      "meter": {
+        "pass": true,
+        "failed": []
+      },
+      "billing": {
+        "pass": true,
+        "failed": []
+      },
+      "front": {
+        "pass": true,
+        "failed": []
+      },
+      "reports": {
+        "pass": true,
+        "failed": []
+      }
+    },
+    "broken": []
+  },
+  "timing": {
+    "listingMs": {
+      "before": 73,
+      "after": 71
+    },
+    "noticeMs": 467,
+    "checkMs": {
+      "rooms": 59,
+      "bookings": 119,
+      "door": 86,
+      "meter": 68,
+      "billing": 79,
+      "front": 75,
+      "reports": 73
+    }
+  }
+}

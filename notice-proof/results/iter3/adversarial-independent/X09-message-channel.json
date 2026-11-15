@@ -1,0 +1,107 @@
+{
+  "id": "X09-message-channel",
+  "title": "The meter writes refusals to its standard error, as errors; readings and done stay on standard output",
+  "provider": "meter",
+  "covers": [
+    "which channel a message travels on changes; every message kind unchanged",
+    "separately running parts"
+  ],
+  "tool": {
+    "firstCommentsStep": false,
+    "interfaceChanged": false,
+    "summary": "The listing before and after is the same. Nobody is told.",
+    "entries": [],
+    "told": [],
+    "toldDetail": [],
+    "notTold": [],
+    "warnings": [],
+    "commentsOnly": false,
+    "checks": {
+      "meter": {
+        "refusedBefore": 0,
+        "refusedAfter": 2,
+        "refusals": [
+          {
+            "at": "meter/src/worker.mjs:15",
+            "code": "message",
+            "text": "a message written to stderr has a kind published for stdout",
+            "kind": "(c) a rule of form: a message is written with its kind, on its channel"
+          },
+          {
+            "at": "meter/test/index.test.mjs:12",
+            "code": "message",
+            "text": "a message is read without a kind its sender publishes (@message)",
+            "kind": "(c) a rule of form: a message is read with its sender's kind"
+          }
+        ],
+        "refusalsBefore": [],
+        "ms": 88
+      },
+      "billing": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 84
+      },
+      "front": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 88
+      },
+      "reports": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 83
+      }
+    }
+  },
+  "groundTruth": {
+    "providerTests": {
+      "pass": true,
+      "failed": [],
+      "ran": 2
+    },
+    "testsBefore": {
+      "billing": true,
+      "front": true,
+      "reports": true
+    },
+    "testsAfter": {
+      "billing": {
+        "pass": false,
+        "failed": [
+          "metered use outside the meter's bound is refused"
+        ]
+      },
+      "front": {
+        "pass": true,
+        "failed": []
+      },
+      "reports": {
+        "pass": true,
+        "failed": []
+      }
+    },
+    "broken": [
+      "billing"
+    ]
+  },
+  "timing": {
+    "listingMs": {
+      "before": 55,
+      "after": 72
+    },
+    "noticeMs": 444,
+    "checkMs": {
+      "meter": 88,
+      "billing": 84,
+      "front": 88,
+      "reports": 83
+    }
+  }
+}

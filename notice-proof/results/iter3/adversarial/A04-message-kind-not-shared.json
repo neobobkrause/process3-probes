@@ -1,0 +1,142 @@
+{
+  "id": "A04-message-kind-not-shared",
+  "title": "The meter's reading carries price in place of cost; billing kept its own copy of the message kind",
+  "provider": "meter",
+  "covers": [
+    "attack: two running parts that do not share one written kind for their message"
+  ],
+  "tool": {
+    "firstCommentsStep": false,
+    "interfaceChanged": true,
+    "summary": "1 module(s) changed their listing; 1 entry changed in a way that tells; 0 user(s) told.",
+    "entries": [
+      {
+        "module": "meter",
+        "entry": "MeterMsg",
+        "changes": [
+          "cannot stand in",
+          "hands back differently"
+        ],
+        "tells": "users",
+        "before": {
+          "kind": "kind",
+          "accepts": "{ cost: { cents: number; currency: \"EUR\" | \"GBP\" | \"USD\" }; kind: \"reading\"; minutes: number; room: string } | { count: number; kind: \"done\" } | { kind: \"refused\"; reason: string; room: string }",
+          "handsBack": "{ cost: { cents: number; currency: \"EUR\" | \"GBP\" | \"USD\" }; kind: \"reading\"; minutes: number; room: string } | { count: number; kind: \"done\" } | { kind: \"refused\"; reason: string; room: string }",
+          "bounds": [
+            "cents: whole number, 0 to 10,000,000 inclusive"
+          ],
+          "side": "both",
+          "channel": "stdout"
+        },
+        "after": {
+          "kind": "kind",
+          "accepts": "{ count: number; kind: \"done\" } | { kind: \"reading\"; minutes: number; price: { cents: number; currency: \"EUR\" | \"GBP\" | \"USD\" }; room: string } | { kind: \"refused\"; reason: string; room: string }",
+          "handsBack": "{ count: number; kind: \"done\" } | { kind: \"reading\"; minutes: number; price: { cents: number; currency: \"EUR\" | \"GBP\" | \"USD\" }; room: string } | { kind: \"refused\"; reason: string; room: string }",
+          "bounds": [
+            "cents: whole number, 0 to 10,000,000 inclusive"
+          ],
+          "side": "both",
+          "channel": "stdout"
+        }
+      }
+    ],
+    "told": [],
+    "toldDetail": [],
+    "notTold": [
+      {
+        "user": "billing",
+        "why": "uses none of the entries that changed in a way that tells"
+      }
+    ],
+    "warnings": [],
+    "commentsOnly": false,
+    "checks": {
+      "meter": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 67
+      },
+      "billing": {
+        "refusedBefore": 1,
+        "refusedAfter": 1,
+        "refusals": [
+          {
+            "at": "billing/src/index.mjs:70",
+            "code": "message",
+            "text": "a message is read without a kind its sender publishes (@message)",
+            "kind": "(c) a rule of form: a message is read with its sender's kind"
+          }
+        ],
+        "refusalsBefore": [
+          {
+            "at": "billing/src/index.mjs:70",
+            "code": "message",
+            "text": "a message is read without a kind its sender publishes (@message)",
+            "kind": "(c) a rule of form: a message is read with its sender's kind"
+          }
+        ],
+        "ms": 91
+      },
+      "front": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 77
+      },
+      "reports": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 89
+      }
+    }
+  },
+  "groundTruth": {
+    "providerTests": {
+      "pass": true,
+      "failed": [],
+      "ran": 2
+    },
+    "testsBefore": {
+      "billing": true,
+      "front": true,
+      "reports": true
+    },
+    "testsAfter": {
+      "billing": {
+        "pass": false,
+        "failed": [
+          "metered use is priced by the meter and added up"
+        ]
+      },
+      "front": {
+        "pass": true,
+        "failed": []
+      },
+      "reports": {
+        "pass": true,
+        "failed": []
+      }
+    },
+    "broken": [
+      "billing"
+    ]
+  },
+  "timing": {
+    "listingMs": {
+      "before": 64,
+      "after": 82
+    },
+    "noticeMs": 447,
+    "checkMs": {
+      "meter": 67,
+      "billing": 91,
+      "front": 77,
+      "reports": 89
+    }
+  }
+}

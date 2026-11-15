@@ -97,6 +97,13 @@ test('a limit held in a named value of the test file is part of the bound test',
   assert.deepEqual(told(r), ['u']);
 });
 
+test('a bound test regrouped under describe/it with the same checks is not a change', () => {
+  const a = T('  assert.equal(f(9), 9);');
+  const b = "import { describe, it } from 'node:test';\nimport assert from 'node:assert/strict';\nimport { f } from '../src/index.mjs';\ndescribe('f', () => {\n  it('bound n: whole number, 1 to 9', () => {\n  assert.equal(f(9), 9);\n  });\n});\n";
+  const r = pair({ 'p/src/index.mjs': BOUNDED, 'p/test/index.test.mjs': a }, { 'p/src/index.mjs': BOUNDED, 'p/test/index.test.mjs': b }, USER_F);
+  assert.deepEqual(told(r), []);
+});
+
 test('tests named for bounds are found in it and describe', () => {
   const t = "import { describe, it } from 'node:test';\nimport assert from 'node:assert/strict';\nimport { f } from '../src/index.mjs';\ndescribe('f', () => {\n  it('bound n: whole number, 1 to 9', () => { assert.equal(f(9), 9); });\n});\n";
   assert.equal(chk({ 'p/src/index.mjs': BOUNDED, 'p/test/index.test.mjs': t, 'u/src/index.mjs': 'export {};\n' }, 'p').refused, false);
@@ -117,7 +124,7 @@ test('an exported class lists what its constructor accepts', () => {
 test('the reader knows the 2023 library, and Map.has guarding Map.get on another module\'s kind is "cannot tell"', () => {
   const files = {
     'p/src/index.mjs': '/**\n * @typedef {Object} Amount\n * @property {number} cents\n */\nexport const Z = 1;\n',
-    'u/src/index.mjs': "/** @import { Amount } from '../../p/src/index.mjs' */\n/** @param {Amount} a @returns {number} */\nconst c = (a) => a.cents;\n/** @param {Map<string, Amount>} m @param {string} k */\nexport function g(m, k) { return m.has(k) ? c(m.get(k)) : 0; }\nexport const sorted = [3, 1, 2].toSorted();\n",
+    'u/src/index.mjs': "/** @import { Amount } from '../../p/src/index.mjs' */\n/** @param {Amount} a @returns {number} */\nconst c = (a) => a.cents;\n/** @param {Map<string, Amount>} m @param {string} k */\nexport function g(m, k) { return m.has(k) ? c(m.get(k)) : 0; }\n/** @param {Map<string, Amount>} m @param {string} k */\nexport function h(m, k) {\n  if (!m.has(k)) m.set(k, { cents: 0 });\n  return c(m.get(k));\n}\nexport const sorted = [3, 1, 2].toSorted();\n",
   };
   const r = chk(files, 'u');
   assert.equal(r.refused, false, JSON.stringify(r.refusals));

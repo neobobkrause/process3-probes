@@ -1,0 +1,189 @@
+{
+  "id": "X03-port-bound-changed",
+  "title": "The clock bookings is handed now gives today's date, YYYY-MM-DD, and bookings keeps only the day",
+  "provider": "bookings",
+  "covers": [
+    "bound line of a kind the user implements changes",
+    "use of a provider kind that the user never names"
+  ],
+  "tool": {
+    "firstCommentsStep": false,
+    "interfaceChanged": true,
+    "summary": "1 module(s) changed their listing; 1 entry changed in a way that tells; 2 user(s) told.",
+    "entries": [
+      {
+        "module": "bookings",
+        "entry": "Clock.now",
+        "changes": [
+          "bound changed"
+        ],
+        "tells": "users",
+        "before": {
+          "kind": "method",
+          "accepts": "()",
+          "handsBack": "string",
+          "bounds": [
+            "now: an ISO date and time, such as 2026-11-15T09:30:00.000Z"
+          ]
+        },
+        "after": {
+          "kind": "method",
+          "accepts": "()",
+          "handsBack": "string",
+          "bounds": [
+            "now: today's date, written YYYY-MM-DD"
+          ]
+        }
+      }
+    ],
+    "told": [
+      "front",
+      "reports"
+    ],
+    "toldDetail": [
+      {
+        "user": "front",
+        "reasons": [
+          {
+            "module": "bookings",
+            "entry": "Clock.now",
+            "changes": [
+              "bound changed"
+            ],
+            "lines": [
+              "front/test/index.test.mjs:19"
+            ],
+            "through": null
+          }
+        ],
+        "undeclared": []
+      },
+      {
+        "user": "reports",
+        "reasons": [
+          {
+            "module": "bookings",
+            "notFollowed": [
+              "reads or calls values of unknown kind: reports/src/index.mjs:13 source.list('rooms').map; reports/src/index.mjs:13 source.list('rooms'); reports/src/index.mjs:13 source.list (+9)"
+            ],
+            "through": null
+          }
+        ],
+        "undeclared": []
+      }
+    ],
+    "notTold": [
+      {
+        "user": "door",
+        "why": "uses none of the entries that changed in a way that tells"
+      },
+      {
+        "user": "billing",
+        "why": "uses none of the entries that changed in a way that tells"
+      }
+    ],
+    "warnings": [],
+    "commentsOnly": false,
+    "checks": {
+      "bookings": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 103
+      },
+      "door": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 76
+      },
+      "meter": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 65
+      },
+      "billing": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 95
+      },
+      "front": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 84
+      },
+      "reports": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 69
+      }
+    }
+  },
+  "groundTruth": {
+    "providerTests": {
+      "pass": true,
+      "failed": [],
+      "ran": 9
+    },
+    "testsBefore": {
+      "door": true,
+      "meter": true,
+      "billing": true,
+      "front": true,
+      "reports": true
+    },
+    "testsAfter": {
+      "door": {
+        "pass": true,
+        "failed": []
+      },
+      "meter": {
+        "pass": true,
+        "failed": []
+      },
+      "billing": {
+        "pass": true,
+        "failed": []
+      },
+      "front": {
+        "pass": false,
+        "failed": [
+          "booking with a valid form says what was booked",
+          "cancel names the cancelled booking"
+        ]
+      },
+      "reports": {
+        "pass": true,
+        "failed": []
+      }
+    },
+    "broken": [
+      "front"
+    ]
+  },
+  "timing": {
+    "listingMs": {
+      "before": 56,
+      "after": 58
+    },
+    "noticeMs": 425,
+    "checkMs": {
+      "bookings": 103,
+      "door": 76,
+      "meter": 65,
+      "billing": 95,
+      "front": 84,
+      "reports": 69
+    }
+  }
+}

@@ -1,0 +1,454 @@
+{
+  "changes": 10,
+  "matchesRules": 9,
+  "notices": 16,
+  "needed": 5,
+  "holes": [],
+  "caughtByGuard": [
+    {
+      "id": "X09-message-channel",
+      "users": [
+        "billing"
+      ],
+      "guard": "meter's own check refuses the write of MeterMsg to stderr (rule 5)"
+    }
+  ],
+  "unneeded": [
+    {
+      "id": "X03-port-bound-changed",
+      "user": "reports"
+    },
+    {
+      "id": "X04-includes-on-literal-list",
+      "user": "reports"
+    },
+    {
+      "id": "X05-stale-write",
+      "user": "reports"
+    },
+    {
+      "id": "X06-bound-reworded",
+      "user": "billing"
+    },
+    {
+      "id": "X06-bound-reworded",
+      "user": "bookings"
+    },
+    {
+      "id": "X06-bound-reworded",
+      "user": "front"
+    },
+    {
+      "id": "X06-bound-reworded",
+      "user": "meter"
+    },
+    {
+      "id": "X06-bound-reworded",
+      "user": "reports"
+    },
+    {
+      "id": "X07-list-gains-name-lookup-table",
+      "user": "billing"
+    },
+    {
+      "id": "X07-list-gains-name-lookup-table",
+      "user": "front"
+    },
+    {
+      "id": "X07-list-gains-name-lookup-table",
+      "user": "reports"
+    },
+    {
+      "id": "X08-new-op-name-clash",
+      "user": "reports"
+    }
+  ],
+  "falseRefusals": 0,
+  "refusals": 6,
+  "rows": [
+    {
+      "id": "X01-optional-param-callback",
+      "title": "formatAmount takes an optional number of digits after the point",
+      "provider": "money",
+      "exp": [
+        "billing"
+      ],
+      "told": [
+        "billing"
+      ],
+      "matches": true,
+      "broken": [
+        "billing"
+      ],
+      "needs": [
+        "billing"
+      ],
+      "through": [],
+      "refusals": [
+        "billing (1)"
+      ],
+      "verdict": "held",
+      "providerTests": true,
+      "firstCommentsStep": false,
+      "timing": {
+        "listingMs": {
+          "before": 233,
+          "after": 121
+        },
+        "noticeMs": 1011,
+        "checkMs": {
+          "money": 112,
+          "calendar": 81,
+          "store": 99,
+          "rooms": 141,
+          "bookings": 151,
+          "door": 136,
+          "meter": 89,
+          "billing": 157,
+          "front": 90,
+          "reports": 119
+        }
+      }
+    },
+    {
+      "id": "X02-opaque-id-digits",
+      "title": "Booking ids become plain numbers written as text, easier to read out over the phone",
+      "provider": "bookings",
+      "exp": [],
+      "told": [],
+      "matches": true,
+      "broken": [],
+      "needs": [],
+      "through": [],
+      "refusals": [],
+      "verdict": "held",
+      "providerTests": true,
+      "firstCommentsStep": false,
+      "timing": {
+        "listingMs": {
+          "before": 91,
+          "after": 94
+        },
+        "noticeMs": 573,
+        "checkMs": {
+          "bookings": 98,
+          "door": 108,
+          "meter": 108,
+          "billing": 89,
+          "front": 86,
+          "reports": 95
+        }
+      }
+    },
+    {
+      "id": "X03-port-bound-changed",
+      "title": "The clock bookings is handed now gives today's date, YYYY-MM-DD, and bookings keeps only the day",
+      "provider": "bookings",
+      "exp": [
+        "front",
+        "reports"
+      ],
+      "told": [
+        "front",
+        "reports"
+      ],
+      "matches": true,
+      "broken": [
+        "front"
+      ],
+      "needs": [
+        "front"
+      ],
+      "through": [],
+      "refusals": [],
+      "verdict": "held; 1 told for nothing",
+      "providerTests": true,
+      "firstCommentsStep": false,
+      "timing": {
+        "listingMs": {
+          "before": 56,
+          "after": 58
+        },
+        "noticeMs": 425,
+        "checkMs": {
+          "bookings": 103,
+          "door": 76,
+          "meter": 65,
+          "billing": 95,
+          "front": 84,
+          "reports": 69
+        }
+      }
+    },
+    {
+      "id": "X04-includes-on-literal-list",
+      "title": "rooms gains isRoomKind, and add uses it",
+      "provider": "rooms",
+      "exp": [
+        "reports"
+      ],
+      "told": [
+        "reports"
+      ],
+      "matches": true,
+      "broken": [],
+      "needs": [],
+      "through": [],
+      "refusals": [],
+      "verdict": "held; 1 told for nothing",
+      "providerTests": true,
+      "firstCommentsStep": false,
+      "timing": {
+        "listingMs": {
+          "before": 64,
+          "after": 59
+        },
+        "noticeMs": 464,
+        "checkMs": {
+          "rooms": 92,
+          "bookings": 97,
+          "door": 90,
+          "meter": 79,
+          "billing": 106,
+          "front": 88,
+          "reports": 88
+        }
+      }
+    },
+    {
+      "id": "X05-stale-write",
+      "title": "store's put can be handed the record as it was read, and refuses the write if it has changed since",
+      "provider": "store",
+      "exp": [
+        "reports"
+      ],
+      "told": [
+        "reports"
+      ],
+      "matches": true,
+      "broken": [],
+      "needs": [],
+      "through": [],
+      "refusals": [],
+      "verdict": "held; 1 told for nothing",
+      "providerTests": true,
+      "firstCommentsStep": false,
+      "timing": {
+        "listingMs": {
+          "before": 47,
+          "after": 52
+        },
+        "noticeMs": 580,
+        "checkMs": {
+          "store": 90,
+          "rooms": 97,
+          "bookings": 102,
+          "door": 72,
+          "meter": 57,
+          "billing": 83,
+          "front": 97,
+          "reports": 107
+        }
+      }
+    },
+    {
+      "id": "X06-bound-reworded",
+      "title": "Amount's bound line is reworded; it means the same",
+      "provider": "money",
+      "exp": [
+        "billing",
+        "bookings",
+        "front",
+        "meter",
+        "reports"
+      ],
+      "told": [
+        "billing",
+        "bookings",
+        "front",
+        "meter",
+        "reports"
+      ],
+      "matches": true,
+      "broken": [],
+      "needs": [],
+      "through": [],
+      "refusals": [],
+      "verdict": "held; 5 told for nothing",
+      "providerTests": true,
+      "firstCommentsStep": false,
+      "timing": {
+        "listingMs": {
+          "before": 49,
+          "after": 53
+        },
+        "noticeMs": 379,
+        "checkMs": {
+          "money": 69,
+          "calendar": 97,
+          "store": 74,
+          "rooms": 84,
+          "bookings": 86,
+          "door": 65,
+          "meter": 106,
+          "billing": 79,
+          "front": 92,
+          "reports": 71
+        }
+      }
+    },
+    {
+      "id": "X07-list-gains-name-lookup-table",
+      "title": "A new kind of room: garden (a user keeps a price for each kind)",
+      "provider": "rooms",
+      "exp": [
+        "billing",
+        "bookings",
+        "front",
+        "reports"
+      ],
+      "told": [
+        "billing",
+        "bookings",
+        "front",
+        "reports"
+      ],
+      "matches": true,
+      "broken": [],
+      "needs": [
+        "bookings"
+      ],
+      "through": [],
+      "refusals": [
+        "bookings (1)"
+      ],
+      "verdict": "held; 3 told for nothing",
+      "providerTests": true,
+      "firstCommentsStep": false,
+      "timing": {
+        "listingMs": {
+          "before": 73,
+          "after": 71
+        },
+        "noticeMs": 467,
+        "checkMs": {
+          "rooms": 59,
+          "bookings": 119,
+          "door": 86,
+          "meter": 68,
+          "billing": 79,
+          "front": 75,
+          "reports": 73
+        }
+      }
+    },
+    {
+      "id": "X08-new-op-name-clash",
+      "title": "rooms answers bookstatus: whether a room can be booked, and its seats",
+      "provider": "rooms",
+      "exp": [
+        "billing",
+        "reports"
+      ],
+      "told": [
+        "billing",
+        "reports"
+      ],
+      "matches": true,
+      "broken": [
+        "billing"
+      ],
+      "needs": [
+        "billing"
+      ],
+      "through": [],
+      "refusals": [
+        "billing (1)",
+        "front (1)"
+      ],
+      "verdict": "held; 1 told for nothing",
+      "providerTests": true,
+      "firstCommentsStep": false,
+      "timing": {
+        "listingMs": {
+          "before": 69,
+          "after": 65
+        },
+        "noticeMs": 620,
+        "checkMs": {
+          "rooms": 116,
+          "bookings": 121,
+          "door": 74,
+          "meter": 80,
+          "billing": 100,
+          "front": 105,
+          "reports": 106
+        }
+      }
+    },
+    {
+      "id": "X09-message-channel",
+      "title": "The meter writes refusals to its standard error, as errors; readings and done stay on standard output",
+      "provider": "meter",
+      "exp": [
+        "billing"
+      ],
+      "told": [],
+      "matches": false,
+      "broken": [
+        "billing"
+      ],
+      "needs": [
+        "billing"
+      ],
+      "through": [],
+      "refusals": [
+        "meter (2)"
+      ],
+      "verdict": "not told, stopped by another guard: meter's own check refuses the write of MeterMsg to stderr (rule 5)",
+      "providerTests": true,
+      "firstCommentsStep": false,
+      "timing": {
+        "listingMs": {
+          "before": 55,
+          "after": 72
+        },
+        "noticeMs": 444,
+        "checkMs": {
+          "meter": 88,
+          "billing": 84,
+          "front": 88,
+          "reports": 83
+        }
+      }
+    },
+    {
+      "id": "X10-node-timer",
+      "title": "The meter stops on its own when its input goes quiet for 30 seconds",
+      "provider": "meter",
+      "exp": [],
+      "told": [],
+      "matches": true,
+      "broken": [],
+      "needs": [],
+      "through": [],
+      "refusals": [],
+      "verdict": "held",
+      "providerTests": true,
+      "firstCommentsStep": false,
+      "timing": {
+        "listingMs": {
+          "before": 81,
+          "after": 79
+        },
+        "noticeMs": 584,
+        "checkMs": {
+          "meter": 75,
+          "billing": 81,
+          "front": 90,
+          "reports": 77
+        }
+      }
+    }
+  ]
+}

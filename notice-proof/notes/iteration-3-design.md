@@ -29,3 +29,9 @@ Written by Claude (the proof session), 15 Nov 2026, after round 3: a fresh indep
 
 - Rule 4 still counts a bound test whose checks really changed as a changed bound, and Bob's rule still counts a reworded bound line as a change (independent change 6, round 1). Both cost notices for nothing; neither can be made exact without reading meaning.
 - An error a function raises without stating it anywhere is still invisible; only stated errors are compared.
+
+## Defects and limits met while running iteration 3
+
+- 15 Nov 2026, round 3 change 11: the comparison of bound tests counted the name of the test call (test became it), so a regrouping told five users for nothing. Fixed: only what the test does is compared. First result kept in `results/iter3/before-fix/`.
+- 15 Nov 2026, round 3 change 10: Map.has guarding Map.get was recognised only as an enclosing condition, not as "set when missing" in the statement before. Fixed. First result kept in `results/iter3/before-fix/`.
+- 15 Nov 2026, round 3 change 6 and independent change 9: the meter's test helper was rewritten (refusals read from the error channel) with the same values and the same calls, so rule 15 saw no change in its bound test, and billing was not told. My expected answers said billing would be told. The meter's own check refuses both changes, so nothing reached billing; but this is a limit of rule 15: a change in what a test checks that keeps its values and calls is invisible to it.
