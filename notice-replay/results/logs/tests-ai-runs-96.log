@@ -36,3 +36,11 @@
 15:42:49 before screens-inquiry 0 pass 69 fail
 15:42:49 before screens-document undefined pass undefined fail
 16:02:49 before control-plane 0 pass 0 fail
+16:22:49 before plane 0 pass 0 fail
+16:23:14 after run-productions 68 pass 0 fail 0 new
+16:23:52 after capture-requests 125 pass 7 fail 0 new
+16:24:14 after skills 133 pass 0 fail 0 new
+16:24:20 after question-explorer 50 pass 0 fail 0 new
+16:24:25 after agent-steps 10 pass 0 fail 0 new
+16:30:21 after agent-worker 21 pass 2 fail 0 new
+16:30:21 after ai-gate undefined pass undefined fail 0 new

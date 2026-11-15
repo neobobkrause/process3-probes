@@ -53,6 +53,9 @@ export function declarationsOf(program, file, plainElsewhere = new Map()) {
   const unname = (ctx) => (root) => {
     const memberName = (m) => (m.name && (ts.isIdentifier(m.name) || ts.isStringLiteral(m.name)) ? m.name.text : '');
     const visit = (n) => {
+      // Replay change R2: a class member with a private name (#name, printed "__#54@#name" with the reader's serial
+      // number when it is static) is not part of the interface and is left out of the printed declaration.
+      if (ts.isClassElement(n) && n.name && (ts.isPrivateIdentifier(n.name) || ((ts.isStringLiteral(n.name) || ts.isIdentifier(n.name)) && /^__#\d*@#/.test(n.name.text)))) return undefined;
       if (ts.isParameter(n)) return ts.factory.updateParameterDeclaration(n, n.modifiers, n.dotDotDotToken, ts.factory.createIdentifier('_'), n.questionToken, n.type ? ts.visitNode(n.type, visit) : n.type, undefined);
       // Iteration 6: an object kind's fields in a fixed order
       if (ts.isTypeLiteralNode(n)) { const v = ts.visitEachChild(n, visit, ctx); return ts.factory.updateTypeLiteralNode(v, ts.factory.createNodeArray([...v.members].sort((a, b) => (memberName(a) < memberName(b) ? -1 : memberName(a) > memberName(b) ? 1 : 0)))); }
@@ -62,7 +65,8 @@ export function declarationsOf(program, file, plainElsewhere = new Map()) {
   };
   const d = ts.transform(parsed, [unname]).transformed[0];
   const printer = ts.createPrinter({ removeComments: true });
-  const print = (n) => printer.printNode(ts.EmitHint.Unspecified, n, d).replace(/\s+/g, ' ').trim();
+  // Replay change R2: the reader's serial numbers in symbol names are not part of a kind.
+  const print = (n) => printer.printNode(ts.EmitHint.Unspecified, n, d).replace(/\s+/g, ' ').trim().replace(/__#\d+@/g, '__#@').replace(/(__@[A-Za-z_$][\w$]*)@\d+/g, '$1');
   // Iteration 5: kinds of this module that are unions or plain kinds are written out where they are used.
   const plainKinds = new Map();
   for (const st of d.statements) if (ts.isTypeAliasDeclaration(st) && !ts.isTypeLiteralNode(st.type) && !ts.isMappedTypeNode(st.type) && !st.typeParameters) plainKinds.set(st.name.text, printer.printNode(ts.EmitHint.Unspecified, st.type, d).replace(/\s+/g, ' ').trim());
