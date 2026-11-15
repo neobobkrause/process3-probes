@@ -1,0 +1,96 @@
+{
+  "about": "Expected answers for the adversarial-independent series, written by the independent adversary (a Claude session separate from the proof session) from the method's rules and from reading the made-up product and the tool's code, BEFORE the tool or any test was run on these changes, and without reading results/ or planned-reading.json. Same fields as planned-expected.json: 'told': users the RULES say must be told (not a guess at what the tool will do); 'brokenPredicted': users whose own tests the adversary predicts will fail; 'wrongWithoutFailingTest': users whose code or comments are wrong after the change although no test of theirs should fail; 'refuses': modules whose check (point 5) should refuse after the change, real disagreements only. 'attack': how the change tries to defeat the method and what outcome counts as a defeat. The decided rules of planned-expected.json are used as they stand: reports is not followed fully for calendar, store, rooms and bookings; modules that pass on a provider's kinds are changed 'through' it; a table's or handle's name gained tells nobody. Setups (changes/setups/X...) hold in both before and after.",
+  "changes": {
+    "X01-optional-param-callback": {
+      "told": [],
+      "why": "formatAmount only gains an optional parameter: by rule 3 it accepts more, and accepting more tells no one. No other entry changes.",
+      "brokenPredicted": ["billing"],
+      "wrongWithoutFailingTest": [],
+      "refuses": ["billing"],
+      "reading": "The setup has billing write parts.map(formatAmount). map calls formatAmount(part, index, list); the index used to be ignored and now sets the number of decimals: the first instalment is written 'EUR 105', the second 'EUR 105.0', and billing's test that every instalment has two decimals fails. The reader should see that a number (the index) is handed where 0 | 1 | 2 is accepted, so billing's check should refuse.",
+      "attack": "In JavaScript every function already 'accepts' extra arguments and ignores them, so an optional parameter added is not accepting more for a user that passes the function as a callback. Defeat: billing's tests fail and no notice tells billing (the rules themselves say nobody); only billing's own check, if it refuses, stands between."
+    },
+    "X02-opaque-id-digits": {
+      "told": [],
+      "why": "Booking.id is still a string with no bound line, before and after; only the words after the property name change. The listing is the same, so nobody is told (rule 2).",
+      "brokenPredicted": ["billing"],
+      "wrongWithoutFailingTest": [],
+      "refuses": [],
+      "reading": "billing asks the door for a booking's status with the request line op=bookstatus&id=<id>. The door turns a value of digits only into a number, so bookstatus gets {id: 1}; bookings hands it to the store, which refuses an id that is not a string (RangeError). Both of billing's invoice tests fail. What needs a change is the door (it hands bookstatus a number where the table says string) or billing; the door's own tests pass. front calls by name with a body, which keeps strings, and is unaffected.",
+      "attack": "A pure content change to an opaque value, fully honest by rule 1, meets a coercion rule in the door that the shared kinds do not show. Defeat: billing broken, nobody told, no check refuses."
+    },
+    "X03-port-bound-changed": {
+      "told": ["front", "reports"],
+      "why": "The bound line of Clock (subject now) changes, so the entry Clock.now changes (rule 3: a changed bound line is a change). front uses Clock.now: its tests hand bookings a clock they wrote, an object with a now method that fits Clock. reports is not followed fully for bookings and bookings' listing changed.",
+      "brokenPredicted": ["front"],
+      "wrongWithoutFailingTest": [],
+      "refuses": [],
+      "reading": "front's fixed clock still gives '2026-11-15T09:30:00.000Z'; bookings now reads it as a day and refuses it, so every front test that books fails. Kinds are unchanged (still () => string), so no check can see it.",
+      "attack": "A kind the user implements (a port) is used without being named: front writes const clock = { now: () => ... } with no comment and passes it in a bag, so the only use the tool can find is createBookings, where Clock is written by name only. Defeat: front's tests fail and front is not told (the tool should record no use of Clock.now)."
+    },
+    "X04-includes-on-literal-list": {
+      "told": ["reports"],
+      "why": "isRoomKind is a new entry (no users); Rooms.add's kinds are unchanged. reports is not followed fully for rooms and rooms' listing changed.",
+      "brokenPredicted": [],
+      "wrongWithoutFailingTest": [],
+      "refuses": [],
+      "reading": "ROOM_KINDS.includes(text) with text a string is right and runs; the reader types includes on a list of literal names as accepting only those names. Not a real disagreement.",
+      "attack": "Honest, idiomatic code that TypeScript types too narrowly. Defeat: rooms' check refuses (a refusal of honest code, against rule 5)."
+    },
+    "X05-stale-write": {
+      "told": ["reports"],
+      "why": "Store.put gains an optional parameter (accepts more). Stored, which was only handed back, is now also accepted: its shape is unchanged and accepting it is accepting more, which tells no one. reports is not followed fully for store and store's listing changed.",
+      "brokenPredicted": [],
+      "wrongWithoutFailingTest": [],
+      "refuses": [],
+      "reading": "The code checks t.has(id) before reading t.get(id).version, and the test asserts read is there (assert.ok) before reading read.version: both right and both run. The reader does not connect has with get, and has no description of node:assert, so it says each value may be missing. Not real disagreements.",
+      "attack": "Two kinds of honest code the reader cannot follow (Map.has then get in the source; assert.ok then use in the test), plus a data kind whose side moves from 'hands back' to 'both'. Defeats: store's check refuses (false refusals), and/or rooms and bookings are told because Stored 'cannot stand in' although nothing about it changed (told for nothing)."
+    },
+    "X06-bound-reworded": {
+      "told": ["bookings", "meter", "billing", "front", "reports"],
+      "why": "The text of Amount's bound line changes, and a changed bound line is a change: Amount and every money entry that takes or gives an Amount change; bookings, meter and billing use them; front reads cents from what bookings hands back; bookings and meter pass Amount on, so billing, front and reports are told through them too (as in P12).",
+      "brokenPredicted": [],
+      "wrongWithoutFailingTest": [],
+      "refuses": [],
+      "reading": "The bound means exactly what it meant ('whole number, 0 to 10,000,000 inclusive' and 'a whole number from 0 to 10,000,000, both ends included'). No user needs anything.",
+      "attack": "Bound lines are compared as text, so a rewording with the same meaning reaches every user of Amount, directly and through two modules. Defeat (by the method's own rules): five notices, none needed."
+    },
+    "X07-list-gains-name-lookup-table": {
+      "told": ["bookings", "billing", "front", "reports"],
+      "why": "As P11: ROOM_KINDS hands back a longer list, so RoomKind, Room, Rooms.* and op:roomlist hand back differently. bookings uses Rooms.find and Room; billing's tests use Rooms.add; front reads ROOM_KINDS and calls roomlist; reports reads ROOM_KINDS and is not followed fully.",
+      "brokenPredicted": [],
+      "wrongWithoutFailingTest": ["bookings"],
+      "refuses": ["bookings"],
+      "reading": "The setup has bookings price a seat from its own table PRICE_BY_KIND with one entry per kind. After the change PRICE_BY_KIND[room.kind] has no entry for garden: quoting or booking a garden makes amount(NaN) and is refused. No user test books a garden. The disagreement is real and the reader sees it, but reports it as an element that 'implicitly has an any type' (a 7000-range code), which the check counts as 'cannot tell'.",
+      "attack": "A real disagreement that the reader words as an unstated kind. Defeat: bookings' check does not refuse (a real disagreement passed as 'cannot tell'), while the notice reaches bookings."
+    },
+    "X08-new-op-name-clash": {
+      "told": ["billing", "front", "reports"],
+      "why": "In rooms, bookstatus is a brand-new operation and RoomOps gains a name: no users (rule 3). But the door gathers BookingOps & RoomOps, so its AllOps and Handlers change through rooms: what Handlers.bookstatus must hand back is now both answers at once. billing and front build the door's handlers in their tests (createDoor({...bookingHandlers, ...roomHandlers})), so they use Handlers and are told through door. reports is not followed fully for rooms.",
+      "brokenPredicted": ["billing"],
+      "wrongWithoutFailingTest": [],
+      "refuses": ["billing", "front"],
+      "reading": "Handlers are merged with rooms' last, so rooms' bookstatus now answers the door's bookstatus: billing's invoice gets {bookable, seats} for a booking id, sees no state 'open', and its first invoice test fails. front calls no bookstatus and its tests pass, but its createDoor call no longer fits Handlers.",
+      "attack": "'A brand-new entry has no users' fails when names share one namespace at the door: the new name shadows another provider's operation. The tool keeps one owner per operation name (the later module wins its map), so billing's by-name call stays attributed to bookings' unchanged bookstatus. Defeat: billing's tests fail and billing is not told."
+    },
+    "X09-message-channel": {
+      "told": [],
+      "why": "MeterInput, MeterMsg, RATE_CENTS_PER_MINUTE and WORKER_FILE are unchanged; only prose changes in index.mjs, and worker.mjs is not public. The listing is the same: nobody is told.",
+      "brokenPredicted": ["billing"],
+      "wrongWithoutFailingTest": [],
+      "refuses": [],
+      "reading": "billing reads only the meter's standard output; refusals now arrive on standard error, so billing resolves with the total of the readings it saw and its test that a use outside the meter's bound is refused fails. The meter's own tests were updated and pass.",
+      "attack": "Rule 8 shares one written kind for each message, but not the channel a message travels on. Defeat: billing broken, nobody told, no check refuses."
+    },
+    "X10-node-timer": {
+      "told": [],
+      "why": "Only worker.mjs (not public) changes; the listing is the same.",
+      "brokenPredicted": [],
+      "wrongWithoutFailingTest": [],
+      "refuses": [],
+      "reading": "setTimeout(...).unref() and .refresh() are right in Node, where setTimeout hands back a Timeout. The reader is given the browser's library, where setTimeout hands back a number, so it says number has no unref or refresh. Not real disagreements; the check's 'cannot tell' list covers Node's missing names (process, Buffer) but not Node's names that the browser's library describes differently.",
+      "attack": "Honest Node code that the reader misdescribes. Defeat: meter's check refuses (two false refusals) and the job cannot merge correct code."
+    }
+  },
+  "notes": []
+}
