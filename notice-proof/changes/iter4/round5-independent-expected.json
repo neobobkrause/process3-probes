@@ -1,0 +1,127 @@
+{
+  "about": "Expected answers for round 5 (changes/round5-independent.py), written by an independent adversary against the fourth design (notes/iteration-4-design.md) BEFORE any change was run. 'told' is who the RULES say must be told (rule 18 included: where rule 18 itself tells for nothing, 'told' lists those users and 'attack' says so). 'refuses' lists the modules whose own check the rules say refuses after the change (whether or not that check would run). 'attack' says what the change aims at and what counts as a defeat. The adversary read the tool, the product, the earlier change series and the design notes up to their 'Defects' headings; it read no results.",
+  "changes": {
+    "V01-accepts-more-hides-static": {
+      "told": ["billing"],
+      "why": "Tally.sum now hands back the Tally, not an Amount (rule 3: any change to what is handed back tells; rule 18: silent only when the entry is shown unchanged, and Tally's declaration differs). billing calls Tally.sum (setup Z13b). The constructor's currency becoming optional is 'accepts more' and alone would tell nobody.",
+      "brokenPredicted": ["billing"],
+      "wrongWithoutFailingTest": [],
+      "refuses": ["billing"],
+      "attack": "A harmless 'accepts more' in the same entry switches the backstop off (notice.mjs compares declarations only when its own comparison found nothing), so Z13's static change slips through again. Defeat: billing not told."
+    },
+    "V02-bound-values-in-mapped-list": {
+      "told": ["billing"],
+      "why": "Rules 4, 15 and 26: the meter's bound test now checks 600 and 601 where it checked 1440 and 1441, its bound line unchanged: the bound 'minutes: whole number, 1 to 1440' counts as changed in every entry that carries it (MeterInput; billing's Billing.meterUsage). billing names MeterInput.",
+      "brokenPredicted": [],
+      "wrongWithoutFailingTest": ["billing"],
+      "refuses": [],
+      "attack": "The bound test's values are the receiver of .map ([1, 1440, 0, 1441, 2.5].map(...)), which the fingerprint never reads; the listing is unchanged. Defeat: nobody told, billing's stated domain (uses up to 1440 minutes) now false."
+    },
+    "V03-refusals-through-console-error": {
+      "told": [],
+      "why": "Listing unchanged (worker.mjs is not public); the bound test's pairs (check, value) are the same set (rule 26), only the order of the expected list changed. Rule 8 and iteration-2 rule 5 / rule 20: a MeterMsg (published for stdout) is written to stderr: the meter's own check must refuse.",
+      "brokenPredicted": ["billing"],
+      "wrongWithoutFailingTest": [],
+      "refuses": ["meter"],
+      "guard": "meter's own check (rule 8; iteration-2 rule 5; rules 19 and 20)",
+      "attack": "console.error is a write to stderr that the message checks never look at (they inspect calls named write or end). Defeat: meter's check passes and billing (refusals no longer reject meterUsage; its test of a use outside the bound fails) is not told."
+    },
+    "V04-instance-built-in-a-conditional": {
+      "told": [],
+      "why": "Listing and declarations unchanged (FixedAmount and ZERO are not exported). Rule 22: an Amount handed back is now a class instance (getters on its prototype), however built: money's own check must refuse.",
+      "brokenPredicted": ["billing", "bookings", "front", "meter"],
+      "wrongWithoutFailingTest": [],
+      "refuses": ["money"],
+      "guard": "money's own check (rule 22)",
+      "attack": "The instance is built in a conditional expression (cents === 0 ? ZERO[currency] : new FixedAmount(...)); rule 22's check looks only at a new, call or name standing directly in a return, declaration, arrow body, field or argument. Defeat: money's check passes, nobody told, every copy of an amount arrives as {}."
+    },
+    "V05-error-kind-in-bound-test": {
+      "told": ["billing"],
+      "why": "Rules 4, 15 and 26: the bound test of parts now checks for TypeError where it checked for RangeError (the expected kind is what assert.throws checks); its bound line unchanged: the bound counts as changed; splitEvenly carries it; billing calls splitEvenly. The @throws line was forgotten, so the listing's errors do not move.",
+      "brokenPredicted": ["billing"],
+      "wrongWithoutFailingTest": [],
+      "refuses": [],
+      "attack": "The expected kind of error is a name, not a literal, so the fingerprint keeps no value for it; with @throws forgotten the listing is unchanged. Defeat: billing (setup A06 expects RangeError for 101 instalments) not told."
+    },
+    "V06-non-interface-file-renamed": {
+      "told": [],
+      "why": "No entry changes: bookings' listing (its public file) is the same, so by rules 2 and 4 nobody is told, followed fully or not. No rule says a user may use only a provider's interface files.",
+      "brokenPredicted": ["front"],
+      "wrongWithoutFailingTest": [],
+      "refuses": ["front"],
+      "attack": "A user reaches past the interface (front imports bookings/src/prices.mjs, set-up V06b); the provider renames what is there. Nothing in the method or the tool notices. Defeat: front's module no longer loads; nobody told, nothing refuses (front's check would, but it does not run)."
+    },
+    "V07-write-with-callback": {
+      "told": [],
+      "why": "Listing unchanged. The message is still written as JSON.stringify(msg) + newline (rule 19); the callback is not something written. The reader's complaint of an argument too many comes from the tool's own short description of Node (write with one parameter): 'cannot tell' (rule 5).",
+      "brokenPredicted": [],
+      "wrongWithoutFailingTest": [],
+      "refuses": [],
+      "attack": "Refuse honest code: expected two refusal lines in meter's own check (2554 'Expected 1 arguments' on Node's write, and rule 19's check wanting every argument of the write to be a message line). Defeat: any refusal."
+    },
+    "V08-limit-read-from-json": {
+      "told": [],
+      "why": "Listing unchanged (MAX_CENTS is not exported; its value is the same). A reader not set to read JSON cannot tell what the import holds: rule 5, never refused.",
+      "brokenPredicted": [],
+      "wrongWithoutFailingTest": [],
+      "refuses": [],
+      "attack": "Refuse honest code: a JSON import with { type: 'json' } (standard in Node 22) makes the reader say it cannot find the module (2732, or 2307 for a relative path), and the check refuses that. Defeat: money's check refuses."
+    },
+    "V09-pop-after-length-check": {
+      "told": ["reports"],
+      "why": "Bookings.suggest is a new entry (nobody); reports cannot be followed and is told whenever bookings' listing changes (rule 4). The 'possibly undefined' comes from Array.pop after a length check the reader cannot see, not from rooms' interface: 'cannot tell' (rule 5).",
+      "brokenPredicted": [],
+      "wrongWithoutFailingTest": [],
+      "refuses": [],
+      "attack": "Refuse honest code: 'possibly undefined' is cannot-tell only when every value in the statement is the module's own; here a Room is in it, so it is refused as disagreeing with rooms. Defeat: bookings' check refuses."
+    },
+    "V10-checked-cast-to-kind": {
+      "told": ["reports"],
+      "why": "parseKind is a new entry (nobody); reports is told as not followed (rule 4). Rule 14 as written refuses a cast from a known kind (text) to a product kind it is not (RoomKind), so its letter says refuse; rule 5 says only real disagreements are refused, and the cast does not disagree: the text was checked against ROOM_KINDS just above.",
+      "brokenPredicted": [],
+      "wrongWithoutFailingTest": [],
+      "refuses": ["rooms"],
+      "attack": "Refuse honest code by a rule of the method itself: the standard narrowing of a checked value with a cast is refused by rule 14, in conflict with rule 5. Defeat: the refusal of rooms' honest change (a defect of the design, whatever the tool does)."
+    },
+    "V11-door-copy-in-two-steps": {
+      "told": ["billing", "front"],
+      "why": "The door states a new error on its kind, a line about no particular member, so Door.call and Door.get hand back differently (rule 10; iteration-2 rule 1): billing (call, get) and front (call) are told. JSON.parse(answer) reads back a JSON copy the door itself just wrote: a copy, not a message (iteration-2 rule 3), so nothing is refused.",
+      "brokenPredicted": [],
+      "wrongWithoutFailingTest": [],
+      "refuses": [],
+      "attack": "Refuse honest code: the copy exemption is read only as JSON.parse(JSON.stringify(x)) in one expression, so a copy measured in between is refused as a message read without its kind. Defeat: door's check refuses."
+    },
+    "V12-destructured-parameter": {
+      "told": ["billing", "bookings", "front", "reports"],
+      "why": "Rule 18: createRooms's declaration now prints ({ store }: { store: Store; }) in place of (deps: { store: Store; }) and the tool's own comparison finds nothing: every user of createRooms is told (the tests of bookings, billing, front and reports call it). By rule 3 nothing a user can see changed: these are notices for nothing.",
+      "brokenPredicted": [],
+      "wrongWithoutFailingTest": [],
+      "refuses": [],
+      "attack": "Tell for nothing, through rule 18 itself: an everyday refactor (destructuring a parameter) changes only the printed declaration. Defeat: four notices for nothing (and a refusal in rooms, if the reader objects to the parameter's comment name)."
+    },
+    "V13-states-named": {
+      "told": ["billing", "front", "reports"],
+      "why": "Rule 18: Booking's declaration (and table:bookings', which is Booking's) prints state: BookingState in place of state: \"open\" | \"cancelled\"; the tool's own comparison finds nothing. Users of Booking: front (reads a booking's fields), billing (its tests read them); reports is told as not followed. BookingState is a new entry. By rule 3 nothing changed: notices for nothing.",
+      "brokenPredicted": [],
+      "wrongWithoutFailingTest": [],
+      "refuses": [],
+      "attack": "Tell for nothing, through rule 18 itself: giving a name to a kind written in place. Defeat: three notices for nothing."
+    },
+    "V14-overload-added": {
+      "told": [],
+      "why": "Rule 3: a second overload only accepts more, and every existing call is answered the same (a string). billing calls formatAmount directly (not handed on as a value), so it is not told.",
+      "brokenPredicted": [],
+      "wrongWithoutFailingTest": [],
+      "refuses": [],
+      "attack": "Tell for nothing against the rules: iteration 4 lists overloads as a new form that standsIn cannot compare with one signature, so the tool says 'cannot stand in' and 'hands back differently'. Defeat: billing told."
+    },
+    "V15-bound-test-through-helper": {
+      "told": [],
+      "why": "Rules 15 and 26: the bound test of parts makes the same checks with the same values (assert.equal with 1 and 100, assert.throws with 0 and 101), written through a helper of its own file, whose name does not count. Not a change.",
+      "brokenPredicted": [],
+      "wrongWithoutFailingTest": [],
+      "refuses": [],
+      "attack": "Tell for nothing against the rules: the fingerprint visits the helper's body once, where its parameter has no value, and loses the pairs (splitEvenly, 0), (splitEvenly, 1) and (splitEvenly, 101), so the bound counts as changed. Defeat: billing told."
+    }
+  }
+}
