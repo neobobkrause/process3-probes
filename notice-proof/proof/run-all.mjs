@@ -23,7 +23,9 @@ for (const [m, r] of Object.entries(base)) console.log(`${m}: ${r.pass ? 'pass' 
 step('the check on every module, unchanged');
 for (const m of tree.modules) { const c = check(tree, m.id); console.log(`${m.id}: ${c.refused ? `REFUSED ${c.refusals.length}` : 'no disagreement'}; ${c.cannotTell.length} place(s) where the reader cannot tell`); }
 
-for (const series of ['planned', 'adversarial', 'adversarial-independent']) {
+// every series of changes, in the order they were written
+const SERIES = ['planned', 'adversarial', 'adversarial-independent', ...fs.readdirSync(path.join(ROOT, 'changes')).filter((f) => /^round\d+-independent\.py$/.test(f)).map((f) => f.slice(0, -3)).sort((x, y) => parseInt(x.slice(5)) - parseInt(y.slice(5)))];
+for (const series of SERIES) {
   if (!fs.existsSync(path.join(ROOT, 'changes', series))) continue;
   step(`series ${series}`);
   node(['proof/run-series.mjs', series]);
