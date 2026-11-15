@@ -127,5 +127,102 @@
   "listingChanges": false,
   "entries": [],
   "notes": "Only seed.mjs's header comment changed (CATALOGUE_KEYS now holds Bob's two keys alone, in signatures), and a test was added confirming it. No interface comment needed to change. The real change is in signatures' CATALOGUE_KEYS, which this module uses as the constructor's default keys; that default's value is content, not a kind, so the listing of ai-catalogue does not move."
+ },
+ {
+  "change": "ai-catalogue:317",
+  "written": "2026-11-15T15:38:22Z",
+  "listingChanges": true,
+  "entries": [
+   {
+    "entry": "DEVELOPMENT_KEY_VAR",
+    "change": "new entry",
+    "tells": "nobody",
+    "why": "re-exported from seed.mjs"
+   },
+   {
+    "entry": "catalogueKeysFor",
+    "change": "accepts more",
+    "tells": "nobody",
+    "why": "lines may now be null or undefined (Bob's lines alone); env gained the optional AI_CATALOGUE_DEVELOPMENT_KEY"
+   },
+   {
+    "entry": "CatalogueEnv",
+    "change": "accepts more",
+    "tells": "nobody",
+    "why": "gained the optional AI_CATALOGUE_DEVELOPMENT_KEY (unknown) with a bound line"
+   },
+   {
+    "entry": "AiCatalogue",
+    "change": "accepts more",
+    "tells": "nobody",
+    "why": "its options' env (CatalogueEnv, written out in full) gained an optional member"
+   },
+   {
+    "entry": "aiCatalogueOf",
+    "change": "accepts more",
+    "tells": "nobody",
+    "why": "its options' env gained an optional member"
+   }
+  ],
+  "notes": "The new member arrives with a bound line (AI_CATALOGUE_DEVELOPMENT_KEY: one ssh-ed25519 line marked -development, trusted only where AI_CATALOGUE_DEVELOPMENT is \"1\"); the tool attaches nested bounds to every entry whose kind reaches CatalogueEnv (CatalogueEnv, AiCatalogue, aiCatalogueOf, catalogueKeysFor), so it may report 'bound changed' on those four rather than only 'accepts more'. By the method the bound belongs to a member that did not exist, so nothing accepted before is refused. Behaviour not in the listing: in a development build, catalogueKeysFor now adds the deployment's own key line, and a caller passing no list now gets Bob's lines rather than an empty list. The new file dev-key.mjs is a command, not an interface file (not public, not re-exported); I gave it the start kinds rule 34 asks for (DevKeyArgv @message argv, DevKeyEnv @message env) with casts on each process.argv and process.env read; they are not in the listing."
+ },
+ {
+  "change": "ai-catalogue:336",
+  "written": "2026-11-15T15:39:03Z",
+  "listingChanges": false,
+  "entries": [],
+  "notes": "Only dev-key.mjs changed: a new exported constant GUARD_LINE, and CF_TOKEN is now required in a dry run too (the Worker is looked up before the key is made). dev-key.mjs is not an interface file (modules.json public is src/checks.mjs and src/index.mjs, and index.mjs does not re-export it), so the listing does not move. I changed one bound line on DevKeyEnv (@message env) for the token; that kind is in a non-public file, so the tool should not list it. If the tool treats a start kind (@message env) as published wherever it is written, it would see 'bound changed' on DevKeyEnv; its users are the process's deploy step, outside the product."
+ },
+ {
+  "change": "ai-catalogue:484",
+  "written": "2026-11-15T15:40:31Z",
+  "listingChanges": true,
+  "entries": [
+   {
+    "entry": "DEVELOPMENT_SEED",
+    "change": "new entry",
+    "tells": "nobody",
+    "why": "re-exported from seed.mjs (ReleaseSeed)"
+   },
+   {
+    "entry": "DEVELOPMENT_SEED_PAYLOAD",
+    "change": "new entry",
+    "tells": "nobody",
+    "why": "re-exported from seed.mjs; its kind is the reader's inference, not CataloguePayload"
+   },
+   {
+    "entry": "DEVELOPMENT_PROVIDER",
+    "change": "new entry",
+    "tells": "nobody",
+    "why": "re-exported from seed.mjs"
+   },
+   {
+    "entry": "DEVELOPMENT_PLAN",
+    "change": "new entry",
+    "tells": "nobody",
+    "why": "re-exported from seed.mjs"
+   },
+   {
+    "entry": "seedFor",
+    "change": "new entry",
+    "tells": "nobody",
+    "why": "re-exported from seed.mjs"
+   }
+  ],
+  "notes": "No existing entry's kind changes: the constructor's seed option keeps its kind (ReleaseSeed | null), only its default moves (with no seed given, a development build now loads DEVELOPMENT_SEED, which lists a plan and an entry, instead of the empty RELEASE_SEED). That is behaviour the listing does not carry; a user (ai-accounts, ai-use) on a development plane now sees a catalogue with a plan where it saw none. dev-key.mjs (not an interface file) now signs DEVELOPMENT_SEED. I could not give DEVELOPMENT_SEED_PAYLOAD the kind CataloguePayload without typing seed.mjs's eight builder helpers (a cast was refused by rule 14 because the helpers' answers widen), so its listed kind is the reader's inference; a later change inside it would show as 'hands back differently' on a constant."
+ },
+ {
+  "change": "ai-catalogue:611",
+  "written": "2026-11-15T15:41:37Z",
+  "listingChanges": true,
+  "entries": [
+   {
+    "entry": "DEVELOPMENT_ADAPTERS",
+    "change": "new entry",
+    "tells": "nobody",
+    "why": "re-exported from seed.mjs"
+   }
+  ],
+  "notes": "Behaviour not in the listing: in a development build whose development seed verifies, start() now registers DEVELOPMENT_ADAPTERS itself, so the seed's entry no longer needs a newer release and entriesFor offers it. No kind of an existing entry changes (registerAdapterTypes is called from inside; #loadReleaseSeed's answer is unchanged)."
  }
 ]

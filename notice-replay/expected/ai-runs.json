@@ -1,0 +1,959 @@
+[
+ {
+  "change": "ai-runs:96",
+  "written": "2026-11-15T15:37:45Z",
+  "listingChanges": true,
+  "entries": [
+   {
+    "entry": "AiRuns#open",
+    "change": "bound changed",
+    "tells": "users",
+    "why": "principalClaude/principalClaudeRef renamed principalAi/principalAiRef: the new ones are required, the old ones refused whenever sent (semantically 'cannot stand in'; in kinds the members are only added or widened to *, so only the bound lines show it)"
+   },
+   {
+    "entry": "op:airunopen",
+    "change": "bound changed",
+    "tells": "users",
+    "why": "principalClaude/principalClaudeRef renamed principalAi/principalAiRef: the new ones are required, the old ones refused whenever sent (semantically 'cannot stand in'; in kinds the members are only added or widened to *, so only the bound lines show it)"
+   },
+   {
+    "entry": "OpenRequest",
+    "change": "bound changed",
+    "tells": "users",
+    "why": "principalClaude/principalClaudeRef renamed principalAi/principalAiRef: the new ones are required, the old ones refused whenever sent (semantically 'cannot stand in'; in kinds the members are only added or widened to *, so only the bound lines show it)"
+   },
+   {
+    "entry": "AiRuns#open",
+    "change": "accepts more",
+    "tells": "nobody",
+    "why": "new optional members principalAi, principalAiRef; principalClaude, principalClaudeRef widened to *"
+   },
+   {
+    "entry": "op:airunopen",
+    "change": "accepts more",
+    "tells": "nobody",
+    "why": "new optional members principalAi, principalAiRef; principalClaude, principalClaudeRef widened to *"
+   },
+   {
+    "entry": "OpenRequest",
+    "change": "accepts more",
+    "tells": "nobody",
+    "why": "new optional members principalAi, principalAiRef; principalClaude, principalClaudeRef widened to *"
+   },
+   {
+    "entry": "UsageEntry",
+    "change": "cannot stand in",
+    "tells": "users",
+    "why": "a usage entry now requires entry_id and a full label (UsageLabel); model and effort moved into the label"
+   },
+   {
+    "entry": "AiRuns#tick",
+    "change": "cannot stand in",
+    "tells": "users",
+    "why": "a usage entry now requires entry_id and a full label (UsageLabel); model and effort moved into the label"
+   },
+   {
+    "entry": "AiRuns#tickAndContinue",
+    "change": "cannot stand in",
+    "tells": "users",
+    "why": "a usage entry now requires entry_id and a full label (UsageLabel); model and effort moved into the label"
+   },
+   {
+    "entry": "op:airuntick",
+    "change": "cannot stand in",
+    "tells": "users",
+    "why": "a usage entry now requires entry_id and a full label (UsageLabel); model and effort moved into the label"
+   },
+   {
+    "entry": "TickRequest",
+    "change": "cannot stand in",
+    "tells": "users",
+    "why": "a usage entry now requires entry_id and a full label (UsageLabel); model and effort moved into the label"
+   },
+   {
+    "entry": "AiRuns#tick",
+    "change": "bound changed",
+    "tells": "users",
+    "why": "segment_end may carry ai_stop with its own bounds; log entries' produced_by bounded; segment_end.next may be stop"
+   },
+   {
+    "entry": "AiRuns#tickAndContinue",
+    "change": "bound changed",
+    "tells": "users",
+    "why": "segment_end may carry ai_stop with its own bounds; log entries' produced_by bounded; segment_end.next may be stop"
+   },
+   {
+    "entry": "op:airuntick",
+    "change": "bound changed",
+    "tells": "users",
+    "why": "segment_end may carry ai_stop with its own bounds; log entries' produced_by bounded; segment_end.next may be stop"
+   },
+   {
+    "entry": "TickRequest",
+    "change": "bound changed",
+    "tells": "users",
+    "why": "segment_end may carry ai_stop with its own bounds; log entries' produced_by bounded; segment_end.next may be stop"
+   },
+   {
+    "entry": "AiRuns#tick",
+    "change": "hands back differently",
+    "tells": "users",
+    "why": "segment_end gains stop (AfterStop); next may be 'stop'"
+   },
+   {
+    "entry": "AiRuns#tickAndContinue",
+    "change": "hands back differently",
+    "tells": "users",
+    "why": "segment_end gains stop (AfterStop); next may be 'stop'"
+   },
+   {
+    "entry": "op:airuntick",
+    "change": "hands back differently",
+    "tells": "users",
+    "why": "segment_end gains stop (AfterStop); next may be 'stop'"
+   },
+   {
+    "entry": "TickAnswer",
+    "change": "hands back differently",
+    "tells": "users",
+    "why": "segment_end gains stop (AfterStop); next may be 'stop'"
+   },
+   {
+    "entry": "RunSession",
+    "change": "hands back differently",
+    "tells": "users",
+    "why": "session.principal.claude renamed principal.ai; session gains segments, labels, held"
+   },
+   {
+    "entry": "ReadAnswer",
+    "change": "hands back differently",
+    "tells": "users",
+    "why": "session.principal.claude renamed principal.ai; session gains segments, labels, held"
+   },
+   {
+    "entry": "ListAnswer",
+    "change": "hands back differently",
+    "tells": "users",
+    "why": "session.principal.claude renamed principal.ai; session gains segments, labels, held"
+   },
+   {
+    "entry": "AiRuns#read",
+    "change": "hands back differently",
+    "tells": "users",
+    "why": "session.principal.claude renamed principal.ai; session gains segments, labels, held"
+   },
+   {
+    "entry": "AiRuns#listInContext",
+    "change": "hands back differently",
+    "tells": "users",
+    "why": "session.principal.claude renamed principal.ai; session gains segments, labels, held"
+   },
+   {
+    "entry": "op:airun",
+    "change": "hands back differently",
+    "tells": "users",
+    "why": "session.principal.claude renamed principal.ai; session gains segments, labels, held"
+   },
+   {
+    "entry": "op:airuns",
+    "change": "hands back differently",
+    "tells": "users",
+    "why": "session.principal.claude renamed principal.ai; session gains segments, labels, held"
+   },
+   {
+    "entry": "RunFacts",
+    "change": "hands back differently",
+    "tells": "users",
+    "why": "principal_claude renamed principal_ai"
+   },
+   {
+    "entry": "RunGateAnswer",
+    "change": "hands back differently",
+    "tells": "users",
+    "why": "principal_claude renamed principal_ai"
+   },
+   {
+    "entry": "AiRuns#runFor",
+    "change": "hands back differently",
+    "tells": "users",
+    "why": "principal_claude renamed principal_ai"
+   },
+   {
+    "entry": "AiRuns#runGate",
+    "change": "hands back differently",
+    "tells": "users",
+    "why": "principal_claude renamed principal_ai"
+   },
+   {
+    "entry": "LogEntry",
+    "change": "hands back differently",
+    "tells": "users",
+    "why": "each entry gains read, disagree and produced_by"
+   },
+   {
+    "entry": "LogAnswer",
+    "change": "hands back differently",
+    "tells": "users",
+    "why": "each entry gains read, disagree and produced_by"
+   },
+   {
+    "entry": "AiRuns#log",
+    "change": "hands back differently",
+    "tells": "users",
+    "why": "each entry gains read, disagree and produced_by"
+   },
+   {
+    "entry": "op:airunlog",
+    "change": "hands back differently",
+    "tells": "users",
+    "why": "each entry gains read, disagree and produced_by"
+   },
+   {
+    "entry": "DispatchOutcome",
+    "change": "hands back differently",
+    "tells": "users",
+    "why": "a dispatch outcome gains withheld and recipient, and the state WITHHELD (bound line changed)"
+   },
+   {
+    "entry": "WakeEntry",
+    "change": "hands back differently",
+    "tells": "users",
+    "why": "a dispatch outcome gains withheld and recipient, and the state WITHHELD (bound line changed)"
+   },
+   {
+    "entry": "WakeAnswer",
+    "change": "hands back differently",
+    "tells": "users",
+    "why": "a dispatch outcome gains withheld and recipient, and the state WITHHELD (bound line changed)"
+   },
+   {
+    "entry": "MemberDispatchAnswer",
+    "change": "hands back differently",
+    "tells": "users",
+    "why": "a dispatch outcome gains withheld and recipient, and the state WITHHELD (bound line changed)"
+   },
+   {
+    "entry": "AiRuns#wake",
+    "change": "hands back differently",
+    "tells": "users",
+    "why": "a dispatch outcome gains withheld and recipient, and the state WITHHELD (bound line changed)"
+   },
+   {
+    "entry": "AiRuns#dispatchMemberRun",
+    "change": "hands back differently",
+    "tells": "users",
+    "why": "a dispatch outcome gains withheld and recipient, and the state WITHHELD (bound line changed)"
+   },
+   {
+    "entry": "RunCounts",
+    "change": "hands back differently",
+    "tells": "users",
+    "why": "a fifth figure, aiRunSegments"
+   },
+   {
+    "entry": "AiRuns#counts",
+    "change": "hands back differently",
+    "tells": "users",
+    "why": "a fifth figure, aiRunSegments"
+   },
+   {
+    "entry": "AiRuns.COUNT_KEYS",
+    "change": "hands back differently",
+    "tells": "users",
+    "why": "a fifth figure, aiRunSegments"
+   },
+   {
+    "entry": "TestBarResult",
+    "change": "hands back differently",
+    "tells": "users",
+    "why": "results gain entry_id (and, for group results, part)"
+   },
+   {
+    "entry": "AiRuns#testBarRecords",
+    "change": "hands back differently",
+    "tells": "users",
+    "why": "results gain entry_id (and, for group results, part)"
+   },
+   {
+    "entry": "AiRuns#testBarRecord",
+    "change": "hands back differently",
+    "tells": "users",
+    "why": "results gain entry_id (and, for group results, part)"
+   },
+   {
+    "entry": "AiRuns#groupTestResults",
+    "change": "hands back differently",
+    "tells": "users",
+    "why": "results gain entry_id (and, for group results, part)"
+   },
+   {
+    "entry": "TestBarRequest",
+    "change": "accepts more",
+    "tells": "nobody",
+    "why": "new optional entry_id"
+   },
+   {
+    "entry": "AiRuns#testBarRecord",
+    "change": "accepts more",
+    "tells": "nobody",
+    "why": "new optional entry_id"
+   },
+   {
+    "entry": "TestBarRequest",
+    "change": "bound changed",
+    "tells": "users",
+    "why": "entry_id added to the line judged by checkTestBarRecord"
+   },
+   {
+    "entry": "AiRuns#testBarRecord",
+    "change": "bound changed",
+    "tells": "users",
+    "why": "entry_id added to the line judged by checkTestBarRecord"
+   },
+   {
+    "entry": "AiRuns#partAdmitted",
+    "change": "accepts more",
+    "tells": "nobody",
+    "why": "a second, optional parameter entry"
+   },
+   {
+    "entry": "AiRuns#dispatchMemberRun",
+    "change": "accepts more",
+    "tells": "nobody",
+    "why": "its argument may now be null (args ?? {})"
+   },
+   {
+    "entry": "RunsEnv",
+    "change": "accepts more",
+    "tells": "nobody",
+    "why": "new optional AI_RUN_PAUSE_MAX_MS, AI_RUN_PROBE_INTERVAL_MS, gateRecords"
+   },
+   {
+    "entry": "RunsDeps",
+    "change": "accepts more",
+    "tells": "nobody",
+    "why": "new optional AI_RUN_PAUSE_MAX_MS, AI_RUN_PROBE_INTERVAL_MS, gateRecords"
+   },
+   {
+    "entry": "RunsEnv",
+    "change": "bound changed",
+    "tells": "users",
+    "why": "two bound lines added for the new environment overrides"
+   },
+   {
+    "entry": "AiRuns",
+    "change": "bound changed",
+    "tells": "users",
+    "why": "two bound lines added for the new environment overrides"
+   },
+   {
+    "entry": "aiRunsOf",
+    "change": "bound changed",
+    "tells": "users",
+    "why": "two bound lines added for the new environment overrides"
+   },
+   {
+    "entry": "AiRuns#env",
+    "change": "bound changed",
+    "tells": "users",
+    "why": "two bound lines added for the new environment overrides"
+   },
+   {
+    "entry": "table:ai_runs",
+    "change": "hands back differently",
+    "tells": "users",
+    "why": "principal_claude(_ref) renamed principal_ai(_ref); new columns hold and wait_choice"
+   },
+   {
+    "entry": "AiRunRow",
+    "change": "hands back differently",
+    "tells": "users",
+    "why": "principal_claude(_ref) renamed principal_ai(_ref); new columns hold and wait_choice"
+   },
+   {
+    "entry": "table:ai_test_bar",
+    "change": "hands back differently",
+    "tells": "users",
+    "why": "new column entry_id"
+   },
+   {
+    "entry": "TestBarRow",
+    "change": "hands back differently",
+    "tells": "users",
+    "why": "new column entry_id"
+   },
+   {
+    "entry": "table:ai_run_segments",
+    "change": "new entry",
+    "tells": "nobody",
+    "why": "two new tables"
+   },
+   {
+    "entry": "table:ai_run_producers",
+    "change": "new entry",
+    "tells": "nobody",
+    "why": "two new tables"
+   },
+   {
+    "entry": "AiRunSegmentRow",
+    "change": "new entry",
+    "tells": "nobody",
+    "why": "two new tables"
+   },
+   {
+    "entry": "AiRunProducerRow",
+    "change": "new entry",
+    "tells": "nobody",
+    "why": "two new tables"
+   },
+   {
+    "entry": "op:aicontinue",
+    "change": "new entry",
+    "tells": "nobody",
+    "why": "eight new operations (rule 7 may tell users of a same-named op elsewhere)"
+   },
+   {
+    "entry": "op:aistop",
+    "change": "new entry",
+    "tells": "nobody",
+    "why": "eight new operations (rule 7 may tell users of a same-named op elsewhere)"
+   },
+   {
+    "entry": "op:aiwait",
+    "change": "new entry",
+    "tells": "nobody",
+    "why": "eight new operations (rule 7 may tell users of a same-named op elsewhere)"
+   },
+   {
+    "entry": "op:aiswitchaccount",
+    "change": "new entry",
+    "tells": "nobody",
+    "why": "eight new operations (rule 7 may tell users of a same-named op elsewhere)"
+   },
+   {
+    "entry": "op:aiwithout",
+    "change": "new entry",
+    "tells": "nobody",
+    "why": "eight new operations (rule 7 may tell users of a same-named op elsewhere)"
+   },
+   {
+    "entry": "op:aisendrefuse",
+    "change": "new entry",
+    "tells": "nobody",
+    "why": "eight new operations (rule 7 may tell users of a same-named op elsewhere)"
+   },
+   {
+    "entry": "op:aiwaitswitch",
+    "change": "new entry",
+    "tells": "nobody",
+    "why": "eight new operations (rule 7 may tell users of a same-named op elsewhere)"
+   },
+   {
+    "entry": "op:airunparts",
+    "change": "new entry",
+    "tells": "nobody",
+    "why": "eight new operations (rule 7 may tell users of a same-named op elsewhere)"
+   },
+   {
+    "entry": "AiRunHandlers.aicontinue",
+    "change": "new entry",
+    "tells": "nobody",
+    "why": "eight new operations (rule 7 may tell users of a same-named op elsewhere)"
+   },
+   {
+    "entry": "AiRunHandlers.aistop",
+    "change": "new entry",
+    "tells": "nobody",
+    "why": "eight new operations (rule 7 may tell users of a same-named op elsewhere)"
+   },
+   {
+    "entry": "AiRunHandlers.aiwait",
+    "change": "new entry",
+    "tells": "nobody",
+    "why": "eight new operations (rule 7 may tell users of a same-named op elsewhere)"
+   },
+   {
+    "entry": "AiRunHandlers.aiswitchaccount",
+    "change": "new entry",
+    "tells": "nobody",
+    "why": "eight new operations (rule 7 may tell users of a same-named op elsewhere)"
+   },
+   {
+    "entry": "AiRunHandlers.aiwithout",
+    "change": "new entry",
+    "tells": "nobody",
+    "why": "eight new operations (rule 7 may tell users of a same-named op elsewhere)"
+   },
+   {
+    "entry": "AiRunHandlers.aisendrefuse",
+    "change": "new entry",
+    "tells": "nobody",
+    "why": "eight new operations (rule 7 may tell users of a same-named op elsewhere)"
+   },
+   {
+    "entry": "AiRunHandlers.aiwaitswitch",
+    "change": "new entry",
+    "tells": "nobody",
+    "why": "eight new operations (rule 7 may tell users of a same-named op elsewhere)"
+   },
+   {
+    "entry": "AiRunHandlers.airunparts",
+    "change": "new entry",
+    "tells": "nobody",
+    "why": "eight new operations (rule 7 may tell users of a same-named op elsewhere)"
+   },
+   {
+    "entry": "AiRunOps",
+    "change": "hands back differently",
+    "tells": "users",
+    "why": "the operation table names eight more operations"
+   },
+   {
+    "entry": "AiRunHandlers",
+    "change": "hands back differently",
+    "tells": "users",
+    "why": "the operation table names eight more operations"
+   },
+   {
+    "entry": "aiRunsOps",
+    "change": "hands back differently",
+    "tells": "users",
+    "why": "the operation table names eight more operations"
+   },
+   {
+    "entry": "DECLARED_OPS",
+    "change": "hands back differently",
+    "tells": "users",
+    "why": "eight more declared operations; DeclaredOp gains machineClasses and needs; airunopen's field lists name principalAi(Ref)"
+   },
+   {
+    "entry": "DeclaredOp",
+    "change": "hands back differently",
+    "tells": "users",
+    "why": "eight more declared operations; DeclaredOp gains machineClasses and needs; airunopen's field lists name principalAi(Ref)"
+   },
+   {
+    "entry": "AiRuns#registerGateVerdicts",
+    "change": "new entry",
+    "tells": "nobody",
+    "why": "new public members of the class"
+   },
+   {
+    "entry": "AiRuns#registerPathReady",
+    "change": "new entry",
+    "tells": "nobody",
+    "why": "new public members of the class"
+   },
+   {
+    "entry": "AiRuns#runParts",
+    "change": "new entry",
+    "tells": "nobody",
+    "why": "new public members of the class"
+   },
+   {
+    "entry": "AiRuns#aiContinue",
+    "change": "new entry",
+    "tells": "nobody",
+    "why": "new public members of the class"
+   },
+   {
+    "entry": "AiRuns#aiStop",
+    "change": "new entry",
+    "tells": "nobody",
+    "why": "new public members of the class"
+   },
+   {
+    "entry": "AiRuns#aiWithout",
+    "change": "new entry",
+    "tells": "nobody",
+    "why": "new public members of the class"
+   },
+   {
+    "entry": "AiRuns#aiSwitchAccount",
+    "change": "new entry",
+    "tells": "nobody",
+    "why": "new public members of the class"
+   },
+   {
+    "entry": "AiRuns#aiWait",
+    "change": "new entry",
+    "tells": "nobody",
+    "why": "new public members of the class"
+   },
+   {
+    "entry": "AiRuns#waitThenSwitch",
+    "change": "new entry",
+    "tells": "nobody",
+    "why": "new public members of the class"
+   },
+   {
+    "entry": "AiRuns#aiSendRefuse",
+    "change": "new entry",
+    "tells": "nobody",
+    "why": "new public members of the class"
+   },
+   {
+    "entry": "AiRuns#registerHealthProbe",
+    "change": "new entry",
+    "tells": "nobody",
+    "why": "new public members of the class"
+   },
+   {
+    "entry": "AiRuns#healthProbe",
+    "change": "new entry",
+    "tells": "nobody",
+    "why": "new public members of the class"
+   },
+   {
+    "entry": "AiRuns.LABEL_FIELDS",
+    "change": "new entry",
+    "tells": "nobody",
+    "why": "new public members of the class"
+   },
+   {
+    "entry": "AiRuns.EFFORT_WORD_MAX",
+    "change": "new entry",
+    "tells": "nobody",
+    "why": "new public members of the class"
+   },
+   {
+    "entry": "AiRuns.RUN_PARTS_LIMIT",
+    "change": "new entry",
+    "tells": "nobody",
+    "why": "new public members of the class"
+   },
+   {
+    "entry": "AiRuns.WAIT_THEN_SWITCH_CHOICES",
+    "change": "new entry",
+    "tells": "nobody",
+    "why": "new public members of the class"
+   },
+   {
+    "entry": "AiRuns.PAUSE_MAX_MS",
+    "change": "new entry",
+    "tells": "nobody",
+    "why": "new public members of the class"
+   },
+   {
+    "entry": "AiRuns.PROBE_BATCH",
+    "change": "new entry",
+    "tells": "nobody",
+    "why": "new public members of the class"
+   },
+   {
+    "entry": "AiRuns.PROBE_INTERVAL_MS",
+    "change": "new entry",
+    "tells": "nobody",
+    "why": "new public members of the class"
+   },
+   {
+    "entry": "AiRuns.RUN_LEASE_MS",
+    "change": "new entry",
+    "tells": "nobody",
+    "why": "new public members of the class"
+   },
+   {
+    "entry": "AiRuns.HOP_STOPS",
+    "change": "new entry",
+    "tells": "nobody",
+    "why": "new public members of the class"
+   },
+   {
+    "entry": "AiRuns.READY_STATES",
+    "change": "new entry",
+    "tells": "nobody",
+    "why": "new public members of the class"
+   },
+   {
+    "entry": "UsageLabel",
+    "change": "new entry",
+    "tells": "nobody",
+    "why": "new kinds"
+   },
+   {
+    "entry": "AiStop",
+    "change": "new entry",
+    "tells": "nobody",
+    "why": "new kinds"
+   },
+   {
+    "entry": "AfterStop",
+    "change": "new entry",
+    "tells": "nobody",
+    "why": "new kinds"
+   },
+   {
+    "entry": "SegmentRead",
+    "change": "new entry",
+    "tells": "nobody",
+    "why": "new kinds"
+   },
+   {
+    "entry": "RunHeld",
+    "change": "new entry",
+    "tells": "nobody",
+    "why": "new kinds"
+   },
+   {
+    "entry": "MemberChoiceRequest",
+    "change": "new entry",
+    "tells": "nobody",
+    "why": "new kinds"
+   },
+   {
+    "entry": "WaitChoice",
+    "change": "new entry",
+    "tells": "nobody",
+    "why": "new kinds"
+   },
+   {
+    "entry": "MemberChoiceAnswer",
+    "change": "new entry",
+    "tells": "nobody",
+    "why": "new kinds"
+   },
+   {
+    "entry": "HopSide",
+    "change": "new entry",
+    "tells": "nobody",
+    "why": "new kinds"
+   },
+   {
+    "entry": "HopAnswered",
+    "change": "new entry",
+    "tells": "nobody",
+    "why": "new kinds"
+   },
+   {
+    "entry": "RunPart",
+    "change": "new entry",
+    "tells": "nobody",
+    "why": "new kinds"
+   },
+   {
+    "entry": "RunPartsAnswer",
+    "change": "new entry",
+    "tells": "nobody",
+    "why": "new kinds"
+   },
+   {
+    "entry": "PathState",
+    "change": "new entry",
+    "tells": "nobody",
+    "why": "new kinds"
+   },
+   {
+    "entry": "HealthProbe",
+    "change": "new entry",
+    "tells": "nobody",
+    "why": "new kinds"
+   },
+   {
+    "entry": "AiRuns",
+    "change": "hands back differently",
+    "tells": "users",
+    "why": "the instance shape gains every new member (and the private ones the listing writes out)"
+   },
+   {
+    "entry": "aiRunsOf",
+    "change": "hands back differently",
+    "tells": "users",
+    "why": "the instance shape gains every new member (and the private ones the listing writes out)"
+   }
+  ],
+  "notes": "A large change (T53: about 1,000 lines): rename of the paying principal (claude -> ai) in the open's request, the stored row, runFor and read; usage entries relabelled; segments, hops and holds with eight new member operations and a health probe; Gate 1 verdicts per entry. The rename of the open's argument shows in kinds only as added members and a widened old member, so it depends on the bound lines to be told; I expect 'bound changed' there, while the real effect on a caller still sending principalClaude is a refusal. The listing also lists private #members as entries, so expect many entries like AiRuns##gateSource, AiRuns##dispatchMember, AiRuns##afterStop, AiRuns.#flagOnly as new, and AiRuns##accountServing, AiRuns##accountFor, AiRuns##aiRunDispatch as changed; I have not listed those, since no user can reach them. dispatchMemberRun's parameter changes from a destructuring pattern to `args`; the tool may read that as a parameter name change. partAdmitted's and verificationRecord's behaviour changed (Gate 1, flag only) with no kind change. UsageEntry's change also reaches op:airuntick's req."
+ },
+ {
+  "change": "ai-runs:213",
+  "written": "2026-11-15T15:39:02Z",
+  "listingChanges": false,
+  "entries": [],
+  "notes": "Only the private #useCheck changed (a fourth, optional parameter `served`, passed on to ai-use's useCheck). No comment needed to change. The listing lists private members, so the tool may show AiRuns##useCheck as 'accepts more' (tells nobody); no user can call it."
+ },
+ {
+  "change": "ai-runs:323",
+  "written": "2026-11-15T15:40:57Z",
+  "listingChanges": true,
+  "entries": [
+   {
+    "entry": "AiRuns#pathReadyRead",
+    "change": "new entry",
+    "tells": "nobody",
+    "why": "the path read op=aipathready, now this module's, and its closed set of reasons"
+   },
+   {
+    "entry": "AiRuns.PATH_REASONS",
+    "change": "new entry",
+    "tells": "nobody",
+    "why": "the path read op=aipathready, now this module's, and its closed set of reasons"
+   },
+   {
+    "entry": "PathReadyAnswer",
+    "change": "new entry",
+    "tells": "nobody",
+    "why": "the path read op=aipathready, now this module's, and its closed set of reasons"
+   },
+   {
+    "entry": "op:aipathready",
+    "change": "new entry",
+    "tells": "nobody",
+    "why": "the path read op=aipathready, now this module's, and its closed set of reasons"
+   },
+   {
+    "entry": "AiRunHandlers.aipathready",
+    "change": "new entry",
+    "tells": "nobody",
+    "why": "the path read op=aipathready, now this module's, and its closed set of reasons"
+   },
+   {
+    "entry": "AiRunOps",
+    "change": "hands back differently",
+    "tells": "users",
+    "why": "the operation table names aipathready"
+   },
+   {
+    "entry": "AiRunHandlers",
+    "change": "hands back differently",
+    "tells": "users",
+    "why": "the operation table names aipathready"
+   },
+   {
+    "entry": "aiRunsOps",
+    "change": "hands back differently",
+    "tells": "users",
+    "why": "the operation table names aipathready"
+   },
+   {
+    "entry": "DECLARED_OPS",
+    "change": "hands back differently",
+    "tells": "users",
+    "why": "a declared aipathready"
+   },
+   {
+    "entry": "PathState",
+    "change": "bound changed",
+    "tells": "users",
+    "why": "the state a registered source answers is now held to PATH_REASONS (else unknown) and reset_at to a parseable instant of at most 40 characters"
+   },
+   {
+    "entry": "AiRuns#registerPathReady",
+    "change": "bound changed",
+    "tells": "users",
+    "why": "the state a registered source answers is now held to PATH_REASONS (else unknown) and reset_at to a parseable instant of at most 40 characters"
+   }
+  ],
+  "notes": "F1: a new read op aipathready (pathReadyRead) and the path rule made fail closed: with no source registered a path now reads not ready (state unregistered), where it read ready. That is a change of behaviour for every dispatch (AiRuns#dispatchMemberRun, the wake, tickAndContinue) with no change of kind: nothing in my comments can show it, so the tool should not tell anyone about it. The private #pathReady's answer changed too (listed as a private entry). AiRuns and aiRunsOf hand back differently as the class gains members (as at 96)."
+ },
+ {
+  "change": "ai-runs:348",
+  "written": "2026-11-15T15:42:28Z",
+  "listingChanges": true,
+  "entries": [
+   {
+    "entry": "OpenRequest",
+    "change": "accepts more",
+    "tells": "nobody",
+    "why": "new optional member enabledBy"
+   },
+   {
+    "entry": "AiRuns#open",
+    "change": "accepts more",
+    "tells": "nobody",
+    "why": "new optional member enabledBy"
+   },
+   {
+    "entry": "op:airunopen",
+    "change": "accepts more",
+    "tells": "nobody",
+    "why": "new optional member enabledBy"
+   },
+   {
+    "entry": "OpenRequest",
+    "change": "bound changed",
+    "tells": "users",
+    "why": "a new bound line: an exploring run's accountable member is enabledBy (else the actor's) and must be active"
+   },
+   {
+    "entry": "AiRuns#open",
+    "change": "bound changed",
+    "tells": "users",
+    "why": "a new bound line: an exploring run's accountable member is enabledBy (else the actor's) and must be active"
+   },
+   {
+    "entry": "op:airunopen",
+    "change": "bound changed",
+    "tells": "users",
+    "why": "a new bound line: an exploring run's accountable member is enabledBy (else the actor's) and must be active"
+   },
+   {
+    "entry": "OpenAnswer",
+    "change": "hands back differently",
+    "tells": "users",
+    "why": "a refused open may carry exploring (startAllowed's refusal of an exploring run)"
+   },
+   {
+    "entry": "AiRuns#open",
+    "change": "hands back differently",
+    "tells": "users",
+    "why": "a refused open may carry exploring (startAllowed's refusal of an exploring run)"
+   },
+   {
+    "entry": "op:airunopen",
+    "change": "hands back differently",
+    "tells": "users",
+    "why": "a refused open may carry exploring (startAllowed's refusal of an exploring run)"
+   },
+   {
+    "entry": "AiRuns#openMany",
+    "change": "hands back differently",
+    "tells": "users",
+    "why": "a refused open may carry exploring (startAllowed's refusal of an exploring run)"
+   }
+  ],
+  "notes": "F2: an exploring run is accountable to the member who turned exploring on. openMany does not hand back OpenAnswer directly (its runs carry the refusal as *), so it may not be told; I listed it in case the tool follows OpenAnswer through openMany's code. AiRunHandlers.airunopen and AiRunOps may show the same change through op:airunopen. The behavioural change (an exploring run whose enabler is not active is refused, its account now the enabler's) is only in the bound line."
+ },
+ {
+  "change": "ai-runs:391",
+  "written": "2026-11-15T15:43:57Z",
+  "listingChanges": true,
+  "entries": [
+   {
+    "entry": "AiRuns#gateVerdictRecord",
+    "change": "new entry",
+    "tells": "nobody",
+    "why": "Gate 1 records written here (R75) and read back; a new table"
+   },
+   {
+    "entry": "AiRuns#gateVerdictRecords",
+    "change": "new entry",
+    "tells": "nobody",
+    "why": "Gate 1 records written here (R75) and read back; a new table"
+   },
+   {
+    "entry": "GateRecordRow",
+    "change": "new entry",
+    "tells": "nobody",
+    "why": "Gate 1 records written here (R75) and read back; a new table"
+   },
+   {
+    "entry": "table:ai_gate_records",
+    "change": "new entry",
+    "tells": "nobody",
+    "why": "Gate 1 records written here (R75) and read back; a new table"
+   },
+   {
+    "entry": "AiRuns",
+    "change": "hands back differently",
+    "tells": "users",
+    "why": "the class gains two members (as before)"
+   },
+   {
+    "entry": "aiRunsOf",
+    "change": "hands back differently",
+    "tells": "users",
+    "why": "the class gains two members (as before)"
+   }
+  ],
+  "notes": "partAdmitted now also reads the records written here before the registered source's; a change of behaviour, not of kind. AI_RUNS_TABLES gains ai_gate_records, but its kind is readonly string[], so no change shows there. The private #gateRecords changed body only."
+ }
+]

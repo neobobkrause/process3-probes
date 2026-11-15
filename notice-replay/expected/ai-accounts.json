@@ -1,0 +1,352 @@
+[
+ {
+  "change": "ai-accounts:124",
+  "written": "2026-11-15T15:39:23Z",
+  "listingChanges": true,
+  "entries": [
+   {
+    "entry": "AiAccounts#accountReferenceSet",
+    "change": "new entry",
+    "tells": "nobody",
+    "why": "deprecated pre-T53 name brought back by the compatibility layer (legacy.mjs)"
+   },
+   {
+    "entry": "AiAccounts#accountReferenceState",
+    "change": "new entry",
+    "tells": "nobody",
+    "why": "deprecated pre-T53 name brought back by the compatibility layer (legacy.mjs)"
+   },
+   {
+    "entry": "AiAccounts#groupKeySet",
+    "change": "new entry",
+    "tells": "nobody",
+    "why": "deprecated pre-T53 name brought back by the compatibility layer (legacy.mjs)"
+   },
+   {
+    "entry": "AiAccounts#groupKeyState",
+    "change": "new entry",
+    "tells": "nobody",
+    "why": "deprecated pre-T53 name brought back by the compatibility layer (legacy.mjs)"
+   },
+   {
+    "entry": "AiAccounts#groupKeySwitches",
+    "change": "new entry",
+    "tells": "nobody",
+    "why": "deprecated pre-T53 name brought back by the compatibility layer (legacy.mjs)"
+   },
+   {
+    "entry": "AiAccounts#projectKeySet",
+    "change": "new entry",
+    "tells": "nobody",
+    "why": "deprecated pre-T53 name brought back by the compatibility layer (legacy.mjs)"
+   },
+   {
+    "entry": "AiAccounts#subscriptionTokenHold",
+    "change": "new entry",
+    "tells": "nobody",
+    "why": "deprecated pre-T53 name brought back by the compatibility layer (legacy.mjs)"
+   },
+   {
+    "entry": "AiAccounts#groupKeySwitch",
+    "change": "new entry",
+    "tells": "nobody",
+    "why": "deprecated pre-T53 name brought back by the compatibility layer (legacy.mjs)"
+   },
+   {
+    "entry": "AiAccounts#projectAccountSwitch",
+    "change": "new entry",
+    "tells": "nobody",
+    "why": "deprecated pre-T53 name brought back by the compatibility layer (legacy.mjs)"
+   },
+   {
+    "entry": "AiAccounts#projectAccountState",
+    "change": "new entry",
+    "tells": "nobody",
+    "why": "deprecated pre-T53 name brought back by the compatibility layer (legacy.mjs)"
+   },
+   {
+    "entry": "AiAccounts#accountReferenceRemove",
+    "change": "new entry",
+    "tells": "nobody",
+    "why": "deprecated pre-T53 name brought back by the compatibility layer (legacy.mjs)"
+   },
+   {
+    "entry": "AiAccounts#groupKeyNoticeSeen",
+    "change": "new entry",
+    "tells": "nobody",
+    "why": "deprecated pre-T53 name brought back by the compatibility layer (legacy.mjs)"
+   },
+   {
+    "entry": "AiAccounts#projectKeyNoticeSeen",
+    "change": "new entry",
+    "tells": "nobody",
+    "why": "deprecated pre-T53 name brought back by the compatibility layer (legacy.mjs)"
+   },
+   {
+    "entry": "AiAccounts#subscriptionConnected",
+    "change": "new entry",
+    "tells": "nobody",
+    "why": "deprecated pre-T53 name brought back by the compatibility layer (legacy.mjs)"
+   },
+   {
+    "entry": "LegacyHeld",
+    "change": "new entry",
+    "tells": "nobody",
+    "why": "new kind written for the legacy answers"
+   },
+   {
+    "entry": "LegacyAccounts",
+    "change": "new entry",
+    "tells": "nobody",
+    "why": "new kind written for the legacy answers"
+   },
+   {
+    "entry": "LegacyKeyFacts",
+    "change": "new entry",
+    "tells": "nobody",
+    "why": "new kind written for the legacy answers"
+   },
+   {
+    "entry": "LegacyReferenceState",
+    "change": "new entry",
+    "tells": "nobody",
+    "why": "new kind written for the legacy answers"
+   },
+   {
+    "entry": "AccountUsesOfAnswer",
+    "change": "new entry",
+    "tells": "nobody",
+    "why": "new kind written for the legacy answers"
+   },
+   {
+    "entry": "AiAccounts#accountUsesSet",
+    "change": "accepts more",
+    "tells": "nobody",
+    "why": "also takes the old form {owner, switch, on, by}"
+   },
+   {
+    "entry": "AiAccounts#accountUses",
+    "change": "accepts more",
+    "tells": "nobody",
+    "why": "also takes the old form {owner, viewer}"
+   },
+   {
+    "entry": "AiAccounts#accountUses",
+    "change": "hands back differently",
+    "tells": "users",
+    "why": "AccountUsesAnswer gained the optional members kind and accounts (old form)"
+   },
+   {
+    "entry": "AiAccounts#accountUsesOf",
+    "change": "accepts more",
+    "tells": "nobody",
+    "why": "also takes the old form {owner}"
+   },
+   {
+    "entry": "AiAccounts#accountUsesOf",
+    "change": "hands back differently",
+    "tells": "users",
+    "why": "answer now AccountUsesOfAnswer: account_id became optional, accounts added"
+   },
+   {
+    "entry": "AiAccounts#accountFor",
+    "change": "hands back differently",
+    "tells": "users",
+    "why": "AccountForAnswer gained optional (non-enumerable) kind and key"
+   },
+   {
+    "entry": "AccountForAnswer",
+    "change": "hands back differently",
+    "tells": "users",
+    "why": "gained optional kind and key"
+   },
+   {
+    "entry": "AccountUsesAnswer",
+    "change": "hands back differently",
+    "tells": "users",
+    "why": "gained optional kind and accounts"
+   },
+   {
+    "entry": "op:accountuses",
+    "change": "hands back differently",
+    "tells": "users",
+    "why": "its res is AccountUsesAnswer, which gained optional members"
+   },
+   {
+    "entry": "AiAccountsHandlers.accountuses",
+    "change": "hands back differently",
+    "tells": "users",
+    "why": "same as op:accountuses"
+   },
+   {
+    "entry": "AiAccounts",
+    "change": "hands back differently",
+    "tells": "users",
+    "why": "the class's instance gained 14 public and about 10 private members (the tool writes a class instance in full)"
+   },
+   {
+    "entry": "aiAccountsOf",
+    "change": "hands back differently",
+    "tells": "users",
+    "why": "it hands back the AiAccounts instance, which the tool writes in full; the instance gained members"
+   }
+  ],
+  "notes": "The change adds a deprecated compatibility layer (legacy.mjs) as the class's last layer: 14 new public methods, and overrides of accountUsesSet, accountUses, accountUsesOf and accountFor that accept an old form and (for the last three) hand back more. Every addition to an answer is an optional member, which the method counts as hands back differently. The tool may also list private _legacy* members as new entries (uncommented). Because aiAccountsOf's answer is the class instance, written in full, any change to the class's members reads as aiAccountsOf handing back differently and tells every user of aiAccountsOf; that is most of the 26 users and is the largest source of notices I expect here. If the tool compares the class entry's members one by one rather than the instance as a whole, those notices go to the four changed methods' users only."
+ },
+ {
+  "change": "ai-accounts:188",
+  "written": "2026-11-15T15:40:30Z",
+  "listingChanges": false,
+  "entries": [],
+  "notes": "The change is inside aiAccountsOps' handlers: a member's own act (aiownadd, aimineuse, aimycheckset, aipersonalchoose, aiorderset with owner member) now takes a stamp already written member:<id> as the owner as it stands, instead of prefixing it again. No kind changes; my comments never stated the form of the stamp `by` (only that it is the control plane's), so no comment needed to change. Had the first comments bound `by` to a bare member id, this would read as accepts more on those ops (tells nobody). If the tool notices the code change without a listing change, it should tell nobody."
+ },
+ {
+  "change": "ai-accounts:316",
+  "written": "2026-11-15T15:41:18Z",
+  "listingChanges": false,
+  "entries": [],
+  "notes": "Inside the deprecated subscriptionTokenHold: the acts it makes on the member's behalf (accountSet, accountSwitch) now pass `by` as member:<id> instead of the bare id, so the disclosure registered under member:<id> is found. What it accepts and hands back is unchanged (it could already answer DISCLOSURE_DUE as a Refusal). No comment needed to change."
+ },
+ {
+  "change": "ai-accounts:483",
+  "written": "2026-11-15T15:42:31Z",
+  "listingChanges": true,
+  "entries": [
+   {
+    "entry": "DeclaredOp",
+    "change": "hands back differently",
+    "tells": "users",
+    "why": "weight's kind gained 'reversible' and 'terminal' and lost 'caller-owned' (no row carries it now)"
+   },
+   {
+    "entry": "DECLARED_OPS",
+    "change": "hands back differently",
+    "tells": "users",
+    "why": "each row is a DeclaredOp, whose weight kind changed"
+   }
+  ],
+  "notes": "The change regrades the declared ops (DECLARED_OPS' weight per row, to op-grades R57's grades). The kind written for a row (DeclaredOp, built by D) carries the set of weights, not each row's own, so the listing shows only the set changing; which op moved from which weight to which is content the kinds do not hold. Users that read DECLARED_OPS (store-assembly's declarations, op-declarations, op-grades through them) are the ones to tell. If the tool widens literal values of a constant only when no comment states its kind, it will not see the per-row values at all."
+ },
+ {
+  "change": "ai-accounts:1098",
+  "written": "2026-11-15T15:44:15Z",
+  "listingChanges": true,
+  "entries": [
+   {
+    "entry": "AccountState",
+    "change": "hands back differently",
+    "tells": "users",
+    "why": "gained flagged_at (string | null, always present) and health (AccountHealth)"
+   },
+   {
+    "entry": "AccountListed",
+    "change": "hands back differently",
+    "tells": "users",
+    "why": "its AccountState side gained flagged_at and health"
+   },
+   {
+    "entry": "AiAccounts#accountState",
+    "change": "hands back differently",
+    "tells": "users",
+    "why": "an owner's answer is AccountState, which gained flagged_at and health"
+   },
+   {
+    "entry": "AiAccounts#accountsOf",
+    "change": "hands back differently",
+    "tells": "users",
+    "why": "its accounts are AccountListed, whose AccountState side gained flagged_at and health"
+   },
+   {
+    "entry": "op:accountstate",
+    "change": "hands back differently",
+    "tells": "users",
+    "why": "res includes AccountState"
+   },
+   {
+    "entry": "op:accountsof",
+    "change": "hands back differently",
+    "tells": "users",
+    "why": "res includes AccountListed"
+   },
+   {
+    "entry": "AiAccountsHandlers.accountstate",
+    "change": "hands back differently",
+    "tells": "users",
+    "why": "as op:accountstate"
+   },
+   {
+    "entry": "AiAccountsHandlers.accountsof",
+    "change": "hands back differently",
+    "tells": "users",
+    "why": "as op:accountsof"
+   },
+   {
+    "entry": "AccountHealth",
+    "change": "new entry",
+    "tells": "nobody",
+    "why": "new kind of the health an account state carries"
+   },
+   {
+    "entry": "AiAccounts#aiKeyReference",
+    "change": "new entry",
+    "tells": "nobody",
+    "why": "new act: an account's credential replaced by a reference"
+   },
+   {
+    "entry": "AiAccounts#aiSignin",
+    "change": "new entry",
+    "tells": "nobody",
+    "why": "new act: a provider sign-in's token held on an issued account"
+   },
+   {
+    "entry": "op:aikeyreference",
+    "change": "new entry",
+    "tells": "nobody",
+    "why": "new op answered by name"
+   },
+   {
+    "entry": "op:aisignin",
+    "change": "new entry",
+    "tells": "nobody",
+    "why": "new op answered by name"
+   },
+   {
+    "entry": "AiAccountsHandlers.aikeyreference",
+    "change": "new entry",
+    "tells": "nobody",
+    "why": "new handler"
+   },
+   {
+    "entry": "AiAccountsHandlers.aisignin",
+    "change": "new entry",
+    "tells": "nobody",
+    "why": "new handler"
+   },
+   {
+    "entry": "AiAccountsOps",
+    "change": "accepts more",
+    "tells": "nobody",
+    "why": "the table answers two more names"
+   },
+   {
+    "entry": "DECLARED_OPS",
+    "change": "hands back differently",
+    "tells": "users",
+    "why": "gained the rows aikeyreference and aisignin"
+   },
+   {
+    "entry": "AiAccounts",
+    "change": "hands back differently",
+    "tells": "users",
+    "why": "the instance gained aiKeyReference, aiSignin and the private _healthOf (written in full)"
+   },
+   {
+    "entry": "aiAccountsOf",
+    "change": "hands back differently",
+    "tells": "users",
+    "why": "it hands back the AiAccounts instance, written in full, which gained members and whose accountState/accountsOf answers changed"
+   }
+  ],
+  "notes": "A layer merge (F6, screens-ai): an account's state gains flagged_at and health (both always present, so every reader of AccountState is told), and two new credential acts with their ops and declarations. If op names are checked against other modules' answers (rule 7), aikeyreference and aisignin are new names nobody else answers, so they tell nobody. As at 124, aiAccountsOf handing back the instance in full means its users are told too. The ops table entry may be reported as changed in its names rather than as accepts more."
+ }
+]

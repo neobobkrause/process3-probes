@@ -1,0 +1,30 @@
+[
+ {
+  "change": "wizard-scripts:98",
+  "written": "2026-11-15T15:39:28Z",
+  "listingChanges": false,
+  "entries": [],
+  "notes": "Data only: the screen registry is re-taken at 30af4350f2 (build-data's SOURCES pin and the generated screen-registry.mjs: more acts and owed acts on existing screens, same 91 screens). No comment needed to change. SCREEN_REGISTRY and SCREEN_REGISTRY_SOURCE are generated, carry no comment and list as 'anything' both sides, so the tool should see no change; a user that reads a screen's acts (affordances, interface-shell, screens-inquiry, store-assembly) sees new acts only as content, which no kind states."
+ },
+ {
+  "change": "wizard-scripts:163",
+  "written": "2026-11-15T15:40:40Z",
+  "listingChanges": false,
+  "entries": [],
+  "notes": "data.mjs gains RETIRED_ACTS and currentAct (the door ops ai-accounts retired, read as their T53 replacements); neither is re-exported by index.mjs, so neither is an entry. The generated registry and library now name the new ops (aiaccountadd, aiownadd, aiaccountremove, aiaccountswitch) instead of the retired ones: content of SCREEN_REGISTRY and CIVICSMITH_LIBRARY, which carry no stated kind ('anything' both sides). No comment needed to change. ADMIN_ACTS still lists groupkeyset, groupkeyremove, groupkeyswitch (unchanged; its bound 'each the name of an op the member op table declares' may now be untrue for those three, but the code did not change it and the bound is words only)."
+ },
+ {
+  "change": "wizard-scripts:253",
+  "written": "2026-11-15T15:42:01Z",
+  "listingChanges": false,
+  "entries": [],
+  "notes": "ADMIN_ACTS loses five names (groupkeyset, groupkeyremove, groupkeyswitch, scanmirror, officeconfirm). Its kind is ReadonlySet<string> with the bound 'each the name of an op the member op table declares' (a name from a list kept elsewhere); kind and bound words are unchanged, so the listing is unchanged. The change is content: store-assembly hands ADMIN_ACTS to wizardRegister and interface-shell reads it, so their behaviour changes (startFrom withholds fewer library scripts from a viewer who does not administer), but no stated kind carries the names. If the tool compared a frozen Set's contents it would not be by the method's rules. Only the comment above ADMIN_ACTS (not JSDoc) changed in the real code; the merge conflict was that comment against my JSDoc, resolved by keeping both."
+ },
+ {
+  "change": "wizard-scripts:255",
+  "written": "2026-11-15T15:43:07Z",
+  "listingChanges": false,
+  "entries": [],
+  "notes": "ADMIN_ACTS takes back scanmirror and officeconfirm (owner-declared ops), and its prose says every name is an op the assembled registration declares (OPS or an owner's DECLARED_OPS). Kind ReadonlySet<string> unchanged. Its bound, 'each the name of an op the member op table declares', already meant the assembled table (the member op table is the plane's whole table, aliases included, as index.mjs uses the words), so its words stay: no bound change. Content change only (users store-assembly and interface-shell read two more names). Merge conflict in admin.mjs again: the real's prose against my JSDoc, both kept."
+ }
+]

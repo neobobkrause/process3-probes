@@ -1,0 +1,730 @@
+[
+ {
+  "change": "ai-use:105",
+  "written": "2026-11-15T15:44:29Z",
+  "listingChanges": true,
+  "entries": [
+   {
+    "entry": "REASONING_FIGURE",
+    "change": "new entry",
+    "tells": "nobody",
+    "why": "new constant (T53)"
+   },
+   {
+    "entry": "ESTIMATE_MIN_ACTS",
+    "change": "new entry",
+    "tells": "nobody",
+    "why": "new constant (T53)"
+   },
+   {
+    "entry": "ESTIMATE_SAMPLE_SIZE",
+    "change": "new entry",
+    "tells": "nobody",
+    "why": "new constant (T53)"
+   },
+   {
+    "entry": "EFFORT_WORD_MAX",
+    "change": "new entry",
+    "tells": "nobody",
+    "why": "new constant (T53)"
+   },
+   {
+    "entry": "USE_DAYS",
+    "change": "new entry",
+    "tells": "nobody",
+    "why": "new constant (T53)"
+   },
+   {
+    "entry": "PROVIDER_REPROBE_MS",
+    "change": "new entry",
+    "tells": "nobody",
+    "why": "new constant (T53)"
+   },
+   {
+    "entry": "PROVIDER_LIMIT_KINDS",
+    "change": "new entry",
+    "tells": "nobody",
+    "why": "new constant (T53)"
+   },
+   {
+    "entry": "PROVIDER_LIMIT_SCOPES",
+    "change": "new entry",
+    "tells": "nobody",
+    "why": "new constant (T53)"
+   },
+   {
+    "entry": "THRESHOLD_PERCENT_MIN",
+    "change": "new entry",
+    "tells": "nobody",
+    "why": "new constant (T53)"
+   },
+   {
+    "entry": "THRESHOLD_PERCENT_MAX",
+    "change": "new entry",
+    "tells": "nobody",
+    "why": "new constant (T53)"
+   },
+   {
+    "entry": "THRESHOLD_KINDS",
+    "change": "new entry",
+    "tells": "nobody",
+    "why": "new constant (T53)"
+   },
+   {
+    "entry": "RECONCILE_TOLERANCE",
+    "change": "new entry",
+    "tells": "nobody",
+    "why": "new constant (T53)"
+   },
+   {
+    "entry": "HEALTH_MIN_CALLS",
+    "change": "new entry",
+    "tells": "nobody",
+    "why": "new constant (T53)"
+   },
+   {
+    "entry": "HEALTH_DAYS_MAX",
+    "change": "new entry",
+    "tells": "nobody",
+    "why": "new constant (T53)"
+   },
+   {
+    "entry": "HEALTH_KEEP_DAYS",
+    "change": "new entry",
+    "tells": "nobody",
+    "why": "new constant (T53)"
+   },
+   {
+    "entry": "HEALTH_REPORT_VERSION",
+    "change": "new entry",
+    "tells": "nobody",
+    "why": "new constant (T53)"
+   },
+   {
+    "entry": "HEALTH_OUTCOMES",
+    "change": "new entry",
+    "tells": "nobody",
+    "why": "new constant (T53)"
+   },
+   {
+    "entry": "HEALTH_ERROR_CLASSES",
+    "change": "new entry",
+    "tells": "nobody",
+    "why": "new constant (T53)"
+   },
+   {
+    "entry": "RETEST_MODE",
+    "change": "new entry",
+    "tells": "nobody",
+    "why": "new constant (T53)"
+   },
+   {
+    "entry": "LABEL_FIELDS",
+    "change": "new entry",
+    "tells": "nobody",
+    "why": "new constant (T53)"
+   },
+   {
+    "entry": "AI_USE_NEW_WORDS",
+    "change": "new entry",
+    "tells": "nobody",
+    "why": "new constant (T53)"
+   },
+   {
+    "entry": "AI_USE_ADDED_COLUMNS",
+    "change": "new entry",
+    "tells": "nobody",
+    "why": "new constant (T53)"
+   },
+   {
+    "entry": "AiUse#countHealth",
+    "change": "new entry",
+    "tells": "nobody",
+    "why": "new method (T53)"
+   },
+   {
+    "entry": "AiUse#recordProviderLimit",
+    "change": "new entry",
+    "tells": "nobody",
+    "why": "new method (T53)"
+   },
+   {
+    "entry": "AiUse#aiProviderLimits",
+    "change": "new entry",
+    "tells": "nobody",
+    "why": "new method (T53)"
+   },
+   {
+    "entry": "AiUse#useEstimate",
+    "change": "new entry",
+    "tells": "nobody",
+    "why": "new method (T53)"
+   },
+   {
+    "entry": "AiUse#estimateSwitch",
+    "change": "new entry",
+    "tells": "nobody",
+    "why": "new method (T53)"
+   },
+   {
+    "entry": "AiUse#accountUseByMember",
+    "change": "new entry",
+    "tells": "nobody",
+    "why": "new method (T53)"
+   },
+   {
+    "entry": "AiUse#aiThresholdSet",
+    "change": "new entry",
+    "tells": "nobody",
+    "why": "new method (T53)"
+   },
+   {
+    "entry": "AiUse#thresholdsReached",
+    "change": "new entry",
+    "tells": "nobody",
+    "why": "new method (T53)"
+   },
+   {
+    "entry": "AiUse#reconcile",
+    "change": "new entry",
+    "tells": "nobody",
+    "why": "new method (T53)"
+   },
+   {
+    "entry": "AiUse#retestSet",
+    "change": "new entry",
+    "tells": "nobody",
+    "why": "new method (T53)"
+   },
+   {
+    "entry": "AiUse#retestAllowed",
+    "change": "new entry",
+    "tells": "nobody",
+    "why": "new method (T53)"
+   },
+   {
+    "entry": "AiUse#retestingOff",
+    "change": "new entry",
+    "tells": "nobody",
+    "why": "new method (T53)"
+   },
+   {
+    "entry": "AiUse#healthShareSet",
+    "change": "new entry",
+    "tells": "nobody",
+    "why": "new method (T53)"
+   },
+   {
+    "entry": "AiUse#healthShareState",
+    "change": "new entry",
+    "tells": "nobody",
+    "why": "new method (T53)"
+   },
+   {
+    "entry": "AiUse#healthReport",
+    "change": "new entry",
+    "tells": "nobody",
+    "why": "new method (T53)"
+   },
+   {
+    "entry": "AiUse#healthSent",
+    "change": "new entry",
+    "tells": "nobody",
+    "why": "new method (T53)"
+   },
+   {
+    "entry": "AiUse#healthPreview",
+    "change": "new entry",
+    "tells": "nobody",
+    "why": "new method (T53)"
+   },
+   {
+    "entry": "op:aiusebymember",
+    "change": "new entry",
+    "tells": "nobody",
+    "why": "new operation answered by name (rule 7: tells users of that name if another module answers it; none known)"
+   },
+   {
+    "entry": "op:airetestset",
+    "change": "new entry",
+    "tells": "nobody",
+    "why": "new operation answered by name (rule 7: tells users of that name if another module answers it; none known)"
+   },
+   {
+    "entry": "op:aihealthset",
+    "change": "new entry",
+    "tells": "nobody",
+    "why": "new operation answered by name (rule 7: tells users of that name if another module answers it; none known)"
+   },
+   {
+    "entry": "op:aihealthpreview",
+    "change": "new entry",
+    "tells": "nobody",
+    "why": "new operation answered by name (rule 7: tells users of that name if another module answers it; none known)"
+   },
+   {
+    "entry": "table:ai_usage_money",
+    "change": "new entry",
+    "tells": "nobody",
+    "why": "new stored table (T53)"
+   },
+   {
+    "entry": "table:ai_usage_entries",
+    "change": "new entry",
+    "tells": "nobody",
+    "why": "new stored table (T53)"
+   },
+   {
+    "entry": "table:ai_use_act_entries",
+    "change": "new entry",
+    "tells": "nobody",
+    "why": "new stored table (T53)"
+   },
+   {
+    "entry": "table:ai_provider_limits",
+    "change": "new entry",
+    "tells": "nobody",
+    "why": "new stored table (T53)"
+   },
+   {
+    "entry": "table:ai_thresholds",
+    "change": "new entry",
+    "tells": "nobody",
+    "why": "new stored table (T53)"
+   },
+   {
+    "entry": "table:ai_threshold_history",
+    "change": "new entry",
+    "tells": "nobody",
+    "why": "new stored table (T53)"
+   },
+   {
+    "entry": "table:ai_threshold_crossed",
+    "change": "new entry",
+    "tells": "nobody",
+    "why": "new stored table (T53)"
+   },
+   {
+    "entry": "table:ai_reconcile_gaps",
+    "change": "new entry",
+    "tells": "nobody",
+    "why": "new stored table (T53)"
+   },
+   {
+    "entry": "table:ai_retest",
+    "change": "new entry",
+    "tells": "nobody",
+    "why": "new stored table (T53)"
+   },
+   {
+    "entry": "table:ai_health",
+    "change": "new entry",
+    "tells": "nobody",
+    "why": "new stored table (T53)"
+   },
+   {
+    "entry": "table:ai_health_switch",
+    "change": "new entry",
+    "tells": "nobody",
+    "why": "new stored table (T53)"
+   },
+   {
+    "entry": "table:ai_health_sent",
+    "change": "new entry",
+    "tells": "nobody",
+    "why": "new stored table (T53)"
+   },
+   {
+    "entry": "AI_USE_CHECKS",
+    "change": "hands back differently",
+    "tells": "users",
+    "why": "two rows added (AI_THRESHOLD_INVALID, NOT_A_PAYING_ACCOUNT), each with a word"
+   },
+   {
+    "entry": "AiUseCheckRow",
+    "change": "hands back differently",
+    "tells": "users",
+    "why": "gained optional member word"
+   },
+   {
+    "entry": "AiUseCode",
+    "change": "hands back differently",
+    "tells": "users",
+    "why": "two codes added"
+   },
+   {
+    "entry": "AiUse",
+    "change": "accepts more",
+    "tells": "nobody",
+    "why": "AiUseDeps gained optional catalogue (constructor)"
+   },
+   {
+    "entry": "aiUseOf",
+    "change": "accepts more",
+    "tells": "nobody",
+    "why": "AiUseDeps gained optional catalogue"
+   },
+   {
+    "entry": "AiUseDeps",
+    "change": "accepts more",
+    "tells": "nobody",
+    "why": "gained optional catalogue"
+   },
+   {
+    "entry": "aiUseOps",
+    "change": "hands back differently",
+    "tells": "users",
+    "why": "the handlers object gained aiusebymember, airetestset, aihealthset, aihealthpreview"
+   },
+   {
+    "entry": "AiUseHandlers",
+    "change": "hands back differently",
+    "tells": "users",
+    "why": "four handlers added"
+   },
+   {
+    "entry": "AiUseOpTable",
+    "change": "hands back differently",
+    "tells": "users",
+    "why": "four operations added; existing ops' answers changed as below"
+   },
+   {
+    "entry": "Usage",
+    "change": "accepts more",
+    "tells": "nobody",
+    "why": "total_cost_usd became optional; new optional reasoning_tokens, cost_reported, cost_estimated, unstated"
+   },
+   {
+    "entry": "Usage",
+    "change": "bound changed",
+    "tells": "users",
+    "why": "bound lines: reasoning_tokens added to the whole-number line; new line on unstated"
+   },
+   {
+    "entry": "UsageEntry",
+    "change": "accepts more",
+    "tells": "nobody",
+    "why": "new optional entry_id and label"
+   },
+   {
+    "entry": "UsageEntry",
+    "change": "bound changed",
+    "tells": "users",
+    "why": "new bound on entry_id"
+   },
+   {
+    "entry": "AskUsageEntry",
+    "change": "accepts more",
+    "tells": "nobody",
+    "why": "new optional entry_id and label"
+   },
+   {
+    "entry": "CountedUse",
+    "change": "hands back differently",
+    "tells": "users",
+    "why": "gained entry_id"
+   },
+   {
+    "entry": "AiUse#countUsage",
+    "change": "hands back differently",
+    "tells": "users",
+    "why": "answer gained entry_id; accepts more (entry_id, label, neutral usage)"
+   },
+   {
+    "entry": "AiUse#countUsage",
+    "change": "bound changed",
+    "tells": "users",
+    "why": "nested bounds of UsageEntry/Usage/Label changed"
+   },
+   {
+    "entry": "AiUse#countAskUsage",
+    "change": "hands back differently",
+    "tells": "users",
+    "why": "answer gained entry_id; accepts more"
+   },
+   {
+    "entry": "AiUse#countAskUsage",
+    "change": "bound changed",
+    "tells": "users",
+    "why": "nested bounds of Usage/Label changed"
+   },
+   {
+    "entry": "Sums",
+    "change": "hands back differently",
+    "tells": "users",
+    "why": "removed total_cost_usd and cost_unstated; added reasoning_tokens, unpriced_calls, unstated, cost_reported_sum, cost_estimated_sum, cost, not_measurable, word"
+   },
+   {
+    "entry": "UseSums",
+    "change": "hands back differently",
+    "tells": "users",
+    "why": "via Sums"
+   },
+   {
+    "entry": "AccountUsage",
+    "change": "hands back differently",
+    "tells": "users",
+    "why": "uses' Sums changed"
+   },
+   {
+    "entry": "MyUsage",
+    "change": "hands back differently",
+    "tells": "users",
+    "why": "payers' uses' Sums changed"
+   },
+   {
+    "entry": "AiUse#aiUsage",
+    "change": "hands back differently",
+    "tells": "users",
+    "why": "Sums changed"
+   },
+   {
+    "entry": "AiUse#aiUsageMine",
+    "change": "hands back differently",
+    "tells": "users",
+    "why": "Sums changed"
+   },
+   {
+    "entry": "op:aiusage",
+    "change": "hands back differently",
+    "tells": "users",
+    "why": "Sums changed"
+   },
+   {
+    "entry": "ReachedLimit",
+    "change": "hands back differently",
+    "tells": "users",
+    "why": "own entries gained source; provider-limit entries added (kind, resets_at, null unit/period/period_start)"
+   },
+   {
+    "entry": "AiUse#limitsReached",
+    "change": "hands back differently",
+    "tells": "users",
+    "why": "ReachedLimit changed"
+   },
+   {
+    "entry": "Estimate",
+    "change": "hands back differently",
+    "tells": "users",
+    "why": "the 'not known yet' words became {low:null, high:null, unit:null, basis:'not_known'}; ranges gained basis; tokens range gained not_measurable; money unit any unit, not only usd"
+   },
+   {
+    "entry": "PendingAsk",
+    "change": "hands back differently",
+    "tells": "users",
+    "why": "estimate changed"
+   },
+   {
+    "entry": "AiUse#exploreAsksPending",
+    "change": "hands back differently",
+    "tells": "users",
+    "why": "estimate changed"
+   },
+   {
+    "entry": "Estimated",
+    "change": "hands back differently",
+    "tells": "users",
+    "why": "estimate changed"
+   },
+   {
+    "entry": "AiUse#estimate",
+    "change": "hands back differently",
+    "tells": "users",
+    "why": "estimate changed; RelayedRefusal ok now boolean"
+   },
+   {
+    "entry": "EstimateRequest",
+    "change": "accepts more",
+    "tells": "nobody",
+    "why": "named entry_id (not read)"
+   },
+   {
+    "entry": "ExploreAllowed",
+    "change": "hands back differently",
+    "tells": "users",
+    "why": "both members gained account_id"
+   },
+   {
+    "entry": "AiUse#exploreAllowed",
+    "change": "hands back differently",
+    "tells": "users",
+    "why": "account_id in answers; the limit refusal now useCheck's (walkable, source, provider refusal, unit-unavailable unjudged)"
+   },
+   {
+    "entry": "AiUse#exploreAllowed",
+    "change": "bound changed",
+    "tells": "users",
+    "why": "new bound: account_id names one of the owner's accounts, none reads as explore no (an owner with explore on but no account_id is now refused EXPLORE_NOT_ENABLED: effectively cannot stand in)"
+   },
+   {
+    "entry": "AiUse#exploreAsk",
+    "change": "bound changed",
+    "tells": "users",
+    "why": "new bound on account_id (without it EXPLORE_NOT_ENABLED)"
+   },
+   {
+    "entry": "AiUse#exploreAsk",
+    "change": "accepts more",
+    "tells": "nobody",
+    "why": "optional account_id"
+   },
+   {
+    "entry": "AiUse#useCheck",
+    "change": "hands back differently",
+    "tells": "users",
+    "why": "refusals carry walkable and source; new provider-limit refusal; new LIMIT_UNIT_UNAVAILABLE unjudged refusal"
+   },
+   {
+    "entry": "AiUse#useCheck",
+    "change": "bound changed",
+    "tells": "users",
+    "why": "new bound on account_id for explore; LimitReachedRefusal word bound reworded"
+   },
+   {
+    "entry": "UseCheckRefusal",
+    "change": "new entry",
+    "tells": "nobody",
+    "why": "new kind"
+   },
+   {
+    "entry": "ProviderLimitRefusal",
+    "change": "new entry",
+    "tells": "nobody",
+    "why": "new kind"
+   },
+   {
+    "entry": "LimitReachedRefusal",
+    "change": "bound changed",
+    "tells": "users",
+    "why": "word bound now says the overall word also serves a re-test cap"
+   },
+   {
+    "entry": "ActualCost",
+    "change": "hands back differently",
+    "tells": "users",
+    "why": "removed cost, unit, by_model; added unpriced_calls, cost_reported, cost_estimated, not_measurable, word, by_entry"
+   },
+   {
+    "entry": "AiUse#actualOf",
+    "change": "hands back differently",
+    "tells": "users",
+    "why": "ActualCost changed"
+   },
+   {
+    "entry": "LimitChange",
+    "change": "hands back differently",
+    "tells": "users",
+    "why": "change may be retest_on or retest_off"
+   },
+   {
+    "entry": "AccountLimits",
+    "change": "hands back differently",
+    "tells": "users",
+    "why": "history's change values widened"
+   },
+   {
+    "entry": "AiUse#aiLimits",
+    "change": "hands back differently",
+    "tells": "users",
+    "why": "history's change values widened; RelayedRefusal ok boolean"
+   },
+   {
+    "entry": "op:ailimits",
+    "change": "hands back differently",
+    "tells": "users",
+    "why": "as aiLimits"
+   },
+   {
+    "entry": "UseOverTime",
+    "change": "hands back differently",
+    "tells": "users",
+    "why": "days: dollars removed; tokens, cost (reported/estimated or null), not_measurable added"
+   },
+   {
+    "entry": "UseOverTime",
+    "change": "bound changed",
+    "tells": "users",
+    "why": "days bound reworded (USE_DAYS)"
+   },
+   {
+    "entry": "AiUse#accountUseOverTime",
+    "change": "hands back differently",
+    "tells": "users",
+    "why": "UseOverTime changed"
+   },
+   {
+    "entry": "op:aiuseovertime",
+    "change": "hands back differently",
+    "tells": "users",
+    "why": "UseOverTime changed"
+   },
+   {
+    "entry": "RelayedRefusal",
+    "change": "hands back differently",
+    "tells": "users",
+    "why": "ok stated boolean, not false (correction forced by membership's notAnAdmin now handed back directly)"
+   },
+   {
+    "entry": "AiUse#aiLimitSet",
+    "change": "hands back differently",
+    "tells": "users",
+    "why": "RelayedRefusal ok boolean"
+   },
+   {
+    "entry": "AiUse#aiLimitSet",
+    "change": "bound changed",
+    "tells": "users",
+    "why": "LimitRequest: usd only where every account's plan money is reported or priced (was: refused on a sign-in)"
+   },
+   {
+    "entry": "LimitRequest",
+    "change": "bound changed",
+    "tells": "users",
+    "why": "unit/amount bound lines changed (plan money rule replaces sign-in rule)"
+   },
+   {
+    "entry": "op:ailimitset",
+    "change": "bound changed",
+    "tells": "users",
+    "why": "LimitRequest bounds changed"
+   },
+   {
+    "entry": "op:ailimitset",
+    "change": "hands back differently",
+    "tells": "users",
+    "why": "RelayedRefusal ok boolean"
+   },
+   {
+    "entry": "AiUse#exploreApprove",
+    "change": "hands back differently",
+    "tells": "users",
+    "why": "RelayedRefusal ok boolean"
+   },
+   {
+    "entry": "op:exploreapprove",
+    "change": "hands back differently",
+    "tells": "users",
+    "why": "RelayedRefusal ok boolean"
+   },
+   {
+    "entry": "table:ai_usage",
+    "change": "hands back differently",
+    "tells": "users",
+    "why": "rows gained reasoning_tokens, unpriced_calls, unstated"
+   },
+   {
+    "entry": "table:ai_use_acts",
+    "change": "hands back differently",
+    "tells": "users",
+    "why": "rows gained member, last_input_tokens, unpriced_calls, reported_/estimated_ micro and calls, money_unit"
+   },
+   {
+    "entry": "table:ai_limit_history",
+    "change": "hands back differently",
+    "tells": "users",
+    "why": "change may be retest_on/retest_off"
+   }
+  ],
+  "notes": "T53 is a rewrite of the module; this list is from my comments before and after. Expected also: many new kind entries (typedefs) as new entries telling nobody, which I have not listed one by one (ProviderLimitRefusal, FieldRefusal, ThresholdInvalidRefusal, NotAPayingAccountRefusal, UsageCost, Label, LabelServed, HealthTurn, MoneyByUnit, OwnLimitReached, ProviderLimitStanding, SwitchRequest, SwitchEstimate, SpanCost, MemberUse, UseByMember, ProviderLimitRequest, ProviderLimitRecorded, ProviderLimitShown, ProviderLimits, ThresholdRequest, ThresholdSet, ThresholdCrossed, Comparison, ReconcileRequest, Reconciled, RetestState, RetestRequest, RetestCapReached, RetestingOff, HealthShareState, HealthReport, AiUseNewWordKey, 12 row kinds, 4 answer unions). The tool lists AiUse's private #members as class members; if it compares them it will also report: removed AiUse##isSignin, AiUse##entryRefusal, AiUse.#callsOf, AiUse.#costOf (static), AiUse.#sums; new AiUse##entryOf, ##catalogue, ##carryDollars, ##countAct, ##usdUsed, ##usedFor, ##usdLimitBears, ##planMoney, ##ownerMoney, ##entry, ##entryMeasurable, ##unitUnavailable, ##amountOf, ##providerStanding, ##providerReached, ##moneyOf, ##figures, ##actsOwned, ##costOf, ##thresholdInvalid, ##noteCrossed, ##retestUsed, ##retestRow, ##retestOf, ##admin, ##healthReports, AiUse.#labelOf, .#usageOf, .#micro, .#where, .#who, .#priced, .#unstatedOf; changed ##exploreOf, ##estimate, ##used, ##accountsBar and others. By the method these tell nobody (no other module can reach them). AI_USE_TABLES and AI_USE_SCHEMA change only in content (new tables), so no kind change. Two bound changes are mine to make the comments true (LimitRequest's usd rule; LimitReachedRefusal's word for re-test caps). The real behaviour change most likely to break users: exploreAllowed/exploreAsk/useCheck(explore) now need account_id (without it explore reads no), and estimate's 'not known yet' string became an object; I expect the tool to see the second (hands back differently) but the first only as a bound change on a new parameter (the kind 'accepts more')."
+ }
+]
