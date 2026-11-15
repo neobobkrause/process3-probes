@@ -48,3 +48,8 @@ Ended 2026-11-15T15:44:17Z. Between 255's merge and 546's first parent only a te
 
 Started 2026-11-15T15:44:17Z.
 
+Ended 2026-11-15T15:45:13Z. Another generator-side change: a private table of acts the module adds to three screens, and the generated registry with them. No public kind changed; no comment changed; data.mjs merged cleanly. Check 1,075 real, 949 commented.
+
+## Close
+
+All five changes and the gap done by 2026-11-15T15:47:35Z. In this replay every later change of the provider touched content (generated data, a constant set, private generator helpers), never a stated kind; the cost after the first step was mostly reading diffs and two small merge conflicts in admin.mjs, where the real change rewrote the prose just above my JSDoc block.

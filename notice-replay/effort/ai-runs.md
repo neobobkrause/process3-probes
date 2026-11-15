@@ -52,3 +52,19 @@ Mechanical.
 
 A 107-line diff: Gate 1 records are now written here (`gateVerdictRecord`, `gateVerdictRecords`, table `ai_gate_records`). Two JSDoc blocks and one row kind; the record itself is ai-gate's and stays `*`. A few minutes.
 
+## Gap before 485
+
+Mechanical.
+
+## Update ai-runs:485
+
+A 37-line diff inside `openMany`: the batch's estimate names the entry it is served on, and is awaited. The estimate is ai-use's and written `*`, so no comment changed. A couple of minutes.
+
+## Gap before 1004
+
+Mechanical.
+
+## Update ai-runs:1004
+
+A 175-line diff (F4, F5): answer keys may mark passages (`ANSWER_MARKS`, `answerKeyMarks`), Gate 1 records may carry recall figures, group results count marked matters, and `aipathready` with no pair named becomes a cascade read. Two conflicts. One mattered: the new exports were inserted between `hiddenRuns`' JSDoc and the function, so the real file now has `hiddenRuns`' prose above `ANSWER_MARKS`. My `@param`/`@returns` for `hiddenRuns` were in that block; I kept the real layout and wrote a new block directly above `hiddenRuns`. Two corrections after the check (a private helper whose answer the public read hands back needed `@returns` and a closure `@type`; a refusal field a new test reads). About ten minutes.
+

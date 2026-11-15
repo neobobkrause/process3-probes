@@ -31,3 +31,7 @@ The change adds a development seed (a made-up provider, plan and entry) and `see
 ## update ai-catalogue:611
 
 The change adds `DEVELOPMENT_ADAPTERS`, which the catalogue registers itself when a development seed verifies at start. There was one conflict, where the new constant sits just above my comment on `DEVELOPMENT_SEED`. I gave the constant its kind, with one cast on the reducer's empty accumulator. The expected answer is one new entry, plus a note on the behaviour.
+
+## update ai-catalogue:1097
+
+This was the largest change after the first step. It adds the screens' two reads (`catalogueRead`, `resultsRead`), an operations map (`aiCatalogueOps`) with its declarations, and a private `#listingOf`. It also moves `CATALOGUE_ADDRESS` to `/ai/index.json`. There were two conflicts, both where the change inserted code next to my comments. I wrote eight new kinds, including an `@optable` for the two operations, and gave the two methods and the map their kinds. It took three rounds of the check. One round was a slip: TypeScript drops a typedef's members after a `@bound` line placed among them. The other was two answers the reader can see as null. The address change is the one I expect the tool not to see: it is a lone string constant, and it changes the contract with ai-issuer. The single-object answer kind I chose at the first step (url optional) cost 3 refusals in a new test that reads `pullRequest(...).url` directly.

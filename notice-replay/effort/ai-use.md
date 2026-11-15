@@ -26,3 +26,11 @@ Most of the time went into reading the diff and writing the ~60 new kinds: every
 - membership's notAnAdmin, now handed straight back, whose `ok` TypeScript reads as `boolean`. This forced me to correct RelayedRefusal everywhere. That correction is noise in the expected answer.
 
 I wrote the expected answer from my before and after comments: 120 listed entry changes plus ~60 new kinds. I flagged one real break the method may see only weakly: exploreAllowed, exploreAsk and useCheck(explore) now read explore through `account_id`, and with none it is "no". That is a new optional parameter whose absence now refuses, so the kind says "accepts more" and only a bound line says otherwise.
+
+## Gap before ai-use:378
+
+Only tests changed (108 added lines in three test files: two notice tests confirming no code change after ai-accounts:124 and :188, and one explore test). No source changed, so the carry was mechanical and no comment changed. The check counts moved with the new tests only (real 342, commented 347). One new test reads `useCheck(...).code` directly, adding one more "possibly null" refusal of the kind described above.
+
+## Update ai-use:378
+
+A small change (a 74-line diff). useEstimate now reads entry_id. With one named and too few measured acts, it asks agent-model for a range, and so returns a Promise. The module declares the four T53 ops beside the map. carry.mjs left two conflict hunks, which I resolved by hand. The one thing worth noting is how the comments say "a promise when an entry is named, the answer at once otherwise". Plain JSDoc kinds cannot say it, so I wrote three @overload signatures on useEstimate and copied them onto its alias estimate. Without them, every user that reads `.estimate` would be refused against a `Answer | Promise<Answer>` union. Other updates: two new Estimate variants (measured, price_only), a new bound on entry_id, OpDeclaration.fields becoming optional, and four more DECLARED_OPS keys. Check: real 347, commented 356 (66 of them bound lines without tests).

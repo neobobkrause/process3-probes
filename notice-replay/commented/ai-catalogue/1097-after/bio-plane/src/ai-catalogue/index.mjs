@@ -1743,7 +1743,7 @@ export class AiCatalogue {
       const entries = [...view.entries.values()].map((held) => {
         const e = held.rec;
         const listing = this.#listingOf("entry", e.entry_id, held, when);
-        const offered = {};
+        const offered = /** @type {{[part: string]: {offered: boolean, reasons: OfferReason[]}}} */ ({});
         for (const part of parts) {
           const j = this.#judge(held, view, part, list, when);
           offered[part] = { offered: j.reasons.length === 0, reasons: j.reasons };
@@ -1790,7 +1790,7 @@ export class AiCatalogue {
           on_list: this.#stateOf("entry", id, held, when) };
         const t = view.payload ? view.payload.tested.find((x) => x.subject_id === id) : undefined;
         return { subject_id: id, display_name: t ? t.display_name : null, provider_name: t ? t.provider_name : null,
-          host_name: t ? t.host_name : null, on_list: "not_listed" };
+          host_name: t ? t.host_name : null, on_list: /** @type {'not_listed'} */ ("not_listed") };
       });
       return out({ ok: true, catalogue: this.catalogueState({ at }), subjects, rows, combined });
     } catch { return this.#unavailable(); }
