@@ -1,0 +1,164 @@
+{
+  "about": "Expected answers for the planned series, written by Claude (this proof session) from the method's rules and from reading the made-up product's code, BEFORE the tool was run on any planned change and before any test was run on them. 'told': users the rules say must be told. 'brokenPredicted': users whose own tests Claude predicts will fail. 'wrongWithoutFailingTest': users whose code or comments Claude judges wrong after the change although no test of theirs should fail. 'refuses': modules whose check (point 5) should refuse after the change. Never edited after a result was seen; a later note, if any, is added under 'notes' with its date. Decided rules used here, from the method as Claude settled it: (1) a user that declares a provider but reads or calls a value of unknown kind is not followed fully and is told on every change to that provider's listing; reports is such a user of calendar, store, rooms and bookings; (2) a module whose own files did not change but whose listing changed because it passes on a kind of the changed provider is treated as changed too ('through'), and its users are told; (3) a kind renamed with its shape unchanged tells only the users that write its name; (4) a handle's or an operation table's list of names: a name gained tells nobody, a name lost tells the users of that table or handle by name.",
+  "changes": {
+    "P01-price-content": {
+      "told": [],
+      "why": "Only a value changes; the listing (kinds, fields, bounds) is the same. Content changes tell no one (Bob, 14 Nov).",
+      "brokenPredicted": [], "wrongWithoutFailingTest": [], "refuses": []
+    },
+    "P02-reword-explanation": {
+      "told": [],
+      "why": "Only the words of an explanation change, not a bound line; the listing is the same.",
+      "brokenPredicted": [], "wrongWithoutFailingTest": [], "refuses": []
+    },
+    "P03-remove-function": {
+      "told": ["front"],
+      "why": "titleCase is removed; front imports it by name.",
+      "brokenPredicted": ["front"], "wrongWithoutFailingTest": [], "refuses": ["front"]
+    },
+    "P04-rename-function": {
+      "told": ["billing"],
+      "why": "splitEvenly is gone (removed) and splitAmount is new (no users); billing imports splitEvenly.",
+      "brokenPredicted": ["billing"], "wrongWithoutFailingTest": [], "refuses": ["billing"]
+    },
+    "P05-answer-field-removed": {
+      "told": ["billing", "reports"],
+      "why": "op:bookstatus hands back differently; billing calls it by name in a request line. reports is not followed fully for bookings and the bookings listing changed.",
+      "brokenPredicted": [], "wrongWithoutFailingTest": ["billing"], "refuses": ["billing"],
+      "reading": "billing writes status.room into the invoice text; it would now say 'undefined'. Its tests check only that the text holds the booking id, so they should pass."
+    },
+    "P06-answer-field-renamed": {
+      "told": ["bookings", "billing", "front", "reports"],
+      "why": "Room hands back capacity in place of seats, so Room, Rooms.add, Rooms.find, Rooms.list and op:roomlist hand back differently. bookings uses Rooms.find and reads room.seats; billing's tests use Rooms.add; front calls roomlist and reads r.seats; reports is not followed fully. door uses only the table's names, which are unchanged.",
+      "brokenPredicted": ["bookings", "front"], "wrongWithoutFailingTest": [], "refuses": ["bookings", "front"],
+      "reading": "bookings compares party with room.seats, now undefined, so a party larger than the room is no longer refused: its own test of that bound fails. front writes '(undefined seats)' and, through bookings, no longer sees the refusal its test expects. billing and reports need nothing (cost)."
+    },
+    "P07-accept-optional": {
+      "told": ["reports"],
+      "why": "BookingRequest, Bookings.open and op:bookopen only accept more: nobody is told for that. reports is not followed fully for bookings and the listing changed.",
+      "brokenPredicted": [], "wrongWithoutFailingTest": [], "refuses": []
+    },
+    "P08-newly-required": {
+      "told": ["billing", "front", "reports"],
+      "why": "contact is newly required on BookingRequest, Bookings.open and op:bookopen (cannot stand in). billing's and reports' tests open bookings through Bookings.open; front calls bookopen by name with a body.",
+      "brokenPredicted": ["billing", "front", "reports"], "wrongWithoutFailingTest": [], "refuses": ["billing", "front", "reports"]
+    },
+    "P09-newly-refused": {
+      "told": ["rooms", "bookings", "front", "reports"],
+      "why": "Store.put and seededStore refuse what they used to accept (cannot stand in). rooms and bookings call put; front's tests call seededStore; reports is not followed fully for store.",
+      "brokenPredicted": [], "wrongWithoutFailingTest": [], "refuses": [],
+      "reading": "Every user already puts objects, so none breaks: all four notices are the cost of a narrowing that happens not to bite."
+    },
+    "P10-answer-gains-field": {
+      "told": ["billing", "front", "reports"],
+      "why": "Booking gains a field, so every entry that hands back a Booking hands back differently. billing and reports (tests) use Bookings.open and read the Booking; front calls bookopen and bookcancel by name and reads the Booking.",
+      "brokenPredicted": [], "wrongWithoutFailingTest": [], "refuses": []
+    },
+    "P11-list-gains-name": {
+      "told": ["bookings", "billing", "front", "reports"],
+      "why": "ROOM_KINDS hands back a longer list, so RoomKind, Room, Rooms.* and op:roomlist hand back differently (NewRoom only accepts more). bookings uses Rooms.find and Room; billing's tests use Rooms.add; front reads ROOM_KINDS and calls roomlist; reports reads ROOM_KINDS and is not followed fully.",
+      "brokenPredicted": [], "wrongWithoutFailingTest": [], "refuses": []
+    },
+    "P12-bound-line-changed": {
+      "told": ["bookings", "meter", "billing", "front", "reports"],
+      "why": "The bound line of Amount changes, so Amount and every money function that takes or gives an Amount have a changed bound. bookings, meter and billing use them directly; front reads Amount's cents from what bookings hands back. bookings and meter pass Amount on, so their listings change too and their users (billing, front, reports) are told through them.",
+      "brokenPredicted": ["bookings"], "wrongWithoutFailingTest": [], "refuses": [],
+      "reading": "bookings' own test opens a booking for 200 people for 2 nights, 600,000 cents, now above the bound. The others stay under 500,000."
+    },
+    "P13-kind-renamed": {
+      "told": ["bookings", "meter", "billing", "front", "reports"],
+      "why": "Amount is renamed Money with the same shape: only users that write the name Amount are told: bookings, meter, billing. Their comments then name a kind that no longer exists, so their own listings change through money (an Amount they hand back becomes 'anything'), and the users of those (billing, front, reports) are told through bookings and meter.",
+      "brokenPredicted": [], "wrongWithoutFailingTest": ["bookings", "meter", "billing"], "refuses": ["bookings", "meter", "billing"],
+      "reading": "Nothing changes at run time. bookings, meter and billing need their comments changed. front and reports need nothing; their notices are a cost of the comments of others going stale."
+    },
+    "P14-meaning-changed-comment-updated": {
+      "told": ["billing", "reports"],
+      "why": "The bound line of op:bookquote's answer changes; billing calls bookquote by name. reports is not followed fully.",
+      "brokenPredicted": ["billing"], "wrongWithoutFailingTest": [], "refuses": []
+    },
+    "P15-meaning-changed-comment-not-updated": {
+      "told": [],
+      "why": "The listing is the same: the method cannot see a change of meaning that no comment records. This is the blind spot the study named.",
+      "brokenPredicted": ["billing"], "wrongWithoutFailingTest": [], "refuses": [],
+      "reading": "Expected hole: billing's estimate becomes one night's price and its test fails. Neither the notice nor the check can see it; only a test named for the bound could, and the job changed that test's body."
+    },
+    "P16-code-changed-comment-forgotten-visible": {
+      "told": [],
+      "why": "The comment still says boolean, so the listing is the same and nobody is told. But the check on text-rules refuses: its code hands back an object where its comment says boolean. The job cannot merge until the comment is put right, and then the listing changes and front is told.",
+      "brokenPredicted": ["front"], "wrongWithoutFailingTest": [], "refuses": ["text-rules"],
+      "reading": "If it were merged anyway, front would accept any email, since an object is always true, and its test of that would fail."
+    },
+    "P17-code-changed-comment-forgotten-running-only": {
+      "told": [],
+      "why": "Only running code changed; the listing is the same and the check cannot see a number inside the code. The provider's own test named for the party bound should fail, so the job should not merge.",
+      "brokenPredicted": ["front"], "wrongWithoutFailingTest": [], "refuses": [],
+      "reading": "If merged anyway, front books 150 people and would be refused. The method's guard here is bookings' own bound test, not the notice."
+    },
+    "P18-operation-retired": {
+      "told": ["door", "front", "reports"],
+      "why": "op:bookcancel is removed; front calls it by name. The table BookingOps loses a name; door writes BookingOps by name in its gathered list. reports is not followed fully.",
+      "brokenPredicted": ["front"], "wrongWithoutFailingTest": [], "refuses": ["front"],
+      "reading": "door's gathered list follows the table on its own, so door needs nothing (cost)."
+    },
+    "P19-operation-body-field-renamed": {
+      "told": ["billing", "reports"],
+      "why": "op:bookquote's body loses party and newly requires people (cannot stand in); billing calls bookquote by name. reports is not followed fully.",
+      "brokenPredicted": ["billing"], "wrongWithoutFailingTest": [], "refuses": ["billing"]
+    },
+    "P20-message-kind-changed": {
+      "told": ["billing"],
+      "why": "MeterMsg, the shared kind of the meter's messages, hands back price in place of cost; billing reads MeterMsg.",
+      "brokenPredicted": ["billing"], "wrongWithoutFailingTest": [], "refuses": ["billing"]
+    },
+    "P21-unfollowable-users-provider": {
+      "told": ["reports"],
+      "why": "A new method is a new entry (no users), and the handle gaining a name tells nobody. reports cannot be followed and is told on any change to store's listing.",
+      "brokenPredicted": [], "wrongWithoutFailingTest": [], "refuses": []
+    },
+    "P22a-first-job-comments-step": {
+      "told": [],
+      "why": "calendar had no interface comments; this step adds them and changes no running code. It sends no notice and its listing becomes the 'before' of the next step.",
+      "brokenPredicted": [], "wrongWithoutFailingTest": [], "refuses": [],
+      "alsoExpected": "The comments-only verification passes."
+    },
+    "P22b-first-job-real-change": {
+      "told": ["bookings", "reports"],
+      "why": "addDays gains a bound line (bound changed); bookings calls addDays. reports is not followed fully for calendar.",
+      "brokenPredicted": [], "wrongWithoutFailingTest": [], "refuses": []
+    },
+    "P23-user-already-disagrees": {
+      "told": ["billing"],
+      "why": "splitEvenly hands back differently; billing calls it. billing's standing disagreement with money (an extra argument to formatAmount) does not change who is told, because who is told comes from what billing uses, not from new complaints.",
+      "brokenPredicted": ["billing"], "wrongWithoutFailingTest": [], "refuses": ["billing"],
+      "alsoExpected": "billing's check refuses before the change too (the standing disagreement)."
+    },
+    "P24-new-entry": {
+      "told": [],
+      "why": "A new entry has no users; no user of text-rules is unfollowable.",
+      "brokenPredicted": [], "wrongWithoutFailingTest": [], "refuses": []
+    },
+    "P25-two-changes-one-commit": {
+      "told": ["front", "reports"],
+      "why": "NewRoom and Rooms.add only accept more (tells nobody); op:roomlist hands back items in place of rooms (tells its users): front. reports is not followed fully.",
+      "brokenPredicted": ["front"], "wrongWithoutFailingTest": [], "refuses": ["front"]
+    },
+    "P26-reaches-through-third-module": {
+      "told": ["bookings", "meter", "billing", "front", "reports"],
+      "why": "Amount's field is renamed: Amount and every money function that takes or gives one change. bookings, meter, billing use money directly. front does not import money: it reads cents from the Booking that bookings hands back; the tool should find that the field belongs to money's Amount, and bookings' listing changes through money as well. reports is told through bookings (not followed fully).",
+      "brokenPredicted": ["bookings", "meter", "billing", "front"], "wrongWithoutFailingTest": [], "refuses": ["bookings", "meter", "billing", "front"],
+      "reading": "bookings', meter's and billing's tests read cents; billing's estimate reads cents in its code; front writes NaN in place of the price."
+    },
+    "P27-test-helper-changed": {
+      "told": ["front", "reports"],
+      "why": "seededStore, the store's published test helper, now takes something else (cannot stand in); front's tests call it. reports is not followed fully for store.",
+      "brokenPredicted": ["front"], "wrongWithoutFailingTest": [], "refuses": ["front"]
+    },
+    "P28-handle-method-renamed": {
+      "told": ["rooms", "bookings", "reports"],
+      "why": "Store.get is removed (read is new); rooms and bookings call get on the store handed to them in a bag of dependencies. reports is not followed fully.",
+      "brokenPredicted": ["rooms", "bookings", "billing", "front", "reports"], "wrongWithoutFailingTest": [], "refuses": ["rooms", "bookings"],
+      "reading": "billing, front and reports run rooms' and bookings' code in their tests, so their tests fail too, but only through rooms and bookings, which are told; their own code needs nothing."
+    }
+  },
+  "notes": []
+}
