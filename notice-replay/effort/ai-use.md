@@ -14,3 +14,15 @@ What was hard:
 - **Residual refusals my true comments cause:** 18 in the tests. Most are `useCheck(...).word` read straight off an answer that may be null. The check counts TypeScript's 2531 ("Object is possibly 'null'") as a refusal, but it counts 18047 (the same thing on a named variable) as "cannot tell".
 
 Counts: check 179 refusals before and 149 after. Of the 149, 35 are bound lines without a named test (expected), and 114 others are as described above. "anything" in the listing went from 99 to 72. About 40 of those 72 are the class's private `#members`, which the tool lists as entries; I did not type them.
+
+## Update ai-use:105 (T53)
+
+This "change" is a rewrite of the module: the index.mjs diff alone is 1733 lines. It added 17 public methods, 4 ops, 12 tables, about 20 constants, two refusal codes and a second words table. It also reshaped the answers of countUsage, aiUsage, aiUsageMine, actualOf, estimate, accountUseOverTime, limitsReached, useCheck and exploreAllowed. carry.mjs merged checks and schema cleanly but left 20 conflict hunks in index.mjs, because my comments sat beside nearly every method T53 touched. Instead of resolving hunk by hunk, I re-applied my comments to the real after file with the same edit list, adjusted to the new anchors. The result is the same, and it was faster.
+
+Most of the time went into reading the diff and writing the ~60 new kinds: every new answer, the new refusals, the neutral usage record and label, and 12 row kinds. Each of the following needed one fix before the check stopped blaming my comments:
+
+- small widening problems: arrows and spreads that turn `true` or `false` into `boolean`, and `{}` accumulators;
+- the new rows of AI_USE_CHECKS carrying `word`;
+- membership's notAnAdmin, now handed straight back, whose `ok` TypeScript reads as `boolean`. This forced me to correct RelayedRefusal everywhere. That correction is noise in the expected answer.
+
+I wrote the expected answer from my before and after comments: 120 listed entry changes plus ~60 new kinds. I flagged one real break the method may see only weakly: exploreAllowed, exploreAsk and useCheck(explore) now read explore through `account_id`, and with none it is "no". That is a new optional parameter whose absence now refuses, so the kind says "accepts more" and only a bound line says otherwise.

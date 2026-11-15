@@ -15,3 +15,19 @@ The change adds `seed.mjs` (the seed a release carries and which signing keys a 
 ## update ai-catalogue:204
 
 The change touched only `seed.mjs`'s header comment and added a test. The carry merged it without conflicts. No interface comment needed to change, so the expected answer is "no listing change".
+
+## update ai-catalogue:317
+
+The change adds `dev-key.mjs`, a command a development deploy runs to make its own catalogue key. It also adds `DEVELOPMENT_KEY_VAR` to `seed.mjs`, and `catalogueKeysFor` now takes no list (Bob's lines alone) and, in a development build, adds the deployment's own key line. The interface change is small: one new constant, one new optional environment member, and a wider `catalogueKeysFor`. Most of the time went to `dev-key.mjs`. It is not an interface file, but it reads `process.argv` and `process.env`, and the method's rule 34 refuses that without published start kinds. I wrote `DevKeyArgv` and `DevKeyEnv` and cast the eight reads. There was one conflict in `seed.mjs` (my `@import` beside the change's new import, and the function comment the change rewrote), which I resolved by hand.
+
+## update ai-catalogue:336
+
+Only `dev-key.mjs` changed: the command now looks the Worker up before making a key, in a dry run too, so it needs the token there as well. It also prints a guard line. I changed one bound line on the start kind (`DevKeyEnv`). The file is not an interface file, so the expected answer is "no listing change". This took a couple of minutes.
+
+## update ai-catalogue:484
+
+The change adds a development seed (a made-up provider, plan and entry) and `seedFor(env)`, and makes the constructor's default seed depend on the environment. I commented the new exports. My cast giving the development payload the payload kind was refused (rule 14): the payload is built by helpers whose answers the reader widens. Typing eight helpers just for a development constant was not worth it, so its kind stays the reader's guess. The constructor's kind did not change, only its default, so the expected answer is five new entries and a note on the behaviour change.
+
+## update ai-catalogue:611
+
+The change adds `DEVELOPMENT_ADAPTERS`, which the catalogue registers itself when a development seed verifies at start. There was one conflict, where the new constant sits just above my comment on `DEVELOPMENT_SEED`. I gave the constant its kind, with one cast on the reducer's empty accumulator. The expected answer is one new entry, plus a note on the behaviour.

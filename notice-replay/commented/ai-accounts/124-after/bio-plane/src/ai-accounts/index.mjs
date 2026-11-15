@@ -185,6 +185,56 @@ export { USE_KINDS, EXPLORE_VALUES, USE_SWITCHES, ACCOUNT_SWITCHES, PART_OF_KIND
  */
 
 /**
+ * DEPRECATED (F1): one of a member's old accounts, as the old forms of `accountUses` and `accountUsesOf` answer it.
+ * @typedef {{held: boolean, uses: UseSwitches | null}} LegacyHeld
+ */
+
+/**
+ * DEPRECATED (F1): the old forms' `accounts` of a member: her key (first sealed account) and her sign-in (first issued).
+ * @typedef {{reference: LegacyHeld, signin: LegacyHeld}} LegacyAccounts
+ */
+
+/**
+ * DEPRECATED (F1): the team's key account as R6 answered it.
+ * @typedef {Object} LegacyKeyFacts
+ * @property {boolean} held
+ * @property {boolean} on
+ * @property {string | null} set_at
+ * @property {string | null} by
+ * @property {string | null} account_id
+ * @property {boolean} suggestions
+ * @property {boolean} standing
+ * @property {UseSwitches} uses
+ */
+
+/**
+ * DEPRECATED (F1): a member's own key and sign-in, as R2 answered them.
+ * @typedef {Object} LegacyReferenceState
+ * @property {true} ok
+ * @property {boolean} held
+ * @property {'apikey' | null} kind
+ * @property {string | null} set_at
+ * @property {string | null} account_id
+ * @property {boolean} suggestions
+ * @property {boolean} standing
+ * @property {UseSwitches | null} uses
+ * @property {{connected: boolean, since: string | null, held: boolean, account_id: string | null, valid_until?: string, refused_at?: string, uses: UseSwitches | null}} subscription
+ */
+
+/**
+ * R17's read of one account's uses, and (deprecated, F1) its old form by owner: the owner's head account, with a member's
+ * `accounts`; `account_id` absent in the old form for an owner not spelled as R14's.
+ * @typedef {Object} AccountUsesOfAnswer
+ * @property {true} ok
+ * @property {string | null} [account_id]
+ * @property {string | null} owner
+ * @property {boolean | null} held
+ * @property {UseSwitches | null} uses
+ * @property {LegacyAccounts} [accounts]
+ * @property {true} [unreadable]
+ */
+
+/**
  * An account as a member who is not its owner reads it (R6): the team's with its entries, a project's without.
  * @typedef {Object} AccountPartial
  * @property {string} account_id
@@ -283,6 +333,8 @@ export { USE_KINDS, EXPLORE_VALUES, USE_SWITCHES, ACCOUNT_SWITCHES, PART_OF_KIND
  * @property {string} [secret]
  * @property {{store: string, locator: string} | null} [reference]
  * @property {string | null} [gateway_id]
+ * @property {'apikey' | 'signin'} [kind] DEPRECATED (F1), not enumerable: sealed apikey, issued signin; only with a secret
+ * @property {string} [key] DEPRECATED (F1), not enumerable: the secret again; only with a secret
  */
 
 /**
@@ -530,6 +582,8 @@ export { USE_KINDS, EXPLORE_VALUES, USE_SWITCHES, ACCOUNT_SWITCHES, PART_OF_KIND
  * @property {UseSwitches | null} uses
  * @property {LimitOf[] | null} keptAway
  * @property {true} [unreadable]
+ * @property {'apikey' | 'signin' | null} [kind] DEPRECATED (F1): the old form's kind of the owner's head account
+ * @property {LegacyAccounts} [accounts] DEPRECATED (F1): the old form, for a member
  */
 
 /**

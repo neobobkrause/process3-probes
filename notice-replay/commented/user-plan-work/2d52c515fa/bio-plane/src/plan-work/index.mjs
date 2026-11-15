@@ -188,7 +188,15 @@ export { PLAN_WORK_CHECKS } from "./checks.mjs";
  * conformance R37's answer: per standard, the standing cure link or null.
  * @typedef {Object} CuresAnswer
  * @property {true} [ok]
- * @property {{standard?: string, link?: {cure_standing?: boolean} | null}[]} [standards]
+ * @property {{standard?: string, link?: CureLink | null}[]} [standards]
+ */
+/**
+ * A standing cure link (conformance R37), handed on whole; plan-work reads only `cure_standing`.
+ * @typedef {Object} CureLink
+ * @property {string} [link]
+ * @property {string} [cure]
+ * @property {string} [standard]
+ * @property {boolean} [cure_standing]
  */
 /**
  * @typedef {Object} Draft
@@ -232,8 +240,8 @@ export { PLAN_WORK_CHECKS } from "./checks.mjs";
  */
 /**
  * @typedef {Object} ActionHoldsApi
- * @property {(a: {projects: string[], viewer: string}) => {ok?: true, projects?: unknown[]} | Refusal} projectHolds
- * @property {(a: {viewer: string}) => {ok?: true, items?: {action?: string, project?: string}[]} | Refusal} holdsDue
+ * @property {(a: {projects: string[], viewer: string}) => {ok?: true, projects?: {project?: string, held?: boolean, recorded_by?: string}[]} | Refusal} projectHolds
+ * @property {(a: {viewer: string}) => {ok?: true, items?: {action?: string, project?: string, ord?: number}[]} | Refusal} holdsDue
  * @property {(a: {target?: string, ord?: unknown, project?: string, viewer: string}) => {ok?: true, holds?: unknown[]} | Refusal} holdsOf
  */
 /**
@@ -368,7 +376,7 @@ export { PLAN_WORK_CHECKS } from "./checks.mjs";
  * @property {string} state
  * @property {string} [why]
  * @property {string} [escalation]
- * @property {{cure_standing?: boolean}} [cure]
+ * @property {CureLink} [cure]
  * @property {string} [action]
  */
 /**
@@ -441,8 +449,8 @@ export { PLAN_WORK_CHECKS } from "./checks.mjs";
  * @typedef {Object} HoldsRead
  * @property {"read" | "undetermined"} state
  * @property {string} [why]
- * @property {unknown[] | {state: string, why: string}} [project]
- * @property {{action?: string, project?: string}[] | {state: string, why: string}} [due]
+ * @property {{project?: string, held?: boolean, recorded_by?: string}[] | {state: string, why: string}} [project]
+ * @property {{action?: string, project?: string, ord?: number}[] | {state: string, why: string}} [due]
  * @property {Source} [source]
  */
 /**
@@ -481,16 +489,16 @@ export { PLAN_WORK_CHECKS } from "./checks.mjs";
  * @typedef {{opened: boolean, run?: string | null, why?: string, refused?: {code: string | null, detail: string | null}}} RunOutcome
  */
 /** @typedef {{ok: true, reexamined: ({plan: string, marks: Mark[], run: RunOutcome} | {failed: string})[]}} Reexamined */
-/** @typedef {{ok: true, plan: string, items: {response: string | undefined, at: string | undefined, marks: unknown, run: unknown}[]}} Reexaminations */
+/** @typedef {{ok: true, plan: string, items: {response: string | undefined, at: string | undefined, marks: Mark[], run: RunOutcome | null}[]}} Reexaminations */
 /** @typedef {{ok: true, take_up: number, item: Record<string, unknown>, by: string | undefined, at: string}} TakenUp */
-/** @typedef {{ok: true, items: {take_up: number | undefined, item: unknown, member: string | undefined, at: string | undefined}[], truncated: boolean, cursor: number | null | undefined, limit: number}} TakeUps */
+/** @typedef {{ok: true, items: {take_up: number | undefined, item: Partial<ItemRef>, member: string | undefined, at: string | undefined}[], truncated: boolean, cursor: number | null | undefined, limit: number}} TakeUps */
 /**
  * @typedef {Object} PromiseDuties
  * @property {true} ok
  * @property {unknown} plan
  * @property {unknown} matter
  * @property {string[]} captures
- * @property {Duty[] | unknown[]} duties
+ * @property {Duty[]} duties
  * @property {boolean} all_met
  * @property {boolean} partial
  * @property {string | null} met_at
@@ -1453,7 +1461,7 @@ export class PlanWork {
     if (!p) return noSuchPlan(plan ?? null);
     return { ok: true, plan: p.id, items: this.#rows(`SELECT x.*, r.run_json FROM pw_reexams x LEFT JOIN pw_reexam_runs r
         ON r.plan_id = x.plan_id AND r.response = x.response WHERE x.plan_id=? ORDER BY x.at, x.response`, p.id)
-      .map((r) => ({ response: r.response, at: r.at, marks: unjson(r.marks_json, []), run: unjson(r.run_json, null) })) };
+      .map((r) => ({ response: r.response, at: r.at, marks: /** @type {Mark[]} */ (unjson(r.marks_json, [])), run: /** @type {RunOutcome | null} */ (unjson(r.run_json, null)) })) };
   }
 
   /* ===================================================================== *
@@ -1524,7 +1532,7 @@ export class PlanWork {
     const items = [];
     let truncated = false;
     for (const r of this.#rows(`SELECT * FROM pw_takeups WHERE seq > ? ORDER BY seq`, from)) {
-      const item = unjson(r.item_json, {});
+      const item = /** @type {Partial<ItemRef>} */ (unjson(r.item_json, {}));
       if (viewer !== null && viewer !== undefined && this.#item(item, viewer).r) continue;
       if (items.length === cap) { truncated = true; break; }
       items.push({ take_up: r.seq, item, member: r.member, at: r.at });
@@ -1788,7 +1796,31 @@ export function planWorkOwns(t) {
 
 /** The module's ops (K3, K671), as entries of the plane's op map. `viewer` and `author` are the control plane's stamps,
  *  read from the query and set after the body, so a caller's own copy never wins. */
-/** @param {PlanWork} m @param {URL} url @param {Record<string, unknown> | unknown[] | null | undefined} body */
+/**
+ * The op map's arms, each answering its method's answer.
+ * @typedef {Object} PlanWorkOpMap
+ * @property {() => Refusal | OutcomeSet} matteroutcomeset
+ * @property {() => Refusal | Matters} matters
+ * @property {() => Refusal | Timeline} plantimeline
+ * @property {() => Refusal | RhythmSet} planreviewrhythm
+ * @property {() => Refusal | ReviewOpen} planreviewopen
+ * @property {() => Refusal | ReviewRecorded} planreviewrecord
+ * @property {() => Refusal | Reviews} planreviews
+ * @property {() => Refusal | PrepAdded} prepitemadd
+ * @property {() => Refusal | PrepActed} prepitemtakeup
+ * @property {() => Refusal | PrepActed} prepitemdone
+ * @property {() => Refusal | PrepItems} prepitems
+ * @property {() => Refusal | Commented} plancomment
+ * @property {() => Refusal | Comments} plancomments
+ * @property {() => Refusal | Standing} whereitstands
+ * @property {() => Refusal | ReportDraft} statusreportdraft
+ * @property {() => Refusal | ReportDraft} statusreportassist
+ * @property {() => Refusal | ReportSaved} statusreportsave
+ * @property {() => Refusal | Reports} statusreports
+ * @property {() => Refusal | TakenUp} itemtakeup
+ * @property {() => Refusal | PromiseDuties} matterpromiseduties
+ */
+/** @param {PlanWork} m @param {URL} url @param {Record<string, unknown> | unknown[] | null | undefined} body @returns {PlanWorkOpMap} */
 export function planWorkOps(m, url, body) {
   const qp = (k) => url.searchParams.get(k);
   const b = body && typeof body === "object" && !Array.isArray(body) ? body : {};

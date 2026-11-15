@@ -12,7 +12,7 @@ import { AiAccountsBase } from "./base.mjs";
 import { AI_ACCOUNT_CHECKS } from "./checks.mjs";
 import { MEANS, LEVEL_RANK, SCOPE_RANK, REFERENCE_MAX_CHARS, USE_SWITCHES, USE_DEFAULTS, GATEWAY_ROUTES, SIGNIN_TOKEN_LENGTH,
   HISTORY_LIMIT_DEFAULT, HISTORY_LIMIT_MAX, DAY_MS, stampSecond, levelOf, ownerSpelled, LEVEL_WORD } from "./constants.mjs";
-/** @import { Refusal, MembershipRefusal, Registered, AccountState, AccountPartial, AccountListed, AccountSetRequest, AccountSetAnswer, Credential, UseSwitches, AccountUsesAnswer, AccountHistoryAnswer, GatewayPort, GatewayHeld, ClearedNotice, LimitOf } from './index.mjs' */
+/** @import { Refusal, MembershipRefusal, Registered, AccountState, AccountPartial, AccountListed, AccountSetRequest, AccountSetAnswer, Credential, UseSwitches, AccountUsesAnswer, AccountHistoryAnswer, GatewayPort, GatewayHeld, ClearedNotice, LimitOf, AccountUsesOfAnswer } from './index.mjs' */
 
 const M = AiAccountsBase;
 
@@ -483,7 +483,7 @@ export class AiAccountsAccounts extends AiAccountsLimits {
      `held: false, uses: null` (K2620). The read an in-plane caller (`ai-use`) uses for an account it does not own. */
   /**
    * @param {{account_id?: string | null}} [args]
-   * @returns {{ok: true, account_id: string | null, owner: string | null, held: boolean | null, uses: UseSwitches | null, unreadable?: true}}
+   * @returns {AccountUsesOfAnswer}
    */
   accountUsesOf({ account_id = null } = {}) {
     const said = typeof account_id === "string" ? account_id : null;

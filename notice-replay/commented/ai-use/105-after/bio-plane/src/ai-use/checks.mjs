@@ -50,6 +50,7 @@ const at = (fn, region) => `src/ai-use/index.mjs ${fn} > ${region}`;
  * @property {string} check its number in family C-143, `C-143.<n>`
  * @property {string} where the one site in `index.mjs` that mints it
  * @property {string} translation its member-facing sentence, read by key from `words.json`, placeholders unfilled
+ * @property {string} [word] the key of its sentence, on the rows T53 adds
  */
 
 /**
@@ -163,7 +164,7 @@ export function fillWords(sentence, fills) {
   return Object.entries(fills).reduce((s, [k, v]) => s.split(`{${k}}`).join(String(v)), sentence);
 }
 
-/** @type {Readonly<Record<AiUseCode, AiUseCheckRow>>} */
+/** @type {Readonly<Record<AiUseCode, AiUseCheckRow> & Record<'AI_THRESHOLD_INVALID' | 'NOT_A_PAYING_ACCOUNT', {word: string}>>} */
 export const AI_USE_CHECKS = Object.freeze({
   /* R3 (D38 C, D39; B3, B5, B7): a limit of the paying account is reached for the current period: its own use's, its
      overall one (over the uses that are not exclusive), or its per-member one. Carries `whose` (`group`, `project` or

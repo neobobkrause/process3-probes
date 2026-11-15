@@ -27,3 +27,39 @@ them `*`. `aiAccountsOf` hands back the class instance, which the tool writes in
 
 ## Update ai-accounts:124 (started 2026-11-15T15:36:42Z)
 
+The change adds `legacy.mjs` (371 lines), a deprecated compatibility layer that becomes the class's last layer. The carry
+had one conflict (the kinds block sits beside the class line the change rewrote), resolved by keeping both. I read the
+new file whole and the first 100 lines of its new test: 14 new public methods, each with its old answer, and overrides
+of four T53 methods that take an old form and hand back more (`accountUses` and `accountUsesOf` gain `kind`, `accounts`;
+`accountFor` gains non-enumerable `kind` and `key`). Writing their comments was quick because the file states each old
+answer in prose; the one snag was a conditional the reader widened. The expected answer is mostly new entries and three
+"hands back differently"; I expect the instance written in full to make `aiAccountsOf` tell nearly every user.
+
+## Update ai-accounts:188
+
+A 15-line change inside `aiAccountsOps`: a member's own act takes a stamp already written `member:<id>` as it stands.
+The carry merged it cleanly. No kind changed and my comments never stated the form of the stamp, so nothing needed to
+change; the one decision was whether a careful job would have bound `by` to a bare id at the first step (I had not).
+
+## Update ai-accounts:316
+
+A 6-line change inside the deprecated `subscriptionTokenHold`: the acts it makes for the member pass `by` as
+`member:<id>`. Merged cleanly; nothing it accepts or answers changed, so no comment changed.
+
+## Update ai-accounts:483
+
+The change regrades every declared op (`DECLARED_OPS`' weights, to op-grades' grades). Merged cleanly. One comment line
+had to change: the union of weights in `DeclaredOp` (gained `reversible` and `terminal`, lost `caller-owned`). The kinds
+hold the set of weights, not each row's, so the per-op regrading itself is invisible to the listing.
+
+## Update ai-accounts:1098
+
+A layer merge (F6, screens-ai), merged cleanly: every account state now carries `flagged_at` and a `health`, and two new
+credential acts (`aiKeyReference`, `aiSignin`) arrive with their ops and declarations. I added the two members and a new
+kind `AccountHealth` (with `@returns` on the private `_healthOf`, so the reader checks `_stateOf`'s answer), the two
+methods, and the two ops with their bounds. Quick: the change's own comments state each answer, and the bounds were the
+ones already written for `accountSet`.
+
+## Done (2026-11-15T15:44:33Z)
+
+No gap steps: the real code did not change between one replayed change and the next.

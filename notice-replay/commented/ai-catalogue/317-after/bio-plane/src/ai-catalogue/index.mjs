@@ -668,7 +668,7 @@ export { validatePayload, CATALOGUE_CHECKS, CATALOGUE_STATES, STATE_WORDS, AI_CA
  * @property {string | number} [BIO_NOW_MS]
  * @property {string} [AI_CATALOGUE_SEED_SIGNATURE] the armored signature of the seed's statement
  * @property {string} [AI_CATALOGUE_DEVELOPMENT] "1" in a development deployment only
- * @property {string} [AI_CATALOGUE_DEVELOPMENT_KEY] the deployment's own development key's public line
+ * @property {unknown} [AI_CATALOGUE_DEVELOPMENT_KEY] the deployment's own development key's public line; anything else ignored
  * @bound AI_CATALOGUE_DEVELOPMENT: exactly "1" to trust development key lines; any other value trusts none
  * @bound AI_CATALOGUE_DEVELOPMENT_KEY: one ssh-ed25519 line whose comment ends `-development`, not one of Bob's; trusted only where AI_CATALOGUE_DEVELOPMENT is "1"
  */

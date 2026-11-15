@@ -31,3 +31,7 @@
 15:37:18 before store-door 63 pass 0 fail
 15:37:18 before store-jobs undefined pass undefined fail
 15:37:18 before store-ask undefined pass undefined fail
+15:40:50 before store-assembly 338 pass 82 fail
+15:41:09 before store-request 7 pass 110 fail
+15:42:49 before screens-inquiry 0 pass 69 fail
+15:42:49 before screens-document undefined pass undefined fail
