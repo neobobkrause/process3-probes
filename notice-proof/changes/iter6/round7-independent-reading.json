@@ -1,0 +1,99 @@
+{
+ "about": "Ground truth by reading for round 7 (fresh independent attacks) run on iteration 6, written by Claude AFTER the results were seen, independently of what the tool said.",
+ "changes": {
+  "U01-table-renamed-mark-forgotten": {
+   "needs": [
+    "reports"
+   ],
+   "note": "The table's new name has no @storedrows mark, so the rows rule finds no owner and checks nothing; reports reads the old table."
+  },
+  "U02-table-name-in-constant-rows-compact": {
+   "needs": [
+    "reports"
+   ],
+   "note": "The table name is held in a constant; the tool reads only a literal name, so the rows written without day are not checked."
+  },
+  "U03-coded-error-through-object-assign": {
+   "needs": [
+    "billing"
+   ],
+   "note": "throw Object.assign(new Error(...), {code}) is not the spelling 'throw new X' that rules 29 and 36 look at."
+  },
+  "U04-messages-encoded-by-named-function": {
+   "needs": [
+    "billing"
+   ],
+   "note": "The line is built in a named function; rules 19 and 35 follow variables only, so the blank line after each message is not seen."
+  },
+  "U05-start-environment-through-node-process": {
+   "needs": [
+    "billing"
+   ],
+   "note": "env imported from node:process is not the spelling process.env that rule 34 looks at."
+  },
+  "U06-limit-lowered-in-json": {
+   "needs": [
+    "bookings"
+   ],
+   "note": "The limit lives in a JSON file read by both the code and the bound test; the fingerprint does not follow JSON, and the listing sees a number either way."
+  },
+  "U07-method-now-needs-its-handle": {
+   "needs": [
+    "reports"
+   ],
+   "note": "add now uses this; reports hands rooms.add to forEach. What a method needs of its receiver is in no kind."
+  },
+  "U08-same-kind-parameters-swap-places": {
+   "needs": [
+    "billing"
+   ],
+   "note": "Two parameters of the same kind swap places: both comparisons leave parameter names out, so the entry looks unchanged."
+  },
+  "U09-price-sheet-in-euros": {
+   "needs": [
+    "front"
+   ],
+   "note": "front reads a data file of bookings with readFileSync; rules 28 and 38 look only at imports, so the set-up passes front's check."
+  },
+  "U10-handle-renamed-member-changed": {
+   "needs": [
+    "bookings",
+    "front"
+   ],
+   "note": "Rooms renamed RoomDirectory: bookings, which names the kind, is told; the members of the renamed kind are not compared, so front, which hands find to map, is not told."
+  },
+  "U11-test-uses-notStrictEqual": {
+   "needs": [],
+   "note": "node:assert's notStrictEqual is missing from the tool's description of Node.",
+   "falseRefusals": {
+    "store": 1
+   }
+  },
+  "U12-worker-path-through-import-meta-resolve": {
+   "needs": [],
+   "note": "import.meta.resolve is missing from the tool's description of Node.",
+   "falseRefusals": {
+    "meter": 1
+   }
+  },
+  "U13-error-subclass-of-stated-kind": {
+   "needs": [],
+   "note": "A subclass of RangeError is a RangeError; rule 29 compares names.",
+   "falseRefusals": {
+    "money": 1
+   }
+  },
+  "U14-inline-import-to-at-import": {
+   "needs": [],
+   "note": "Naming the kind with @import instead of an inline import() changes the printed declaration only."
+  },
+  "U15-functions-written-as-arrows": {
+   "needs": [],
+   "note": "Held: the tool told no one."
+  },
+  "U16-equal-written-strictEqual": {
+   "needs": [],
+   "note": "assert.strictEqual and assert.equal are the same check under node:assert/strict; the fingerprint keys on the name."
+  }
+ }
+}
