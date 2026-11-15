@@ -15,3 +15,7 @@ Measured on the state before ai-runs 96 (the provider uncommented, `analyse` of 
 ## Dated notes
 
 (none yet)
+
+### 15 Nov 2026, 16:41 UTC: the followability experiment, written before its notice was run
+
+A helper commented one user, plan-work, until the tool could follow it (`commented/user-plan-work/2d52c515fa/`, at the state before ai-runs 96). The notice of ai-runs 96 is to be run once more with those comments laid over plan-work. Expected by the rules: plan-work is no longer "not followed"; it is told only for the entries of ai-runs it uses. Its code opens a run with `aiRunsOf(...).open({... principalClaude ...})`; the ai-runs helper's expected answer for 96 has `AiRuns#open` changing (the argument's bound line changes, and the old name is refused), so plan-work is expected to be told, for `AiRuns#open` (and for `aiRunsOf` only if that entry changes). Every other user is told as before.

@@ -1,7 +1,8 @@
 #!/usr/bin/env node
 // Compares, for every replayed change, who the tool told with who Process3 told, the judged verdicts, and the users'
 // own tests before and after. Writes results/compare.json and results/compare.md.
-//   node replay/compare.mjs
+//   node replay/compare.mjs [--notice <folder of notice reports>] [--name <label>]
+// Writes results/compare[-<label>].json and .md. Default: results/notice (the tool with the replay's changes R1, R2).
 //
 // Words, per change and user:
 //  - told (record): Process3 told the user.
@@ -18,26 +19,36 @@ import { CHANGES } from '../adaptor/state.mjs';
 
 const HERE = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(HERE, '..');
+const argv = process.argv.slice(2);
+const opt = (n, d) => { const i = argv.indexOf(n); return i >= 0 ? argv.splice(i, 2)[1] : d; };
+const NOTICE = path.resolve(opt('--notice', path.join(ROOT, 'results', 'notice')));
+const NAME = opt('--name', '');
 const read = (f) => (fs.existsSync(f) ? JSON.parse(fs.readFileSync(f, 'utf8')) : null);
 const key = (c) => c.change.replace(':', '-');
 
 const rows = [];
 for (const c of CHANGES) {
-  const n = read(path.join(ROOT, 'results', 'notice', `${key(c)}.json`));
+  const n = read(path.join(NOTICE, `${key(c)}.json`));
   const t = read(path.join(ROOT, 'results', 'tests', `${key(c)}.json`));
   const recordTold = Object.keys(c.told);
   const broken = Object.entries(c.verdicts).filter(([, v]) => v.outcome === 'B').map(([u]) => u);
   const adopted = Object.entries(c.verdicts).filter(([, v]) => v.outcome === 'A').map(([u]) => u);
   const needed = new Set([...broken, ...adopted]);
   const row = { change: c.change, provider: c.provider, kind: c.kind, recordTold: recordTold.length, broken, adopted };
-  if (n && !n.error) {
+  if (n && Array.isArray(n.told)) {
     const told = n.told.map((x) => x.user);
     const forEntry = n.told.filter((x) => x.reasons.some((r) => r.entry)).map((x) => x.user);
+    // Estimated, not built: the narrower rule. A user the tool cannot follow is told only when some entry changed in
+    // a way that tells (not when the only changes are new entries or entries that accept more).
+    const anyTells = n.entries.some((e) => e.tells !== 'nobody');
+    const narrow = n.told.filter((x) => x.reasons.some((r) => r.entry) || anyTells).map((x) => x.user);
     Object.assign(row, {
       listingChanged: !!n.interfaceChanged,
       entriesThatTell: n.entries.filter((e) => e.tells !== 'nobody').map((e) => `${e.module} ${e.entry}: ${e.changes.join(', ')}`),
       entriesThatTellNobody: n.entries.filter((e) => e.tells === 'nobody').map((e) => `${e.module} ${e.entry}: ${e.changes.join(', ')}`),
-      toolTold: told.length, toolToldForEntry: forEntry.length,
+      toolTold: told.length, toolToldForEntry: forEntry.length, narrowTold: narrow.length,
+      narrowForNothing: narrow.filter((u) => !needed.has(u)).length,
+      narrowBrokenMissed: broken.filter((u) => !narrow.includes(u)), narrowAdoptedMissed: adopted.filter((u) => !narrow.includes(u)),
       toolForNothing: told.filter((u) => !needed.has(u)).length,
       entryForNothing: forEntry.filter((u) => !needed.has(u)).length,
       brokenMissed: broken.filter((u) => !told.includes(u)), adoptedMissed: adopted.filter((u) => !told.includes(u)),
@@ -46,7 +57,7 @@ for (const c of CHANGES) {
       notFollowedOnly: n.told.filter((x) => !x.reasons.some((r) => r.entry)).map((x) => x.user),
       ms: n.replay?.ms,
     });
-  } else if (n?.error) row.toolError = n.error.slice(0, 500);
+  } else if (n) row.toolError = String(n.error ?? '').slice(0, 500) || `status ${n.status}`;
   row.recordForNothing = recordTold.filter((u) => !needed.has(u)).length;
   if (t) {
     const failing = Object.entries(t.users).filter(([, r]) => (r.newFailures ?? []).length).map(([u]) => u);
@@ -70,6 +81,8 @@ const total = (rs) => ({
   listingUnchanged: rs.filter((r) => r.listingChanged === false).length,
   toolTold: sum(rs, (r) => r.toolTold), toolForNothing: sum(rs, (r) => r.toolForNothing),
   toolBrokenMissed: sum(rs, (r) => r.brokenMissed?.length), toolAdoptedMissed: sum(rs, (r) => r.adoptedMissed?.length),
+  narrowTold: sum(rs, (r) => r.narrowTold), narrowForNothing: sum(rs, (r) => r.narrowForNothing),
+  narrowBrokenMissed: sum(rs, (r) => r.narrowBrokenMissed?.length), narrowAdoptedMissed: sum(rs, (r) => r.narrowAdoptedMissed?.length),
   entryTold: sum(rs, (r) => r.toolToldForEntry), entryForNothing: sum(rs, (r) => r.entryForNothing),
   entryBrokenMissed: sum(rs, (r) => r.brokenMissedByEntry?.length), entryAdoptedMissed: sum(rs, (r) => r.adoptedMissedByEntry?.length),
   testsChanges: rs.filter((r) => r.testsRanFor !== undefined).length,
@@ -79,9 +92,9 @@ const total = (rs) => ({
 });
 const providers = [...new Set(rows.map((r) => r.provider))];
 const out = { written: new Date().toISOString(), total: total(rows), byProvider: Object.fromEntries(providers.map((p) => [p, total(rows.filter((r) => r.provider === p))])), rows };
-fs.writeFileSync(path.join(ROOT, 'results', 'compare.json'), JSON.stringify(out, null, 1) + '\n');
+fs.writeFileSync(path.join(ROOT, 'results', `compare${NAME ? '-' + NAME : ''}.json`), JSON.stringify(out, null, 1) + '\n');
 
-const L = ['# Replay: the tool against the record, change by change', '', `Written by \`replay/compare.mjs\` at ${out.written}. Measured, except "broken" and "adopted", which are the study session's judged reading of the record.`, ''];
+const L = ['# Replay: the tool against the record, change by change', '', `Written by \`replay/compare.mjs\` at ${out.written}, from \`${path.relative(ROOT, NOTICE)}\`. Measured, except "broken" and "adopted", which are the study session's judged reading of the record.`, ''];
 L.push('| Change | Record told | Listing changed | Tool told | of them for an entry | Tool for nothing | Broken (missed by tool) | Adopted (missed by tool) | Users whose tests newly fail | Broken caught by tests |');
 L.push('| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |');
 for (const r of rows) {
@@ -90,5 +103,5 @@ for (const r of rows) {
 }
 const T = out.total;
 L.push('', '## Totals', '', '```', JSON.stringify(T, null, 1), '```');
-fs.writeFileSync(path.join(ROOT, 'results', 'compare.md'), L.join('\n') + '\n');
+fs.writeFileSync(path.join(ROOT, 'results', `compare${NAME ? '-' + NAME : ''}.md`), L.join('\n') + '\n');
 console.log(JSON.stringify(T, null, 1));
