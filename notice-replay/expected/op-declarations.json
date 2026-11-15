@@ -1,0 +1,56 @@
+[
+ {
+  "change": "op-declarations:95",
+  "written": "2026-11-15T15:34:20Z",
+  "listingChanges": true,
+  "entries": [
+   {
+    "entry": "T48_FAMILIES",
+    "change": "hands back differently",
+    "tells": "users",
+    "why": "its inferred frozen literal kind changes: ai-accounts' family loses its 21 retired ops and the member extras, gains accountstate, accountsof, aichecks, aioffered, personalchoice, aicredential, aigatewayserved, aicredentialfailed and 21 screen acts, an extra for aicredential, and a new cite string"
+   },
+   {
+    "entry": "T48_SHARES",
+    "change": "hands back differently",
+    "tells": "users",
+    "why": "ai-use's share gains aiusebymember, airetestset, aihealthset, aihealthpreview and a new cite string (inferred literal kind)"
+   },
+   {
+    "entry": "REAUTH_ACTS",
+    "change": "hands back differently",
+    "tells": "users",
+    "why": "accountreferenceset, groupkeyset, projectkeyset and projectsigninset leave the table (inferred literal kind of t47's frozen object)"
+   }
+  ],
+  "notes": "No comment needed to change: every stated kind (OpSpec, OpTable, OpFamily, OpKinds, NeedsTable, ActHelpAbsent, the lists, ...) is still true. The change adds and retires ops (events' eventwithdraw, money's moneyfiscalyears, entities' federaloffices, calculations' owner extras, ai-accounts' family rewritten, ai-use's share) and re-sorts ACT_HELP_ABSENT's grounds; by my first-step decision op names in index.mjs's tables are content, not kinds, so none of that shows in OPS, OP_FAMILIES, NEEDS, OP_STAMPS, SESSION_OPS, ACT_HELP_ABSENT or the lists. Only the public share file t48.mjs and t47's REAUTH_ACTS, whose frozen literals the tool reads as kinds, change in the listing. Retired ops (accountreferenceset, groupkeyset, projectkeyset, ...) vanish from OPS with no notice from this module's listing; users that name them (screens, admission's re-auth) would be told only through REAUTH_ACTS, and only if they use that entry. The cite strings inside T48_FAMILIES/T48_SHARES are part of their inferred kind, so a citation edit alone would also be reported."
+ },
+ {
+  "change": "op-declarations:167",
+  "written": "2026-11-15T15:35:10Z",
+  "listingChanges": false,
+  "entries": [],
+  "notes": "The source change only moves op names among ACT_HELP_ABSENT's grounds (airunparts and seven ai-runs acts named; fiscalyears dropped). ActHelpAbsent's kind (four grounds, each {ground, ops}) is unchanged and its names are content, so nothing in the listing changes."
+ },
+ {
+  "change": "op-declarations:289",
+  "written": "2026-11-15T15:36:03Z",
+  "listingChanges": true,
+  "entries": [
+   {
+    "entry": "REAUTH_ACTS",
+    "change": "hands back differently",
+    "tells": "users",
+    "why": "seven keys join the frozen table (aiaccountadd, aiownadd, aiaccountremove, aiaccountswitch, aikeyenter, aikeyseal, aikeycloudflare, each null); its kind is the inferred literal of t47's Object.freeze, so new keys change what it hands back. admission reads it (OP_DECLARATIONS.REAUTH_ACTS)."
+   }
+  ],
+  "notes": "No comment changed: the change is t47.mjs's REAUTH_ACTS only, which I left with its inferred kind (already exact). The method might judge added keys of a handed-back table as compatible, but by the brief's list any change to what is handed back is 'hands back differently'. If the tool compares REAUTH_ACTS through index.mjs's re-export, the entry name is REAUTH_ACTS in op-declarations' listing."
+ },
+ {
+  "change": "op-declarations:321",
+  "written": "2026-11-15T15:36:50Z",
+  "listingChanges": false,
+  "entries": [],
+  "notes": "The source change only names aipathready under ACT_HELP_ABSENT's read ground (an op ai-runs serves and declares). ActHelpAbsent's kind is unchanged and its names are content, so nothing in the listing changes."
+ }
+]

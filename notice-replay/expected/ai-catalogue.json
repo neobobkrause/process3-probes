@@ -1,0 +1,131 @@
+[
+ {
+  "change": "ai-catalogue:194",
+  "written": "2026-11-15T15:35:33Z",
+  "listingChanges": true,
+  "entries": [
+   {
+    "entry": "AiCatalogue",
+    "change": "accepts more",
+    "tells": "nobody",
+    "why": "the constructor's options gained an optional seed (ReleaseSeed | null)"
+   },
+   {
+    "entry": "AiCatalogue",
+    "change": "hands back differently",
+    "tells": "users",
+    "why": "the instance gained seedAtStart (SeedAnswer | null) and the private #seed and #loadReleaseSeed"
+   },
+   {
+    "entry": "aiCatalogueOf",
+    "change": "accepts more",
+    "tells": "nobody",
+    "why": "its options gained an optional seed"
+   },
+   {
+    "entry": "aiCatalogueOf",
+    "change": "hands back differently",
+    "tells": "users",
+    "why": "it hands back an AiCatalogue, whose instance gained seedAtStart and private members"
+   },
+   {
+    "entry": "CatalogueEnv",
+    "change": "accepts more",
+    "tells": "nobody",
+    "why": "gained the optional AI_CATALOGUE_SEED_SIGNATURE and AI_CATALOGUE_DEVELOPMENT, with a bound line on the latter"
+   },
+   {
+    "entry": "AiCatalogue#seedAtStart",
+    "change": "new entry",
+    "tells": "nobody",
+    "why": "set by start()"
+   },
+   {
+    "entry": "AiCatalogue##seed",
+    "change": "new entry",
+    "tells": "nobody",
+    "why": "private field"
+   },
+   {
+    "entry": "AiCatalogue##loadReleaseSeed",
+    "change": "new entry",
+    "tells": "nobody",
+    "why": "private method"
+   },
+   {
+    "entry": "RELEASE_SEED",
+    "change": "new entry",
+    "tells": "nobody",
+    "why": "re-exported from seed.mjs"
+   },
+   {
+    "entry": "SEED_PAYLOAD",
+    "change": "new entry",
+    "tells": "nobody",
+    "why": "re-exported from seed.mjs"
+   },
+   {
+    "entry": "SEED_SIGNATURE_VAR",
+    "change": "new entry",
+    "tells": "nobody",
+    "why": "re-exported from seed.mjs"
+   },
+   {
+    "entry": "DEVELOPMENT_VAR",
+    "change": "new entry",
+    "tells": "nobody",
+    "why": "re-exported from seed.mjs"
+   },
+   {
+    "entry": "DEVELOPMENT_KEY_MARK",
+    "change": "new entry",
+    "tells": "nobody",
+    "why": "re-exported from seed.mjs"
+   },
+   {
+    "entry": "isDevelopmentKey",
+    "change": "new entry",
+    "tells": "nobody",
+    "why": "re-exported from seed.mjs"
+   },
+   {
+    "entry": "catalogueKeysFor",
+    "change": "new entry",
+    "tells": "nobody",
+    "why": "re-exported from seed.mjs"
+   },
+   {
+    "entry": "seedOf",
+    "change": "new entry",
+    "tells": "nobody",
+    "why": "re-exported from seed.mjs"
+   },
+   {
+    "entry": "SeedStatement",
+    "change": "new entry",
+    "tells": "nobody",
+    "why": "new kind"
+   },
+   {
+    "entry": "ReleaseSeed",
+    "change": "new entry",
+    "tells": "nobody",
+    "why": "new kind"
+   },
+   {
+    "entry": "SeedAnswer",
+    "change": "new entry",
+    "tells": "nobody",
+    "why": "new kind"
+   }
+  ],
+  "notes": "The behaviour that matters most is not in the listing: start() now loads the release's seed (it writes a payload row and a seed becomes the current payload at boot), and the trusted keys are now filtered by the environment (a development key line is refused unless AI_CATALOGUE_DEVELOPMENT is \"1\"). A user that counted on an empty catalogue at boot, or on development keys being trusted, sees no kind change for it; only the new optional env members and the instance's new member show. The instance's hands-back change comes partly from private members (#seed, #loadReleaseSeed), which the tool lists; I expect it to report AiCatalogue and aiCatalogueOf as handing back differently because of them, which is a notice for nothing for users that only call methods."
+ },
+ {
+  "change": "ai-catalogue:204",
+  "written": "2026-11-15T15:36:14Z",
+  "listingChanges": false,
+  "entries": [],
+  "notes": "Only seed.mjs's header comment changed (CATALOGUE_KEYS now holds Bob's two keys alone, in signatures), and a test was added confirming it. No interface comment needed to change. The real change is in signatures' CATALOGUE_KEYS, which this module uses as the constructor's default keys; that default's value is content, not a kind, so the listing of ai-catalogue does not move."
+ }
+]
