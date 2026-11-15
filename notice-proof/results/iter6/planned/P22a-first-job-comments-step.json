@@ -1,0 +1,155 @@
+{
+  "id": "P22a-first-job-comments-step",
+  "title": "calendar's first job, step one: interface comments added, describing the module as it stands",
+  "provider": "calendar",
+  "covers": [
+    "the first job on the module without comments: the comments-only step",
+    "module that starts with no interface comments"
+  ],
+  "tool": {
+    "firstCommentsStep": true,
+    "interfaceChanged": false,
+    "summary": "calendar had no interface comments; this change only adds comments (running code unchanged in 2 file(s)). No notice; the listing after it is the \"before\" for the job's real change.",
+    "entries": [],
+    "told": [],
+    "toldDetail": [],
+    "notTold": [],
+    "warnings": [],
+    "commentsOnly": true,
+    "checks": {
+      "calendar": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 86
+      },
+      "store": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 93
+      },
+      "rooms": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 72
+      },
+      "bookings": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 87
+      },
+      "door": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 73
+      },
+      "meter": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 63
+      },
+      "billing": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 90
+      },
+      "front": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 106
+      },
+      "reports": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 99
+      }
+    }
+  },
+  "groundTruth": {
+    "providerTests": {
+      "pass": true,
+      "failed": [],
+      "ran": 4
+    },
+    "testsBefore": {
+      "store": true,
+      "rooms": true,
+      "bookings": true,
+      "door": true,
+      "meter": true,
+      "billing": true,
+      "front": true,
+      "reports": true
+    },
+    "testsAfter": {
+      "store": {
+        "pass": true,
+        "failed": []
+      },
+      "rooms": {
+        "pass": true,
+        "failed": []
+      },
+      "bookings": {
+        "pass": true,
+        "failed": []
+      },
+      "door": {
+        "pass": true,
+        "failed": []
+      },
+      "meter": {
+        "pass": true,
+        "failed": []
+      },
+      "billing": {
+        "pass": true,
+        "failed": []
+      },
+      "front": {
+        "pass": true,
+        "failed": []
+      },
+      "reports": {
+        "pass": true,
+        "failed": []
+      }
+    },
+    "broken": []
+  },
+  "timing": {
+    "listingMs": {
+      "before": 50,
+      "after": 50
+    },
+    "noticeMs": 675,
+    "checkMs": {
+      "calendar": 86,
+      "store": 93,
+      "rooms": 72,
+      "bookings": 87,
+      "door": 73,
+      "meter": 63,
+      "billing": 90,
+      "front": 106,
+      "reports": 99
+    }
+  }
+}

@@ -1,0 +1,251 @@
+{
+  "id": "P04-rename-function",
+  "title": "splitEvenly is renamed splitAmount",
+  "provider": "money",
+  "covers": [
+    "function renamed"
+  ],
+  "tool": {
+    "firstCommentsStep": false,
+    "interfaceChanged": true,
+    "summary": "1 module(s) changed their listing; 1 entry changed in a way that tells; 1 user(s) told.",
+    "entries": [
+      {
+        "module": "money",
+        "entry": "splitAmount",
+        "changes": [
+          "new entry"
+        ],
+        "after": {
+          "kind": "function",
+          "accepts": "(arg0: { cents: number; currency: \"EUR\" | \"GBP\" | \"USD\" }, arg1: number)",
+          "handsBack": "{ cents: number; currency: \"EUR\" | \"GBP\" | \"USD\" }[]",
+          "bounds": [
+            "cents: whole number, 0 to 10,000,000 inclusive",
+            "parts: whole number, 1 to 100"
+          ],
+          "throws": [
+            "RangeError"
+          ]
+        },
+        "tells": "nobody"
+      },
+      {
+        "module": "money",
+        "entry": "splitEvenly",
+        "changes": [
+          "removed"
+        ],
+        "before": {
+          "kind": "function",
+          "accepts": "(arg0: { cents: number; currency: \"EUR\" | \"GBP\" | \"USD\" }, arg1: number)",
+          "handsBack": "{ cents: number; currency: \"EUR\" | \"GBP\" | \"USD\" }[]",
+          "bounds": [
+            "cents: whole number, 0 to 10,000,000 inclusive",
+            "parts: whole number, 1 to 100"
+          ],
+          "throws": [
+            "RangeError"
+          ]
+        },
+        "tells": "users"
+      }
+    ],
+    "told": [
+      "billing"
+    ],
+    "toldDetail": [
+      {
+        "user": "billing",
+        "reasons": [
+          {
+            "module": "money",
+            "entry": "splitEvenly",
+            "changes": [
+              "removed"
+            ],
+            "lines": [
+              "billing/src/index.mjs:5",
+              "billing/src/index.mjs:45"
+            ],
+            "through": null
+          }
+        ],
+        "undeclared": []
+      }
+    ],
+    "notTold": [
+      {
+        "user": "bookings",
+        "why": "uses none of the entries that changed in a way that tells"
+      },
+      {
+        "user": "meter",
+        "why": "uses none of the entries that changed in a way that tells"
+      },
+      {
+        "user": "front",
+        "why": "uses none of the entries that changed in a way that tells"
+      }
+    ],
+    "warnings": [],
+    "commentsOnly": false,
+    "checks": {
+      "money": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 62
+      },
+      "calendar": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 57
+      },
+      "store": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 70
+      },
+      "rooms": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 68
+      },
+      "bookings": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 99
+      },
+      "door": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 78
+      },
+      "meter": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 76
+      },
+      "billing": {
+        "refusedBefore": 0,
+        "refusedAfter": 1,
+        "refusals": [
+          {
+            "at": "billing/src/index.mjs:5",
+            "code": 2305,
+            "text": "Module '\"../../money/src/index.mjs\"' has no exported member 'splitEvenly'.",
+            "kind": "(b) code disagrees with the stated interface of money"
+          }
+        ],
+        "refusalsBefore": [],
+        "ms": 95
+      },
+      "front": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 75
+      },
+      "reports": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 65
+      }
+    }
+  },
+  "groundTruth": {
+    "providerTests": {
+      "pass": true,
+      "failed": [],
+      "ran": 6
+    },
+    "testsBefore": {
+      "calendar": true,
+      "store": true,
+      "rooms": true,
+      "bookings": true,
+      "door": true,
+      "meter": true,
+      "billing": true,
+      "front": true,
+      "reports": true
+    },
+    "testsAfter": {
+      "calendar": {
+        "pass": true,
+        "failed": []
+      },
+      "store": {
+        "pass": true,
+        "failed": []
+      },
+      "rooms": {
+        "pass": true,
+        "failed": []
+      },
+      "bookings": {
+        "pass": true,
+        "failed": []
+      },
+      "door": {
+        "pass": true,
+        "failed": []
+      },
+      "meter": {
+        "pass": true,
+        "failed": []
+      },
+      "billing": {
+        "pass": false,
+        "failed": []
+      },
+      "front": {
+        "pass": true,
+        "failed": []
+      },
+      "reports": {
+        "pass": true,
+        "failed": []
+      }
+    },
+    "broken": [
+      "billing"
+    ]
+  },
+  "timing": {
+    "listingMs": {
+      "before": 56,
+      "after": 55
+    },
+    "noticeMs": 612,
+    "checkMs": {
+      "money": 62,
+      "calendar": 57,
+      "store": 70,
+      "rooms": 68,
+      "bookings": 99,
+      "door": 78,
+      "meter": 76,
+      "billing": 95,
+      "front": 75,
+      "reports": 65
+    }
+  }
+}
