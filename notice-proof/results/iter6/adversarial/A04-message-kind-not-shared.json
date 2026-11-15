@@ -56,7 +56,7 @@
         "refusedAfter": 0,
         "refusals": [],
         "refusalsBefore": [],
-        "ms": 70
+        "ms": 61
       },
       "billing": {
         "refusedBefore": 1,
@@ -77,14 +77,14 @@
             "kind": "(c) a rule of form: a message is read with its sender's kind"
           }
         ],
-        "ms": 76
+        "ms": 85
       },
       "front": {
         "refusedBefore": 0,
         "refusedAfter": 0,
         "refusals": [],
         "refusalsBefore": [],
-        "ms": 79
+        "ms": 85
       },
       "reports": {
         "refusedBefore": 0,
@@ -128,14 +128,14 @@
   },
   "timing": {
     "listingMs": {
-      "before": 54,
-      "after": 61
+      "before": 55,
+      "after": 51
     },
-    "noticeMs": 641,
+    "noticeMs": 556,
     "checkMs": {
-      "meter": 70,
-      "billing": 76,
-      "front": 79,
+      "meter": 61,
+      "billing": 85,
+      "front": 85,
       "reports": 75
     }
   }

@@ -22,77 +22,77 @@
         "refusedAfter": 0,
         "refusals": [],
         "refusalsBefore": [],
-        "ms": 60
+        "ms": 64
       },
       "money": {
         "refusedBefore": 0,
         "refusedAfter": 0,
         "refusals": [],
         "refusalsBefore": [],
-        "ms": 73
+        "ms": 67
       },
       "calendar": {
         "refusedBefore": 0,
         "refusedAfter": 0,
         "refusals": [],
         "refusalsBefore": [],
-        "ms": 60
+        "ms": 67
       },
       "store": {
         "refusedBefore": 0,
         "refusedAfter": 0,
         "refusals": [],
         "refusalsBefore": [],
-        "ms": 72
+        "ms": 67
       },
       "rooms": {
         "refusedBefore": 0,
         "refusedAfter": 0,
         "refusals": [],
         "refusalsBefore": [],
-        "ms": 76
+        "ms": 68
       },
       "bookings": {
         "refusedBefore": 0,
         "refusedAfter": 0,
         "refusals": [],
         "refusalsBefore": [],
-        "ms": 111
+        "ms": 108
       },
       "door": {
         "refusedBefore": 0,
         "refusedAfter": 0,
         "refusals": [],
         "refusalsBefore": [],
-        "ms": 71
+        "ms": 91
       },
       "meter": {
         "refusedBefore": 0,
         "refusedAfter": 0,
         "refusals": [],
         "refusalsBefore": [],
-        "ms": 74
+        "ms": 75
       },
       "billing": {
         "refusedBefore": 0,
         "refusedAfter": 0,
         "refusals": [],
         "refusalsBefore": [],
-        "ms": 90
+        "ms": 86
       },
       "front": {
         "refusedBefore": 0,
         "refusedAfter": 0,
         "refusals": [],
         "refusalsBefore": [],
-        "ms": 90
+        "ms": 76
       },
       "reports": {
         "refusedBefore": 0,
         "refusedAfter": 0,
         "refusals": [],
         "refusalsBefore": [],
-        "ms": 72
+        "ms": 64
       }
     }
   },
@@ -160,22 +160,22 @@
   },
   "timing": {
     "listingMs": {
-      "before": 52,
-      "after": 65
+      "before": 64,
+      "after": 78
     },
-    "noticeMs": 706,
+    "noticeMs": 670,
     "checkMs": {
-      "text-rules": 60,
-      "money": 73,
-      "calendar": 60,
-      "store": 72,
-      "rooms": 76,
-      "bookings": 111,
-      "door": 71,
-      "meter": 74,
-      "billing": 90,
-      "front": 90,
-      "reports": 72
+      "text-rules": 64,
+      "money": 67,
+      "calendar": 67,
+      "store": 67,
+      "rooms": 68,
+      "bookings": 108,
+      "door": 91,
+      "meter": 75,
+      "billing": 86,
+      "front": 76,
+      "reports": 64
     }
   }
 }

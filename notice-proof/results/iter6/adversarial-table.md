@@ -1,7 +1,7 @@
 | Change | Provider | Expected by the rules | Told by the tool | Tests that broke (measured) | Needed a change (judged) | Check refused | Verdict |
 |---|---|---|---|---|---|---|---|
 | A01-stored-row-shape: bookings keeps its interface but stores its rows in a shorter form of its own | bookings | none | none | reports | reports | bookings (2) | not told, stopped by another guard: bookings' own check refuses its rows (rule 2) |
-| A03-reexported-function: slugify joins words with underscores; front reaches slugify only through rooms' re-export | text-rules | front, reports, rooms | billing, bookings, front, reports, rooms **(differs)** | front, rooms | front, rooms | none | held; 3 told for nothing |
+| A03-reexported-function: slugify joins words with underscores; front reaches slugify only through rooms' re-export | text-rules | front, reports, rooms | front, reports, rooms | front, rooms | front, rooms | none | held; 1 told for nothing |
 | A04-message-kind-not-shared: The meter's reading carries price in place of cost; billing kept its own copy of the message kind | meter | none | none | billing | billing | billing (1) | not told, stopped by another guard: billing's own check refuses its own copy of the message kind, before the change too: that state could not have been merged (rule 3) |
 | A06-error-kind-changed: splitEvenly now throws TypeError, not RangeError, outside its bound; its @throws comment says so | money | billing | billing | billing | billing | none | held |
 | A07-bound-test-moved-line-not: A party may now be at most 100; the job moved its own bound test to 100 but left the bound line and the test's name | bookings | billing, front, reports | billing, front, reports | front | front | none | held; 2 told for nothing |

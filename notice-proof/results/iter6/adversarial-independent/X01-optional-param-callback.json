@@ -82,28 +82,28 @@
         "refusedAfter": 0,
         "refusals": [],
         "refusalsBefore": [],
-        "ms": 83
+        "ms": 92
       },
       "calendar": {
         "refusedBefore": 0,
         "refusedAfter": 0,
         "refusals": [],
         "refusalsBefore": [],
-        "ms": 89
+        "ms": 96
       },
       "store": {
         "refusedBefore": 0,
         "refusedAfter": 0,
         "refusals": [],
         "refusalsBefore": [],
-        "ms": 81
+        "ms": 98
       },
       "rooms": {
         "refusedBefore": 0,
         "refusedAfter": 0,
         "refusals": [],
         "refusalsBefore": [],
-        "ms": 80
+        "ms": 87
       },
       "bookings": {
         "refusedBefore": 0,
@@ -117,14 +117,14 @@
         "refusedAfter": 0,
         "refusals": [],
         "refusalsBefore": [],
-        "ms": 70
+        "ms": 99
       },
       "meter": {
         "refusedBefore": 0,
         "refusedAfter": 0,
         "refusals": [],
         "refusalsBefore": [],
-        "ms": 95
+        "ms": 73
       },
       "billing": {
         "refusedBefore": 0,
@@ -145,14 +145,14 @@
         "refusedAfter": 0,
         "refusals": [],
         "refusalsBefore": [],
-        "ms": 99
+        "ms": 90
       },
       "reports": {
         "refusedBefore": 0,
         "refusedAfter": 0,
         "refusals": [],
         "refusalsBefore": [],
-        "ms": 80
+        "ms": 86
       }
     }
   },
@@ -219,21 +219,21 @@
   },
   "timing": {
     "listingMs": {
-      "before": 326,
-      "after": 123
+      "before": 340,
+      "after": 130
     },
-    "noticeMs": 1003,
+    "noticeMs": 1023,
     "checkMs": {
-      "money": 83,
-      "calendar": 89,
-      "store": 81,
-      "rooms": 80,
+      "money": 92,
+      "calendar": 96,
+      "store": 98,
+      "rooms": 87,
       "bookings": 108,
-      "door": 70,
-      "meter": 95,
+      "door": 99,
+      "meter": 73,
       "billing": 96,
-      "front": 99,
-      "reports": 80
+      "front": 90,
+      "reports": 86
     }
   }
 }

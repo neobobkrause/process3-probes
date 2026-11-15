@@ -89,10 +89,7 @@
           "accepts": "{ id: string }",
           "handsBack": "{ room: string; state: \"cancelled\" | \"open\"; total: { cents: number; currency: \"EUR\" | \"GBP\" | \"USD\" } }",
           "bounds": [
-            "cents: whole number, 0 to 10,000,000 inclusive",
-            "day: a real calendar day written YYYY-MM-DD",
-            "nights: whole number, 1 to 14",
-            "party: whole number, 1 to 200, and no more than the room's seats"
+            "cents: whole number, 0 to 10,000,000 inclusive"
           ]
         },
         "after": {
@@ -100,10 +97,7 @@
           "accepts": "{ id: string }",
           "handsBack": "{ room: string; state: \"cancelled\" | \"open\"; total: { cents: number; currency: \"EUR\" | \"GBP\" | \"USD\" } }",
           "bounds": [
-            "cents: whole number, 0 to 10,000,000 inclusive",
-            "day: a real calendar day written YYYY-MM-DD",
-            "nights: whole number, 1 to 14",
-            "party: whole number, 1 to 200, and no more than the room's seats"
+            "cents: whole number, 0 to 10,000,000 inclusive"
           ],
           "throws": [
             "Error"
@@ -205,42 +199,42 @@
         "refusedAfter": 0,
         "refusals": [],
         "refusalsBefore": [],
-        "ms": 126
+        "ms": 112
       },
       "door": {
         "refusedBefore": 0,
         "refusedAfter": 0,
         "refusals": [],
         "refusalsBefore": [],
-        "ms": 105
+        "ms": 76
       },
       "meter": {
         "refusedBefore": 0,
         "refusedAfter": 0,
         "refusals": [],
         "refusalsBefore": [],
-        "ms": 77
+        "ms": 82
       },
       "billing": {
         "refusedBefore": 0,
         "refusedAfter": 0,
         "refusals": [],
         "refusalsBefore": [],
-        "ms": 97
+        "ms": 118
       },
       "front": {
         "refusedBefore": 0,
         "refusedAfter": 0,
         "refusals": [],
         "refusalsBefore": [],
-        "ms": 102
+        "ms": 101
       },
       "reports": {
         "refusedBefore": 0,
         "refusedAfter": 0,
         "refusals": [],
         "refusalsBefore": [],
-        "ms": 88
+        "ms": 74
       }
     }
   },
@@ -287,17 +281,17 @@
   },
   "timing": {
     "listingMs": {
-      "before": 400,
-      "after": 183
+      "before": 420,
+      "after": 189
     },
-    "noticeMs": 869,
+    "noticeMs": 887,
     "checkMs": {
-      "bookings": 126,
-      "door": 105,
-      "meter": 77,
-      "billing": 97,
-      "front": 102,
-      "reports": 88
+      "bookings": 112,
+      "door": 76,
+      "meter": 82,
+      "billing": 118,
+      "front": 101,
+      "reports": 74
     }
   }
 }

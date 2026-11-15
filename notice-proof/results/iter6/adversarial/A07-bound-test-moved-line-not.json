@@ -8,7 +8,7 @@
   "tool": {
     "firstCommentsStep": false,
     "interfaceChanged": true,
-    "summary": "2 module(s) changed their listing; 13 entries changed in a way that tells; 3 user(s) told.",
+    "summary": "2 module(s) changed their listing; 12 entries changed in a way that tells; 3 user(s) told.",
     "entries": [
       {
         "module": "bookings",
@@ -252,36 +252,6 @@
       },
       {
         "module": "bookings",
-        "entry": "op:bookstatus",
-        "changes": [
-          "bound test changed"
-        ],
-        "tells": "users",
-        "before": {
-          "kind": "operation",
-          "accepts": "{ id: string }",
-          "handsBack": "{ room: string; state: \"cancelled\" | \"open\"; total: { cents: number; currency: \"EUR\" | \"GBP\" | \"USD\" } }",
-          "bounds": [
-            "cents: whole number, 0 to 10,000,000 inclusive",
-            "day: a real calendar day written YYYY-MM-DD",
-            "nights: whole number, 1 to 14",
-            "party: whole number, 1 to 200, and no more than the room's seats"
-          ]
-        },
-        "after": {
-          "kind": "operation",
-          "accepts": "{ id: string }",
-          "handsBack": "{ room: string; state: \"cancelled\" | \"open\"; total: { cents: number; currency: \"EUR\" | \"GBP\" | \"USD\" } }",
-          "bounds": [
-            "cents: whole number, 0 to 10,000,000 inclusive",
-            "day: a real calendar day written YYYY-MM-DD",
-            "nights: whole number, 1 to 14",
-            "party: whole number, 1 to 200, and no more than the room's seats"
-          ]
-        }
-      },
-      {
-        "module": "bookings",
         "entry": "table:bookings",
         "changes": [
           "bound test changed"
@@ -457,21 +427,6 @@
               "billing/test/index.test.mjs:39"
             ],
             "through": null
-          },
-          {
-            "module": "bookings",
-            "entry": "op:bookstatus",
-            "changes": [
-              "bound test changed"
-            ],
-            "lines": [
-              "billing/src/index.mjs:43",
-              "billing/src/index.mjs:44",
-              "billing/src/index.mjs:45",
-              "billing/src/index.mjs:48",
-              "billing/src/index.mjs:50"
-            ],
-            "through": null
           }
         ],
         "undeclared": []
@@ -580,42 +535,42 @@
         "refusedAfter": 0,
         "refusals": [],
         "refusalsBefore": [],
-        "ms": 105
+        "ms": 96
       },
       "door": {
         "refusedBefore": 0,
         "refusedAfter": 0,
         "refusals": [],
         "refusalsBefore": [],
-        "ms": 69
+        "ms": 89
       },
       "meter": {
         "refusedBefore": 0,
         "refusedAfter": 0,
         "refusals": [],
         "refusalsBefore": [],
-        "ms": 78
+        "ms": 71
       },
       "billing": {
         "refusedBefore": 0,
         "refusedAfter": 0,
         "refusals": [],
         "refusalsBefore": [],
-        "ms": 84
+        "ms": 81
       },
       "front": {
         "refusedBefore": 0,
         "refusedAfter": 0,
         "refusals": [],
         "refusalsBefore": [],
-        "ms": 75
+        "ms": 95
       },
       "reports": {
         "refusedBefore": 0,
         "refusedAfter": 0,
         "refusals": [],
         "refusalsBefore": [],
-        "ms": 72
+        "ms": 76
       }
     }
   },
@@ -662,17 +617,17 @@
   },
   "timing": {
     "listingMs": {
-      "before": 146,
-      "after": 111
+      "before": 118,
+      "after": 101
     },
-    "noticeMs": 639,
+    "noticeMs": 709,
     "checkMs": {
-      "bookings": 105,
-      "door": 69,
-      "meter": 78,
-      "billing": 84,
-      "front": 75,
-      "reports": 72
+      "bookings": 96,
+      "door": 89,
+      "meter": 71,
+      "billing": 81,
+      "front": 95,
+      "reports": 76
     }
   }
 }
