@@ -164,7 +164,7 @@ export function makeLister(program, tree) {
           const members = [
             ...checker.getPropertiesOfType(t).filter((p) => p.name !== 'prototype').map((p) => [`${name}.${p.name}`, p]),
             ...checker.getPropertiesOfType(checker.getDeclaredTypeOfSymbol(sym)).map((p) => [`${name}#${p.name}`, p]),
-          ];
+          ].filter(([, p]) => !C.isPrivateMember(p)); // replay change 1: private members (#name) are not entries
           for (const [e, p] of members) {
             const mt = checker.getTypeOfSymbol(p);
             const msigs = mt.getCallSignatures();

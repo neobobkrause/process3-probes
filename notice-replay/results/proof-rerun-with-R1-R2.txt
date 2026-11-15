@@ -1,0 +1,5 @@
+160 changed files; 4 differ beyond timings
+  notice-proof/results/iter7/round3-independent/Y13-constructor-accepts-differently.json   users told: same
+  notice-proof/results/iter7/round4-independent/Z09-list-parameter-becomes-rest.json   users told: same
+  notice-proof/results/iter7/round4-independent/Z13-static-method-hands-back.json   users told: same
+  notice-proof/results/iter7/round5-independent/V01-accepts-more-hides-static.json   users told: same

@@ -71,7 +71,8 @@ export function declarationsOf(program, file, plainElsewhere = new Map()) {
   for (const st of d.statements) {
     if ((ts.isFunctionDeclaration(st) || ts.isClassDeclaration(st) || ts.isInterfaceDeclaration(st) || ts.isTypeAliasDeclaration(st)) && st.name) {
       add(st.name.text, print(st));
-      if (ts.isClassDeclaration(st)) for (const m of st.members) if (m.name && (ts.isIdentifier(m.name) || ts.isPrivateIdentifier(m.name))) {
+      // Replay change 1: a private member (#name) is not part of the interface; its printed marker is left out too.
+      if (ts.isClassDeclaration(st)) for (const m of st.members) if (m.name && ts.isIdentifier(m.name)) {
         const isStatic = (ts.getCombinedModifierFlags(m) & ts.ModifierFlags.Static) !== 0;
         add(`${st.name.text}${isStatic ? '.' : '#'}${m.name.text}`, print(m));
       }

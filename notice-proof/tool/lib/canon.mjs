@@ -19,17 +19,25 @@ export function makeCanon(checker, tree) {
     for (const sym of [t.aliasSymbol, t.symbol]) {
       if (!sym || sym.name.startsWith('__')) continue;
       const d = sym.declarations?.[0];
-      if (d && isProductDecl(d) && (ts.isJSDocTypedefTag(d) || ts.isTypeAliasDeclaration(d) || ts.isJSDocCallbackTag(d))) {
+      // Replay change 1: a class of the product, read as the kind of its instances, is a named kind too (written by
+      // its name when it is a handle; its members are entries of their own, as rule 27 lists them).
+      const classInstance = d && (ts.isClassDeclaration(d) || ts.isClassExpression(d)) && d.name && sym === t.symbol && ((t.objectFlags ?? 0) & ts.ObjectFlags.Class);
+      if (d && isProductDecl(d) && (ts.isJSDocTypedefTag(d) || ts.isTypeAliasDeclaration(d) || ts.isJSDocCallbackTag(d) || classInstance)) {
         return { sym, decl: d, module: tree.moduleOfFile(d.getSourceFile().fileName), name: sym.name };
       }
     }
     return null;
   }
 
+  /** Replay change 1: a member declared with a private name (#name), which no other module can reach. */
+  function isPrivateMember(p) {
+    return (p.declarations ?? []).some((d) => d.name && ts.isPrivateIdentifier(d.name));
+  }
+
   function isHandle(t) {
     if (!(t.flags & ts.TypeFlags.Object) || checker.isArrayType(t) || checker.isTupleType(t)) return false;
     if (t.getCallSignatures().length) return false;
-    return checker.getPropertiesOfType(t).some((p) => {
+    return checker.getPropertiesOfType(t).filter((p) => !isPrivateMember(p)).some((p) => {
       const pt = checker.getNonNullableType(checker.getTypeOfSymbol(p));
       return pt.getCallSignatures().length > 0;
     });
@@ -107,7 +115,8 @@ export function makeCanon(checker, tree) {
         return { k: 'ref', name: sym.name, args };
       }
       const calls = t.getCallSignatures();
-      const props = checker.getPropertiesOfType(t);
+      // Replay change 1: a class's private members (#name) cannot be reached from outside it, and are left out.
+      const props = checker.getPropertiesOfType(t).filter((p) => !isPrivateMember(p));
       if (calls.length && !props.length) return calls.length === 1 ? canonSig(calls[0], ctx) : { k: 'overloads', of: calls.map((s) => canonSig(s, ctx)) };
       const out = { k: 'obj', props: {} };
       for (const p of [...props].sort((a, b) => (a.name < b.name ? -1 : 1))) {
@@ -115,7 +124,9 @@ export function makeCanon(checker, tree) {
         const opt = !!(p.flags & ts.SymbolFlags.Optional);
         let pt = checker.getTypeOfSymbol(p);
         if (opt) pt = removeUndefined(pt);
-        out.props[p.name] = { opt, t: canon(pt, ctx) };
+        // Replay change 2: a member keyed by a symbol carries the reader's own serial number (__@iterator@152), which
+        // differs from one reading to the next; it is written without it.
+        out.props[p.name.replace(/^(__@.+)@\d+$/, '$1')] = { opt, t: canon(pt, ctx) };
       }
       const idx = checker.getIndexInfosOfType(t);
       if (idx.length) out.index = idx.map((i) => ({ key: canon(i.keyType, ctx), t: canon(i.type, ctx) }));
@@ -192,7 +203,7 @@ export function makeCanon(checker, tree) {
     return out;
   }
 
-  return { canon, canonSig, isHandle, productAlias, removeUndefined };
+  return { canon, canonSig, isHandle, isPrivateMember, productAlias, removeUndefined };
 }
 
 // ---- comparing two canonical forms ----

@@ -12,7 +12,7 @@ In the replay, a helper wrote these comments for each module as it stood before 
 
 ## What the tool will handle, so the jobs need not
 
-These were faults of the tool, not of the modules (judged, Claude; the fixes are recorded in `notice-proof/notes/replay-tool-changes.md`):
+These were faults of the tool, not of the modules (judged, Claude; the fixes are recorded in `notice-proof/tool/REPLAY-CHANGES.md`):
 
 - **A class was written out member by member** wherever a function handed one back. `aiAccountsOf` hands back an `AiAccounts` object, so a change to any one of its members read as `aiAccountsOf` handing back something different, and every user that calls `aiAccountsOf`, which is almost every user, was told. The tool now names such an object by its kind, as it already did for objects described by a named comment kind, and compares each member separately.
 - **Truly private members** (written `#name`; JavaScript lets no other module reach them) were listed as entries. wizard-scripts has 64 such methods (measured by pattern count), ai-runs, ai-catalogue and ai-use dozens more. The tool now leaves them out.

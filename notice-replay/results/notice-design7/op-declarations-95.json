@@ -1,0 +1,768 @@
+{
+ "provider": "op-declarations",
+ "reader": "TypeScript 5.6.3",
+ "firstCommentsStep": false,
+ "changedModules": [
+  {
+   "module": "op-declarations",
+   "through": null
+  },
+  {
+   "module": "admission",
+   "through": "op-declarations"
+  }
+ ],
+ "entries": [
+  {
+   "module": "op-declarations",
+   "entry": "FrozenOpSet",
+   "changes": [
+    "hands back differently"
+   ],
+   "tells": "users",
+   "before": {
+    "kind": "kind",
+    "handsBack": "{ __@iterator@141: () => Iterator<string, undefined, unknown>; add: (...arg0?: unknown) => never; clear: (...arg0?: unknown) => never; delete: (...arg0?: unknown) => never; entries: () => IterableIterator<[string, string], undefined, unknown>; forEach: (arg0: (arg0: string, arg1: string, arg2: unknown) => void, arg1?: unknown) => void; has: (arg0: string) => boolean; keys: () => IterableIterator<string, undefined, unknown>; size: number; values: () => IterableIterator<string, undefined, unknown> }",
+    "side": "handsBack"
+   },
+   "after": {
+    "kind": "kind",
+    "handsBack": "{ __@iterator@254759: () => Iterator<string, undefined, unknown>; add: (...arg0?: unknown) => never; clear: (...arg0?: unknown) => never; delete: (...arg0?: unknown) => never; entries: () => IterableIterator<[string, string], undefined, unknown>; forEach: (arg0: (arg0: string, arg1: string, arg2: unknown) => void, arg1?: unknown) => void; has: (arg0: string) => boolean; keys: () => IterableIterator<string, undefined, unknown>; size: number; values: () => IterableIterator<string, undefined, unknown> }",
+    "side": "handsBack"
+   }
+  },
+  {
+   "module": "op-declarations",
+   "entry": "REAUTH_ACTS",
+   "changes": [
+    "hands back differently"
+   ],
+   "tells": "users",
+   "before": {
+    "kind": "value",
+    "handsBack": "{ accountreferenceset: null; adminendorse: null; adminremove: null; caseratify: null; docketpost: null; groupkeyset: null; memberadd: { field: \"role\"; values: readonly string[] }; memberset: { field: \"role\"; values: null }; projectkeyset: null; projectsigninset: null; publishat: null; publishatmove: null; ratify: null; subscriptionsignin: { field: \"step\"; values: readonly string[] } }"
+   },
+   "after": {
+    "kind": "value",
+    "handsBack": "{ adminendorse: null; adminremove: null; caseratify: null; docketpost: null; memberadd: { field: \"role\"; values: readonly string[] }; memberset: { field: \"role\"; values: null }; publishat: null; publishatmove: null; ratify: null; subscriptionsignin: { field: \"step\"; values: readonly string[] } }"
+   }
+  },
+  {
+   "module": "op-declarations",
+   "entry": "SESSION_OPS",
+   "changes": [
+    "hands back differently"
+   ],
+   "tells": "users",
+   "before": {
+    "kind": "value",
+    "handsBack": "{ admin: { __@iterator@141: () => Iterator<string, undefined, unknown>; add: (...arg0?: unknown) => never; clear: (...arg0?: unknown) => never; delete: (...arg0?: unknown) => never; entries: () => IterableIterator<[string, string], undefined, unknown>; forEach: (arg0: (arg0: string, arg1: string, arg2: unknown) => void, arg1?: unknown) => void; has: (arg0: string) => boolean; keys: () => IterableIterator<string, undefined, unknown>; size: number; values: () => IterableIterator<string, undefined, unknown> }; member: { __@iterator@141: () => Iterator<string, undefined, unknown>; add: (...arg0?: unknown) => never; clear: (...arg0?: unknown) => never; delete: (...arg0?: unknown) => never; entries: () => IterableIterator<[string, string], undefined, unknown>; forEach: (arg0: (arg0: string, arg1: string, arg2: unknown) => void, arg1?: unknown) => void; has: (arg0: string) => boolean; keys: () => IterableIterator<string, undefined, unknown>; size: number; values: () => IterableIterator<string, undefined, unknown> } }",
+    "bounds": [
+     "a public op is in neither; a founder-only op in admin alone"
+    ]
+   },
+   "after": {
+    "kind": "value",
+    "handsBack": "{ admin: { __@iterator@254759: () => Iterator<string, undefined, unknown>; add: (...arg0?: unknown) => never; clear: (...arg0?: unknown) => never; delete: (...arg0?: unknown) => never; entries: () => IterableIterator<[string, string], undefined, unknown>; forEach: (arg0: (arg0: string, arg1: string, arg2: unknown) => void, arg1?: unknown) => void; has: (arg0: string) => boolean; keys: () => IterableIterator<string, undefined, unknown>; size: number; values: () => IterableIterator<string, undefined, unknown> }; member: { __@iterator@254759: () => Iterator<string, undefined, unknown>; add: (...arg0?: unknown) => never; clear: (...arg0?: unknown) => never; delete: (...arg0?: unknown) => never; entries: () => IterableIterator<[string, string], undefined, unknown>; forEach: (arg0: (arg0: string, arg1: string, arg2: unknown) => void, arg1?: unknown) => void; has: (arg0: string) => boolean; keys: () => IterableIterator<string, undefined, unknown>; size: number; values: () => IterableIterator<string, undefined, unknown> } }",
+    "bounds": [
+     "a public op is in neither; a founder-only op in admin alone"
+    ]
+   }
+  },
+  {
+   "module": "op-declarations",
+   "entry": "SessionOps",
+   "changes": [
+    "hands back differently"
+   ],
+   "tells": "users",
+   "before": {
+    "kind": "kind",
+    "handsBack": "{ admin: { __@iterator@141: () => Iterator<string, undefined, unknown>; add: (...arg0?: unknown) => never; clear: (...arg0?: unknown) => never; delete: (...arg0?: unknown) => never; entries: () => IterableIterator<[string, string], undefined, unknown>; forEach: (arg0: (arg0: string, arg1: string, arg2: unknown) => void, arg1?: unknown) => void; has: (arg0: string) => boolean; keys: () => IterableIterator<string, undefined, unknown>; size: number; values: () => IterableIterator<string, undefined, unknown> }; member: { __@iterator@141: () => Iterator<string, undefined, unknown>; add: (...arg0?: unknown) => never; clear: (...arg0?: unknown) => never; delete: (...arg0?: unknown) => never; entries: () => IterableIterator<[string, string], undefined, unknown>; forEach: (arg0: (arg0: string, arg1: string, arg2: unknown) => void, arg1?: unknown) => void; has: (arg0: string) => boolean; keys: () => IterableIterator<string, undefined, unknown>; size: number; values: () => IterableIterator<string, undefined, unknown> } }",
+    "bounds": [
+     "a public op is in neither; a founder-only op in admin alone"
+    ],
+    "side": "handsBack"
+   },
+   "after": {
+    "kind": "kind",
+    "handsBack": "{ admin: { __@iterator@254759: () => Iterator<string, undefined, unknown>; add: (...arg0?: unknown) => never; clear: (...arg0?: unknown) => never; delete: (...arg0?: unknown) => never; entries: () => IterableIterator<[string, string], undefined, unknown>; forEach: (arg0: (arg0: string, arg1: string, arg2: unknown) => void, arg1?: unknown) => void; has: (arg0: string) => boolean; keys: () => IterableIterator<string, undefined, unknown>; size: number; values: () => IterableIterator<string, undefined, unknown> }; member: { __@iterator@254759: () => Iterator<string, undefined, unknown>; add: (...arg0?: unknown) => never; clear: (...arg0?: unknown) => never; delete: (...arg0?: unknown) => never; entries: () => IterableIterator<[string, string], undefined, unknown>; forEach: (arg0: (arg0: string, arg1: string, arg2: unknown) => void, arg1?: unknown) => void; has: (arg0: string) => boolean; keys: () => IterableIterator<string, undefined, unknown>; size: number; values: () => IterableIterator<string, undefined, unknown> } }",
+    "bounds": [
+     "a public op is in neither; a founder-only op in admin alone"
+    ],
+    "side": "handsBack"
+   }
+  },
+  {
+   "module": "op-declarations",
+   "entry": "T48_FAMILIES",
+   "changes": [
+    "hands back differently"
+   ],
+   "tells": "users",
+   "before": {
+    "kind": "value",
+    "handsBack": "readonly ({ actor: { at: \"query\"; key: string }; cite: \"ai-accounts R1–R33; R68; credentials R20, R22–R27, R33, R36, R41; K1544, K1755, K2373, K2435\"; extra: { accountreference: readonly string[]; accountreferenceremove: readonly string[]; accountreferenceset: readonly string[] }; ops: { accounthistory: \"ownread\"; accountreference: \"ownread\"; accountreferenceremove: \"own\"; accountreferenceset: \"own\"; accountuses: \"ownread\"; accountusesset: \"own\"; aikeepaway: \"admin\"; aikeepawaystate: \"settingread\"; groupkeynotice: \"ownread\"; groupkeynoticeseen: \"own\"; groupkeyremove: \"admin\"; groupkeyset: \"admin\"; groupkeystate: \"ownread\"; groupkeyswitch: \"admin\"; projectaccountremove: \"own\"; projectaccountstate: \"ownread\"; projectaccountswitch: \"own\"; projectaikeepaway: \"own\"; projectaikeepawaystate: \"ownread\"; projectkeynotice: \"ownread\"; projectkeynoticeseen: \"own\"; projectkeyset: \"own\"; projectsigninset: \"own\"; subscriptiondisconnect: \"own\" }; owner: \"ai-accounts\" } | { actor: { at: \"query\"; key: string }; cite: \"connections R68; R67; N1043\"; ops: { stepsource: \"member\"; stepsourcewithdraw: \"member\" }; owner: \"connections\" })[]"
+   },
+   "after": {
+    "kind": "value",
+    "handsBack": "readonly ({ actor: { at: \"query\"; key: string }; cite: \"ai-accounts R2, R14–R17, R20–R22, R35, R46, R47, R52, R53, R65–R67; R20, R24, R30, R41; R68; K1544, K1755, K2373, K2435\"; extra: { aicredential: readonly string[] }; ops: { accounthistory: \"ownread\"; accountsof: \"ownread\"; accountstate: \"ownread\"; accountuses: \"ownread\"; accountusesset: \"own\"; aiaccountadd: \"own\"; aiaccountremove: \"own\"; aiaccountswitch: \"own\"; aichecks: \"ownread\"; aicheckset: \"own\"; aicredential: \"settingread\"; aicredentialfailed: \"tally\"; aicreditsclear: \"own\"; aigatewayserved: \"tally\"; aikeepaway: \"admin\"; aikeepawaystate: \"settingread\"; aikeycloudflare: \"own\"; aikeyenter: \"own\"; aikeyseal: \"own\"; aimemberallow: \"own\"; aimineuse: \"own\"; aimycheckset: \"own\"; aioffered: \"ownread\"; aioptinset: \"own\"; aiorderset: \"own\"; aiownadd: \"own\"; aipersonalchoose: \"own\"; aiprojectcheckset: \"own\"; aiprojectorder: \"own\"; aiprojectuse: \"own\"; aisend: \"own\"; aitermsaccept: \"own\"; aitermswithdraw: \"own\"; personalchoice: \"ownread\"; projectaikeepaway: \"own\"; projectaikeepawaystate: \"ownread\" }; owner: \"ai-accounts\" } | { actor: { at: \"query\"; key: string }; cite: \"connections R68; R67; N1043\"; ops: { stepsource: \"member\"; stepsourcewithdraw: \"member\" }; owner: \"connections\" })[]"
+   }
+  },
+  {
+   "module": "op-declarations",
+   "entry": "T48_SHARES",
+   "changes": [
+    "hands back differently"
+   ],
+   "tells": "users",
+   "before": {
+    "kind": "value",
+    "handsBack": "{ action-holds: { cite: \"action-holds R16; R67; N1035\"; ops: { pressurefor: \"read\" } }; action-plans: { cite: \"action-plans R51; R67; N1038\"; ops: { planask: \"member\" } }; action-replies: { cite: \"action-replies R10; R64\"; ops: { actionreplyquoting: \"member\" } }; agent-worker: { cite: \"agent-worker R86; R64; N670\"; extra: { readtranslate: readonly string[] }; ops: { readtranslate: \"ownread\" } }; ai-use: { cite: \"ai-use R14; R67; N1026\"; ops: { aiuseovertime: \"ownread\" } }; explore: { cite: \"explore R21; R67; N1027\"; ops: { exploregraph: \"read\" } }; filings: { cite: \"filings R59; R67; N1030\"; ops: { filingread: \"read\" } }; following: { cite: \"following R30; R64\"; ops: { proceedingdates: \"read\" } }; instance-setup: { cite: \"instance-setup R89, R90; R66; N1047\"; ops: { updatelater: \"admin\"; updatenotice: \"ownread\"; updateskip: \"admin\"; updatestart: \"admin\" } }; membership: { cite: \"membership R143; R67; N1036\"; ops: { lookedsince: \"own\" } }; standards: { cite: \"standards R57; R67; N1029\"; ops: { standardproposals: \"read\" } } }"
+   },
+   "after": {
+    "kind": "value",
+    "handsBack": "{ action-holds: { cite: \"action-holds R16; R67; N1035\"; ops: { pressurefor: \"read\" } }; action-plans: { cite: \"action-plans R51; R67; N1038\"; ops: { planask: \"member\" } }; action-replies: { cite: \"action-replies R10; R64\"; ops: { actionreplyquoting: \"member\" } }; agent-worker: { cite: \"agent-worker R86; R64; N670\"; extra: { readtranslate: readonly string[] }; ops: { readtranslate: \"ownread\" } }; ai-use: { cite: \"ai-use R14, R27, R28, R32, R33; R67; N1026\"; ops: { aihealthpreview: \"ownread\"; aihealthset: \"admin\"; airetestset: \"admin\"; aiusebymember: \"ownread\"; aiuseovertime: \"ownread\" } }; explore: { cite: \"explore R21; R67; N1027\"; ops: { exploregraph: \"read\" } }; filings: { cite: \"filings R59; R67; N1030\"; ops: { filingread: \"read\" } }; following: { cite: \"following R30; R64\"; ops: { proceedingdates: \"read\" } }; instance-setup: { cite: \"instance-setup R89, R90; R66; N1047\"; ops: { updatelater: \"admin\"; updatenotice: \"ownread\"; updateskip: \"admin\"; updatestart: \"admin\" } }; membership: { cite: \"membership R143; R67; N1036\"; ops: { lookedsince: \"own\" } }; standards: { cite: \"standards R57; R67; N1029\"; ops: { standardproposals: \"read\" } } }"
+   }
+  },
+  {
+   "module": "admission",
+   "entry": "admit",
+   "changes": [
+    "cannot stand in"
+   ],
+   "tells": "users",
+   "before": {
+    "kind": "function",
+    "accepts": "(arg0: { background?: boolean; body?: null; credential?: null; doAnswer: anything; env: anything; method: anything; op: anything; presented: anything; reauthActs?: {  }; spec: anything; tables?: { SESSION_OPS: { admin: { __@iterator@141: () => Iterator<string, undefined, unknown>; add: (...arg0?: unknown) => never; clear: (...arg0?: unknown) => never; delete: (...arg0?: unknown) => never; entries: () => IterableIterator<[string, string], undefined, unknown>; forEach: (arg0: (arg0: string, arg1: string, arg2: unknown) => void, arg1?: unknown) => void; has: (arg0: string) => boolean; keys: () => IterableIterator<string, undefined, unknown>; size: number; values: () => IterableIterator<string, undefined, unknown> }; member: { __@iterator@141: () => Iterator<string, undefined, unknown>; add: (...arg0?: unknown) => never; clear: (...arg0?: unknown) => never; delete: (...arg0?: unknown) => never; entries: () => IterableIterator<[string, string], undefined, unknown>; forEach: (arg0: (arg0: string, arg1: string, arg2: unknown) => void, arg1?: unknown) => void; has: (arg0: string) => boolean; keys: () => IterableIterator<string, undefined, unknown>; size: number; values: () => IterableIterator<string, undefined, unknown> } }; UNATTENDED_BY_DECISION: { [key: string]: string } }; url: anything })",
+    "handsBack": "Promise<{ caller: { aiCred: anything; caps: null | Set<anything>; cls: string; identity: null; member: null; rights: anything; storeName: string | undefined; viaSession: boolean; viewer: null }; refusal?: undefined; silent?: undefined } | { caller?: undefined; refusal: { body: anything; status: number }; silent?: undefined } | { caller?: undefined; refusal?: undefined; silent: anything }>",
+    "bounds": [
+     "a public op is in neither; a founder-only op in admin alone"
+    ]
+   },
+   "after": {
+    "kind": "function",
+    "accepts": "(arg0: { background?: boolean; body?: null; credential?: null; doAnswer: anything; env: anything; method: anything; op: anything; presented: anything; reauthActs?: {  }; spec: anything; tables?: { SESSION_OPS: { admin: { __@iterator@254759: () => Iterator<string, undefined, unknown>; add: (...arg0?: unknown) => never; clear: (...arg0?: unknown) => never; delete: (...arg0?: unknown) => never; entries: () => IterableIterator<[string, string], undefined, unknown>; forEach: (arg0: (arg0: string, arg1: string, arg2: unknown) => void, arg1?: unknown) => void; has: (arg0: string) => boolean; keys: () => IterableIterator<string, undefined, unknown>; size: number; values: () => IterableIterator<string, undefined, unknown> }; member: { __@iterator@254759: () => Iterator<string, undefined, unknown>; add: (...arg0?: unknown) => never; clear: (...arg0?: unknown) => never; delete: (...arg0?: unknown) => never; entries: () => IterableIterator<[string, string], undefined, unknown>; forEach: (arg0: (arg0: string, arg1: string, arg2: unknown) => void, arg1?: unknown) => void; has: (arg0: string) => boolean; keys: () => IterableIterator<string, undefined, unknown>; size: number; values: () => IterableIterator<string, undefined, unknown> } }; UNATTENDED_BY_DECISION: { [key: string]: string } }; url: anything })",
+    "handsBack": "Promise<{ caller: { aiCred: anything; caps: null | Set<anything>; cls: string; identity: null; member: null; rights: anything; storeName: string | undefined; viaSession: boolean; viewer: null }; refusal?: undefined; silent?: undefined } | { caller?: undefined; refusal: { body: anything; status: number }; silent?: undefined } | { caller?: undefined; refusal?: undefined; silent: anything }>",
+    "bounds": [
+     "a public op is in neither; a founder-only op in admin alone"
+    ]
+   }
+  },
+  {
+   "module": "admission",
+   "entry": "sessionOpGate",
+   "changes": [
+    "cannot stand in"
+   ],
+   "tells": "users",
+   "before": {
+    "kind": "function",
+    "accepts": "(arg0: anything, arg1: anything, arg2: anything, arg3: anything, arg4?: { SESSION_OPS: { admin: { __@iterator@141: () => Iterator<string, undefined, unknown>; add: (...arg0?: unknown) => never; clear: (...arg0?: unknown) => never; delete: (...arg0?: unknown) => never; entries: () => IterableIterator<[string, string], undefined, unknown>; forEach: (arg0: (arg0: string, arg1: string, arg2: unknown) => void, arg1?: unknown) => void; has: (arg0: string) => boolean; keys: () => IterableIterator<string, undefined, unknown>; size: number; values: () => IterableIterator<string, undefined, unknown> }; member: { __@iterator@141: () => Iterator<string, undefined, unknown>; add: (...arg0?: unknown) => never; clear: (...arg0?: unknown) => never; delete: (...arg0?: unknown) => never; entries: () => IterableIterator<[string, string], undefined, unknown>; forEach: (arg0: (arg0: string, arg1: string, arg2: unknown) => void, arg1?: unknown) => void; has: (arg0: string) => boolean; keys: () => IterableIterator<string, undefined, unknown>; size: number; values: () => IterableIterator<string, undefined, unknown> } }; UNATTENDED_BY_DECISION: { [key: string]: string } })",
+    "handsBack": "{ body: { check: anything; code: anything; detail: anything; error: string; ok: boolean; op: anything; reason: string; recorded: string; translation: anything }; status: number } | { body: { check: anything; code: anything; detail: string; error: string; ok: boolean; op: anything; reachedBy: string; reason: string; session: anything; translation: anything }; status: number } | { body: { check: anything; code: anything; detail: string; error: string; ok: boolean; op: anything; reason: string; translation: anything }; status: number } | null",
+    "bounds": [
+     "a public op is in neither; a founder-only op in admin alone"
+    ]
+   },
+   "after": {
+    "kind": "function",
+    "accepts": "(arg0: anything, arg1: anything, arg2: anything, arg3: anything, arg4?: { SESSION_OPS: { admin: { __@iterator@254759: () => Iterator<string, undefined, unknown>; add: (...arg0?: unknown) => never; clear: (...arg0?: unknown) => never; delete: (...arg0?: unknown) => never; entries: () => IterableIterator<[string, string], undefined, unknown>; forEach: (arg0: (arg0: string, arg1: string, arg2: unknown) => void, arg1?: unknown) => void; has: (arg0: string) => boolean; keys: () => IterableIterator<string, undefined, unknown>; size: number; values: () => IterableIterator<string, undefined, unknown> }; member: { __@iterator@254759: () => Iterator<string, undefined, unknown>; add: (...arg0?: unknown) => never; clear: (...arg0?: unknown) => never; delete: (...arg0?: unknown) => never; entries: () => IterableIterator<[string, string], undefined, unknown>; forEach: (arg0: (arg0: string, arg1: string, arg2: unknown) => void, arg1?: unknown) => void; has: (arg0: string) => boolean; keys: () => IterableIterator<string, undefined, unknown>; size: number; values: () => IterableIterator<string, undefined, unknown> } }; UNATTENDED_BY_DECISION: { [key: string]: string } })",
+    "handsBack": "{ body: { check: anything; code: anything; detail: anything; error: string; ok: boolean; op: anything; reason: string; recorded: string; translation: anything }; status: number } | { body: { check: anything; code: anything; detail: string; error: string; ok: boolean; op: anything; reachedBy: string; reason: string; session: anything; translation: anything }; status: number } | { body: { check: anything; code: anything; detail: string; error: string; ok: boolean; op: anything; reason: string; translation: anything }; status: number } | null",
+    "bounds": [
+     "a public op is in neither; a founder-only op in admin alone"
+    ]
+   }
+  }
+ ],
+ "told": [
+  {
+   "user": "admission",
+   "reasons": [
+    {
+     "module": "op-declarations",
+     "entry": "REAUTH_ACTS",
+     "changes": [
+      "hands back differently"
+     ],
+     "lines": [
+      "admission/src/index.mjs:777",
+      "admission/test/doors.test.mjs:150",
+      "admission/test/t47.test.mjs:206",
+      "admission/test/t50.test.mjs:10"
+     ],
+     "through": null
+    },
+    {
+     "module": "op-declarations",
+     "entry": "SESSION_OPS",
+     "changes": [
+      "hands back differently"
+     ],
+     "lines": [
+      "admission/src/index.mjs:61",
+      "admission/test/admission.test.mjs:8",
+      "admission/test/doors.test.mjs:9",
+      "admission/test/harness.mjs:170",
+      "admission/test/t41.test.mjs:9"
+     ],
+     "through": null
+    },
+    {
+     "module": "op-declarations",
+     "entry": "SessionOps",
+     "changes": [
+      "hands back differently"
+     ],
+     "lines": [
+      "admission/src/index.mjs:595",
+      "admission/src/index.mjs:605",
+      "admission/test/admission.test.mjs:15",
+      "admission/test/admission.test.mjs:65",
+      "admission/test/admission.test.mjs:102",
+      "admission/test/admission.test.mjs:152"
+     ],
+     "through": null
+    },
+    {
+     "module": "op-declarations",
+     "notFollowed": [
+      "reads or calls values of unknown kind: admission/src/checks.mjs:37 rows; admission/src/index.mjs:78 table; admission/src/index.mjs:79 row (+902)"
+     ],
+     "through": null
+    }
+   ],
+   "undeclared": []
+  },
+  {
+   "user": "signin-door",
+   "reasons": [
+    {
+     "module": "op-declarations",
+     "notFollowed": [
+      "reads or calls values of unknown kind: signin-door/src/index.mjs:78 b; signin-door/src/index.mjs:84 env; signin-door/src/index.mjs:99 env (+185)"
+     ],
+     "through": null
+    },
+    {
+     "module": "admission",
+     "notFollowed": [
+      "declares admission but no use of it is found in its code",
+      "reads or calls values of unknown kind: signin-door/src/index.mjs:78 b; signin-door/src/index.mjs:84 env; signin-door/src/index.mjs:99 env (+185)"
+     ],
+     "through": "op-declarations"
+    }
+   ],
+   "undeclared": []
+  },
+  {
+   "user": "store-assembly",
+   "reasons": [
+    {
+     "module": "op-declarations",
+     "notFollowed": [
+      "reads or calls values of unknown kind: store-assembly/src/acquire-timings.mjs:25 host; store-assembly/src/acquire-timings.mjs:25 host.storage; store-assembly/src/acquire-timings.mjs:25 host.storage.sql (+6752)"
+     ],
+     "through": null
+    },
+    {
+     "module": "admission",
+     "notFollowed": [
+      "reads or calls values of unknown kind: store-assembly/src/acquire-timings.mjs:25 host; store-assembly/src/acquire-timings.mjs:25 host.storage; store-assembly/src/acquire-timings.mjs:25 host.storage.sql (+6752)"
+     ],
+     "through": "op-declarations"
+    }
+   ],
+   "undeclared": []
+  },
+  {
+   "user": "store-request",
+   "reasons": [
+    {
+     "module": "op-declarations",
+     "notFollowed": [
+      "reads or calls values of unknown kind: store-request/src/door-ops.mjs:23 res.clone().json; store-request/src/door-ops.mjs:23 res.clone(); store-request/src/door-ops.mjs:23 res.clone (+2233)"
+     ],
+     "through": null
+    },
+    {
+     "module": "admission",
+     "entry": "admit",
+     "changes": [
+      "cannot stand in"
+     ],
+     "lines": [
+      "store-request/test/door.mjs:23",
+      "store-request/test/door.mjs:293",
+      "store-request/test/door.mjs:295",
+      "store-request/test/door.mjs:299",
+      "store-request/test/door.mjs:305",
+      "store-request/test/door.mjs:306"
+     ],
+     "through": "op-declarations"
+    },
+    {
+     "module": "admission",
+     "notFollowed": [
+      "reads or calls values of unknown kind: store-request/src/door-ops.mjs:23 res.clone().json; store-request/src/door-ops.mjs:23 res.clone(); store-request/src/door-ops.mjs:23 res.clone (+2233)"
+     ],
+     "through": "op-declarations"
+    }
+   ],
+   "undeclared": []
+  },
+  {
+   "user": "interface-shell",
+   "reasons": [
+    {
+     "module": "op-declarations",
+     "entry": "SESSION_OPS",
+     "changes": [
+      "hands back differently"
+     ],
+     "lines": [
+      "interface-shell/src/index.mjs:10",
+      "interface-shell/src/index.mjs:304",
+      "interface-shell/test/acts.test.mjs:5",
+      "interface-shell/test/acts.test.mjs:138",
+      "interface-shell/test/acts.test.mjs:151",
+      "interface-shell/test/acts.test.mjs:351"
+     ],
+     "through": null
+    },
+    {
+     "module": "op-declarations",
+     "entry": "SessionOps",
+     "changes": [
+      "hands back differently"
+     ],
+     "lines": [
+      "interface-shell/src/index.mjs:304",
+      "interface-shell/test/acts.test.mjs:138",
+      "interface-shell/test/acts.test.mjs:151",
+      "interface-shell/test/acts.test.mjs:352",
+      "interface-shell/test/fixround.test.mjs:222"
+     ],
+     "through": null
+    },
+    {
+     "module": "op-declarations",
+     "notFollowed": [
+      "reads or calls values of unknown kind: interface-shell/src/browser.mjs:10 win; interface-shell/src/browser.mjs:12 win[name].getItem; interface-shell/src/browser.mjs:12 win[name] (+8780)"
+     ],
+     "through": null
+    }
+   ],
+   "undeclared": []
+  },
+  {
+   "user": "screens-entry",
+   "reasons": [
+    {
+     "module": "op-declarations",
+     "entry": "SESSION_OPS",
+     "changes": [
+      "hands back differently"
+     ],
+     "lines": [
+      "screens-entry/test/kit.mjs:15",
+      "screens-entry/test/kit.mjs:283"
+     ],
+     "through": null
+    },
+    {
+     "module": "op-declarations",
+     "entry": "SessionOps",
+     "changes": [
+      "hands back differently"
+     ],
+     "lines": [
+      "screens-entry/test/kit.mjs:283"
+     ],
+     "through": null
+    },
+    {
+     "module": "op-declarations",
+     "notFollowed": [
+      "reads or calls values of unknown kind: screens-entry/src/forgot.mjs:15 cs; screens-entry/src/forgot.mjs:16 view; screens-entry/src/forgot.mjs:17 cs.title (+2475)"
+     ],
+     "through": null
+    }
+   ],
+   "undeclared": []
+  },
+  {
+   "user": "screens-wizards",
+   "reasons": [
+    {
+     "module": "op-declarations",
+     "notFollowed": [
+      "reads or calls values of unknown kind: screens-wizards/src/guide.mjs:34 given; screens-wizards/src/guide.mjs:35 given; screens-wizards/src/guide.mjs:36 given (+2295)"
+     ],
+     "through": null
+    }
+   ],
+   "undeclared": []
+  },
+  {
+   "user": "screens-settings",
+   "reasons": [
+    {
+     "module": "op-declarations",
+     "notFollowed": [
+      "reads or calls values of unknown kind: screens-settings/src/account.mjs:24 view; screens-settings/src/account.mjs:30 me; screens-settings/src/account.mjs:40 cs (+9677)"
+     ],
+     "through": null
+    }
+   ],
+   "undeclared": [
+    "admission"
+   ]
+  },
+  {
+   "user": "screens-ai",
+   "reasons": [
+    {
+     "module": "op-declarations",
+     "notFollowed": [
+      "declares op-declarations but no use of it is found in its code"
+     ],
+     "through": null
+    }
+   ],
+   "undeclared": []
+  },
+  {
+   "user": "screens-intake",
+   "reasons": [
+    {
+     "module": "op-declarations",
+     "entry": "SESSION_OPS",
+     "changes": [
+      "hands back differently"
+     ],
+     "lines": [
+      "screens-intake/test/common.test.mjs:11",
+      "screens-intake/test/common.test.mjs:106"
+     ],
+     "through": null
+    },
+    {
+     "module": "op-declarations",
+     "entry": "SessionOps",
+     "changes": [
+      "hands back differently"
+     ],
+     "lines": [
+      "screens-intake/test/common.test.mjs:106"
+     ],
+     "through": null
+    },
+    {
+     "module": "op-declarations",
+     "notFollowed": [
+      "reads or calls values of unknown kind: screens-intake/src/about-knocker.mjs:10 view; screens-intake/src/about-knocker.mjs:10 view.subject.toLowerCase; screens-intake/src/about-knocker.mjs:10 view.subject (+8915)"
+     ],
+     "through": null
+    }
+   ],
+   "undeclared": []
+  },
+  {
+   "user": "screens-daily",
+   "reasons": [
+    {
+     "module": "op-declarations",
+     "entry": "SESSION_OPS",
+     "changes": [
+      "hands back differently"
+     ],
+     "lines": [
+      "screens-daily/test/finder.test.mjs:12",
+      "screens-daily/test/finder.test.mjs:147"
+     ],
+     "through": null
+    },
+    {
+     "module": "op-declarations",
+     "entry": "SessionOps",
+     "changes": [
+      "hands back differently"
+     ],
+     "lines": [
+      "screens-daily/test/finder.test.mjs:147"
+     ],
+     "through": null
+    },
+    {
+     "module": "op-declarations",
+     "notFollowed": [
+      "reads or calls values of unknown kind: screens-daily/src/answers.mjs:15 view; screens-daily/src/answers.mjs:18 view; screens-daily/src/answers.mjs:19 view (+11589)"
+     ],
+     "through": null
+    }
+   ],
+   "undeclared": []
+  },
+  {
+   "user": "screens-inquiry",
+   "reasons": [
+    {
+     "module": "op-declarations",
+     "notFollowed": [
+      "reads or calls values of unknown kind: screens-inquiry/src/admit.mjs:12 SCREEN_REGISTRY.find; screens-inquiry/src/admit.mjs:12 SCREEN_REGISTRY; screens-inquiry/src/admit.mjs:12 r (+17770)"
+     ],
+     "through": null
+    }
+   ],
+   "undeclared": []
+  },
+  {
+   "user": "screens-document",
+   "reasons": [
+    {
+     "module": "op-declarations",
+     "notFollowed": [
+      "declares op-declarations but no use of it is found in its code"
+     ],
+     "through": null
+    }
+   ],
+   "undeclared": []
+  },
+  {
+   "user": "screens-investigate",
+   "reasons": [
+    {
+     "module": "op-declarations",
+     "entry": "SESSION_OPS",
+     "changes": [
+      "hands back differently"
+     ],
+     "lines": [
+      "screens-investigate/test/fix2w2.test.mjs:8",
+      "screens-investigate/test/fix2w2.test.mjs:487",
+      "screens-investigate/test/fix2w2.test.mjs:488",
+      "screens-investigate/test/fix2w2.test.mjs:489"
+     ],
+     "through": null
+    },
+    {
+     "module": "op-declarations",
+     "entry": "SessionOps",
+     "changes": [
+      "hands back differently"
+     ],
+     "lines": [
+      "screens-investigate/test/fix2w2.test.mjs:487",
+      "screens-investigate/test/fix2w2.test.mjs:488",
+      "screens-investigate/test/fix2w2.test.mjs:489"
+     ],
+     "through": null
+    },
+    {
+     "module": "op-declarations",
+     "notFollowed": [
+      "reads or calls values of unknown kind: screens-investigate/src/calculation.mjs:14 view; screens-investigate/src/calculation.mjs:15 v; screens-investigate/src/calculation.mjs:16 v (+12997)"
+     ],
+     "through": null
+    }
+   ],
+   "undeclared": [
+    "admission"
+   ]
+  },
+  {
+   "user": "screens-publish",
+   "reasons": [
+    {
+     "module": "op-declarations",
+     "notFollowed": [
+      "reads or calls values of unknown kind: screens-publish/src/case-editor.mjs:15 view.parts.subject; screens-publish/src/case-editor.mjs:15 view.parts; screens-publish/src/case-editor.mjs:15 view (+7560)"
+     ],
+     "through": null
+    }
+   ],
+   "undeclared": []
+  },
+  {
+   "user": "screens-action",
+   "reasons": [
+    {
+     "module": "op-declarations",
+     "notFollowed": [
+      "reads or calls values of unknown kind: screens-action/src/action.mjs:14 spec; screens-action/src/action.mjs:22 view.data; screens-action/src/action.mjs:22 view (+9652)"
+     ],
+     "through": null
+    }
+   ],
+   "undeclared": []
+  },
+  {
+   "user": "screens-plan",
+   "reasons": [
+    {
+     "module": "op-declarations",
+     "notFollowed": [
+      "declares op-declarations but no use of it is found in its code"
+     ],
+     "through": null
+    }
+   ],
+   "undeclared": []
+  },
+  {
+   "user": "screens-matter",
+   "reasons": [
+    {
+     "module": "op-declarations",
+     "notFollowed": [
+      "declares op-declarations but no use of it is found in its code"
+     ],
+     "through": null
+    }
+   ],
+   "undeclared": []
+  },
+  {
+   "user": "control-plane",
+   "reasons": [
+    {
+     "module": "op-declarations",
+     "entry": "SESSION_OPS",
+     "changes": [
+      "hands back differently"
+     ],
+     "lines": [
+      "control-plane/test/doorbell.test.mjs:22",
+      "control-plane/test/gates.test.mjs:8",
+      "control-plane/test/harness.mjs:25",
+      "control-plane/test/option-preview.test.mjs:11",
+      "control-plane/test/routes.test.mjs:11",
+      "control-plane/test/t42-door.test.mjs:48"
+     ],
+     "through": null
+    },
+    {
+     "module": "op-declarations",
+     "entry": "SessionOps",
+     "changes": [
+      "hands back differently"
+     ],
+     "lines": [
+      "control-plane/test/doorbell.test.mjs:84",
+      "control-plane/test/gates.test.mjs:116",
+      "control-plane/test/gates.test.mjs:124",
+      "control-plane/test/option-preview.test.mjs:30",
+      "control-plane/test/routes.test.mjs:109",
+      "control-plane/test/t42-door.test.mjs:48"
+     ],
+     "through": null
+    },
+    {
+     "module": "op-declarations",
+     "entry": "T48_FAMILIES",
+     "changes": [
+      "hands back differently"
+     ],
+     "lines": [
+      "control-plane/test/t48-door.test.mjs:10",
+      "control-plane/test/t48-door.test.mjs:294",
+      "control-plane/test/t48-door.test.mjs:354",
+      "control-plane/test/t49-door.test.mjs:9",
+      "control-plane/test/t49-door.test.mjs:141",
+      "control-plane/test/t49-door.test.mjs:142"
+     ],
+     "through": null
+    },
+    {
+     "module": "op-declarations",
+     "entry": "T48_SHARES",
+     "changes": [
+      "hands back differently"
+     ],
+     "lines": [
+      "control-plane/test/t48-door.test.mjs:10",
+      "control-plane/test/t48-door.test.mjs:154",
+      "control-plane/test/t48-door.test.mjs:354"
+     ],
+     "through": null
+    },
+    {
+     "module": "op-declarations",
+     "notFollowed": [
+      "reads or calls values of unknown kind: control-plane/src/app.mjs:29 req; control-plane/src/app.mjs:30 url; control-plane/src/app.mjs:31 p.startsWith (+11687)"
+     ],
+     "through": null
+    },
+    {
+     "module": "admission",
+     "entry": "admit",
+     "changes": [
+      "cannot stand in"
+     ],
+     "lines": [
+      "control-plane/src/index.mjs:16",
+      "control-plane/src/index.mjs:367",
+      "control-plane/src/index.mjs:370",
+      "control-plane/src/index.mjs:371",
+      "control-plane/src/index.mjs:372",
+      "control-plane/src/index.mjs:1192"
+     ],
+     "through": "op-declarations"
+    },
+    {
+     "module": "admission",
+     "notFollowed": [
+      "reads or calls values of unknown kind: control-plane/src/app.mjs:29 req; control-plane/src/app.mjs:30 url; control-plane/src/app.mjs:31 p.startsWith (+11687)"
+     ],
+     "through": "op-declarations"
+    }
+   ],
+   "undeclared": []
+  },
+  {
+   "user": "plane",
+   "reasons": [
+    {
+     "module": "op-declarations",
+     "notFollowed": [
+      "reads or calls values of unknown kind: plane/src/arrival.mjs:8 headers.get; plane/src/arrival.mjs:8 headers; plane/src/arrival.mjs:9 raw.trim (+3325)"
+     ],
+     "through": null
+    },
+    {
+     "module": "admission",
+     "notFollowed": [
+      "reads or calls values of unknown kind: plane/src/arrival.mjs:8 headers.get; plane/src/arrival.mjs:8 headers; plane/src/arrival.mjs:9 raw.trim (+3325)"
+     ],
+     "through": "op-declarations"
+    }
+   ],
+   "undeclared": []
+  },
+  {
+   "user": "load-check",
+   "reasons": [
+    {
+     "module": "op-declarations",
+     "notFollowed": [
+      "declares op-declarations but no use of it is found in its code"
+     ],
+     "through": null
+    }
+   ],
+   "undeclared": []
+  }
+ ],
+ "notTold": [],
+ "warnings": [],
+ "interfaceChanged": true,
+ "summary": "2 module(s) changed their listing; 8 entries changed in a way that tells; 21 user(s) told.",
+ "replay": {
+  "change": "op-declarations:95",
+  "ms": 155634,
+  "ranAt": "2026-11-15T16:12:29.648Z",
+  "tool": "notice-replay/.cache/design7/notice-proof/tool/p3tool.mjs",
+  "commentedUsers": null
+ }
+}
