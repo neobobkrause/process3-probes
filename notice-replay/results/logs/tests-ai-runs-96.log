@@ -1,0 +1,15 @@
+15:23:35 preparing ai-runs:96
+15:23:49 npm ci agent-runner 0
+15:23:51 npm ci bio-plane 0
+15:23:51 npm ci file-scanner 0
+15:23:53 npm ci newgroup 0
+15:23:55 npm ci ocr-worker 0
+15:23:57 npm ci pdf-worker 0
+15:23:57 npm ci reader-container 0
+15:23:59 npm ci sheet-worker 0
+15:24:02 npm ci site 0
+15:24:19 before run-productions 68 pass 0 fail
+15:24:44 before capture-requests 125 pass 7 fail
+15:24:58 before skills 133 pass 0 fail
+15:25:02 before question-explorer 50 pass 0 fail
+15:25:04 before agent-steps 9 pass 1 fail

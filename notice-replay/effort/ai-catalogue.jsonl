@@ -1,0 +1,2 @@
+{"t": "2026-11-15T15:21:03Z", "event": "start", "step": "first comments"}
+{"t": "2026-11-15T15:24:25Z", "event": "note", "text": "Read all five source files (1465 lines) and the call sites in ai-accounts (base.mjs 352-430), ai-runs and ai-use. The listing shows the class's private # members as entries of their own (36 of 81 'anything' lines come from them); they are not interface, so I leave them untyped except where a public method's answer is built by one."}
