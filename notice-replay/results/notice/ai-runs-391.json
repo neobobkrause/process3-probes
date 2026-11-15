@@ -781,8 +781,8 @@
  "summary": "1 module(s) changed their listing; 1 entry changed in a way that tells; 30 user(s) told.",
  "replay": {
   "change": "ai-runs:391",
-  "ms": 145145,
-  "ranAt": "2026-11-15T16:53:16.336Z",
+  "ms": 103398,
+  "ranAt": "2026-11-15T17:36:41.858Z",
   "tool": "notice-proof/tool/p3tool.mjs",
   "commentedUsers": null
  }

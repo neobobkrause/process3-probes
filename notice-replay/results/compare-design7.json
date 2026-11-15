@@ -1,5 +1,5 @@
 {
- "written": "2026-11-15T17:21:58.819Z",
+ "written": "2026-11-15T17:58:37.095Z",
  "total": {
   "changes": 32,
   "replayed": 32,
@@ -20,11 +20,11 @@
   "entryForNothing": 248,
   "entryBrokenMissed": 6,
   "entryAdoptedMissed": 2,
-  "testsChanges": 0,
-  "testsUserRuns": 0,
-  "testsUsersFailing": 0,
-  "brokenCaughtByTests": 0,
-  "brokenInChangesWithTests": 0
+  "testsChanges": 1,
+  "testsUserRuns": 22,
+  "testsUsersFailing": 3,
+  "brokenCaughtByTests": 1,
+  "brokenInChangesWithTests": 11
  },
  "byProvider": {
   "ai-runs": {
@@ -47,11 +47,11 @@
    "entryForNothing": 119,
    "entryBrokenMissed": 0,
    "entryAdoptedMissed": 0,
-   "testsChanges": 0,
-   "testsUserRuns": 0,
-   "testsUsersFailing": 0,
-   "brokenCaughtByTests": 0,
-   "brokenInChangesWithTests": 0
+   "testsChanges": 1,
+   "testsUserRuns": 22,
+   "testsUsersFailing": 3,
+   "brokenCaughtByTests": 1,
+   "brokenInChangesWithTests": 11
   },
   "ai-accounts": {
    "changes": 5,
@@ -465,7 +465,41 @@
     "screens-document"
    ],
    "ms": 170376,
-   "recordForNothing": 18
+   "recordForNothing": 18,
+   "testsRanFor": 22,
+   "testsNoTests": [
+    "ai-gate",
+    "instance-reports",
+    "surface-declarations",
+    "op-specs-late",
+    "store-jobs",
+    "store-ask",
+    "screens-document"
+   ],
+   "testsNewFailures": [
+    "op-declarations",
+    "store-assembly",
+    "plane"
+   ],
+   "brokenCaughtByTests": [
+    "store-assembly"
+   ],
+   "brokenNotCaughtByTests": [
+    "action-plans",
+    "agent-steps",
+    "agent-worker",
+    "capture-requests",
+    "intent",
+    "plan-work",
+    "question-explorer",
+    "scheduler",
+    "screens-inquiry",
+    "store-request"
+   ],
+   "testsFailingNotJudgedBroken": [
+    "op-declarations",
+    "plane"
+   ]
   },
   {
    "change": "ai-runs:213",

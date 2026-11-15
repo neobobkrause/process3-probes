@@ -382,8 +382,8 @@
  "summary": "1 module(s) changed their listing; 3 entries changed in a way that tells; 21 user(s) told.",
  "replay": {
   "change": "op-declarations:95",
-  "ms": 127406,
-  "ranAt": "2026-11-15T17:03:44.757Z",
+  "ms": 103059,
+  "ranAt": "2026-11-15T17:44:54.113Z",
   "tool": "notice-proof/tool/p3tool.mjs",
   "commentedUsers": null
  }

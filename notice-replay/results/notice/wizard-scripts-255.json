@@ -94,8 +94,8 @@
  "summary": "1 module(s) changed their listing; 0 entries changed in a way that tells; 2 user(s) told.",
  "replay": {
   "change": "wizard-scripts:255",
-  "ms": 110815,
-  "ranAt": "2026-11-15T17:20:08.962Z",
+  "ms": 99362,
+  "ranAt": "2026-11-15T17:56:35.084Z",
   "tool": "notice-proof/tool/p3tool.mjs",
   "commentedUsers": null
  }

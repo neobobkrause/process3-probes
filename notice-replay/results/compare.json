@@ -1,5 +1,5 @@
 {
- "written": "2026-11-15T17:21:58.692Z",
+ "written": "2026-11-15T17:57:58.032Z",
  "total": {
   "changes": 32,
   "replayed": 32,
@@ -12,19 +12,19 @@
   "toolForNothing": 377,
   "toolBrokenMissed": 3,
   "toolAdoptedMissed": 2,
-  "narrowTold": 387,
-  "narrowForNothing": 356,
-  "narrowBrokenMissed": 3,
+  "narrowTold": 363,
+  "narrowForNothing": 333,
+  "narrowBrokenMissed": 4,
   "narrowAdoptedMissed": 2,
-  "entryTold": 145,
-  "entryForNothing": 124,
+  "entryTold": 140,
+  "entryForNothing": 119,
   "entryBrokenMissed": 11,
   "entryAdoptedMissed": 4,
-  "testsChanges": 0,
-  "testsUserRuns": 0,
-  "testsUsersFailing": 0,
-  "brokenCaughtByTests": 0,
-  "brokenInChangesWithTests": 0
+  "testsChanges": 1,
+  "testsUserRuns": 22,
+  "testsUsersFailing": 3,
+  "brokenCaughtByTests": 1,
+  "brokenInChangesWithTests": 11
  },
  "byProvider": {
   "ai-runs": {
@@ -47,11 +47,11 @@
    "entryForNothing": 78,
    "entryBrokenMissed": 0,
    "entryAdoptedMissed": 0,
-   "testsChanges": 0,
-   "testsUserRuns": 0,
-   "testsUsersFailing": 0,
-   "brokenCaughtByTests": 0,
-   "brokenInChangesWithTests": 0
+   "testsChanges": 1,
+   "testsUserRuns": 22,
+   "testsUsersFailing": 3,
+   "brokenCaughtByTests": 1,
+   "brokenInChangesWithTests": 11
   },
   "ai-accounts": {
    "changes": 5,
@@ -117,12 +117,12 @@
    "toolForNothing": 55,
    "toolBrokenMissed": 0,
    "toolAdoptedMissed": 0,
-   "narrowTold": 56,
-   "narrowForNothing": 55,
-   "narrowBrokenMissed": 0,
+   "narrowTold": 32,
+   "narrowForNothing": 32,
+   "narrowBrokenMissed": 1,
    "narrowAdoptedMissed": 0,
-   "entryTold": 14,
-   "entryForNothing": 14,
+   "entryTold": 9,
+   "entryForNothing": 9,
    "entryBrokenMissed": 1,
    "entryAdoptedMissed": 0,
    "testsChanges": 0,
@@ -403,8 +403,42 @@
     "store-ask",
     "screens-document"
    ],
-   "ms": 128290,
-   "recordForNothing": 18
+   "ms": 102106,
+   "recordForNothing": 18,
+   "testsRanFor": 22,
+   "testsNoTests": [
+    "ai-gate",
+    "instance-reports",
+    "surface-declarations",
+    "op-specs-late",
+    "store-jobs",
+    "store-ask",
+    "screens-document"
+   ],
+   "testsNewFailures": [
+    "op-declarations",
+    "store-assembly",
+    "plane"
+   ],
+   "brokenCaughtByTests": [
+    "store-assembly"
+   ],
+   "brokenNotCaughtByTests": [
+    "action-plans",
+    "agent-steps",
+    "agent-worker",
+    "capture-requests",
+    "intent",
+    "plan-work",
+    "question-explorer",
+    "scheduler",
+    "screens-inquiry",
+    "store-request"
+   ],
+   "testsFailingNotJudgedBroken": [
+    "op-declarations",
+    "plane"
+   ]
   },
   {
    "change": "ai-runs:213",
@@ -431,7 +465,7 @@
    "toldUsers": [],
    "toldForEntryUsers": [],
    "notFollowedOnly": [],
-   "ms": 133173,
+   "ms": 103687,
    "recordForNothing": 29
   },
   {
@@ -535,7 +569,7 @@
     "store-ask",
     "screens-document"
    ],
-   "ms": 135497,
+   "ms": 103185,
    "recordForNothing": 29
   },
   {
@@ -632,7 +666,7 @@
     "control-plane",
     "plane"
    ],
-   "ms": 135503,
+   "ms": 102840,
    "recordForNothing": 28
   },
   {
@@ -732,7 +766,7 @@
     "store-ask",
     "screens-document"
    ],
-   "ms": 145145,
+   "ms": 103398,
    "recordForNothing": 29
   },
   {
@@ -760,7 +794,7 @@
    "toldUsers": [],
    "toldForEntryUsers": [],
    "notFollowedOnly": [],
-   "ms": 143792,
+   "ms": 104569,
    "recordForNothing": 30
   },
   {
@@ -860,7 +894,7 @@
     "store-ask",
     "screens-document"
    ],
-   "ms": 166264,
+   "ms": 107912,
    "recordForNothing": 23
   },
   {
@@ -888,7 +922,7 @@
    "toldUsers": [],
    "toldForEntryUsers": [],
    "notFollowedOnly": [],
-   "ms": 164825,
+   "ms": 104442,
    "recordForNothing": 18
   },
   {
@@ -1017,7 +1051,7 @@
     "screens-inquiry",
     "screens-document"
    ],
-   "ms": 128078,
+   "ms": 113026,
    "recordForNothing": 25
   },
   {
@@ -1045,7 +1079,7 @@
    "toldUsers": [],
    "toldForEntryUsers": [],
    "notFollowedOnly": [],
-   "ms": 131702,
+   "ms": 115228,
    "recordForNothing": 26
   },
   {
@@ -1081,7 +1115,7 @@
    "toldUsers": [],
    "toldForEntryUsers": [],
    "notFollowedOnly": [],
-   "ms": 146142,
+   "ms": 126001,
    "recordForNothing": 27
   },
   {
@@ -1177,7 +1211,7 @@
     "control-plane",
     "plane"
    ],
-   "ms": 143737,
+   "ms": 124489,
    "recordForNothing": 30
   },
   {
@@ -1292,7 +1326,7 @@
     "screens-document",
     "plane"
    ],
-   "ms": 164394,
+   "ms": 126973,
    "recordForNothing": 28
   },
   {
@@ -1389,7 +1423,7 @@
     "plane",
     "load-check"
    ],
-   "ms": 127406,
+   "ms": 103059,
    "recordForNothing": 12
   },
   {
@@ -1417,7 +1451,7 @@
    "toldUsers": [],
    "toldForEntryUsers": [],
    "notFollowedOnly": [],
-   "ms": 144178,
+   "ms": 97036,
    "recordForNothing": 21
   },
   {
@@ -1492,7 +1526,7 @@
     "plane",
     "load-check"
    ],
-   "ms": 154455,
+   "ms": 100157,
    "recordForNothing": 21
   },
   {
@@ -1520,7 +1554,7 @@
    "toldUsers": [],
    "toldForEntryUsers": [],
    "notFollowedOnly": [],
-   "ms": 147320,
+   "ms": 107679,
    "recordForNothing": 21
   },
   {
@@ -1532,15 +1566,8 @@
    "adopted": [],
    "listingChanged": true,
    "entriesThatTell": [
-    "ai-catalogue ADVISORY_KINDS: declaration changed (not classified)",
-    "ai-catalogue ADVISORY_REASONS: declaration changed (not classified)",
-    "ai-catalogue AI_CATALOGUE_DECLARATIONS: declaration changed (not classified)",
-    "ai-catalogue AI_CATALOGUE_TABLES: declaration changed (not classified)",
     "ai-catalogue AiCatalogue: accepts more, bound changed",
     "ai-catalogue BindingTerm: cannot stand in",
-    "ai-catalogue CATALOGUE_CHECKS: declaration changed (not classified)",
-    "ai-catalogue CATALOGUE_STATES: declaration changed (not classified)",
-    "ai-catalogue CHECK_IDS: declaration changed (not classified)",
     "ai-catalogue Capabilities: cannot stand in",
     "ai-catalogue CatalogueEntry: cannot stand in",
     "ai-catalogue CatalogueEnv: accepts more, bound changed",
@@ -1554,26 +1581,19 @@
     "ai-catalogue CombinedResult: cannot stand in",
     "ai-catalogue ConnectionWay: cannot stand in",
     "ai-catalogue CredentialKind: cannot stand in",
-    "ai-catalogue DISPLAY_NAME_MAX: declaration changed (not classified)",
-    "ai-catalogue EFFORT_WORD_MAX: declaration changed (not classified)",
-    "ai-catalogue ENTRY_ID_MAX: declaration changed (not classified)",
     "ai-catalogue EntryPin: cannot stand in",
     "ai-catalogue EntryPrices: cannot stand in",
     "ai-catalogue Evidence: cannot stand in",
     "ai-catalogue Figure: cannot stand in",
-    "ai-catalogue GRADES: declaration changed (not classified)",
     "ai-catalogue GateLimit: cannot stand in",
     "ai-catalogue GateRecord: cannot stand in",
     "ai-catalogue Grade: cannot stand in",
     "ai-catalogue Guidance: cannot stand in",
     "ai-catalogue HostKind: cannot stand in",
     "ai-catalogue HostProfile: cannot stand in",
-    "ai-catalogue LIFECYCLE: declaration changed (not classified)",
-    "ai-catalogue LIMIT_KINDS: declaration changed (not classified)",
     "ai-catalogue LibraryRow: cannot stand in",
     "ai-catalogue Lifecycle: cannot stand in",
     "ai-catalogue LimitKind: cannot stand in",
-    "ai-catalogue MOVES: declaration changed (not classified)",
     "ai-catalogue Means: cannot stand in",
     "ai-catalogue Money: cannot stand in",
     "ai-catalogue Open: cannot stand in",
@@ -1582,8 +1602,6 @@
     "ai-catalogue PriceBasis: cannot stand in",
     "ai-catalogue Restriction: cannot stand in",
     "ai-catalogue Runtime: cannot stand in",
-    "ai-catalogue SHOWN_IDS: declaration changed (not classified)",
-    "ai-catalogue STATE_WORDS: declaration changed (not classified)",
     "ai-catalogue ShownId: cannot stand in",
     "ai-catalogue StandardTaskCosts: cannot stand in",
     "ai-catalogue StepKind: cannot stand in",
@@ -1592,14 +1610,10 @@
     "ai-catalogue TermKind: cannot stand in",
     "ai-catalogue TestedAi: cannot stand in",
     "ai-catalogue TokenStorage: cannot stand in",
-    "ai-catalogue VERDICTS: declaration changed (not classified)",
     "ai-catalogue Verdict: cannot stand in",
     "ai-catalogue Warning: cannot stand in",
     "ai-catalogue Words: cannot stand in",
-    "ai-catalogue aiCatalogueOf: accepts more, bound changed",
-    "ai-catalogue isDate: declaration changed (not classified)",
-    "ai-catalogue isInstant: declaration changed (not classified)",
-    "ai-catalogue validatePayload: declaration changed (not classified)"
+    "ai-catalogue aiCatalogueOf: accepts more, bound changed"
    ],
    "entriesThatTellNobody": [
     "ai-catalogue AiCatalogue#seedAtStart: new entry",
@@ -1651,7 +1665,7 @@
     "store-assembly",
     "ai-issuer"
    ],
-   "ms": 46261,
+   "ms": 27969,
    "recordForNothing": 9
   },
   {
@@ -1679,7 +1693,7 @@
    "toldUsers": [],
    "toldForEntryUsers": [],
    "notFollowedOnly": [],
-   "ms": 48896,
+   "ms": 32364,
    "recordForNothing": 9
   },
   {
@@ -1691,49 +1705,22 @@
    "adopted": [],
    "listingChanged": true,
    "entriesThatTell": [
-    "ai-catalogue ADVISORY_KINDS: declaration changed (not classified)",
-    "ai-catalogue ADVISORY_REASONS: declaration changed (not classified)",
-    "ai-catalogue AI_CATALOGUE_DECLARATIONS: declaration changed (not classified)",
-    "ai-catalogue AI_CATALOGUE_TABLES: declaration changed (not classified)",
     "ai-catalogue AiCatalogue: accepts more, bound changed",
-    "ai-catalogue CATALOGUE_CHECKS: declaration changed (not classified)",
-    "ai-catalogue CATALOGUE_STATES: declaration changed (not classified)",
-    "ai-catalogue CHECK_IDS: declaration changed (not classified)",
     "ai-catalogue CatalogueEnv: accepts more, bound changed",
-    "ai-catalogue DEVELOPMENT_KEY_MARK: declaration changed (not classified)",
-    "ai-catalogue DEVELOPMENT_VAR: declaration changed (not classified)",
-    "ai-catalogue DISPLAY_NAME_MAX: declaration changed (not classified)",
-    "ai-catalogue EFFORT_WORD_MAX: declaration changed (not classified)",
-    "ai-catalogue ENTRY_ID_MAX: declaration changed (not classified)",
-    "ai-catalogue GRADES: declaration changed (not classified)",
-    "ai-catalogue LIFECYCLE: declaration changed (not classified)",
-    "ai-catalogue LIMIT_KINDS: declaration changed (not classified)",
-    "ai-catalogue MOVES: declaration changed (not classified)",
-    "ai-catalogue RELEASE_SEED: declaration changed (not classified)",
-    "ai-catalogue SEED_PAYLOAD: declaration changed (not classified)",
-    "ai-catalogue SEED_SIGNATURE_VAR: declaration changed (not classified)",
-    "ai-catalogue SHOWN_IDS: declaration changed (not classified)",
-    "ai-catalogue STATE_WORDS: declaration changed (not classified)",
-    "ai-catalogue VERDICTS: declaration changed (not classified)",
     "ai-catalogue aiCatalogueOf: accepts more, bound changed",
-    "ai-catalogue catalogueKeysFor: accepts more, bound changed",
-    "ai-catalogue isDate: declaration changed (not classified)",
-    "ai-catalogue isDevelopmentKey: declaration changed (not classified)",
-    "ai-catalogue isInstant: declaration changed (not classified)",
-    "ai-catalogue seedOf: declaration changed (not classified)",
-    "ai-catalogue validatePayload: declaration changed (not classified)"
+    "ai-catalogue catalogueKeysFor: accepts more, bound changed"
    ],
    "entriesThatTellNobody": [
     "ai-catalogue DEVELOPMENT_KEY_VAR: new entry"
    ],
    "toolTold": 11,
-   "toolToldForEntry": 5,
+   "toolToldForEntry": 4,
    "narrowTold": 11,
    "narrowForNothing": 11,
    "narrowBrokenMissed": [],
    "narrowAdoptedMissed": [],
    "toolForNothing": 11,
-   "entryForNothing": 5,
+   "entryForNothing": 4,
    "brokenMissed": [],
    "adoptedMissed": [],
    "brokenMissedByEntry": [],
@@ -1755,7 +1742,6 @@
     "ai-accounts",
     "ai-use",
     "ai-runs",
-    "answer-envelope",
     "store-assembly"
    ],
    "notFollowedOnly": [
@@ -1764,9 +1750,10 @@
     "ai-gate",
     "surface-declarations",
     "op-declarations",
+    "answer-envelope",
     "ai-issuer"
    ],
-   "ms": 65740,
+   "ms": 40532,
    "recordForNothing": 11
   },
   {
@@ -1794,7 +1781,7 @@
    "toldUsers": [],
    "toldForEntryUsers": [],
    "notFollowedOnly": [],
-   "ms": 65266,
+   "ms": 42109,
    "recordForNothing": 11
   },
   {
@@ -1807,25 +1794,7 @@
    ],
    "adopted": [],
    "listingChanged": true,
-   "entriesThatTell": [
-    "ai-catalogue AI_CATALOGUE_DECLARATIONS: declaration changed (not classified)",
-    "ai-catalogue AI_CATALOGUE_TABLES: declaration changed (not classified)",
-    "ai-catalogue CATALOGUE_CHECKS: declaration changed (not classified)",
-    "ai-catalogue CATALOGUE_STATES: declaration changed (not classified)",
-    "ai-catalogue CHECK_IDS: declaration changed (not classified)",
-    "ai-catalogue DISPLAY_NAME_MAX: declaration changed (not classified)",
-    "ai-catalogue EFFORT_WORD_MAX: declaration changed (not classified)",
-    "ai-catalogue ENTRY_ID_MAX: declaration changed (not classified)",
-    "ai-catalogue GRADES: declaration changed (not classified)",
-    "ai-catalogue LIFECYCLE: declaration changed (not classified)",
-    "ai-catalogue LIMIT_KINDS: declaration changed (not classified)",
-    "ai-catalogue SHOWN_IDS: declaration changed (not classified)",
-    "ai-catalogue STATE_WORDS: declaration changed (not classified)",
-    "ai-catalogue VERDICTS: declaration changed (not classified)",
-    "ai-catalogue isDate: declaration changed (not classified)",
-    "ai-catalogue isInstant: declaration changed (not classified)",
-    "ai-catalogue validatePayload: declaration changed (not classified)"
-   ],
+   "entriesThatTell": [],
    "entriesThatTellNobody": [
     "ai-catalogue DEVELOPMENT_PLAN: new entry",
     "ai-catalogue DEVELOPMENT_PROVIDER: new entry",
@@ -1834,13 +1803,15 @@
     "ai-catalogue seedFor: new entry"
    ],
    "toolTold": 12,
-   "toolToldForEntry": 2,
-   "narrowTold": 12,
-   "narrowForNothing": 11,
-   "narrowBrokenMissed": [],
+   "toolToldForEntry": 0,
+   "narrowTold": 0,
+   "narrowForNothing": 0,
+   "narrowBrokenMissed": [
+    "store-assembly"
+   ],
    "narrowAdoptedMissed": [],
    "toolForNothing": 11,
-   "entryForNothing": 2,
+   "entryForNothing": 0,
    "brokenMissed": [],
    "adoptedMissed": [],
    "brokenMissedByEntry": [
@@ -1861,23 +1832,22 @@
     "store-assembly",
     "ai-issuer"
    ],
-   "toldForEntryUsers": [
-    "ai-runs",
-    "answer-envelope"
-   ],
+   "toldForEntryUsers": [],
    "notFollowedOnly": [
     "ai-accounts",
     "agent-model",
     "ai-use",
+    "ai-runs",
     "agent-runner",
     "agent-worker",
     "ai-gate",
     "surface-declarations",
     "op-declarations",
+    "answer-envelope",
     "store-assembly",
     "ai-issuer"
    ],
-   "ms": 78364,
+   "ms": 44901,
    "recordForNothing": 11
   },
   {
@@ -1888,36 +1858,18 @@
    "broken": [],
    "adopted": [],
    "listingChanged": true,
-   "entriesThatTell": [
-    "ai-catalogue AI_CATALOGUE_DECLARATIONS: declaration changed (not classified)",
-    "ai-catalogue AI_CATALOGUE_TABLES: declaration changed (not classified)",
-    "ai-catalogue CATALOGUE_CHECKS: declaration changed (not classified)",
-    "ai-catalogue CATALOGUE_STATES: declaration changed (not classified)",
-    "ai-catalogue CHECK_IDS: declaration changed (not classified)",
-    "ai-catalogue DISPLAY_NAME_MAX: declaration changed (not classified)",
-    "ai-catalogue EFFORT_WORD_MAX: declaration changed (not classified)",
-    "ai-catalogue ENTRY_ID_MAX: declaration changed (not classified)",
-    "ai-catalogue GRADES: declaration changed (not classified)",
-    "ai-catalogue LIFECYCLE: declaration changed (not classified)",
-    "ai-catalogue LIMIT_KINDS: declaration changed (not classified)",
-    "ai-catalogue SHOWN_IDS: declaration changed (not classified)",
-    "ai-catalogue STATE_WORDS: declaration changed (not classified)",
-    "ai-catalogue VERDICTS: declaration changed (not classified)",
-    "ai-catalogue isDate: declaration changed (not classified)",
-    "ai-catalogue isInstant: declaration changed (not classified)",
-    "ai-catalogue validatePayload: declaration changed (not classified)"
-   ],
+   "entriesThatTell": [],
    "entriesThatTellNobody": [
     "ai-catalogue DEVELOPMENT_ADAPTERS: new entry"
    ],
    "toolTold": 12,
-   "toolToldForEntry": 2,
-   "narrowTold": 12,
-   "narrowForNothing": 12,
+   "toolToldForEntry": 0,
+   "narrowTold": 0,
+   "narrowForNothing": 0,
    "narrowBrokenMissed": [],
    "narrowAdoptedMissed": [],
    "toolForNothing": 12,
-   "entryForNothing": 2,
+   "entryForNothing": 0,
    "brokenMissed": [],
    "adoptedMissed": [],
    "brokenMissedByEntry": [],
@@ -1936,23 +1888,22 @@
     "store-assembly",
     "ai-issuer"
    ],
-   "toldForEntryUsers": [
-    "ai-runs",
-    "answer-envelope"
-   ],
+   "toldForEntryUsers": [],
    "notFollowedOnly": [
     "ai-accounts",
     "agent-model",
     "ai-use",
+    "ai-runs",
     "agent-runner",
     "agent-worker",
     "ai-gate",
     "surface-declarations",
     "op-declarations",
+    "answer-envelope",
     "store-assembly",
     "ai-issuer"
    ],
-   "ms": 74534,
+   "ms": 44976,
    "recordForNothing": 12
   },
   {
@@ -2037,7 +1988,7 @@
     "answer-envelope",
     "ai-issuer"
    ],
-   "ms": 77773,
+   "ms": 44891,
    "recordForNothing": 11
   },
   {
@@ -2058,9 +2009,6 @@
    "listingChanged": true,
    "entriesThatTell": [
     "ai-use AI_USE_CHECKS: hands back differently",
-    "ai-use AI_USE_SCHEMA: declaration changed (not classified)",
-    "ai-use AI_USE_TABLES: declaration changed (not classified)",
-    "ai-use AI_USE_WORDS: declaration changed (not classified)",
     "ai-use AccountLimits: accepts more, hands back differently",
     "ai-use AccountLimitsAnswer: accepts more, hands back differently",
     "ai-use AccountUsage: hands back differently",
@@ -2096,31 +2044,23 @@
     "ai-use EstimateRequest: accepts more, hands back differently",
     "ai-use Estimated: cannot stand in, hands back differently",
     "ai-use ExploreAllowed: cannot stand in, hands back differently",
-    "ai-use LIMIT_FIELD_WORD: declaration changed (not classified)",
-    "ai-use LIMIT_WORD_BY_SCOPE: declaration changed (not classified)",
     "ai-use LimitChange: hands back differently",
     "ai-use LimitHistoryRow: accepts more, hands back differently",
     "ai-use LimitReachedRefusal: bound changed",
     "ai-use LimitRequest: bound changed",
     "ai-use LimitSetAnswer: accepts more, hands back differently",
-    "ai-use MONTH_WORD: declaration changed (not classified)",
     "ai-use MyUsage: hands back differently",
     "ai-use MyUsageAnswer: cannot stand in, hands back differently",
-    "ai-use PERIOD_WORD: declaration changed (not classified)",
     "ai-use PendingAsk: cannot stand in, hands back differently",
     "ai-use ReachedLimit: cannot stand in, hands back differently, bound changed",
     "ai-use RelayedRefusal: hands back differently",
     "ai-use Sums: hands back differently",
-    "ai-use UNJUDGED_WORD: declaration changed (not classified)",
     "ai-use Usage: accepts more, hands back differently, bound changed",
     "ai-use UsageEntry: accepts more, hands back differently, bound changed",
     "ai-use UsageRow: cannot stand in, hands back differently",
     "ai-use UseOverTime: cannot stand in, hands back differently, bound changed",
     "ai-use UseOverTimeAnswer: cannot stand in, hands back differently",
     "ai-use UseSums: hands back differently",
-    "ai-use WHEN_WORD: declaration changed (not classified)",
-    "ai-use WHOSE_WORD: declaration changed (not classified)",
-    "ai-use fillWords: declaration changed (not classified)",
     "ai-use op:ailimits: hands back differently",
     "ai-use op:ailimitset: hands back differently, bound changed",
     "ai-use op:aiusage: hands back differently",
@@ -2129,8 +2069,6 @@
     "ai-use table:ai_limit_history: accepts more, hands back differently",
     "ai-use table:ai_usage: cannot stand in, hands back differently",
     "ai-use table:ai_use_acts: cannot stand in, hands back differently",
-    "ai-use useInlineWord: declaration changed (not classified)",
-    "ai-use useNameWord: declaration changed (not classified)",
     "store-door controlPlaneRoutes: hands back differently"
    ],
    "entriesThatTellNobody": [
@@ -2305,7 +2243,7 @@
     "answer-envelope",
     "store-ask"
    ],
-   "ms": 117656,
+   "ms": 71915,
    "recordForNothing": 12
   },
   {
@@ -2395,7 +2333,7 @@
     "store-ask",
     "plane"
    ],
-   "ms": 120424,
+   "ms": 76120,
    "recordForNothing": 18
   },
   {
@@ -2480,7 +2418,7 @@
     "store-ask",
     "plane"
    ],
-   "ms": 114805,
+   "ms": 75496,
    "recordForNothing": 19
   },
   {
@@ -2520,7 +2458,7 @@
    "toldUsers": [],
    "toldForEntryUsers": [],
    "notFollowedOnly": [],
-   "ms": 142000,
+   "ms": 92711,
    "recordForNothing": 17
   },
   {
@@ -2560,7 +2498,7 @@
    "toldUsers": [],
    "toldForEntryUsers": [],
    "notFollowedOnly": [],
-   "ms": 128527,
+   "ms": 99182,
    "recordForNothing": 17
   },
   {
@@ -2588,7 +2526,7 @@
    "toldUsers": [],
    "toldForEntryUsers": [],
    "notFollowedOnly": [],
-   "ms": 126522,
+   "ms": 102589,
    "recordForNothing": 19
   },
   {
@@ -2625,7 +2563,7 @@
     "control-plane",
     "plane"
    ],
-   "ms": 110815,
+   "ms": 99362,
    "recordForNothing": 19
   },
   {
@@ -2695,7 +2633,7 @@
     "control-plane",
     "plane"
    ],
-   "ms": 97326,
+   "ms": 92979,
    "recordForNothing": 19
   }
  ]

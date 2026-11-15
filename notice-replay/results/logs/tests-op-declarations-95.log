@@ -1,0 +1,11 @@
+17:58:33 preparing op-declarations:95
+17:58:45 npm ci agent-runner 0
+17:58:48 npm ci bio-plane 0
+17:58:48 npm ci file-scanner 0
+17:58:51 npm ci newgroup 0
+17:58:52 npm ci ocr-worker 0
+17:58:55 npm ci pdf-worker 0
+17:58:55 npm ci reader-container 0
+17:58:58 npm ci sheet-worker 0
+17:59:00 npm ci site 0
+17:59:36 before admission 79 pass 0 fail

@@ -55,54 +55,6 @@
   },
   {
    "module": "ai-use",
-   "entry": "AI_USE_SCHEMA",
-   "changes": [
-    "declaration changed (not classified)"
-   ],
-   "tells": "users",
-   "before": {
-    "kind": "value",
-    "handsBack": "string"
-   },
-   "after": {
-    "kind": "value",
-    "handsBack": "string"
-   }
-  },
-  {
-   "module": "ai-use",
-   "entry": "AI_USE_TABLES",
-   "changes": [
-    "declaration changed (not classified)"
-   ],
-   "tells": "users",
-   "before": {
-    "kind": "value",
-    "handsBack": "readonly { derive: \"stored\"; export: \"admin-only\"; expunge: \"none\"; keys: readonly string[]; name: string; purge: \"clear\"; sight: \"group\"; version_chain: false }[]"
-   },
-   "after": {
-    "kind": "value",
-    "handsBack": "readonly { derive: \"stored\"; export: \"admin-only\"; expunge: \"none\"; keys: readonly string[]; name: string; purge: \"clear\"; sight: \"group\"; version_chain: false }[]"
-   }
-  },
-  {
-   "module": "ai-use",
-   "entry": "AI_USE_WORDS",
-   "changes": [
-    "declaration changed (not classified)"
-   ],
-   "tells": "users",
-   "before": {
-    "kind": "value",
-    "handsBack": "{ ai.limitfield.amount: string; ai.limitfield.count: string; ai.limitfield.inclusive: string; ai.limitfield.owner: string; ai.limitfield.period: string; ai.limitfield.scope: string; ai.limitfield.unit: string; ai.limitfield.use: string; ai.period.day: string; ai.period.month: string; ai.queue.exploreask: string; ai.refused.exploreaskinvalid: string; ai.refused.explorenotenabled: string; ai.refused.exploreoutofscope: string; ai.refused.limit: string; ai.refused.limit.member: string; ai.refused.limit.overall: string; ai.refused.limit.unjudged: string; ai.refused.limitinvalid: string; ai.refused.unitunavailable: string; ai.use.account.inline: string; ai.use.account.name: string; ai.use.ask.inline: string; ai.use.ask.name: string; ai.use.draft.inline: string; ai.use.draft.name: string; ai.use.enquire.inline: string; ai.use.enquire.name: string; ai.use.explore.inline: string; ai.use.explore.name: string; ai.use.read.inline: string; ai.use.read.name: string; ai.use.run.inline: string; ai.use.run.name: string; ai.use.standing.inline: string; ai.use.standing.name: string; ai.use.transcribe.inline: string; ai.use.transcribe.name: string; ai.when.day: string; ai.when.month: string; ai.whose.group: string; ai.whose.own: string; ai.whose.project: string; date.month.april: string; date.month.august: string; date.month.december: string; date.month.february: string; date.month.january: string; date.month.july: string; date.month.june: string; date.month.march: string; date.month.may: string; date.month.november: string; date.month.october: string; date.month.september: string }"
-   },
-   "after": {
-    "kind": "value",
-    "handsBack": "{ ai.limitfield.amount: string; ai.limitfield.count: string; ai.limitfield.inclusive: string; ai.limitfield.owner: string; ai.limitfield.period: string; ai.limitfield.scope: string; ai.limitfield.unit: string; ai.limitfield.use: string; ai.period.day: string; ai.period.month: string; ai.queue.exploreask: string; ai.refused.exploreaskinvalid: string; ai.refused.explorenotenabled: string; ai.refused.exploreoutofscope: string; ai.refused.limit: string; ai.refused.limit.member: string; ai.refused.limit.overall: string; ai.refused.limit.unjudged: string; ai.refused.limitinvalid: string; ai.refused.unitunavailable: string; ai.use.account.inline: string; ai.use.account.name: string; ai.use.ask.inline: string; ai.use.ask.name: string; ai.use.draft.inline: string; ai.use.draft.name: string; ai.use.enquire.inline: string; ai.use.enquire.name: string; ai.use.explore.inline: string; ai.use.explore.name: string; ai.use.read.inline: string; ai.use.read.name: string; ai.use.run.inline: string; ai.use.run.name: string; ai.use.standing.inline: string; ai.use.standing.name: string; ai.use.transcribe.inline: string; ai.use.transcribe.name: string; ai.when.day: string; ai.when.month: string; ai.whose.group: string; ai.whose.own: string; ai.whose.project: string; date.month.april: string; date.month.august: string; date.month.december: string; date.month.february: string; date.month.january: string; date.month.july: string; date.month.june: string; date.month.march: string; date.month.may: string; date.month.november: string; date.month.october: string; date.month.september: string }"
-   }
-  },
-  {
-   "module": "ai-use",
    "entry": "AccountLimits",
    "changes": [
     "accepts more",
@@ -1631,38 +1583,6 @@
   },
   {
    "module": "ai-use",
-   "entry": "LIMIT_FIELD_WORD",
-   "changes": [
-    "declaration changed (not classified)"
-   ],
-   "tells": "users",
-   "before": {
-    "kind": "value",
-    "handsBack": "{ [key: string]: string }"
-   },
-   "after": {
-    "kind": "value",
-    "handsBack": "{ [key: string]: string }"
-   }
-  },
-  {
-   "module": "ai-use",
-   "entry": "LIMIT_WORD_BY_SCOPE",
-   "changes": [
-    "declaration changed (not classified)"
-   ],
-   "tells": "users",
-   "before": {
-    "kind": "value",
-    "handsBack": "{ overall: \"ai.refused.limit.overall\"; per_member: \"ai.refused.limit.member\" }"
-   },
-   "after": {
-    "kind": "value",
-    "handsBack": "{ overall: \"ai.refused.limit.overall\"; per_member: \"ai.refused.limit.member\" }"
-   }
-  },
-  {
-   "module": "ai-use",
    "entry": "Label",
    "changes": [
     "new entry"
@@ -1818,22 +1738,6 @@
   },
   {
    "module": "ai-use",
-   "entry": "MONTH_WORD",
-   "changes": [
-    "declaration changed (not classified)"
-   ],
-   "tells": "users",
-   "before": {
-    "kind": "value",
-    "handsBack": "readonly string[]"
-   },
-   "after": {
-    "kind": "value",
-    "handsBack": "readonly string[]"
-   }
-  },
-  {
-   "module": "ai-use",
    "entry": "MemberUse",
    "changes": [
     "new entry"
@@ -1927,22 +1831,6 @@
     "side": "both"
    },
    "tells": "nobody"
-  },
-  {
-   "module": "ai-use",
-   "entry": "PERIOD_WORD",
-   "changes": [
-    "declaration changed (not classified)"
-   ],
-   "tells": "users",
-   "before": {
-    "kind": "value",
-    "handsBack": "{ day: \"ai.period.day\"; month: \"ai.period.month\" }"
-   },
-   "after": {
-    "kind": "value",
-    "handsBack": "{ day: \"ai.period.day\"; month: \"ai.period.month\" }"
-   }
   },
   {
    "module": "ai-use",
@@ -2541,22 +2429,6 @@
   },
   {
    "module": "ai-use",
-   "entry": "UNJUDGED_WORD",
-   "changes": [
-    "declaration changed (not classified)"
-   ],
-   "tells": "users",
-   "before": {
-    "kind": "value",
-    "handsBack": "\"ai.limitfield.amount\" | \"ai.limitfield.count\" | \"ai.limitfield.inclusive\" | \"ai.limitfield.owner\" | \"ai.limitfield.period\" | \"ai.limitfield.scope\" | \"ai.limitfield.unit\" | \"ai.limitfield.use\" | \"ai.period.day\" | \"ai.period.month\" | \"ai.queue.exploreask\" | \"ai.refused.exploreaskinvalid\" | \"ai.refused.explorenotenabled\" | \"ai.refused.exploreoutofscope\" | \"ai.refused.limit\" | \"ai.refused.limit.member\" | \"ai.refused.limit.overall\" | \"ai.refused.limit.unjudged\" | \"ai.refused.limitinvalid\" | \"ai.refused.unitunavailable\" | \"ai.use.account.inline\" | \"ai.use.account.name\" | \"ai.use.ask.inline\" | \"ai.use.ask.name\" | \"ai.use.draft.inline\" | \"ai.use.draft.name\" | \"ai.use.enquire.inline\" | \"ai.use.enquire.name\" | \"ai.use.explore.inline\" | \"ai.use.explore.name\" | \"ai.use.read.inline\" | \"ai.use.read.name\" | \"ai.use.run.inline\" | \"ai.use.run.name\" | \"ai.use.standing.inline\" | \"ai.use.standing.name\" | \"ai.use.transcribe.inline\" | \"ai.use.transcribe.name\" | \"ai.when.day\" | \"ai.when.month\" | \"ai.whose.group\" | \"ai.whose.own\" | \"ai.whose.project\" | \"date.month.april\" | \"date.month.august\" | \"date.month.december\" | \"date.month.february\" | \"date.month.january\" | \"date.month.july\" | \"date.month.june\" | \"date.month.march\" | \"date.month.may\" | \"date.month.november\" | \"date.month.october\" | \"date.month.september\""
-   },
-   "after": {
-    "kind": "value",
-    "handsBack": "\"ai.limitfield.amount\" | \"ai.limitfield.count\" | \"ai.limitfield.inclusive\" | \"ai.limitfield.owner\" | \"ai.limitfield.period\" | \"ai.limitfield.scope\" | \"ai.limitfield.unit\" | \"ai.limitfield.use\" | \"ai.period.day\" | \"ai.period.month\" | \"ai.queue.exploreask\" | \"ai.refused.exploreaskinvalid\" | \"ai.refused.explorenotenabled\" | \"ai.refused.exploreoutofscope\" | \"ai.refused.limit\" | \"ai.refused.limit.member\" | \"ai.refused.limit.overall\" | \"ai.refused.limit.unjudged\" | \"ai.refused.limitinvalid\" | \"ai.refused.unitunavailable\" | \"ai.use.account.inline\" | \"ai.use.account.name\" | \"ai.use.ask.inline\" | \"ai.use.ask.name\" | \"ai.use.draft.inline\" | \"ai.use.draft.name\" | \"ai.use.enquire.inline\" | \"ai.use.enquire.name\" | \"ai.use.explore.inline\" | \"ai.use.explore.name\" | \"ai.use.read.inline\" | \"ai.use.read.name\" | \"ai.use.run.inline\" | \"ai.use.run.name\" | \"ai.use.standing.inline\" | \"ai.use.standing.name\" | \"ai.use.transcribe.inline\" | \"ai.use.transcribe.name\" | \"ai.when.day\" | \"ai.when.month\" | \"ai.whose.group\" | \"ai.whose.own\" | \"ai.whose.project\" | \"date.month.april\" | \"date.month.august\" | \"date.month.december\" | \"date.month.february\" | \"date.month.january\" | \"date.month.july\" | \"date.month.june\" | \"date.month.march\" | \"date.month.may\" | \"date.month.november\" | \"date.month.october\" | \"date.month.september\""
-   }
-  },
-  {
-   "module": "ai-use",
    "entry": "USE_DAYS",
    "changes": [
     "new entry"
@@ -2831,56 +2703,6 @@
     "kind": "kind",
     "handsBack": "{ cache_creation_input_tokens: number; cache_read_input_tokens: number; calls: number; cost?: null; cost_estimated_sum?: { [key: string]: number } | null; cost_reported_sum?: { [key: string]: number } | null; input_tokens: number; not_measurable?: true; output_tokens: number; reasoning_tokens: number; tokens: number; tokens_unstated: number; unpriced_calls: number; unstated: string[]; use: string; word?: string }",
     "side": "handsBack"
-   }
-  },
-  {
-   "module": "ai-use",
-   "entry": "WHEN_WORD",
-   "changes": [
-    "declaration changed (not classified)"
-   ],
-   "tells": "users",
-   "before": {
-    "kind": "value",
-    "handsBack": "{ day: \"ai.when.day\"; month: \"ai.when.month\" }"
-   },
-   "after": {
-    "kind": "value",
-    "handsBack": "{ day: \"ai.when.day\"; month: \"ai.when.month\" }"
-   }
-  },
-  {
-   "module": "ai-use",
-   "entry": "WHOSE_WORD",
-   "changes": [
-    "declaration changed (not classified)"
-   ],
-   "tells": "users",
-   "before": {
-    "kind": "value",
-    "handsBack": "{ group: \"ai.whose.group\"; own: \"ai.whose.own\"; project: \"ai.whose.project\" }"
-   },
-   "after": {
-    "kind": "value",
-    "handsBack": "{ group: \"ai.whose.group\"; own: \"ai.whose.own\"; project: \"ai.whose.project\" }"
-   }
-  },
-  {
-   "module": "ai-use",
-   "entry": "fillWords",
-   "changes": [
-    "declaration changed (not classified)"
-   ],
-   "tells": "users",
-   "before": {
-    "kind": "function",
-    "accepts": "(arg0: string, arg1: { [key: string]: anything })",
-    "handsBack": "string"
-   },
-   "after": {
-    "kind": "function",
-    "accepts": "(arg0: string, arg1: { [key: string]: anything })",
-    "handsBack": "string"
    }
   },
   {
@@ -3286,42 +3108,6 @@
    }
   },
   {
-   "module": "ai-use",
-   "entry": "useInlineWord",
-   "changes": [
-    "declaration changed (not classified)"
-   ],
-   "tells": "users",
-   "before": {
-    "kind": "function",
-    "accepts": "(arg0: string)",
-    "handsBack": "string"
-   },
-   "after": {
-    "kind": "function",
-    "accepts": "(arg0: string)",
-    "handsBack": "string"
-   }
-  },
-  {
-   "module": "ai-use",
-   "entry": "useNameWord",
-   "changes": [
-    "declaration changed (not classified)"
-   ],
-   "tells": "users",
-   "before": {
-    "kind": "function",
-    "accepts": "(arg0: string)",
-    "handsBack": "string"
-   },
-   "after": {
-    "kind": "function",
-    "accepts": "(arg0: string)",
-    "handsBack": "string"
-   }
-  },
-  {
    "module": "store-door",
    "entry": "controlPlaneRoutes",
    "changes": [
@@ -3344,20 +3130,6 @@
   {
    "user": "ai-runs",
    "reasons": [
-    {
-     "module": "ai-use",
-     "entry": "AI_USE_TABLES",
-     "changes": [
-      "declaration changed (not classified)"
-     ],
-     "lines": [
-      "ai-runs/test/t50.test.mjs:8",
-      "ai-runs/test/t50.test.mjs:134",
-      "ai-runs/test/usage.test.mjs:11",
-      "ai-runs/test/usage.test.mjs:19"
-     ],
-     "through": null
-    },
     {
      "module": "ai-use",
      "entry": "ActualCost",
@@ -3888,18 +3660,6 @@
    "reasons": [
     {
      "module": "ai-use",
-     "entry": "AI_USE_TABLES",
-     "changes": [
-      "declaration changed (not classified)"
-     ],
-     "lines": [
-      "store-assembly/test/t41.test.mjs:17",
-      "store-assembly/test/t41.test.mjs:32"
-     ],
-     "through": null
-    },
-    {
-     "module": "ai-use",
      "entry": "ActualCost",
      "changes": [
       "cannot stand in",
@@ -4258,11 +4018,11 @@
  "notTold": [],
  "warnings": [],
  "interfaceChanged": true,
- "summary": "2 module(s) changed their listing; 75 entries changed in a way that tells; 18 user(s) told.",
+ "summary": "2 module(s) changed their listing; 62 entries changed in a way that tells; 18 user(s) told.",
  "replay": {
   "change": "ai-use:105",
-  "ms": 117656,
-  "ranAt": "2026-11-15T17:13:48.834Z",
+  "ms": 71915,
+  "ranAt": "2026-11-15T17:51:36.515Z",
   "tool": "notice-proof/tool/p3tool.mjs",
   "commentedUsers": null
  }

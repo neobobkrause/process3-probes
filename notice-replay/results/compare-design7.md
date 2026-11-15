@@ -1,10 +1,10 @@
 # Replay: the tool against the record, change by change
 
-Written by `replay/compare.mjs` at 2026-11-15T17:21:58.819Z, from `results/notice-design7`. Measured, except "broken" and "adopted", which are the study session's judged reading of the record.
+Written by `replay/compare.mjs` at 2026-11-15T17:58:37.095Z, from `results/notice-design7`. Measured, except "broken" and "adopted", which are the study session's judged reading of the record.
 
 | Change | Record told | Listing changed | Tool told | of them for an entry | Tool for nothing | Broken (missed by tool) | Adopted (missed by tool) | Users whose tests newly fail | Broken caught by tests |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| ai-runs:96 | 29 | yes | 29 | 22 | 18 | 11 | 0 | not run | - |
+| ai-runs:96 | 29 | yes | 29 | 22 | 18 | 11 | 0 | op-declarations, store-assembly, plane | 1 of 11 |
 | ai-runs:213 | 29 | yes | 29 | 18 | 29 | 0 | 0 | not run | - |
 | ai-runs:323 | 29 | yes | 29 | 18 | 29 | 0 | 0 | not run | - |
 | ai-runs:348 | 29 | yes | 29 | 21 | 28 | 0 | 1 | not run | - |
@@ -60,10 +60,10 @@ Written by `replay/compare.mjs` at 2026-11-15T17:21:58.819Z, from `results/notic
  "entryForNothing": 248,
  "entryBrokenMissed": 6,
  "entryAdoptedMissed": 2,
- "testsChanges": 0,
- "testsUserRuns": 0,
- "testsUsersFailing": 0,
- "brokenCaughtByTests": 0,
- "brokenInChangesWithTests": 0
+ "testsChanges": 1,
+ "testsUserRuns": 22,
+ "testsUsersFailing": 3,
+ "brokenCaughtByTests": 1,
+ "brokenInChangesWithTests": 11
 }
 ```

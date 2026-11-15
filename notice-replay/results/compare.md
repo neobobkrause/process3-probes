@@ -1,10 +1,10 @@
 # Replay: the tool against the record, change by change
 
-Written by `replay/compare.mjs` at 2026-11-15T17:21:58.692Z, from `results/notice`. Measured, except "broken" and "adopted", which are the study session's judged reading of the record.
+Written by `replay/compare.mjs` at 2026-11-15T17:57:58.032Z, from `results/notice`. Measured, except "broken" and "adopted", which are the study session's judged reading of the record.
 
 | Change | Record told | Listing changed | Tool told | of them for an entry | Tool for nothing | Broken (missed by tool) | Adopted (missed by tool) | Users whose tests newly fail | Broken caught by tests |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| ai-runs:96 | 29 | yes | 29 | 22 | 18 | 11 | 0 | not run | - |
+| ai-runs:96 | 29 | yes | 29 | 22 | 18 | 11 | 0 | op-declarations, store-assembly, plane | 1 of 11 |
 | ai-runs:213 | 29 | no | 0 | 0 | 0 | 0 | 0 | not run | - |
 | ai-runs:323 | 29 | yes | 29 | 19 | 29 | 0 | 0 | not run | - |
 | ai-runs:348 | 29 | yes | 29 | 10 | 28 | 0 | 1 | not run | - |
@@ -23,10 +23,10 @@ Written by `replay/compare.mjs` at 2026-11-15T17:21:58.692Z, from `results/notic
 | op-declarations:321 | 21 | no | 0 | 0 | 0 | 0 | 0 | not run | - |
 | ai-catalogue:194 | 9 | yes | 9 | 3 | 9 | 0 | 0 | not run | - |
 | ai-catalogue:204 | 9 | no | 0 | 0 | 0 | 0 | 0 | not run | - |
-| ai-catalogue:317 | 11 | yes | 11 | 5 | 11 | 0 | 0 | not run | - |
+| ai-catalogue:317 | 11 | yes | 11 | 4 | 11 | 0 | 0 | not run | - |
 | ai-catalogue:336 | 11 | no | 0 | 0 | 0 | 0 | 0 | not run | - |
-| ai-catalogue:484 | 12 | yes | 12 | 2 | 11 | 1 | 0 | not run | - |
-| ai-catalogue:611 | 12 | yes | 12 | 2 | 12 | 0 | 0 | not run | - |
+| ai-catalogue:484 | 12 | yes | 12 | 0 | 11 | 1 | 0 | not run | - |
+| ai-catalogue:611 | 12 | yes | 12 | 0 | 12 | 0 | 0 | not run | - |
 | ai-catalogue:1097 | 11 | yes | 12 | 2 | 12 | 0 | 0 | not run | - |
 | ai-use:105 | 18 | yes | 18 | 9 | 12 | 1 | 5 | not run | - |
 | ai-use:378 | 19 | yes | 19 | 7 | 18 | 0 | 1 | not run | - |
@@ -52,18 +52,18 @@ Written by `replay/compare.mjs` at 2026-11-15T17:21:58.692Z, from `results/notic
  "toolForNothing": 377,
  "toolBrokenMissed": 3,
  "toolAdoptedMissed": 2,
- "narrowTold": 387,
- "narrowForNothing": 356,
- "narrowBrokenMissed": 3,
+ "narrowTold": 363,
+ "narrowForNothing": 333,
+ "narrowBrokenMissed": 4,
  "narrowAdoptedMissed": 2,
- "entryTold": 145,
- "entryForNothing": 124,
+ "entryTold": 140,
+ "entryForNothing": 119,
  "entryBrokenMissed": 11,
  "entryAdoptedMissed": 4,
- "testsChanges": 0,
- "testsUserRuns": 0,
- "testsUsersFailing": 0,
- "brokenCaughtByTests": 0,
- "brokenInChangesWithTests": 0
+ "testsChanges": 1,
+ "testsUserRuns": 22,
+ "testsUsersFailing": 3,
+ "brokenCaughtByTests": 1,
+ "brokenInChangesWithTests": 11
 }
 ```

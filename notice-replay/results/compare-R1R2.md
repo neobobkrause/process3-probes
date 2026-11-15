@@ -1,6 +1,6 @@
 # Replay: the tool against the record, change by change
 
-Written by `replay/compare.mjs` at 2026-11-15T17:24:39.694Z, from `results/notice-R1R2`. Measured, except "broken" and "adopted", which are the study session's judged reading of the record.
+Written by `replay/compare.mjs` at 2026-11-15T17:58:37.168Z, from `results/notice-R1R2`. Measured, except "broken" and "adopted", which are the study session's judged reading of the record.
 
 | Change | Record told | Listing changed | Tool told | of them for an entry | Tool for nothing | Broken (missed by tool) | Adopted (missed by tool) | Users whose tests newly fail | Broken caught by tests |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
