@@ -1,0 +1,480 @@
+{
+  "id": "P08-newly-required",
+  "title": "Opening a booking now requires a contact email",
+  "provider": "bookings",
+  "covers": [
+    "field newly required"
+  ],
+  "tool": {
+    "firstCommentsStep": false,
+    "interfaceChanged": true,
+    "summary": "2 module(s) changed their listing; 6 entries changed in a way that tells; 3 user(s) told.",
+    "entries": [
+      {
+        "module": "bookings",
+        "entry": "BookingHandlers.bookopen",
+        "changes": [
+          "cannot stand in",
+          "bound changed"
+        ],
+        "tells": "users",
+        "before": {
+          "kind": "method",
+          "accepts": "(arg0: { day: string; nights: number; note?: string; party: number; room: string })",
+          "handsBack": "{ day: string; id: string; nights: number; note?: string; party: number; room: string; state: \"cancelled\" | \"open\"; total: { cents: number; currency: \"EUR\" | \"GBP\" | \"USD\" }; until: string }",
+          "bounds": [
+            "cents: whole number, 0 to 10,000,000 inclusive",
+            "day: a real calendar day written YYYY-MM-DD",
+            "nights: whole number, 1 to 14",
+            "party: whole number, 1 to 200, and no more than the room's seats"
+          ]
+        },
+        "after": {
+          "kind": "method",
+          "accepts": "(arg0: { contact: string; day: string; nights: number; note?: string; party: number; room: string })",
+          "handsBack": "{ day: string; id: string; nights: number; note?: string; party: number; room: string; state: \"cancelled\" | \"open\"; total: { cents: number; currency: \"EUR\" | \"GBP\" | \"USD\" }; until: string }",
+          "bounds": [
+            "cents: whole number, 0 to 10,000,000 inclusive",
+            "contact: an email address, something@something.something",
+            "day: a real calendar day written YYYY-MM-DD",
+            "nights: whole number, 1 to 14",
+            "party: whole number, 1 to 200, and no more than the room's seats"
+          ]
+        }
+      },
+      {
+        "module": "bookings",
+        "entry": "BookingRequest",
+        "changes": [
+          "cannot stand in",
+          "bound changed"
+        ],
+        "tells": "users",
+        "before": {
+          "kind": "kind",
+          "accepts": "{ day: string; nights: number; note?: string; party: number; room: string }",
+          "side": "accepts"
+        },
+        "after": {
+          "kind": "kind",
+          "accepts": "{ contact: string; day: string; nights: number; note?: string; party: number; room: string }",
+          "bounds": [
+            "contact: an email address, something@something.something"
+          ],
+          "side": "accepts"
+        }
+      },
+      {
+        "module": "bookings",
+        "entry": "Bookings.open",
+        "changes": [
+          "cannot stand in",
+          "bound changed"
+        ],
+        "tells": "users",
+        "before": {
+          "kind": "method",
+          "accepts": "(arg0: { day: string; nights: number; note?: string; party: number; room: string })",
+          "handsBack": "{ day: string; id: string; nights: number; note?: string; party: number; room: string; state: \"cancelled\" | \"open\"; total: { cents: number; currency: \"EUR\" | \"GBP\" | \"USD\" }; until: string }",
+          "bounds": [
+            "cents: whole number, 0 to 10,000,000 inclusive",
+            "day: a real calendar day written YYYY-MM-DD",
+            "nights: whole number, 1 to 14",
+            "party: whole number, 1 to 200, and no more than the room's seats"
+          ]
+        },
+        "after": {
+          "kind": "method",
+          "accepts": "(arg0: { contact: string; day: string; nights: number; note?: string; party: number; room: string })",
+          "handsBack": "{ day: string; id: string; nights: number; note?: string; party: number; room: string; state: \"cancelled\" | \"open\"; total: { cents: number; currency: \"EUR\" | \"GBP\" | \"USD\" }; until: string }",
+          "bounds": [
+            "cents: whole number, 0 to 10,000,000 inclusive",
+            "contact: an email address, something@something.something",
+            "day: a real calendar day written YYYY-MM-DD",
+            "nights: whole number, 1 to 14",
+            "party: whole number, 1 to 200, and no more than the room's seats"
+          ]
+        }
+      },
+      {
+        "module": "bookings",
+        "entry": "op:bookopen",
+        "changes": [
+          "cannot stand in",
+          "bound changed"
+        ],
+        "tells": "users",
+        "before": {
+          "kind": "operation",
+          "accepts": "{ day: string; nights: number; note?: string; party: number; room: string }",
+          "handsBack": "{ day: string; id: string; nights: number; note?: string; party: number; room: string; state: \"cancelled\" | \"open\"; total: { cents: number; currency: \"EUR\" | \"GBP\" | \"USD\" }; until: string }",
+          "bounds": [
+            "cents: whole number, 0 to 10,000,000 inclusive",
+            "day: a real calendar day written YYYY-MM-DD",
+            "nights: whole number, 1 to 14",
+            "party: whole number, 1 to 200, and no more than the room's seats"
+          ]
+        },
+        "after": {
+          "kind": "operation",
+          "accepts": "{ contact: string; day: string; nights: number; note?: string; party: number; room: string }",
+          "handsBack": "{ day: string; id: string; nights: number; note?: string; party: number; room: string; state: \"cancelled\" | \"open\"; total: { cents: number; currency: \"EUR\" | \"GBP\" | \"USD\" }; until: string }",
+          "bounds": [
+            "cents: whole number, 0 to 10,000,000 inclusive",
+            "contact: an email address, something@something.something",
+            "day: a real calendar day written YYYY-MM-DD",
+            "nights: whole number, 1 to 14",
+            "party: whole number, 1 to 200, and no more than the room's seats"
+          ]
+        }
+      },
+      {
+        "module": "door",
+        "entry": "AllOps",
+        "changes": [
+          "cannot stand in",
+          "hands back differently",
+          "bound changed"
+        ],
+        "tells": "users",
+        "before": {
+          "kind": "kind",
+          "accepts": "{ bookcancel: { req: { id: string }; res: { day: string; id: string; nights: number; note?: string; party: number; room: string; state: \"cancelled\" | \"open\"; total: { cents: number; currency: \"EUR\" | \"GBP\" | \"USD\" }; until: string } }; bookopen: { req: { day: string; nights: number; note?: string; party: number; room: string }; res: { day: string; id: string; nights: number; note?: string; party: number; room: string; state: \"cancelled\" | \"open\"; total: { cents: number; currency: \"EUR\" | \"GBP\" | \"USD\" }; until: string } }; bookquote: { req: { nights: number; party: number; room: string }; res: { total: { cents: number; currency: \"EUR\" | \"GBP\" | \"USD\" } } }; bookstatus: { req: { id: string }; res: { room: string; state: \"cancelled\" | \"open\"; total: { cents: number; currency: \"EUR\" | \"GBP\" | \"USD\" } } }; roomlist: { req: { kind?: \"hall\" | \"kitchen\" | \"studio\" }; res: { rooms: { id: string; kind: \"hall\" | \"kitchen\" | \"studio\"; name: string; seats: number }[] } } }",
+          "handsBack": "{ bookcancel: { req: { id: string }; res: { day: string; id: string; nights: number; note?: string; party: number; room: string; state: \"cancelled\" | \"open\"; total: { cents: number; currency: \"EUR\" | \"GBP\" | \"USD\" }; until: string } }; bookopen: { req: { day: string; nights: number; note?: string; party: number; room: string }; res: { day: string; id: string; nights: number; note?: string; party: number; room: string; state: \"cancelled\" | \"open\"; total: { cents: number; currency: \"EUR\" | \"GBP\" | \"USD\" }; until: string } }; bookquote: { req: { nights: number; party: number; room: string }; res: { total: { cents: number; currency: \"EUR\" | \"GBP\" | \"USD\" } } }; bookstatus: { req: { id: string }; res: { room: string; state: \"cancelled\" | \"open\"; total: { cents: number; currency: \"EUR\" | \"GBP\" | \"USD\" } } }; roomlist: { req: { kind?: \"hall\" | \"kitchen\" | \"studio\" }; res: { rooms: { id: string; kind: \"hall\" | \"kitchen\" | \"studio\"; name: string; seats: number }[] } } }",
+          "bounds": [
+            "cents: whole number, 0 to 10,000,000 inclusive",
+            "day: a real calendar day written YYYY-MM-DD",
+            "nights: whole number, 1 to 14",
+            "party: whole number, 1 to 200, and no more than the room's seats",
+            "seats: whole number, 1 to 500"
+          ],
+          "side": "both"
+        },
+        "after": {
+          "kind": "kind",
+          "accepts": "{ bookcancel: { req: { id: string }; res: { day: string; id: string; nights: number; note?: string; party: number; room: string; state: \"cancelled\" | \"open\"; total: { cents: number; currency: \"EUR\" | \"GBP\" | \"USD\" }; until: string } }; bookopen: { req: { contact: string; day: string; nights: number; note?: string; party: number; room: string }; res: { day: string; id: string; nights: number; note?: string; party: number; room: string; state: \"cancelled\" | \"open\"; total: { cents: number; currency: \"EUR\" | \"GBP\" | \"USD\" }; until: string } }; bookquote: { req: { nights: number; party: number; room: string }; res: { total: { cents: number; currency: \"EUR\" | \"GBP\" | \"USD\" } } }; bookstatus: { req: { id: string }; res: { room: string; state: \"cancelled\" | \"open\"; total: { cents: number; currency: \"EUR\" | \"GBP\" | \"USD\" } } }; roomlist: { req: { kind?: \"hall\" | \"kitchen\" | \"studio\" }; res: { rooms: { id: string; kind: \"hall\" | \"kitchen\" | \"studio\"; name: string; seats: number }[] } } }",
+          "handsBack": "{ bookcancel: { req: { id: string }; res: { day: string; id: string; nights: number; note?: string; party: number; room: string; state: \"cancelled\" | \"open\"; total: { cents: number; currency: \"EUR\" | \"GBP\" | \"USD\" }; until: string } }; bookopen: { req: { contact: string; day: string; nights: number; note?: string; party: number; room: string }; res: { day: string; id: string; nights: number; note?: string; party: number; room: string; state: \"cancelled\" | \"open\"; total: { cents: number; currency: \"EUR\" | \"GBP\" | \"USD\" }; until: string } }; bookquote: { req: { nights: number; party: number; room: string }; res: { total: { cents: number; currency: \"EUR\" | \"GBP\" | \"USD\" } } }; bookstatus: { req: { id: string }; res: { room: string; state: \"cancelled\" | \"open\"; total: { cents: number; currency: \"EUR\" | \"GBP\" | \"USD\" } } }; roomlist: { req: { kind?: \"hall\" | \"kitchen\" | \"studio\" }; res: { rooms: { id: string; kind: \"hall\" | \"kitchen\" | \"studio\"; name: string; seats: number }[] } } }",
+          "bounds": [
+            "cents: whole number, 0 to 10,000,000 inclusive",
+            "contact: an email address, something@something.something",
+            "day: a real calendar day written YYYY-MM-DD",
+            "nights: whole number, 1 to 14",
+            "party: whole number, 1 to 200, and no more than the room's seats",
+            "seats: whole number, 1 to 500"
+          ],
+          "side": "both"
+        }
+      },
+      {
+        "module": "door",
+        "entry": "Handlers.bookopen",
+        "changes": [
+          "cannot stand in",
+          "bound changed"
+        ],
+        "tells": "users",
+        "before": {
+          "kind": "method",
+          "accepts": "(arg0: { day: string; nights: number; note?: string; party: number; room: string })",
+          "handsBack": "{ day: string; id: string; nights: number; note?: string; party: number; room: string; state: \"cancelled\" | \"open\"; total: { cents: number; currency: \"EUR\" | \"GBP\" | \"USD\" }; until: string }",
+          "bounds": [
+            "cents: whole number, 0 to 10,000,000 inclusive",
+            "day: a real calendar day written YYYY-MM-DD",
+            "nights: whole number, 1 to 14",
+            "party: whole number, 1 to 200, and no more than the room's seats"
+          ]
+        },
+        "after": {
+          "kind": "method",
+          "accepts": "(arg0: { contact: string; day: string; nights: number; note?: string; party: number; room: string })",
+          "handsBack": "{ day: string; id: string; nights: number; note?: string; party: number; room: string; state: \"cancelled\" | \"open\"; total: { cents: number; currency: \"EUR\" | \"GBP\" | \"USD\" }; until: string }",
+          "bounds": [
+            "cents: whole number, 0 to 10,000,000 inclusive",
+            "contact: an email address, something@something.something",
+            "day: a real calendar day written YYYY-MM-DD",
+            "nights: whole number, 1 to 14",
+            "party: whole number, 1 to 200, and no more than the room's seats"
+          ]
+        }
+      }
+    ],
+    "told": [
+      "billing",
+      "front",
+      "reports"
+    ],
+    "toldDetail": [
+      {
+        "user": "billing",
+        "reasons": [
+          {
+            "module": "bookings",
+            "entry": "BookingRequest",
+            "changes": [
+              "cannot stand in",
+              "bound changed"
+            ],
+            "lines": [
+              "billing/test/index.test.mjs:20",
+              "billing/test/index.test.mjs:31",
+              "billing/test/index.test.mjs:39"
+            ],
+            "through": null
+          },
+          {
+            "module": "bookings",
+            "entry": "Bookings.open",
+            "changes": [
+              "cannot stand in",
+              "bound changed"
+            ],
+            "lines": [
+              "billing/test/index.test.mjs:20",
+              "billing/test/index.test.mjs:31",
+              "billing/test/index.test.mjs:39"
+            ],
+            "through": null
+          }
+        ],
+        "undeclared": []
+      },
+      {
+        "user": "front",
+        "reasons": [
+          {
+            "module": "bookings",
+            "entry": "BookingRequest",
+            "changes": [
+              "cannot stand in",
+              "bound changed"
+            ],
+            "lines": [
+              "front/src/index.mjs:40",
+              "front/src/index.mjs:41",
+              "front/src/index.mjs:42",
+              "front/src/index.mjs:43",
+              "front/src/index.mjs:44"
+            ],
+            "through": null
+          },
+          {
+            "module": "bookings",
+            "entry": "op:bookopen",
+            "changes": [
+              "cannot stand in",
+              "bound changed"
+            ],
+            "lines": [
+              "front/src/index.mjs:39"
+            ],
+            "through": null
+          }
+        ],
+        "undeclared": []
+      },
+      {
+        "user": "reports",
+        "reasons": [
+          {
+            "module": "bookings",
+            "entry": "BookingRequest",
+            "changes": [
+              "cannot stand in",
+              "bound changed"
+            ],
+            "lines": [
+              "reports/test/index.test.mjs:14",
+              "reports/test/index.test.mjs:15",
+              "reports/test/index.test.mjs:16"
+            ],
+            "through": null
+          },
+          {
+            "module": "bookings",
+            "entry": "Bookings.open",
+            "changes": [
+              "cannot stand in",
+              "bound changed"
+            ],
+            "lines": [
+              "reports/test/index.test.mjs:14",
+              "reports/test/index.test.mjs:15",
+              "reports/test/index.test.mjs:16"
+            ],
+            "through": null
+          },
+          {
+            "module": "bookings",
+            "notFollowed": [
+              "reads or calls values of unknown kind: reports/src/index.mjs:13 source.list('rooms').map; reports/src/index.mjs:13 source.list('rooms'); reports/src/index.mjs:13 source.list (+9)"
+            ],
+            "through": null
+          }
+        ],
+        "undeclared": []
+      }
+    ],
+    "notTold": [
+      {
+        "user": "door",
+        "why": "uses none of the entries that changed in a way that tells"
+      }
+    ],
+    "warnings": [],
+    "commentsOnly": false,
+    "checks": {
+      "bookings": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 182
+      },
+      "door": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 156
+      },
+      "meter": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 158
+      },
+      "billing": {
+        "refusedBefore": 0,
+        "refusedAfter": 3,
+        "refusals": [
+          {
+            "at": "billing/test/index.test.mjs:20",
+            "code": 2345,
+            "text": "Argument of type '{ room: string; day: string; nights: number; party: number; }' is not assignable to parameter of type 'BookingRequest'.   Property 'contact' is missing in type '{ room: string; day: string; nights: number; party: number; }' but required in type 'BookingRequest'.",
+            "kind": "(b) code disagrees with the stated interface of bookings"
+          },
+          {
+            "at": "billing/test/index.test.mjs:31",
+            "code": 2345,
+            "text": "Argument of type '{ room: string; day: string; nights: number; party: number; }' is not assignable to parameter of type 'BookingRequest'.   Property 'contact' is missing in type '{ room: string; day: string; nights: number; party: number; }' but required in type 'BookingRequest'.",
+            "kind": "(b) code disagrees with the stated interface of bookings"
+          },
+          {
+            "at": "billing/test/index.test.mjs:39",
+            "code": 2345,
+            "text": "Argument of type '{ room: string; day: string; nights: number; party: number; }' is not assignable to parameter of type 'BookingRequest'.   Property 'contact' is missing in type '{ room: string; day: string; nights: number; party: number; }' but required in type 'BookingRequest'.",
+            "kind": "(b) code disagrees with the stated interface of bookings"
+          }
+        ],
+        "refusalsBefore": [],
+        "ms": 177
+      },
+      "front": {
+        "refusedBefore": 0,
+        "refusedAfter": 1,
+        "refusals": [
+          {
+            "at": "front/src/index.mjs:39",
+            "code": 2345,
+            "text": "Argument of type '{ note?: string | undefined; room: string; day: string; nights: number; party: number; }' is not assignable to parameter of type 'BookingRequest'.   Property 'contact' is missing in type '{ note?: string | undefined; room: string; day: string; nights: number; party: number; }' but required in type 'BookingRequest'.",
+            "kind": "(b) code disagrees with the stated interface of door, bookings"
+          }
+        ],
+        "refusalsBefore": [],
+        "ms": 169
+      },
+      "reports": {
+        "refusedBefore": 0,
+        "refusedAfter": 3,
+        "refusals": [
+          {
+            "at": "reports/test/index.test.mjs:14",
+            "code": 2345,
+            "text": "Argument of type '{ room: string; day: string; nights: number; party: number; }' is not assignable to parameter of type 'BookingRequest'.   Property 'contact' is missing in type '{ room: string; day: string; nights: number; party: number; }' but required in type 'BookingRequest'.",
+            "kind": "(b) code disagrees with the stated interface of bookings"
+          },
+          {
+            "at": "reports/test/index.test.mjs:15",
+            "code": 2345,
+            "text": "Argument of type '{ room: string; day: string; nights: number; party: number; }' is not assignable to parameter of type 'BookingRequest'.   Property 'contact' is missing in type '{ room: string; day: string; nights: number; party: number; }' but required in type 'BookingRequest'.",
+            "kind": "(b) code disagrees with the stated interface of bookings"
+          },
+          {
+            "at": "reports/test/index.test.mjs:16",
+            "code": 2345,
+            "text": "Argument of type '{ room: string; day: string; nights: number; party: number; }' is not assignable to parameter of type 'BookingRequest'.   Property 'contact' is missing in type '{ room: string; day: string; nights: number; party: number; }' but required in type 'BookingRequest'.",
+            "kind": "(b) code disagrees with the stated interface of bookings"
+          }
+        ],
+        "refusalsBefore": [],
+        "ms": 181
+      }
+    }
+  },
+  "groundTruth": {
+    "providerTests": {
+      "pass": true,
+      "failed": [],
+      "ran": 9
+    },
+    "testsBefore": {
+      "door": true,
+      "meter": true,
+      "billing": true,
+      "front": true,
+      "reports": true
+    },
+    "testsAfter": {
+      "door": {
+        "pass": true,
+        "failed": []
+      },
+      "meter": {
+        "pass": true,
+        "failed": []
+      },
+      "billing": {
+        "pass": false,
+        "failed": [
+          "an invoice splits the booking total into instalments that add up to it",
+          "an invoice for a cancelled booking is refused",
+          "an estimate is what the booking then costs, with a deposit of a fifth"
+        ]
+      },
+      "front": {
+        "pass": false,
+        "failed": [
+          "booking with a valid form says what was booked",
+          "cancel names the cancelled booking"
+        ]
+      },
+      "reports": {
+        "pass": false,
+        "failed": [
+          "summary counts real bookings by state, kind and weekday"
+        ]
+      }
+    },
+    "broken": [
+      "billing",
+      "front",
+      "reports"
+    ]
+  },
+  "timing": {
+    "listingMs": {
+      "before": 170,
+      "after": 160
+    },
+    "noticeMs": 704,
+    "checkMs": {
+      "bookings": 182,
+      "door": 156,
+      "meter": 158,
+      "billing": 177,
+      "front": 169,
+      "reports": 181
+    }
+  }
+}

@@ -1,0 +1,31 @@
+| Change | Provider | Expected by the rules | Told by the tool | Tests that broke (measured) | Needed a change (judged) | Check refused | Verdict |
+|---|---|---|---|---|---|---|---|
+| P01-price-content: The price per seat and night goes up: a different valid answer, same domain and range | bookings | none | none | none | none | none | held |
+| P02-reword-explanation: slugify's explanation is reworded; no bound line changes | text-rules | none | none | none | none | none | held |
+| P03-remove-function: titleCase is removed | text-rules | front | front | front | front | front (1) | held |
+| P04-rename-function: splitEvenly is renamed splitAmount | money | billing | billing | billing | billing | billing (1) | held |
+| P05-answer-field-removed: bookstatus no longer hands back the room | bookings | billing, reports | billing, reports | none | billing | billing (1) | held; 1 told for nothing |
+| P06-answer-field-renamed: A room's seats are now called capacity in what rooms hands back | rooms | billing, bookings, front, reports | billing, bookings, front, reports | bookings | bookings, front | bookings (1), front (1) | held; 2 told for nothing |
+| P07-accept-optional: Opening a booking accepts an optional arrival time | bookings | reports | reports | none | none | none | held; 1 told for nothing |
+| P08-newly-required: Opening a booking now requires a contact email | bookings | billing, front, reports | billing, front, reports | billing, front, reports | billing, front, reports | billing (3), front (1), reports (3) | held |
+| P09-newly-refused: The store refuses a value that is not an object | store | bookings, front, reports, rooms | bookings, front, reports, rooms | none | none | store (4) | held; 4 told for nothing |
+| P10-answer-gains-field: A booking now also says when it was opened | bookings | billing, front, reports | billing, front, reports | none | none | none | held; 3 told for nothing |
+| P11-list-gains-name: A new kind of room: garden | rooms | billing, bookings, front, reports | billing, bookings, front, reports | none | none | none | held; 4 told for nothing |
+| P12-bound-line-changed: An amount may now be at most 500,000 cents (code and bound line both changed) | money | billing, bookings, front, meter, reports | billing, bookings, front, meter, reports | bookings | bookings | none | held; 4 told for nothing |
+| P13-kind-renamed: The kind Amount is renamed Money; its shape is unchanged | money | billing, bookings, front, meter, reports | billing, bookings, front, meter, reports | none | billing, bookings, meter | bookings (1), meter (1), billing (1) | held; 2 told for nothing |
+| P14-meaning-changed-comment-updated: bookquote's total now means one night, and its bound line says so | bookings | billing, reports | billing, reports | billing | billing | none | held; 1 told for nothing |
+| P15-meaning-changed-comment-not-updated: bookquote's total now means one night; the bound line is left as it was | bookings | none | none | billing | billing | none | HOLE: billing needed a change and was not told |
+| P16-code-changed-comment-forgotten-visible: isEmail now hands back {ok, reason}; its comment still says boolean | text-rules | none | none | front | front | text-rules (7) | not told, stopped by another guard: The check refuses text-rules' own comment, so this job cannot merge as it stands. |
+| P17-code-changed-comment-forgotten-running-only: A party may now be at most 100 in the code; bound line and tests left as they were | bookings (its own tests fail) | none | none | front | front | none | not told, stopped by another guard: bookings' own test named for the party bound fails, so this job cannot merge as it stands. |
+| P18-operation-retired: The bookcancel operation is retired (cancelling stays possible through the handle) | bookings | door, front, reports | door, front, reports | front | front | front (2) | held; 2 told for nothing |
+| P19-operation-body-field-renamed: bookquote's body field party is renamed people | bookings | billing, reports | billing, reports | billing | billing | billing (1) | held; 1 told for nothing |
+| P20-message-kind-changed: The meter's reading now carries price where it carried cost | meter | billing | billing | billing | billing | billing (1) | held |
+| P21-unfollowable-users-provider: The store gains a count method | store | reports | reports | none | none | none | held; 1 told for nothing |
+| P22a-first-job-comments-step: calendar's first job, step one: interface comments added, describing the module as it stands | calendar | none | none (first comments step) | none | none | none | held |
+| P22b-first-job-real-change: calendar's first job, step two: addDays refuses a number of days that is not whole | calendar | bookings, reports | bookings, reports | none | none | none | held; 2 told for nothing |
+| P23-user-already-disagrees: splitEvenly now hands back {parts, each}; billing already disagreed with money before this | money | billing | billing | billing | billing | billing (3) | held |
+| P24-new-entry: text-rules gains truncate | text-rules | none | none | none | none | none | held |
+| P25-two-changes-one-commit: rooms: adding a room accepts an optional floor, and roomlist's answer renames rooms to items | rooms | front, reports | front, reports | front | front | front (1) | held; 1 told for nothing |
+| P26-reaches-through-third-module: Amount's field cents is renamed minor; front reads it only from what bookings passes on | money | billing, bookings, front, meter, reports | billing, bookings, front, meter, reports | billing, bookings, front, meter | billing, bookings, front, meter | bookings (8), meter (4), billing (12), front (1) | held; 1 told for nothing |
+| P27-test-helper-changed: The store's test helper seededStore now takes a list of rows, each naming its table | store | front, reports | front, reports | front | front | front (1) | held; 1 told for nothing |
+| P28-handle-method-renamed: The store handle's get is renamed read | store | bookings, reports, rooms | bookings, reports, rooms | billing, bookings, front, reports, rooms (billing, front, reports only through a told module) | bookings, rooms | rooms (2), bookings (1) | held; 1 told for nothing |
