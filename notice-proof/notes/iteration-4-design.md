@@ -33,3 +33,7 @@ The blind rounds found 5, then 8, then 15 holes. The adversaries read the tool's
 | 19 | The reader is told of Node's `crypto`, `fetch` and `performance`, and given the library parts Node 22 has beyond 2023 (Object.groupBy and Map.groupBy, Promise.withResolvers, Array.fromAsync, the newer string methods). | Z16, Z18 |
 | 20 | `filter(Boolean)` is "cannot tell". | Z17 |
 | 21 | A bound line is read from the comment as written, so an `@` inside its words no longer cuts it; a complaint of the comment parser inside a comment is "cannot tell". | Z19 |
+
+## Defects met while running iteration 4
+
+- 15 Nov 2026, independent change 8 (round 1): the stricter comparison of type parameters compared the constraint as TypeScript printed it, and the same set of operation names printed in another order looked like a change: front was told for nothing. Fixed by comparing the constraint in the tool's own ordered form; the first result is kept in `results/iter4/before-fix/`.

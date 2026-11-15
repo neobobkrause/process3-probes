@@ -1,0 +1,187 @@
+{
+  "id": "Z15-uncommented-module-changed",
+  "title": "calendar's weekday takes the day as written, YYYY-MM-DD, since every caller had to parse it first (no comments-only step first)",
+  "provider": "calendar",
+  "covers": [
+    "a real change to a module with no interface comments, without the first step",
+    "what a function accepts changes; \"anything\" before and after"
+  ],
+  "tool": {
+    "firstCommentsStep": false,
+    "interfaceChanged": true,
+    "summary": "calendar had no interface comments and this change is not the comments-only first step: every user is told.",
+    "entries": [],
+    "told": [
+      "bookings",
+      "reports"
+    ],
+    "toldDetail": [
+      {
+        "user": "bookings",
+        "reasons": [
+          {
+            "module": "calendar",
+            "notFollowed": [
+              "calendar had no interface comments and this change is not the comments-only first step"
+            ]
+          }
+        ],
+        "undeclared": []
+      },
+      {
+        "user": "reports",
+        "reasons": [
+          {
+            "module": "calendar",
+            "notFollowed": [
+              "calendar had no interface comments and this change is not the comments-only first step"
+            ]
+          }
+        ],
+        "undeclared": []
+      }
+    ],
+    "notTold": [],
+    "warnings": [],
+    "commentsOnly": false,
+    "checks": {
+      "calendar": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 57
+      },
+      "store": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 62
+      },
+      "rooms": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 82
+      },
+      "bookings": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 93
+      },
+      "door": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 71
+      },
+      "meter": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 66
+      },
+      "billing": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 91
+      },
+      "front": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 102
+      },
+      "reports": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 108
+      }
+    }
+  },
+  "groundTruth": {
+    "providerTests": {
+      "pass": true,
+      "failed": [],
+      "ran": 3
+    },
+    "testsBefore": {
+      "store": true,
+      "rooms": true,
+      "bookings": true,
+      "door": true,
+      "meter": true,
+      "billing": true,
+      "front": true,
+      "reports": true
+    },
+    "testsAfter": {
+      "store": {
+        "pass": true,
+        "failed": []
+      },
+      "rooms": {
+        "pass": true,
+        "failed": []
+      },
+      "bookings": {
+        "pass": true,
+        "failed": []
+      },
+      "door": {
+        "pass": true,
+        "failed": []
+      },
+      "meter": {
+        "pass": true,
+        "failed": []
+      },
+      "billing": {
+        "pass": true,
+        "failed": []
+      },
+      "front": {
+        "pass": true,
+        "failed": []
+      },
+      "reports": {
+        "pass": false,
+        "failed": [
+          "summary counts real bookings by state, kind and weekday"
+        ]
+      }
+    },
+    "broken": [
+      "reports"
+    ]
+  },
+  "timing": {
+    "listingMs": {
+      "before": 49,
+      "after": 47
+    },
+    "noticeMs": 633,
+    "checkMs": {
+      "calendar": 57,
+      "store": 62,
+      "rooms": 82,
+      "bookings": 93,
+      "door": 71,
+      "meter": 66,
+      "billing": 91,
+      "front": 102,
+      "reports": 108
+    }
+  }
+}

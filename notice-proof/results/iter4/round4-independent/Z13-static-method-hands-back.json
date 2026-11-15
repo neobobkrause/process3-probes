@@ -1,0 +1,238 @@
+{
+  "id": "Z13-static-method-hands-back",
+  "title": "Tally.sum hands back the tally itself, so that a caller can go on adding to it",
+  "provider": "money",
+  "covers": [
+    "a static method of an exported class hands back a different kind",
+    "static members are not in the listing"
+  ],
+  "tool": {
+    "firstCommentsStep": false,
+    "interfaceChanged": true,
+    "summary": "1 module(s) changed their listing; 1 entry changed in a way that tells; 1 user(s) told.",
+    "entries": [
+      {
+        "module": "money",
+        "entry": "Tally",
+        "changes": [
+          "declaration changed (not classified)"
+        ],
+        "tells": "users",
+        "before": {
+          "kind": "class",
+          "accepts": "(arg0: \"EUR\" | \"GBP\" | \"USD\")",
+          "handsBack": "{ add: (arg0: { cents: number; currency: \"EUR\" | \"GBP\" | \"USD\" }) => void; total: { cents: number; currency: \"EUR\" | \"GBP\" | \"USD\" } }",
+          "bounds": [
+            "cents: whole number, 0 to 10,000,000 inclusive"
+          ]
+        },
+        "after": {
+          "kind": "class",
+          "accepts": "(arg0: \"EUR\" | \"GBP\" | \"USD\")",
+          "handsBack": "{ add: (arg0: { cents: number; currency: \"EUR\" | \"GBP\" | \"USD\" }) => void; total: { cents: number; currency: \"EUR\" | \"GBP\" | \"USD\" } }",
+          "bounds": [
+            "cents: whole number, 0 to 10,000,000 inclusive"
+          ]
+        }
+      }
+    ],
+    "told": [
+      "billing"
+    ],
+    "toldDetail": [
+      {
+        "user": "billing",
+        "reasons": [
+          {
+            "module": "money",
+            "entry": "Tally",
+            "changes": [
+              "declaration changed (not classified)"
+            ],
+            "lines": [
+              "billing/src/index.mjs:5",
+              "billing/src/index.mjs:74"
+            ],
+            "through": null
+          }
+        ],
+        "undeclared": []
+      }
+    ],
+    "notTold": [
+      {
+        "user": "bookings",
+        "why": "uses none of the entries that changed in a way that tells"
+      },
+      {
+        "user": "meter",
+        "why": "uses none of the entries that changed in a way that tells"
+      },
+      {
+        "user": "front",
+        "why": "uses none of the entries that changed in a way that tells"
+      }
+    ],
+    "warnings": [],
+    "commentsOnly": false,
+    "checks": {
+      "money": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 66
+      },
+      "calendar": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 55
+      },
+      "store": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 73
+      },
+      "rooms": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 76
+      },
+      "bookings": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 99
+      },
+      "door": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 82
+      },
+      "meter": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 66
+      },
+      "billing": {
+        "refusedBefore": 0,
+        "refusedAfter": 1,
+        "refusals": [
+          {
+            "at": "billing/src/index.mjs:74",
+            "code": 2345,
+            "text": "Argument of type 'Tally' is not assignable to parameter of type 'Amount | PromiseLike<Amount>'.",
+            "kind": "(b) code disagrees with the stated interface of money"
+          }
+        ],
+        "refusalsBefore": [],
+        "ms": 80
+      },
+      "front": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 82
+      },
+      "reports": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 76
+      }
+    }
+  },
+  "groundTruth": {
+    "providerTests": {
+      "pass": true,
+      "failed": [],
+      "ran": 8
+    },
+    "testsBefore": {
+      "calendar": true,
+      "store": true,
+      "rooms": true,
+      "bookings": true,
+      "door": true,
+      "meter": true,
+      "billing": true,
+      "front": true,
+      "reports": true
+    },
+    "testsAfter": {
+      "calendar": {
+        "pass": true,
+        "failed": []
+      },
+      "store": {
+        "pass": true,
+        "failed": []
+      },
+      "rooms": {
+        "pass": true,
+        "failed": []
+      },
+      "bookings": {
+        "pass": true,
+        "failed": []
+      },
+      "door": {
+        "pass": true,
+        "failed": []
+      },
+      "meter": {
+        "pass": true,
+        "failed": []
+      },
+      "billing": {
+        "pass": false,
+        "failed": [
+          "metered use is priced by the meter and added up"
+        ]
+      },
+      "front": {
+        "pass": true,
+        "failed": []
+      },
+      "reports": {
+        "pass": true,
+        "failed": []
+      }
+    },
+    "broken": [
+      "billing"
+    ]
+  },
+  "timing": {
+    "listingMs": {
+      "before": 72,
+      "after": 64
+    },
+    "noticeMs": 593,
+    "checkMs": {
+      "money": 66,
+      "calendar": 55,
+      "store": 73,
+      "rooms": 76,
+      "bookings": 99,
+      "door": 82,
+      "meter": 66,
+      "billing": 80,
+      "front": 82,
+      "reports": 76
+    }
+  }
+}

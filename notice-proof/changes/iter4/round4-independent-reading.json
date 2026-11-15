@@ -1,0 +1,101 @@
+{
+  "about": "Ground truth by reading under iteration 4, written by Claude AFTER the results were seen, independently of what the tool said.",
+  "changes": {
+    "Z01-bound-test-same-values-other-checks": {
+      "needs": [
+        "front"
+      ]
+    },
+    "Z02-limit-read-from-module": {
+      "needs": [
+        "bookings"
+      ]
+    },
+    "Z03-blank-line-after-each-message": {
+      "needs": [
+        "billing"
+      ],
+      "guard": "meter's own check: one message per line (rule 19)"
+    },
+    "Z04-stream-chosen-into-variable": {
+      "needs": [
+        "billing"
+      ],
+      "guard": "meter's own check follows the stream into its variable (rule 20)",
+      "note": "billing was also told (rule 26)."
+    },
+    "Z05-amount-built-by-static-factory": {
+      "needs": [],
+      "guard": "money's own check: plain data is never a class instance (rule 22)"
+    },
+    "Z06-wrapping-handler-error-kind": {
+      "needs": [
+        "billing"
+      ]
+    },
+    "Z07-handle-method-handed-on": {
+      "needs": [
+        "front"
+      ]
+    },
+    "Z08-second-overload-hands-back": {
+      "needs": [
+        "billing"
+      ]
+    },
+    "Z09-list-parameter-becomes-rest": {
+      "needs": [
+        "billing"
+      ]
+    },
+    "Z10-readonly-list-now-sorted": {
+      "needs": [
+        "front"
+      ]
+    },
+    "Z11-request-lines-change-nothing": {
+      "needs": [
+        "front"
+      ]
+    },
+    "Z12-returned-text-kind-bound": {
+      "needs": [
+        "rooms"
+      ]
+    },
+    "Z13-static-method-hands-back": {
+      "needs": [
+        "billing"
+      ]
+    },
+    "Z14-member-may-be-undefined": {
+      "needs": [
+        "billing"
+      ]
+    },
+    "Z15-uncommented-module-changed": {
+      "needs": [
+        "reports"
+      ],
+      "note": "bookings is told too (rule 21) and needs nothing: the cost of failing safe."
+    },
+    "Z16-random-booking-ids": {
+      "needs": []
+    },
+    "Z17-filter-boolean": {
+      "needs": []
+    },
+    "Z18-object-groupby": {
+      "needs": []
+    },
+    "Z19-at-sign-in-bound-line": {
+      "needs": []
+    },
+    "Z20-test-helper-renamed": {
+      "needs": []
+    },
+    "Z21-throws-explained-in-two-lines": {
+      "needs": []
+    }
+  }
+}

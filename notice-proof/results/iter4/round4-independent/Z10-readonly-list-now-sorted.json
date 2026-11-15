@@ -1,0 +1,237 @@
+{
+  "id": "Z10-readonly-list-now-sorted",
+  "title": "listWords writes its words in alphabetical order, sorting the list it is given; its comment no longer says read-only, since the reader said a read-only list has no sort",
+  "provider": "text-rules",
+  "covers": [
+    "a read-only list parameter becomes a mutable one (newly refused)",
+    "standsIn ignores read-only on lists: accepts more"
+  ],
+  "tool": {
+    "firstCommentsStep": false,
+    "interfaceChanged": true,
+    "summary": "1 module(s) changed their listing; 1 entry changed in a way that tells; 1 user(s) told.",
+    "entries": [
+      {
+        "module": "text-rules",
+        "entry": "listWords",
+        "changes": [
+          "cannot stand in"
+        ],
+        "tells": "users",
+        "before": {
+          "kind": "function",
+          "accepts": "(arg0: readonly string[])",
+          "handsBack": "string"
+        },
+        "after": {
+          "kind": "function",
+          "accepts": "(arg0: string[])",
+          "handsBack": "string"
+        }
+      }
+    ],
+    "told": [
+      "front"
+    ],
+    "toldDetail": [
+      {
+        "user": "front",
+        "reasons": [
+          {
+            "module": "text-rules",
+            "entry": "listWords",
+            "changes": [
+              "cannot stand in"
+            ],
+            "lines": [
+              "front/src/index.mjs:4",
+              "front/src/index.mjs:58"
+            ],
+            "through": null
+          }
+        ],
+        "undeclared": []
+      }
+    ],
+    "notTold": [
+      {
+        "user": "rooms",
+        "why": "uses none of the entries that changed in a way that tells"
+      }
+    ],
+    "warnings": [],
+    "commentsOnly": false,
+    "checks": {
+      "text-rules": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 62
+      },
+      "money": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 63
+      },
+      "calendar": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 59
+      },
+      "store": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 66
+      },
+      "rooms": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 68
+      },
+      "bookings": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 87
+      },
+      "door": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 72
+      },
+      "meter": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 69
+      },
+      "billing": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 77
+      },
+      "front": {
+        "refusedBefore": 0,
+        "refusedAfter": 1,
+        "refusals": [
+          {
+            "at": "front/src/index.mjs:58",
+            "code": 2345,
+            "text": "Argument of type 'readonly [\"hall\", \"studio\", \"kitchen\"]' is not assignable to parameter of type 'string[]'.   The type 'readonly [\"hall\", \"studio\", \"kitchen\"]' is 'readonly' and cannot be assigned to the mutable type 'string[]'.",
+            "kind": "(b) code disagrees with the stated interface of text-rules, rooms"
+          }
+        ],
+        "refusalsBefore": [],
+        "ms": 107
+      },
+      "reports": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 73
+      }
+    }
+  },
+  "groundTruth": {
+    "providerTests": {
+      "pass": true,
+      "failed": [],
+      "ran": 6
+    },
+    "testsBefore": {
+      "money": true,
+      "calendar": true,
+      "store": true,
+      "rooms": true,
+      "bookings": true,
+      "door": true,
+      "meter": true,
+      "billing": true,
+      "front": true,
+      "reports": true
+    },
+    "testsAfter": {
+      "money": {
+        "pass": true,
+        "failed": []
+      },
+      "calendar": {
+        "pass": true,
+        "failed": []
+      },
+      "store": {
+        "pass": true,
+        "failed": []
+      },
+      "rooms": {
+        "pass": true,
+        "failed": []
+      },
+      "bookings": {
+        "pass": true,
+        "failed": []
+      },
+      "door": {
+        "pass": true,
+        "failed": []
+      },
+      "meter": {
+        "pass": true,
+        "failed": []
+      },
+      "billing": {
+        "pass": true,
+        "failed": []
+      },
+      "front": {
+        "pass": false,
+        "failed": [
+          "the kinds line names every kind of room"
+        ]
+      },
+      "reports": {
+        "pass": true,
+        "failed": []
+      }
+    },
+    "broken": [
+      "front"
+    ]
+  },
+  "timing": {
+    "listingMs": {
+      "before": 48,
+      "after": 59
+    },
+    "noticeMs": 574,
+    "checkMs": {
+      "text-rules": 62,
+      "money": 63,
+      "calendar": 59,
+      "store": 66,
+      "rooms": 68,
+      "bookings": 87,
+      "door": 72,
+      "meter": 69,
+      "billing": 77,
+      "front": 107,
+      "reports": 73
+    }
+  }
+}

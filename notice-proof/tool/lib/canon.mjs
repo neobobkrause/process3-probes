@@ -186,7 +186,9 @@ export function makeCanon(checker, tree) {
     const rd = sig.declaration;
     if (rd) noteKindsIn(rd.type ?? ts.getJSDocReturnType(rd), retCtx);
     const out = { k: 'fn', params, ret: canon(sig.getReturnType(), retCtx) };
-    if (sig.typeParameters?.length) out.tparams = sig.typeParameters.map((tp) => checker.typeToString(tp) + ' extends ' + (tp.getConstraint() ? checker.typeToString(tp.getConstraint()) : 'unknown'));
+    // a type parameter's constraint in the tool's own (ordered) form, so the same constraint printed in another order
+    // is the same (iteration 4)
+    if (sig.typeParameters?.length) out.tparams = sig.typeParameters.map((tp) => checker.typeToString(tp) + ' extends ' + (tp.getConstraint() ? JSON.stringify(canon(tp.getConstraint(), { kinds: new Map(), stack: [] })) : 'unknown'));
     return out;
   }
 

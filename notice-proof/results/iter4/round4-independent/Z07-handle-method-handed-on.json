@@ -1,0 +1,213 @@
+{
+  "id": "Z07-handle-method-handed-on",
+  "title": "rooms' find takes an optional kind: the room is found only if it is of that kind",
+  "provider": "rooms",
+  "covers": [
+    "a handle's method gains an optional parameter (accepts more)",
+    "a user hands the method to map, which passes the index as the second argument"
+  ],
+  "tool": {
+    "firstCommentsStep": false,
+    "interfaceChanged": true,
+    "summary": "1 module(s) changed their listing; 0 entries changed in a way that tells; 2 user(s) told.",
+    "entries": [
+      {
+        "module": "rooms",
+        "entry": "Rooms.find",
+        "changes": [
+          "accepts more"
+        ],
+        "tells": "nobody",
+        "before": {
+          "kind": "method",
+          "accepts": "(arg0: string)",
+          "handsBack": "{ id: string; kind: \"hall\" | \"kitchen\" | \"studio\"; name: string; seats: number } | undefined",
+          "bounds": [
+            "seats: whole number, 1 to 500"
+          ]
+        },
+        "after": {
+          "kind": "method",
+          "accepts": "(arg0: string, arg1?: \"hall\" | \"kitchen\" | \"studio\")",
+          "handsBack": "{ id: string; kind: \"hall\" | \"kitchen\" | \"studio\"; name: string; seats: number } | undefined",
+          "bounds": [
+            "seats: whole number, 1 to 500"
+          ]
+        }
+      }
+    ],
+    "told": [
+      "front",
+      "reports"
+    ],
+    "toldDetail": [
+      {
+        "user": "front",
+        "reasons": [
+          {
+            "module": "rooms",
+            "entry": "Rooms.find",
+            "changes": [
+              "accepts more",
+              "handed on as a value"
+            ],
+            "lines": [
+              "front/test/index.test.mjs:55"
+            ],
+            "through": null
+          }
+        ],
+        "undeclared": []
+      },
+      {
+        "user": "reports",
+        "reasons": [
+          {
+            "module": "rooms",
+            "notFollowed": [
+              "reads or calls values of unknown kind: reports/src/index.mjs:13 source.list('rooms').map; reports/src/index.mjs:13 source.list('rooms'); reports/src/index.mjs:13 source.list (+9)"
+            ],
+            "through": null
+          }
+        ],
+        "undeclared": []
+      }
+    ],
+    "notTold": [
+      {
+        "user": "bookings",
+        "why": "uses none of the entries that changed in a way that tells"
+      },
+      {
+        "user": "door",
+        "why": "uses none of the entries that changed in a way that tells"
+      },
+      {
+        "user": "billing",
+        "why": "uses none of the entries that changed in a way that tells"
+      }
+    ],
+    "warnings": [],
+    "commentsOnly": false,
+    "checks": {
+      "rooms": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 70
+      },
+      "bookings": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 79
+      },
+      "door": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 62
+      },
+      "meter": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 66
+      },
+      "billing": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 77
+      },
+      "front": {
+        "refusedBefore": 0,
+        "refusedAfter": 1,
+        "refusals": [
+          {
+            "at": "front/test/index.test.mjs:55",
+            "code": 2345,
+            "text": "Argument of type '(id: string, kind?: \"hall\" | \"studio\" | \"kitchen\" | undefined) => Room | undefined' is not assignable to parameter of type '(value: string, index: number, array: string[]) => Room | undefined'.   Types of parameters 'kind' and 'index' are incompatible.     Type 'number' is not assignable to type '\"hall\" | \"studio\" | \"kitchen\" | undefined'.",
+            "kind": "(b) code disagrees with the stated interface of rooms"
+          }
+        ],
+        "refusalsBefore": [],
+        "ms": 79
+      },
+      "reports": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 64
+      }
+    }
+  },
+  "groundTruth": {
+    "providerTests": {
+      "pass": true,
+      "failed": [],
+      "ran": 5
+    },
+    "testsBefore": {
+      "bookings": true,
+      "door": true,
+      "meter": true,
+      "billing": true,
+      "front": true,
+      "reports": true
+    },
+    "testsAfter": {
+      "bookings": {
+        "pass": true,
+        "failed": []
+      },
+      "door": {
+        "pass": true,
+        "failed": []
+      },
+      "meter": {
+        "pass": true,
+        "failed": []
+      },
+      "billing": {
+        "pass": true,
+        "failed": []
+      },
+      "front": {
+        "pass": false,
+        "failed": [
+          "every seeded room can be found by its id"
+        ]
+      },
+      "reports": {
+        "pass": true,
+        "failed": []
+      }
+    },
+    "broken": [
+      "front"
+    ]
+  },
+  "timing": {
+    "listingMs": {
+      "before": 58,
+      "after": 66
+    },
+    "noticeMs": 552,
+    "checkMs": {
+      "rooms": 70,
+      "bookings": 79,
+      "door": 62,
+      "meter": 66,
+      "billing": 77,
+      "front": 79,
+      "reports": 64
+    }
+  }
+}

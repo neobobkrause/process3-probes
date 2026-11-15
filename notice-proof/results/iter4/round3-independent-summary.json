@@ -1,0 +1,592 @@
+{
+  "changes": 13,
+  "matchesRules": 12,
+  "notices": 19,
+  "needed": 8,
+  "holes": [],
+  "caughtByGuard": [
+    {
+      "id": "Y02-amount-cannot-be-changed",
+      "users": [
+        "billing",
+        "bookings",
+        "front",
+        "meter"
+      ],
+      "guard": "money's own check refuses Amount built as a class instance (rule 11)"
+    },
+    {
+      "id": "Y05-row-cast-at-write",
+      "users": [
+        "reports"
+      ],
+      "guard": "bookings' own check refuses the cast (rule 14)"
+    }
+  ],
+  "unneeded": [
+    {
+      "id": "Y01-method-error-kind",
+      "user": "billing"
+    },
+    {
+      "id": "Y01-method-error-kind",
+      "user": "reports"
+    },
+    {
+      "id": "Y04-row-kind-written-through-helper",
+      "user": "reports"
+    },
+    {
+      "id": "Y07-limit-outside-bound-test",
+      "user": "billing"
+    },
+    {
+      "id": "Y07-limit-outside-bound-test",
+      "user": "front"
+    },
+    {
+      "id": "Y07-limit-outside-bound-test",
+      "user": "meter"
+    },
+    {
+      "id": "Y07-limit-outside-bound-test",
+      "user": "reports"
+    },
+    {
+      "id": "Y08-bound-on-number-kind",
+      "user": "billing"
+    },
+    {
+      "id": "Y08-bound-on-number-kind",
+      "user": "front"
+    },
+    {
+      "id": "Y08-bound-on-number-kind",
+      "user": "meter"
+    },
+    {
+      "id": "Y08-bound-on-number-kind",
+      "user": "reports"
+    },
+    {
+      "id": "Y10-map-has-get-provider-kind",
+      "user": "reports"
+    }
+  ],
+  "falseRefusals": 0,
+  "refusals": 6,
+  "rows": [
+    {
+      "id": "Y01-method-error-kind",
+      "title": "An unknown booking is refused with an Error, not a RangeError (kept for values out of bounds); the methods' comments say so",
+      "provider": "bookings",
+      "exp": [
+        "billing",
+        "front",
+        "reports"
+      ],
+      "told": [
+        "billing",
+        "front",
+        "reports"
+      ],
+      "matches": true,
+      "broken": [
+        "front"
+      ],
+      "needs": [
+        "front"
+      ],
+      "through": [],
+      "refusals": [],
+      "verdict": "held; 2 told for nothing",
+      "providerTests": true,
+      "firstCommentsStep": false,
+      "timing": {
+        "listingMs": {
+          "before": 330,
+          "after": 157
+        },
+        "noticeMs": 881,
+        "checkMs": {
+          "bookings": 140,
+          "door": 85,
+          "meter": 104,
+          "billing": 94,
+          "front": 111,
+          "reports": 99
+        }
+      }
+    },
+    {
+      "id": "Y02-amount-cannot-be-changed",
+      "title": "An amount cannot be changed once made: cents and currency are read through getters",
+      "provider": "money",
+      "exp": [],
+      "told": [],
+      "matches": true,
+      "broken": [
+        "billing",
+        "bookings",
+        "front",
+        "meter"
+      ],
+      "needs": [],
+      "through": [],
+      "refusals": [
+        "money (1)"
+      ],
+      "verdict": "not told, stopped by another guard: money's own check refuses Amount built as a class instance (rule 11)",
+      "providerTests": true,
+      "firstCommentsStep": false,
+      "timing": {
+        "listingMs": {
+          "before": 65,
+          "after": 94
+        },
+        "noticeMs": 659,
+        "checkMs": {
+          "money": 69,
+          "calendar": 63,
+          "store": 76,
+          "rooms": 77,
+          "bookings": 95,
+          "door": 78,
+          "meter": 67,
+          "billing": 83,
+          "front": 88,
+          "reports": 81
+        }
+      }
+    },
+    {
+      "id": "Y03-handle-member-optional",
+      "title": "Request lines become opt-in: only a door made with {lines: true} has get",
+      "provider": "door",
+      "exp": [
+        "billing"
+      ],
+      "told": [
+        "billing"
+      ],
+      "matches": true,
+      "broken": [
+        "billing"
+      ],
+      "needs": [
+        "billing"
+      ],
+      "through": [],
+      "refusals": [
+        "billing (2)"
+      ],
+      "verdict": "held",
+      "providerTests": true,
+      "firstCommentsStep": false,
+      "timing": {
+        "listingMs": {
+          "before": 79,
+          "after": 64
+        },
+        "noticeMs": 617,
+        "checkMs": {
+          "door": 67,
+          "meter": 64,
+          "billing": 100,
+          "front": 74,
+          "reports": 71
+        }
+      }
+    },
+    {
+      "id": "Y04-row-kind-written-through-helper",
+      "title": "The rooms table keeps seats under capacity, in a row kind of its own (RoomRow, @storedrows rooms); Room is unchanged",
+      "provider": "rooms",
+      "exp": [
+        "front",
+        "reports"
+      ],
+      "told": [
+        "front",
+        "reports"
+      ],
+      "matches": true,
+      "broken": [
+        "front"
+      ],
+      "needs": [
+        "front"
+      ],
+      "through": [],
+      "refusals": [],
+      "verdict": "held; 1 told for nothing",
+      "providerTests": true,
+      "firstCommentsStep": false,
+      "timing": {
+        "listingMs": {
+          "before": 72,
+          "after": 66
+        },
+        "noticeMs": 508,
+        "checkMs": {
+          "rooms": 100,
+          "bookings": 130,
+          "door": 74,
+          "meter": 70,
+          "billing": 86,
+          "front": 85,
+          "reports": 79
+        }
+      }
+    },
+    {
+      "id": "Y05-row-cast-at-write",
+      "title": "The bookings table keeps no first day (worked out from until and nights when read); the row is written as a Booking",
+      "provider": "bookings",
+      "exp": [],
+      "told": [],
+      "matches": true,
+      "broken": [
+        "reports"
+      ],
+      "needs": [
+        "reports"
+      ],
+      "through": [],
+      "refusals": [
+        "bookings (1)"
+      ],
+      "verdict": "not told, stopped by another guard: bookings' own check refuses the cast (rule 14)",
+      "providerTests": true,
+      "firstCommentsStep": false,
+      "timing": {
+        "listingMs": {
+          "before": 78,
+          "after": 67
+        },
+        "noticeMs": 608,
+        "checkMs": {
+          "bookings": 85,
+          "door": 65,
+          "meter": 72,
+          "billing": 90,
+          "front": 72,
+          "reports": 69
+        }
+      }
+    },
+    {
+      "id": "Y06-channel-line-built-first",
+      "title": "The meter writes refusals to standard error, as errors; the line is built first, then written; the @message tag is left as it was",
+      "provider": "meter",
+      "exp": [],
+      "told": [
+        "billing"
+      ],
+      "matches": false,
+      "broken": [
+        "billing"
+      ],
+      "needs": [
+        "billing"
+      ],
+      "through": [],
+      "refusals": [
+        "meter (1)"
+      ],
+      "verdict": "held",
+      "providerTests": true,
+      "firstCommentsStep": false,
+      "timing": {
+        "listingMs": {
+          "before": 49,
+          "after": 49
+        },
+        "noticeMs": 511,
+        "checkMs": {
+          "meter": 76,
+          "billing": 134,
+          "front": 78,
+          "reports": 71
+        }
+      }
+    },
+    {
+      "id": "Y07-limit-outside-bound-test",
+      "title": "An amount may now be at most 500,000 cents; code and the tests' limit changed, the bound line forgotten",
+      "provider": "money",
+      "exp": [
+        "billing",
+        "bookings",
+        "front",
+        "meter",
+        "reports"
+      ],
+      "told": [
+        "billing",
+        "bookings",
+        "front",
+        "meter",
+        "reports"
+      ],
+      "matches": true,
+      "broken": [
+        "bookings"
+      ],
+      "needs": [
+        "bookings"
+      ],
+      "through": [],
+      "refusals": [],
+      "verdict": "held; 4 told for nothing",
+      "providerTests": true,
+      "firstCommentsStep": false,
+      "timing": {
+        "listingMs": {
+          "before": 53,
+          "after": 56
+        },
+        "noticeMs": 473,
+        "checkMs": {
+          "money": 64,
+          "calendar": 55,
+          "store": 64,
+          "rooms": 64,
+          "bookings": 99,
+          "door": 78,
+          "meter": 69,
+          "billing": 80,
+          "front": 87,
+          "reports": 71
+        }
+      }
+    },
+    {
+      "id": "Y08-bound-on-number-kind",
+      "title": "An amount may now be at most 500,000 cents; code, the bound line of Cents and its test all changed",
+      "provider": "money",
+      "exp": [
+        "billing",
+        "bookings",
+        "front",
+        "meter",
+        "reports"
+      ],
+      "told": [
+        "billing",
+        "bookings",
+        "front",
+        "meter",
+        "reports"
+      ],
+      "matches": true,
+      "broken": [
+        "bookings"
+      ],
+      "needs": [
+        "bookings"
+      ],
+      "through": [],
+      "refusals": [],
+      "verdict": "held; 4 told for nothing",
+      "providerTests": true,
+      "firstCommentsStep": false,
+      "timing": {
+        "listingMs": {
+          "before": 53,
+          "after": 50
+        },
+        "noticeMs": 572,
+        "checkMs": {
+          "money": 89,
+          "calendar": 60,
+          "store": 72,
+          "rooms": 74,
+          "bookings": 91,
+          "door": 75,
+          "meter": 115,
+          "billing": 113,
+          "front": 125,
+          "reports": 155
+        }
+      }
+    },
+    {
+      "id": "Y09-newer-library-method",
+      "title": "rooms sorts its list with toSorted, which leaves the list it sorts as it was",
+      "provider": "rooms",
+      "exp": [],
+      "told": [],
+      "matches": true,
+      "broken": [],
+      "needs": [],
+      "through": [],
+      "refusals": [],
+      "verdict": "held",
+      "providerTests": true,
+      "firstCommentsStep": false,
+      "timing": {
+        "listingMs": {
+          "before": 76,
+          "after": 122
+        },
+        "noticeMs": 868,
+        "checkMs": {
+          "rooms": 121,
+          "bookings": 176,
+          "door": 102,
+          "meter": 116,
+          "billing": 209,
+          "front": 202,
+          "reports": 104
+        }
+      }
+    },
+    {
+      "id": "Y10-map-has-get-provider-kind",
+      "title": "bookings adds up what the open bookings of each room come to (takings)",
+      "provider": "bookings",
+      "exp": [
+        "reports"
+      ],
+      "told": [
+        "reports"
+      ],
+      "matches": true,
+      "broken": [],
+      "needs": [],
+      "through": [],
+      "refusals": [],
+      "verdict": "held; 1 told for nothing",
+      "providerTests": true,
+      "firstCommentsStep": false,
+      "timing": {
+        "listingMs": {
+          "before": 82,
+          "after": 128
+        },
+        "noticeMs": 778,
+        "checkMs": {
+          "bookings": 121,
+          "door": 96,
+          "meter": 108,
+          "billing": 129,
+          "front": 118,
+          "reports": 97
+        }
+      }
+    },
+    {
+      "id": "Y11-tests-grouped-with-it",
+      "title": "money's tests are grouped by function with describe and it; every assertion and every test name stays",
+      "provider": "money",
+      "exp": [],
+      "told": [],
+      "matches": true,
+      "broken": [],
+      "needs": [],
+      "through": [],
+      "refusals": [],
+      "verdict": "held",
+      "providerTests": true,
+      "firstCommentsStep": false,
+      "timing": {
+        "listingMs": {
+          "before": 86,
+          "after": 90
+        },
+        "noticeMs": 633,
+        "checkMs": {
+          "money": 105,
+          "calendar": 59,
+          "store": 94,
+          "rooms": 83,
+          "bookings": 151,
+          "door": 74,
+          "meter": 75,
+          "billing": 87,
+          "front": 110,
+          "reports": 67
+        }
+      }
+    },
+    {
+      "id": "Y12-bound-test-rewritten-same-meaning",
+      "title": "The test of the bound of cents is written as two loops; the same values, the same assertions",
+      "provider": "money",
+      "exp": [],
+      "told": [],
+      "matches": true,
+      "broken": [],
+      "needs": [],
+      "through": [],
+      "refusals": [],
+      "verdict": "held",
+      "providerTests": true,
+      "firstCommentsStep": false,
+      "timing": {
+        "listingMs": {
+          "before": 84,
+          "after": 68
+        },
+        "noticeMs": 823,
+        "checkMs": {
+          "money": 108,
+          "calendar": 112,
+          "store": 164,
+          "rooms": 90,
+          "bookings": 145,
+          "door": 106,
+          "meter": 119,
+          "billing": 100,
+          "front": 100,
+          "reports": 86
+        }
+      }
+    },
+    {
+      "id": "Y13-constructor-accepts-differently",
+      "title": "A Tally now starts from an amount (a deposit already paid, say), not from a currency",
+      "provider": "money",
+      "exp": [
+        "billing"
+      ],
+      "told": [
+        "billing"
+      ],
+      "matches": true,
+      "broken": [
+        "billing"
+      ],
+      "needs": [
+        "billing"
+      ],
+      "through": [],
+      "refusals": [
+        "billing (1)"
+      ],
+      "verdict": "held",
+      "providerTests": true,
+      "firstCommentsStep": false,
+      "timing": {
+        "listingMs": {
+          "before": 64,
+          "after": 70
+        },
+        "noticeMs": 601,
+        "checkMs": {
+          "money": 63,
+          "calendar": 60,
+          "store": 92,
+          "rooms": 67,
+          "bookings": 111,
+          "door": 77,
+          "meter": 63,
+          "billing": 81,
+          "front": 68,
+          "reports": 61
+        }
+      }
+    }
+  ]
+}
