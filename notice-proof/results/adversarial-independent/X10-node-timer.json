@@ -1,0 +1,102 @@
+{
+  "id": "X10-node-timer",
+  "title": "The meter stops on its own when its input goes quiet for 30 seconds",
+  "provider": "meter",
+  "covers": [
+    "honest code using Node's own timer methods, which the reader describes as the browser's"
+  ],
+  "tool": {
+    "firstCommentsStep": false,
+    "interfaceChanged": false,
+    "summary": "The listing before and after is the same. Nobody is told.",
+    "entries": [],
+    "told": [],
+    "toldDetail": [],
+    "notTold": [],
+    "warnings": [],
+    "commentsOnly": false,
+    "checks": {
+      "meter": {
+        "refusedBefore": 0,
+        "refusedAfter": 2,
+        "refusals": [
+          {
+            "at": "meter/src/worker.mjs:21",
+            "code": 2339,
+            "text": "Property 'unref' does not exist on type 'number'.",
+            "kind": "(a) a comment disagrees with this module's code"
+          },
+          {
+            "at": "meter/src/worker.mjs:24",
+            "code": 2339,
+            "text": "Property 'refresh' does not exist on type 'number'.",
+            "kind": "(a) a comment disagrees with this module's code"
+          }
+        ],
+        "refusalsBefore": [],
+        "ms": 241
+      },
+      "billing": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 219
+      },
+      "front": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 300
+      },
+      "reports": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 164
+      }
+    }
+  },
+  "groundTruth": {
+    "providerTests": {
+      "pass": true,
+      "failed": [],
+      "ran": 2
+    },
+    "testsBefore": {
+      "billing": true,
+      "front": true,
+      "reports": true
+    },
+    "testsAfter": {
+      "billing": {
+        "pass": true,
+        "failed": []
+      },
+      "front": {
+        "pass": true,
+        "failed": []
+      },
+      "reports": {
+        "pass": true,
+        "failed": []
+      }
+    },
+    "broken": []
+  },
+  "timing": {
+    "listingMs": {
+      "before": 200,
+      "after": 175
+    },
+    "noticeMs": 860,
+    "checkMs": {
+      "meter": 241,
+      "billing": 219,
+      "front": 300,
+      "reports": 164
+    }
+  }
+}

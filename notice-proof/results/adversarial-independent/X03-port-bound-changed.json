@@ -1,0 +1,175 @@
+{
+  "id": "X03-port-bound-changed",
+  "title": "The clock bookings is handed now gives today's date, YYYY-MM-DD, and bookings keeps only the day",
+  "provider": "bookings",
+  "covers": [
+    "bound line of a kind the user implements changes",
+    "use of a provider kind that the user never names"
+  ],
+  "tool": {
+    "firstCommentsStep": false,
+    "interfaceChanged": true,
+    "summary": "1 module(s) changed their listing; 1 entry changed in a way that tells; 1 user(s) told.",
+    "entries": [
+      {
+        "module": "bookings",
+        "entry": "Clock.now",
+        "changes": [
+          "bound changed"
+        ],
+        "tells": "users",
+        "before": {
+          "kind": "method",
+          "accepts": "()",
+          "handsBack": "string",
+          "bounds": [
+            "now: an ISO date and time, such as 2026-11-15T09:30:00.000Z"
+          ]
+        },
+        "after": {
+          "kind": "method",
+          "accepts": "()",
+          "handsBack": "string",
+          "bounds": [
+            "now: today's date, written YYYY-MM-DD"
+          ]
+        }
+      }
+    ],
+    "told": [
+      "reports"
+    ],
+    "toldDetail": [
+      {
+        "user": "reports",
+        "reasons": [
+          {
+            "module": "bookings",
+            "notFollowed": [
+              "reads or calls values of unknown kind: reports/src/index.mjs:13 source.list('rooms').map; reports/src/index.mjs:13 source.list('rooms'); reports/src/index.mjs:13 source.list (+9)"
+            ],
+            "through": null
+          }
+        ],
+        "undeclared": []
+      }
+    ],
+    "notTold": [
+      {
+        "user": "door",
+        "why": "uses none of the entries that changed in a way that tells"
+      },
+      {
+        "user": "billing",
+        "why": "uses none of the entries that changed in a way that tells"
+      },
+      {
+        "user": "front",
+        "why": "uses none of the entries that changed in a way that tells"
+      }
+    ],
+    "warnings": [],
+    "commentsOnly": false,
+    "checks": {
+      "bookings": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 194
+      },
+      "door": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 210
+      },
+      "meter": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 191
+      },
+      "billing": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 199
+      },
+      "front": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 182
+      },
+      "reports": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 175
+      }
+    }
+  },
+  "groundTruth": {
+    "providerTests": {
+      "pass": true,
+      "failed": [],
+      "ran": 9
+    },
+    "testsBefore": {
+      "door": true,
+      "meter": true,
+      "billing": true,
+      "front": true,
+      "reports": true
+    },
+    "testsAfter": {
+      "door": {
+        "pass": true,
+        "failed": []
+      },
+      "meter": {
+        "pass": true,
+        "failed": []
+      },
+      "billing": {
+        "pass": true,
+        "failed": []
+      },
+      "front": {
+        "pass": false,
+        "failed": [
+          "booking with a valid form says what was booked",
+          "cancel names the cancelled booking"
+        ]
+      },
+      "reports": {
+        "pass": true,
+        "failed": []
+      }
+    },
+    "broken": [
+      "front"
+    ]
+  },
+  "timing": {
+    "listingMs": {
+      "before": 207,
+      "after": 223
+    },
+    "noticeMs": 847,
+    "checkMs": {
+      "bookings": 194,
+      "door": 210,
+      "meter": 191,
+      "billing": 199,
+      "front": 182,
+      "reports": 175
+    }
+  }
+}

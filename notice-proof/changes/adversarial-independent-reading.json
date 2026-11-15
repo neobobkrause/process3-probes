@@ -1,0 +1,15 @@
+{
+  "about": "Ground truth by reading for the independent adversarial round, written by Claude (the proof session) AFTER the results were seen, independently of what the tool said. Fields as in planned-reading.json.",
+  "changes": {
+    "X01-optional-param-callback": { "needs": ["billing"], "note": "billing hands formatAmount to map, so map's index arrives as the new optional argument. billing's own check would refuse the line, but only billing's job runs billing's check, and billing was not told." },
+    "X02-opaque-id-digits": { "needs": ["door"], "throughOnly": ["billing"], "note": "A content change (ids made of digits) broke billing through the door, which turns a value of digits only into a number. The door's conversion is a change of kind made by running code and stated only in words." },
+    "X03-port-bound-changed": { "needs": ["front"], "note": "front's tests build a clock in a variable and hand it to bookings without naming the kind Clock, so the tool never saw that front uses Clock.now." },
+    "X04-includes-on-literal-list": { "needs": [], "falseRefusals": { "rooms": 1 }, "note": "ROOM_KINDS.includes(text) with text a string is right; the reader types includes too narrowly." },
+    "X05-stale-write": { "needs": [], "falseRefusals": { "store": 2 }, "note": "Map.has then Map.get, and assert.ok then a read: both right; the reader cannot tell. The notices to rooms and bookings are a tool defect: a kind newly accepted where nothing was accepted before was called 'cannot stand in'." },
+    "X06-bound-reworded": { "needs": [], "note": "Bob's rule (a changed bound line is a change) applied as written: five notices for a rewording with the same meaning." },
+    "X07-list-gains-name-lookup-table": { "needs": ["bookings"], "note": "bookings has no price for the new kind 'garden'; it was told, but its check did not point at the line, because the reader's complaint about the missing key is in the family the tool treats as 'cannot tell'." },
+    "X08-new-op-name-clash": { "needs": ["billing", "front"], "note": "rooms answers a name bookings already answers; the door merges the handlers and rooms' wins. billing's and front's wiring of the door now disagrees with the door's stated interface (their checks refuse it), but neither was told." },
+    "X09-message-channel": { "needs": ["billing"], "note": "The meter sends refusals on its error channel now; billing listens on the other. The kind of message is shared and unchanged; the channel is written nowhere." },
+    "X10-node-timer": { "needs": [], "falseRefusals": { "meter": 2 }, "note": "The reader was given the browser's description of setTimeout (a number), not Node's (an object with unref and refresh)." }
+  }
+}
