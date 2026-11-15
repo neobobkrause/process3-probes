@@ -1,0 +1,9 @@
+{
+  "title": "The meter prices in the currency it is started with, its one argument (node worker.mjs EUR), and will not start without one",
+  "provider": "meter",
+  "covers": [
+    "a newly required argument to start a separately running part",
+    "no written kind holds how a running part is started"
+  ],
+  "note": "billing's meterUsage spawns [WORKER_FILE] with no argument: the meter stops at once, sends nothing, and billing's promise never settles; both of billing's meter tests fail."
+}

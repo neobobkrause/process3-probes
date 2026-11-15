@@ -1,0 +1,22 @@
+--- before/bookings/src/index.mjs
++++ after/bookings/src/index.mjs
+@@ -93,7 +93,7 @@
+    */
+   const quote = (roomId, party, nights) => {
+     const room = rooms.find(roomId);
+-    if (!room) throw new RangeError(`bookings: unknown room: ${roomId}`);
++    if (!room) throw new Error(`bookings: unknown room: ${roomId}`); // an unknown room is not a value out of bounds
+     checkSize(party, nights, room.seats);
+     return amount(PRICE_PER_SEAT_NIGHT * party * nights, 'EUR');
+   };
+--- before/bookings/test/index.test.mjs
++++ after/bookings/test/index.test.mjs
+@@ -64,7 +64,7 @@
+   assert.equal(bookings.cancel(b.id).state, 'cancelled');
+   assert.throws(() => bookings.cancel(b.id));
+   assert.throws(() => bookings.cancel('b-999'), RangeError);
+-  assert.throws(() => bookings.open(req({ room: 'attic' })), RangeError);
++  assert.throws(() => bookings.open(req({ room: 'attic' })), /unknown room/);
+ });
+ 
+ test('bound bookquote.total: what the whole stay costs, for the whole party and every night', () => {

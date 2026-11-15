@@ -1,0 +1,8 @@
+{
+  "title": "The store hands out a fresh id for a new record of a table: the first whole number, written as text, that no record of it has",
+  "provider": "store",
+  "covers": [
+    "new handle method (new entry)",
+    "its name is the first word of a bound line that belonged to every member"
+  ]
+}

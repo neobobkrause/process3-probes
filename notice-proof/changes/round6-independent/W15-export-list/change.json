@@ -1,0 +1,8 @@
+{
+  "title": "text-rules lists what it exports at the end of the file, so that a reader sees its interface in one place",
+  "provider": "text-rules",
+  "covers": [
+    "exports moved to one export list",
+    "every kind and every function the same"
+  ]
+}

@@ -1,0 +1,15 @@
+--- before/door/src/index.mjs
++++ after/door/src/index.mjs
+@@ -35,7 +35,11 @@
+    */
+   const dispatch = async (op, body) => {
+     const h = /** @type {Record<string, ((req: unknown) => unknown) | undefined>} */ (handlers)[op];
+-    if (typeof h !== 'function') throw new Error(`door: unknown operation: ${op}`);
++    if (typeof h !== 'function') {
++      // The venue's operators collect the error stream: one line of JSON for each call the door cannot carry.
++      console.error(JSON.stringify({ event: 'unknown-operation', op }));
++      throw new Error(`door: unknown operation: ${op}`);
++    }
+     await Promise.resolve();
+     return JSON.parse(JSON.stringify(h(JSON.parse(JSON.stringify(body)))));
+   };

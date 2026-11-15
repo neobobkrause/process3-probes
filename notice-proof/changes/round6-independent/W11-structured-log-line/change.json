@@ -1,0 +1,8 @@
+{
+  "title": "The door writes one line of JSON to the error stream for each call it cannot carry, for the venue's operators",
+  "provider": "door",
+  "covers": [
+    "a structured log line written with console.error",
+    "no kind changes"
+  ]
+}

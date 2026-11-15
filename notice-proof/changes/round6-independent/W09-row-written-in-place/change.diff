@@ -1,0 +1,15 @@
+--- before/bookings/src/index.mjs
++++ after/bookings/src/index.mjs
+@@ -126,10 +126,8 @@
+       const b = find(id);
+       if (!b) throw new RangeError(`bookings: unknown booking: ${id}`);
+       if (b.state !== 'open') throw new Error(`bookings: not open: ${id}`);
+-      /** @type {Booking} builds a Booking */
+-      const done = { ...b, state: 'cancelled' };
+-      store.put('bookings', id, done);
+-      return done;
++      const rec = store.put('bookings', id, { ...b, state: 'cancelled' });
++      return /** @type {Booking} the store holds only Bookings in this table */ (rec.value);
+     },
+   };
+ }

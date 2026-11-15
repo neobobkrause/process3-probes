@@ -1,0 +1,8 @@
+{
+  "title": "Booking's comment lists its fields in the order the front desk reads a booking out; nothing else changes",
+  "provider": "bookings",
+  "covers": [
+    "a kind's @property lines reordered",
+    "the printed declaration keeps the written order"
+  ]
+}

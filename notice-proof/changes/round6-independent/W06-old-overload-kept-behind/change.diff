@@ -1,0 +1,44 @@
+--- before/money/src/index.mjs
++++ after/money/src/index.mjs
+@@ -53,7 +53,14 @@
+  * @returns {string}
+  */
+ /**
+- * Writes several amounts for people to read, one after another, joined by " + ".
++ * Writes several amounts for people to read, one line each, so that the caller can lay them out.
++ * @overload
++ * @param {Amount[]} list
++ * @returns {string[]}
++ */
++/**
++ * Writes several amounts for people to read, one after another, joined by " + ". Kept, so that every call written
++ * for it is still accepted.
+  * @overload
+  * @param {Amount[]} list
+  * @returns {string}
+@@ -61,10 +68,10 @@
+ /**
+  * Writes one amount, or several, for people to read.
+  * @param {Amount | Amount[]} a
+- * @returns {string}
++ * @returns {string | string[]}
+  */
+ export function formatAmount(a) {
+-  if (Array.isArray(a)) return a.map((x) => formatAmount(x)).join(' + ');
++  if (Array.isArray(a)) return a.map((x) => formatAmount(x));
+   return `${a.currency} ${(a.cents / 100).toFixed(2)}`;
+ }
+ 
+--- before/money/test/index.test.mjs
++++ after/money/test/index.test.mjs
+@@ -27,8 +27,8 @@
+   assert.match(s, /12[.,]50/);
+ });
+ 
+-test('formatAmount writes several amounts joined by +', () => {
+-  assert.equal(formatAmount([amount(100, 'EUR'), amount(250, 'EUR')]), 'EUR 1.00 + EUR 2.50');
++test('formatAmount writes several amounts, one line each', () => {
++  assert.deepEqual(formatAmount([amount(100, 'EUR'), amount(250, 'EUR')]), ['EUR 1.00', 'EUR 2.50']);
+ });
+ 
+ test('bound parts: whole number, 1 to 100', () => {

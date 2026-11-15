@@ -1,0 +1,13 @@
+{
+  "title": "bookings' price list is kept in euros, as the venue's price sheet writes it, and renamed SEAT_NIGHT_EUROS to say so",
+  "provider": "bookings",
+  "covers": [
+    "a provider changes a file outside its interface",
+    "a user reaches that file with import(), which rule 28's check does not look at"
+  ],
+  "before": [
+    "setups/V06a-bookings-price-list",
+    "setups/W05b-front-price-menu-loaded-later"
+  ],
+  "note": "front's priceMenu takes SEAT_NIGHT_CENTS out of the module it imports: it is undefined, the menu rejects with a TypeError, and front's price menu test fails."
+}

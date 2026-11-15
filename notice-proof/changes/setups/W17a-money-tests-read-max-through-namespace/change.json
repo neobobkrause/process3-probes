@@ -1,0 +1,7 @@
+{
+  "title": "money publishes its largest amount, MAX_CENTS, and its tests read the limit as money.MAX_CENTS",
+  "provider": "money",
+  "covers": [
+    "a bound test reads its limit from the module under test, imported as a namespace (the standing state)"
+  ]
+}

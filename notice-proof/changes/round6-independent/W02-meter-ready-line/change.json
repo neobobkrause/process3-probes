@@ -1,0 +1,9 @@
+{
+  "title": "The meter writes an empty line as soon as it is ready, so that whoever started it can tell it has started; readers skip empty lines",
+  "provider": "meter",
+  "covers": [
+    "something other than a message written on a message channel, in a write that holds no JSON.stringify",
+    "the sender's own test skips empty lines; a reader does not"
+  ],
+  "note": "billing splits standard output on line ends and parses every line: JSON.parse('') throws inside its data handler, and its meter tests fail."
+}

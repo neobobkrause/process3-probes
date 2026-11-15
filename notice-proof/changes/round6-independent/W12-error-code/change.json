@@ -1,0 +1,8 @@
+{
+  "title": "add's error for currencies that differ carries a code, so that a caller can tell it from an amount out of bounds without reading the message",
+  "provider": "money",
+  "covers": [
+    "honest Node idiom: a code set on an error before it is thrown",
+    "kinds of error unchanged"
+  ]
+}

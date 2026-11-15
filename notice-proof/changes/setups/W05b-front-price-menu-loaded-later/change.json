@@ -1,0 +1,10 @@
+{
+  "title": "The front desk shows the price list, reading it the first time the menu is asked for",
+  "provider": "front",
+  "covers": [
+    "a user that reaches a provider file outside the provider's interface with import() (the standing state)"
+  ],
+  "before": [
+    "setups/V06a-bookings-price-list"
+  ]
+}

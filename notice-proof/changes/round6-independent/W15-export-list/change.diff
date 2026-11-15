@@ -1,0 +1,30 @@
+--- before/text-rules/src/index.mjs
++++ after/text-rules/src/index.mjs
+@@ -13,7 +13,7 @@
+  * @bound result: only a-z, 0-9 and single hyphens between them
+  * @throws {RangeError} when text is outside its bound
+  */
+-export function slugify(text) {
++function slugify(text) {
+   if (typeof text !== 'string' || text.length < 1 || text.length > SLUG_MAX) {
+     throw new RangeError('slugify: text must be 1 to 80 characters');
+   }
+@@ -32,7 +32,7 @@
+  * @param {string} text
+  * @returns {boolean}
+  */
+-export function isEmail(text) {
++function isEmail(text) {
+   return typeof text === 'string' && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(text);
+ }
+ 
+@@ -41,6 +41,8 @@
+  * @param {string} text
+  * @returns {string}
+  */
+-export function titleCase(text) {
++function titleCase(text) {
+   return text.replace(/\b([a-z])/g, (m) => m.toUpperCase());
+ }
++
++export { slugify, isEmail, titleCase };

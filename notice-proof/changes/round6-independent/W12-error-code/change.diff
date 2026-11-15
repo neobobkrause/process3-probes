@@ -1,0 +1,30 @@
+--- before/money/src/index.mjs
++++ after/money/src/index.mjs
+@@ -39,10 +39,14 @@
+  * @param {Amount} a
+  * @param {Amount} b
+  * @returns {Amount}
+- * @throws {RangeError} when the currencies differ or the sum is outside the bound of cents
++ * @throws {RangeError} when the currencies differ (its code is then MONEY_CURRENCIES_DIFFER) or the sum is outside the bound of cents
+  */
+ export function add(a, b) {
+-  if (a.currency !== b.currency) throw new RangeError('add: currencies differ');
++  if (a.currency !== b.currency) {
++    const err = new RangeError(`add: currencies differ: ${a.currency} and ${b.currency}`);
++    err.code = 'MONEY_CURRENCIES_DIFFER';
++    throw err;
++  }
+   return amount(a.cents + b.cents, a.currency);
+ }
+ 
+--- before/money/test/index.test.mjs
++++ after/money/test/index.test.mjs
+@@ -17,7 +17,7 @@
+ 
+ test('add sums amounts of one currency and refuses mixed ones', () => {
+   assert.equal(add(amount(150, 'EUR'), amount(250, 'EUR')).cents, 400);
+-  assert.throws(() => add(amount(1, 'EUR'), amount(1, 'USD')), RangeError);
++  assert.throws(() => add(amount(1, 'EUR'), amount(1, 'USD')), { name: 'RangeError', code: 'MONEY_CURRENCIES_DIFFER' });
+   assert.throws(() => add(amount(10_000_000, 'EUR'), amount(1, 'EUR')), RangeError);
+ });
+ 

@@ -1,0 +1,23 @@
+--- before/meter/src/index.mjs
++++ after/meter/src/index.mjs
+@@ -1,7 +1,8 @@
+ /**
+  * The meter: a separately running program that prices the minutes rooms were used.
+  * It is sent MeterInput lines on its standard input and answers with MeterMsg lines on its standard output,
+- * each one JSON on a line of its own. Both sides use the kinds written here.
++ * each one JSON on a line of its own, after an empty line written as soon as it is ready (readers skip empty
++ * lines). Both sides use the kinds written here.
+  */
+ /** @import { Amount } from '../../money/src/index.mjs' */
+ 
+--- before/meter/src/worker.mjs
++++ after/meter/src/worker.mjs
+@@ -12,6 +12,8 @@
+ const send = (msg) => process.stdout.write(JSON.stringify(msg) + '\n');
+ 
+ const lines = createInterface({ input: process.stdin });
++// An empty line as soon as the meter is ready, so that whoever started it can tell it has started.
++process.stdout.write('\n');
+ lines.on('line', (/** @type {string} */ line) => {
+   if (line.trim() === '') return;
+   /** @type {MeterInput} checks a MeterInput below */

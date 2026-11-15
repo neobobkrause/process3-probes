@@ -1,0 +1,59 @@
+--- before/text-rules/src/reserved.json
++++ after/text-rules/src/reserved.json
+@@ -0,0 +1 @@
++["admin", "staff", "new", "all"]
+--- before/text-rules/src/index.mjs
++++ after/text-rules/src/index.mjs
+@@ -1,9 +1,13 @@
+ /**
+  * Small rules for text that several modules share.
+  */
++import { readFileSync } from 'node:fs';
+ 
+ const SLUG_MAX = 80;
+ 
++/** The names the venue keeps for itself, lower-case, read once from reserved.json, which the venue's staff keep. */
++const RESERVED = new Set(/** @type {string[]} */ (JSON.parse(readFileSync(new URL('./reserved.json', import.meta.url), 'utf8'))));
++
+ /**
+  * Turns a name into a slug: lower-case letters and digits joined by single hyphens.
+  * Accents are dropped, and anything that is not a letter or a digit separates words.
+@@ -37,6 +41,15 @@
+ }
+ 
+ /**
++ * Says whether a name is one the venue keeps for itself, written in any case, with spaces around it or not.
++ * @param {string} text
++ * @returns {boolean}
++ */
++export function isReservedName(text) {
++  return typeof text === 'string' && RESERVED.has(text.trim().toLowerCase());
++}
++
++/**
+  * Upper-cases the first letter of each word and leaves the rest alone.
+  * @param {string} text
+  * @returns {string}
+--- before/text-rules/test/index.test.mjs
++++ after/text-rules/test/index.test.mjs
+@@ -1,6 +1,6 @@
+ import { test } from 'node:test';
+ import assert from 'node:assert/strict';
+-import { slugify, isEmail, titleCase } from '../src/index.mjs';
++import { slugify, isEmail, titleCase, isReservedName } from '../src/index.mjs';
+ 
+ test('bound text: 1 to 80 characters, with at least one letter or digit', () => {
+   assert.equal(typeof slugify('a'), 'string');
+@@ -28,6 +28,12 @@
+   assert.equal(isEmail(''), false);
+ });
+ 
++test('isReservedName recognises the names the venue keeps', () => {
++  assert.equal(isReservedName('Admin'), true);
++  assert.equal(isReservedName(' staff '), true);
++  assert.equal(isReservedName('Main Hall'), false);
++});
++
+ test('titleCase upper-cases the first letter of each word', () => {
+   assert.equal(titleCase('small hall'), 'Small Hall');
+   assert.equal(titleCase('Hall'), 'Hall');

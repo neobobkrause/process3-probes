@@ -1,0 +1,12 @@
+{
+  "title": "An amount may now be at most 500,000 cents, the most the venue's payment provider takes in one payment; MAX_CENTS changed, the bound line forgotten",
+  "provider": "money",
+  "covers": [
+    "bound changed in code, bound line not",
+    "the bound test reads its limit through a namespace import, which the fingerprint does not follow"
+  ],
+  "before": [
+    "setups/W17a-money-tests-read-max-through-namespace"
+  ],
+  "note": "bookings' bound party test opens a booking for 200 people for 2 nights, 600,000 cents: amount now refuses it."
+}

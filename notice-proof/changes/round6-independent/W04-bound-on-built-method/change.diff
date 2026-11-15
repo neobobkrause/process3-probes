@@ -1,0 +1,30 @@
+--- before/bookings/src/index.mjs
++++ after/bookings/src/index.mjs
+@@ -105,9 +105,12 @@
+     quote,
+     find,
+     /**
++     * A note is sent to the caretaker in a text message, so it is kept short.
++     * @bound req.note: at most 140 characters
+      * @throws {RangeError} when the request is outside its bounds or names an unknown room
+      */
+     open(req) {
++      if (req.note !== undefined && req.note.length > 140) throw new RangeError('bookings: a note may be at most 140 characters');
+       const first = parseDay(req.day);
+       const total = quote(req.room, req.party, req.nights);
+       /** @type {Booking} builds a Booking */
+--- before/bookings/test/index.test.mjs
++++ after/bookings/test/index.test.mjs
+@@ -58,6 +58,12 @@
+   assert.throws(() => bookings.open(req({ day: 'tomorrow' })), RangeError);
+ });
+ 
++test('bound req.note: at most 140 characters', () => {
++  const { bookings } = system();
++  assert.equal(bookings.open(req({ note: 'n'.repeat(140) })).note?.length, 140);
++  assert.throws(() => bookings.open(req({ note: 'n'.repeat(141) })), RangeError);
++});
++
+ test('cancel closes an open booking once; unknown rooms and bookings are refused', () => {
+   const { bookings } = system();
+   const b = bookings.open(req());

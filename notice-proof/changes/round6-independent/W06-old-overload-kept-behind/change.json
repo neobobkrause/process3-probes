@@ -1,0 +1,13 @@
+{
+  "title": "formatAmount's list form hands back one line per amount; the old joined form is kept as a later overload, so that calls written for it are still accepted",
+  "provider": "money",
+  "covers": [
+    "a new overload placed before an old one with the same parameters",
+    "rule 33 compares the set of signatures, not which one a call reaches"
+  ],
+  "before": [
+    "setups/Z08a-money-formats-lists",
+    "setups/Z08b-billing-lists-instalments"
+  ],
+  "note": "billing writes formatAmount(parts) into its invoice text: the call reaches the first list overload, a list of lines comes out joined by commas, and billing's invoice test fails."
+}

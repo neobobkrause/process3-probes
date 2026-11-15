@@ -1,0 +1,29 @@
+--- before/text-rules/src/index.mjs
++++ after/text-rules/src/index.mjs
+@@ -11,10 +11,11 @@
+  * @returns {string} the slug
+  * @bound text: 1 to 80 characters, with at least one letter or digit
+  * @bound result: only a-z, 0-9 and single hyphens between them
+- * @throws {RangeError} when text is outside its bound
++ * @throws {TypeError|RangeError} TypeError when text is not text at all; RangeError when it is outside its bound
+  */
+ export function slugify(text) {
+-  if (typeof text !== 'string' || text.length < 1 || text.length > SLUG_MAX) {
++  if (typeof text !== 'string') throw new TypeError('slugify: text must be a string');
++  if (text.length < 1 || text.length > SLUG_MAX) {
+     throw new RangeError('slugify: text must be 1 to 80 characters');
+   }
+   const slug = text
+--- before/text-rules/test/index.test.mjs
++++ after/text-rules/test/index.test.mjs
+@@ -16,6 +16,10 @@
+   }
+ });
+ 
++test('slugify refuses a value that is not text with a TypeError', () => {
++  assert.throws(() => slugify(/** @type {any} */ (12)), TypeError);
++});
++
+ test('slugify keeps the words in order, joined by hyphens', () => {
+   assert.equal(slugify('Main Hall'), 'main-hall');
+   assert.equal(slugify('Café Øst 2'), 'cafe-st-2');

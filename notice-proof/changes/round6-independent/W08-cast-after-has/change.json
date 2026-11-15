@@ -1,0 +1,8 @@
+{
+  "title": "rooms gains pick: the rooms with the given ids, in the order given; an id with no room is refused",
+  "provider": "rooms",
+  "covers": [
+    "new handle method (new entry)",
+    "honest cast of a Map's get after its has, which drops 'undefined'"
+  ]
+}

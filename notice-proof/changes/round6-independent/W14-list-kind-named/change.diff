@@ -1,0 +1,19 @@
+--- before/money/src/index.mjs
++++ after/money/src/index.mjs
+@@ -56,10 +56,15 @@
+ }
+ 
+ /**
++ * The parts an amount is split into, in order; they add up to it exactly.
++ * @typedef {Amount[]} Parts
++ */
++
++/**
+  * Splits an amount into equal parts that add up to it exactly; leftover cents go to the first parts.
+  * @param {Amount} a
+  * @param {number} parts
+- * @returns {Amount[]}
++ * @returns {Parts}
+  * @bound parts: whole number, 1 to 100
+  * @throws {RangeError} when parts is outside its bound
+  */

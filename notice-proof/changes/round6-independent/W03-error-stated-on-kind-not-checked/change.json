@@ -1,0 +1,13 @@
+{
+  "title": "An unknown room is refused with an Error, not a RangeError (it is not a value out of bounds); the @throws line on the handle is forgotten",
+  "provider": "bookings",
+  "covers": [
+    "kind of error changed in code, the @throws line on the kind not",
+    "rule 29 checks only errors stated on the function or method itself"
+  ],
+  "before": [
+    "setups/Z06a-bookings-states-quote-errors",
+    "setups/Z06b-billing-expects-range-error"
+  ],
+  "note": "Bookings still states '@throws {RangeError} quote when the room is unknown'. billing's estimate test expects bookings' RangeError for an unknown room and now gets an Error."
+}

@@ -1,0 +1,45 @@
+--- before/store/src/index.mjs
++++ after/store/src/index.mjs
+@@ -19,9 +19,10 @@
+  * @property {(table: string, id: string) => Stored | undefined} get
+  * @property {(table: string) => Stored[]} list all records of a table, in the order they were first written
+  * @property {(table: string, id: string) => boolean} remove says whether there was a record to remove
++ * @property {(table: string) => string} id a fresh id for a new record of a table: the first whole number, written as text, that no record of it has
+  * @bound table: 1 to 40 characters, each a-z, 0-9 or a hyphen
+  * @bound id: 1 to 120 characters
+- * @carriestable get list put remove
++ * @carriestable get list put remove id
+  */
+ 
+ const TABLE = /^[a-z0-9-]{1,40}$/;
+@@ -77,5 +78,12 @@
+       checkNames(table, id);
+       return tableOf(table).delete(id);
+     },
++    id(table) {
++      checkNames(table);
++      const t = tableOf(table);
++      let n = 1;
++      while (t.has(String(n))) n++;
++      return String(n);
++    },
+   };
+ }
+--- before/store/test/index.test.mjs
++++ after/store/test/index.test.mjs
+@@ -50,6 +50,15 @@
+   assert.equal(s.remove('t', 'a'), false);
+ });
+ 
++test('id hands out an id that no record of the table has', () => {
++  const s = createStore();
++  assert.equal(s.id('t'), '1');
++  s.put('t', '1', 0);
++  s.put('t', '2', 0);
++  assert.equal(s.id('t'), '3');
++  assert.equal(s.get('t', s.id('t')), undefined);
++});
++
+ test('seededStore holds the given records', () => {
+   const s = seededStore({ t: [{ id: 'x', value: 5 }], u: [] });
+   assert.equal(s.get('t', 'x')?.value, 5);

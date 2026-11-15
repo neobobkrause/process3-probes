@@ -1,0 +1,9 @@
+{
+  "title": "slugify refuses a value that is not text with a TypeError, as the language's own functions do; its @throws line names both kinds",
+  "provider": "text-rules",
+  "covers": [
+    "a @throws line written with a union of kinds",
+    "a new kind of error for a value outside the kind (hands back differently)"
+  ],
+  "note": "Every throw in slugify is a kind its comment states."
+}

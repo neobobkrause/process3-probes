@@ -1,0 +1,8 @@
+{
+  "title": "text-rules gains isReservedName: whether a name is one the venue keeps for itself, read from reserved.json, which the venue's staff keep",
+  "provider": "text-rules",
+  "covers": [
+    "new function (new entry)",
+    "honest JSON.parse of a settings file, which is not a message"
+  ]
+}

@@ -1,0 +1,8 @@
+{
+  "title": "cancel writes the cancelled booking in one step and hands back what the store now holds",
+  "provider": "bookings",
+  "covers": [
+    "a row written in place with a spread and one changed field",
+    "the reader widens a literal written where 'unknown' is expected"
+  ]
+}
