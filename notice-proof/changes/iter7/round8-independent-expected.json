@@ -1,0 +1,174 @@
+{
+  "about": "Expected answers for round 8, an independent adversary's series against the seventh design (notes/iteration-7-design.md), written by the adversary BEFORE anything was run on any changed state. The adversary read the rules, the design notes up to their 'Defects' sections, the tool's code, the product and the earlier series, and no results. It ran the tool and the tests on the unchanged product only. 'told' is what the rules say; 'attack' says what the adversary predicts the tool does and what counts as a defeat.",
+  "notes": [
+    "Break-untold attacks (defeat = the predicted user's tests fail, that user is not told, and nothing else stops the change): T01 T02 T03 T04 T05 T06 T07 T08 T09.",
+    "Told for nothing (defeat = a user the rules do not name is told): T10 T11 T12.",
+    "Honest code refused (defeat = the provider's own check refuses): T13 T14 T17, where the rules themselves allow the code; T15 T16, where the letter of the rules (19 and 45; 46) already refuses code that writes the same bytes or throws the same kind. For T15 and T16 'refuses' records the rules' letter; the refusal is still the defeat, since the code is honest.",
+    "T01 and T06 are defeats of the method itself, not only of the tool: no rule as written tells anyone or refuses anything (rule 49 covers only handles built as plain objects; rule 6 does not say the first step must describe every entry, and no check asks for a stated kind). For T06 'told' follows round 1's rule 3 (what weekday accepts can no longer stand in).",
+    "T02 rests on rule 43's narrowing (iteration 6): the product's own bookquote handler wraps quote's answer, so a bound on quote never reaches op:bookquote. Round 1's rule 3 says op:bookquote newly refuses (more than 3 nights), so billing must be told.",
+    "T03, T05 and T09 are places the iteration-7 checks govern but do not recognise: a throw from a helper the stated function calls (rule 46 reads only the function's own throw statements); a console.log() with no argument (the check records only writes handed data); JSON.stringify(x, null, 2) + '\\n' (recognised by spelling, though it writes several lines).",
+    "T04 and T07 are interface facts written in the comment that the listing drops: a class member's @throws (functions, handle members, operations and constructors keep theirs), and the parameter names of an accepted callback (rule 48 compares only the entry's own parameters; the backstop prints every parameter as _).",
+    "T08 is the fifth spelling of 'a bound test's limit kept elsewhere' (Y07, Z02, W17, U06): a helper function in another test file of the module (test/edges.mjs). The fingerprint keeps edgesOf('cents'), never the edge it hands back.",
+    "T10: the door's call and get are generic, <K extends keyof AllOps>; the tool writes K's constraint out as the union of every operation name, and iteration 4 made any difference in a type parameter 'cannot stand in'. A new, unclashing operation of bookings therefore changes Door.call and Door.get through bookings. Iteration 4's 'any change to a type parameter' was written for a provider's own function; here no code of the door changed, the door only accepts more names, and rule 3 says a brand-new entry has no users.",
+    "Set-ups: T04a (billing, on Y13a and Y13b), T06a (calendar's partial first step), T07a (bookings), T07b (billing), T08a (money's tests). Earlier set-ups reused: Z07, U07a (T01), Z06a, Z06b (T03), Y13a, Y13b (T04). No set-up is expected to be refused (no refusesBefore).",
+    "Reports is not followed (it reads its source as 'anything') and declares calendar, store, rooms and bookings, so rule 4 tells it whenever one of their listings changes: in T02 and T10 it is told by the rules and, predicted, by the tool."
+  ],
+  "changes": {
+    "T01-rooms-handle-built-as-class": {
+      "told": [],
+      "why": "Rooms, NewRoom, Room and createRooms are unchanged in the listing and in the printed declarations: rule 2, nobody told. Rule 49 refuses `this` only in the methods of a handle built as a plain object; a handle built as a class instance is not covered by any rule, so nothing is refused either. front (Z07: ids mapped through rooms.find) and reports (U07a: rooms.add handed to forEach) call the methods without their handle and fail with a TypeError.",
+      "brokenPredicted": ["front", "reports"],
+      "wrongWithoutFailingTest": [],
+      "refuses": [],
+      "attack": "Hole in rule 49 (and in the method): what a handed-out method needs of its receiver is in no kind, and the check walks only object literals. Building the handle as a class with a private #store is an ordinary refactor. Predicted: rooms' check passes (no plain-object method uses this; a class instance where a handle is expected is allowed), rooms' listing and declarations are unchanged, nobody is told (reports, not followed, is told only when a listing changes). Defeat: front's and reports' tests fail and neither is told.",
+      "realistic": true
+    },
+    "T02-quote-bound-not-reaching-operation": {
+      "told": ["billing", "reports"],
+      "why": "Round 1's rule 3: op:bookquote now refuses a stay of more than 3 nights (its handler hands the call to quote), so what it accepts cannot stand in for what it accepted, and its user billing must be told. The bound is written on Bookings.quote (rule 1), whose only users are bookings' own tests. Rule 4: reports, not followed, is told because bookings' listing changes. Rule 43 passes a bound on only through a handler whose whole body is the call; bookquote's handler wraps the answer in { total }, so by rule 43's letter op:bookquote does not change: the rules contradict each other here, and the safe answer is round 1's.",
+      "brokenPredicted": ["billing"],
+      "wrongWithoutFailingTest": [],
+      "refuses": [],
+      "attack": "Hole in rule 43's narrowing (iteration 6): the product's own bookquote handler is not 'straight', so W04's break comes back on it. Predicted: Bookings.quote is 'bound changed' (no user outside bookings); op:bookquote, BookingHandlers.bookquote and every other entry are unchanged; the tool tells reports only (not followed). Defeat: billing is not told; its estimate test (6 people, 4 nights, through door.call('bookquote')) is refused by quote and fails.",
+      "realistic": true
+    },
+    "T03-unknown-room-refused-in-helper": {
+      "told": [],
+      "why": "Rules 29, 36 and 46: where errors are stated, a function throws only kinds it states. quote's errors are stated on the handle (Z06a: RangeError); quote now lets an Error escape from roomOf, which it calls: bookings' own check must refuse, which stops the change. Nothing exported changes, so no one is told by the listing.",
+      "brokenPredicted": ["billing"],
+      "wrongWithoutFailingTest": [],
+      "refuses": ["bookings"],
+      "guard": "bookings' own check (rule 46)",
+      "attack": "Hole in rule 46: the check reads only the throw statements in the stated function's own body; a private helper the function calls, with no errors stated on it, is never looked at. Extracting a lookup helper is an ordinary refactor; the reason (an unknown room is not a value out of bounds) is U03's, and the @throws line on the handle is forgotten as there. Predicted: bookings' check passes, its listing is unchanged, nobody is told. Defeat: billing's Z06b test (estimate for an unknown room rejects with RangeError) fails.",
+      "realistic": true
+    },
+    "T04-tally-full-error": {
+      "told": ["billing"],
+      "why": "Rule 1 (iteration 2): the kinds of error named by @throws are part of what an entry hands back; rule 27: each member of a class is an entry. Tally#add's stated errors change from RangeError to RangeError and Error, so its users are told: billing (Y13b, T04a). No interface kind changes, so billing's check finds nothing; its T04a test fails, which is the told user's own job to fix.",
+      "brokenPredicted": ["billing"],
+      "wrongWithoutFailingTest": [],
+      "refuses": [],
+      "attack": "Hole in the listing: @throws are kept for functions, handle members, operations and a class's constructor, not for a class's other members, and the printed declaration carries no @throws. Predicted: money's check passes (both thrown kinds are stated), Tally#add is (Amount) => void before and after, nobody is told. Defeat: billing's T04a test (400 uses of 1440 minutes) expects RangeError, gets the tally's Error, and fails.",
+      "realistic": true
+    },
+    "T05-meter-ready-line-console-log": {
+      "told": [],
+      "why": "Rules 35 and 45: standard output carries the meter's messages, so every write to it in the meter's source must be a message line. console.log() writes an empty line to standard output: meter's own check must refuse, which stops the change. MeterInput and MeterMsg are unchanged, so no one is told by the listing.",
+      "brokenPredicted": ["billing"],
+      "wrongWithoutFailingTest": [],
+      "refuses": ["meter"],
+      "guard": "meter's own check (rules 35 and 45)",
+      "attack": "Hole in rules 35 and 45: the check records a write only when it is handed data (`if (data.length)`), and returns early for a console write with no message in it; console.log() with no argument is never looked at. W02's honest reason (a ready line; readers skip empty lines), written the plainest way. Predicted: meter's check passes, nobody is told. Defeat: billing parses the empty line as a MeterMsg, JSON.parse throws in its data handler, and billing's meter tests fail; the meter's own tests skip empty lines and pass.",
+      "realistic": true
+    },
+    "T06-weekday-takes-text-after-partial-first-step": {
+      "told": ["reports"],
+      "why": "Round 1's rule 3: weekday accepted a day (a Date) and now accepts text written YYYY-MM-DD; the new cannot stand in for the old, so its user reports is told. Rule 1 asks that the interface be written in the code; weekday has no interface comment (set-up T06a described parseDay and formatDay only), and no rule makes a check refuse a missing comment, so nothing is refused.",
+      "brokenPredicted": ["reports"],
+      "wrongWithoutFailingTest": [],
+      "refuses": [],
+      "attack": "Hole in rule 6 (and rule 21's answer to Z15): the comments-only first step is verified to leave running code unchanged, not to describe every entry; once any comment states a kind, the module 'has interface comments' and the ordinary comparison applies. An entry with no stated kinds is (any) => string in the tool's form and `weekday(_: any): string` in the printed declaration, before and after. Predicted: calendar's check passes (unstated kinds are 'cannot tell'), nobody is told. Defeat: reports' first test fails (weekday(parseDay(b.day)) now hands parseDay a Date, which it refuses).",
+      "realistic": true
+    },
+    "T07-price-function-parameters-swap": {
+      "told": ["billing", "front", "reports"],
+      "why": "Rule 48: if a name of an old parameter appears in the new entry at another place, the entry has changed. createBookings's accepted kind, as its comment writes it, holds the price callback's parameters (party, nights), now (nights, party): createBookings changed, and its users are told: billing, front and reports, whose tests call it. (Round 1's rule 3 gives the same answer: a callback asked with its parameters swapped cannot stand in.)",
+      "brokenPredicted": ["billing"],
+      "wrongWithoutFailingTest": [],
+      "refuses": [],
+      "attack": "Hole in rule 48: the tool compares the names of an entry's own parameters only (createBookings has one, deps); a callback's parameters inside the accepted kind are compared by kind (number, number), and the backstop prints them as `_`. U08's honest reason, one level down. Predicted: bookings' check passes, its listing and declarations are unchanged, nobody is told. Defeat: billing's T07b test (a venue's own prices, 6 people for 4 nights, 14,000 cents) gets 11,000 and fails.",
+      "realistic": true
+    },
+    "T08-limit-lowered-in-test-helper": {
+      "told": ["billing", "bookings", "front", "meter", "reports"],
+      "why": "Rules 4, 15, 26, 42 and 51: a bound test is compared by what it checks, the values it reads from its module included; what the cents bound test checks moved from 10,000,000 to 500,000 while its line did not, so the cents bound counts as changed and the users of every entry that carries it are told: bookings (amount, Amount), meter (amount), billing (amount, add, formatAmount, splitEvenly, and bookings' operations), front (bookings' operations), reports (not followed; bookings' listing carries the line).",
+      "brokenPredicted": ["bookings"],
+      "wrongWithoutFailingTest": [],
+      "refuses": [],
+      "attack": "Hole in the bound-test fingerprint: it follows the test file's constants and helpers, constants of the module's source, `import * as` and JSON files, not a helper FUNCTION in another test file of the module (test/edges.mjs, set-up T08a): it keeps edgesOf('cents') and never the edge. The forgotten-bound-line story of Y07, Z02, W17 and U06. Predicted: money's listing and its bound test's fingerprint are unchanged, nobody is told. Defeat: bookings' bound party test (200 people for 2 nights, 600,000 cents) fails.",
+      "realistic": true
+    },
+    "T09-messages-pretty-printed": {
+      "told": [],
+      "why": "Rule 19: messages on a channel are written one per line. The meter now writes each message over several lines: meter's own check must refuse, which stops the change. MeterMsg is unchanged, so no one is told by the listing.",
+      "brokenPredicted": ["billing"],
+      "wrongWithoutFailingTest": [],
+      "refuses": ["meter"],
+      "guard": "meter's own check (rules 19 and 45)",
+      "attack": "Hole in rule 19's recognition: a line is recognised as JSON.stringify(...) + '\\n', whatever stringify's other arguments; JSON.stringify(msg, null, 2) writes a message over several lines and passes. Predicted: meter's check passes, nobody is told. Defeat: billing parses '{' as a message and its meter tests fail. Contrived: the job must rewrite its own test's reader, knowing it no longer writes one message per line.",
+      "realistic": false
+    },
+    "T10-new-operation": {
+      "told": ["reports"],
+      "why": "Rule 3: a brand-new entry has no users; rule 7 adds a notice only when another provider already answers the name (none does). The door's call and get only accept one more name. Rule 4: reports, not followed and declaring bookings, is told because bookings' listing changes (new entries).",
+      "brokenPredicted": [],
+      "wrongWithoutFailingTest": [],
+      "refuses": [],
+      "attack": "Told for nothing: the tool writes Door.call's and Door.get's type parameter K with its constraint expanded to the union of every operation name, and a type parameter that differs makes the whole parameter list 'cannot stand in'. Predicted: the door's listing changes through bookings (Door.call, Door.get: cannot stand in), and billing (call and get) and front (call) are told, besides reports. Defeat: billing or front is told.",
+      "realistic": true
+    },
+    "T11-bound-test-assertion-messages": {
+      "told": [],
+      "why": "Rule 15: a bound test is compared by what it checks, its values and its checks; rewriting it with the same values and checks is not a change. Only the messages of five assertions are added: the same checks of the same values. No one is told.",
+      "brokenPredicted": [],
+      "wrongWithoutFailingTest": [],
+      "refuses": [],
+      "attack": "Told for nothing: the fingerprint collects every literal among a check's arguments, so an assertion's message is a new (check, value) pair and the cents bound counts as changed in every entry that carries it. Predicted: bookings, meter, billing, front and reports are told ('bound test changed'). Defeat: anyone is told.",
+      "realistic": true
+    },
+    "T12-list-kind-written-as-Array": {
+      "told": [],
+      "why": "A different valid answer (where leftover cents go) with the same domain and range: a change of content tells no one. splitEvenly accepts and hands back the same kinds, with the same bounds and errors; Array<Amount> and Amount[] are one kind.",
+      "brokenPredicted": [],
+      "wrongWithoutFailingTest": [],
+      "refuses": [],
+      "attack": "Told for nothing: TypeScript prints a JSDoc type as written where it can, so the backstop sees `Amount[]` become `Array<Amount>` while the tool's own form is unchanged, and calls splitEvenly 'declaration changed (not classified)'. Predicted: billing (which calls splitEvenly) is told. Defeat: billing is told. (If TypeScript writes both as Amount[], nobody is told and this is not a defeat.)",
+      "realistic": true
+    },
+    "T13-data-file-url-in-a-constant": {
+      "told": [],
+      "why": "Rule 44: a file is read with readFileSync only at a path the tool can work out, from the module's own folder. The path is a constant set to new URL('./reserved.json', import.meta.url), a file next to the module's source: a path the tool can work out (rule 47 reads a table's name through such a constant). Rule 40: what is parsed has a stated kind (string[]). isReservedName is a new entry: no one is told, nothing is refused.",
+      "brokenPredicted": [],
+      "wrongWithoutFailingTest": [],
+      "refuses": [],
+      "attack": "False refusal: rule 44's check recognises one spelling, readFileSync(new URL('<literal>', import.meta.url)) written in place, and refuses an identifier as 'a path the tool cannot work out', though the constant is the same URL (the meter names its program the same way, WORKER_FILE). Predicted: text-rules' check refuses at the readFileSync call. Defeat: text-rules' check refuses.",
+      "realistic": true
+    },
+    "T14-write-with-encoding": {
+      "told": [],
+      "why": "process.stdout.write(chunk, encoding) is Node's own signature, and the line written is the same message line. Rule 5: the check refuses only real disagreements, never where it merely cannot tell. No one is told, nothing is refused.",
+      "brokenPredicted": [],
+      "wrongWithoutFailingTest": [],
+      "refuses": [],
+      "attack": "False refusal: the tool's description of Node gives write(chunk, callback?), so the reader complains that 'utf8' is not a callback (2345). Iteration 7 made a missing property of Node 'cannot tell', not a call Node accepts and the description does not. Predicted: meter's check refuses at worker.mjs:12 as '(a) a comment disagrees with this module's code'. Defeat: meter's check refuses.",
+      "realistic": true
+    },
+    "T15-message-line-as-template": {
+      "told": [],
+      "why": "By the letter of rules 19 and 45 (a message line is JSON.stringify(message) + '\\n'; 'a line built any other way ... is refused'), meter's check refuses, though the template writes exactly the same bytes. No one is told.",
+      "brokenPredicted": [],
+      "wrongWithoutFailingTest": [],
+      "refuses": ["meter"],
+      "attack": "Honest code refused by the rules' letter: `${JSON.stringify(msg)}\\n` is what ESLint's prefer-template rule makes of the product's own line. Predicted: meter's check refuses at worker.mjs:12 (one message per line; a channel carries only message lines the tool can read). Defeat: meter's check refuses code that writes the same bytes.",
+      "realistic": true
+    },
+    "T16-errors-made-by-helper": {
+      "told": [],
+      "why": "By the letter of rule 46 (a throw is new X(...), Object.assign(new X(...), ...), a variable set to one of these, or a caught error thrown again; anything else is refused), money's check refuses `throw outOfBounds(...)`, though the helper's comment states it returns a RangeError, the kind amount and splitEvenly state. No one is told.",
+      "brokenPredicted": [],
+      "wrongWithoutFailingTest": [],
+      "refuses": ["money"],
+      "attack": "Honest code refused by the rules' letter: an error-making helper is the commonest way to keep messages uniform, and its kind is as readable (from @returns, or from the reader's type of the call) as a variable's. Predicted: money's check refuses twice (amount, splitEvenly): 'throws something whose kind the tool cannot read'. Defeat: money's check refuses.",
+      "realistic": true
+    },
+    "T17-test-shows-meter-output": {
+      "told": [],
+      "why": "Rule 35 concerns the stream that carries the meter's messages: the worker's standard output. The test's console.log writes to the test process's own standard output, another stream of another process, which carries no message. No one is told, nothing is refused.",
+      "brokenPredicted": [],
+      "wrongWithoutFailingTest": [],
+      "refuses": [],
+      "attack": "False refusal: the check gathers the streams that carry messages by name over all of a module's files, tests included, so the worker's message writes make 'stdout' a message stream, and a console.log in the meter's test is refused as 'something other than a message to stdout'. Predicted: meter's check refuses at the test's console.log. Defeat: meter's check refuses.",
+      "realistic": true
+    }
+  }
+}
