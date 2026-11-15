@@ -1055,6 +1055,29 @@ export { AI_USE_CHECKS, AI_USE_WORDS, AI_USE_NEW_WORDS, LIMIT_WORD_BY_SCOPE, UNJ
 /** @typedef {OneOf<ExploreApproved | LimitInvalidRefusal | AskFaultRefusal | Refusal | RelayedRefusal>} ApproveAnswer */
 /** @typedef {OneOf<AccountLimits | LimitInvalidRefusal | Refusal | RelayedRefusal>} AccountLimitsAnswer */
 /** @typedef {OneOf<UseOverTime | LimitInvalidRefusal | Refusal | RelayedRefusal>} UseOverTimeAnswer */
+
+/**
+ * F3: a limit (R2), or with `kind` an alert threshold (R23), on one account, as the screens set it.
+ * @typedef {Object} BudgetRequest
+ * @property {string | null} [owner]
+ * @property {string | null} [scope]
+ * @property {string | null} [unit]
+ * @property {string | null} [period]
+ * @property {number | null} [amount] a limit's, as LimitRequest's
+ * @property {boolean | null} [inclusive]
+ * @property {string | null} [kind] with it, a threshold
+ * @property {number | null} [level] a threshold's, as ThresholdRequest's
+ * @property {number | null} [was]
+ * @property {string | null} [by]
+ * @property {Instant | null} [at]
+ * @bound as LimitRequest's without kind, as ThresholdRequest's with it
+ */
+
+/**
+ * F3: what `budgetSet` answers: `aiLimitSet`'s or `aiThresholdSet`'s answer, or `AI_LIMIT_INVALID` naming the owner field.
+ * @typedef {OneOf<LimitSet | ThresholdSet | LimitInvalidRefusal | ThresholdInvalidRefusal | UnitUnavailableRefusal | Refusal
+ *   | RelayedRefusal>} BudgetAnswer
+ */
 /** @typedef {OneOf<UseByMember | LimitInvalidRefusal | NotAPayingAccountRefusal | Refusal | RelayedRefusal>} UseByMemberAnswer */
 /** @typedef {OneOf<{ok: true, owner: string, retest: RetestState, set_at: string} | LimitInvalidRefusal | FieldRefusal
  *   | UnitUnavailableRefusal | Refusal | RelayedRefusal>} RetestSetAnswer */
@@ -1073,8 +1096,12 @@ export { AI_USE_CHECKS, AI_USE_WORDS, AI_USE_NEW_WORDS, LIMIT_WORD_BY_SCOPE, UNJ
  *   aiusebymember: {req: {owner: string | null, viewer: string | null}, res: UseByMemberAnswer},
  *   airetestset: {req: RetestRequest, res: RetestSetAnswer},
  *   aihealthset: {req: {on: boolean, by: string | null}, res: HealthShareSetAnswer},
- *   aihealthpreview: {req: {viewer: string | null}, res: HealthPreviewAnswer}
+ *   aihealthpreview: {req: {viewer: string | null}, res: HealthPreviewAnswer},
+ *   aibudgetset: {req: BudgetRequest, res: BudgetAnswer},
+ *   aiprojectbudget: {req: BudgetRequest & {project: string | null}, res: BudgetAnswer}
  * }} AiUseOpTable
+ * @bound aibudgetset.owner: `group` or `team` (or none) for the team's, `member` for the stamped member's own, else an owner's spelling
+ * @bound aiprojectbudget.project: the project's id; the owner is `project:<project>`
  * @optable
  */
 
@@ -1092,7 +1119,10 @@ export { AI_USE_CHECKS, AI_USE_WORDS, AI_USE_NEW_WORDS, LIMIT_WORD_BY_SCOPE, UNJ
  * @property {boolean} mutating
  * @property {string} weight
  * @property {string} description
- * @property {{accepts: string[], requires: string[]}} [fields] what the arm reads, and what it requires; none on a read
+ * @property {string[]} [stamps] the query fields the control plane stamps
+ * @property {null} [needs]
+ * @property {{accepts: string[], requires: (string | string[])[]}} [fields] what the arm reads, and what it requires (a
+ *   list inside requires: one of them); none on a read
  */
 
 /** R1 (was ai-runs R48; T53, `agent-model` R5): the token figures of one conversation's neutral `usage` record, each a
@@ -2043,7 +2073,10 @@ export class AiUse {
    *  (the team's or a member's own account, the screen's "Limits and alerts") and `op=aiprojectbudget` (a project's): with
    *  `kind`, an alert threshold as R23 sets it (`aiThresholdSet`); without, a limit as R2 sets it (`aiLimitSet`). Either
    *  way the owner's own act, refused and recorded as those are. An owner that is not one is refused `AI_LIMIT_INVALID`
-   *  naming `ownerField` (`owner`, or `project` for a project's). Never throws. */
+   *  naming `ownerField` (`owner`, or `project` for a project's). Never throws.
+   *  @param {BudgetRequest} [request]
+   *  @param {string} [ownerField] the field an owner that is not one is refused naming
+   *  @returns {BudgetAnswer} */
   budgetSet({ owner = null, scope = null, unit = null, period = null, amount = undefined, inclusive = undefined, kind = undefined,
               level = undefined, was = null, by = null, at = null } = {}, ownerField = "owner") {
     try {
@@ -3174,7 +3207,12 @@ export function aiUseOf(ctx, deps = {}) {
  *  `airetestset` (R28), `aihealthset` (R32), `aihealthpreview` (R33), and (F3) `aibudgetset` and `aiprojectbudget`
  *  (R2's limits and R23's thresholds, the screens' spellings). Every identity (`by`, `viewer`) is the control
  *  plane's stamp, read from the QUERY after the body is spread, so a caller's own copy never wins (D-136). */
-<<<<<<< commented
+/** F3: the owner `aibudgetset` names: `group` (or `team`, or none given), the member's own from the stamp (`member`), or
+ *  an owner as written (the act's own bar judges it). */
+/** @type {(owner: *, by: string | null) => string | null} */
+const budgetOwner = (owner, by) => (owner === undefined || owner === null || owner === "group" || owner === "team" ? "group"
+  : owner === "member" ? (memberIdOf(by) ? `member:${memberIdOf(by)}` : null) : owner);
+
 /**
  * @param {AiUse} use
  * @param {URL} url the request's URL; `by`, `viewer`, `owner`, `month`, `day` are read from its query
@@ -3182,13 +3220,6 @@ export function aiUseOf(ctx, deps = {}) {
  * @param {{[name: string]: *} | null} [env] the store's environment, handed to `use` (R17)
  * @returns {AiUseHandlers}
  */
-=======
-/** F3: the owner `aibudgetset` names: `group` (or `team`, or none given), the member's own from the stamp (`member`), or
- *  an owner as written (the act's own bar judges it). */
-const budgetOwner = (owner, by) => (owner === undefined || owner === null || owner === "group" || owner === "team" ? "group"
-  : owner === "member" ? (memberIdOf(by) ? `member:${memberIdOf(by)}` : null) : owner);
-
->>>>>>> real after
 export function aiUseOps(use, url, body, env = null) {
   /* R17 (K5132): the store's environment is the instance clock's source (`BIO_NOW_MS`), as credentialsOps hands it */
   if (env && typeof env === "object") use.env = env;
@@ -3217,7 +3248,7 @@ export function aiUseOps(use, url, body, env = null) {
 /* R16 (T51; K4168; op-declarations R80, op-grades R49): the ops this module serves that the screens send, declared by their owner beside
    the ops map: each row's class, weight and description are the op's existing rows', its fields are what the arm reads. */
 /** @type {Readonly<{ailimitset: OpDeclaration, exploreapprove: OpDeclaration, airetestset: OpDeclaration, aihealthset: OpDeclaration,
- *   aiusebymember: OpDeclaration, aihealthpreview: OpDeclaration}>} */
+ *   aiusebymember: OpDeclaration, aihealthpreview: OpDeclaration, aibudgetset: OpDeclaration, aiprojectbudget: OpDeclaration}>} */
 export const DECLARED_OPS = Object.freeze({
   ailimitset: { classes: ["admin","member"], machineClasses: [], mutating: true, weight: "substrate", description: localize("ai-use.declared.ailimitset", "the account's configuration: a limit on one account's assistant use, set by its owner; moves no document, claim or grade"),
     fields: { accepts: ["owner","scope","unit","period","amount","inclusive"], requires: ["owner","scope","unit","period","amount"] } },
