@@ -9,3 +9,21 @@
 17:58:58 npm ci sheet-worker 0
 17:59:00 npm ci site 0
 17:59:36 before admission 79 pass 0 fail
+18:14:36 before control-plane 0 pass 0 fail
+18:16:31 before interface-shell 292 pass 93 fail
+18:17:36 before screens-daily 85 pass 238 fail
+18:17:42 before screens-entry 13 pass 98 fail
+18:18:46 before screens-inquiry 0 pass 69 fail
+18:19:08 before screens-settings 2 pass 271 fail
+18:19:10 before signin-door 8 pass 1 fail
+18:19:25 before store-request 7 pass 110 fail
+18:19:53 after admission 75 pass 4 fail 4 new
+18:34:53 after control-plane 0 pass 0 fail 29 new
+18:36:51 after interface-shell 282 pass 103 fail 10 new
+18:37:38 after screens-daily 20 pass 303 fail 65 new
+18:37:43 after screens-entry 11 pass 100 fail 2 new
+18:38:42 after screens-inquiry 0 pass 69 fail 0 new
+18:39:03 after screens-settings 2 pass 271 fail 0 new
+18:39:05 after signin-door 8 pass 1 fail 0 new
+18:39:20 after store-request 7 pass 110 fail 0 new
+18:39:24 done op-declarations:95

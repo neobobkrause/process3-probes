@@ -1,0 +1,74 @@
+{
+ "change": "ai-accounts:124",
+ "provider": "ai-accounts",
+ "before": "e255f11da4d3ab1de730360feac07344ad230e27",
+ "after": "575bf14884fa85918168e569247d6bac29999669",
+ "node": "v22.23.4",
+ "started": "2026-11-15T18:47:44.195Z",
+ "users": {
+  "signin-door": {
+   "before": {
+    "files": 4,
+    "pass": 8,
+    "fail": 1,
+    "failed": [
+     "bio-plane: test/m/signin-door/door.test.mjs"
+    ],
+    "ms": 1327,
+    "status": [
+     1
+    ]
+   },
+   "after": {
+    "files": 4,
+    "pass": 8,
+    "fail": 1,
+    "failed": [
+     "bio-plane: test/m/signin-door/door.test.mjs"
+    ],
+    "ms": 1491,
+    "status": [
+     1
+    ]
+   },
+   "newFailures": []
+  }
+ },
+ "pretestBefore": [
+  {
+   "step": "docs/development/ux-substrate/screens/build_words.mjs",
+   "status": 0
+  },
+  {
+   "step": "bio-plane/src/setup-words/build.mjs",
+   "status": 0
+  },
+  {
+   "step": "bio-plane/src/case-checker/build-program.mjs",
+   "status": 0
+  },
+  {
+   "step": "bio-plane/scripts/bundles.mjs",
+   "status": 0
+  }
+ ],
+ "pretestAfter": [
+  {
+   "step": "docs/development/ux-substrate/screens/build_words.mjs",
+   "status": 0
+  },
+  {
+   "step": "bio-plane/src/setup-words/build.mjs",
+   "status": 0
+  },
+  {
+   "step": "bio-plane/src/case-checker/build-program.mjs",
+   "status": 0
+  },
+  {
+   "step": "bio-plane/scripts/bundles.mjs",
+   "status": 0
+  }
+ ],
+ "finished": "2026-11-15T18:48:32.367Z"
+}

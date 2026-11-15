@@ -24,7 +24,7 @@ So: **about 1.7 times fewer notices for nothing, measured, with 3 broken users m
 
 **Where it does not.** In the other 19 changes the interface did change, and the tool told every user, 406 notifications where Process3 sent 396. The reason is a rule of the method: a user the tool cannot follow fully counts as using everything, and is told whenever the provider's interface changes at all. On the real product **no user can be followed**: each reads or calls hundreds to thousands of values whose kind no comment states (measured: 471 to 17,775 per user of ai-runs). One user, plan-work, was made followable; it was then told only for the four entries it uses (measured, one case), at a cost of about 20 minutes and 300,000 tokens of a helper's work, and with 309 places its own check now refuses.
 
-**What it misses.** The 3 broken users missed by the tool (measured against the judged reading) all broke through something no interface comment carries: a value's format (`ann` became `member:ann`, ai-accounts 316) and the contents of lists of act names (wizard-scripts 163). A run of the users' own tests is the only thing that could find those; here, at ai-runs 96, it found 1 of 11 broken users (measured; section "The users' own tests").
+**What it misses.** The 3 broken users missed by the tool (measured against the judged reading) all broke through something no interface comment carries: a value's format (`ann` became `member:ann`, ai-accounts 316) and the contents of lists of act names (wizard-scripts 163). The users' own tests, run before and after, caught 2 of those 3 (store-assembly at ai-accounts 316, affordances at wizard-scripts 163); the third, screens-inquiry, has a suite that fails every test before the change. But the tests would have to be run even when the tool says nothing changed, and over all seven changes that broke a user they caught only 7 of the 23 broken users (measured; section "The users' own tests").
 
 **The effort** (measured on six helpers; estimated for the product):
 
@@ -109,7 +109,20 @@ Measured at ai-runs 96, every user (`results/tests/ai-runs-96.json`): of the 11 
 
 Some suites cannot be judged in this container: screens-inquiry fails all 69 tests before the change, store-request 110 of 117, and control-plane's suite ran out of its 15-minute limit. A full run of all 29 users of one change took two hours here.
 
-The other six changes that broke a user: only the users judged broken or adopted were run (see "Dated notes" at the end for their outcome, if it came in time).
+The other six changes that broke a user: only the users judged broken or adopted were run (measured, `results/tests/`, finished 19:04):
+
+| Change | Broken users | Caught by their tests | Not caught | Adopters whose tests newly fail |
+| --- | --- | --- | --- | --- |
+| ai-runs 96 (all users) | 11 | store-assembly | 10 | none adopted; op-declarations and plane, not judged broken, gained one failure each |
+| ai-accounts 124 | 1 | none | signin-door (one test file fails before and after) | none adopted |
+| ai-accounts 316 | 1 | store-assembly (3 tests; the tool missed it) | none | none adopted |
+| op-declarations 95 | 6 | interface-shell (10 tests), screens-daily (65), screens-entry (2) | screens-inquiry, screens-settings (fail almost every test before), signin-door (as above) | admission (4 tests); control-plane ran out of time before and after, so its 29 "new" failures are not to be trusted |
+| ai-catalogue 484 | 1 | store-assembly (3 tests) | none | none adopted |
+| ai-use 105 | 1 | none | ai-runs | none of 5 |
+| wizard-scripts 163 | 2 | affordances (1 test; the tool missed it) | screens-inquiry (fails every test before) | none adopted |
+| **All seven** | **23** | **7** | **16** | |
+
+So the users' tests caught **7 of the 23** broken users (measured), and 2 of the 3 the tool missed. Of the 16 not caught, 6 cannot be judged here because their suites fail before the change (screens-inquiry three times, screens-settings, signin-door twice); the other 10 have suites that pass before and after (judged, Claude: the breaks are in paths their tests do not reach, or showed only with the other changes of that week). Where tests did fail, the failing tests name the changed thing (the op words at op-declarations 95, the `member:` form at ai-accounts 316), so a failure there is a real catch, not noise (judged, from the test names).
 
 A run of the tests of every module that uses the provider directly or through another: the declared closure is 25 to 165 modules per change (measured, `data/reach.json`), most of the product for ai-accounts and ai-catalogue. Not run here.
 
@@ -171,7 +184,7 @@ Each can be overruled.
 - **"Broken" and "adopted" are one reader's judgement** (the study session); the tool's counts are measured against it.
 - **The two estimated rules were not built or run** as rules; they were computed from the tool's reports. Neither has been put to Bob.
 - **Users were not commented**, except plan-work. What the tool finds a user uses is therefore a lower bound.
-- **The users' tests** ran in a container where some suites fail before any change, and only partly.
+- **The users' tests** ran in a container where some suites fail before any change, and, except at ai-runs 96, only for the users judged broken or adopted, so they say nothing about failures in users judged to need nothing at those six changes.
 - **One version of the reader** (TypeScript 5.6.3) and of Node (22.23.4).
 
 ## How to rerun
@@ -204,4 +217,4 @@ It clones the public product repository read-only once, installs TypeScript 5.6.
 
 ## Dated notes
 
-(none yet)
+- **15 Nov 2026, 19:10 UTC.** The users' tests of the six other changes finished at 19:04 and are folded in above (section "The users' own tests"; `results/compare.md`, columns on tests). Nothing written before them was changed except the sentence in "The answer first" on what the tests caught, which until then gave ai-runs 96 alone.

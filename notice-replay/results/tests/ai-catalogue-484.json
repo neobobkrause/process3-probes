@@ -1,0 +1,119 @@
+{
+ "change": "ai-catalogue:484",
+ "provider": "ai-catalogue",
+ "before": "297d25b8a5e61ec8b67f56d88c4e83e09398cf1f",
+ "after": "a936799e95031538448a12dbb1dba2326d6f93d9",
+ "node": "v22.23.4",
+ "started": "2026-11-15T18:56:22.276Z",
+ "users": {
+  "store-assembly": {
+   "before": {
+    "files": 85,
+    "pass": 445,
+    "fail": 20,
+    "failed": [
+     "bio-plane: R90, R1: storeWorld forwards `catalogueKeys`, so a test-instance world seeds the fixture's list through its own catalogue; control: a world that is no test instance refuses that list",
+     "bio-plane: R5 (K5200): ai-use's first construction takes the store's clock: a limit set and a use counted on a pinned world read the pin, and `tick` moves them; with the clock unpinned the wall answers",
+     "bio-plane: R5 (K5200): file-safety and capture take the store's clock: a file queued for the scan, and a parted upload begun, on a pinned world carry the pin, and `tick` moves them",
+     "bio-plane: R5 (K5200): corpus-export takes the store's clock through publication: an export on a pinned world is logged at the pin, and `exportlog` reads it back",
+     "bio-plane: R5 (K5200; diagnosis A3): action-clocks takes the store's clock: on a pinned world `remindersfor` is judged on the pinned day, and a reminder is set at the pin, `tick` moving both",
+     "bio-plane: R5 (K5200; diagnosis A3): action-plans and filings take the store's clock: each instance's instants read the pin to the second, and two plans opened a minute apart tell their instants apart",
+     "bio-plane: R1 R5 (K5200): a second assembly over one storage hands capture the same clock: capture refuses a different `now` (its R58), so the assembly refuses nothing and builds nothing twice, and capture's clock stays the store's",
+     "bio-plane: notice reading-guides:352 (R31, R6, R7): guideoptout, sent through the store's door by the team's one member, reaches reading-guides' arm on the assembly's instance: the guide records review_opt_out and procedureguides answers it not_reviewed with NOT_REVIEWED_LABEL; control: a guide not opted out is not answered",
+     "bio-plane: test/m/store-assembly/sa-world.test.mjs",
+     "bio-plane: R2, R100 (K1416, K1832; control-plane R42): store-door's step (was control-plane's) ranks after every module of layers 1-10 and before every later module of `build/modules.json`, directly before the first layer-11 module, so checks and refusals keep their order; a pure module the order does not rank holds no step",
+     "bio-plane: R10 (T50; N1171; K3268; membership R146): the order laws read the file, so they hold after a module is added to it and another moved, with no edit to a list in the tests; control: a step order that holds the step after the first layer-11 module, or lacks the file's last module, fails them",
+     "bio-plane: R19: monitoring is handed the plane's case-import instance: a watch set through the door is due to its cadence, read on its tick and recorded through recordDocketRead",
+     "bio-plane: R19: case-import's accepted-work registration carries moves, filled before the first request, so accepted-work's publisherMoves reads the moves the watch saw",
+     "bio-plane: R19: queue is handed the plane's case-import, so the producers it reads answer the watch's items to the member who set it and nobody else",
+     "bio-plane: test/m/store-assembly/words.test.mjs",
+     "bio-plane: R94 (K5200; SCREENS-ENTRY \\#13 J15): a world's network script answers that world alone: another world made after it is refused, its own scheduler's firing and `within` reach it, and a bare call reaches the latest world's",
+     "bio-plane: R94 (K5200; SCREENS-ENTRY \\#13 J15): no script of an earlier test answers a later test's world",
+     "bio-plane: R90 (K5200; STORE-REQUEST \\#6 J17 (2)): `instanceName: null` is a first boot with no name bound, as an older installation had: no producing team is recorded and a promote that names the team is refused GROUP_UNDETERMINED; the default world, and one that names its team, record it",
+     "bio-plane: R1 R90 (K5200; STORE-REQUEST \\#6 J17 (3a)): `storeWorld({deliver})` hands the delivery to the owed-work ledger as the class does: an owed render's run is handed it and it reaches the delivery with the answer and the session; a world given none hands the run none",
+     "bio-plane: R1 R90 (K5200; STORE-REQUEST \\#6 J18 (c)): `storeWorld({releaseKeys})` is the list of keys instance-setup verifies a release notice against: a notice signed with the test's key is stored by the daily check, one signed with another key is refused, and a world with no keys verifies against the product's, which refuse both"
+    ],
+    "ms": 212338,
+    "status": [
+     1
+    ]
+   },
+   "after": {
+    "files": 85,
+    "pass": 442,
+    "fail": 23,
+    "failed": [
+     "bio-plane: R90, R1: storeWorld forwards `catalogueKeys`, so a test-instance world seeds the fixture's list through its own catalogue; control: a world that is no test instance refuses that list",
+     "bio-plane: R1 (ai-catalogue R33, R39): the assembled catalogue is built with the store's env, so a development deployment's AI_CATALOGUE_SEED_SIGNATURE loads the release seed when AI_CATALOGUE_DEVELOPMENT is \"1\"; control: without it the development-signed seed is refused and the catalogue holds none",
+     "bio-plane: R5 (K5200): ai-use's first construction takes the store's clock: a limit set and a use counted on a pinned world read the pin, and `tick` moves them; with the clock unpinned the wall answers",
+     "bio-plane: R5 (K5200): file-safety and capture take the store's clock: a file queued for the scan, and a parted upload begun, on a pinned world carry the pin, and `tick` moves them",
+     "bio-plane: R5 (K5200): corpus-export takes the store's clock through publication: an export on a pinned world is logged at the pin, and `exportlog` reads it back",
+     "bio-plane: R5 (K5200; diagnosis A3): action-clocks takes the store's clock: on a pinned world `remindersfor` is judged on the pinned day, and a reminder is set at the pin, `tick` moving both",
+     "bio-plane: R5 (K5200; diagnosis A3): action-plans and filings take the store's clock: each instance's instants read the pin to the second, and two plans opened a minute apart tell their instants apart",
+     "bio-plane: R1 R5 (K5200): a second assembly over one storage hands capture the same clock: capture refuses a different `now` (its R58), so the assembly refuses nothing and builds nothing twice, and capture's clock stays the store's",
+     "bio-plane: R1 (notice ai-catalogue:317): through assembleStore, a development deployment (AI_CATALOGUE_DEVELOPMENT \"1\") trusts its AI_CATALOGUE_DEVELOPMENT_KEY line, so the seed signed by that key loads and the catalogue is available; control: with AI_CATALOGUE_DEVELOPMENT unset the same seed is refused and an account act fails closed CATALOGUE_UNAVAILABLE",
+     "bio-plane: R1 (notice ai-catalogue:317): the assembly builds the catalogue with env before ai-use, ai-runs or credentials can reach it, so the one instance on the storage, which ai-accounts holds and ai-use and ai-runs find without env, is the env-built one",
+     "bio-plane: notice reading-guides:352 (R31, R6, R7): guideoptout, sent through the store's door by the team's one member, reaches reading-guides' arm on the assembly's instance: the guide records review_opt_out and procedureguides answers it not_reviewed with NOT_REVIEWED_LABEL; control: a guide not opted out is not answered",
+     "bio-plane: test/m/store-assembly/sa-world.test.mjs",
+     "bio-plane: R2, R100 (K1416, K1832; control-plane R42): store-door's step (was control-plane's) ranks after every module of layers 1-10 and before every later module of `build/modules.json`, directly before the first layer-11 module, so checks and refusals keep their order; a pure module the order does not rank holds no step",
+     "bio-plane: R10 (T50; N1171; K3268; membership R146): the order laws read the file, so they hold after a module is added to it and another moved, with no edit to a list in the tests; control: a step order that holds the step after the first layer-11 module, or lacks the file's last module, fails them",
+     "bio-plane: R19: monitoring is handed the plane's case-import instance: a watch set through the door is due to its cadence, read on its tick and recorded through recordDocketRead",
+     "bio-plane: R19: case-import's accepted-work registration carries moves, filled before the first request, so accepted-work's publisherMoves reads the moves the watch saw",
+     "bio-plane: R19: queue is handed the plane's case-import, so the producers it reads answer the watch's items to the member who set it and nobody else",
+     "bio-plane: test/m/store-assembly/words.test.mjs",
+     "bio-plane: R94 (K5200; SCREENS-ENTRY \\#13 J15): a world's network script answers that world alone: another world made after it is refused, its own scheduler's firing and `within` reach it, and a bare call reaches the latest world's",
+     "bio-plane: R94 (K5200; SCREENS-ENTRY \\#13 J15): no script of an earlier test answers a later test's world",
+     "bio-plane: R90 (K5200; STORE-REQUEST \\#6 J17 (2)): `instanceName: null` is a first boot with no name bound, as an older installation had: no producing team is recorded and a promote that names the team is refused GROUP_UNDETERMINED; the default world, and one that names its team, record it",
+     "bio-plane: R1 R90 (K5200; STORE-REQUEST \\#6 J17 (3a)): `storeWorld({deliver})` hands the delivery to the owed-work ledger as the class does: an owed render's run is handed it and it reaches the delivery with the answer and the session; a world given none hands the run none",
+     "bio-plane: R1 R90 (K5200; STORE-REQUEST \\#6 J18 (c)): `storeWorld({releaseKeys})` is the list of keys instance-setup verifies a release notice against: a notice signed with the test's key is stored by the daily check, one signed with another key is refused, and a world with no keys verifies against the product's, which refuse both"
+    ],
+    "ms": 215548,
+    "status": [
+     1
+    ]
+   },
+   "newFailures": [
+    "bio-plane: R1 (ai-catalogue R33, R39): the assembled catalogue is built with the store's env, so a development deployment's AI_CATALOGUE_SEED_SIGNATURE loads the release seed when AI_CATALOGUE_DEVELOPMENT is \"1\"; control: without it the development-signed seed is refused and the catalogue holds none",
+    "bio-plane: R1 (notice ai-catalogue:317): through assembleStore, a development deployment (AI_CATALOGUE_DEVELOPMENT \"1\") trusts its AI_CATALOGUE_DEVELOPMENT_KEY line, so the seed signed by that key loads and the catalogue is available; control: with AI_CATALOGUE_DEVELOPMENT unset the same seed is refused and an account act fails closed CATALOGUE_UNAVAILABLE",
+    "bio-plane: R1 (notice ai-catalogue:317): the assembly builds the catalogue with env before ai-use, ai-runs or credentials can reach it, so the one instance on the storage, which ai-accounts holds and ai-use and ai-runs find without env, is the env-built one"
+   ]
+  }
+ },
+ "pretestBefore": [
+  {
+   "step": "docs/development/ux-substrate/screens/build_words.mjs",
+   "status": 0
+  },
+  {
+   "step": "bio-plane/src/setup-words/build.mjs",
+   "status": 0
+  },
+  {
+   "step": "bio-plane/src/case-checker/build-program.mjs",
+   "status": 0
+  },
+  {
+   "step": "bio-plane/scripts/bundles.mjs",
+   "status": 0
+  }
+ ],
+ "pretestAfter": [
+  {
+   "step": "docs/development/ux-substrate/screens/build_words.mjs",
+   "status": 0
+  },
+  {
+   "step": "bio-plane/src/setup-words/build.mjs",
+   "status": 0
+  },
+  {
+   "step": "bio-plane/src/case-checker/build-program.mjs",
+   "status": 0
+  },
+  {
+   "step": "bio-plane/scripts/bundles.mjs",
+   "status": 0
+  }
+ ],
+ "finished": "2026-11-15T19:04:19.444Z"
+}

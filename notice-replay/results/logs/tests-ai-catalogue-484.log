@@ -1,0 +1,13 @@
+18:56:22 preparing ai-catalogue:484
+18:56:34 npm ci agent-runner 0
+18:56:36 npm ci bio-plane 0
+18:56:36 npm ci file-scanner 0
+18:56:39 npm ci newgroup 0
+18:56:40 npm ci ocr-worker 0
+18:56:42 npm ci pdf-worker 0
+18:56:42 npm ci reader-container 0
+18:56:44 npm ci sheet-worker 0
+18:56:46 npm ci site 0
+19:00:34 before store-assembly 445 pass 20 fail
+19:04:19 after store-assembly 442 pass 23 fail 3 new
+19:04:24 done ai-catalogue:484

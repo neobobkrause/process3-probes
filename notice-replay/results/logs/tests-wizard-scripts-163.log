@@ -1,0 +1,15 @@
+18:42:27 preparing wizard-scripts:163
+18:42:38 npm ci agent-runner 0
+18:42:40 npm ci bio-plane 0
+18:42:40 npm ci file-scanner 0
+18:42:42 npm ci newgroup 0
+18:42:44 npm ci ocr-worker 0
+18:42:46 npm ci pdf-worker 0
+18:42:46 npm ci reader-container 0
+18:42:48 npm ci sheet-worker 0
+18:42:50 npm ci site 0
+18:44:16 before affordances 302 pass 0 fail
+18:45:14 before screens-inquiry 0 pass 69 fail
+18:46:37 after affordances 301 pass 1 fail 1 new
+18:47:39 after screens-inquiry 0 pass 69 fail 0 new
+18:47:44 done wizard-scripts:163

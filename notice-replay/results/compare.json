@@ -1,5 +1,5 @@
 {
- "written": "2026-11-15T17:57:58.032Z",
+ "written": "2026-11-15T19:04:31.010Z",
  "total": {
   "changes": 32,
   "replayed": 32,
@@ -20,11 +20,11 @@
   "entryForNothing": 119,
   "entryBrokenMissed": 11,
   "entryAdoptedMissed": 4,
-  "testsChanges": 1,
-  "testsUserRuns": 22,
-  "testsUsersFailing": 3,
-  "brokenCaughtByTests": 1,
-  "brokenInChangesWithTests": 11
+  "testsChanges": 7,
+  "testsUserRuns": 42,
+  "testsUsersFailing": 11,
+  "brokenCaughtByTests": 7,
+  "brokenInChangesWithTests": 23
  },
  "byProvider": {
   "ai-runs": {
@@ -73,11 +73,11 @@
    "entryForNothing": 15,
    "entryBrokenMissed": 2,
    "entryAdoptedMissed": 0,
-   "testsChanges": 0,
-   "testsUserRuns": 0,
-   "testsUsersFailing": 0,
-   "brokenCaughtByTests": 0,
-   "brokenInChangesWithTests": 0
+   "testsChanges": 2,
+   "testsUserRuns": 2,
+   "testsUsersFailing": 1,
+   "brokenCaughtByTests": 1,
+   "brokenInChangesWithTests": 2
   },
   "op-declarations": {
    "changes": 4,
@@ -99,11 +99,11 @@
    "entryForNothing": 1,
    "entryBrokenMissed": 6,
    "entryAdoptedMissed": 1,
-   "testsChanges": 0,
-   "testsUserRuns": 0,
-   "testsUsersFailing": 0,
-   "brokenCaughtByTests": 0,
-   "brokenInChangesWithTests": 0
+   "testsChanges": 1,
+   "testsUserRuns": 9,
+   "testsUsersFailing": 5,
+   "brokenCaughtByTests": 3,
+   "brokenInChangesWithTests": 6
   },
   "ai-catalogue": {
    "changes": 7,
@@ -125,11 +125,11 @@
    "entryForNothing": 9,
    "entryBrokenMissed": 1,
    "entryAdoptedMissed": 0,
-   "testsChanges": 0,
-   "testsUserRuns": 0,
-   "testsUsersFailing": 0,
-   "brokenCaughtByTests": 0,
-   "brokenInChangesWithTests": 0
+   "testsChanges": 1,
+   "testsUserRuns": 1,
+   "testsUsersFailing": 1,
+   "brokenCaughtByTests": 1,
+   "brokenInChangesWithTests": 1
   },
   "ai-use": {
    "changes": 3,
@@ -151,11 +151,11 @@
    "entryForNothing": 16,
    "entryBrokenMissed": 0,
    "entryAdoptedMissed": 1,
-   "testsChanges": 0,
-   "testsUserRuns": 0,
+   "testsChanges": 1,
+   "testsUserRuns": 6,
    "testsUsersFailing": 0,
    "brokenCaughtByTests": 0,
-   "brokenInChangesWithTests": 0
+   "brokenInChangesWithTests": 1
   },
   "wizard-scripts": {
    "changes": 5,
@@ -177,11 +177,11 @@
    "entryForNothing": 0,
    "entryBrokenMissed": 2,
    "entryAdoptedMissed": 2,
-   "testsChanges": 0,
-   "testsUserRuns": 0,
-   "testsUsersFailing": 0,
-   "brokenCaughtByTests": 0,
-   "brokenInChangesWithTests": 0
+   "testsChanges": 1,
+   "testsUserRuns": 2,
+   "testsUsersFailing": 1,
+   "brokenCaughtByTests": 1,
+   "brokenInChangesWithTests": 2
   }
  },
  "rows": [
@@ -1052,7 +1052,15 @@
     "screens-document"
    ],
    "ms": 113026,
-   "recordForNothing": 25
+   "recordForNothing": 25,
+   "testsRanFor": 1,
+   "testsNoTests": [],
+   "testsNewFailures": [],
+   "brokenCaughtByTests": [],
+   "brokenNotCaughtByTests": [
+    "signin-door"
+   ],
+   "testsFailingNotJudgedBroken": []
   },
   {
    "change": "ai-accounts:188",
@@ -1116,7 +1124,17 @@
    "toldForEntryUsers": [],
    "notFollowedOnly": [],
    "ms": 126001,
-   "recordForNothing": 27
+   "recordForNothing": 27,
+   "testsRanFor": 1,
+   "testsNoTests": [],
+   "testsNewFailures": [
+    "store-assembly"
+   ],
+   "brokenCaughtByTests": [
+    "store-assembly"
+   ],
+   "brokenNotCaughtByTests": [],
+   "testsFailingNotJudgedBroken": []
   },
   {
    "change": "ai-accounts:483",
@@ -1424,7 +1442,30 @@
     "load-check"
    ],
    "ms": 103059,
-   "recordForNothing": 12
+   "recordForNothing": 12,
+   "testsRanFor": 9,
+   "testsNoTests": [],
+   "testsNewFailures": [
+    "admission",
+    "control-plane",
+    "interface-shell",
+    "screens-daily",
+    "screens-entry"
+   ],
+   "brokenCaughtByTests": [
+    "interface-shell",
+    "screens-daily",
+    "screens-entry"
+   ],
+   "brokenNotCaughtByTests": [
+    "screens-inquiry",
+    "screens-settings",
+    "signin-door"
+   ],
+   "testsFailingNotJudgedBroken": [
+    "admission",
+    "control-plane"
+   ]
   },
   {
    "change": "op-declarations:167",
@@ -1848,7 +1889,17 @@
     "ai-issuer"
    ],
    "ms": 44901,
-   "recordForNothing": 11
+   "recordForNothing": 11,
+   "testsRanFor": 1,
+   "testsNoTests": [],
+   "testsNewFailures": [
+    "store-assembly"
+   ],
+   "brokenCaughtByTests": [
+    "store-assembly"
+   ],
+   "brokenNotCaughtByTests": [],
+   "testsFailingNotJudgedBroken": []
   },
   {
    "change": "ai-catalogue:611",
@@ -2244,7 +2295,15 @@
     "store-ask"
    ],
    "ms": 71915,
-   "recordForNothing": 12
+   "recordForNothing": 12,
+   "testsRanFor": 6,
+   "testsNoTests": [],
+   "testsNewFailures": [],
+   "brokenCaughtByTests": [],
+   "brokenNotCaughtByTests": [
+    "ai-runs"
+   ],
+   "testsFailingNotJudgedBroken": []
   },
   {
    "change": "ai-use:378",
@@ -2499,7 +2558,19 @@
    "toldForEntryUsers": [],
    "notFollowedOnly": [],
    "ms": 99182,
-   "recordForNothing": 17
+   "recordForNothing": 17,
+   "testsRanFor": 2,
+   "testsNoTests": [],
+   "testsNewFailures": [
+    "affordances"
+   ],
+   "brokenCaughtByTests": [
+    "affordances"
+   ],
+   "brokenNotCaughtByTests": [
+    "screens-inquiry"
+   ],
+   "testsFailingNotJudgedBroken": []
   },
   {
    "change": "wizard-scripts:253",

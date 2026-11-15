@@ -1,0 +1,13 @@
+18:48:36 preparing ai-accounts:316
+18:48:48 npm ci agent-runner 0
+18:48:50 npm ci bio-plane 0
+18:48:50 npm ci file-scanner 0
+18:48:52 npm ci newgroup 0
+18:48:54 npm ci ocr-worker 0
+18:48:56 npm ci pdf-worker 0
+18:48:56 npm ci reader-container 0
+18:48:57 npm ci sheet-worker 0
+18:48:59 npm ci site 0
+18:52:42 before store-assembly 441 pass 17 fail
+18:56:17 after store-assembly 438 pass 20 fail 3 new
+18:56:22 done ai-accounts:316

@@ -1,0 +1,23 @@
+18:39:24 preparing ai-use:105
+18:39:38 npm ci agent-runner 0
+18:39:41 npm ci bio-plane 0
+18:39:41 npm ci file-scanner 0
+18:39:44 npm ci newgroup 0
+18:39:46 npm ci ocr-worker 0
+18:39:48 npm ci pdf-worker 0
+18:39:48 npm ci reader-container 0
+18:39:50 npm ci sheet-worker 0
+18:39:52 npm ci site 0
+18:40:16 before ai-runs 4 pass 137 fail
+18:40:25 before answers 78 pass 0 fail
+18:40:41 before notice-producers 146 pass 9 fail
+18:40:54 before op-declarations 237 pass 12 fail
+18:40:57 before question-explorer 6 pass 40 fail
+18:41:07 before store-door 53 pass 8 fail
+18:41:32 after ai-runs 4 pass 137 fail 0 new
+18:41:42 after answers 78 pass 0 fail 0 new
+18:41:58 after notice-producers 146 pass 9 fail 0 new
+18:42:10 after op-declarations 237 pass 12 fail 0 new
+18:42:13 after question-explorer 6 pass 40 fail 0 new
+18:42:22 after store-door 53 pass 8 fail 0 new
+18:42:27 done ai-use:105
