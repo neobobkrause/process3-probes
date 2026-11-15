@@ -21,42 +21,42 @@
         "refusedAfter": 0,
         "refusals": [],
         "refusalsBefore": [],
-        "ms": 119
+        "ms": 150
       },
       "door": {
         "refusedBefore": 0,
         "refusedAfter": 0,
         "refusals": [],
         "refusalsBefore": [],
-        "ms": 91
+        "ms": 94
       },
       "meter": {
         "refusedBefore": 0,
         "refusedAfter": 0,
         "refusals": [],
         "refusalsBefore": [],
-        "ms": 86
+        "ms": 87
       },
       "billing": {
         "refusedBefore": 0,
         "refusedAfter": 0,
         "refusals": [],
         "refusalsBefore": [],
-        "ms": 93
+        "ms": 98
       },
       "front": {
         "refusedBefore": 0,
         "refusedAfter": 0,
         "refusals": [],
         "refusalsBefore": [],
-        "ms": 147
+        "ms": 95
       },
       "reports": {
         "refusedBefore": 0,
         "refusedAfter": 0,
         "refusals": [],
         "refusalsBefore": [],
-        "ms": 89
+        "ms": 118
       }
     }
   },
@@ -99,17 +99,17 @@
   },
   "timing": {
     "listingMs": {
-      "before": 444,
-      "after": 196
+      "before": 482,
+      "after": 221
     },
-    "noticeMs": 880,
+    "noticeMs": 941,
     "checkMs": {
-      "bookings": 119,
-      "door": 91,
-      "meter": 86,
-      "billing": 93,
-      "front": 147,
-      "reports": 89
+      "bookings": 150,
+      "door": 94,
+      "meter": 87,
+      "billing": 98,
+      "front": 95,
+      "reports": 118
     }
   }
 }
