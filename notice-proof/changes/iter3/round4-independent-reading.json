@@ -1,0 +1,26 @@
+{
+  "about": "Ground truth by reading for round 4 (fresh independent attacks) run on iteration 3, written by Claude AFTER the results were seen, independently of what the tool said.",
+  "changes": {
+    "Z01-bound-test-same-values-other-checks": { "needs": ["front"], "note": "The bound test moved 13 from a refusal check to an acceptance check: same values, same calls, so rule 15's sets saw nothing." },
+    "Z02-limit-read-from-module": { "needs": ["bookings"], "note": "The bound test reads its limit from money's own exported constant; the test's text did not change." },
+    "Z03-blank-line-after-each-message": { "needs": ["billing"], "note": "No rule covers how messages are separated on a channel." },
+    "Z04-stream-chosen-into-variable": { "needs": ["billing"], "note": "The stream is chosen into a variable, so no stream name appears where the message is written." },
+    "Z05-amount-built-by-static-factory": { "needs": [], "note": "money's change is wrong (Amount built as a class instance by a static factory); bookings, meter, billing and front fail, untold, and money's check does not see it." },
+    "Z06-wrapping-handler-error-kind": { "needs": ["billing"], "note": "The handler wraps the call, so it did not inherit the changed error kind." },
+    "Z07-handle-method-handed-on": { "needs": ["front"], "note": "A method of a handed-out object, handed to map, gained an optional parameter; 'handed on as a value' covered functions only." },
+    "Z08-second-overload-hands-back": { "needs": ["billing"], "note": "Only the first of two overloads was listed." },
+    "Z09-list-parameter-becomes-rest": { "needs": ["billing"], "note": "A list parameter became a rest parameter; read as 'accepts more'." },
+    "Z10-readonly-list-now-sorted": { "needs": ["front"], "note": "A read-only list parameter became writable (and is sorted in place); the comparison ignored read-only." },
+    "Z11-request-lines-change-nothing": { "needs": ["front"], "note": "A type parameter's constraint narrowed; the comparison ignored constraints." },
+    "Z12-returned-text-kind-bound": { "needs": ["rooms"], "note": "The bound sits on Slug, a text kind slugify hands back; bounds of a number or text kind were carried for fields and parameters, not for what is handed back." },
+    "Z13-static-method-hands-back": { "needs": ["billing"], "note": "Static members of a class are not listed." },
+    "Z14-member-may-be-undefined": { "needs": ["billing"], "note": "A member written '| undefined' rather than '[get]' was not seen as possibly missing." },
+    "Z15-uncommented-module-changed": { "needs": ["reports"], "note": "A real change to a module without interface comments, without the comments-only first step; nothing enforces rule 6." },
+    "Z16-random-booking-ids": { "needs": [], "falseRefusals": { "bookings": 1 }, "note": "crypto is a Node global the tool's description of Node leaves out." },
+    "Z17-filter-boolean": { "needs": [], "falseRefusals": { "rooms": 1 }, "note": "filter(Boolean) removes the missing values; the reader does not know it." },
+    "Z18-object-groupby": { "needs": [], "falseRefusals": { "rooms": 1 }, "note": "Object.groupBy runs on Node 22; the reader's library is 2023." },
+    "Z19-at-sign-in-bound-line": { "needs": [], "falseRefusals": { "text-rules": 3 }, "note": "An @ inside a bound line's words cut the line short in the reader's comment parser." },
+    "Z20-test-helper-renamed": { "needs": [], "note": "Three notices for nothing: the bound tests' fingerprints kept the name of a renamed helper." },
+    "Z21-throws-explained-in-two-lines": { "needs": [], "note": "One notice for nothing: the same error kind stated twice was counted as a change." }
+  }
+}
