@@ -1,0 +1,141 @@
+{
+  "id": "U07-method-now-needs-its-handle",
+  "title": "Adding a room asks the handle's own find whether the name's slug is taken, so that rooms are read from the store in one place",
+  "provider": "rooms",
+  "covers": [
+    "a method now uses this",
+    "its declared kind (a property holding a function) is unchanged",
+    "a user calls it without its handle"
+  ],
+  "tool": {
+    "firstCommentsStep": false,
+    "interfaceChanged": false,
+    "summary": "The listing before and after is the same. Nobody is told.",
+    "entries": [],
+    "told": [],
+    "toldDetail": [],
+    "notTold": [],
+    "warnings": [],
+    "commentsOnly": false,
+    "checks": {
+      "rooms": {
+        "refusedBefore": 0,
+        "refusedAfter": 1,
+        "refusals": [
+          {
+            "at": "rooms/src/index.mjs:67",
+            "code": "this",
+            "text": "a method of Rooms, a handle built as a plain object, uses this; a user may hand the method on as a value",
+            "kind": "(c) a rule of form: methods of a plain handle do not use this"
+          }
+        ],
+        "refusalsBefore": [],
+        "ms": 76
+      },
+      "bookings": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 92
+      },
+      "door": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 69
+      },
+      "meter": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 72
+      },
+      "billing": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 81
+      },
+      "front": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 73
+      },
+      "reports": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 72
+      }
+    }
+  },
+  "groundTruth": {
+    "providerTests": {
+      "pass": true,
+      "failed": [],
+      "ran": 5
+    },
+    "testsBefore": {
+      "bookings": true,
+      "door": true,
+      "meter": true,
+      "billing": true,
+      "front": true,
+      "reports": true
+    },
+    "testsAfter": {
+      "bookings": {
+        "pass": true,
+        "failed": []
+      },
+      "door": {
+        "pass": true,
+        "failed": []
+      },
+      "meter": {
+        "pass": true,
+        "failed": []
+      },
+      "billing": {
+        "pass": true,
+        "failed": []
+      },
+      "front": {
+        "pass": true,
+        "failed": []
+      },
+      "reports": {
+        "pass": false,
+        "failed": [
+          "summary counts real bookings by state, kind and weekday"
+        ]
+      }
+    },
+    "broken": [
+      "reports"
+    ]
+  },
+  "timing": {
+    "listingMs": {
+      "before": 151,
+      "after": 112
+    },
+    "noticeMs": 646,
+    "checkMs": {
+      "rooms": 76,
+      "bookings": 92,
+      "door": 69,
+      "meter": 72,
+      "billing": 81,
+      "front": 73,
+      "reports": 72
+    }
+  }
+}

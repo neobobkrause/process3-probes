@@ -1,0 +1,241 @@
+{
+  "id": "W07-throws-union",
+  "title": "slugify refuses a value that is not text with a TypeError, as the language's own functions do; its @throws line names both kinds",
+  "provider": "text-rules",
+  "covers": [
+    "a @throws line written with a union of kinds",
+    "a new kind of error for a value outside the kind (hands back differently)"
+  ],
+  "tool": {
+    "firstCommentsStep": false,
+    "interfaceChanged": true,
+    "summary": "1 module(s) changed their listing; 1 entry changed in a way that tells; 1 user(s) told.",
+    "entries": [
+      {
+        "module": "text-rules",
+        "entry": "slugify",
+        "changes": [
+          "hands back differently"
+        ],
+        "tells": "users",
+        "before": {
+          "kind": "function",
+          "accepts": "(arg0: string)",
+          "handsBack": "string",
+          "bounds": [
+            "result: only a-z, 0-9 and single hyphens between them",
+            "text: 1 to 80 characters, with at least one letter or digit"
+          ],
+          "throws": [
+            "RangeError"
+          ]
+        },
+        "after": {
+          "kind": "function",
+          "accepts": "(arg0: string)",
+          "handsBack": "string",
+          "bounds": [
+            "result: only a-z, 0-9 and single hyphens between them",
+            "text: 1 to 80 characters, with at least one letter or digit"
+          ],
+          "throws": [
+            "RangeError",
+            "TypeError"
+          ]
+        }
+      }
+    ],
+    "told": [
+      "rooms"
+    ],
+    "toldDetail": [
+      {
+        "user": "rooms",
+        "reasons": [
+          {
+            "module": "text-rules",
+            "entry": "slugify",
+            "changes": [
+              "hands back differently"
+            ],
+            "lines": [
+              "rooms/src/index.mjs:4",
+              "rooms/src/index.mjs:65"
+            ],
+            "through": null
+          }
+        ],
+        "undeclared": []
+      }
+    ],
+    "notTold": [
+      {
+        "user": "front",
+        "why": "uses none of the entries that changed in a way that tells"
+      }
+    ],
+    "warnings": [],
+    "commentsOnly": false,
+    "checks": {
+      "text-rules": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 60
+      },
+      "money": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 69
+      },
+      "calendar": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 73
+      },
+      "store": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 97
+      },
+      "rooms": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 84
+      },
+      "bookings": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 92
+      },
+      "door": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 65
+      },
+      "meter": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 75
+      },
+      "billing": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 90
+      },
+      "front": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 118
+      },
+      "reports": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 87
+      }
+    }
+  },
+  "groundTruth": {
+    "providerTests": {
+      "pass": true,
+      "failed": [],
+      "ran": 6
+    },
+    "testsBefore": {
+      "money": true,
+      "calendar": true,
+      "store": true,
+      "rooms": true,
+      "bookings": true,
+      "door": true,
+      "meter": true,
+      "billing": true,
+      "front": true,
+      "reports": true
+    },
+    "testsAfter": {
+      "money": {
+        "pass": true,
+        "failed": []
+      },
+      "calendar": {
+        "pass": true,
+        "failed": []
+      },
+      "store": {
+        "pass": true,
+        "failed": []
+      },
+      "rooms": {
+        "pass": true,
+        "failed": []
+      },
+      "bookings": {
+        "pass": true,
+        "failed": []
+      },
+      "door": {
+        "pass": true,
+        "failed": []
+      },
+      "meter": {
+        "pass": true,
+        "failed": []
+      },
+      "billing": {
+        "pass": true,
+        "failed": []
+      },
+      "front": {
+        "pass": true,
+        "failed": []
+      },
+      "reports": {
+        "pass": true,
+        "failed": []
+      }
+    },
+    "broken": []
+  },
+  "timing": {
+    "listingMs": {
+      "before": 67,
+      "after": 73
+    },
+    "noticeMs": 707,
+    "checkMs": {
+      "text-rules": 60,
+      "money": 69,
+      "calendar": 73,
+      "store": 97,
+      "rooms": 84,
+      "bookings": 92,
+      "door": 65,
+      "meter": 75,
+      "billing": 90,
+      "front": 118,
+      "reports": 87
+    }
+  }
+}

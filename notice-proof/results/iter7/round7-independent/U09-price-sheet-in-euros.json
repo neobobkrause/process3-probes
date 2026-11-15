@@ -1,0 +1,134 @@
+{
+  "id": "U09-price-sheet-in-euros",
+  "title": "The venue's price sheet is kept in euros, as its staff write prices; bookings turns the price into cents as it reads it",
+  "provider": "bookings",
+  "covers": [
+    "a module's data file changes form; its listing is the same",
+    "a user reads that file past the interface, with readFileSync"
+  ],
+  "tool": {
+    "firstCommentsStep": false,
+    "interfaceChanged": false,
+    "summary": "The listing before and after is the same. Nobody is told.",
+    "entries": [],
+    "told": [],
+    "toldDetail": [],
+    "notTold": [],
+    "warnings": [],
+    "commentsOnly": false,
+    "checks": {
+      "bookings": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 134
+      },
+      "door": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 72
+      },
+      "meter": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 70
+      },
+      "billing": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 107
+      },
+      "front": {
+        "refusedBefore": 1,
+        "refusedAfter": 1,
+        "refusals": [
+          {
+            "at": "front/src/index.mjs:63",
+            "code": "outside",
+            "text": "reads a file at a path the tool cannot work out: write new URL('./file', import.meta.url)",
+            "kind": "(c) a rule of form: the outside world is reached only in recognised forms"
+          }
+        ],
+        "refusalsBefore": [
+          {
+            "at": "front/src/index.mjs:63",
+            "code": "outside",
+            "text": "reads a file at a path the tool cannot work out: write new URL('./file', import.meta.url)",
+            "kind": "(c) a rule of form: the outside world is reached only in recognised forms"
+          }
+        ],
+        "ms": 83
+      },
+      "reports": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 75
+      }
+    }
+  },
+  "groundTruth": {
+    "providerTests": {
+      "pass": true,
+      "failed": [],
+      "ran": 8
+    },
+    "testsBefore": {
+      "door": true,
+      "meter": true,
+      "billing": true,
+      "front": true,
+      "reports": true
+    },
+    "testsAfter": {
+      "door": {
+        "pass": true,
+        "failed": []
+      },
+      "meter": {
+        "pass": true,
+        "failed": []
+      },
+      "billing": {
+        "pass": true,
+        "failed": []
+      },
+      "front": {
+        "pass": false,
+        "failed": [
+          "the price line says what one seat for one night costs"
+        ]
+      },
+      "reports": {
+        "pass": true,
+        "failed": []
+      }
+    },
+    "broken": [
+      "front"
+    ]
+  },
+  "timing": {
+    "listingMs": {
+      "before": 86,
+      "after": 87
+    },
+    "noticeMs": 524,
+    "checkMs": {
+      "bookings": 134,
+      "door": 72,
+      "meter": 70,
+      "billing": 107,
+      "front": 83,
+      "reports": 75
+    }
+  }
+}

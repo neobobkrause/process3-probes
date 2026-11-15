@@ -1,0 +1,306 @@
+{
+  "id": "U10-handle-renamed-member-changed",
+  "title": "The rooms' handle is called RoomDirectory; find takes an optional kind: the room is found only if it is of that kind",
+  "provider": "rooms",
+  "covers": [
+    "a handle kind renamed, its list of members the same",
+    "a member of it changed in the same job (accepts more)",
+    "a user hands that member on as a value"
+  ],
+  "tool": {
+    "firstCommentsStep": false,
+    "interfaceChanged": true,
+    "summary": "2 module(s) changed their listing; 1 entry changed in a way that tells; 3 user(s) told.",
+    "entries": [
+      {
+        "module": "rooms",
+        "entry": "Rooms",
+        "changes": [
+          "kind renamed, shape unchanged"
+        ],
+        "to": "RoomDirectory",
+        "tells": "users that name it"
+      },
+      {
+        "module": "rooms",
+        "entry": "RoomDirectory.find",
+        "changes": [
+          "accepts more"
+        ],
+        "tells": "nobody",
+        "before": {
+          "kind": "method",
+          "accepts": "(arg0: string)",
+          "handsBack": "{ id: string; kind: \"hall\" | \"kitchen\" | \"studio\"; name: string; seats: number } | undefined",
+          "bounds": [
+            "seats: whole number, 1 to 500"
+          ]
+        },
+        "after": {
+          "kind": "method",
+          "accepts": "(arg0: string, arg1?: \"hall\" | \"kitchen\" | \"studio\")",
+          "handsBack": "{ id: string; kind: \"hall\" | \"kitchen\" | \"studio\"; name: string; seats: number } | undefined",
+          "bounds": [
+            "seats: whole number, 1 to 500"
+          ]
+        }
+      },
+      {
+        "module": "rooms",
+        "entry": "Rooms.find",
+        "changes": [
+          "accepts more"
+        ],
+        "tells": "nobody",
+        "before": {
+          "kind": "method",
+          "accepts": "(arg0: string)",
+          "handsBack": "{ id: string; kind: \"hall\" | \"kitchen\" | \"studio\"; name: string; seats: number } | undefined",
+          "bounds": [
+            "seats: whole number, 1 to 500"
+          ]
+        },
+        "after": {
+          "kind": "method",
+          "accepts": "(arg0: string, arg1?: \"hall\" | \"kitchen\" | \"studio\")",
+          "handsBack": "{ id: string; kind: \"hall\" | \"kitchen\" | \"studio\"; name: string; seats: number } | undefined",
+          "bounds": [
+            "seats: whole number, 1 to 500"
+          ]
+        }
+      },
+      {
+        "module": "bookings",
+        "entry": "createBookings",
+        "changes": [
+          "accepts more"
+        ],
+        "tells": "nobody",
+        "before": {
+          "kind": "function",
+          "accepts": "(arg0: { rooms: handle rooms.Rooms; store: handle store.Store })",
+          "handsBack": "handle bookings.Bookings"
+        },
+        "after": {
+          "kind": "function",
+          "accepts": "(arg0: { rooms: anything; store: handle store.Store })",
+          "handsBack": "handle bookings.Bookings"
+        }
+      }
+    ],
+    "told": [
+      "bookings",
+      "front",
+      "reports"
+    ],
+    "toldDetail": [
+      {
+        "user": "bookings",
+        "reasons": [
+          {
+            "module": "rooms",
+            "entry": "Rooms",
+            "changes": [
+              "kind renamed, shape unchanged"
+            ],
+            "lines": [
+              "bookings/src/index.mjs:8",
+              "bookings/src/index.mjs:82"
+            ],
+            "through": null
+          }
+        ],
+        "undeclared": []
+      },
+      {
+        "user": "front",
+        "reasons": [
+          {
+            "module": "rooms",
+            "entry": "RoomDirectory.find",
+            "changes": [
+              "accepts more",
+              "handed on as a value"
+            ],
+            "lines": [
+              "front/test/index.test.mjs:55"
+            ],
+            "through": null
+          },
+          {
+            "module": "rooms",
+            "entry": "Rooms.find",
+            "changes": [
+              "accepts more",
+              "handed on as a value"
+            ],
+            "lines": [
+              "front/test/index.test.mjs:55"
+            ],
+            "through": null
+          }
+        ],
+        "undeclared": []
+      },
+      {
+        "user": "reports",
+        "reasons": [
+          {
+            "module": "rooms",
+            "notFollowed": [
+              "reads or calls values of unknown kind: reports/src/index.mjs:13 source.list('rooms').map; reports/src/index.mjs:13 source.list('rooms'); reports/src/index.mjs:13 source.list (+9)"
+            ],
+            "through": null
+          },
+          {
+            "module": "bookings",
+            "notFollowed": [
+              "reads or calls values of unknown kind: reports/src/index.mjs:13 source.list('rooms').map; reports/src/index.mjs:13 source.list('rooms'); reports/src/index.mjs:13 source.list (+9)"
+            ],
+            "through": "rooms"
+          }
+        ],
+        "undeclared": []
+      }
+    ],
+    "notTold": [
+      {
+        "user": "door",
+        "why": "uses none of the entries that changed in a way that tells"
+      },
+      {
+        "user": "billing",
+        "why": "uses none of the entries that changed in a way that tells"
+      }
+    ],
+    "warnings": [],
+    "commentsOnly": false,
+    "checks": {
+      "rooms": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 96
+      },
+      "bookings": {
+        "refusedBefore": 0,
+        "refusedAfter": 1,
+        "refusals": [
+          {
+            "at": "bookings/src/index.mjs:8",
+            "code": 2724,
+            "text": "'\"../../rooms/src/index.mjs\"' has no exported member named 'Rooms'. Did you mean 'Room'?",
+            "kind": "(b) code disagrees with the stated interface of money, calendar, store"
+          }
+        ],
+        "refusalsBefore": [],
+        "ms": 109
+      },
+      "door": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 74
+      },
+      "meter": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 73
+      },
+      "billing": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 94
+      },
+      "front": {
+        "refusedBefore": 0,
+        "refusedAfter": 1,
+        "refusals": [
+          {
+            "at": "front/test/index.test.mjs:55",
+            "code": 2345,
+            "text": "Argument of type '(id: string, kind?: \"hall\" | \"studio\" | \"kitchen\" | undefined) => Room | undefined' is not assignable to parameter of type '(value: string, index: number, array: string[]) => Room | undefined'.   Types of parameters 'kind' and 'index' are incompatible.     Type 'number' is not assignable to type '\"hall\" | \"studio\" | \"kitchen\" | undefined'.",
+            "kind": "(b) code disagrees with the stated interface of rooms"
+          }
+        ],
+        "refusalsBefore": [],
+        "ms": 86
+      },
+      "reports": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 66
+      }
+    }
+  },
+  "groundTruth": {
+    "providerTests": {
+      "pass": true,
+      "failed": [],
+      "ran": 5
+    },
+    "testsBefore": {
+      "bookings": true,
+      "door": true,
+      "meter": true,
+      "billing": true,
+      "front": true,
+      "reports": true
+    },
+    "testsAfter": {
+      "bookings": {
+        "pass": true,
+        "failed": []
+      },
+      "door": {
+        "pass": true,
+        "failed": []
+      },
+      "meter": {
+        "pass": true,
+        "failed": []
+      },
+      "billing": {
+        "pass": true,
+        "failed": []
+      },
+      "front": {
+        "pass": false,
+        "failed": [
+          "every seeded room can be found by its id"
+        ]
+      },
+      "reports": {
+        "pass": true,
+        "failed": []
+      }
+    },
+    "broken": [
+      "front"
+    ]
+  },
+  "timing": {
+    "listingMs": {
+      "before": 99,
+      "after": 77
+    },
+    "noticeMs": 591,
+    "checkMs": {
+      "rooms": 96,
+      "bookings": 109,
+      "door": 74,
+      "meter": 73,
+      "billing": 94,
+      "front": 86,
+      "reports": 66
+    }
+  }
+}

@@ -1,0 +1,140 @@
+{
+  "id": "W05-price-list-in-euros",
+  "title": "bookings' price list is kept in euros, as the venue's price sheet writes it, and renamed SEAT_NIGHT_EUROS to say so",
+  "provider": "bookings",
+  "covers": [
+    "a provider changes a file outside its interface",
+    "a user reaches that file with import(), which rule 28's check does not look at"
+  ],
+  "tool": {
+    "firstCommentsStep": false,
+    "interfaceChanged": false,
+    "summary": "The listing before and after is the same. Nobody is told.",
+    "entries": [],
+    "told": [],
+    "toldDetail": [],
+    "notTold": [],
+    "warnings": [],
+    "commentsOnly": false,
+    "checks": {
+      "bookings": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 108
+      },
+      "door": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 78
+      },
+      "meter": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 61
+      },
+      "billing": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 92
+      },
+      "front": {
+        "refusedBefore": 1,
+        "refusedAfter": 2,
+        "refusals": [
+          {
+            "at": "front/src/index.mjs:59",
+            "code": 2339,
+            "text": "Property 'SEAT_NIGHT_CENTS' does not exist on type 'typeof import(\"/home/user/process3-probes/notice-proof/.scratch/round6-independent/W05-price-list-in-euros/after/bookings/src/prices\", { with: { \"resolution-mode\": \"import\" } })'.",
+            "kind": "(a) a comment disagrees with this module's code"
+          },
+          {
+            "at": "front/src/index.mjs:59",
+            "code": "import",
+            "text": "imports bookings/src/prices.mjs, which is not one of bookings's interface files",
+            "kind": "(c) a rule of form: only a module's interface files are imported"
+          }
+        ],
+        "refusalsBefore": [
+          {
+            "at": "front/src/index.mjs:59",
+            "code": "import",
+            "text": "imports bookings/src/prices.mjs, which is not one of bookings's interface files",
+            "kind": "(c) a rule of form: only a module's interface files are imported"
+          }
+        ],
+        "ms": 128
+      },
+      "reports": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 71
+      }
+    }
+  },
+  "groundTruth": {
+    "providerTests": {
+      "pass": true,
+      "failed": [],
+      "ran": 8
+    },
+    "testsBefore": {
+      "door": true,
+      "meter": true,
+      "billing": true,
+      "front": true,
+      "reports": true
+    },
+    "testsAfter": {
+      "door": {
+        "pass": true,
+        "failed": []
+      },
+      "meter": {
+        "pass": true,
+        "failed": []
+      },
+      "billing": {
+        "pass": true,
+        "failed": []
+      },
+      "front": {
+        "pass": false,
+        "failed": [
+          "the price menu has one line per kind, each with a price"
+        ]
+      },
+      "reports": {
+        "pass": true,
+        "failed": []
+      }
+    },
+    "broken": [
+      "front"
+    ]
+  },
+  "timing": {
+    "listingMs": {
+      "before": 128,
+      "after": 126
+    },
+    "noticeMs": 784,
+    "checkMs": {
+      "bookings": 108,
+      "door": 78,
+      "meter": 61,
+      "billing": 92,
+      "front": 128,
+      "reports": 71
+    }
+  }
+}

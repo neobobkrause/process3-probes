@@ -1,0 +1,102 @@
+{
+  "id": "U04-messages-encoded-by-named-function",
+  "title": "The meter writes an empty line after each message, so that people reading its output can tell one message from the next; the encoding is one named function",
+  "provider": "meter",
+  "covers": [
+    "something other than a message written on a message channel",
+    "the message is encoded by a function declaration, which the check does not follow"
+  ],
+  "tool": {
+    "firstCommentsStep": false,
+    "interfaceChanged": false,
+    "summary": "The listing before and after is the same. Nobody is told.",
+    "entries": [],
+    "told": [],
+    "toldDetail": [],
+    "notTold": [],
+    "warnings": [],
+    "commentsOnly": false,
+    "checks": {
+      "meter": {
+        "refusedBefore": 0,
+        "refusedAfter": 1,
+        "refusals": [
+          {
+            "at": "meter/src/worker.mjs:22",
+            "code": "message",
+            "text": "writes to stdout, which this module's messages are published for, something the tool cannot read as one message line",
+            "kind": "(c) a rule of form: a message channel carries only message lines the tool can read"
+          }
+        ],
+        "refusalsBefore": [],
+        "ms": 76
+      },
+      "billing": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 89
+      },
+      "front": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 76
+      },
+      "reports": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 90
+      }
+    }
+  },
+  "groundTruth": {
+    "providerTests": {
+      "pass": true,
+      "failed": [],
+      "ran": 2
+    },
+    "testsBefore": {
+      "billing": true,
+      "front": true,
+      "reports": true
+    },
+    "testsAfter": {
+      "billing": {
+        "pass": false,
+        "failed": [
+          "metered use is priced by the meter and added up",
+          "metered use outside the meter's bound is refused"
+        ]
+      },
+      "front": {
+        "pass": true,
+        "failed": []
+      },
+      "reports": {
+        "pass": true,
+        "failed": []
+      }
+    },
+    "broken": [
+      "billing"
+    ]
+  },
+  "timing": {
+    "listingMs": {
+      "before": 54,
+      "after": 59
+    },
+    "noticeMs": 560,
+    "checkMs": {
+      "meter": 76,
+      "billing": 89,
+      "front": 76,
+      "reports": 90
+    }
+  }
+}
