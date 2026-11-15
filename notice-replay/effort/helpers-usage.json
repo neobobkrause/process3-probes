@@ -24,6 +24,18 @@
    "toolUses": 109,
    "durationMs": 1652663,
    "finished": "2026-11-15T15:49Z"
+  },
+  "user-plan-work": {
+   "tokens": 296976,
+   "toolUses": 88,
+   "durationMs": 1386479,
+   "finished": "2026-11-15T15:50Z"
+  },
+  "ai-runs": {
+   "tokens": 504056,
+   "toolUses": 108,
+   "durationMs": 1714472,
+   "finished": "2026-11-15T15:50Z"
   }
  }
 }

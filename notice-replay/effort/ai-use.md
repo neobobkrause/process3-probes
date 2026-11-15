@@ -34,3 +34,7 @@ Only tests changed (108 added lines in three test files: two notice tests confir
 ## Update ai-use:378
 
 A small change (a 74-line diff). useEstimate now reads entry_id. With one named and too few measured acts, it asks agent-model for a range, and so returns a Promise. The module declares the four T53 ops beside the map. carry.mjs left two conflict hunks, which I resolved by hand. The one thing worth noting is how the comments say "a promise when an entry is named, the answer at once otherwise". Plain JSDoc kinds cannot say it, so I wrote three @overload signatures on useEstimate and copied them onto its alias estimate. Without them, every user that reads `.estimate` would be refused against a `Answer | Promise<Answer>` union. Other updates: two new Estimate variants (measured, price_only), a new bound on entry_id, OpDeclaration.fields becoming optional, and four more DECLARED_OPS keys. Check: real 347, commented 356 (66 of them bound lines without tests).
+
+## Update ai-use:613 (F3)
+
+Small: budgetSet, which sets a limit or (with kind) an alert threshold, plus the ops aibudgetset and aiprojectbudget, declared in DECLARED_OPS. There was one conflict hunk, where the new private budgetOwner const met my aiUseOps comment; I kept both. One existing kind changed: a declaration's `requires` may now hold a list ("one of these"), and declarations carry `stamps` and `needs`. So OpDeclaration changed, which the users of DECLARED_OPS should be told about. About 5 minutes in all. Check: real 358, commented 370 (69 of them bound lines without tests).

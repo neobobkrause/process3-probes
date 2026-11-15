@@ -68,3 +68,15 @@ Mechanical.
 
 A 175-line diff (F4, F5): answer keys may mark passages (`ANSWER_MARKS`, `answerKeyMarks`), Gate 1 records may carry recall figures, group results count marked matters, and `aipathready` with no pair named becomes a cascade read. Two conflicts. One mattered: the new exports were inserted between `hiddenRuns`' JSDoc and the function, so the real file now has `hiddenRuns`' prose above `ANSWER_MARKS`. My `@param`/`@returns` for `hiddenRuns` were in that block; I kept the real layout and wrote a new block directly above `hiddenRuns`. Two corrections after the check (a private helper whose answer the public read hands back needed `@returns` and a closure `@type`; a refusal field a new test reads). About ten minutes.
 
+## Gap before 1073
+
+Mechanical.
+
+## Update ai-runs:1073
+
+A test-only change (the module's answer to membership's notice 1030). Nothing to comment; one check run.
+
+## Overall
+
+The first step was the work: about a quarter of an hour by the clock for a 3,800-line module, three quarters of it spent not on writing the comments but on making the check agree with them (unions the tests do not narrow, literals widened in locals, private helpers that infer `null` once their callers are typed, a `@bound` line that silently ends a typedef). After that, each change cost what its diff cost to read: the 1,763-line T53 change about ten minutes, the others two to ten. The check's count with my comments stays about 64 above the real code's at every state: about 66 tests reading nullable answers without a null check and about 35 tests passing deliberately wrong kinds, less about 110 old refusals the comments removed, plus the bound-test refusals (44 at first, 59 to 67 later) that this replay expects.
+
