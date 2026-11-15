@@ -36,6 +36,12 @@
    "toolUses": 108,
    "durationMs": 1714472,
    "finished": "2026-11-15T15:50Z"
+  },
+  "ai-use": {
+   "tokens": 471647,
+   "toolUses": 107,
+   "durationMs": 1744799,
+   "finished": "2026-11-15T15:51Z"
   }
  }
 }
