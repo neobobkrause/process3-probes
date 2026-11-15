@@ -60,3 +60,5 @@
 16:38:49 after store-door 63 pass 0 fail 0 new
 16:38:49 after store-jobs undefined pass undefined fail 0 new
 16:38:49 after store-ask undefined pass undefined fail 0 new
+16:42:02 after store-assembly 335 pass 85 fail 3 new
+16:42:18 after store-request 7 pass 110 fail 0 new
