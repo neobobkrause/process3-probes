@@ -1,0 +1,264 @@
+{
+  "id": "P23-user-already-disagrees",
+  "title": "splitEvenly now hands back {parts, each}; billing already disagreed with money before this",
+  "provider": "money",
+  "covers": [
+    "a user that already disagrees with its provider's stated interface"
+  ],
+  "tool": {
+    "firstCommentsStep": false,
+    "interfaceChanged": true,
+    "summary": "1 module(s) changed their listing; 1 entry changed in a way that tells; 1 user(s) told.",
+    "entries": [
+      {
+        "module": "money",
+        "entry": "splitEvenly",
+        "changes": [
+          "hands back differently"
+        ],
+        "tells": "users",
+        "before": {
+          "kind": "function",
+          "accepts": "(arg0: { cents: number; currency: \"EUR\" | \"GBP\" | \"USD\" }, arg1: number)",
+          "handsBack": "{ cents: number; currency: \"EUR\" | \"GBP\" | \"USD\" }[]",
+          "bounds": [
+            "cents: whole number, 0 to 10,000,000 inclusive",
+            "parts: whole number, 1 to 100"
+          ],
+          "throws": [
+            "RangeError"
+          ]
+        },
+        "after": {
+          "kind": "function",
+          "accepts": "(arg0: { cents: number; currency: \"EUR\" | \"GBP\" | \"USD\" }, arg1: number)",
+          "handsBack": "{ each: number; parts: { cents: number; currency: \"EUR\" | \"GBP\" | \"USD\" }[] }",
+          "bounds": [
+            "cents: whole number, 0 to 10,000,000 inclusive",
+            "parts: whole number, 1 to 100"
+          ],
+          "throws": [
+            "RangeError"
+          ]
+        }
+      }
+    ],
+    "told": [
+      "billing"
+    ],
+    "toldDetail": [
+      {
+        "user": "billing",
+        "reasons": [
+          {
+            "module": "money",
+            "entry": "splitEvenly",
+            "changes": [
+              "hands back differently"
+            ],
+            "lines": [
+              "billing/src/index.mjs:5",
+              "billing/src/index.mjs:45"
+            ],
+            "through": null
+          }
+        ],
+        "undeclared": []
+      }
+    ],
+    "notTold": [
+      {
+        "user": "bookings",
+        "why": "uses none of the entries that changed in a way that tells"
+      },
+      {
+        "user": "meter",
+        "why": "uses none of the entries that changed in a way that tells"
+      },
+      {
+        "user": "front",
+        "why": "uses none of the entries that changed in a way that tells"
+      }
+    ],
+    "warnings": [],
+    "commentsOnly": false,
+    "checks": {
+      "money": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 83
+      },
+      "calendar": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 91
+      },
+      "store": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 167
+      },
+      "rooms": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 84
+      },
+      "bookings": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 89
+      },
+      "door": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 76
+      },
+      "meter": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 70
+      },
+      "billing": {
+        "refusedBefore": 1,
+        "refusedAfter": 3,
+        "refusals": [
+          {
+            "at": "billing/src/index.mjs:42",
+            "code": 2322,
+            "text": "Type '(bookingId: string, instalments: number) => Promise<{ booking: string; total: Amount; instalments: { parts: Amount[]; each: number; }; text: string; }>' is not assignable to type '(bookingId: string, instalments: number) => Promise<Invoice>'.   Type 'Promise<{ booking: string; total: Amount; instalments: { parts: Amount[]; each: number; }; text: string; }>' is not assignable to type 'Promise<Invoice>'.     Type '{ booking: string; total: Amount; instalments: { parts: Amount[]; each: number; }; text: string; }' is not assignable to type 'Invoice'.       Types of property 'instalments' are incompatible.         Type '{ parts: Amount[]; each: number; }' is missing the following properties from type 'Amount[]': length, pop, push, concat, and 35 more.",
+            "kind": "(b) code disagrees with the stated interface of bookings, door, money, meter"
+          },
+          {
+            "at": "billing/src/index.mjs:50",
+            "code": 2554,
+            "text": "Expected 1 arguments, but got 2.",
+            "kind": "(b) code disagrees with the stated interface of money, bookings"
+          },
+          {
+            "at": "billing/src/index.mjs:50",
+            "code": 2339,
+            "text": "Property 'length' does not exist on type '{ parts: Amount[]; each: number; }'.",
+            "kind": "(b) code disagrees with the stated interface of money, bookings"
+          }
+        ],
+        "refusalsBefore": [
+          {
+            "at": "billing/src/index.mjs:50",
+            "code": 2554,
+            "text": "Expected 1 arguments, but got 2.",
+            "kind": "(b) code disagrees with the stated interface of money, bookings"
+          }
+        ],
+        "ms": 105
+      },
+      "front": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 103
+      },
+      "reports": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 64
+      }
+    }
+  },
+  "groundTruth": {
+    "providerTests": {
+      "pass": true,
+      "failed": [],
+      "ran": 6
+    },
+    "testsBefore": {
+      "calendar": true,
+      "store": true,
+      "rooms": true,
+      "bookings": true,
+      "door": true,
+      "meter": true,
+      "billing": true,
+      "front": true,
+      "reports": true
+    },
+    "testsAfter": {
+      "calendar": {
+        "pass": true,
+        "failed": []
+      },
+      "store": {
+        "pass": true,
+        "failed": []
+      },
+      "rooms": {
+        "pass": true,
+        "failed": []
+      },
+      "bookings": {
+        "pass": true,
+        "failed": []
+      },
+      "door": {
+        "pass": true,
+        "failed": []
+      },
+      "meter": {
+        "pass": true,
+        "failed": []
+      },
+      "billing": {
+        "pass": false,
+        "failed": [
+          "an invoice splits the booking total into instalments that add up to it"
+        ]
+      },
+      "front": {
+        "pass": true,
+        "failed": []
+      },
+      "reports": {
+        "pass": true,
+        "failed": []
+      }
+    },
+    "broken": [
+      "billing"
+    ]
+  },
+  "timing": {
+    "listingMs": {
+      "before": 53,
+      "after": 57
+    },
+    "noticeMs": 517,
+    "checkMs": {
+      "money": 83,
+      "calendar": 91,
+      "store": 167,
+      "rooms": 84,
+      "bookings": 89,
+      "door": 76,
+      "meter": 70,
+      "billing": 105,
+      "front": 103,
+      "reports": 64
+    }
+  }
+}

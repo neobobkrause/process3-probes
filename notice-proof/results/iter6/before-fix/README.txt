@@ -1,0 +1,1 @@
+First full run of iteration 6, before two fixes made while reading it (see notes/iteration-6-design.md, Defects). V03 and W04 here were already rerun after their fix, so their files show the fixed tool; their first answers are described in the note.

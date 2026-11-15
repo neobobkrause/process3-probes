@@ -1,0 +1,90 @@
+{
+  "id": "V07-write-with-callback",
+  "title": "The meter exits as soon as its closing message is written, so that nothing left open can keep a finished meter running",
+  "provider": "meter",
+  "covers": [
+    "honest code using Node's write with a callback, which the tool's description of Node does not have",
+    "a message written one per line, with a callback"
+  ],
+  "tool": {
+    "firstCommentsStep": false,
+    "interfaceChanged": false,
+    "summary": "The listing before and after is the same. Nobody is told.",
+    "entries": [],
+    "told": [],
+    "toldDetail": [],
+    "notTold": [],
+    "warnings": [],
+    "commentsOnly": false,
+    "checks": {
+      "meter": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 72
+      },
+      "billing": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 89
+      },
+      "front": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 71
+      },
+      "reports": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 65
+      }
+    }
+  },
+  "groundTruth": {
+    "providerTests": {
+      "pass": true,
+      "failed": [],
+      "ran": 2
+    },
+    "testsBefore": {
+      "billing": true,
+      "front": true,
+      "reports": true
+    },
+    "testsAfter": {
+      "billing": {
+        "pass": true,
+        "failed": []
+      },
+      "front": {
+        "pass": true,
+        "failed": []
+      },
+      "reports": {
+        "pass": true,
+        "failed": []
+      }
+    },
+    "broken": []
+  },
+  "timing": {
+    "listingMs": {
+      "before": 59,
+      "after": 59
+    },
+    "noticeMs": 596,
+    "checkMs": {
+      "meter": 72,
+      "billing": 89,
+      "front": 71,
+      "reports": 65
+    }
+  }
+}

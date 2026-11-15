@@ -1,0 +1,168 @@
+{
+  "id": "Z21-throws-explained-in-two-lines",
+  "title": "add's @throws comment explains its two cases on two lines; the kind of error is the same",
+  "provider": "money",
+  "covers": [
+    "a @throws comment split into two lines naming the same kind",
+    "the kinds of error raised do not change"
+  ],
+  "tool": {
+    "firstCommentsStep": false,
+    "interfaceChanged": false,
+    "summary": "The listing before and after is the same. Nobody is told.",
+    "entries": [],
+    "told": [],
+    "toldDetail": [],
+    "notTold": [],
+    "warnings": [],
+    "commentsOnly": true,
+    "checks": {
+      "money": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 69
+      },
+      "calendar": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 64
+      },
+      "store": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 81
+      },
+      "rooms": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 77
+      },
+      "bookings": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 143
+      },
+      "door": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 80
+      },
+      "meter": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 82
+      },
+      "billing": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 105
+      },
+      "front": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 83
+      },
+      "reports": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 125
+      }
+    }
+  },
+  "groundTruth": {
+    "providerTests": {
+      "pass": true,
+      "failed": [],
+      "ran": 6
+    },
+    "testsBefore": {
+      "calendar": true,
+      "store": true,
+      "rooms": true,
+      "bookings": true,
+      "door": true,
+      "meter": true,
+      "billing": true,
+      "front": true,
+      "reports": true
+    },
+    "testsAfter": {
+      "calendar": {
+        "pass": true,
+        "failed": []
+      },
+      "store": {
+        "pass": true,
+        "failed": []
+      },
+      "rooms": {
+        "pass": true,
+        "failed": []
+      },
+      "bookings": {
+        "pass": true,
+        "failed": []
+      },
+      "door": {
+        "pass": true,
+        "failed": []
+      },
+      "meter": {
+        "pass": true,
+        "failed": []
+      },
+      "billing": {
+        "pass": true,
+        "failed": []
+      },
+      "front": {
+        "pass": true,
+        "failed": []
+      },
+      "reports": {
+        "pass": true,
+        "failed": []
+      }
+    },
+    "broken": []
+  },
+  "timing": {
+    "listingMs": {
+      "before": 67,
+      "after": 58
+    },
+    "noticeMs": 746,
+    "checkMs": {
+      "money": 69,
+      "calendar": 64,
+      "store": 81,
+      "rooms": 77,
+      "bookings": 143,
+      "door": 80,
+      "meter": 82,
+      "billing": 105,
+      "front": 83,
+      "reports": 125
+    }
+  }
+}

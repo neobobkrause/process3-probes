@@ -104,6 +104,16 @@ export function check(tree, moduleId) {
     return null;
   };
   const messageChannelsOf = (t) => { const m = markOf(t); return m && m.channels.length ? m.channels : null; };
+  // the channels of the value an expression writes: its kind where it is used, or, when the reader has narrowed it to
+  // one member of a message kind, the kind its variable is declared with (iteration 6, found on V03)
+  const channelsOfValue = (x) => {
+    const here = messageChannelsOf(checker.getTypeAtLocation(x));
+    if (here || !ts.isIdentifier(x)) return here;
+    const s = checker.getSymbolAtLocation(x);
+    const d = s?.declarations?.[0];
+    if (d && ts.isVariableDeclaration(d)) { const tn = ts.getJSDocType(d) ?? ts.getJSDocType(d.parent.parent); if (tn) return messageChannelsOf(checker.getTypeFromTypeNode(tn)); }
+    return s ? messageChannelsOf(checker.getTypeOfSymbol(s)) : null;
+  };
   const productKind = (t) => [t.aliasSymbol, t.symbol].some((sym) => sym && !sym.name.startsWith('__') && (sym.declarations ?? []).some((d) => moduleOfDecl(d) && (ts.isJSDocTypedefTag(d) || ts.isTypeAliasDeclaration(d))));
   const kindName = (t) => (t.aliasSymbol ?? t.symbol)?.name ?? checker.typeToString(t);
   const plainDataKind = (t) => productKind(t) && !!(t.flags & ts.TypeFlags.Object) && checker.getPropertiesOfType(t).length > 0 &&
@@ -459,7 +469,7 @@ export function check(tree, moduleId) {
         };
         const data = isConsole ? n.arguments : n.arguments.slice(0, 1); // iteration 5: a write's callback is not data
         for (const a of data) find(a, 0);
-        const messages = stringified.filter((js) => js.arguments[0] && messageChannelsOf(checker.getTypeAtLocation(js.arguments[0])));
+        const messages = stringified.filter((js) => js.arguments[0] && channelsOfValue(js.arguments[0]));
         // Iteration 6 (rule 35): remember every write, to see later whether a stream that carries messages carries anything else
         if (data.length) writes.push({ at: lineAt(sf, n, tree.root), streams, message: messages.length > 0 });
         // Iteration 6 (rule 40): a log line written with console is a message only if what it writes has a message kind
@@ -487,7 +497,7 @@ export function check(tree, moduleId) {
         }
         for (const js of stringified) {
           const a0 = js.arguments[0];
-          const channels = a0 ? messageChannelsOf(checker.getTypeAtLocation(a0)) : null;
+          const channels = a0 ? channelsOfValue(a0) : null;
           const wrong = streams.filter((x) => !channels || !channels.includes(x));
           if (wrong.length) {
             refusals.push({ at: lineAt(sf, js, tree.root), code: 'message', text: `a message written to ${wrong.join(' and ')} ${channels ? `has a kind published for ${channels.join(', ')}` : 'has no kind its sender publishes'}`, kind: '(c) a rule of form: a message is written with its kind, on its channel' });

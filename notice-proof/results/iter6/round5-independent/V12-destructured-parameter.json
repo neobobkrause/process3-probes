@@ -1,0 +1,128 @@
+{
+  "id": "V12-destructured-parameter",
+  "title": "createRooms takes its dependencies apart in its parameter list",
+  "provider": "rooms",
+  "covers": [
+    "a parameter written as a destructuring pattern; kinds and behaviour unchanged"
+  ],
+  "tool": {
+    "firstCommentsStep": false,
+    "interfaceChanged": false,
+    "summary": "The listing before and after is the same. Nobody is told.",
+    "entries": [],
+    "told": [],
+    "toldDetail": [],
+    "notTold": [],
+    "warnings": [],
+    "commentsOnly": false,
+    "checks": {
+      "rooms": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 75
+      },
+      "bookings": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 90
+      },
+      "door": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 62
+      },
+      "meter": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 75
+      },
+      "billing": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 99
+      },
+      "front": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 119
+      },
+      "reports": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 93
+      }
+    }
+  },
+  "groundTruth": {
+    "providerTests": {
+      "pass": true,
+      "failed": [],
+      "ran": 5
+    },
+    "testsBefore": {
+      "bookings": true,
+      "door": true,
+      "meter": true,
+      "billing": true,
+      "front": true,
+      "reports": true
+    },
+    "testsAfter": {
+      "bookings": {
+        "pass": true,
+        "failed": []
+      },
+      "door": {
+        "pass": true,
+        "failed": []
+      },
+      "meter": {
+        "pass": true,
+        "failed": []
+      },
+      "billing": {
+        "pass": true,
+        "failed": []
+      },
+      "front": {
+        "pass": true,
+        "failed": []
+      },
+      "reports": {
+        "pass": true,
+        "failed": []
+      }
+    },
+    "broken": []
+  },
+  "timing": {
+    "listingMs": {
+      "before": 81,
+      "after": 100
+    },
+    "noticeMs": 664,
+    "checkMs": {
+      "rooms": 75,
+      "bookings": 90,
+      "door": 62,
+      "meter": 75,
+      "billing": 99,
+      "front": 119,
+      "reports": 93
+    }
+  }
+}

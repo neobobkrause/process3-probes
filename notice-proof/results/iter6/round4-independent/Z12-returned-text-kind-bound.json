@@ -1,0 +1,268 @@
+{
+  "id": "Z12-returned-text-kind-bound",
+  "title": "Slugs join words with single underscores, as the venue's booking system needs; Slug's bound line, its test and slugify's tests say so",
+  "provider": "text-rules",
+  "covers": [
+    "bound line changed honestly, on a kind that is just text",
+    "the kind is what a function hands back, not a field or a parameter"
+  ],
+  "tool": {
+    "firstCommentsStep": false,
+    "interfaceChanged": true,
+    "summary": "1 module(s) changed their listing; 2 entries changed in a way that tells; 1 user(s) told.",
+    "entries": [
+      {
+        "module": "text-rules",
+        "entry": "Slug",
+        "changes": [
+          "bound changed"
+        ],
+        "tells": "users",
+        "before": {
+          "kind": "kind",
+          "handsBack": "string",
+          "bounds": [
+            "slug: only a-z, 0-9 and single hyphens between them"
+          ],
+          "side": "handsBack"
+        },
+        "after": {
+          "kind": "kind",
+          "handsBack": "string",
+          "bounds": [
+            "slug: only a-z, 0-9 and single underscores between them"
+          ],
+          "side": "handsBack"
+        }
+      },
+      {
+        "module": "text-rules",
+        "entry": "slugify",
+        "changes": [
+          "bound changed"
+        ],
+        "tells": "users",
+        "before": {
+          "kind": "function",
+          "accepts": "(arg0: string)",
+          "handsBack": "string",
+          "bounds": [
+            "slug: only a-z, 0-9 and single hyphens between them",
+            "text: 1 to 80 characters, with at least one letter or digit"
+          ],
+          "throws": [
+            "RangeError"
+          ]
+        },
+        "after": {
+          "kind": "function",
+          "accepts": "(arg0: string)",
+          "handsBack": "string",
+          "bounds": [
+            "slug: only a-z, 0-9 and single underscores between them",
+            "text: 1 to 80 characters, with at least one letter or digit"
+          ],
+          "throws": [
+            "RangeError"
+          ]
+        }
+      }
+    ],
+    "told": [
+      "rooms"
+    ],
+    "toldDetail": [
+      {
+        "user": "rooms",
+        "reasons": [
+          {
+            "module": "text-rules",
+            "entry": "slugify",
+            "changes": [
+              "bound changed"
+            ],
+            "lines": [
+              "rooms/src/index.mjs:4",
+              "rooms/src/index.mjs:65"
+            ],
+            "through": null
+          }
+        ],
+        "undeclared": []
+      }
+    ],
+    "notTold": [
+      {
+        "user": "front",
+        "why": "uses none of the entries that changed in a way that tells"
+      }
+    ],
+    "warnings": [],
+    "commentsOnly": false,
+    "checks": {
+      "text-rules": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 90
+      },
+      "money": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 104
+      },
+      "calendar": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 55
+      },
+      "store": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 79
+      },
+      "rooms": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 71
+      },
+      "bookings": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 110
+      },
+      "door": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 80
+      },
+      "meter": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 77
+      },
+      "billing": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 101
+      },
+      "front": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 88
+      },
+      "reports": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 87
+      }
+    }
+  },
+  "groundTruth": {
+    "providerTests": {
+      "pass": true,
+      "failed": [],
+      "ran": 5
+    },
+    "testsBefore": {
+      "money": true,
+      "calendar": true,
+      "store": true,
+      "rooms": true,
+      "bookings": true,
+      "door": true,
+      "meter": true,
+      "billing": true,
+      "front": true,
+      "reports": true
+    },
+    "testsAfter": {
+      "money": {
+        "pass": true,
+        "failed": []
+      },
+      "calendar": {
+        "pass": true,
+        "failed": []
+      },
+      "store": {
+        "pass": true,
+        "failed": []
+      },
+      "rooms": {
+        "pass": false,
+        "failed": [
+          "add then find hands back the room under its slug"
+        ]
+      },
+      "bookings": {
+        "pass": true,
+        "failed": []
+      },
+      "door": {
+        "pass": true,
+        "failed": []
+      },
+      "meter": {
+        "pass": true,
+        "failed": []
+      },
+      "billing": {
+        "pass": true,
+        "failed": []
+      },
+      "front": {
+        "pass": true,
+        "failed": []
+      },
+      "reports": {
+        "pass": true,
+        "failed": []
+      }
+    },
+    "broken": [
+      "rooms"
+    ]
+  },
+  "timing": {
+    "listingMs": {
+      "before": 72,
+      "after": 69
+    },
+    "noticeMs": 807,
+    "checkMs": {
+      "text-rules": 90,
+      "money": 104,
+      "calendar": 55,
+      "store": 79,
+      "rooms": 71,
+      "bookings": 110,
+      "door": 80,
+      "meter": 77,
+      "billing": 101,
+      "front": 88,
+      "reports": 87
+    }
+  }
+}

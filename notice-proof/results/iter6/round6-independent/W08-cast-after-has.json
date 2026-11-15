@@ -1,0 +1,202 @@
+{
+  "id": "W08-cast-after-has",
+  "title": "rooms gains pick: the rooms with the given ids, in the order given; an id with no room is refused",
+  "provider": "rooms",
+  "covers": [
+    "new handle method (new entry)",
+    "honest cast of a Map's get after its has, which drops 'undefined'"
+  ],
+  "tool": {
+    "firstCommentsStep": false,
+    "interfaceChanged": true,
+    "summary": "1 module(s) changed their listing; 0 entries changed in a way that tells; 1 user(s) told.",
+    "entries": [
+      {
+        "module": "rooms",
+        "entry": "Rooms",
+        "changes": [
+          "new entry"
+        ],
+        "lost": [],
+        "gained": [
+          "pick"
+        ],
+        "tells": "nobody",
+        "before": {
+          "kind": "handle kind",
+          "handsBack": "names: add, find, list"
+        },
+        "after": {
+          "kind": "handle kind",
+          "handsBack": "names: add, find, list, pick"
+        }
+      },
+      {
+        "module": "rooms",
+        "entry": "Rooms.pick",
+        "changes": [
+          "new entry"
+        ],
+        "after": {
+          "kind": "method",
+          "accepts": "(arg0: string[])",
+          "handsBack": "{ id: string; kind: \"hall\" | \"kitchen\" | \"studio\"; name: string; seats: number }[]",
+          "bounds": [
+            "seats: whole number, 1 to 500"
+          ],
+          "throws": [
+            "RangeError"
+          ]
+        },
+        "tells": "nobody"
+      }
+    ],
+    "told": [
+      "reports"
+    ],
+    "toldDetail": [
+      {
+        "user": "reports",
+        "reasons": [
+          {
+            "module": "rooms",
+            "notFollowed": [
+              "reads or calls values of unknown kind: reports/src/index.mjs:13 source.list('rooms').map; reports/src/index.mjs:13 source.list('rooms'); reports/src/index.mjs:13 source.list (+9)"
+            ],
+            "through": null
+          }
+        ],
+        "undeclared": []
+      }
+    ],
+    "notTold": [
+      {
+        "user": "bookings",
+        "why": "uses none of the entries that changed in a way that tells"
+      },
+      {
+        "user": "door",
+        "why": "uses none of the entries that changed in a way that tells"
+      },
+      {
+        "user": "billing",
+        "why": "uses none of the entries that changed in a way that tells"
+      },
+      {
+        "user": "front",
+        "why": "uses none of the entries that changed in a way that tells"
+      }
+    ],
+    "warnings": [],
+    "commentsOnly": false,
+    "checks": {
+      "rooms": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 76
+      },
+      "bookings": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 93
+      },
+      "door": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 68
+      },
+      "meter": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 86
+      },
+      "billing": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 74
+      },
+      "front": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 82
+      },
+      "reports": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 99
+      }
+    }
+  },
+  "groundTruth": {
+    "providerTests": {
+      "pass": true,
+      "failed": [],
+      "ran": 6
+    },
+    "testsBefore": {
+      "bookings": true,
+      "door": true,
+      "meter": true,
+      "billing": true,
+      "front": true,
+      "reports": true
+    },
+    "testsAfter": {
+      "bookings": {
+        "pass": true,
+        "failed": []
+      },
+      "door": {
+        "pass": true,
+        "failed": []
+      },
+      "meter": {
+        "pass": true,
+        "failed": []
+      },
+      "billing": {
+        "pass": true,
+        "failed": []
+      },
+      "front": {
+        "pass": true,
+        "failed": []
+      },
+      "reports": {
+        "pass": true,
+        "failed": []
+      }
+    },
+    "broken": []
+  },
+  "timing": {
+    "listingMs": {
+      "before": 100,
+      "after": 100
+    },
+    "noticeMs": 652,
+    "checkMs": {
+      "rooms": 76,
+      "bookings": 93,
+      "door": 68,
+      "meter": 86,
+      "billing": 74,
+      "front": 82,
+      "reports": 99
+    }
+  }
+}

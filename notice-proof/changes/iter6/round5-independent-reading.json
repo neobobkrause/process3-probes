@@ -1,0 +1,66 @@
+{
+  "about": "Ground truth by reading under iteration 5, written by Claude AFTER the results were seen, independently of what the tool said.",
+  "changes": {
+    "V01-accepts-more-hides-static": {
+      "needs": [
+        "billing"
+      ]
+    },
+    "V02-bound-values-in-mapped-list": {
+      "needs": [
+        "billing"
+      ],
+      "note": "Told under rule 32."
+    },
+    "V03-refusals-through-console-error": {
+      "needs": [
+        "billing"
+      ],
+      "guard": "meter's own check refuses MeterMsg written with console.error (rule 30)"
+    },
+    "V04-instance-built-in-a-conditional": {
+      "needs": [],
+      "guard": "money's own check refuses the class instance (rule 31)"
+    },
+    "V05-error-kind-in-bound-test": {
+      "needs": [
+        "billing"
+      ],
+      "guard": "money's own check refuses a thrown kind its comment does not state (rule 29)",
+      "note": "billing was also told (rule 32)."
+    },
+    "V06-non-interface-file-renamed": {
+      "needs": [
+        "front"
+      ],
+      "guard": "front's own check refuses its import of a file that is not one of bookings' interface files, before the change too (rule 28): that state could not have been merged"
+    },
+    "V07-write-with-callback": {
+      "needs": []
+    },
+    "V08-limit-read-from-json": {
+      "needs": []
+    },
+    "V09-pop-after-length-check": {
+      "needs": []
+    },
+    "V10-checked-cast-to-kind": {
+      "needs": []
+    },
+    "V11-door-copy-in-two-steps": {
+      "needs": []
+    },
+    "V12-destructured-parameter": {
+      "needs": []
+    },
+    "V13-states-named": {
+      "needs": []
+    },
+    "V14-overload-added": {
+      "needs": []
+    },
+    "V15-bound-test-through-helper": {
+      "needs": []
+    }
+  }
+}

@@ -1,0 +1,204 @@
+{
+  "id": "V11-door-copy-in-two-steps",
+  "title": "The door refuses an answer larger than 64 KiB of text, as a connection would; it measures the answer as it copies it",
+  "provider": "door",
+  "covers": [
+    "a JSON copy written in two statements",
+    "a new error stated on the kind (rule 10)"
+  ],
+  "tool": {
+    "firstCommentsStep": false,
+    "interfaceChanged": true,
+    "summary": "1 module(s) changed their listing; 2 entries changed in a way that tells; 2 user(s) told.",
+    "entries": [
+      {
+        "module": "door",
+        "entry": "Door.call",
+        "changes": [
+          "hands back differently"
+        ],
+        "tells": "users",
+        "before": {
+          "kind": "method",
+          "accepts": "(arg0: K, arg1: AllOps[K][\"req\"])",
+          "handsBack": "Promise<AllOps[K][\"res\"]>"
+        },
+        "after": {
+          "kind": "method",
+          "accepts": "(arg0: K, arg1: AllOps[K][\"req\"])",
+          "handsBack": "Promise<AllOps[K][\"res\"]>",
+          "throws": [
+            "RangeError"
+          ]
+        }
+      },
+      {
+        "module": "door",
+        "entry": "Door.get",
+        "changes": [
+          "hands back differently"
+        ],
+        "tells": "users",
+        "before": {
+          "kind": "method",
+          "accepts": "(arg0: `op=${K}&${string}`)",
+          "handsBack": "Promise<AllOps[K][\"res\"]>"
+        },
+        "after": {
+          "kind": "method",
+          "accepts": "(arg0: `op=${K}&${string}`)",
+          "handsBack": "Promise<AllOps[K][\"res\"]>",
+          "throws": [
+            "RangeError"
+          ]
+        }
+      }
+    ],
+    "told": [
+      "billing",
+      "front"
+    ],
+    "toldDetail": [
+      {
+        "user": "billing",
+        "reasons": [
+          {
+            "module": "door",
+            "entry": "Door.call",
+            "changes": [
+              "hands back differently"
+            ],
+            "lines": [
+              "billing/src/index.mjs:54"
+            ],
+            "through": null
+          },
+          {
+            "module": "door",
+            "entry": "Door.get",
+            "changes": [
+              "hands back differently"
+            ],
+            "lines": [
+              "billing/src/index.mjs:43"
+            ],
+            "through": null
+          }
+        ],
+        "undeclared": []
+      },
+      {
+        "user": "front",
+        "reasons": [
+          {
+            "module": "door",
+            "entry": "Door.call",
+            "changes": [
+              "hands back differently"
+            ],
+            "lines": [
+              "front/src/index.mjs:39",
+              "front/src/index.mjs:50",
+              "front/src/index.mjs:57"
+            ],
+            "through": null
+          }
+        ],
+        "undeclared": []
+      }
+    ],
+    "notTold": [],
+    "warnings": [],
+    "commentsOnly": false,
+    "checks": {
+      "door": {
+        "refusedBefore": 0,
+        "refusedAfter": 1,
+        "refusals": [
+          {
+            "at": "door/src/index.mjs:53",
+            "code": "throws",
+            "text": "throws Error, which its comment does not state (it states RangeError)",
+            "kind": "(a) a comment disagrees with this module's code"
+          }
+        ],
+        "refusalsBefore": [],
+        "ms": 71
+      },
+      "meter": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 70
+      },
+      "billing": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 99
+      },
+      "front": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 109
+      },
+      "reports": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 77
+      }
+    }
+  },
+  "groundTruth": {
+    "providerTests": {
+      "pass": true,
+      "failed": [],
+      "ran": 4
+    },
+    "testsBefore": {
+      "meter": true,
+      "billing": true,
+      "front": true,
+      "reports": true
+    },
+    "testsAfter": {
+      "meter": {
+        "pass": true,
+        "failed": []
+      },
+      "billing": {
+        "pass": true,
+        "failed": []
+      },
+      "front": {
+        "pass": true,
+        "failed": []
+      },
+      "reports": {
+        "pass": true,
+        "failed": []
+      }
+    },
+    "broken": []
+  },
+  "timing": {
+    "listingMs": {
+      "before": 112,
+      "after": 171
+    },
+    "noticeMs": 665,
+    "checkMs": {
+      "door": 71,
+      "meter": 70,
+      "billing": 99,
+      "front": 109,
+      "reports": 77
+    }
+  }
+}

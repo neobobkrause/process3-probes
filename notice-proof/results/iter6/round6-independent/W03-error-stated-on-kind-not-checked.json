@@ -1,0 +1,127 @@
+{
+  "id": "W03-error-stated-on-kind-not-checked",
+  "title": "An unknown room is refused with an Error, not a RangeError (it is not a value out of bounds); the @throws line on the handle is forgotten",
+  "provider": "bookings",
+  "covers": [
+    "kind of error changed in code, the @throws line on the kind not",
+    "rule 29 checks only errors stated on the function or method itself"
+  ],
+  "tool": {
+    "firstCommentsStep": false,
+    "interfaceChanged": false,
+    "summary": "The listing before and after is the same. Nobody is told.",
+    "entries": [],
+    "told": [],
+    "toldDetail": [],
+    "notTold": [],
+    "warnings": [],
+    "commentsOnly": false,
+    "checks": {
+      "bookings": {
+        "refusedBefore": 0,
+        "refusedAfter": 1,
+        "refusals": [
+          {
+            "at": "bookings/src/index.mjs:96",
+            "code": "throws",
+            "text": "throws Error, which its comment does not state (it states RangeError)",
+            "kind": "(a) a comment disagrees with this module's code"
+          }
+        ],
+        "refusalsBefore": [],
+        "ms": 106
+      },
+      "door": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 101
+      },
+      "meter": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 110
+      },
+      "billing": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 110
+      },
+      "front": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 118
+      },
+      "reports": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 122
+      }
+    }
+  },
+  "groundTruth": {
+    "providerTests": {
+      "pass": true,
+      "failed": [],
+      "ran": 8
+    },
+    "testsBefore": {
+      "door": true,
+      "meter": true,
+      "billing": true,
+      "front": true,
+      "reports": true
+    },
+    "testsAfter": {
+      "door": {
+        "pass": true,
+        "failed": []
+      },
+      "meter": {
+        "pass": true,
+        "failed": []
+      },
+      "billing": {
+        "pass": false,
+        "failed": [
+          "an estimate for an unknown room is refused with a RangeError"
+        ]
+      },
+      "front": {
+        "pass": true,
+        "failed": []
+      },
+      "reports": {
+        "pass": true,
+        "failed": []
+      }
+    },
+    "broken": [
+      "billing"
+    ]
+  },
+  "timing": {
+    "listingMs": {
+      "before": 141,
+      "after": 142
+    },
+    "noticeMs": 714,
+    "checkMs": {
+      "bookings": 106,
+      "door": 101,
+      "meter": 110,
+      "billing": 110,
+      "front": 118,
+      "reports": 122
+    }
+  }
+}

@@ -267,6 +267,9 @@ export function makeLister(program, tree) {
     for (let round = 0; round < 3; round++) for (const [to, from] of delegations) {
       const inherited = entries[from]?.throws ?? [];
       if (inherited.length) entries[to].throws = [...new Set([...(entries[to].throws ?? []), ...inherited])].sort();
+      // Iteration 6 (rule 43): and its bounds, which limit what the caller can accept just as much.
+      const inb = entries[from]?.bounds ?? [];
+      if (inb.length) entries[to].bounds = [...new Set([...(entries[to].bounds ?? []), ...inb])];
     }
     for (const e of Object.values(entries)) e.bounds = [...new Set(e.bounds)].sort();
     // Iteration 4 (rule 18): each entry's declaration as TypeScript prints it.

@@ -1,0 +1,1391 @@
+{
+  "changes": 29,
+  "matchesRules": 29,
+  "notices": 60,
+  "needed": 28,
+  "holes": [],
+  "caughtByGuard": [
+    {
+      "id": "P16-code-changed-comment-forgotten-visible",
+      "users": [
+        "front"
+      ],
+      "guard": "The check refuses text-rules' own comment, so this job cannot merge as it stands."
+    },
+    {
+      "id": "P17-code-changed-comment-forgotten-running-only",
+      "users": [
+        "front"
+      ],
+      "guard": "bookings' own test named for the party bound fails, so this job cannot merge as it stands."
+    }
+  ],
+  "unneeded": [
+    {
+      "id": "P05-answer-field-removed",
+      "user": "reports"
+    },
+    {
+      "id": "P06-answer-field-renamed",
+      "user": "billing"
+    },
+    {
+      "id": "P06-answer-field-renamed",
+      "user": "reports"
+    },
+    {
+      "id": "P07-accept-optional",
+      "user": "reports"
+    },
+    {
+      "id": "P09-newly-refused",
+      "user": "bookings"
+    },
+    {
+      "id": "P09-newly-refused",
+      "user": "front"
+    },
+    {
+      "id": "P09-newly-refused",
+      "user": "reports"
+    },
+    {
+      "id": "P09-newly-refused",
+      "user": "rooms"
+    },
+    {
+      "id": "P10-answer-gains-field",
+      "user": "billing"
+    },
+    {
+      "id": "P10-answer-gains-field",
+      "user": "front"
+    },
+    {
+      "id": "P10-answer-gains-field",
+      "user": "reports"
+    },
+    {
+      "id": "P11-list-gains-name",
+      "user": "billing"
+    },
+    {
+      "id": "P11-list-gains-name",
+      "user": "bookings"
+    },
+    {
+      "id": "P11-list-gains-name",
+      "user": "front"
+    },
+    {
+      "id": "P11-list-gains-name",
+      "user": "reports"
+    },
+    {
+      "id": "P12-bound-line-changed",
+      "user": "billing"
+    },
+    {
+      "id": "P12-bound-line-changed",
+      "user": "front"
+    },
+    {
+      "id": "P12-bound-line-changed",
+      "user": "meter"
+    },
+    {
+      "id": "P12-bound-line-changed",
+      "user": "reports"
+    },
+    {
+      "id": "P13-kind-renamed",
+      "user": "front"
+    },
+    {
+      "id": "P13-kind-renamed",
+      "user": "reports"
+    },
+    {
+      "id": "P14-meaning-changed-comment-updated",
+      "user": "reports"
+    },
+    {
+      "id": "P15-meaning-changed-comment-not-updated",
+      "user": "reports"
+    },
+    {
+      "id": "P18-operation-retired",
+      "user": "billing"
+    },
+    {
+      "id": "P18-operation-retired",
+      "user": "door"
+    },
+    {
+      "id": "P18-operation-retired",
+      "user": "reports"
+    },
+    {
+      "id": "P19-operation-body-field-renamed",
+      "user": "reports"
+    },
+    {
+      "id": "P21-unfollowable-users-provider",
+      "user": "reports"
+    },
+    {
+      "id": "P22b-first-job-real-change",
+      "user": "bookings"
+    },
+    {
+      "id": "P22b-first-job-real-change",
+      "user": "reports"
+    },
+    {
+      "id": "P25-two-changes-one-commit",
+      "user": "reports"
+    },
+    {
+      "id": "P26-reaches-through-third-module",
+      "user": "reports"
+    },
+    {
+      "id": "P27-test-helper-changed",
+      "user": "reports"
+    },
+    {
+      "id": "P28-handle-method-renamed",
+      "user": "reports"
+    }
+  ],
+  "falseRefusals": 0,
+  "refusals": 63,
+  "rows": [
+    {
+      "id": "P01-price-content",
+      "title": "The price per seat and night goes up: a different valid answer, same domain and range",
+      "provider": "bookings",
+      "exp": [],
+      "told": [],
+      "matches": true,
+      "broken": [],
+      "needs": [],
+      "through": [],
+      "refusals": [],
+      "verdict": "held",
+      "providerTests": true,
+      "firstCommentsStep": false,
+      "timing": {
+        "listingMs": {
+          "before": 414,
+          "after": 231
+        },
+        "noticeMs": 1007,
+        "checkMs": {
+          "bookings": 163,
+          "door": 101,
+          "meter": 82,
+          "billing": 98,
+          "front": 88,
+          "reports": 84
+        }
+      }
+    },
+    {
+      "id": "P02-reword-explanation",
+      "title": "slugify's explanation is reworded; no bound line changes",
+      "provider": "text-rules",
+      "exp": [],
+      "told": [],
+      "matches": true,
+      "broken": [],
+      "needs": [],
+      "through": [],
+      "refusals": [],
+      "verdict": "held",
+      "providerTests": true,
+      "firstCommentsStep": false,
+      "timing": {
+        "listingMs": {
+          "before": 59,
+          "after": 73
+        },
+        "noticeMs": 623,
+        "checkMs": {
+          "text-rules": 59,
+          "money": 71,
+          "calendar": 72,
+          "store": 84,
+          "rooms": 83,
+          "bookings": 92,
+          "door": 95,
+          "meter": 91,
+          "billing": 81,
+          "front": 83,
+          "reports": 69
+        }
+      }
+    },
+    {
+      "id": "P03-remove-function",
+      "title": "titleCase is removed",
+      "provider": "text-rules",
+      "exp": [
+        "front"
+      ],
+      "told": [
+        "front"
+      ],
+      "matches": true,
+      "broken": [
+        "front"
+      ],
+      "needs": [
+        "front"
+      ],
+      "through": [],
+      "refusals": [
+        "front (1)"
+      ],
+      "verdict": "held",
+      "providerTests": true,
+      "firstCommentsStep": false,
+      "timing": {
+        "listingMs": {
+          "before": 73,
+          "after": 68
+        },
+        "noticeMs": 630,
+        "checkMs": {
+          "text-rules": 74,
+          "money": 73,
+          "calendar": 57,
+          "store": 72,
+          "rooms": 81,
+          "bookings": 146,
+          "door": 66,
+          "meter": 71,
+          "billing": 87,
+          "front": 75,
+          "reports": 77
+        }
+      }
+    },
+    {
+      "id": "P04-rename-function",
+      "title": "splitEvenly is renamed splitAmount",
+      "provider": "money",
+      "exp": [
+        "billing"
+      ],
+      "told": [
+        "billing"
+      ],
+      "matches": true,
+      "broken": [
+        "billing"
+      ],
+      "needs": [
+        "billing"
+      ],
+      "through": [],
+      "refusals": [
+        "billing (1)"
+      ],
+      "verdict": "held",
+      "providerTests": true,
+      "firstCommentsStep": false,
+      "timing": {
+        "listingMs": {
+          "before": 56,
+          "after": 55
+        },
+        "noticeMs": 612,
+        "checkMs": {
+          "money": 62,
+          "calendar": 57,
+          "store": 70,
+          "rooms": 68,
+          "bookings": 99,
+          "door": 78,
+          "meter": 76,
+          "billing": 95,
+          "front": 75,
+          "reports": 65
+        }
+      }
+    },
+    {
+      "id": "P05-answer-field-removed",
+      "title": "bookstatus no longer hands back the room",
+      "provider": "bookings",
+      "exp": [
+        "billing",
+        "reports"
+      ],
+      "told": [
+        "billing",
+        "reports"
+      ],
+      "matches": true,
+      "broken": [],
+      "needs": [
+        "billing"
+      ],
+      "through": [],
+      "refusals": [
+        "billing (1)"
+      ],
+      "verdict": "held; 1 told for nothing",
+      "providerTests": true,
+      "firstCommentsStep": false,
+      "timing": {
+        "listingMs": {
+          "before": 107,
+          "after": 103
+        },
+        "noticeMs": 619,
+        "checkMs": {
+          "bookings": 96,
+          "door": 67,
+          "meter": 64,
+          "billing": 83,
+          "front": 74,
+          "reports": 77
+        }
+      }
+    },
+    {
+      "id": "P06-answer-field-renamed",
+      "title": "A room's seats are now called capacity in what rooms hands back",
+      "provider": "rooms",
+      "exp": [
+        "billing",
+        "bookings",
+        "front",
+        "reports"
+      ],
+      "told": [
+        "billing",
+        "bookings",
+        "front",
+        "reports"
+      ],
+      "matches": true,
+      "broken": [
+        "bookings"
+      ],
+      "needs": [
+        "bookings",
+        "front"
+      ],
+      "through": [],
+      "refusals": [
+        "bookings (1)",
+        "front (1)"
+      ],
+      "verdict": "held; 2 told for nothing",
+      "providerTests": true,
+      "firstCommentsStep": false,
+      "timing": {
+        "listingMs": {
+          "before": 83,
+          "after": 63
+        },
+        "noticeMs": 545,
+        "checkMs": {
+          "rooms": 91,
+          "bookings": 98,
+          "door": 70,
+          "meter": 73,
+          "billing": 96,
+          "front": 79,
+          "reports": 69
+        }
+      }
+    },
+    {
+      "id": "P07-accept-optional",
+      "title": "Opening a booking accepts an optional arrival time",
+      "provider": "bookings",
+      "exp": [
+        "reports"
+      ],
+      "told": [
+        "reports"
+      ],
+      "matches": true,
+      "broken": [],
+      "needs": [],
+      "through": [],
+      "refusals": [],
+      "verdict": "held; 1 told for nothing",
+      "providerTests": true,
+      "firstCommentsStep": false,
+      "timing": {
+        "listingMs": {
+          "before": 84,
+          "after": 94
+        },
+        "noticeMs": 555,
+        "checkMs": {
+          "bookings": 85,
+          "door": 84,
+          "meter": 65,
+          "billing": 90,
+          "front": 96,
+          "reports": 67
+        }
+      }
+    },
+    {
+      "id": "P08-newly-required",
+      "title": "Opening a booking now requires a contact email",
+      "provider": "bookings",
+      "exp": [
+        "billing",
+        "front",
+        "reports"
+      ],
+      "told": [
+        "billing",
+        "front",
+        "reports"
+      ],
+      "matches": true,
+      "broken": [
+        "billing",
+        "front",
+        "reports"
+      ],
+      "needs": [
+        "billing",
+        "front",
+        "reports"
+      ],
+      "through": [],
+      "refusals": [
+        "billing (3)",
+        "front (1)",
+        "reports (3)"
+      ],
+      "verdict": "held",
+      "providerTests": true,
+      "firstCommentsStep": false,
+      "timing": {
+        "listingMs": {
+          "before": 95,
+          "after": 118
+        },
+        "noticeMs": 591,
+        "checkMs": {
+          "bookings": 97,
+          "door": 72,
+          "meter": 64,
+          "billing": 83,
+          "front": 89,
+          "reports": 83
+        }
+      }
+    },
+    {
+      "id": "P09-newly-refused",
+      "title": "The store refuses a value that is not an object",
+      "provider": "store",
+      "exp": [
+        "bookings",
+        "front",
+        "reports",
+        "rooms"
+      ],
+      "told": [
+        "bookings",
+        "front",
+        "reports",
+        "rooms"
+      ],
+      "matches": true,
+      "broken": [],
+      "needs": [],
+      "through": [],
+      "refusals": [
+        "store (4)"
+      ],
+      "verdict": "held; 4 told for nothing",
+      "providerTests": true,
+      "firstCommentsStep": false,
+      "timing": {
+        "listingMs": {
+          "before": 53,
+          "after": 76
+        },
+        "noticeMs": 610,
+        "checkMs": {
+          "store": 100,
+          "rooms": 98,
+          "bookings": 95,
+          "door": 79,
+          "meter": 73,
+          "billing": 111,
+          "front": 85,
+          "reports": 77
+        }
+      }
+    },
+    {
+      "id": "P10-answer-gains-field",
+      "title": "A booking now also says when it was opened",
+      "provider": "bookings",
+      "exp": [
+        "billing",
+        "front",
+        "reports"
+      ],
+      "told": [
+        "billing",
+        "front",
+        "reports"
+      ],
+      "matches": true,
+      "broken": [],
+      "needs": [],
+      "through": [],
+      "refusals": [],
+      "verdict": "held; 3 told for nothing",
+      "providerTests": true,
+      "firstCommentsStep": false,
+      "timing": {
+        "listingMs": {
+          "before": 132,
+          "after": 110
+        },
+        "noticeMs": 735,
+        "checkMs": {
+          "bookings": 88,
+          "door": 74,
+          "meter": 73,
+          "billing": 113,
+          "front": 113,
+          "reports": 79
+        }
+      }
+    },
+    {
+      "id": "P11-list-gains-name",
+      "title": "A new kind of room: garden",
+      "provider": "rooms",
+      "exp": [
+        "billing",
+        "bookings",
+        "front",
+        "reports"
+      ],
+      "told": [
+        "billing",
+        "bookings",
+        "front",
+        "reports"
+      ],
+      "matches": true,
+      "broken": [],
+      "needs": [],
+      "through": [],
+      "refusals": [],
+      "verdict": "held; 4 told for nothing",
+      "providerTests": true,
+      "firstCommentsStep": false,
+      "timing": {
+        "listingMs": {
+          "before": 79,
+          "after": 94
+        },
+        "noticeMs": 578,
+        "checkMs": {
+          "rooms": 86,
+          "bookings": 84,
+          "door": 72,
+          "meter": 111,
+          "billing": 75,
+          "front": 73,
+          "reports": 68
+        }
+      }
+    },
+    {
+      "id": "P12-bound-line-changed",
+      "title": "An amount may now be at most 500,000 cents (code and bound line both changed)",
+      "provider": "money",
+      "exp": [
+        "billing",
+        "bookings",
+        "front",
+        "meter",
+        "reports"
+      ],
+      "told": [
+        "billing",
+        "bookings",
+        "front",
+        "meter",
+        "reports"
+      ],
+      "matches": true,
+      "broken": [
+        "bookings"
+      ],
+      "needs": [
+        "bookings"
+      ],
+      "through": [],
+      "refusals": [],
+      "verdict": "held; 4 told for nothing",
+      "providerTests": true,
+      "firstCommentsStep": false,
+      "timing": {
+        "listingMs": {
+          "before": 58,
+          "after": 61
+        },
+        "noticeMs": 556,
+        "checkMs": {
+          "money": 72,
+          "calendar": 58,
+          "store": 85,
+          "rooms": 85,
+          "bookings": 120,
+          "door": 71,
+          "meter": 77,
+          "billing": 94,
+          "front": 97,
+          "reports": 92
+        }
+      }
+    },
+    {
+      "id": "P13-kind-renamed",
+      "title": "The kind Amount is renamed Money; its shape is unchanged",
+      "provider": "money",
+      "exp": [
+        "billing",
+        "bookings",
+        "front",
+        "meter",
+        "reports"
+      ],
+      "told": [
+        "billing",
+        "bookings",
+        "front",
+        "meter",
+        "reports"
+      ],
+      "matches": true,
+      "broken": [],
+      "needs": [
+        "billing",
+        "bookings",
+        "meter"
+      ],
+      "through": [],
+      "refusals": [
+        "bookings (1)",
+        "meter (1)",
+        "billing (1)"
+      ],
+      "verdict": "held; 2 told for nothing",
+      "providerTests": true,
+      "firstCommentsStep": false,
+      "timing": {
+        "listingMs": {
+          "before": 57,
+          "after": 60
+        },
+        "noticeMs": 615,
+        "checkMs": {
+          "money": 77,
+          "calendar": 56,
+          "store": 64,
+          "rooms": 91,
+          "bookings": 97,
+          "door": 71,
+          "meter": 92,
+          "billing": 86,
+          "front": 73,
+          "reports": 64
+        }
+      }
+    },
+    {
+      "id": "P14-meaning-changed-comment-updated",
+      "title": "bookquote's total now means one night, and its bound line says so",
+      "provider": "bookings",
+      "exp": [
+        "billing",
+        "reports"
+      ],
+      "told": [
+        "billing",
+        "reports"
+      ],
+      "matches": true,
+      "broken": [
+        "billing"
+      ],
+      "needs": [
+        "billing"
+      ],
+      "through": [],
+      "refusals": [],
+      "verdict": "held; 1 told for nothing",
+      "providerTests": true,
+      "firstCommentsStep": false,
+      "timing": {
+        "listingMs": {
+          "before": 104,
+          "after": 97
+        },
+        "noticeMs": 592,
+        "checkMs": {
+          "bookings": 83,
+          "door": 75,
+          "meter": 73,
+          "billing": 80,
+          "front": 77,
+          "reports": 76
+        }
+      }
+    },
+    {
+      "id": "P15-meaning-changed-comment-not-updated",
+      "title": "bookquote's total now means one night; the bound line is left as it was",
+      "provider": "bookings",
+      "exp": [
+        "billing",
+        "reports"
+      ],
+      "told": [
+        "billing",
+        "reports"
+      ],
+      "matches": true,
+      "broken": [
+        "billing"
+      ],
+      "needs": [
+        "billing"
+      ],
+      "through": [],
+      "refusals": [],
+      "verdict": "held; 1 told for nothing",
+      "providerTests": true,
+      "firstCommentsStep": false,
+      "timing": {
+        "listingMs": {
+          "before": 99,
+          "after": 105
+        },
+        "noticeMs": 618,
+        "checkMs": {
+          "bookings": 111,
+          "door": 64,
+          "meter": 84,
+          "billing": 66,
+          "front": 93,
+          "reports": 67
+        }
+      }
+    },
+    {
+      "id": "P16-code-changed-comment-forgotten-visible",
+      "title": "isEmail now hands back {ok, reason}; its comment still says boolean",
+      "provider": "text-rules",
+      "exp": [],
+      "told": [],
+      "matches": true,
+      "broken": [
+        "front"
+      ],
+      "needs": [
+        "front"
+      ],
+      "through": [],
+      "refusals": [
+        "text-rules (7)"
+      ],
+      "verdict": "not told, stopped by another guard: The check refuses text-rules' own comment, so this job cannot merge as it stands.",
+      "providerTests": true,
+      "firstCommentsStep": false,
+      "timing": {
+        "listingMs": {
+          "before": 71,
+          "after": 57
+        },
+        "noticeMs": 699,
+        "checkMs": {
+          "text-rules": 75,
+          "money": 62,
+          "calendar": 61,
+          "store": 107,
+          "rooms": 106,
+          "bookings": 114,
+          "door": 77,
+          "meter": 82,
+          "billing": 87,
+          "front": 69,
+          "reports": 62
+        }
+      }
+    },
+    {
+      "id": "P17-code-changed-comment-forgotten-running-only",
+      "title": "A party may now be at most 100 in the code; bound line and tests left as they were",
+      "provider": "bookings",
+      "exp": [],
+      "told": [],
+      "matches": true,
+      "broken": [
+        "front"
+      ],
+      "needs": [
+        "front"
+      ],
+      "through": [],
+      "refusals": [],
+      "verdict": "not told, stopped by another guard: bookings' own test named for the party bound fails, so this job cannot merge as it stands.",
+      "providerTests": false,
+      "firstCommentsStep": false,
+      "timing": {
+        "listingMs": {
+          "before": 148,
+          "after": 124
+        },
+        "noticeMs": 637,
+        "checkMs": {
+          "bookings": 146,
+          "door": 94,
+          "meter": 98,
+          "billing": 96,
+          "front": 106,
+          "reports": 75
+        }
+      }
+    },
+    {
+      "id": "P18-operation-retired",
+      "title": "The bookcancel operation is retired (cancelling stays possible through the handle)",
+      "provider": "bookings",
+      "exp": [
+        "billing",
+        "door",
+        "front",
+        "reports"
+      ],
+      "told": [
+        "billing",
+        "door",
+        "front",
+        "reports"
+      ],
+      "matches": true,
+      "broken": [
+        "front"
+      ],
+      "needs": [
+        "front"
+      ],
+      "through": [],
+      "refusals": [
+        "front (2)"
+      ],
+      "verdict": "held; 3 told for nothing",
+      "providerTests": true,
+      "firstCommentsStep": false,
+      "timing": {
+        "listingMs": {
+          "before": 112,
+          "after": 106
+        },
+        "noticeMs": 773,
+        "checkMs": {
+          "bookings": 119,
+          "door": 67,
+          "meter": 64,
+          "billing": 78,
+          "front": 82,
+          "reports": 81
+        }
+      }
+    },
+    {
+      "id": "P19-operation-body-field-renamed",
+      "title": "bookquote's body field party is renamed people",
+      "provider": "bookings",
+      "exp": [
+        "billing",
+        "reports"
+      ],
+      "told": [
+        "billing",
+        "reports"
+      ],
+      "matches": true,
+      "broken": [
+        "billing"
+      ],
+      "needs": [
+        "billing"
+      ],
+      "through": [],
+      "refusals": [
+        "billing (1)"
+      ],
+      "verdict": "held; 1 told for nothing",
+      "providerTests": true,
+      "firstCommentsStep": false,
+      "timing": {
+        "listingMs": {
+          "before": 99,
+          "after": 106
+        },
+        "noticeMs": 544,
+        "checkMs": {
+          "bookings": 86,
+          "door": 62,
+          "meter": 77,
+          "billing": 97,
+          "front": 77,
+          "reports": 67
+        }
+      }
+    },
+    {
+      "id": "P20-message-kind-changed",
+      "title": "The meter's reading now carries price where it carried cost",
+      "provider": "meter",
+      "exp": [
+        "billing"
+      ],
+      "told": [
+        "billing"
+      ],
+      "matches": true,
+      "broken": [
+        "billing"
+      ],
+      "needs": [
+        "billing"
+      ],
+      "through": [],
+      "refusals": [
+        "billing (1)"
+      ],
+      "verdict": "held",
+      "providerTests": true,
+      "firstCommentsStep": false,
+      "timing": {
+        "listingMs": {
+          "before": 57,
+          "after": 68
+        },
+        "noticeMs": 607,
+        "checkMs": {
+          "meter": 66,
+          "billing": 94,
+          "front": 96,
+          "reports": 87
+        }
+      }
+    },
+    {
+      "id": "P21-unfollowable-users-provider",
+      "title": "The store gains a count method",
+      "provider": "store",
+      "exp": [
+        "reports"
+      ],
+      "told": [
+        "reports"
+      ],
+      "matches": true,
+      "broken": [],
+      "needs": [],
+      "through": [],
+      "refusals": [],
+      "verdict": "held; 1 told for nothing",
+      "providerTests": true,
+      "firstCommentsStep": false,
+      "timing": {
+        "listingMs": {
+          "before": 71,
+          "after": 78
+        },
+        "noticeMs": 731,
+        "checkMs": {
+          "store": 79,
+          "rooms": 65,
+          "bookings": 88,
+          "door": 66,
+          "meter": 72,
+          "billing": 100,
+          "front": 93,
+          "reports": 73
+        }
+      }
+    },
+    {
+      "id": "P22a-first-job-comments-step",
+      "title": "calendar's first job, step one: interface comments added, describing the module as it stands",
+      "provider": "calendar",
+      "exp": [],
+      "told": [],
+      "matches": true,
+      "broken": [],
+      "needs": [],
+      "through": [],
+      "refusals": [],
+      "verdict": "held",
+      "providerTests": true,
+      "firstCommentsStep": true,
+      "timing": {
+        "listingMs": {
+          "before": 50,
+          "after": 50
+        },
+        "noticeMs": 675,
+        "checkMs": {
+          "calendar": 86,
+          "store": 93,
+          "rooms": 72,
+          "bookings": 87,
+          "door": 73,
+          "meter": 63,
+          "billing": 90,
+          "front": 106,
+          "reports": 99
+        }
+      }
+    },
+    {
+      "id": "P22b-first-job-real-change",
+      "title": "calendar's first job, step two: addDays refuses a number of days that is not whole",
+      "provider": "calendar",
+      "exp": [
+        "bookings",
+        "reports"
+      ],
+      "told": [
+        "bookings",
+        "reports"
+      ],
+      "matches": true,
+      "broken": [],
+      "needs": [],
+      "through": [],
+      "refusals": [],
+      "verdict": "held; 2 told for nothing",
+      "providerTests": true,
+      "firstCommentsStep": false,
+      "timing": {
+        "listingMs": {
+          "before": 58,
+          "after": 52
+        },
+        "noticeMs": 617,
+        "checkMs": {
+          "calendar": 63,
+          "store": 72,
+          "rooms": 80,
+          "bookings": 103,
+          "door": 69,
+          "meter": 68,
+          "billing": 108,
+          "front": 87,
+          "reports": 79
+        }
+      }
+    },
+    {
+      "id": "P23-user-already-disagrees",
+      "title": "splitEvenly now hands back {parts, each}; billing already disagreed with money before this",
+      "provider": "money",
+      "exp": [
+        "billing"
+      ],
+      "told": [
+        "billing"
+      ],
+      "matches": true,
+      "broken": [
+        "billing"
+      ],
+      "needs": [
+        "billing"
+      ],
+      "through": [],
+      "refusals": [
+        "billing (3)"
+      ],
+      "verdict": "held",
+      "providerTests": true,
+      "firstCommentsStep": false,
+      "timing": {
+        "listingMs": {
+          "before": 53,
+          "after": 57
+        },
+        "noticeMs": 517,
+        "checkMs": {
+          "money": 83,
+          "calendar": 91,
+          "store": 167,
+          "rooms": 84,
+          "bookings": 89,
+          "door": 76,
+          "meter": 70,
+          "billing": 105,
+          "front": 103,
+          "reports": 64
+        }
+      }
+    },
+    {
+      "id": "P24-new-entry",
+      "title": "text-rules gains truncate",
+      "provider": "text-rules",
+      "exp": [],
+      "told": [],
+      "matches": true,
+      "broken": [],
+      "needs": [],
+      "through": [],
+      "refusals": [],
+      "verdict": "held",
+      "providerTests": true,
+      "firstCommentsStep": false,
+      "timing": {
+        "listingMs": {
+          "before": 52,
+          "after": 49
+        },
+        "noticeMs": 607,
+        "checkMs": {
+          "text-rules": 71,
+          "money": 75,
+          "calendar": 68,
+          "store": 81,
+          "rooms": 74,
+          "bookings": 86,
+          "door": 68,
+          "meter": 72,
+          "billing": 81,
+          "front": 81,
+          "reports": 62
+        }
+      }
+    },
+    {
+      "id": "P25-two-changes-one-commit",
+      "title": "rooms: adding a room accepts an optional floor, and roomlist's answer renames rooms to items",
+      "provider": "rooms",
+      "exp": [
+        "front",
+        "reports"
+      ],
+      "told": [
+        "front",
+        "reports"
+      ],
+      "matches": true,
+      "broken": [
+        "front"
+      ],
+      "needs": [
+        "front"
+      ],
+      "through": [],
+      "refusals": [
+        "front (1)"
+      ],
+      "verdict": "held; 1 told for nothing",
+      "providerTests": true,
+      "firstCommentsStep": false,
+      "timing": {
+        "listingMs": {
+          "before": 80,
+          "after": 92
+        },
+        "noticeMs": 601,
+        "checkMs": {
+          "rooms": 95,
+          "bookings": 82,
+          "door": 68,
+          "meter": 72,
+          "billing": 98,
+          "front": 75,
+          "reports": 105
+        }
+      }
+    },
+    {
+      "id": "P26-reaches-through-third-module",
+      "title": "Amount's field cents is renamed minor; front reads it only from what bookings passes on",
+      "provider": "money",
+      "exp": [
+        "billing",
+        "bookings",
+        "front",
+        "meter",
+        "reports"
+      ],
+      "told": [
+        "billing",
+        "bookings",
+        "front",
+        "meter",
+        "reports"
+      ],
+      "matches": true,
+      "broken": [
+        "billing",
+        "bookings",
+        "front",
+        "meter"
+      ],
+      "needs": [
+        "billing",
+        "bookings",
+        "front",
+        "meter"
+      ],
+      "through": [],
+      "refusals": [
+        "bookings (8)",
+        "meter (4)",
+        "billing (12)",
+        "front (1)"
+      ],
+      "verdict": "held; 1 told for nothing",
+      "providerTests": true,
+      "firstCommentsStep": false,
+      "timing": {
+        "listingMs": {
+          "before": 68,
+          "after": 66
+        },
+        "noticeMs": 679,
+        "checkMs": {
+          "money": 103,
+          "calendar": 62,
+          "store": 73,
+          "rooms": 87,
+          "bookings": 116,
+          "door": 100,
+          "meter": 81,
+          "billing": 108,
+          "front": 79,
+          "reports": 66
+        }
+      }
+    },
+    {
+      "id": "P27-test-helper-changed",
+      "title": "The store's test helper seededStore now takes a list of rows, each naming its table",
+      "provider": "store",
+      "exp": [
+        "front",
+        "reports"
+      ],
+      "told": [
+        "front",
+        "reports"
+      ],
+      "matches": true,
+      "broken": [
+        "front"
+      ],
+      "needs": [
+        "front"
+      ],
+      "through": [],
+      "refusals": [
+        "front (1)"
+      ],
+      "verdict": "held; 1 told for nothing",
+      "providerTests": true,
+      "firstCommentsStep": false,
+      "timing": {
+        "listingMs": {
+          "before": 59,
+          "after": 62
+        },
+        "noticeMs": 517,
+        "checkMs": {
+          "store": 63,
+          "rooms": 62,
+          "bookings": 81,
+          "door": 137,
+          "meter": 61,
+          "billing": 91,
+          "front": 94,
+          "reports": 73
+        }
+      }
+    },
+    {
+      "id": "P28-handle-method-renamed",
+      "title": "The store handle's get is renamed read",
+      "provider": "store",
+      "exp": [
+        "bookings",
+        "reports",
+        "rooms"
+      ],
+      "told": [
+        "bookings",
+        "reports",
+        "rooms"
+      ],
+      "matches": true,
+      "broken": [
+        "billing",
+        "bookings",
+        "front",
+        "reports",
+        "rooms"
+      ],
+      "needs": [
+        "bookings",
+        "rooms"
+      ],
+      "through": [
+        "billing",
+        "front",
+        "reports"
+      ],
+      "refusals": [
+        "rooms (2)",
+        "bookings (1)"
+      ],
+      "verdict": "held; 1 told for nothing",
+      "providerTests": true,
+      "firstCommentsStep": false,
+      "timing": {
+        "listingMs": {
+          "before": 67,
+          "after": 65
+        },
+        "noticeMs": 582,
+        "checkMs": {
+          "store": 79,
+          "rooms": 66,
+          "bookings": 93,
+          "door": 82,
+          "meter": 83,
+          "billing": 81,
+          "front": 92,
+          "reports": 104
+        }
+      }
+    }
+  ]
+}

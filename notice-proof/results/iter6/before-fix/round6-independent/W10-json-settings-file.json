@@ -1,0 +1,204 @@
+{
+  "id": "W10-json-settings-file",
+  "title": "text-rules gains isReservedName: whether a name is one the venue keeps for itself, read from reserved.json, which the venue's staff keep",
+  "provider": "text-rules",
+  "covers": [
+    "new function (new entry)",
+    "honest JSON.parse of a settings file, which is not a message"
+  ],
+  "tool": {
+    "firstCommentsStep": false,
+    "interfaceChanged": true,
+    "summary": "1 module(s) changed their listing; 0 entries changed in a way that tells; 0 user(s) told.",
+    "entries": [
+      {
+        "module": "text-rules",
+        "entry": "isReservedName",
+        "changes": [
+          "new entry"
+        ],
+        "after": {
+          "kind": "function",
+          "accepts": "(arg0: string)",
+          "handsBack": "boolean"
+        },
+        "tells": "nobody"
+      }
+    ],
+    "told": [],
+    "toldDetail": [],
+    "notTold": [
+      {
+        "user": "rooms",
+        "why": "uses none of the entries that changed in a way that tells"
+      },
+      {
+        "user": "front",
+        "why": "uses none of the entries that changed in a way that tells"
+      }
+    ],
+    "warnings": [],
+    "commentsOnly": false,
+    "checks": {
+      "text-rules": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 68
+      },
+      "money": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 66
+      },
+      "calendar": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 73
+      },
+      "store": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 94
+      },
+      "rooms": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 109
+      },
+      "bookings": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 129
+      },
+      "door": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 84
+      },
+      "meter": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 84
+      },
+      "billing": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 101
+      },
+      "front": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 114
+      },
+      "reports": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 96
+      }
+    }
+  },
+  "groundTruth": {
+    "providerTests": {
+      "pass": true,
+      "failed": [],
+      "ran": 6
+    },
+    "testsBefore": {
+      "money": true,
+      "calendar": true,
+      "store": true,
+      "rooms": true,
+      "bookings": true,
+      "door": true,
+      "meter": true,
+      "billing": true,
+      "front": true,
+      "reports": true
+    },
+    "testsAfter": {
+      "money": {
+        "pass": true,
+        "failed": []
+      },
+      "calendar": {
+        "pass": true,
+        "failed": []
+      },
+      "store": {
+        "pass": true,
+        "failed": []
+      },
+      "rooms": {
+        "pass": true,
+        "failed": []
+      },
+      "bookings": {
+        "pass": true,
+        "failed": []
+      },
+      "door": {
+        "pass": true,
+        "failed": []
+      },
+      "meter": {
+        "pass": true,
+        "failed": []
+      },
+      "billing": {
+        "pass": true,
+        "failed": []
+      },
+      "front": {
+        "pass": true,
+        "failed": []
+      },
+      "reports": {
+        "pass": true,
+        "failed": []
+      }
+    },
+    "broken": []
+  },
+  "timing": {
+    "listingMs": {
+      "before": 50,
+      "after": 65
+    },
+    "noticeMs": 790,
+    "checkMs": {
+      "text-rules": 68,
+      "money": 66,
+      "calendar": 73,
+      "store": 94,
+      "rooms": 109,
+      "bookings": 129,
+      "door": 84,
+      "meter": 84,
+      "billing": 101,
+      "front": 114,
+      "reports": 96
+    }
+  }
+}

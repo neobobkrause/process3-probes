@@ -126,3 +126,16 @@ test('bound tests: a limit read through import * as module counts', () => {
   const r = pair({ 'p/src/index.mjs': src(9), 'p/test/index.test.mjs': t }, { 'p/src/index.mjs': src(5), 'p/test/index.test.mjs': t }, { 'u/src/index.mjs': "import { f } from '../../p/src/index.mjs';\nexport const y = f(2);\n" });
   assert.deepEqual(told(r), ['u']);
 });
+
+test('a message written with console.error from a variable the reader has narrowed is still a message', () => {
+  const src = "/**\n * @typedef {{kind: 'a'} | {kind: 'b', why: string}} M\n * @message stdout\n */\n/** @param {number} n */\nexport function w(n) {\n  if (n > 1) {\n    /** @type {M} */\n    const m = { kind: 'b', why: 'big' };\n    console.error(JSON.stringify(m));\n  }\n}\n";
+  assert.ok(chk({ 'p/src/index.mjs': src, ...NONE }, 'p').refusals.some((x) => /stderr/.test(x.text)));
+});
+
+test('a handler that calls a method inherits the bound written on that method', async () => {
+  const { listingOf } = await import('../p3tool.mjs');
+  const src = `/**\n * @typedef {Object} H\n * @property {(note: string) => string} open\n */\n/**\n * @typedef {{ bookopen: {req: string, res: string} }} Ops\n * @optable\n */\n/** @typedef {{[K in keyof Ops]: (req: Ops[K]['req']) => Ops[K]['res']}} Handlers */\n/** @returns {H} */\nexport function make() {\n  return {\n    /**\n     * @bound note: at most 140 characters\n     */\n    open(note) { return note; },\n  };\n}\n/** @param {H} h @returns {Handlers} */\nexport function handlers(h) { return { bookopen: (req) => h.open(req) }; }\n`;
+  const l = listingOf(product(MODS, { 'p/src/index.mjs': src, ...NONE }), 'p');
+  assert.ok(l.entries['H.open'].bounds.includes('note: at most 140 characters'));
+  assert.ok(l.entries['op:bookopen'].bounds.includes('note: at most 140 characters'), JSON.stringify(l.entries['op:bookopen']));
+});

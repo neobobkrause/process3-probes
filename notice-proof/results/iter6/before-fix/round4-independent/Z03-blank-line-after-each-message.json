@@ -1,0 +1,102 @@
+{
+  "id": "Z03-blank-line-after-each-message",
+  "title": "The meter writes a blank line after each message, so that people reading its output can tell one message from the next",
+  "provider": "meter",
+  "covers": [
+    "the framing of messages on a channel changes; every message's kind and channel stay",
+    "the sender's own test ignores empty lines; a reader does not"
+  ],
+  "tool": {
+    "firstCommentsStep": false,
+    "interfaceChanged": false,
+    "summary": "The listing before and after is the same. Nobody is told.",
+    "entries": [],
+    "told": [],
+    "toldDetail": [],
+    "notTold": [],
+    "warnings": [],
+    "commentsOnly": false,
+    "checks": {
+      "meter": {
+        "refusedBefore": 0,
+        "refusedAfter": 1,
+        "refusals": [
+          {
+            "at": "meter/src/worker.mjs:15",
+            "code": "message",
+            "text": "messages on a channel are written one per line: JSON.stringify(message) + newline",
+            "kind": "(c) a rule of form: one message per line"
+          }
+        ],
+        "refusalsBefore": [],
+        "ms": 69
+      },
+      "billing": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 100
+      },
+      "front": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 84
+      },
+      "reports": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 74
+      }
+    }
+  },
+  "groundTruth": {
+    "providerTests": {
+      "pass": true,
+      "failed": [],
+      "ran": 2
+    },
+    "testsBefore": {
+      "billing": true,
+      "front": true,
+      "reports": true
+    },
+    "testsAfter": {
+      "billing": {
+        "pass": false,
+        "failed": [
+          "metered use is priced by the meter and added up",
+          "metered use outside the meter's bound is refused"
+        ]
+      },
+      "front": {
+        "pass": true,
+        "failed": []
+      },
+      "reports": {
+        "pass": true,
+        "failed": []
+      }
+    },
+    "broken": [
+      "billing"
+    ]
+  },
+  "timing": {
+    "listingMs": {
+      "before": 90,
+      "after": 60
+    },
+    "noticeMs": 598,
+    "checkMs": {
+      "meter": 69,
+      "billing": 100,
+      "front": 84,
+      "reports": 74
+    }
+  }
+}

@@ -1,0 +1,181 @@
+{
+  "id": "Z04-stream-chosen-into-variable",
+  "title": "The meter writes refusals to standard error, among the errors; the stream is chosen first, then written to; the @message tag is left as it was",
+  "provider": "meter",
+  "covers": [
+    "a message's channel changes; its @message channel is not updated",
+    "the stream written to is held in a variable, so the write names no stream"
+  ],
+  "tool": {
+    "firstCommentsStep": false,
+    "interfaceChanged": true,
+    "summary": "2 module(s) changed their listing; 2 entries changed in a way that tells; 1 user(s) told.",
+    "entries": [
+      {
+        "module": "meter",
+        "entry": "MeterInput",
+        "changes": [
+          "bound test changed"
+        ],
+        "tells": "users",
+        "before": {
+          "kind": "kind",
+          "accepts": "{ kind: \"use\"; minutes: number; room: string }",
+          "handsBack": "{ kind: \"use\"; minutes: number; room: string }",
+          "bounds": [
+            "minutes: whole number, 1 to 1440"
+          ],
+          "side": "both",
+          "channel": "stdin"
+        },
+        "after": {
+          "kind": "kind",
+          "accepts": "{ kind: \"use\"; minutes: number; room: string }",
+          "handsBack": "{ kind: \"use\"; minutes: number; room: string }",
+          "bounds": [
+            "minutes: whole number, 1 to 1440"
+          ],
+          "side": "both",
+          "channel": "stdin"
+        }
+      },
+      {
+        "module": "billing",
+        "entry": "Billing.meterUsage",
+        "changes": [
+          "bound test changed"
+        ],
+        "tells": "users",
+        "before": {
+          "kind": "method",
+          "accepts": "(arg0: { kind: \"use\"; minutes: number; room: string }[])",
+          "handsBack": "Promise<{ cents: number; currency: \"EUR\" | \"GBP\" | \"USD\" }>",
+          "bounds": [
+            "cents: whole number, 0 to 10,000,000 inclusive",
+            "minutes: whole number, 1 to 1440"
+          ]
+        },
+        "after": {
+          "kind": "method",
+          "accepts": "(arg0: { kind: \"use\"; minutes: number; room: string }[])",
+          "handsBack": "Promise<{ cents: number; currency: \"EUR\" | \"GBP\" | \"USD\" }>",
+          "bounds": [
+            "cents: whole number, 0 to 10,000,000 inclusive",
+            "minutes: whole number, 1 to 1440"
+          ]
+        }
+      }
+    ],
+    "told": [
+      "billing"
+    ],
+    "toldDetail": [
+      {
+        "user": "billing",
+        "reasons": [
+          {
+            "module": "meter",
+            "entry": "MeterInput",
+            "changes": [
+              "bound test changed"
+            ],
+            "lines": [
+              "billing/src/index.mjs:8",
+              "billing/src/index.mjs:24",
+              "billing/test/index.test.mjs:47",
+              "billing/test/index.test.mjs:49",
+              "billing/test/index.test.mjs:50",
+              "billing/test/index.test.mjs:58"
+            ],
+            "through": null
+          }
+        ],
+        "undeclared": []
+      }
+    ],
+    "notTold": [],
+    "warnings": [],
+    "commentsOnly": false,
+    "checks": {
+      "meter": {
+        "refusedBefore": 0,
+        "refusedAfter": 1,
+        "refusals": [
+          {
+            "at": "meter/src/worker.mjs:18",
+            "code": "message",
+            "text": "a message written to stderr has a kind published for stdout",
+            "kind": "(c) a rule of form: a message is written with its kind, on its channel"
+          }
+        ],
+        "refusalsBefore": [],
+        "ms": 96
+      },
+      "billing": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 83
+      },
+      "front": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 116
+      },
+      "reports": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 100
+      }
+    }
+  },
+  "groundTruth": {
+    "providerTests": {
+      "pass": true,
+      "failed": [],
+      "ran": 2
+    },
+    "testsBefore": {
+      "billing": true,
+      "front": true,
+      "reports": true
+    },
+    "testsAfter": {
+      "billing": {
+        "pass": false,
+        "failed": [
+          "metered use outside the meter's bound is refused"
+        ]
+      },
+      "front": {
+        "pass": true,
+        "failed": []
+      },
+      "reports": {
+        "pass": true,
+        "failed": []
+      }
+    },
+    "broken": [
+      "billing"
+    ]
+  },
+  "timing": {
+    "listingMs": {
+      "before": 57,
+      "after": 64
+    },
+    "noticeMs": 725,
+    "checkMs": {
+      "meter": 96,
+      "billing": 83,
+      "front": 116,
+      "reports": 100
+    }
+  }
+}

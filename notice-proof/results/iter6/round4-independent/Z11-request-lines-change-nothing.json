@@ -1,0 +1,191 @@
+{
+  "id": "Z11-request-lines-change-nothing",
+  "title": "A request line may call only an operation that changes nothing: anyone shown a link can follow it",
+  "provider": "door",
+  "covers": [
+    "a generic method's type parameter is newly constrained (newly refused)",
+    "the printed parameter text is the same; the constraint is not compared"
+  ],
+  "tool": {
+    "firstCommentsStep": false,
+    "interfaceChanged": true,
+    "summary": "1 module(s) changed their listing; 1 entry changed in a way that tells; 2 user(s) told.",
+    "entries": [
+      {
+        "module": "door",
+        "entry": "Door.get",
+        "changes": [
+          "cannot stand in"
+        ],
+        "tells": "users",
+        "before": {
+          "kind": "method",
+          "accepts": "(arg0: `op=${K}&${string}`)",
+          "handsBack": "Promise<AllOps[K][\"res\"]>"
+        },
+        "after": {
+          "kind": "method",
+          "accepts": "(arg0: `op=${K}&${string}`)",
+          "handsBack": "Promise<AllOps[K][\"res\"]>"
+        }
+      },
+      {
+        "module": "door",
+        "entry": "LineOp",
+        "changes": [
+          "new entry"
+        ],
+        "after": {
+          "kind": "kind",
+          "accepts": "\"bookquote\" | \"bookstatus\" | \"roomlist\"",
+          "handsBack": "\"bookquote\" | \"bookstatus\" | \"roomlist\"",
+          "side": "both"
+        },
+        "tells": "nobody"
+      }
+    ],
+    "told": [
+      "billing",
+      "front"
+    ],
+    "toldDetail": [
+      {
+        "user": "billing",
+        "reasons": [
+          {
+            "module": "door",
+            "entry": "Door.get",
+            "changes": [
+              "cannot stand in"
+            ],
+            "lines": [
+              "billing/src/index.mjs:43"
+            ],
+            "through": null
+          }
+        ],
+        "undeclared": []
+      },
+      {
+        "user": "front",
+        "reasons": [
+          {
+            "module": "door",
+            "entry": "Door.get",
+            "changes": [
+              "cannot stand in"
+            ],
+            "lines": [
+              "front/src/index.mjs:51"
+            ],
+            "through": null
+          }
+        ],
+        "undeclared": []
+      }
+    ],
+    "notTold": [],
+    "warnings": [],
+    "commentsOnly": false,
+    "checks": {
+      "door": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 68
+      },
+      "meter": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 59
+      },
+      "billing": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 83
+      },
+      "front": {
+        "refusedBefore": 0,
+        "refusedAfter": 2,
+        "refusals": [
+          {
+            "at": "front/src/index.mjs:51",
+            "code": 2345,
+            "text": "Argument of type '`op=bookcancel&id=${string}`' is not assignable to parameter of type '`op=bookstatus&${string}` | `op=bookquote&${string}` | `op=roomlist&${string}`'.",
+            "kind": "(b) code disagrees with the stated interface of bookings, rooms, door"
+          },
+          {
+            "at": "front/src/index.mjs:52",
+            "code": 2339,
+            "text": "Property 'id' does not exist on type '{ state: \"open\" | \"cancelled\"; total: Amount; room: string; } | { total: Amount; } | { rooms: Room[]; }'.   Property 'id' does not exist on type '{ state: \"open\" | \"cancelled\"; total: Amount; room: string; }'.",
+            "kind": "(b) code disagrees with the stated interface of bookings, rooms"
+          }
+        ],
+        "refusalsBefore": [],
+        "ms": 81
+      },
+      "reports": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 123
+      }
+    }
+  },
+  "groundTruth": {
+    "providerTests": {
+      "pass": true,
+      "failed": [],
+      "ran": 3
+    },
+    "testsBefore": {
+      "meter": true,
+      "billing": true,
+      "front": true,
+      "reports": true
+    },
+    "testsAfter": {
+      "meter": {
+        "pass": true,
+        "failed": []
+      },
+      "billing": {
+        "pass": true,
+        "failed": []
+      },
+      "front": {
+        "pass": false,
+        "failed": [
+          "cancel names the cancelled booking"
+        ]
+      },
+      "reports": {
+        "pass": true,
+        "failed": []
+      }
+    },
+    "broken": [
+      "front"
+    ]
+  },
+  "timing": {
+    "listingMs": {
+      "before": 99,
+      "after": 104
+    },
+    "noticeMs": 557,
+    "checkMs": {
+      "door": 68,
+      "meter": 59,
+      "billing": 83,
+      "front": 81,
+      "reports": 123
+    }
+  }
+}
