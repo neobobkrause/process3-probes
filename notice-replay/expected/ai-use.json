@@ -812,5 +812,73 @@
    }
   ],
   "notes": "The LimitInvalidRefusal bound change reaches, through nested bounds, every entry that hands back that kind (aiLimitSet, aiUsage, aiLimits, accountUseOverTime, exploreApprove, aiProviderLimits, accountUseByMember, aiThresholdSet, reconcile, retestSet and their ops ailimitset, ailimits, aiusage, aiuseovertime, exploreapprove, aiusebymember, airetestset): the tool may list each as bound changed; by the method that is a true but minor change (one more field name a refusal may carry). Private members: new AiUse##useEstimateNow and AiUse##entryRange; if the tool compares private #members it will list them as new. The import of agent-model's src/provider/catalogue.mjs (a file of another module that may not be its interface file) is a rule-of-form matter for the check, not a change of ai-use's interface."
+ },
+ {
+  "change": "ai-use:613",
+  "written": "2026-11-15T15:49:18Z",
+  "listingChanges": true,
+  "entries": [
+   {
+    "entry": "AiUse#budgetSet",
+    "change": "new entry",
+    "tells": "nobody",
+    "why": "new method: a limit (aiLimitSet) or with kind a threshold (aiThresholdSet)"
+   },
+   {
+    "entry": "op:aibudgetset",
+    "change": "new entry",
+    "tells": "nobody",
+    "why": "new operation (rule 7: tells users of that name only if another module also answers it; I know of none)"
+   },
+   {
+    "entry": "op:aiprojectbudget",
+    "change": "new entry",
+    "tells": "nobody",
+    "why": "new operation, as above"
+   },
+   {
+    "entry": "BudgetRequest",
+    "change": "new entry",
+    "tells": "nobody",
+    "why": "new kind"
+   },
+   {
+    "entry": "BudgetAnswer",
+    "change": "new entry",
+    "tells": "nobody",
+    "why": "new kind"
+   },
+   {
+    "entry": "AiUseOpTable",
+    "change": "hands back differently",
+    "tells": "users",
+    "why": "two operations added"
+   },
+   {
+    "entry": "AiUseHandlers",
+    "change": "hands back differently",
+    "tells": "users",
+    "why": "two handlers added"
+   },
+   {
+    "entry": "aiUseOps",
+    "change": "hands back differently",
+    "tells": "users",
+    "why": "the handlers object gained aibudgetset and aiprojectbudget"
+   },
+   {
+    "entry": "OpDeclaration",
+    "change": "hands back differently",
+    "tells": "users",
+    "why": "fields.requires widened to (string | string[])[]; optional stamps and needs added"
+   },
+   {
+    "entry": "DECLARED_OPS",
+    "change": "hands back differently",
+    "tells": "users",
+    "why": "two declarations added (aibudgetset, aiprojectbudget), carrying stamps, needs and a nested requires list"
+   }
+  ],
+  "notes": "F3 adds one method and two ops answered by name, and declares them. The only change to an existing kind a user might read is OpDeclaration: a requires entry may now be a list (one of these fields), which a reader of DECLARED_OPS expecting strings (op-declarations, store-assembly's owner map, op-grades) must handle; I expect that as 'hands back differently' on OpDeclaration and DECLARED_OPS. The private const budgetOwner is not exported."
  }
 ]

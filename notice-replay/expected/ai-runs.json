@@ -1060,5 +1060,12 @@
    }
   ],
   "notes": "F4 and F5. The real change inserted ANSWER_MARKS, answerKeyMarks and a private recallFit between hiddenRuns' JSDoc and hiddenRuns itself, so in the real code hiddenRuns' prose now sits on ANSWER_MARKS. The carry put my @param/@returns/@bound for hiddenRuns in that conflict; I resolved it by keeping the real layout and writing a second JSDoc directly above hiddenRuns with the same tags, so hiddenRuns' entry should be unchanged. If the tool reads the first block's prose as ANSWER_MARKS' comment, no kind is involved. pathReadyRead's no-pair case is now a cascade read: accepts more in effect, but my kinds already accepted both absent, so only the bound line shows it. The expected 'hands back differently' on PathReadyAnswer is a comment-text change only and I expect the tool to report none for it."
+ },
+ {
+  "change": "ai-runs:1073",
+  "written": "2026-11-15T15:49:00Z",
+  "listingChanges": false,
+  "entries": [],
+  "notes": "Only a test was added (notice-membership-1030: membership's isAdministrator now also reads member:<id>; ai-runs passes the bare id, so its answer is unchanged). No source change, no comment change. The change is the provider's answer to a notice it received, so the listing of ai-runs cannot change."
  }
 ]
