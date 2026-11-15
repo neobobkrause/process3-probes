@@ -1,0 +1,9 @@
+{
+  "title": "calendar's weekday takes the day as written, YYYY-MM-DD, since every caller had to parse it first (no comments-only step first)",
+  "provider": "calendar",
+  "covers": [
+    "a real change to a module with no interface comments, without the first step",
+    "what a function accepts changes; \"anything\" before and after"
+  ],
+  "note": "reports calls weekday(parseDay(b.day)): parseDay of a Date finds no YYYY-MM-DD and throws."
+}

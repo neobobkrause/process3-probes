@@ -1,0 +1,9 @@
+{
+  "title": "Request lines become opt-in: only a door made with {lines: true} has get; on any other door get is undefined, as its kind says",
+  "provider": "door",
+  "covers": [
+    "a handle's method may now be undefined, written as '| undefined' in its kind",
+    "the factory gains an optional parameter (accepts more)"
+  ],
+  "note": "billing calls deps.door.get on a door its tests make with createDoor(handlers)."
+}

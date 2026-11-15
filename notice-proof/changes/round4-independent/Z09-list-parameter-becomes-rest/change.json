@@ -1,0 +1,12 @@
+{
+  "title": "sum takes its amounts one after another, sum(a, b, c), so that a caller adding two need not build a list",
+  "provider": "money",
+  "covers": [
+    "a list parameter becomes a rest parameter of the same kind",
+    "standsIn sees the same kind, now optional: accepts more"
+  ],
+  "before": [
+    "setups/Z09a-money-sum",
+    "setups/Z09b-billing-sums-readings"
+  ]
+}

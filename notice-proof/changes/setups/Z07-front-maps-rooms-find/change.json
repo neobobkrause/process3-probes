@@ -1,0 +1,7 @@
+{
+  "title": "front's tests check that every seeded room is found, mapping the ids through rooms.find",
+  "provider": "front",
+  "covers": [
+    "a handle's method handed on as a value (the standing state)"
+  ]
+}

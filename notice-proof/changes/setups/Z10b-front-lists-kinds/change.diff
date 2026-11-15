@@ -1,0 +1,42 @@
+--- before/front/src/index.mjs
++++ after/front/src/index.mjs
+@@ -1,7 +1,7 @@
+ /**
+  * The front desk: what people see when they book.
+  */
+-import { isEmail, titleCase } from '../../text-rules/src/index.mjs';
++import { isEmail, titleCase, listWords } from '../../text-rules/src/index.mjs';
+ import { ROOM_KINDS } from '../../rooms/src/index.mjs';
+ /** @import { RoomKind } from '../../rooms/src/index.mjs' */
+ /** @import { Door } from '../../door/src/index.mjs' */
+@@ -23,6 +23,7 @@
+  * @property {(form: BookingForm) => Promise<{id: string, text: string}>} book refuses a form without a valid email
+  * @property {(id: string) => Promise<string>} cancel
+  * @property {() => string[]} kindsMenu one line per kind of room
++ * @property {() => string} kindsLine one line naming every kind of room
+  * @property {(kind?: RoomKind) => Promise<string[]>} roomMenu one line per room
+  */
+ 
+@@ -53,6 +54,9 @@
+     kindsMenu() {
+       return ROOM_KINDS.map((k) => titleCase(k));
+     },
++    kindsLine() {
++      return `We have rooms of these kinds: ${listWords(ROOM_KINDS)}`;
++    },
+     async roomMenu(kind) {
+       const { rooms } = await door.call('roomlist', kind === undefined ? {} : { kind });
+       return rooms.map((r) => `${r.name} (${r.seats} seats)`);
+--- before/front/test/index.test.mjs
++++ after/front/test/index.test.mjs
+@@ -49,6 +49,10 @@
+   for (const line of menu) assert.match(line, /^[A-Z]/);
+ });
+ 
++test('the kinds line names every kind of room', () => {
++  assert.equal(system().kindsLine(), 'We have rooms of these kinds: hall, studio and kitchen');
++});
++
+ test('the room menu lists rooms with their seats', async () => {
+   const front = system();
+   const all = await front.roomMenu();

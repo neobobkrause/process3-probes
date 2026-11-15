@@ -1,0 +1,7 @@
+{
+  "title": "billing keeps the meter's readings and adds them up with sum when the meter is done",
+  "provider": "billing",
+  "covers": [
+    "a user that hands a list to a provider function (the standing state)"
+  ]
+}

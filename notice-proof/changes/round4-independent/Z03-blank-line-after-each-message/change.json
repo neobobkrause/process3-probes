@@ -1,0 +1,9 @@
+{
+  "title": "The meter writes a blank line after each message, so that people reading its output can tell one message from the next",
+  "provider": "meter",
+  "covers": [
+    "the framing of messages on a channel changes; every message's kind and channel stay",
+    "the sender's own test ignores empty lines; a reader does not"
+  ],
+  "note": "billing's meterUsage splits what it reads at each newline and parses every line, empty ones included."
+}

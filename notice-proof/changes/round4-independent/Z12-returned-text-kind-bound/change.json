@@ -1,0 +1,12 @@
+{
+  "title": "Slugs join words with single underscores, as the venue's booking system needs; Slug's bound line, its test and slugify's tests say so",
+  "provider": "text-rules",
+  "covers": [
+    "bound line changed honestly, on a kind that is just text",
+    "the kind is what a function hands back, not a field or a parameter"
+  ],
+  "before": [
+    "setups/Z12-text-rules-slug-kind"
+  ],
+  "note": "rooms makes each room's id with slugify; its tests expect ids of a-z, 0-9 and hyphens."
+}

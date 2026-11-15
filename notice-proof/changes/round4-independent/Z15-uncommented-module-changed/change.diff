@@ -1,0 +1,23 @@
+--- before/calendar/src/index.mjs
++++ after/calendar/src/index.mjs
+@@ -23,6 +23,7 @@
+   return Math.round((b.getTime() - a.getTime()) / DAY_MS);
+ }
+ 
++// The day as written, YYYY-MM-DD: every caller had to parse it first.
+ export function weekday(day) {
+-  return NAMES[day.getUTCDay()];
++  return NAMES[parseDay(day).getUTCDay()];
+ }
+--- before/calendar/test/index.test.mjs
++++ after/calendar/test/index.test.mjs
+@@ -17,6 +17,7 @@
+ });
+ 
+ test('weekday names the day of the week', () => {
+-  assert.equal(weekday(parseDay('2026-11-15')), 'Sun');
+-  assert.equal(weekday(parseDay('2026-11-16')), 'Mon');
++  assert.equal(weekday('2026-11-15'), 'Sun');
++  assert.equal(weekday('2026-11-16'), 'Mon');
++  assert.throws(() => weekday('2026-02-30'), RangeError);
+ });

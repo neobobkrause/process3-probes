@@ -1,0 +1,10 @@
+--- before/bookings/src/index.mjs
++++ after/bookings/src/index.mjs
+@@ -45,6 +45,7 @@
+  * @property {(id: string) => Booking} cancel cancels an open booking; refuses an unknown or already cancelled one
+  * @property {(id: string) => Booking | undefined} find
+  * @property {(room: string, party: number, nights: number) => Amount} quote what a booking would cost
++ * @throws {RangeError} quote when the room is unknown, or the party or the nights are outside their bounds
+  */
+ 
+ /**

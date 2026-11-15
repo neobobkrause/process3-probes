@@ -1,0 +1,8 @@
+{
+  "title": "rooms gains findAll: the rooms with the given ids, in order, ids with no room left out",
+  "provider": "rooms",
+  "covers": [
+    "new handle method (new entry)",
+    "honest .filter(Boolean) the reader cannot follow"
+  ]
+}

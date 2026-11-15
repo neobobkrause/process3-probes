@@ -1,0 +1,11 @@
+{
+  "title": "rooms' find takes an optional kind: the room is found only if it is of that kind",
+  "provider": "rooms",
+  "covers": [
+    "a handle's method gains an optional parameter (accepts more)",
+    "a user hands the method to map, which passes the index as the second argument"
+  ],
+  "before": [
+    "setups/Z07-front-maps-rooms-find"
+  ]
+}

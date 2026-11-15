@@ -1,0 +1,8 @@
+{
+  "title": "bookings' test helper system is renamed bookingSystem; nothing else changes",
+  "provider": "bookings",
+  "covers": [
+    "a helper of the test file renamed",
+    "the values and checks of every bound test stay"
+  ]
+}

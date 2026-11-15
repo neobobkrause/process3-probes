@@ -1,0 +1,35 @@
+--- before/money/src/index.mjs
++++ after/money/src/index.mjs
+@@ -47,12 +47,12 @@
+ }
+ 
+ /**
+- * Adds up a list of amounts of one currency. An empty list adds up to nothing in euros.
+- * @param {Amount[]} amounts
++ * Adds up amounts of one currency, given one after another: sum(a, b, c). No amounts add up to nothing in euros.
++ * @param {...Amount} amounts
+  * @returns {Amount}
+  * @throws {RangeError} when the currencies differ or the sum is outside the bound of cents
+  */
+-export function sum(amounts) {
++export function sum(...amounts) {
+   return amounts.reduce((total, a) => add(total, a), amount(0, amounts[0]?.currency ?? 'EUR'));
+ }
+ 
+--- before/money/test/index.test.mjs
++++ after/money/test/index.test.mjs
+@@ -21,10 +21,10 @@
+   assert.throws(() => add(amount(10_000_000, 'EUR'), amount(1, 'EUR')), RangeError);
+ });
+ 
+-test('sum adds up a list of amounts of one currency', () => {
+-  assert.equal(sum([amount(150, 'EUR'), amount(250, 'EUR'), amount(100, 'EUR')]).cents, 500);
+-  assert.equal(sum([]).cents, 0);
+-  assert.throws(() => sum([amount(1, 'EUR'), amount(1, 'USD')]), RangeError);
++test('sum adds up amounts of one currency', () => {
++  assert.equal(sum(amount(150, 'EUR'), amount(250, 'EUR'), amount(100, 'EUR')).cents, 500);
++  assert.equal(sum().cents, 0);
++  assert.throws(() => sum(amount(1, 'EUR'), amount(1, 'USD')), RangeError);
+ });
+ 
+ test('formatAmount shows the currency and the value', () => {

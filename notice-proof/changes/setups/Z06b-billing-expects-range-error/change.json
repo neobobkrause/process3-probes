@@ -1,0 +1,7 @@
+{
+  "title": "billing's estimate refuses an unknown room with bookings' RangeError, and its tests say so",
+  "provider": "billing",
+  "covers": [
+    "a user that relies on the kind of error an operation raises (the standing state)"
+  ]
+}

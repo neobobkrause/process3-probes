@@ -1,0 +1,42 @@
+--- before/money/src/index.mjs
++++ after/money/src/index.mjs
+@@ -47,6 +47,16 @@
+ }
+ 
+ /**
++ * Adds up a list of amounts of one currency. An empty list adds up to nothing in euros.
++ * @param {Amount[]} amounts
++ * @returns {Amount}
++ * @throws {RangeError} when the currencies differ or the sum is outside the bound of cents
++ */
++export function sum(amounts) {
++  return amounts.reduce((total, a) => add(total, a), amount(0, amounts[0]?.currency ?? 'EUR'));
++}
++
++/**
+  * Writes an amount for people to read.
+  * @param {Amount} a
+  * @returns {string}
+--- before/money/test/index.test.mjs
++++ after/money/test/index.test.mjs
+@@ -1,6 +1,6 @@
+ import { test } from 'node:test';
+ import assert from 'node:assert/strict';
+-import { amount, add, formatAmount, splitEvenly, CURRENCIES } from '../src/index.mjs';
++import { amount, add, formatAmount, splitEvenly, CURRENCIES, sum } from '../src/index.mjs';
+ 
+ test('bound cents: whole number, 0 to 10,000,000 inclusive', () => {
+   assert.equal(amount(0, 'EUR').cents, 0);
+@@ -21,6 +21,12 @@
+   assert.throws(() => add(amount(10_000_000, 'EUR'), amount(1, 'EUR')), RangeError);
+ });
+ 
++test('sum adds up a list of amounts of one currency', () => {
++  assert.equal(sum([amount(150, 'EUR'), amount(250, 'EUR'), amount(100, 'EUR')]).cents, 500);
++  assert.equal(sum([]).cents, 0);
++  assert.throws(() => sum([amount(1, 'EUR'), amount(1, 'USD')]), RangeError);
++});
++
+ test('formatAmount shows the currency and the value', () => {
+   const s = formatAmount(amount(1250, 'EUR'));
+   assert.match(s, /EUR|€/);

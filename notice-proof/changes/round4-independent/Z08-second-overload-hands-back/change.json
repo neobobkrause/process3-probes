@@ -1,0 +1,13 @@
+{
+  "title": "formatAmount's list form now hands back one line per amount, so that callers lay them out",
+  "provider": "money",
+  "covers": [
+    "a function's second overload hands back a different kind",
+    "only the first call signature is listed"
+  ],
+  "before": [
+    "setups/Z08a-money-formats-lists",
+    "setups/Z08b-billing-lists-instalments"
+  ],
+  "note": "billing writes formatAmount(parts) into a template: a list of lines comes out joined by commas, and the reader raises nothing."
+}

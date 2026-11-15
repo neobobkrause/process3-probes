@@ -1,0 +1,11 @@
+{
+  "title": "A request line may call only an operation that changes nothing: anyone shown a link can follow it",
+  "provider": "door",
+  "covers": [
+    "a generic method's type parameter is newly constrained (newly refused)",
+    "the printed parameter text is the same; the constraint is not compared"
+  ],
+  "before": [
+    "setups/Z11-front-cancels-by-request-line"
+  ]
+}

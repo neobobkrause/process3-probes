@@ -1,0 +1,7 @@
+{
+  "title": "money gains sum, which adds up a list of amounts",
+  "provider": "money",
+  "covers": [
+    "a function that accepts a list (the standing state)"
+  ]
+}

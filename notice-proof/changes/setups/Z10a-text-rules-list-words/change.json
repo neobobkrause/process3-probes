@@ -1,0 +1,7 @@
+{
+  "title": "text-rules gains listWords, which writes a list for people: 'a, b and c'",
+  "provider": "text-rules",
+  "covers": [
+    "a function that accepts a read-only list (the standing state)"
+  ]
+}

@@ -1,0 +1,7 @@
+{
+  "title": "billing's invoice text lists the instalments, written by formatAmount's list form",
+  "provider": "billing",
+  "covers": [
+    "a user of a function's second overload (the standing state)"
+  ]
+}

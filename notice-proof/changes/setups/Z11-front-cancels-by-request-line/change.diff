@@ -1,0 +1,12 @@
+--- before/front/src/index.mjs
++++ after/front/src/index.mjs
+@@ -47,7 +47,8 @@
+       return { id: b.id, text: `Booked ${b.room} from ${b.day} to ${b.until} for ${b.party}: ${price}` };
+     },
+     async cancel(id) {
+-      const b = await door.call('bookcancel', { id });
++      // The same request line as the cancel link in the confirmation email.
++      const b = await door.get(`op=bookcancel&id=${id}`);
+       return `Cancelled ${b.id}`;
+     },
+     kindsMenu() {

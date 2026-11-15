@@ -1,0 +1,10 @@
+{
+  "title": "money's Tally gains a static sum, which adds up a list of amounts",
+  "provider": "money",
+  "covers": [
+    "a static method of an exported class (the standing state)"
+  ],
+  "before": [
+    "setups/Y13a-money-tally"
+  ]
+}

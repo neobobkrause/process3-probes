@@ -1,0 +1,94 @@
+--- before/meter/src/index.mjs
++++ after/meter/src/index.mjs
+@@ -1,7 +1,7 @@
+ /**
+  * The meter: a separately running program that prices the minutes rooms were used.
+- * It is sent MeterInput lines on its standard input and answers with MeterMsg lines on its standard output,
+- * each one JSON on a line of its own. Both sides use the kinds written here.
++ * It is sent MeterInput lines on its standard input and answers with MeterMsg lines: refusals on its standard
++ * error, among the errors, and everything else on its standard output, each one JSON on a line of its own. Both sides use the kinds written here.
+  */
+ /** @import { Amount } from '../../money/src/index.mjs' */
+ 
+@@ -20,7 +20,7 @@
+ 
+ /**
+  * What the meter sends back: a reading for each use it was sent, in the same order, then done once its input ends.
+- * A use outside its bound gets a refusal in place of a reading.
++ * A use outside its bound gets a refusal in place of a reading, written to standard error.
+  * @typedef {{kind: 'reading', room: string, minutes: number, cost: Amount}
+  *   | {kind: 'refused', room: string, reason: string}
+  *   | {kind: 'done', count: number}} MeterMsg
+--- before/meter/src/worker.mjs
++++ after/meter/src/worker.mjs
+@@ -8,8 +8,15 @@
+ 
+ let count = 0;
+ 
+-/** @param {MeterMsg} msg */
+-const send = (msg) => process.stdout.write(JSON.stringify(msg) + '\n');
++/**
++ * Writes a message on a line of its own: a refusal to standard error, so that it shows among the errors; everything
++ * else to standard output.
++ * @param {MeterMsg} msg
++ */
++const send = (msg) => {
++  const out = msg.kind === 'refused' ? process.stderr : process.stdout;
++  out.write(JSON.stringify(msg) + '\n');
++};
+ 
+ const lines = createInterface({ input: process.stdin });
+ lines.on('line', (/** @type {string} */ line) => {
+--- before/meter/test/index.test.mjs
++++ after/meter/test/index.test.mjs
+@@ -5,26 +5,36 @@
+ /** @import { MeterMsg } from '../src/index.mjs' */
+ 
+ /**
+- * Runs the meter's program on the given lines and collects what it sends back.
++ * The messages in what one output of the meter wrote.
++ * @param {string} text
++ * @returns {MeterMsg[]}
++ */
++const parse = (text) => text.trim().split('\n').filter(Boolean).map((l) => /** @type {MeterMsg} */ (JSON.parse(l)));
++
++/**
++ * Runs the meter's program on the given lines and collects what it sends back on each of its two outputs.
+  * @param {string[]} lines
+- * @returns {Promise<MeterMsg[]>}
++ * @returns {Promise<{out: MeterMsg[], err: MeterMsg[]}>}
+  */
+ function runMeter(lines) {
+   return new Promise((resolve, reject) => {
+     const child = spawn(process.execPath, [WORKER_FILE]);
+     let out = '';
++    let err = '';
+     child.stdout.on('data', (/** @type {any} */ d) => (out += d));
++    child.stderr.on('data', (/** @type {any} */ d) => (err += d));
+     child.on('error', reject);
+-    child.on('close', () => resolve(out.trim().split('\n').filter(Boolean).map((l) => /** @type {MeterMsg} */ (JSON.parse(l)))));
++    child.on('close', () => resolve({ out: parse(out), err: parse(err) }));
+     child.stdin.end(lines.join('\n') + '\n');
+   });
+ }
+ 
+ test('one reading per use, in order, then done', async () => {
+-  const msgs = await runMeter([
++  const { out: msgs, err } = await runMeter([
+     JSON.stringify({ kind: 'use', room: 'hall', minutes: 30 }),
+     JSON.stringify({ kind: 'use', room: 'studio', minutes: 1 }),
+   ]);
++  assert.deepEqual(err, []);
+   assert.deepEqual(msgs.map((m) => m.kind), ['reading', 'reading', 'done']);
+   const [a, b, done] = msgs;
+   if (a.kind !== 'reading' || b.kind !== 'reading' || done.kind !== 'done') return assert.fail('unexpected kinds');
+@@ -35,6 +45,7 @@
+ });
+ 
+ test('bound minutes: whole number, 1 to 1440', async () => {
+-  const msgs = await runMeter([1, 1440, 0, 1441, 2.5].map((minutes) => JSON.stringify({ kind: 'use', room: 'r', minutes })));
+-  assert.deepEqual(msgs.map((m) => m.kind), ['reading', 'reading', 'refused', 'refused', 'refused', 'done']);
++  const { out, err } = await runMeter([1, 1440, 0, 1441, 2.5].map((minutes) => JSON.stringify({ kind: 'use', room: 'r', minutes })));
++  assert.deepEqual(out.map((m) => m.kind), ['reading', 'reading', 'done']);
++  assert.deepEqual(err.map((m) => m.kind), ['refused', 'refused', 'refused']);
+ });

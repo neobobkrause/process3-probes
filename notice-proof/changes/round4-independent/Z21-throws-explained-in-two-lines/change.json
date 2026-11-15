@@ -1,0 +1,8 @@
+{
+  "title": "add's @throws comment explains its two cases on two lines; the kind of error is the same",
+  "provider": "money",
+  "covers": [
+    "a @throws comment split into two lines naming the same kind",
+    "the kinds of error raised do not change"
+  ]
+}

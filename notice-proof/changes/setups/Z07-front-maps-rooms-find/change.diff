@@ -1,0 +1,21 @@
+--- before/front/test/index.test.mjs
++++ after/front/test/index.test.mjs
+@@ -43,6 +43,18 @@
+   assert.ok((await front.cancel(id)).includes(id));
+ });
+ 
++test('every seeded room can be found by its id', () => {
++  const rooms = createRooms({
++    store: seededStore({
++      rooms: [
++        { id: 'big-hall', value: { id: 'big-hall', name: 'Big Hall', kind: 'hall', seats: 300 } },
++        { id: 'kitchen', value: { id: 'kitchen', name: 'Kitchen', kind: 'kitchen', seats: 8 } },
++      ],
++    }),
++  });
++  assert.deepEqual(['big-hall', 'kitchen'].map(rooms.find).map((r) => r?.seats), [300, 8]);
++});
++
+ test('the kinds menu has one line per kind, each starting with a capital', () => {
+   const menu = system().kindsMenu();
+   assert.ok(menu.length >= 1);

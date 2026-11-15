@@ -1,0 +1,9 @@
+{
+  "title": "The meter writes refusals to standard error, among the errors; the stream is chosen first, then written to; the @message tag is left as it was",
+  "provider": "meter",
+  "covers": [
+    "a message's channel changes; its @message channel is not updated",
+    "the stream written to is held in a variable, so the write names no stream"
+  ],
+  "note": "MeterMsg keeps '@message stdout'. billing reads the meter's standard output only."
+}

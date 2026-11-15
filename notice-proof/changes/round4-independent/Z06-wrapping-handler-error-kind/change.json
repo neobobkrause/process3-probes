@@ -1,0 +1,13 @@
+{
+  "title": "An unknown room is refused with an Error, not a RangeError (kept for values out of bounds); the handle's @throws lines say so",
+  "provider": "bookings",
+  "covers": [
+    "kind of error stated for a handle method changes",
+    "the operation's handler hands its call to that method and wraps the answer"
+  ],
+  "before": [
+    "setups/Z06a-bookings-states-quote-errors",
+    "setups/Z06b-billing-expects-range-error"
+  ],
+  "note": "bookquote: (req) => ({ total: bookings.quote(req.room, req.party, req.nights) }). billing calls bookquote through the door."
+}

@@ -1,0 +1,33 @@
+--- before/text-rules/src/index.mjs
++++ after/text-rules/src/index.mjs
+@@ -5,12 +5,17 @@
+ const SLUG_MAX = 80;
+ 
+ /**
++ * A slug: what slugify makes of a name.
++ * @typedef {string} Slug
++ * @bound slug: only a-z, 0-9 and single hyphens between them
++ */
++
++/**
+  * Turns a name into a slug: lower-case letters and digits joined by single hyphens.
+  * Accents are dropped, and anything that is not a letter or a digit separates words.
+  * @param {string} text the name to turn into a slug
+- * @returns {string} the slug
++ * @returns {Slug} the slug
+  * @bound text: 1 to 80 characters, with at least one letter or digit
+- * @bound result: only a-z, 0-9 and single hyphens between them
+  * @throws {RangeError} when text is outside its bound
+  */
+ export function slugify(text) {
+--- before/text-rules/test/index.test.mjs
++++ after/text-rules/test/index.test.mjs
+@@ -10,7 +10,7 @@
+   assert.throws(() => slugify('!!! ---'), RangeError);
+ });
+ 
+-test('bound result: only a-z, 0-9 and single hyphens between them', () => {
++test('bound slug: only a-z, 0-9 and single hyphens between them', () => {
+   for (const t of ['Main Hall', '  Café  Øst ', 'A--B', 'x_y z', 'Room 12']) {
+     assert.match(slugify(t), /^[a-z0-9]+(-[a-z0-9]+)*$/);
+   }

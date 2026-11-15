@@ -1,0 +1,7 @@
+{
+  "title": "front cancels with the same request line as the cancel link in the confirmation email",
+  "provider": "front",
+  "covers": [
+    "a user calling a state-changing operation through a request line (the standing state)"
+  ]
+}

@@ -1,0 +1,7 @@
+{
+  "title": "billing keeps the meter's readings and adds them up with Tally.sum when the meter is done",
+  "provider": "billing",
+  "covers": [
+    "a user of a class's static method (the standing state)"
+  ]
+}

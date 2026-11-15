@@ -1,0 +1,12 @@
+{
+  "title": "An amount may now be at most 500,000 cents; MAX_CENTS changed, the bound line forgotten; the tests read the limit from the module",
+  "provider": "money",
+  "covers": [
+    "bound changed in code, bound line not",
+    "the bound test reads its limit from an export of the module, outside its own file"
+  ],
+  "before": [
+    "setups/Z02-money-tests-read-max"
+  ],
+  "note": "bookings opens a party of 200 for 2 nights at 1500 cents a seat and night: 600,000 cents."
+}

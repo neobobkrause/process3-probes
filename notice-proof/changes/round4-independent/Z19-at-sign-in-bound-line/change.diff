@@ -1,0 +1,27 @@
+--- before/text-rules/src/index.mjs
++++ after/text-rules/src/index.mjs
+@@ -31,6 +31,7 @@
+  * Says whether text looks like an email address: something, an at sign, something, a dot, something; no spaces.
+  * @param {string} text
+  * @returns {boolean}
++ * @bound result: true only for text with no spaces and exactly one @, with a dot somewhere after it
+  */
+ export function isEmail(text) {
+   return typeof text === 'string' && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(text);
+--- before/text-rules/test/index.test.mjs
++++ after/text-rules/test/index.test.mjs
+@@ -21,6 +21,14 @@
+   assert.equal(slugify('Café Øst 2'), 'cafe-st-2');
+ });
+ 
++test('bound result: true only for text with no spaces and exactly one @, with a dot somewhere after it', () => {
++  assert.equal(isEmail('ann@example.org'), true);
++  assert.equal(isEmail('ann@@example.org'), false);
++  assert.equal(isEmail('ann@ex@ample.org'), false);
++  assert.equal(isEmail('ann@example'), false);
++  assert.equal(isEmail('a nn@example.org'), false);
++});
++
+ test('isEmail recognises addresses and refuses others', () => {
+   assert.equal(isEmail('ann@example.org'), true);
+   assert.equal(isEmail('ann@example'), false);

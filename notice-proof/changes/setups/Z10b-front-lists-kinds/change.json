@@ -1,0 +1,7 @@
+{
+  "title": "front gains a line naming every kind of room, written by listWords from ROOM_KINDS",
+  "provider": "front",
+  "covers": [
+    "a user that hands a frozen list to a provider function (the standing state)"
+  ]
+}

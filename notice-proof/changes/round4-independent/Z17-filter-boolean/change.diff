@@ -1,0 +1,51 @@
+--- before/rooms/src/index.mjs
++++ after/rooms/src/index.mjs
+@@ -33,6 +33,7 @@
+  * @typedef {Object} Rooms
+  * @property {(input: NewRoom) => Room} add adds a room; refuses a name whose slug is already taken
+  * @property {(id: string) => Room | undefined} find
++ * @property {(ids: string[]) => Room[]} findAll the rooms with these ids, in the same order; an id with no room is left out
+  * @property {(kind?: RoomKind) => Room[]} list rooms, only of one kind when it is given, in name order
+  */
+ 
+@@ -56,6 +57,11 @@
+  */
+ export function createRooms(deps) {
+   const { store } = deps;
++  /** @param {string} id */
++  const find = (id) => {
++    const rec = store.get('rooms', id);
++    return rec ? /** @type {Room} checks nothing: the store holds only Rooms in this table */ (rec.value) : undefined;
++  };
+   return {
+     add(input) {
+       if (!ROOM_KINDS.includes(input.kind)) throw new RangeError(`rooms: unknown kind: ${input.kind}`);
+@@ -69,9 +75,9 @@
+       store.put('rooms', id, room);
+       return room;
+     },
+-    find(id) {
+-      const rec = store.get('rooms', id);
+-      return rec ? /** @type {Room} checks nothing: the store holds only Rooms in this table */ (rec.value) : undefined;
++    find,
++    findAll(ids) {
++      return ids.map(find).filter(Boolean);
+     },
+     list(kind) {
+       return store
+--- before/rooms/test/index.test.mjs
++++ after/rooms/test/index.test.mjs
+@@ -29,6 +29,13 @@
+   assert.throws(() => rooms.add({ name: 'Pool', kind: /** @type {any} */ ('pool'), seats: 10 }), RangeError);
+ });
+ 
++test('findAll finds the rooms with the given ids, in order, leaving out ids with no room', () => {
++  const rooms = fresh();
++  rooms.add({ name: 'Hall', kind: 'hall', seats: 80 });
++  rooms.add({ name: 'Kitchen', kind: 'kitchen', seats: 8 });
++  assert.deepEqual(rooms.findAll(['kitchen', 'attic', 'hall']).map((r) => r.name), ['Kitchen', 'Hall']);
++});
++
+ test('list filters by kind and keeps name order', () => {
+   const rooms = fresh();
+   rooms.add({ name: 'B Hall', kind: 'hall', seats: 50 });

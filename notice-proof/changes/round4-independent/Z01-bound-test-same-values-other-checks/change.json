@@ -1,0 +1,9 @@
+{
+  "title": "A party may be larger than the room's seats (the rest stand); code and the bound test changed, the bound line forgotten",
+  "provider": "bookings",
+  "covers": [
+    "bound changed in code and its test, the bound line not",
+    "the test's values and calls are the same sets; one value moves from a refusal to an acceptance"
+  ],
+  "note": "front's tests expect a party of 9 in the kitchen (8 seats) to be refused."
+}

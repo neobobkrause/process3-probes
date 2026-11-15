@@ -1,0 +1,8 @@
+{
+  "title": "isEmail states the bound on its result, with a test named for it",
+  "provider": "text-rules",
+  "covers": [
+    "a new bound line, with its test, on an existing function",
+    "the line holds \"@,\" as plain text"
+  ]
+}

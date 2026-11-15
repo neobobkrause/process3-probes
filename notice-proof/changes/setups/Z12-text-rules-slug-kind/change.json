@@ -1,0 +1,7 @@
+{
+  "title": "text-rules names its kind of slug; the bound on slugify's result moves onto it",
+  "provider": "text-rules",
+  "covers": [
+    "a bound on a kind that is just text, handed back by a function (the standing state)"
+  ]
+}

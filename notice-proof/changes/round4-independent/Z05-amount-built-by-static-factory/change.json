@@ -1,0 +1,9 @@
+{
+  "title": "An amount cannot be changed once made: money builds it with FixedAmount.of, whose cents and currency are read through getters",
+  "provider": "money",
+  "covers": [
+    "what is handed back changes from plain data to an instance; its kind as TypeScript reads it does not",
+    "the instance is built by a static factory of the class, not by `new` where an Amount is expected"
+  ],
+  "note": "Every @returns {Amount} stays true as TypeScript reads it (a getter is a member). JSON (door, meter) and structuredClone (store) copy an instance with private fields as {}."
+}

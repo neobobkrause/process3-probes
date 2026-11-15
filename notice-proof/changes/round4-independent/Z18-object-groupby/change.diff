@@ -1,0 +1,40 @@
+--- before/rooms/src/index.mjs
++++ after/rooms/src/index.mjs
+@@ -34,6 +34,7 @@
+  * @property {(input: NewRoom) => Room} add adds a room; refuses a name whose slug is already taken
+  * @property {(id: string) => Room | undefined} find
+  * @property {(kind?: RoomKind) => Room[]} list rooms, only of one kind when it is given, in name order
++ * @property {() => Partial<Record<RoomKind, Room[]>>} byKind the rooms of each kind there is a room of, each list in name order
+  */
+ 
+ /**
+@@ -80,6 +81,9 @@
+         .filter((r) => kind === undefined || r.kind === kind)
+         .sort((a, b) => a.name.localeCompare(b.name));
+     },
++    byKind() {
++      return Object.groupBy(this.list(), (r) => r.kind);
++    },
+   };
+ }
+ 
+--- before/rooms/test/index.test.mjs
++++ after/rooms/test/index.test.mjs
+@@ -39,6 +39,17 @@
+   for (const r of rooms.list()) assert.ok(ROOM_KINDS.includes(r.kind));
+ });
+ 
++test('byKind lists the rooms of each kind, in name order', () => {
++  const rooms = fresh();
++  rooms.add({ name: 'B Hall', kind: 'hall', seats: 50 });
++  rooms.add({ name: 'A Hall', kind: 'hall', seats: 50 });
++  rooms.add({ name: 'Kitchen', kind: 'kitchen', seats: 8 });
++  const by = rooms.byKind();
++  assert.deepEqual(by.hall?.map((r) => r.name), ['A Hall', 'B Hall']);
++  assert.equal(by.kitchen?.length, 1);
++  assert.equal(by.studio, undefined);
++});
++
+ test('roomlist operation answers with the rooms of a kind', () => {
+   const rooms = fresh();
+   rooms.add({ name: 'Kitchen', kind: 'kitchen', seats: 8 });

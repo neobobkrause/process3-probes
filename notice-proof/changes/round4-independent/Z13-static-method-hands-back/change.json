@@ -1,0 +1,13 @@
+{
+  "title": "Tally.sum hands back the tally itself, so that a caller can go on adding to it",
+  "provider": "money",
+  "covers": [
+    "a static method of an exported class hands back a different kind",
+    "static members are not in the listing"
+  ],
+  "before": [
+    "setups/Y13a-money-tally",
+    "setups/Z13a-money-tally-sum",
+    "setups/Z13b-billing-tally-sum"
+  ]
+}

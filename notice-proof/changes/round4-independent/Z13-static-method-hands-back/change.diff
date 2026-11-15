@@ -1,0 +1,32 @@
+--- before/money/src/index.mjs
++++ after/money/src/index.mjs
+@@ -95,15 +95,15 @@
+   }
+ 
+   /**
+-   * Adds up a list of amounts of one currency.
++   * Adds up a list of amounts of one currency, in a tally that more amounts can be added to.
+    * @param {Currency} currency the currency of the amounts, and of the total when the list is empty
+    * @param {Amount[]} amounts
+-   * @returns {Amount}
++   * @returns {Tally}
+    * @throws {RangeError} when a currency differs or the total would leave the bound of cents
+    */
+   static sum(currency, amounts) {
+     const t = new Tally(currency);
+     for (const a of amounts) t.add(a);
+-    return t.total;
++    return t;
+   }
+ }
+--- before/money/test/index.test.mjs
++++ after/money/test/index.test.mjs
+@@ -51,6 +51,6 @@
+ });
+ 
+ test('Tally.sum adds up a list of amounts', () => {
+-  assert.equal(Tally.sum('EUR', [amount(150, 'EUR'), amount(250, 'EUR')]).cents, 400);
+-  assert.equal(Tally.sum('GBP', []).currency, 'GBP');
++  assert.equal(Tally.sum('EUR', [amount(150, 'EUR'), amount(250, 'EUR')]).total.cents, 400);
++  assert.equal(Tally.sum('GBP', []).total.currency, 'GBP');
+ });

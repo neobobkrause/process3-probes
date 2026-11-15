@@ -1,0 +1,12 @@
+--- before/money/src/index.mjs
++++ after/money/src/index.mjs
+@@ -39,7 +39,8 @@
+  * @param {Amount} a
+  * @param {Amount} b
+  * @returns {Amount}
+- * @throws {RangeError} when the currencies differ or the sum is outside the bound of cents
++ * @throws {RangeError} when the currencies differ
++ * @throws {RangeError} when the sum is outside the bound of cents
+  */
+ export function add(a, b) {
+   if (a.currency !== b.currency) throw new RangeError('add: currencies differ');

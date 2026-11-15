@@ -1,0 +1,13 @@
+{
+  "title": "listWords writes its words in alphabetical order, sorting the list it is given; its comment no longer says read-only, since the reader said a read-only list has no sort",
+  "provider": "text-rules",
+  "covers": [
+    "a read-only list parameter becomes a mutable one (newly refused)",
+    "standsIn ignores read-only on lists: accepts more"
+  ],
+  "before": [
+    "setups/Z10a-text-rules-list-words",
+    "setups/Z10b-front-lists-kinds"
+  ],
+  "note": "ROOM_KINDS is frozen: sorting it throws a TypeError."
+}

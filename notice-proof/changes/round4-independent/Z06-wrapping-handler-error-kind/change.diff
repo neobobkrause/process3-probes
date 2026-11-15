@@ -1,0 +1,33 @@
+--- before/bookings/src/index.mjs
++++ after/bookings/src/index.mjs
+@@ -45,7 +45,8 @@
+  * @property {(id: string) => Booking} cancel cancels an open booking; refuses an unknown or already cancelled one
+  * @property {(id: string) => Booking | undefined} find
+  * @property {(room: string, party: number, nights: number) => Amount} quote what a booking would cost
+- * @throws {RangeError} quote when the room is unknown, or the party or the nights are outside their bounds
++ * @throws {RangeError} quote when the party or the nights are outside their bounds
++ * @throws {Error} quote when the room is unknown (an unknown room is not a value out of bounds)
+  */
+ 
+ /**
+@@ -93,7 +94,7 @@
+    */
+   const quote = (roomId, party, nights) => {
+     const room = rooms.find(roomId);
+-    if (!room) throw new RangeError(`bookings: unknown room: ${roomId}`);
++    if (!room) throw new Error(`bookings: unknown room: ${roomId}`);
+     checkSize(party, nights, room.seats);
+     return amount(PRICE_PER_SEAT_NIGHT * party * nights, 'EUR');
+   };
+--- before/bookings/test/index.test.mjs
++++ after/bookings/test/index.test.mjs
+@@ -64,7 +64,8 @@
+   assert.equal(bookings.cancel(b.id).state, 'cancelled');
+   assert.throws(() => bookings.cancel(b.id));
+   assert.throws(() => bookings.cancel('b-999'), RangeError);
+-  assert.throws(() => bookings.open(req({ room: 'attic' })), RangeError);
++  assert.throws(() => bookings.open(req({ room: 'attic' })), /unknown room/);
++  assert.throws(() => bookings.quote('attic', 1, 1), /unknown room/);
+ });
+ 
+ test('bound bookquote.total: what the whole stay costs, for the whole party and every night', () => {

@@ -1,0 +1,18 @@
+--- before/money/src/index.mjs
++++ after/money/src/index.mjs
+@@ -1,5 +1,5 @@
+ /**
+- * Amounts of money, held as whole cents with a currency code.
++ * Amounts of money, held as whole cents with a currency code. No amount may exceed MAX_CENTS.
+  */
+ 
+ /** The currencies the product handles. */
+@@ -16,7 +16,7 @@
+  */
+ 
+ /** The largest amount there may be, in cents. */
+-export const MAX_CENTS = 10_000_000;
++export const MAX_CENTS = 500_000;
+ 
+ /**
+  * Makes an amount, refusing one outside its bound.

@@ -1,0 +1,31 @@
+--- before/text-rules/src/index.mjs
++++ after/text-rules/src/index.mjs
+@@ -46,11 +46,13 @@
+ }
+ 
+ /**
+- * Writes a list of words for people to read: "a, b and c".
+- * @param {readonly string[]} words
++ * Writes a list of words for people to read, in alphabetical order, so that a list reads the same whatever order
++ * its words come in: "a, b and c".
++ * @param {string[]} words
+  * @returns {string}
+  */
+ export function listWords(words) {
++  words.sort((x, y) => x.localeCompare(y));
+   if (words.length <= 1) return words.join('');
+   return `${words.slice(0, -1).join(', ')} and ${words[words.length - 1]}`;
+ }
+--- before/text-rules/test/index.test.mjs
++++ after/text-rules/test/index.test.mjs
+@@ -28,8 +28,8 @@
+   assert.equal(isEmail(''), false);
+ });
+ 
+-test('listWords writes a list for people to read', () => {
+-  assert.equal(listWords(['hall', 'studio', 'kitchen']), 'hall, studio and kitchen');
++test('listWords writes a list for people to read, in alphabetical order', () => {
++  assert.equal(listWords(['studio', 'hall', 'kitchen']), 'hall, kitchen and studio');
+   assert.equal(listWords(['hall']), 'hall');
+   assert.equal(listWords([]), '');
+ });
