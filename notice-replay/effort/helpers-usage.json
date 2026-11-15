@@ -42,6 +42,12 @@
    "toolUses": 107,
    "durationMs": 1744799,
    "finished": "2026-11-15T15:51Z"
+  },
+  "ai-accounts carry to main": {
+   "tokens": 261095,
+   "toolUses": 50,
+   "durationMs": 487692,
+   "finished": "2026-11-15T16:50Z"
   }
  }
 }

@@ -63,3 +63,29 @@ ones already written for `accountSet`.
 ## Done (2026-11-15T15:44:33Z)
 
 No gap steps: the real code did not change between one replayed change and the next.
+
+## Carry to main 0dea5a6 (started 2026-11-15T16:42:27Z)
+
+The comments-only first step on the product's main (1 Nov), whose ai-accounts is OLDER than the 124-before state the
+comments were written for: before T53, one `index.mjs` of 1,788 lines (a class of true `#private` members), `schema.mjs`
+and `checks.mjs`, no layer files. Of the public methods, 23 exist only on main (a member's reference, the team's key, a
+project's account, the sign-in), 25 are in both (most keyed by `owner` instead of `account_id`), and 37 of 124-before's
+are gone.
+
+The three-way merge (ours = commented 124-before, base = real e255f11da4, theirs = main) carried nothing: in `checks.mjs`
+both conflicts were comments on code main lacks (`made`, `fillSentence`), so it stays as main's; in `index.mjs` the first
+conflict was the whole kinds block against main's whole class. So I read main's `index.mjs` whole and the schema's
+tables, and wrote the comments into main's real file by anchor, copying what still fit from the earlier comments (the
+refusal, the material limits, the switches, the history, the keep-away and change rows, the shared methods' lines) and
+taking the old answers' shapes from the same helper's `legacy.mjs` of 124-after, which describes these very methods as
+deprecated forms. About 270 substantive lines were copied as they stood, about 220 written or rewritten: the pre-T53
+kinds (a member's reference state and sign-in, the team key's facts, the uses answer with `kind` and `accounts`,
+`accountFor`'s `{kind, level, key}`, a project's account, the suspensions, the cleared notice), the 24 ops of the op
+table, and stored-row kinds for the eight tables T53 dropped or renamed.
+
+What took the time: reading main's file and deciding what of the T53 comments was still true. Two corrections after the
+first check (a private helper's `scope` including `true`; `KEPT_AWAY_UNREADABLE`'s `keep_away` stated). The check says
+comments only: yes; refusals 153 -> 371, of which 2 are from my lines (the same two the earlier helper had), about 199 are
+tests reading members of the union answers, and 33 are bounds without a named test. Listing "anything" 63 -> 122.
+
+## Done (carry to main, 2026-11-15T16:50:08Z)

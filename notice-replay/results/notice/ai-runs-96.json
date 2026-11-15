@@ -8,26 +8,6 @@
    "through": null
   },
   {
-   "module": "run-productions",
-   "through": "ai-runs"
-  },
-  {
-   "module": "capture-requests",
-   "through": "ai-runs"
-  },
-  {
-   "module": "wizard-scripts",
-   "through": "ai-runs"
-  },
-  {
-   "module": "queue-producers",
-   "through": "ai-runs"
-  },
-  {
-   "module": "instance-setup",
-   "through": "ai-runs"
-  },
-  {
    "module": "plane",
    "through": "ai-runs"
   }
@@ -2438,96 +2418,6 @@
    }
   },
   {
-   "module": "run-productions",
-   "entry": "RunProductions",
-   "changes": [
-    "declaration changed (not classified)"
-   ],
-   "tells": "users",
-   "before": {
-    "kind": "class",
-    "accepts": "(arg0: { aiAccounts?: null; aiRuns: anything; basisVersions: anything; citation: anything; connections: anything; content: anything; extraction?: null; legEarning?: null; membership: anything; now?: null; record: anything; steps?: null; storage: anything; strength: anything })",
-    "handsBack": "handle run-productions.RunProductions"
-   },
-   "after": {
-    "kind": "class",
-    "accepts": "(arg0: { aiAccounts?: null; aiRuns: anything; basisVersions: anything; citation: anything; connections: anything; content: anything; extraction?: null; legEarning?: null; membership: anything; now?: null; record: anything; steps?: null; storage: anything; strength: anything })",
-    "handsBack": "handle run-productions.RunProductions"
-   }
-  },
-  {
-   "module": "capture-requests",
-   "entry": "CaptureRequests",
-   "changes": [
-    "declaration changed (not classified)"
-   ],
-   "tells": "users",
-   "before": {
-    "kind": "class",
-    "accepts": "(arg0: anything, arg1?: {  })",
-    "handsBack": "handle capture-requests.CaptureRequests"
-   },
-   "after": {
-    "kind": "class",
-    "accepts": "(arg0: anything, arg1?: {  })",
-    "handsBack": "handle capture-requests.CaptureRequests"
-   }
-  },
-  {
-   "module": "wizard-scripts",
-   "entry": "WizardScripts",
-   "changes": [
-    "declaration changed (not classified)"
-   ],
-   "tells": "users",
-   "before": {
-    "kind": "class",
-    "accepts": "(arg0?: { accounts?: null; aiRuns?: null; env?: null; filingTemplates?: null; now?: null })",
-    "handsBack": "handle wizard-scripts.WizardScripts"
-   },
-   "after": {
-    "kind": "class",
-    "accepts": "(arg0?: { accounts?: null; aiRuns?: null; env?: null; filingTemplates?: null; now?: null })",
-    "handsBack": "handle wizard-scripts.WizardScripts"
-   }
-  },
-  {
-   "module": "queue-producers",
-   "entry": "QueueProducers",
-   "changes": [
-    "declaration changed (not classified)"
-   ],
-   "tells": "users",
-   "before": {
-    "kind": "class",
-    "accepts": "(arg0?: { deps?: {  } })",
-    "handsBack": "handle queue-producers.QueueProducers"
-   },
-   "after": {
-    "kind": "class",
-    "accepts": "(arg0?: { deps?: {  } })",
-    "handsBack": "handle queue-producers.QueueProducers"
-   }
-  },
-  {
-   "module": "instance-setup",
-   "entry": "InstanceSetup",
-   "changes": [
-    "declaration changed (not classified)"
-   ],
-   "tells": "users",
-   "before": {
-    "kind": "class",
-    "accepts": "(arg0: anything, arg1?: {  }, arg2?: {  })",
-    "handsBack": "handle instance-setup.InstanceSetup"
-   },
-   "after": {
-    "kind": "class",
-    "accepts": "(arg0: anything, arg1?: {  }, arg2?: {  })",
-    "handsBack": "handle instance-setup.InstanceSetup"
-   }
-  },
-  {
    "module": "plane",
    "entry": "Store#dispatchMemberRun",
    "changes": [
@@ -2620,25 +2510,9 @@
       "reads or calls values of unknown kind: capture-requests/src/index.mjs:118 fam; capture-requests/src/index.mjs:122 row; capture-requests/src/index.mjs:137 row (+2745)"
      ],
      "through": null
-    },
-    {
-     "module": "run-productions",
-     "entry": "RunProductions",
-     "changes": [
-      "declaration changed (not classified)"
-     ],
-     "lines": [
-      "capture-requests/src/index.mjs:770",
-      "capture-requests/src/index.mjs:773",
-      "capture-requests/src/index.mjs:780",
-      "capture-requests/src/index.mjs:781"
-     ],
-     "through": "ai-runs"
     }
    ],
-   "undeclared": [
-    "run-productions"
-   ]
+   "undeclared": []
   },
   {
    "user": "skills",
@@ -2662,13 +2536,6 @@
       "reads or calls values of unknown kind: skills/src/skilldoctrine.mjs:260 SUGGEST_CHECKS.SUGGEST_BOILERPLATE; skills/src/skilldoctrine.mjs:261 SUGGEST_CHECKS.SUGGEST_UNWRITABLE_STATE; skills/src/skilldoctrine.mjs:262 SUGGEST_CHECKS.SUGGEST_NOT_DIFFERENT (+468)"
      ],
      "through": null
-    },
-    {
-     "module": "run-productions",
-     "notFollowed": [
-      "reads or calls values of unknown kind: skills/src/skilldoctrine.mjs:260 SUGGEST_CHECKS.SUGGEST_BOILERPLATE; skills/src/skilldoctrine.mjs:261 SUGGEST_CHECKS.SUGGEST_UNWRITABLE_STATE; skills/src/skilldoctrine.mjs:262 SUGGEST_CHECKS.SUGGEST_NOT_DIFFERENT (+468)"
-     ],
-     "through": "ai-runs"
     }
    ],
    "undeclared": []
@@ -2712,20 +2579,6 @@
       "reads or calls values of unknown kind: question-explorer/src/index.mjs:99 storage; question-explorer/src/index.mjs:119 aiRuns; question-explorer/src/index.mjs:119 aiRuns.verifications (+2167)"
      ],
      "through": null
-    },
-    {
-     "module": "run-productions",
-     "notFollowed": [
-      "reads or calls values of unknown kind: question-explorer/src/index.mjs:99 storage; question-explorer/src/index.mjs:119 aiRuns; question-explorer/src/index.mjs:119 aiRuns.verifications (+2167)"
-     ],
-     "through": "ai-runs"
-    },
-    {
-     "module": "capture-requests",
-     "notFollowed": [
-      "reads or calls values of unknown kind: question-explorer/src/index.mjs:99 storage; question-explorer/src/index.mjs:119 aiRuns; question-explorer/src/index.mjs:119 aiRuns.verifications (+2167)"
-     ],
-     "through": "ai-runs"
     }
    ],
    "undeclared": []
@@ -2755,26 +2608,9 @@
       "reads or calls values of unknown kind: agent-steps/src/drive.mjs:26 env; agent-steps/src/drive.mjs:26 env.CLOCK; agent-steps/src/drive.mjs:49 askPlane (+1595)"
      ],
      "through": null
-    },
-    {
-     "module": "run-productions",
-     "notFollowed": [
-      "reads or calls values of unknown kind: agent-steps/src/drive.mjs:26 env; agent-steps/src/drive.mjs:26 env.CLOCK; agent-steps/src/drive.mjs:49 askPlane (+1595)"
-     ],
-     "through": "ai-runs"
-    },
-    {
-     "module": "capture-requests",
-     "notFollowed": [
-      "reads or calls values of unknown kind: agent-steps/src/drive.mjs:26 env; agent-steps/src/drive.mjs:26 env.CLOCK; agent-steps/src/drive.mjs:49 askPlane (+1595)"
-     ],
-     "through": "ai-runs"
     }
    ],
-   "undeclared": [
-    "wizard-scripts",
-    "instance-setup"
-   ]
+   "undeclared": []
   },
   {
    "user": "agent-worker",
@@ -2802,50 +2638,9 @@
       "reads or calls values of unknown kind: agent-worker/src/scripts/build.mjs:41 member.bundle; agent-worker/src/scripts/build.mjs:42 built.bytes; agent-worker/src/scripts/build.mjs:43 member.bundle (+5807)"
      ],
      "through": null
-    },
-    {
-     "module": "run-productions",
-     "entry": "RunProductions",
-     "changes": [
-      "declaration changed (not classified)"
-     ],
-     "lines": [
-      "agent-worker/src/src/index.mjs:397",
-      "agent-worker/src/src/index.mjs:720"
-     ],
-     "through": "ai-runs"
-    },
-    {
-     "module": "run-productions",
-     "notFollowed": [
-      "reads or calls values of unknown kind: agent-worker/src/scripts/build.mjs:41 member.bundle; agent-worker/src/scripts/build.mjs:42 built.bytes; agent-worker/src/scripts/build.mjs:43 member.bundle (+5807)"
-     ],
-     "through": "ai-runs"
-    },
-    {
-     "module": "capture-requests",
-     "entry": "CaptureRequests",
-     "changes": [
-      "declaration changed (not classified)"
-     ],
-     "lines": [
-      "agent-worker/src/src/index.mjs:412",
-      "agent-worker/src/src/index.mjs:416"
-     ],
-     "through": "ai-runs"
-    },
-    {
-     "module": "capture-requests",
-     "notFollowed": [
-      "reads or calls values of unknown kind: agent-worker/src/scripts/build.mjs:41 member.bundle; agent-worker/src/scripts/build.mjs:42 built.bytes; agent-worker/src/scripts/build.mjs:43 member.bundle (+5807)"
-     ],
-     "through": "ai-runs"
     }
    ],
-   "undeclared": [
-    "instance-setup",
-    "wizard-scripts"
-   ]
+   "undeclared": []
   },
   {
    "user": "ai-gate",
@@ -2975,13 +2770,6 @@
       "reads or calls values of unknown kind: intent/src/checks.mjs:149 row; intent/src/doc.mjs:31 lines; intent/src/doc.mjs:32 lines.indexOf (+3341)"
      ],
      "through": null
-    },
-    {
-     "module": "capture-requests",
-     "notFollowed": [
-      "reads or calls values of unknown kind: intent/src/checks.mjs:149 row; intent/src/doc.mjs:31 lines; intent/src/doc.mjs:32 lines.indexOf (+3341)"
-     ],
-     "through": "ai-runs"
     }
    ],
    "undeclared": []
@@ -3059,9 +2847,7 @@
      "through": null
     }
    ],
-   "undeclared": [
-    "run-productions"
-   ]
+   "undeclared": []
   },
   {
    "user": "plan-work",
@@ -3145,18 +2931,9 @@
       "reads or calls values of unknown kind: scheduler/src/index.mjs:165 e; scheduler/src/index.mjs:194 record; scheduler/src/index.mjs:194 record.getSetting (+1180)"
      ],
      "through": null
-    },
-    {
-     "module": "capture-requests",
-     "notFollowed": [
-      "reads or calls values of unknown kind: scheduler/src/index.mjs:165 e; scheduler/src/index.mjs:194 record; scheduler/src/index.mjs:194 record.getSetting (+1180)"
-     ],
-     "through": "ai-runs"
     }
    ],
-   "undeclared": [
-    "run-productions"
-   ]
+   "undeclared": []
   },
   {
    "user": "wizard-scripts",
@@ -3199,10 +2976,7 @@
      "through": null
     }
    ],
-   "undeclared": [
-    "capture-requests",
-    "run-productions"
-   ]
+   "undeclared": []
   },
   {
    "user": "affordances",
@@ -3225,13 +2999,6 @@
       "reads or calls values of unknown kind: affordances/src/act-help.mjs:292 MEMBERSHIP_CHECKS.HANDLE_FIXED; affordances/src/act-help.mjs:293 ACT_HELP_KEYS; affordances/src/affordances.mjs:603 p.proceeding_kinds.filter((k) => k && ty (+3116)"
      ],
      "through": null
-    },
-    {
-     "module": "wizard-scripts",
-     "notFollowed": [
-      "reads or calls values of unknown kind: affordances/src/act-help.mjs:292 MEMBERSHIP_CHECKS.HANDLE_FIXED; affordances/src/act-help.mjs:293 ACT_HELP_KEYS; affordances/src/affordances.mjs:603 p.proceeding_kinds.filter((k) => k && ty (+3116)"
-     ],
-     "through": "ai-runs"
     }
    ],
    "undeclared": []
@@ -3271,26 +3038,9 @@
       "reads or calls values of unknown kind: queue-producers/src/index.mjs:87 r; queue-producers/src/index.mjs:100 storage; queue-producers/src/index.mjs:106 make (+3821)"
      ],
      "through": null
-    },
-    {
-     "module": "capture-requests",
-     "notFollowed": [
-      "reads or calls values of unknown kind: queue-producers/src/index.mjs:87 r; queue-producers/src/index.mjs:100 storage; queue-producers/src/index.mjs:106 make (+3821)"
-     ],
-     "through": "ai-runs"
-    },
-    {
-     "module": "wizard-scripts",
-     "notFollowed": [
-      "reads or calls values of unknown kind: queue-producers/src/index.mjs:87 r; queue-producers/src/index.mjs:100 storage; queue-producers/src/index.mjs:106 make (+3821)"
-     ],
-     "through": "ai-runs"
     }
    ],
-   "undeclared": [
-    "run-productions",
-    "instance-setup"
-   ]
+   "undeclared": []
   },
   {
    "user": "instance-setup",
@@ -3318,26 +3068,9 @@
       "reads or calls values of unknown kind: instance-setup/src/livefire.mjs:30 env; instance-setup/src/livefire.mjs:39 stub.fetch; instance-setup/src/livefire.mjs:39 stub (+3670)"
      ],
      "through": null
-    },
-    {
-     "module": "wizard-scripts",
-     "notFollowed": [
-      "reads or calls values of unknown kind: instance-setup/src/livefire.mjs:30 env; instance-setup/src/livefire.mjs:39 stub.fetch; instance-setup/src/livefire.mjs:39 stub (+3670)"
-     ],
-     "through": "ai-runs"
-    },
-    {
-     "module": "queue-producers",
-     "notFollowed": [
-      "declares queue-producers but no use of it is found in its code",
-      "reads or calls values of unknown kind: instance-setup/src/livefire.mjs:30 env; instance-setup/src/livefire.mjs:39 stub.fetch; instance-setup/src/livefire.mjs:39 stub (+3670)"
-     ],
-     "through": "ai-runs"
     }
    ],
-   "undeclared": [
-    "run-productions"
-   ]
+   "undeclared": []
   },
   {
    "user": "instance-reports",
@@ -3348,13 +3081,6 @@
       "declares ai-runs but no use of it is found in its code"
      ],
      "through": null
-    },
-    {
-     "module": "instance-setup",
-     "notFollowed": [
-      "declares instance-setup but no use of it is found in its code"
-     ],
-     "through": "ai-runs"
     }
    ],
    "undeclared": []
@@ -3381,20 +3107,6 @@
       "declares ai-runs but no use of it is found in its code"
      ],
      "through": null
-    },
-    {
-     "module": "capture-requests",
-     "notFollowed": [
-      "declares capture-requests but no use of it is found in its code"
-     ],
-     "through": "ai-runs"
-    },
-    {
-     "module": "instance-setup",
-     "notFollowed": [
-      "declares instance-setup but no use of it is found in its code"
-     ],
-     "through": "ai-runs"
     }
    ],
    "undeclared": []
@@ -3434,35 +3146,6 @@
       "reads or calls values of unknown kind: op-declarations/src/compose.mjs:10 composed; op-declarations/src/compose.mjs:16 composed; op-declarations/src/declared.mjs:15 a (+3576)"
      ],
      "through": null
-    },
-    {
-     "module": "run-productions",
-     "notFollowed": [
-      "reads or calls values of unknown kind: op-declarations/src/compose.mjs:10 composed; op-declarations/src/compose.mjs:16 composed; op-declarations/src/declared.mjs:15 a (+3576)"
-     ],
-     "through": "ai-runs"
-    },
-    {
-     "module": "capture-requests",
-     "notFollowed": [
-      "reads or calls values of unknown kind: op-declarations/src/compose.mjs:10 composed; op-declarations/src/compose.mjs:16 composed; op-declarations/src/declared.mjs:15 a (+3576)"
-     ],
-     "through": "ai-runs"
-    },
-    {
-     "module": "wizard-scripts",
-     "notFollowed": [
-      "reads or calls values of unknown kind: op-declarations/src/compose.mjs:10 composed; op-declarations/src/compose.mjs:16 composed; op-declarations/src/declared.mjs:15 a (+3576)"
-     ],
-     "through": "ai-runs"
-    },
-    {
-     "module": "instance-setup",
-     "notFollowed": [
-      "declares instance-setup but no use of it is found in its code",
-      "reads or calls values of unknown kind: op-declarations/src/compose.mjs:10 composed; op-declarations/src/compose.mjs:16 composed; op-declarations/src/declared.mjs:15 a (+3576)"
-     ],
-     "through": "ai-runs"
     }
    ],
    "undeclared": []
@@ -3521,34 +3204,6 @@
       "reads or calls values of unknown kind: store-door/src/dispatch.mjs:202 url.searchParams.get; store-door/src/dispatch.mjs:202 url.searchParams; store-door/src/dispatch.mjs:202 url (+1319)"
      ],
      "through": null
-    },
-    {
-     "module": "run-productions",
-     "notFollowed": [
-      "reads or calls values of unknown kind: store-door/src/dispatch.mjs:202 url.searchParams.get; store-door/src/dispatch.mjs:202 url.searchParams; store-door/src/dispatch.mjs:202 url (+1319)"
-     ],
-     "through": "ai-runs"
-    },
-    {
-     "module": "capture-requests",
-     "notFollowed": [
-      "reads or calls values of unknown kind: store-door/src/dispatch.mjs:202 url.searchParams.get; store-door/src/dispatch.mjs:202 url.searchParams; store-door/src/dispatch.mjs:202 url (+1319)"
-     ],
-     "through": "ai-runs"
-    },
-    {
-     "module": "wizard-scripts",
-     "notFollowed": [
-      "reads or calls values of unknown kind: store-door/src/dispatch.mjs:202 url.searchParams.get; store-door/src/dispatch.mjs:202 url.searchParams; store-door/src/dispatch.mjs:202 url (+1319)"
-     ],
-     "through": "ai-runs"
-    },
-    {
-     "module": "instance-setup",
-     "notFollowed": [
-      "reads or calls values of unknown kind: store-door/src/dispatch.mjs:202 url.searchParams.get; store-door/src/dispatch.mjs:202 url.searchParams; store-door/src/dispatch.mjs:202 url (+1319)"
-     ],
-     "through": "ai-runs"
     }
    ],
    "undeclared": []
@@ -3562,13 +3217,6 @@
       "declares ai-runs but no use of it is found in its code"
      ],
      "through": null
-    },
-    {
-     "module": "run-productions",
-     "notFollowed": [
-      "declares run-productions but no use of it is found in its code"
-     ],
-     "through": "ai-runs"
     }
    ],
    "undeclared": []
@@ -3673,67 +3321,6 @@
       "reads or calls values of unknown kind: store-assembly/src/acquire-timings.mjs:25 host; store-assembly/src/acquire-timings.mjs:25 host.storage; store-assembly/src/acquire-timings.mjs:25 host.storage.sql (+6723)"
      ],
      "through": null
-    },
-    {
-     "module": "run-productions",
-     "entry": "RunProductions",
-     "changes": [
-      "declaration changed (not classified)"
-     ],
-     "lines": [
-      "store-assembly/src/stats.mjs:13",
-      "store-assembly/src/stats.mjs:30",
-      "store-assembly/test/r9-jobs.test.mjs:49",
-      "store-assembly/test/stats.test.mjs:17",
-      "store-assembly/test/stats.test.mjs:133"
-     ],
-     "through": "ai-runs"
-    },
-    {
-     "module": "run-productions",
-     "notFollowed": [
-      "reads or calls values of unknown kind: store-assembly/src/acquire-timings.mjs:25 host; store-assembly/src/acquire-timings.mjs:25 host.storage; store-assembly/src/acquire-timings.mjs:25 host.storage.sql (+6723)"
-     ],
-     "through": "ai-runs"
-    },
-    {
-     "module": "capture-requests",
-     "entry": "CaptureRequests",
-     "changes": [
-      "declaration changed (not classified)"
-     ],
-     "lines": [
-      "store-assembly/src/ask.mjs:370"
-     ],
-     "through": "ai-runs"
-    },
-    {
-     "module": "capture-requests",
-     "notFollowed": [
-      "reads or calls values of unknown kind: store-assembly/src/acquire-timings.mjs:25 host; store-assembly/src/acquire-timings.mjs:25 host.storage; store-assembly/src/acquire-timings.mjs:25 host.storage.sql (+6723)"
-     ],
-     "through": "ai-runs"
-    },
-    {
-     "module": "wizard-scripts",
-     "notFollowed": [
-      "reads or calls values of unknown kind: store-assembly/src/acquire-timings.mjs:25 host; store-assembly/src/acquire-timings.mjs:25 host.storage; store-assembly/src/acquire-timings.mjs:25 host.storage.sql (+6723)"
-     ],
-     "through": "ai-runs"
-    },
-    {
-     "module": "queue-producers",
-     "notFollowed": [
-      "reads or calls values of unknown kind: store-assembly/src/acquire-timings.mjs:25 host; store-assembly/src/acquire-timings.mjs:25 host.storage; store-assembly/src/acquire-timings.mjs:25 host.storage.sql (+6723)"
-     ],
-     "through": "ai-runs"
-    },
-    {
-     "module": "instance-setup",
-     "notFollowed": [
-      "reads or calls values of unknown kind: store-assembly/src/acquire-timings.mjs:25 host; store-assembly/src/acquire-timings.mjs:25 host.storage; store-assembly/src/acquire-timings.mjs:25 host.storage.sql (+6723)"
-     ],
-     "through": "ai-runs"
     }
    ],
    "undeclared": []
@@ -3790,13 +3377,6 @@
       "reads or calls values of unknown kind: store-request/src/door-ops.mjs:23 res.clone().json; store-request/src/door-ops.mjs:23 res.clone(); store-request/src/door-ops.mjs:23 res.clone (+2391)"
      ],
      "through": null
-    },
-    {
-     "module": "instance-setup",
-     "notFollowed": [
-      "reads or calls values of unknown kind: store-request/src/door-ops.mjs:23 res.clone().json; store-request/src/door-ops.mjs:23 res.clone(); store-request/src/door-ops.mjs:23 res.clone (+2391)"
-     ],
-     "through": "ai-runs"
     }
    ],
    "undeclared": []
@@ -3822,21 +3402,6 @@
       "reads or calls values of unknown kind: screens-inquiry/src/admit.mjs:12 SCREEN_REGISTRY.find; screens-inquiry/src/admit.mjs:12 SCREEN_REGISTRY; screens-inquiry/src/admit.mjs:12 r (+17772)"
      ],
      "through": null
-    },
-    {
-     "module": "wizard-scripts",
-     "notFollowed": [
-      "reads or calls values of unknown kind: screens-inquiry/src/admit.mjs:12 SCREEN_REGISTRY.find; screens-inquiry/src/admit.mjs:12 SCREEN_REGISTRY; screens-inquiry/src/admit.mjs:12 r (+17772)"
-     ],
-     "through": "ai-runs"
-    },
-    {
-     "module": "instance-setup",
-     "notFollowed": [
-      "declares instance-setup but no use of it is found in its code",
-      "reads or calls values of unknown kind: screens-inquiry/src/admit.mjs:12 SCREEN_REGISTRY.find; screens-inquiry/src/admit.mjs:12 SCREEN_REGISTRY; screens-inquiry/src/admit.mjs:12 r (+17772)"
-     ],
-     "through": "ai-runs"
     }
    ],
    "undeclared": []
@@ -3850,20 +3415,6 @@
       "declares ai-runs but no use of it is found in its code"
      ],
      "through": null
-    },
-    {
-     "module": "wizard-scripts",
-     "notFollowed": [
-      "declares wizard-scripts but no use of it is found in its code"
-     ],
-     "through": "ai-runs"
-    },
-    {
-     "module": "instance-setup",
-     "notFollowed": [
-      "declares instance-setup but no use of it is found in its code"
-     ],
-     "through": "ai-runs"
     }
    ],
    "undeclared": []
@@ -3925,60 +3476,6 @@
       "reads or calls values of unknown kind: control-plane/src/app.mjs:29 req; control-plane/src/app.mjs:30 url; control-plane/src/app.mjs:31 p.startsWith (+12148)"
      ],
      "through": null
-    },
-    {
-     "module": "run-productions",
-     "notFollowed": [
-      "reads or calls values of unknown kind: control-plane/src/app.mjs:29 req; control-plane/src/app.mjs:30 url; control-plane/src/app.mjs:31 p.startsWith (+12148)"
-     ],
-     "through": "ai-runs"
-    },
-    {
-     "module": "capture-requests",
-     "entry": "CaptureRequests",
-     "changes": [
-      "declaration changed (not classified)"
-     ],
-     "lines": [
-      "control-plane/src/index.mjs:1864",
-      "control-plane/test/r100-upload.test.mjs:61",
-      "control-plane/test/r124-owed-render.test.mjs:205",
-      "control-plane/test/r124-owed-render.test.mjs:216",
-      "control-plane/test/r124-owed-render.test.mjs:295"
-     ],
-     "through": "ai-runs"
-    },
-    {
-     "module": "capture-requests",
-     "notFollowed": [
-      "reads or calls values of unknown kind: control-plane/src/app.mjs:29 req; control-plane/src/app.mjs:30 url; control-plane/src/app.mjs:31 p.startsWith (+12148)"
-     ],
-     "through": "ai-runs"
-    },
-    {
-     "module": "wizard-scripts",
-     "entry": "WizardScripts",
-     "changes": [
-      "declaration changed (not classified)"
-     ],
-     "lines": [
-      "control-plane/src/index.mjs:425"
-     ],
-     "through": "ai-runs"
-    },
-    {
-     "module": "wizard-scripts",
-     "notFollowed": [
-      "reads or calls values of unknown kind: control-plane/src/app.mjs:29 req; control-plane/src/app.mjs:30 url; control-plane/src/app.mjs:31 p.startsWith (+12148)"
-     ],
-     "through": "ai-runs"
-    },
-    {
-     "module": "instance-setup",
-     "notFollowed": [
-      "reads or calls values of unknown kind: control-plane/src/app.mjs:29 req; control-plane/src/app.mjs:30 url; control-plane/src/app.mjs:31 p.startsWith (+12148)"
-     ],
-     "through": "ai-runs"
     }
    ],
    "undeclared": []
@@ -4080,53 +3577,6 @@
       "reads or calls values of unknown kind: plane/src/arrival.mjs:8 headers.get; plane/src/arrival.mjs:8 headers; plane/src/arrival.mjs:9 raw.trim (+3303)"
      ],
      "through": null
-    },
-    {
-     "module": "run-productions",
-     "notFollowed": [
-      "reads or calls values of unknown kind: plane/src/arrival.mjs:8 headers.get; plane/src/arrival.mjs:8 headers; plane/src/arrival.mjs:9 raw.trim (+3303)"
-     ],
-     "through": "ai-runs"
-    },
-    {
-     "module": "capture-requests",
-     "notFollowed": [
-      "reads or calls values of unknown kind: plane/src/arrival.mjs:8 headers.get; plane/src/arrival.mjs:8 headers; plane/src/arrival.mjs:9 raw.trim (+3303)"
-     ],
-     "through": "ai-runs"
-    },
-    {
-     "module": "wizard-scripts",
-     "notFollowed": [
-      "reads or calls values of unknown kind: plane/src/arrival.mjs:8 headers.get; plane/src/arrival.mjs:8 headers; plane/src/arrival.mjs:9 raw.trim (+3303)"
-     ],
-     "through": "ai-runs"
-    },
-    {
-     "module": "queue-producers",
-     "entry": "QueueProducers",
-     "changes": [
-      "declaration changed (not classified)"
-     ],
-     "lines": [
-      "plane/test/t47.test.mjs:67",
-      "plane/test/t48.test.mjs:90"
-     ],
-     "through": "ai-runs"
-    },
-    {
-     "module": "queue-producers",
-     "notFollowed": [
-      "reads or calls values of unknown kind: plane/src/arrival.mjs:8 headers.get; plane/src/arrival.mjs:8 headers; plane/src/arrival.mjs:9 raw.trim (+3303)"
-     ],
-     "through": "ai-runs"
-    },
-    {
-     "module": "instance-setup",
-     "notFollowed": [
-      "reads or calls values of unknown kind: plane/src/arrival.mjs:8 headers.get; plane/src/arrival.mjs:8 headers; plane/src/arrival.mjs:9 raw.trim (+3303)"
-     ],
-     "through": "ai-runs"
     }
    ],
    "undeclared": []
@@ -4135,11 +3585,11 @@
  "notTold": [],
  "warnings": [],
  "interfaceChanged": true,
- "summary": "7 module(s) changed their listing; 58 entries changed in a way that tells; 29 user(s) told.",
+ "summary": "2 module(s) changed their listing; 53 entries changed in a way that tells; 29 user(s) told.",
  "replay": {
   "change": "ai-runs:96",
-  "ms": 123942,
-  "ranAt": "2026-11-15T16:22:24.882Z",
+  "ms": 128290,
+  "ranAt": "2026-11-15T16:48:17.386Z",
   "tool": "notice-proof/tool/p3tool.mjs",
   "commentedUsers": null
  }
