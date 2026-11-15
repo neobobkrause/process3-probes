@@ -1,0 +1,42 @@
+--- before/rooms/src/index.mjs
++++ after/rooms/src/index.mjs
+@@ -38,9 +38,11 @@
+ /**
+  * The operations rooms answers by name through the door.
+  * @typedef {{
+- *   roomlist: {req: {kind?: RoomKind}, res: {rooms: Room[]}}
++ *   roomlist: {req: {kind?: RoomKind}, res: {rooms: Room[]}},
++ *   bookstatus: {req: {id: string}, res: {bookable: boolean, seats: number}}
+  * }} RoomOps
+  * @optable
++ * @bound bookstatus.seats: whole number, 0 to 500, and 0 when bookable is false
+  */
+ 
+ /**
+@@ -90,5 +92,9 @@
+ export function roomHandlers(rooms) {
+   return {
+     roomlist: (req) => ({ rooms: rooms.list(req.kind) }),
++    bookstatus: (req) => {
++      const room = rooms.find(req.id);
++      return room ? { bookable: true, seats: room.seats } : { bookable: false, seats: 0 };
++    },
+   };
+ }
+--- before/rooms/test/index.test.mjs
++++ after/rooms/test/index.test.mjs
+@@ -39,6 +39,14 @@
+   for (const r of rooms.list()) assert.ok(ROOM_KINDS.includes(r.kind));
+ });
+ 
++test('bound bookstatus.seats: whole number, 0 to 500, and 0 when bookable is false', () => {
++  const rooms = fresh();
++  rooms.add({ name: 'Hall', kind: 'hall', seats: 80 });
++  const h = roomHandlers(rooms);
++  assert.deepEqual(h.bookstatus({ id: 'hall' }), { bookable: true, seats: 80 });
++  assert.deepEqual(h.bookstatus({ id: 'attic' }), { bookable: false, seats: 0 });
++});
++
+ test('roomlist operation answers with the rooms of a kind', () => {
+   const rooms = fresh();
+   rooms.add({ name: 'Kitchen', kind: 'kitchen', seats: 8 });

@@ -1,0 +1,13 @@
+--- before/front/test/index.test.mjs
++++ after/front/test/index.test.mjs
+@@ -14,7 +14,9 @@
+     ],
+   });
+   const rooms = createRooms({ store });
+-  const bookings = createBookings({ store, rooms });
++  // A fixed time, so that what the tests see does not depend on the day they run.
++  const clock = { now: () => '2026-11-15T09:30:00.000Z' };
++  const bookings = createBookings({ store, rooms, clock });
+   return createFront({ door: createDoor({ ...bookingHandlers(bookings), ...roomHandlers(rooms) }) });
+ }
+ 

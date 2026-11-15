@@ -1,0 +1,7 @@
+{
+  "title": "The meter stops on its own when its input goes quiet for 30 seconds",
+  "provider": "meter",
+  "covers": [
+    "honest code using Node's own timer methods, which the reader describes as the browser's"
+  ]
+}

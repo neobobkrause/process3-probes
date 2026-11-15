@@ -1,0 +1,12 @@
+{
+  "title": "formatAmount takes an optional number of digits after the point",
+  "provider": "money",
+  "covers": [
+    "optional parameter added (accepts more)",
+    "user passes the function as a callback to map"
+  ],
+  "before": [
+    "setups/X01-billing-writes-instalments"
+  ],
+  "note": "Before the change billing writes parts.map(formatAmount): map hands formatAmount (amount, index, list). The extra arguments were ignored; now the index is the number of decimals."
+}

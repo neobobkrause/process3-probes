@@ -1,0 +1,31 @@
+--- before/money/src/index.mjs
++++ after/money/src/index.mjs
+@@ -49,10 +49,11 @@
+ /**
+  * Writes an amount for people to read.
+  * @param {Amount} a
++ * @param {0 | 1 | 2} [decimals] how many digits to show after the point; 2 when left out
+  * @returns {string}
+  */
+-export function formatAmount(a) {
+-  return `${a.currency} ${(a.cents / 100).toFixed(2)}`;
++export function formatAmount(a, decimals = 2) {
++  return `${a.currency} ${(a.cents / 100).toFixed(decimals)}`;
+ }
+ 
+ /**
+--- before/money/test/index.test.mjs
++++ after/money/test/index.test.mjs
+@@ -27,6 +27,12 @@
+   assert.match(s, /12[.,]50/);
+ });
+ 
++test('formatAmount shows as many digits after the point as asked, two when not asked', () => {
++  assert.match(formatAmount(amount(1240, 'EUR'), 0), /^EUR 12$/);
++  assert.match(formatAmount(amount(1240, 'EUR'), 1), /^EUR 12\.4$/);
++  assert.match(formatAmount(amount(1240, 'EUR')), /^EUR 12\.40$/);
++});
++
+ test('bound parts: whole number, 1 to 100', () => {
+   assert.equal(splitEvenly(amount(100, 'EUR'), 1).length, 1);
+   assert.equal(splitEvenly(amount(100, 'EUR'), 100).length, 100);

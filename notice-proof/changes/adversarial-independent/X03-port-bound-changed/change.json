@@ -1,0 +1,12 @@
+{
+  "title": "The clock bookings is handed now gives today's date, YYYY-MM-DD, and bookings keeps only the day",
+  "provider": "bookings",
+  "covers": [
+    "bound line of a kind the user implements changes",
+    "use of a provider kind that the user never names"
+  ],
+  "before": [
+    "setups/X03a-bookings-clock",
+    "setups/X03b-front-fixed-clock"
+  ]
+}

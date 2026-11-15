@@ -1,0 +1,28 @@
+--- before/meter/src/worker.mjs
++++ after/meter/src/worker.mjs
+@@ -12,7 +12,16 @@
+ const send = (msg) => process.stdout.write(JSON.stringify(msg) + '\n');
+ 
+ const lines = createInterface({ input: process.stdin });
++
++/** How long the meter waits for its next line before it stops on its own, in milliseconds. */
++const IDLE_MS = 30_000;
++// A meter whose input goes quiet stops on its own, so that a forgotten one does not linger. The wait alone does
++// not keep the program running.
++const idle = setTimeout(() => lines.close(), IDLE_MS);
++idle.unref();
++
+ lines.on('line', (/** @type {string} */ line) => {
++  idle.refresh();
+   if (line.trim() === '') return;
+   /** @type {MeterInput} checks a MeterInput below */
+   const input = JSON.parse(line);
+@@ -23,4 +32,7 @@
+   count++;
+   send({ kind: 'reading', room: input.room, minutes: input.minutes, cost: amount(input.minutes * RATE_CENTS_PER_MINUTE, 'EUR') });
+ });
+-lines.on('close', () => send({ kind: 'done', count }));
++lines.on('close', () => {
++  clearTimeout(idle);
++  send({ kind: 'done', count });
++});

@@ -1,0 +1,22 @@
+--- before/money/src/index.mjs
++++ after/money/src/index.mjs
+@@ -12,7 +12,7 @@
+  * @typedef {Object} Amount
+  * @property {number} cents the amount in whole cents
+  * @property {Currency} currency
+- * @bound cents: whole number, 0 to 10,000,000 inclusive
++ * @bound cents: a whole number from 0 to 10,000,000, both ends included
+  */
+ 
+ const MAX_CENTS = 10_000_000;
+--- before/money/test/index.test.mjs
++++ after/money/test/index.test.mjs
+@@ -2,7 +2,7 @@
+ import assert from 'node:assert/strict';
+ import { amount, add, formatAmount, splitEvenly, CURRENCIES } from '../src/index.mjs';
+ 
+-test('bound cents: whole number, 0 to 10,000,000 inclusive', () => {
++test('bound cents: a whole number from 0 to 10,000,000, both ends included', () => {
+   assert.equal(amount(0, 'EUR').cents, 0);
+   assert.equal(amount(10_000_000, 'EUR').cents, 10_000_000);
+   assert.throws(() => amount(-1, 'EUR'), RangeError);

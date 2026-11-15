@@ -1,0 +1,25 @@
+--- before/bookings/src/index.mjs
++++ after/bookings/src/index.mjs
+@@ -7,9 +7,12 @@
+ /** @import { Store } from '../../store/src/index.mjs' */
+ /** @import { Rooms } from '../../rooms/src/index.mjs' */
+ 
+-/** The price of one seat for one night, in euro cents. */
++/** The price of one seat for one night in a hall, in euro cents. */
+ export const PRICE_PER_SEAT_NIGHT = 1500;
+ 
++/** What one seat for one night costs in each kind of room, in euro cents. */
++const PRICE_BY_KIND = { hall: PRICE_PER_SEAT_NIGHT, studio: 1800, kitchen: 1200 };
++
+ /**
+  * A booking.
+  * @typedef {Object} Booking
+@@ -93,7 +96,7 @@
+     const room = rooms.find(roomId);
+     if (!room) throw new RangeError(`bookings: unknown room: ${roomId}`);
+     checkSize(party, nights, room.seats);
+-    return amount(PRICE_PER_SEAT_NIGHT * party * nights, 'EUR');
++    return amount(PRICE_BY_KIND[room.kind] * party * nights, 'EUR');
+   };
+   /** @param {string} id */
+   const find = (id) => {

@@ -1,0 +1,8 @@
+{
+  "title": "store's put can be handed the record as it was read, and refuses the write if it has changed since",
+  "provider": "store",
+  "covers": [
+    "honest code the reader cannot follow (Map.has then get, assert.ok then use)",
+    "kind handed back now also accepted"
+  ]
+}

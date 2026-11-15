@@ -1,0 +1,7 @@
+{
+  "title": "Front's tests hand bookings a fixed clock",
+  "provider": "front",
+  "covers": [
+    "user implements a provider kind without naming it (the standing state)"
+  ]
+}

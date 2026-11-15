@@ -1,0 +1,7 @@
+{
+  "title": "Bookings takes an optional clock and stamps each booking with the time it was opened",
+  "provider": "bookings",
+  "covers": [
+    "provider defines a kind that users implement (a port)"
+  ]
+}

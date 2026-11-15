@@ -1,0 +1,77 @@
+--- before/bookings/src/index.mjs
++++ after/bookings/src/index.mjs
+@@ -22,6 +22,7 @@
+  * @property {'open' | 'cancelled'} state
+  * @property {Amount} total what the booking costs
+  * @property {string} [note]
++ * @property {string} created when the booking was opened, as the clock gave it
+  * @bound day: a real calendar day written YYYY-MM-DD
+  * @bound nights: whole number, 1 to 14
+  * @bound party: whole number, 1 to 200, and no more than the room's seats
+@@ -38,6 +39,13 @@
+  */
+ 
+ /**
++ * Where bookings learns the time. Handed in, so that tests can fix it.
++ * @typedef {Object} Clock
++ * @property {() => string} now the time now
++ * @bound now: an ISO date and time, such as 2026-11-15T09:30:00.000Z
++ */
++
++/**
+  * The bookings' handle.
+  * @typedef {Object} Bookings
+  * @property {(req: BookingRequest) => Booking} open opens a booking; refuses one outside the bounds or for an unknown room
+@@ -76,13 +84,16 @@
+   if (!Number.isInteger(nights) || nights < 1 || nights > 14) throw new RangeError('bookings: nights out of bounds');
+ }
+ 
++/** @type {Clock} the clock bookings uses when none is handed in */
++const SYSTEM_CLOCK = { now: () => new Date().toISOString() };
++
+ /**
+  * Makes the bookings' handle.
+- * @param {{store: Store, rooms: Rooms}} deps
++ * @param {{store: Store, rooms: Rooms, clock?: Clock}} deps
+  * @returns {Bookings}
+  */
+ export function createBookings(deps) {
+-  const { store, rooms } = deps;
++  const { store, rooms, clock = SYSTEM_CLOCK } = deps;
+   let next = 1;
+   /**
+    * @param {string} roomId
+@@ -105,6 +116,8 @@
+     find,
+     open(req) {
+       const first = parseDay(req.day);
++      const created = clock.now();
++      if (Number.isNaN(Date.parse(created)) || !created.includes('T')) throw new RangeError('bookings: the clock is outside its bound');
+       const total = quote(req.room, req.party, req.nights);
+       /** @type {Booking} builds a Booking */
+       const b = {
+@@ -116,6 +129,7 @@
+         party: req.party,
+         state: 'open',
+         total,
++        created,
+       };
+       if (req.note !== undefined) b.note = req.note;
+       store.put('bookings', b.id, b);
+--- before/bookings/test/index.test.mjs
++++ after/bookings/test/index.test.mjs
+@@ -58,6 +58,14 @@
+   assert.throws(() => bookings.open(req({ day: 'tomorrow' })), RangeError);
+ });
+ 
++test('bound now: an ISO date and time, such as 2026-11-15T09:30:00.000Z', () => {
++  const { store, rooms } = system();
++  const fixed = createBookings({ store, rooms, clock: { now: () => '2026-11-15T09:30:00.000Z' } });
++  assert.equal(fixed.open(req()).created, '2026-11-15T09:30:00.000Z');
++  const wrong = createBookings({ store, rooms, clock: { now: () => 'soon' } });
++  assert.throws(() => wrong.open(req()), RangeError);
++});
++
+ test('cancel closes an open booking once; unknown rooms and bookings are refused', () => {
+   const { bookings } = system();
+   const b = bookings.open(req());

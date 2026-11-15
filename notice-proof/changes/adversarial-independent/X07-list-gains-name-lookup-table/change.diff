@@ -1,0 +1,25 @@
+--- before/rooms/src/index.mjs
++++ after/rooms/src/index.mjs
+@@ -5,7 +5,7 @@
+ /** @import { Store } from '../../store/src/index.mjs' */
+ 
+ /** The kinds of room there are. */
+-export const ROOM_KINDS = Object.freeze(/** @type {const} */ (['hall', 'studio', 'kitchen']));
++export const ROOM_KINDS = Object.freeze(/** @type {const} */ (['hall', 'studio', 'kitchen', 'garden']));
+ 
+ /** @typedef {typeof ROOM_KINDS[number]} RoomKind */
+ 
+--- before/rooms/test/index.test.mjs
++++ after/rooms/test/index.test.mjs
+@@ -29,6 +29,11 @@
+   assert.throws(() => rooms.add({ name: 'Pool', kind: /** @type {any} */ ('pool'), seats: 10 }), RangeError);
+ });
+ 
++test('a garden can be added like any other room', () => {
++  const rooms = fresh();
++  assert.equal(rooms.add({ name: 'Rose Garden', kind: 'garden', seats: 40 }).kind, 'garden');
++});
++
+ test('list filters by kind and keeps name order', () => {
+   const rooms = fresh();
+   rooms.add({ name: 'B Hall', kind: 'hall', seats: 50 });

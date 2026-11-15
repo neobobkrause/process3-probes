@@ -1,0 +1,59 @@
+--- before/bookings/src/index.mjs
++++ after/bookings/src/index.mjs
+@@ -22,7 +22,7 @@
+  * @property {'open' | 'cancelled'} state
+  * @property {Amount} total what the booking costs
+  * @property {string} [note]
+- * @property {string} created when the booking was opened, as the clock gave it
++ * @property {string} created the day the booking was opened, as the clock gave it
+  * @bound day: a real calendar day written YYYY-MM-DD
+  * @bound nights: whole number, 1 to 14
+  * @bound party: whole number, 1 to 200, and no more than the room's seats
+@@ -41,8 +41,8 @@
+ /**
+  * Where bookings learns the time. Handed in, so that tests can fix it.
+  * @typedef {Object} Clock
+- * @property {() => string} now the time now
+- * @bound now: an ISO date and time, such as 2026-11-15T09:30:00.000Z
++ * @property {() => string} now today's date
++ * @bound now: today's date, written YYYY-MM-DD
+  */
+ 
+ /**
+@@ -85,7 +85,7 @@
+ }
+ 
+ /** @type {Clock} the clock bookings uses when none is handed in */
+-const SYSTEM_CLOCK = { now: () => new Date().toISOString() };
++const SYSTEM_CLOCK = { now: () => new Date().toISOString().slice(0, 10) };
+ 
+ /**
+  * Makes the bookings' handle.
+@@ -116,8 +116,7 @@
+     find,
+     open(req) {
+       const first = parseDay(req.day);
+-      const created = clock.now();
+-      if (Number.isNaN(Date.parse(created)) || !created.includes('T')) throw new RangeError('bookings: the clock is outside its bound');
++      const created = formatDay(parseDay(clock.now()));
+       const total = quote(req.room, req.party, req.nights);
+       /** @type {Booking} builds a Booking */
+       const b = {
+--- before/bookings/test/index.test.mjs
++++ after/bookings/test/index.test.mjs
+@@ -58,11 +58,11 @@
+   assert.throws(() => bookings.open(req({ day: 'tomorrow' })), RangeError);
+ });
+ 
+-test('bound now: an ISO date and time, such as 2026-11-15T09:30:00.000Z', () => {
++test('bound now: today\'s date, written YYYY-MM-DD', () => {
+   const { store, rooms } = system();
+-  const fixed = createBookings({ store, rooms, clock: { now: () => '2026-11-15T09:30:00.000Z' } });
+-  assert.equal(fixed.open(req()).created, '2026-11-15T09:30:00.000Z');
+-  const wrong = createBookings({ store, rooms, clock: { now: () => 'soon' } });
++  const fixed = createBookings({ store, rooms, clock: { now: () => '2026-11-15' } });
++  assert.equal(fixed.open(req()).created, '2026-11-15');
++  const wrong = createBookings({ store, rooms, clock: { now: () => '2026-11-15T09:30:00.000Z' } });
+   assert.throws(() => wrong.open(req()), RangeError);
+ });
+ 

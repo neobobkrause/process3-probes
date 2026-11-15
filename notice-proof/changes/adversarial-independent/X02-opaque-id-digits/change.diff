@@ -1,0 +1,20 @@
+--- before/bookings/src/index.mjs
++++ after/bookings/src/index.mjs
+@@ -13,7 +13,7 @@
+ /**
+  * A booking.
+  * @typedef {Object} Booking
+- * @property {string} id
++ * @property {string} id an opaque reference to the booking; read nothing into its form
+  * @property {string} room the room's id
+  * @property {string} day the first night, YYYY-MM-DD
+  * @property {string} until the morning after the last night, YYYY-MM-DD
+@@ -108,7 +108,7 @@
+       const total = quote(req.room, req.party, req.nights);
+       /** @type {Booking} builds a Booking */
+       const b = {
+-        id: `b-${next++}`,
++        id: String(next++),
+         room: req.room,
+         day: formatDay(first),
+         until: formatDay(addDays(first, req.nights)),

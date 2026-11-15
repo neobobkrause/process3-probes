@@ -1,0 +1,45 @@
+--- before/store/src/index.mjs
++++ after/store/src/index.mjs
+@@ -15,7 +15,7 @@
+ /**
+  * The store's handle.
+  * @typedef {Object} Store
+- * @property {(table: string, id: string, value: unknown) => Stored} put writes a record and hands back what is now held
++ * @property {(table: string, id: string, value: unknown, expected?: Stored) => Stored} put writes a record and hands back what is now held; when handed the record as it was read, refuses the write if the record has changed since
+  * @property {(table: string, id: string) => Stored | undefined} get
+  * @property {(table: string) => Stored[]} list all records of a table, in the order they were first written
+  * @property {(table: string, id: string) => boolean} remove says whether there was a record to remove
+@@ -54,9 +54,12 @@
+     return t;
+   };
+   return {
+-    put(table, id, value) {
++    put(table, id, value, expected) {
+       checkNames(table, id);
+       const t = tableOf(table);
++      if (expected !== undefined && (!t.has(id) || t.get(id).version !== expected.version)) {
++        throw new Error(`store: ${table}/${id} has changed since it was read`);
++      }
+       const old = t.get(id);
+       /** @type {Stored} builds a Stored */
+       const rec = { id, version: old ? old.version + 1 : 1, value: structuredClone(value) };
+--- before/store/test/index.test.mjs
++++ after/store/test/index.test.mjs
+@@ -40,6 +40,17 @@
+   assert.throws(() => s.get('t', 'x'.repeat(121)), RangeError);
+ });
+ 
++test('put handed the record as it was read refuses a write when the record has changed since', () => {
++  const s = createStore();
++  s.put('t', 'x', { n: 1 });
++  const read = s.get('t', 'x');
++  assert.ok(read);
++  assert.equal(read.version, 1);
++  s.put('t', 'x', { n: 2 }, read);
++  assert.throws(() => s.put('t', 'x', { n: 3 }, read), /changed since/);
++  assert.throws(() => s.put('t', 'y', { n: 1 }, read), /changed since/);
++});
++
+ test('list keeps first-written order; remove says whether a record was there', () => {
+   const s = createStore();
+   s.put('t', 'b', 1);

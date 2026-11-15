@@ -1,0 +1,11 @@
+{
+  "title": "A new kind of room: garden (a user keeps a price for each kind)",
+  "provider": "rooms",
+  "covers": [
+    "list gains a name",
+    "user indexes its own table by the provider's kind"
+  ],
+  "before": [
+    "setups/X07-bookings-price-by-kind"
+  ]
+}

@@ -1,0 +1,7 @@
+{
+  "title": "Bookings prices a seat by the kind of room",
+  "provider": "bookings",
+  "covers": [
+    "user keeps a lookup table with one entry per name of a provider list (the standing state)"
+  ]
+}

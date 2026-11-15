@@ -1,0 +1,23 @@
+--- before/billing/src/index.mjs
++++ after/billing/src/index.mjs
+@@ -47,7 +47,7 @@
+         booking: bookingId,
+         total: status.total,
+         instalments: parts,
+-        text: `Invoice for ${bookingId} (${status.room}): ${formatAmount(status.total)} in ${parts.length} payment(s)`,
++        text: `Invoice for ${bookingId} (${status.room}): ${formatAmount(status.total)} in ${parts.length} payment(s): ${parts.map(formatAmount).join(' + ')}`,
+       };
+     },
+     async estimate(room, party, nights) {
+--- before/billing/test/index.test.mjs
++++ after/billing/test/index.test.mjs
+@@ -24,6 +24,9 @@
+   assert.equal(inv.instalments.length, 3);
+   assert.equal(inv.instalments.reduce((s, p) => s + p.cents, 0), inv.total.cents);
+   assert.ok(inv.text.includes(b.id));
++  const written = inv.text.split(': ').slice(-1)[0].split(' + ');
++  assert.equal(written.length, inv.instalments.length);
++  for (const w of written) assert.match(w, /^[A-Z]{3} \d+\.\d\d$/);
+ });
+ 
+ test('an invoice for a cancelled booking is refused', async () => {

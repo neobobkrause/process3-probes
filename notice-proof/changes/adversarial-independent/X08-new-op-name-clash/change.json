@@ -1,0 +1,9 @@
+{
+  "title": "rooms answers bookstatus: whether a room can be booked, and its seats",
+  "provider": "rooms",
+  "covers": [
+    "new operation (a name gained)",
+    "name already answered by another provider through the same door"
+  ],
+  "note": "The door is built as {...bookingHandlers(bookings), ...roomHandlers(rooms)}: rooms' handler of the same name wins."
+}

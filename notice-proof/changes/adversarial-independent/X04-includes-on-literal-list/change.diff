@@ -1,0 +1,51 @@
+--- before/rooms/src/index.mjs
++++ after/rooms/src/index.mjs
+@@ -10,6 +10,15 @@
+ /** @typedef {typeof ROOM_KINDS[number]} RoomKind */
+ 
+ /**
++ * Says whether a text names a kind of room.
++ * @param {string} text
++ * @returns {text is RoomKind}
++ */
++export function isRoomKind(text) {
++  return ROOM_KINDS.includes(text);
++}
++
++/**
+  * A room.
+  * @typedef {Object} Room
+  * @property {string} id the room's slug, made from its name
+@@ -57,7 +66,7 @@
+   const { store } = deps;
+   return {
+     add(input) {
+-      if (!ROOM_KINDS.includes(input.kind)) throw new RangeError(`rooms: unknown kind: ${input.kind}`);
++      if (!isRoomKind(input.kind)) throw new RangeError(`rooms: unknown kind: ${input.kind}`);
+       if (!Number.isInteger(input.seats) || input.seats < 1 || input.seats > 500) {
+         throw new RangeError('rooms: seats out of bounds');
+       }
+--- before/rooms/test/index.test.mjs
++++ after/rooms/test/index.test.mjs
+@@ -1,7 +1,7 @@
+ import { test } from 'node:test';
+ import assert from 'node:assert/strict';
+ import { createStore } from '../../store/src/index.mjs';
+-import { createRooms, roomHandlers, ROOM_KINDS } from '../src/index.mjs';
++import { createRooms, roomHandlers, ROOM_KINDS, isRoomKind } from '../src/index.mjs';
+ 
+ const fresh = () => createRooms({ store: createStore() });
+ 
+@@ -39,6 +39,12 @@
+   for (const r of rooms.list()) assert.ok(ROOM_KINDS.includes(r.kind));
+ });
+ 
++test('isRoomKind says which texts name a kind of room', () => {
++  for (const k of ROOM_KINDS) assert.equal(isRoomKind(k), true);
++  assert.equal(isRoomKind('pool'), false);
++  assert.equal(isRoomKind(''), false);
++});
++
+ test('roomlist operation answers with the rooms of a kind', () => {
+   const rooms = fresh();
+   rooms.add({ name: 'Kitchen', kind: 'kitchen', seats: 8 });

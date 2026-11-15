@@ -1,0 +1,9 @@
+{
+  "title": "Booking ids become plain numbers written as text, easier to read out over the phone",
+  "provider": "bookings",
+  "covers": [
+    "content of an opaque value changes; kind and comments unchanged",
+    "door request line coerces digits to numbers"
+  ],
+  "note": "The job reads 'id' as opaque (no bound line before or after). billing passes the id through door.get('op=bookstatus&id=...')."
+}
