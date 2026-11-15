@@ -1,7 +1,7 @@
 // The listing: a module's interface written out from its code and its structured comments together.
 import fs from 'node:fs';
 import path from 'node:path';
-import { ts, tagsOf, tagText, lineOf, docsOf } from './ts.mjs';
+import { ts, tagsOf, tagText, lineOf, docsOf, declarationsOf } from './ts.mjs';
 import { makeCanon } from './canon.mjs';
 
 /** Does the module carry interface comments at all? (Mechanical: any JSDoc tag that states a kind.) */
@@ -112,7 +112,8 @@ export function makeLister(program, tree) {
               } else handsBack = C.canon(mt, h);
               entries[e] = { kind: 'method', accepts, handsBack, bounds: [...boundsFor(bounds, p.name, names), ...nestedBounds(a), ...nestedBounds(h)], where };
               // Iteration 3: a member that may be missing says so (rule 12), and errors stated on the kind (rule 10).
-              if (p.flags & ts.SymbolFlags.Optional) entries[e].optional = true;
+              const raw = checker.getTypeOfSymbol(p);
+              if (p.flags & ts.SymbolFlags.Optional || (raw.flags & ts.TypeFlags.Union && raw.types.some((x) => x.flags & ts.TypeFlags.Undefined))) entries[e].optional = true;
               const kt = kindThrows(decl, p.name, names);
               if (kt.length) entries[e].throws = kt;
               note('accepts', a, e); note('handsBack', h, e);
@@ -161,7 +162,13 @@ export function makeLister(program, tree) {
             where,
           };
           // Iteration 2: the kinds of error it raises are part of what it hands back.
-          const throws = tagsOf(decl, 'throws').map((tg) => tg.typeExpression?.type?.getText?.() ?? tagText(tg).split(/\s+/)[0]).filter(Boolean).sort();
+          const throws = [...new Set(tagsOf(decl, 'throws').map((tg) => tg.typeExpression?.type?.getText?.() ?? tagText(tg).split(/\s+/)[0]).filter(Boolean))].sort();
+          // Iteration 4: every overload is listed.
+          if (sigs.length > 1) {
+            const all = sigs.map((sg) => C.canonSig(sg, a, h));
+            entries[name].accepts = { k: 'overloads', of: all.map((c2) => ({ k: 'params', items: c2.params })) };
+            entries[name].handsBack = { k: 'overloads', of: all.map((c2) => c2.ret) };
+          }
           if (throws.length) entries[name].throws = throws;
         } else {
           // A plain constant's single value (a price, a limit) is content, not a kind: unless its comment states a
@@ -207,16 +214,22 @@ export function makeLister(program, tree) {
             if (!target || !entries[target]) continue;
             const stated = tagsOf(prop, 'throws').map((tg) => tg.typeExpression?.type?.getText?.()).filter(Boolean);
             if (stated.length) entries[target].throws = [...new Set([...(entries[target].throws ?? []), ...stated])].sort();
-            // A body that is one call: (req) => bookings.cancel(req.id), or a method whose only statement returns one.
+            // Iteration 4 (rule 23): every listed entry called anywhere in the method's body passes its errors on.
             const fn = ts.isMethodDeclaration(prop) ? prop : ts.isPropertyAssignment(prop) && (ts.isArrowFunction(prop.initializer) || ts.isFunctionExpression(prop.initializer)) ? prop.initializer : null;
-            let call = null;
-            if (fn?.body && ts.isCallExpression(fn.body)) call = fn.body;
-            else if (fn?.body && ts.isBlock(fn.body) && fn.body.statements.length === 1 && ts.isReturnStatement(fn.body.statements[0]) && fn.body.statements[0].expression && ts.isCallExpression(fn.body.statements[0].expression)) call = fn.body.statements[0].expression;
-            if (call) {
+            const calls = [];
+            const findCalls = (m) => { if (ts.isCallExpression(m)) calls.push(m); ts.forEachChild(m, findCalls); };
+            if (fn?.body) findCalls(fn.body);
+            for (const call of calls) {
               const callee = ts.isPropertyAccessExpression(call.expression) ? call.expression.name : call.expression;
               let sym = checker.getSymbolAtLocation(callee);
               if (sym && sym.flags & ts.SymbolFlags.Alias) { try { sym = checker.getAliasedSymbol(sym); } catch { sym = undefined; } }
-              const from = entryOfDecl(sym?.declarations?.[0]);
+              // a local function of the module (such as quote inside createBookings) stands for the member it fills
+              let decl = sym?.declarations?.[0];
+              let from = entryOfDecl(decl);
+              if (!from && decl && ts.isVariableDeclaration(decl)) {
+                const owner = Object.keys(entries).find((n) => n.endsWith(`.${sym.name}`) && entries[n].kind === 'method');
+                if (owner) from = owner;
+              }
               if (from && from !== target) delegations.push([target, from]);
             }
           }
@@ -230,6 +243,17 @@ export function makeLister(program, tree) {
       if (inherited.length) entries[to].throws = [...new Set([...(entries[to].throws ?? []), ...inherited])].sort();
     }
     for (const e of Object.values(entries)) e.bounds = [...new Set(e.bounds)].sort();
+    // Iteration 4 (rule 18): each entry's declaration as TypeScript prints it.
+    const decls = {};
+    for (const f of mod.public) Object.assign(decls, declarationsOf(program, f));
+    for (const [name, e] of Object.entries(entries)) {
+      if (name.startsWith('op:')) {
+        const table = Object.entries(entries).find(([n, x]) => x.kind === 'operation table' && x.handsBack?.names?.includes(name.slice(3)))?.[0];
+        if (table && decls[`${table}.${name.slice(3)}`] !== undefined) e.decl = decls[`${table}.${name.slice(3)}`];
+      } else if (name.startsWith('table:')) {
+        if (decls[e.rowKind] !== undefined) e.decl = decls[e.rowKind];
+      } else if (decls[name] !== undefined) e.decl = decls[name];
+    }
     const sorted = Object.fromEntries(Object.keys(entries).sort().map((k) => [k, entries[k]]));
     return { module: mod.id, hasInterfaceComments: hasInterfaceComments(mod), entries: sorted, ranges };
   }

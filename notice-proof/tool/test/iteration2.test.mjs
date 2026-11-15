@@ -75,7 +75,7 @@ test('a message is read and written with the kind its sender publishes, on its c
   const c = refusals({ 'p/src/index.mjs': MSG('stdout'), 'u/src/index.mjs': reader }, 'u');
   assert.equal(c.refusals.length, 1, JSON.stringify(c.refusals));
   assert.match(c.refusals[0].text, /without a kind/);
-  const writer = "/** @import { Hello } from '../../p/src/index.mjs' */\n/** @param {Hello} m */\nexport const out = (m) => process.stdout.write(JSON.stringify(m));\n/** @param {Hello} m */\nexport const err = (m) => process.stderr.write(JSON.stringify(m));\n";
+  const writer = "/** @import { Hello } from '../../p/src/index.mjs' */\n/** @param {Hello} m */\nexport const out = (m) => process.stdout.write(JSON.stringify(m) + '\\n');\n/** @param {Hello} m */\nexport const err = (m) => process.stderr.write(JSON.stringify(m) + '\\n');\n";
   const w = refusals({ 'p/src/index.mjs': MSG('stdout'), 'u/src/index.mjs': writer }, 'u');
   assert.equal(w.refusals.length, 1);
   assert.match(w.refusals[0].text, /stderr/);

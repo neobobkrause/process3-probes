@@ -91,3 +91,7 @@ declare class URL {
 interface ImportMeta { url: string; dirname: string; filename: string; }
 declare class TextEncoder { encode(s?: string): Uint8Array; }
 declare class TextDecoder { decode(b?: Uint8Array): string; }
+
+declare var crypto: { randomUUID(): string; getRandomValues<T extends ArrayBufferView>(a: T): T };
+declare function fetch(input: string | URL, init?: { method?: string; headers?: Record<string, string>; body?: string }): Promise<{ ok: boolean; status: number; json(): Promise<unknown>; text(): Promise<string> }>;
+declare var performance: { now(): number };

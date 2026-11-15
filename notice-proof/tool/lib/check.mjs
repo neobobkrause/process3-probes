@@ -64,6 +64,13 @@ function markedKinds(tree) {
   return out;
 }
 
+function isInsideComment(sf, pos) {
+  for (const r of [...(ts.getLeadingCommentRanges(sf.text, 0) ?? [])]) if (pos >= r.pos && pos < r.end) return true;
+  // a position inside /** ... */ anywhere
+  const before = sf.text.lastIndexOf('/*', pos), close = sf.text.lastIndexOf('*/', pos);
+  return before >= 0 && before > close;
+}
+
 const POSSIBLY_UNDEFINED = new Set([2532, 2533, 18047, 18048, 18049]);
 const MEMBERSHIP = new Set(['includes', 'indexOf', 'lastIndexOf', 'has']);
 
@@ -170,6 +177,11 @@ export function check(tree, moduleId) {
       const at = where(d, tree.root);
       const node = nodeAt(sf, d.start ?? 0);
       // A missing name of a closed set of names is a real disagreement, though the reader files it with the unstated kinds.
+      // Iteration 4: a complaint of the comment parser inside a comment; Node names the reader is not told of;
+      // filter(Boolean), which removes the missing values the reader still sees.
+      if (d.code === 1003 && ts.getTokenAtPosition && isInsideComment(sf, d.start ?? 0)) { cannotTell.push({ at, code: d.code, why: 'the comment parser stumbled inside a comment', text }); continue; }
+      if ((d.code === 2304 || d.code === 2552) && /'(crypto|fetch|performance|Buffer|AbortController|AbortSignal|Blob|Response|Request|Headers|FormData|WebSocket|global|globalThis|require|module|exports|__dirname|__filename|setImmediate|clearImmediate)'/.test(text)) { cannotTell.push({ at, code: d.code, why: "a Node name the reader is not told of", text }); continue; }
+      if ([2322, 2345, 2532, 18048].includes(d.code)) { let st = node; while (st.parent && !ts.isStatement(st)) st = st.parent; if (/\.filter\(\s*Boolean\s*\)/.test(st.getText())) { cannotTell.push({ at, code: d.code, why: 'filter(Boolean), which the reader does not understand', text }); continue; } }
       if (isUnstatedKind(d.code) && !(d.code === 7053 && /Property '[^']+' does not exist on type/.test(text))) {
         cannotTell.push({ at, code: d.code, why: 'a kind that no comment states', text });
         continue;
@@ -224,10 +236,16 @@ export function check(tree, moduleId) {
     // Rules of form, iteration 3: a plain-data kind built as a class instance (rule 11); a cast that turns a value of
     // a known kind into a product kind it is not (rule 14).
     walk(sf, (n) => {
-      if (ts.isNewExpression(n)) {
-        const cls = checker.getSymbolAtLocation(n.expression)?.declarations?.find((d) => ts.isClassDeclaration(d) || ts.isClassExpression(d));
-        const ct = cls && moduleOfDecl(cls) ? checker.getContextualType(n) : undefined;
-        if (ct && plainDataKind(ct)) refusals.push({ at: lineAt(sf, n, tree.root), code: 'plain-data', text: `a value of the plain-data kind ${kindName(ct)} is built as an instance of a class: copies keep only its own fields`, kind: '(c) a rule of form: plain data is built as plain data' });
+      // Iteration 4 (rule 22): wherever a plain-data kind is expected, a value whose kind is a class is refused,
+      // however it was built (new, or a factory).
+      if (ts.isExpression(n) && !ts.isParenthesizedExpression(n) && (ts.isNewExpression(n) || ts.isCallExpression(n) || ts.isIdentifier(n)) && n.parent && (ts.isReturnStatement(n.parent) || ts.isVariableDeclaration(n.parent) || ts.isArrowFunction(n.parent) || ts.isPropertyAssignment(n.parent) || (ts.isCallExpression(n.parent) && n.parent.arguments.includes(n)))) {
+        const ct = checker.getContextualType(n);
+        if (ct && plainDataKind(ct)) {
+          const vt = checker.getTypeAtLocation(n);
+          if ((vt.symbol?.declarations ?? []).some((d) => (ts.isClassDeclaration(d) || ts.isClassExpression(d)) && moduleOfDecl(d))) {
+            refusals.push({ at: lineAt(sf, n, tree.root), code: 'plain-data', text: `a value of the plain-data kind ${kindName(ct)} is an instance of a class: copies keep only its own fields`, kind: '(c) a rule of form: plain data is built as plain data' });
+          }
+        }
       }
       if (ts.isParenthesizedExpression(n)) {
         const tn = ts.getJSDocType(n);
@@ -279,8 +297,13 @@ export function check(tree, moduleId) {
         const w = n;
         // Every stream the target may be (a stream chosen at run time names each of them) must be one of the
         // channels the message's kind is published for.
-        const streams = [...new Set(w.expression.expression.getText(sf).match(/\b(stdout|stderr|stdin)\b/g) ?? [])];
-        if (!streams.length) return;
+        // Iteration 4 (rule 20): the stream may be chosen into a variable: follow it to where it is set.
+        let targetText = w.expression.expression.getText(sf);
+        const tid = w.expression.expression;
+        if (ts.isIdentifier(tid)) {
+          for (const dcl of checker.getSymbolAtLocation(tid)?.declarations ?? []) if (ts.isVariableDeclaration(dcl) && dcl.initializer) targetText += ' ' + dcl.initializer.getText();
+        }
+        const streams = [...new Set(targetText.match(/\b(stdout|stderr|stdin)\b/g) ?? [])];
         const stringified = [];
         const seenVars = new Set();
         const find = (x, depth) => {
@@ -293,6 +316,26 @@ export function check(tree, moduleId) {
           });
         };
         for (const a of n.arguments) find(a, 0);
+        const messages = stringified.filter((js) => js.arguments[0] && messageChannelsOf(checker.getTypeAtLocation(js.arguments[0])));
+        if (!streams.length) {
+          if (messages.length) refusals.push({ at: lineAt(sf, n, tree.root), code: 'message', text: 'a message is written where the tool cannot tell which channel', kind: '(c) a rule of form: a message is written where its channel can be read' });
+          return;
+        }
+        // Iteration 4 (rule 19): one message per line.
+        if (stringified.length) {
+          const resolve = (x) => { if (ts.isIdentifier(x)) { const dcl = checker.getSymbolAtLocation(x)?.declarations?.[0]; if (dcl && ts.isVariableDeclaration(dcl) && dcl.initializer) return dcl.initializer; } return x; };
+          const nl = (x) => (ts.isStringLiteral(x) || ts.isNoSubstitutionTemplateLiteral(x)) && x.text === '\n';
+          const isStringify = (x) => ts.isCallExpression(x) && ts.isPropertyAccessExpression(x.expression) && x.expression.name.text === 'stringify';
+          const oneLine = (x) => { x = resolve(x); while (ts.isParenthesizedExpression(x)) x = x.expression;
+            if (!(ts.isBinaryExpression(x) && x.operatorToken.kind === ts.SyntaxKind.PlusToken && nl(x.right))) return false;
+            const l = x.left;
+            if (isStringify(l)) return true;
+            // list.map((v) => JSON.stringify(v)).join('\n') + '\n'
+            return ts.isCallExpression(l) && ts.isPropertyAccessExpression(l.expression) && l.expression.name.text === 'join' && l.arguments[0] && nl(l.arguments[0]) &&
+              ts.isCallExpression(l.expression.expression) && ts.isPropertyAccessExpression(l.expression.expression.expression) && l.expression.expression.expression.name.text === 'map' &&
+              (() => { const f = l.expression.expression.arguments[0]; return f && (ts.isArrowFunction(f) || ts.isFunctionExpression(f)) && isStringify(ts.isBlock(f.body) ? (f.body.statements[0]?.expression ?? f.body) : f.body); })(); };
+          if (!n.arguments.every(oneLine)) refusals.push({ at: lineAt(sf, n, tree.root), code: 'message', text: 'messages on a channel are written one per line: JSON.stringify(message) + newline', kind: '(c) a rule of form: one message per line' });
+        }
         for (const js of stringified) {
           const a0 = js.arguments[0];
           const channels = a0 ? messageChannelsOf(checker.getTypeAtLocation(a0)) : null;
@@ -338,7 +381,7 @@ function addedBoundTests(before, after) {
   return names(after).filter((n) => !b.has(n));
 }
 
-/** The tests of a module named for a bound: "bound <words>" -> the shape of the test's code. */
+/** Names of calls that name a test or a group of tests. */
 const TEST_CALLS = new Set(['test', 'it', 'describe', 'suite']);
 /** Is this a call that names a test or a group of tests (test, it, describe, or t.test)? */
 export const isTestCall = (n) => ts.isCallExpression(n) && (ts.isIdentifier(n.expression) ? TEST_CALLS.has(n.expression.text) : ts.isPropertyAccessExpression(n.expression) && TEST_CALLS.has(n.expression.name.text));
@@ -355,19 +398,62 @@ function fingerprint(node, sf) {
     if (ts.isVariableStatement(st)) for (const d of st.declarationList.declarations) { if (ts.isIdentifier(d.name)) top.set(d.name.text, d); }
     else if (ts.isFunctionDeclaration(st) && st.name) top.set(st.name.text, st);
   }
-  const literals = new Set(), calls = new Set(), seen = new Set();
+  // Iteration 4 (rule 26): constants imported from the module's own source count as values.
+  const imported = new Map();
+  for (const st of sf.statements) {
+    if (!ts.isImportDeclaration(st) || !ts.isStringLiteral(st.moduleSpecifier) || !st.moduleSpecifier.text.startsWith('.')) continue;
+    const target = path.resolve(path.dirname(sf.fileName), st.moduleSpecifier.text);
+    if (!fs.existsSync(target)) continue;
+    const src = ts.createSourceFile(target, fs.readFileSync(target, 'utf8'), ts.ScriptTarget.ES2022, true, ts.ScriptKind.JS);
+    const consts = new Map();
+    for (const x of src.statements) if (ts.isVariableStatement(x)) for (const d of x.declarationList.declarations) if (ts.isIdentifier(d.name) && d.initializer) consts.set(d.name.text, d.initializer);
+    for (const el of st.importClause?.namedBindings && ts.isNamedImports(st.importClause.namedBindings) ? st.importClause.namedBindings.elements : []) {
+      const init = consts.get((el.propertyName ?? el.name).text);
+      if (init) imported.set(el.name.text, init);
+    }
+  }
+  const valueOf = (n) => (ts.isNumericLiteral(n) ? 'n:' + Number(n.text.replace(/_/g, '')) : ts.isStringLiteral(n) || ts.isNoSubstitutionTemplateLiteral(n) || ts.isRegularExpressionLiteral(n) ? 's:' + n.text
+    : ts.isPrefixUnaryExpression(n) && n.operator === ts.SyntaxKind.MinusToken && ts.isNumericLiteral(n.operand) ? 'n:-' + Number(n.operand.text.replace(/_/g, '')) : null);
+  const pairs = new Set();
+  const loopValues = new Map(); // name of a for-of variable -> the values it takes
+  const seen = new Set();
+  // the values an expression stands for: its literals, the values of loop variables and named constants it uses
+  const valuesIn = (n, out, depth = 0) => {
+    const v = valueOf(n);
+    if (v) { out.add(v); return; }
+    if (ts.isIdentifier(n)) {
+      if (loopValues.has(n.text)) for (const x of loopValues.get(n.text)) out.add(x);
+      const init = imported.get(n.text) ?? (top.has(n.text) && ts.isVariableDeclaration(top.get(n.text)) ? top.get(n.text).initializer : null);
+      if (init && depth < 3) valuesIn(init, out, depth + 1);
+    }
+    ts.forEachChild(n, (c) => valuesIn(c, out, depth));
+  };
   const visit = (n) => {
-    if (ts.isNumericLiteral(n)) literals.add('n:' + Number(n.text.replace(/_/g, '')));
-    else if (ts.isStringLiteral(n) || ts.isNoSubstitutionTemplateLiteral(n) || ts.isRegularExpressionLiteral(n)) literals.add('s:' + n.text);
-    else if (n.kind === ts.SyntaxKind.TemplateHead || n.kind === ts.SyntaxKind.TemplateMiddle || n.kind === ts.SyntaxKind.TemplateTail) literals.add('s:' + n.text);
-    else if (ts.isPrefixUnaryExpression(n) && n.operator === ts.SyntaxKind.MinusToken && ts.isNumericLiteral(n.operand)) { literals.add('n:-' + Number(n.operand.text.replace(/_/g, ''))); return; }
-    if (ts.isCallExpression(n)) calls.add(ts.isPropertyAccessExpression(n.expression) ? n.expression.name.text : n.expression.getText(sf));
-    if (ts.isBinaryExpression(n)) calls.add('op' + n.operatorToken.kind);
-    if (ts.isIdentifier(n) && top.has(n.text) && !seen.has(n.text) && !(n.parent && ts.isVariableDeclaration(n.parent) && n.parent.name === n)) { seen.add(n.text); visit(top.get(n.text)); }
+    if (ts.isForOfStatement(n) && ts.isVariableDeclarationList(n.initializer) && n.initializer.declarations.length === 1 && ts.isIdentifier(n.initializer.declarations[0].name)) {
+      const vals = new Set();
+      valuesIn(n.expression, vals);
+      loopValues.set(n.initializer.declarations[0].name.text, vals);
+      visit(n.statement);
+      return;
+    }
+    if (ts.isCallExpression(n)) {
+      let callee = ts.isPropertyAccessExpression(n.expression) ? n.expression.name.text : n.expression.getText(sf);
+      for (const name of top.keys()) callee = callee.replace(new RegExp(`\\b${name}\\b`, 'g'), '_'); // local helpers' names do not count
+      const local = ts.isIdentifier(n.expression) && top.has(n.expression.text);
+      if (local) { if (!seen.has(n.expression.text)) { seen.add(n.expression.text); visit(top.get(n.expression.text)); } }
+      else {
+        const vals = new Set();
+        for (const arg of n.arguments) valuesIn(arg, vals);
+        if (!vals.size) pairs.add(callee);
+        for (const v of vals) pairs.add(`${callee}(${v})`);
+      }
+    }
+    if (ts.isBinaryExpression(n)) pairs.add('op' + n.operatorToken.kind);
+    if (ts.isIdentifier(n) && top.has(n.text) && !seen.has(n.text) && ts.isFunctionDeclaration(top.get(n.text))) { seen.add(n.text); visit(top.get(n.text)); }
     ts.forEachChild(n, visit);
   };
   visit(node);
-  return JSON.stringify([[...literals].sort(), [...calls].sort()]);
+  return JSON.stringify([...pairs].sort());
 }
 
 /** The tests of a module named for a bound: "bound <words>" -> what the test checks. */

@@ -113,7 +113,8 @@ export function makeUsage(program, tree, listings) {
     const isAny = (n) => !!(checker.getTypeAtLocation(n).flags & ts.TypeFlags.Any);
     /** Iteration 2: a function named where it is not called (handed to map, kept in a variable) is handed on as a value. */
     function handedOnAsValue(node, decl) {
-      if (!(ts.isFunctionDeclaration(decl) || (ts.isVariableDeclaration(decl) && decl.initializer && (ts.isArrowFunction(decl.initializer) || ts.isFunctionExpression(decl.initializer))))) return false;
+      const memberFn = (ts.isJSDocPropertyTag(decl) || ts.isPropertySignature(decl) || ts.isMethodSignature(decl)) && checker.getTypeAtLocation(node).getCallSignatures().length > 0;
+      if (!memberFn && !(ts.isFunctionDeclaration(decl) || (ts.isVariableDeclaration(decl) && decl.initializer && (ts.isArrowFunction(decl.initializer) || ts.isFunctionExpression(decl.initializer))))) return false;
       let n = node;
       while (n.parent && (ts.isPropertyAccessExpression(n.parent) && n.parent.name === n)) n = n.parent;
       const p = n.parent;

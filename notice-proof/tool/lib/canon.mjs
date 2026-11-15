@@ -134,6 +134,9 @@ export function makeCanon(checker, tree) {
     if (!decl) return;
     let typeNode = decl.typeExpression?.type ?? decl.type;
     if (!typeNode && ts.isParameter(decl)) typeNode = ts.getJSDocParameterTags(decl)[0]?.typeExpression?.type;
+    noteKindsIn(typeNode, ctx);
+  }
+  function noteKindsIn(typeNode, ctx) {
     if (!typeNode) return;
     const refs = [];
     const collect = (n) => { if (ts.isTypeReferenceNode(n)) refs.push(n.typeName); ts.forEachChild(n, collect); };
@@ -174,9 +177,14 @@ export function makeCanon(checker, tree) {
       const opt = paramOptional(p);
       const rest = !!(p.valueDeclaration && ts.isParameter(p.valueDeclaration) && p.valueDeclaration.dotDotDotToken);
       let pt = checker.getTypeOfSymbol(p);
-      if (opt) pt = removeUndefined(pt);
+      if (opt && !rest) pt = removeUndefined(pt);
+      // Iteration 4: a rest parameter accepts its elements one by one: it is written as its element's kind.
+      if (rest && checker.isArrayType(pt)) pt = checker.getTypeArguments(pt)[0];
       return { opt, rest, t: canon(pt, ctx) };
     });
+    // Iteration 4 (rule 25): a number or text kind written as what is handed back carries its bound lines.
+    const rd = sig.declaration;
+    if (rd) noteKindsIn(rd.type ?? ts.getJSDocReturnType(rd), retCtx);
     const out = { k: 'fn', params, ret: canon(sig.getReturnType(), retCtx) };
     if (sig.typeParameters?.length) out.tparams = sig.typeParameters.map((tp) => checker.typeToString(tp) + ' extends ' + (tp.getConstraint() ? checker.typeToString(tp.getConstraint()) : 'unknown'));
     return out;
@@ -218,12 +226,15 @@ export function standsIn(old, nu) {
       return true;
     }
     case 'arr':
+      if (old.ro && !nu.ro) return false; // a read-only list made writable: the provider may now change it (iteration 4)
       return standsIn(old.of, nu.of);
     case 'tuple':
     case 'params': {
       const oi = old.items, ni = nu.items;
+      if (JSON.stringify(old.tparams ?? null) !== JSON.stringify(nu.tparams ?? null)) return false; // iteration 4
       for (let i = 0; i < oi.length; i++) {
         if (!ni[i]) return false; // removed
+        if (!!oi[i].rest !== !!ni[i].rest) return false; // a list turned into a rest parameter, or back (iteration 4)
         if (oi[i].opt && !ni[i].opt) return false;
         if (!standsIn(oi[i].t, ni[i].t)) return false;
       }

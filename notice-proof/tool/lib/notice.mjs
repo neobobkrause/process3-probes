@@ -20,7 +20,7 @@ export function analyse(root) {
 }
 
 /** Telling changes: those that tell the users of the entry. */
-const TELLS = new Set(['removed', 'cannot stand in', 'hands back differently', 'bound changed']);
+const TELLS = new Set(['removed', 'cannot stand in', 'hands back differently', 'bound changed', 'declaration changed (not classified)']);
 
 /** Rewrites handle names in a canonical form, for kinds renamed with their shape unchanged. */
 function renameHandles(c, map) {
@@ -82,6 +82,13 @@ export function diffListings(moduleId, before, after) {
     if ((!same(eb.throws ?? [], ea.throws ?? []) || (eb.channel ?? '') !== (ea.channel ?? '')) && !changes.includes('hands back differently')) changes.push('hands back differently');
     // Iteration 3 (rule 12): a member that may now be missing hands back differently.
     if (ea.optional && !eb.optional && !changes.includes('hands back differently')) changes.push('hands back differently');
+    // Iteration 4 (rule 18): silent only when the entry is shown unchanged. A declaration that differs where the tool's
+    // own comparison found nothing tells.
+    if (!changes.length && eb.decl !== undefined && ea.decl !== undefined) {
+      let bd = eb.decl;
+      for (const [o, n] of renamed) bd = bd.replace(new RegExp(`\\b${o}\\b`, 'g'), n);
+      if (bd !== ea.decl) changes.push('declaration changed (not classified)');
+    }
     if (!changes.length) continue;
     out.push({
       entry: name,
@@ -141,6 +148,14 @@ export function notice(beforeRoot, afterRoot, provider) {
       report.summary = `${provider} had no interface comments; this change only adds comments (running code unchanged in ${co.files.length} file(s)). No notice; the listing after it is the "before" for the job's real change.`;
       return report;
     }
+    // Iteration 4 (rule 21): a real change without the comments-only first step. The listing before has nothing to
+    // compare, so every module that declares the provider, or uses it, is told.
+    report.firstStepMissing = true;
+    const users = A.tree.modules.filter((m) => m.index > A.tree.byId.get(provider).index && (m.uses.includes(provider) || B.uses.get(m.id)?.uses.has(provider)));
+    report.told = users.map((m) => ({ user: m.id, reasons: [{ module: provider, notFollowed: [`${provider} had no interface comments and this change is not the comments-only first step`] }], undeclared: [] }));
+    report.interfaceChanged = true;
+    report.summary = `${provider} had no interface comments and this change is not the comments-only first step: every user is told.`;
+    return report;
   }
 
   // Every module from the provider on: its listing before and after. Those after the provider whose own files did
