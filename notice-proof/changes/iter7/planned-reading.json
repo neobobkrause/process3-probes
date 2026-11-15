@@ -1,0 +1,153 @@
+{
+ "about": "Ground truth by reading under iteration 5, written by Claude AFTER the results were seen, independently of what the tool said. Copied to iteration 6 unchanged: the changes and the product are the same, and the results on iteration 6 showed no change in what was refused or told. Copied to iteration 7 unchanged: the results on iteration 7 showed no change in what was refused or told.",
+ "changes": {
+  "P01-price-content": {
+   "needs": []
+  },
+  "P02-reword-explanation": {
+   "needs": []
+  },
+  "P03-remove-function": {
+   "needs": [
+    "front"
+   ]
+  },
+  "P04-rename-function": {
+   "needs": [
+    "billing"
+   ]
+  },
+  "P05-answer-field-removed": {
+   "needs": [
+    "billing"
+   ],
+   "note": "billing's tests pass; its invoice text now says '(undefined)' where the room was. Wrong without a failing test."
+  },
+  "P06-answer-field-renamed": {
+   "needs": [
+    "bookings",
+    "front"
+   ],
+   "note": "Claude predicted front's tests would fail; they passed. front's tests put rooms straight into the store in the old shape (with seats), so rooms hands those rows back unchanged. With rooms added through rooms.add, front's menu would say '(undefined seats)'. front's code is wrong without a failing test."
+  },
+  "P07-accept-optional": {
+   "needs": []
+  },
+  "P08-newly-required": {
+   "needs": [
+    "billing",
+    "front",
+    "reports"
+   ]
+  },
+  "P09-newly-refused": {
+   "needs": [],
+   "note": "store's own check refuses 4 lines of its own tests that still hand the store a number where its comment now says object: real."
+  },
+  "P10-answer-gains-field": {
+   "needs": []
+  },
+  "P11-list-gains-name": {
+   "needs": []
+  },
+  "P12-bound-line-changed": {
+   "needs": [
+    "bookings"
+   ],
+   "note": "bookings can no longer price a booking it says is valid (200 people, 2 nights): its own bound and money's new bound conflict."
+  },
+  "P13-kind-renamed": {
+   "needs": [
+    "bookings",
+    "meter",
+    "billing"
+   ],
+   "note": "Comments only: they name a kind that is gone."
+  },
+  "P14-meaning-changed-comment-updated": {
+   "needs": [
+    "billing"
+   ]
+  },
+  "P15-meaning-changed-comment-not-updated": {
+   "needs": [
+    "billing"
+   ],
+   "note": "Told under rule 4: the test named for the bound changed."
+  },
+  "P16-code-changed-comment-forgotten-visible": {
+   "needs": [
+    "front"
+   ],
+   "guard": "The check refuses text-rules' own comment, so this job cannot merge as it stands."
+  },
+  "P17-code-changed-comment-forgotten-running-only": {
+   "needs": [
+    "front"
+   ],
+   "guard": "bookings' own test named for the party bound fails, so this job cannot merge as it stands."
+  },
+  "P18-operation-retired": {
+   "needs": [
+    "front"
+   ]
+  },
+  "P19-operation-body-field-renamed": {
+   "needs": [
+    "billing"
+   ]
+  },
+  "P20-message-kind-changed": {
+   "needs": [
+    "billing"
+   ]
+  },
+  "P21-unfollowable-users-provider": {
+   "needs": []
+  },
+  "P22a-first-job-comments-step": {
+   "needs": [],
+   "note": "The comments step now adds the test for the bound it writes (rule 9): no refusal."
+  },
+  "P22b-first-job-real-change": {
+   "needs": []
+  },
+  "P23-user-already-disagrees": {
+   "needs": [
+    "billing"
+   ]
+  },
+  "P24-new-entry": {
+   "needs": []
+  },
+  "P25-two-changes-one-commit": {
+   "needs": [
+    "front"
+   ]
+  },
+  "P26-reaches-through-third-module": {
+   "needs": [
+    "bookings",
+    "meter",
+    "billing",
+    "front"
+   ]
+  },
+  "P27-test-helper-changed": {
+   "needs": [
+    "front"
+   ]
+  },
+  "P28-handle-method-renamed": {
+   "needs": [
+    "rooms",
+    "bookings"
+   ],
+   "throughOnly": [
+    "billing",
+    "front",
+    "reports"
+   ]
+  }
+ }
+}

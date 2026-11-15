@@ -29,3 +29,7 @@ The other three holes are outside kinds altogether: a method that starts to need
 | --- | --- | --- |
 | 34 | A complaint that a property is missing from something the tool's description of Node describes is "cannot tell" (the description is the tool's, not Node's); `notStrictEqual` and `import.meta.resolve` are added to it. | U11, U12 |
 | 35 | The printed declaration writes a kind named through `import("...")` by its name alone, as `@import` would. | U14 |
+
+## Defects met while running iteration 7
+
+- 15 Nov 2026, round 4 change Z18: rule 49 refuses `this.list()` in rooms' new method `byKind`. The code is right when the method is called on the handle; the refusal is the price of failing closed, counted as one false refusal line.
