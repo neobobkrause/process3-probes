@@ -26,5 +26,12 @@
   "listingChanges": false,
   "entries": [],
   "notes": "ADMIN_ACTS takes back scanmirror and officeconfirm (owner-declared ops), and its prose says every name is an op the assembled registration declares (OPS or an owner's DECLARED_OPS). Kind ReadonlySet<string> unchanged. Its bound, 'each the name of an op the member op table declares', already meant the assembled table (the member op table is the plane's whole table, aliases included, as index.mjs uses the words), so its words stay: no bound change. Content change only (users store-assembly and interface-shell read two more names). Merge conflict in admin.mjs again: the real's prose against my JSDoc, both kept."
+ },
+ {
+  "change": "wizard-scripts:546",
+  "written": "2026-11-15T15:45:13Z",
+  "listingChanges": false,
+  "entries": [],
+  "notes": "data.mjs gains SCREEN_ACTS_ADDED (acts this module appends to three screens: aioptinset on aiproviders and aimine, projectrequest and projectjoin on aiproject), used by screensFromFile, the generator's reading; not re-exported by index.mjs. The generated SCREEN_REGISTRY gains those acts: content of a constant with no stated kind ('anything' both sides), so no listing change. Users that read the registry's acts (affordances via registeredScreens, interface-shell, screens-inquiry's admit, store-assembly's registration) see the new acts only as content; registeredScreens' kind {id, acts: string[]}[] is unchanged."
  }
 ]

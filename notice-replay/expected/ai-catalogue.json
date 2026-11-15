@@ -224,5 +224,121 @@
    }
   ],
   "notes": "Behaviour not in the listing: in a development build whose development seed verifies, start() now registers DEVELOPMENT_ADAPTERS itself, so the seed's entry no longer needs a newer release and entriesFor offers it. No kind of an existing entry changes (registerAdapterTypes is called from inside; #loadReleaseSeed's answer is unchanged)."
+ },
+ {
+  "change": "ai-catalogue:1097",
+  "written": "2026-11-15T15:45:47Z",
+  "listingChanges": true,
+  "entries": [
+   {
+    "entry": "AiCatalogue",
+    "change": "hands back differently",
+    "tells": "users",
+    "why": "the instance gained the methods catalogueRead and resultsRead and the private #listingOf"
+   },
+   {
+    "entry": "aiCatalogueOf",
+    "change": "hands back differently",
+    "tells": "users",
+    "why": "it hands back an AiCatalogue, which gained two methods and a private one"
+   },
+   {
+    "entry": "AiCatalogue#catalogueRead",
+    "change": "new entry",
+    "tells": "nobody",
+    "why": "the screens' read of the whole catalogue"
+   },
+   {
+    "entry": "AiCatalogue#resultsRead",
+    "change": "new entry",
+    "tells": "nobody",
+    "why": "the screens' read of the results library"
+   },
+   {
+    "entry": "AiCatalogue##listingOf",
+    "change": "new entry",
+    "tells": "nobody",
+    "why": "private method"
+   },
+   {
+    "entry": "aiCatalogueOps",
+    "change": "new entry",
+    "tells": "nobody",
+    "why": "the handlers of the module's two operations"
+   },
+   {
+    "entry": "CATALOGUE_DECLARED_OPS",
+    "change": "new entry",
+    "tells": "nobody",
+    "why": "the two operations' declarations"
+   },
+   {
+    "entry": "CatalogueOps",
+    "change": "new entry",
+    "tells": "nobody",
+    "why": "operation table (@optable)"
+   },
+   {
+    "entry": "op:aicatalogueread",
+    "change": "new entry",
+    "tells": "nobody",
+    "why": "a new operation"
+   },
+   {
+    "entry": "op:airesultsread",
+    "change": "new entry",
+    "tells": "nobody",
+    "why": "a new operation"
+   },
+   {
+    "entry": "CatalogueHandlers",
+    "change": "new entry",
+    "tells": "nobody",
+    "why": "new kind"
+   },
+   {
+    "entry": "Listing",
+    "change": "new entry",
+    "tells": "nobody",
+    "why": "new kind"
+   },
+   {
+    "entry": "ClaimView",
+    "change": "new entry",
+    "tells": "nobody",
+    "why": "new kind"
+   },
+   {
+    "entry": "CatalogueReadEntry",
+    "change": "new entry",
+    "tells": "nobody",
+    "why": "new kind"
+   },
+   {
+    "entry": "CatalogueReadAnswer",
+    "change": "new entry",
+    "tells": "nobody",
+    "why": "new kind"
+   },
+   {
+    "entry": "ResultSubject",
+    "change": "new entry",
+    "tells": "nobody",
+    "why": "new kind"
+   },
+   {
+    "entry": "ResultsReadAnswer",
+    "change": "new entry",
+    "tells": "nobody",
+    "why": "new kind"
+   },
+   {
+    "entry": "OpDeclaration",
+    "change": "new entry",
+    "tells": "nobody",
+    "why": "new kind"
+   }
+  ],
+  "notes": "The two new operation names (aicatalogueread, airesultsread) are new to the product as far as I can see; if another module already answers either name, rule 7 tells that operation's users. The change also moves CATALOGUE_ADDRESS from .../catalogue/index.json to .../ai/index.json, so every payload path now resolves under /ai/. That is a real change in the contract with ai-issuer, which must serve there, and with anyone reading pullRequest's url. But the constant is a lone string, which the tool lists as `string`, and my bound line on PullRequestAnswer.url names the constant rather than its value, so I expect no listing change and no notice for it (a possible miss, if ai-issuer was not already serving /ai/). The class's hands-back change shows partly through the private #listingOf."
  }
 ]

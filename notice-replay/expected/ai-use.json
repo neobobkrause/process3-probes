@@ -726,5 +726,91 @@
    }
   ],
   "notes": "T53 is a rewrite of the module; this list is from my comments before and after. Expected also: many new kind entries (typedefs) as new entries telling nobody, which I have not listed one by one (ProviderLimitRefusal, FieldRefusal, ThresholdInvalidRefusal, NotAPayingAccountRefusal, UsageCost, Label, LabelServed, HealthTurn, MoneyByUnit, OwnLimitReached, ProviderLimitStanding, SwitchRequest, SwitchEstimate, SpanCost, MemberUse, UseByMember, ProviderLimitRequest, ProviderLimitRecorded, ProviderLimitShown, ProviderLimits, ThresholdRequest, ThresholdSet, ThresholdCrossed, Comparison, ReconcileRequest, Reconciled, RetestState, RetestRequest, RetestCapReached, RetestingOff, HealthShareState, HealthReport, AiUseNewWordKey, 12 row kinds, 4 answer unions). The tool lists AiUse's private #members as class members; if it compares them it will also report: removed AiUse##isSignin, AiUse##entryRefusal, AiUse.#callsOf, AiUse.#costOf (static), AiUse.#sums; new AiUse##entryOf, ##catalogue, ##carryDollars, ##countAct, ##usdUsed, ##usedFor, ##usdLimitBears, ##planMoney, ##ownerMoney, ##entry, ##entryMeasurable, ##unitUnavailable, ##amountOf, ##providerStanding, ##providerReached, ##moneyOf, ##figures, ##actsOwned, ##costOf, ##thresholdInvalid, ##noteCrossed, ##retestUsed, ##retestRow, ##retestOf, ##admin, ##healthReports, AiUse.#labelOf, .#usageOf, .#micro, .#where, .#who, .#priced, .#unstatedOf; changed ##exploreOf, ##estimate, ##used, ##accountsBar and others. By the method these tell nobody (no other module can reach them). AI_USE_TABLES and AI_USE_SCHEMA change only in content (new tables), so no kind change. Two bound changes are mine to make the comments true (LimitRequest's usd rule; LimitReachedRefusal's word for re-test caps). The real behaviour change most likely to break users: exploreAllowed/exploreAsk/useCheck(explore) now need account_id (without it explore reads no), and estimate's 'not known yet' string became an object; I expect the tool to see the second (hands back differently) but the first only as a bound change on a new parameter (the kind 'accepts more')."
+ },
+ {
+  "change": "ai-use:378",
+  "written": "2026-11-15T15:47:52Z",
+  "listingChanges": true,
+  "entries": [
+   {
+    "entry": "AiUse#useEstimate",
+    "change": "hands back differently",
+    "tells": "users",
+    "why": "with entry_id named the answer is a promise (overloads); Estimate gained the measured/price_only variants; Estimated gained optional entry_id"
+   },
+   {
+    "entry": "AiUse#useEstimate",
+    "change": "bound changed",
+    "tells": "users",
+    "why": "new bound: a malformed entry_id is refused AI_LIMIT_INVALID naming entry_id (was ignored): in effect cannot stand in for a caller passing a bad entry_id"
+   },
+   {
+    "entry": "AiUse#estimate",
+    "change": "hands back differently",
+    "tells": "users",
+    "why": "with entry_id named the answer is a promise (overloads); Estimate gained the measured/price_only variants; Estimated gained optional entry_id"
+   },
+   {
+    "entry": "AiUse#estimate",
+    "change": "bound changed",
+    "tells": "users",
+    "why": "new bound: a malformed entry_id is refused AI_LIMIT_INVALID naming entry_id (was ignored): in effect cannot stand in for a caller passing a bad entry_id"
+   },
+   {
+    "entry": "Estimate",
+    "change": "hands back differently",
+    "tells": "users",
+    "why": "two variants added: agent-model's range with basis measured or price_only, and the same withheld as not_measurable"
+   },
+   {
+    "entry": "Estimated",
+    "change": "hands back differently",
+    "tells": "users",
+    "why": "gained optional entry_id"
+   },
+   {
+    "entry": "EstimateAnswer",
+    "change": "new entry",
+    "tells": "nobody",
+    "why": "new kind naming estimate's answer"
+   },
+   {
+    "entry": "EstimateRequest",
+    "change": "bound changed",
+    "tells": "users",
+    "why": "new bound on entry_id (now read)"
+   },
+   {
+    "entry": "PendingAsk",
+    "change": "hands back differently",
+    "tells": "users",
+    "why": "estimate's kind changed"
+   },
+   {
+    "entry": "AiUse#exploreAsksPending",
+    "change": "hands back differently",
+    "tells": "users",
+    "why": "estimate's kind changed (in practice it never reaches the new variants: #estimate there names no entry)"
+   },
+   {
+    "entry": "LimitInvalidRefusal",
+    "change": "bound changed",
+    "tells": "users",
+    "why": "field bound now lists entry_id"
+   },
+   {
+    "entry": "OpDeclaration",
+    "change": "hands back differently",
+    "tells": "users",
+    "why": "fields became optional (the two read declarations have none)"
+   },
+   {
+    "entry": "DECLARED_OPS",
+    "change": "hands back differently",
+    "tells": "users",
+    "why": "four declarations added: airetestset, aihealthset, aiusebymember, aihealthpreview"
+   }
+  ],
+  "notes": "The LimitInvalidRefusal bound change reaches, through nested bounds, every entry that hands back that kind (aiLimitSet, aiUsage, aiLimits, accountUseOverTime, exploreApprove, aiProviderLimits, accountUseByMember, aiThresholdSet, reconcile, retestSet and their ops ailimitset, ailimits, aiusage, aiuseovertime, exploreapprove, aiusebymember, airetestset): the tool may list each as bound changed; by the method that is a true but minor change (one more field name a refusal may carry). Private members: new AiUse##useEstimateNow and AiUse##entryRange; if the tool compares private #members it will list them as new. The import of agent-model's src/provider/catalogue.mjs (a file of another module that may not be its interface file) is a rule-of-form matter for the check, not a change of ai-use's interface."
  }
 ]

@@ -955,5 +955,110 @@
    }
   ],
   "notes": "partAdmitted now also reads the records written here before the registered source's; a change of behaviour, not of kind. AI_RUNS_TABLES gains ai_gate_records, but its kind is readonly string[], so no change shows there. The private #gateRecords changed body only."
+ },
+ {
+  "change": "ai-runs:485",
+  "written": "2026-11-15T15:45:09Z",
+  "listingChanges": false,
+  "entries": [],
+  "notes": "openMany now asks ai-use's estimate with the entry the batch is served on, and awaits it (ai-use's estimate may now answer a promise). The estimate is written * (ai-use states no kind), so nothing in openMany's kinds moves. If ai-use's own comments changed, that is ai-use's notice, not this one."
+ },
+ {
+  "change": "ai-runs:1004",
+  "written": "2026-11-15T15:47:52Z",
+  "listingChanges": true,
+  "entries": [
+   {
+    "entry": "ANSWER_MARKS",
+    "change": "new entry",
+    "tells": "nobody",
+    "why": "F5's answer-key marks (a constant, a pure function and its answer kind) and F4's cascade bound"
+   },
+   {
+    "entry": "answerKeyMarks",
+    "change": "new entry",
+    "tells": "nobody",
+    "why": "F5's answer-key marks (a constant, a pure function and its answer kind) and F4's cascade bound"
+   },
+   {
+    "entry": "AnswerKeyMarks",
+    "change": "new entry",
+    "tells": "nobody",
+    "why": "F5's answer-key marks (a constant, a pure function and its answer kind) and F4's cascade bound"
+   },
+   {
+    "entry": "AiRuns.CASCADE_PAIRS_MAX",
+    "change": "new entry",
+    "tells": "nobody",
+    "why": "F5's answer-key marks (a constant, a pure function and its answer kind) and F4's cascade bound"
+   },
+   {
+    "entry": "AiRuns#groupTestSet",
+    "change": "bound changed",
+    "tells": "users",
+    "why": "an answer key carrying conclusions must mark each passage (else AI_GROUP_TEST_INVALID naming the field): accepts less"
+   },
+   {
+    "entry": "AiRuns#groupTestSet",
+    "change": "hands back differently",
+    "tells": "users",
+    "why": "a refusal may carry field"
+   },
+   {
+    "entry": "AiRuns#groupTestResults",
+    "change": "hands back differently",
+    "tells": "users",
+    "why": "the answer gains matters_marked"
+   },
+   {
+    "entry": "AiRuns#gateVerdictRecord",
+    "change": "bound changed",
+    "tells": "users",
+    "why": "a record's recall, when present, is held to IV-8's counts (else AI_TEST_BAR_UNFIT naming recall)"
+   },
+   {
+    "entry": "AiRuns#pathReadyRead",
+    "change": "bound changed",
+    "tells": "users",
+    "why": "a new bound line: both account_id and entry_id, or neither (the cascade read); before, neither was no_pair"
+   },
+   {
+    "entry": "op:aipathready",
+    "change": "bound changed",
+    "tells": "users",
+    "why": "a new bound line: both account_id and entry_id, or neither (the cascade read); before, neither was no_pair"
+   },
+   {
+    "entry": "PathReadyAnswer",
+    "change": "hands back differently",
+    "tells": "users",
+    "why": "only the description of reason gained no_account; the kind (string | null) is unchanged, so the tool may see nothing here"
+   },
+   {
+    "entry": "AiRuns#pathReadyRead",
+    "change": "hands back differently",
+    "tells": "users",
+    "why": "only the description of reason gained no_account; the kind (string | null) is unchanged, so the tool may see nothing here"
+   },
+   {
+    "entry": "op:aipathready",
+    "change": "hands back differently",
+    "tells": "users",
+    "why": "only the description of reason gained no_account; the kind (string | null) is unchanged, so the tool may see nothing here"
+   },
+   {
+    "entry": "AiRuns",
+    "change": "hands back differently",
+    "tells": "users",
+    "why": "the class gains CASCADE_PAIRS_MAX and private #cascadeReady"
+   },
+   {
+    "entry": "aiRunsOf",
+    "change": "hands back differently",
+    "tells": "users",
+    "why": "the class gains CASCADE_PAIRS_MAX and private #cascadeReady"
+   }
+  ],
+  "notes": "F4 and F5. The real change inserted ANSWER_MARKS, answerKeyMarks and a private recallFit between hiddenRuns' JSDoc and hiddenRuns itself, so in the real code hiddenRuns' prose now sits on ANSWER_MARKS. The carry put my @param/@returns/@bound for hiddenRuns in that conflict; I resolved it by keeping the real layout and writing a second JSDoc directly above hiddenRuns with the same tags, so hiddenRuns' entry should be unchanged. If the tool reads the first block's prose as ANSWER_MARKS' comment, no kind is involved. pathReadyRead's no-pair case is now a cascade read: accepts more in effect, but my kinds already accepted both absent, so only the bound line shows it. The expected 'hands back differently' on PathReadyAnswer is a comment-text change only and I expect the tool to report none for it."
  }
 ]
