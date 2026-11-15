@@ -1,0 +1,249 @@
+{
+ "about": "Expected answers under iteration 7 of the design (notes/iteration-7-design.md), written by Claude (the proof session) BEFORE any change was run on iteration 7. The writer had seen every earlier result; the next fresh adversarial round is the blind test. Where a change's answer is unchanged from iteration 6 it is copied.",
+ "changes": {
+  "Z01-bound-test-same-values-other-checks": {
+   "told": [
+    "billing",
+    "front",
+    "reports"
+   ],
+   "why": "Rule 26: 13 moved from a refusal check to an acceptance check in the party bound's test: the bound counts as changed; users of Booking and bookopen.",
+   "brokenPredicted": [
+    "front"
+   ],
+   "wrongWithoutFailingTest": [],
+   "refuses": []
+  },
+  "Z02-limit-read-from-module": {
+   "told": [
+    "billing",
+    "bookings",
+    "front",
+    "meter",
+    "reports"
+   ],
+   "why": "Rule 26: the bound test's limit is imported from money's own source and changed: the cents bound counts as changed everywhere it is carried.",
+   "brokenPredicted": [
+    "bookings"
+   ],
+   "wrongWithoutFailingTest": [],
+   "refuses": []
+  },
+  "Z03-blank-line-after-each-message": {
+   "told": [],
+   "why": "Rule 19: meter's own check refuses a message not written one per line.",
+   "brokenPredicted": [
+    "billing"
+   ],
+   "wrongWithoutFailingTest": [],
+   "refuses": [
+    "meter"
+   ],
+   "guard": "meter's own check (rule 19)"
+  },
+  "Z04-stream-chosen-into-variable": {
+   "told": [
+    "billing"
+   ],
+   "why": "As X09; the stream in a variable is followed.",
+   "brokenPredicted": [
+    "billing"
+   ],
+   "wrongWithoutFailingTest": [],
+   "refuses": [
+    "meter"
+   ],
+   "guard": "meter's own check"
+  },
+  "Z05-amount-built-by-static-factory": {
+   "told": [],
+   "why": "Rule 22: money's own check refuses an Amount that is a class instance.",
+   "brokenPredicted": [
+    "billing",
+    "bookings",
+    "front",
+    "meter"
+   ],
+   "wrongWithoutFailingTest": [],
+   "refuses": [
+    "money"
+   ],
+   "guard": "money's own check (rule 22)"
+  },
+  "Z06-wrapping-handler-error-kind": {
+   "told": [
+    "billing",
+    "reports"
+   ],
+   "why": "Rule 23: op:bookquote's handler calls Bookings.quote and inherits its new error kind; billing calls bookquote; reports not followed.",
+   "brokenPredicted": [
+    "billing"
+   ],
+   "wrongWithoutFailingTest": [],
+   "refuses": []
+  },
+  "Z07-handle-method-handed-on": {
+   "told": [
+    "front",
+    "reports"
+   ],
+   "why": "Rule 24: front hands Rooms.find to map; accepting more tells it.",
+   "brokenPredicted": [
+    "front"
+   ],
+   "wrongWithoutFailingTest": [],
+   "refuses": [
+    "front"
+   ]
+  },
+  "Z08-second-overload-hands-back": {
+   "told": [
+    "billing"
+   ],
+   "why": "All overloads listed (and rule 18).",
+   "brokenPredicted": [
+    "billing"
+   ],
+   "wrongWithoutFailingTest": [],
+   "refuses": []
+  },
+  "Z09-list-parameter-becomes-rest": {
+   "told": [
+    "billing"
+   ],
+   "why": "A list turned into a rest parameter cannot stand in.",
+   "brokenPredicted": [
+    "billing"
+   ],
+   "wrongWithoutFailingTest": [],
+   "refuses": [
+    "billing"
+   ]
+  },
+  "Z10-readonly-list-now-sorted": {
+   "told": [
+    "front"
+   ],
+   "why": "A read-only list made writable cannot stand in.",
+   "brokenPredicted": [
+    "front"
+   ],
+   "wrongWithoutFailingTest": [],
+   "refuses": [
+    "front"
+   ]
+  },
+  "Z11-request-lines-change-nothing": {
+   "told": [
+    "billing",
+    "front"
+   ],
+   "why": "A narrowed type parameter cannot stand in; billing and front call get.",
+   "brokenPredicted": [
+    "front"
+   ],
+   "wrongWithoutFailingTest": [],
+   "refuses": [
+    "front"
+   ]
+  },
+  "Z12-returned-text-kind-bound": {
+   "told": [
+    "rooms"
+   ],
+   "why": "Rule 25: the Slug bound reaches slugify's answer.",
+   "brokenPredicted": [
+    "rooms"
+   ],
+   "wrongWithoutFailingTest": [],
+   "refuses": []
+  },
+  "Z13-static-method-hands-back": {
+   "told": [
+    "billing"
+   ],
+   "why": "Rule 18: Tally's declaration changes (a static member) where the comparison found nothing.",
+   "brokenPredicted": [
+    "billing"
+   ],
+   "wrongWithoutFailingTest": [],
+   "refuses": [
+    "billing"
+   ]
+  },
+  "Z14-member-may-be-undefined": {
+   "told": [
+    "billing"
+   ],
+   "why": "A member written '| undefined' may be missing (and rule 18).",
+   "brokenPredicted": [
+    "billing"
+   ],
+   "wrongWithoutFailingTest": [],
+   "refuses": [
+    "billing"
+   ]
+  },
+  "Z15-uncommented-module-changed": {
+   "told": [
+    "bookings",
+    "reports"
+   ],
+   "why": "Rule 21: a real change to calendar without the comments step tells every module that declares it.",
+   "brokenPredicted": [
+    "reports"
+   ],
+   "wrongWithoutFailingTest": [],
+   "refuses": []
+  },
+  "Z16-random-booking-ids": {
+   "told": [],
+   "why": "crypto is described to the reader: no refusal.",
+   "brokenPredicted": [],
+   "wrongWithoutFailingTest": [],
+   "refuses": []
+  },
+  "Z17-filter-boolean": {
+   "told": [
+    "reports"
+   ],
+   "why": "A new entry; filter(Boolean) is 'cannot tell'; reports not followed.",
+   "brokenPredicted": [],
+   "wrongWithoutFailingTest": [],
+   "refuses": []
+  },
+  "Z18-object-groupby": {
+   "told": [
+    "reports"
+   ],
+   "why": "A new entry; Object.groupBy is in the reader's library now; reports not followed.",
+   "brokenPredicted": [],
+   "wrongWithoutFailingTest": [],
+   "refuses": []
+  },
+  "Z19-at-sign-in-bound-line": {
+   "told": [
+    "front"
+   ],
+   "why": "isEmail's bound line changed (read as written); front uses isEmail; no refusal.",
+   "brokenPredicted": [],
+   "wrongWithoutFailingTest": [],
+   "refuses": []
+  },
+  "Z20-test-helper-renamed": {
+   "told": [],
+   "why": "Rule 26: helpers' names do not count.",
+   "brokenPredicted": [],
+   "wrongWithoutFailingTest": [],
+   "refuses": []
+  },
+  "Z21-throws-explained-in-two-lines": {
+   "told": [],
+   "why": "The same error kind stated twice is one.",
+   "brokenPredicted": [],
+   "wrongWithoutFailingTest": [],
+   "refuses": []
+  }
+ },
+ "notes": []
+}

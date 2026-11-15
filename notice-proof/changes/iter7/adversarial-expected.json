@@ -1,0 +1,152 @@
+{
+ "about": "Expected answers under iteration 7 of the design (notes/iteration-7-design.md), written by Claude (the proof session) BEFORE any change was run on iteration 7. The writer had seen every earlier result; the next fresh adversarial round is the blind test. Where a change's answer is unchanged from iteration 6 it is copied.",
+ "changes": {
+  "A01-stored-row-shape": {
+   "told": [],
+   "why": "Listing the same. New rule 2: bookings writes into table 'bookings' rows that are not Bookings, so bookings' own check refuses.",
+   "brokenPredicted": [
+    "reports"
+   ],
+   "wrongWithoutFailingTest": [],
+   "refuses": [
+    "bookings"
+   ],
+   "guard": "bookings' own check (rows of a table are of its stated kind)"
+  },
+  "A03-reexported-function": {
+   "told": [
+    "front",
+    "reports",
+    "rooms"
+   ],
+   "why": "As in round 1.",
+   "brokenPredicted": [
+    "front",
+    "rooms"
+   ],
+   "wrongWithoutFailingTest": [],
+   "refuses": []
+  },
+  "A04-message-kind-not-shared": {
+   "told": [],
+   "why": "billing does not use MeterMsg. New rule 3: billing's own copy of the message kind is refused by billing's own check, before and after, so the state before this change could not have been merged.",
+   "brokenPredicted": [
+    "billing"
+   ],
+   "wrongWithoutFailingTest": [],
+   "refuses": [
+    "billing"
+   ],
+   "guard": "billing's own check refuses the set-up (the state could not exist)",
+   "refusesBefore": [
+    "billing"
+   ]
+  },
+  "A06-error-kind-changed": {
+   "told": [
+    "billing"
+   ],
+   "why": "New rule 1: splitEvenly's kinds of error are in the listing; billing calls it.",
+   "brokenPredicted": [
+    "billing"
+   ],
+   "wrongWithoutFailingTest": [],
+   "refuses": []
+  },
+  "A07-bound-test-moved-line-not": {
+   "told": [
+    "billing",
+    "front",
+    "reports"
+   ],
+   "why": "New rule 4: the party bound's test changed while its line did not: every entry carrying the bound counts as changed.",
+   "brokenPredicted": [
+    "front"
+   ],
+   "wrongWithoutFailingTest": [],
+   "refuses": []
+  },
+  "A08-request-line-built-in-steps": {
+   "told": [],
+   "why": "billing has no users; its check should now say 'cannot tell', not refuse.",
+   "brokenPredicted": [],
+   "wrongWithoutFailingTest": [],
+   "refuses": []
+  },
+  "A09-assert-narrowing": {
+   "told": [],
+   "why": "The reader now sees the narrowing; no refusal.",
+   "brokenPredicted": [],
+   "wrongWithoutFailingTest": [],
+   "refuses": []
+  },
+  "A10-kind-split-same-shape": {
+   "told": [
+    "billing",
+    "front",
+    "reports"
+   ],
+   "why": "Rule 18: Booking's declaration changes (written as two kinds joined) though its shape does not; the backstop tells the users of Booking: billing, front, reports. A cost of the backstop.",
+   "brokenPredicted": [],
+   "wrongWithoutFailingTest": [],
+   "refuses": []
+  },
+  "A11-string-spelled-String": {
+   "told": [],
+   "why": "Listing the same.",
+   "brokenPredicted": [],
+   "wrongWithoutFailingTest": [],
+   "refuses": []
+  },
+  "A12-caught-error-makes-user-unfollowed": {
+   "told": [
+    "reports"
+   ],
+   "why": "front is followed now; accepts more tells nobody.",
+   "brokenPredicted": [],
+   "wrongWithoutFailingTest": [],
+   "refuses": []
+  },
+  "A13-computed-member-renamed": {
+   "told": [
+    "bookings",
+    "reports",
+    "rooms"
+   ],
+   "why": "As in round 1.",
+   "brokenPredicted": [
+    "billing",
+    "bookings",
+    "front",
+    "reports",
+    "rooms"
+   ],
+   "wrongWithoutFailingTest": [],
+   "refuses": [
+    "bookings"
+   ]
+  },
+  "A14-copy-of-kind-in-the-middle": {
+   "told": [
+    "billing",
+    "bookings",
+    "meter",
+    "reports"
+   ],
+   "why": "As in round 1.",
+   "brokenPredicted": [
+    "billing",
+    "bookings",
+    "front",
+    "meter"
+   ],
+   "wrongWithoutFailingTest": [],
+   "refuses": [
+    "billing",
+    "bookings",
+    "meter"
+   ]
+  }
+ },
+ "notes": []
+}

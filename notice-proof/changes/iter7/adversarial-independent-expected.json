@@ -1,0 +1,121 @@
+{
+ "about": "Expected answers under iteration 7 of the design (notes/iteration-7-design.md), written by Claude (the proof session) BEFORE any change was run on iteration 7. The writer had seen every earlier result; the next fresh adversarial round is the blind test. Where a change's answer is unchanged from iteration 6 it is copied.",
+ "changes": {
+  "X01-optional-param-callback": {
+   "told": [
+    "billing"
+   ],
+   "why": "New rule 6: billing hands formatAmount on as a value (to map); accepting more tells it.",
+   "brokenPredicted": [
+    "billing"
+   ],
+   "wrongWithoutFailingTest": [],
+   "refuses": [
+    "billing"
+   ]
+  },
+  "X02-opaque-id-digits": {
+   "told": [],
+   "why": "Listing the same; with the door carrying values as text (rule 8), billing no longer breaks.",
+   "brokenPredicted": [],
+   "wrongWithoutFailingTest": [],
+   "refuses": []
+  },
+  "X03-port-bound-changed": {
+   "told": [
+    "front",
+    "reports"
+   ],
+   "why": "Clock.now's bound changed; new tool rule 10: front's tests fill Clock.now with a clock of their own.",
+   "brokenPredicted": [
+    "front"
+   ],
+   "wrongWithoutFailingTest": [],
+   "refuses": []
+  },
+  "X04-includes-on-literal-list": {
+   "told": [
+    "reports"
+   ],
+   "why": "A new entry; includes is now 'cannot tell'.",
+   "brokenPredicted": [],
+   "wrongWithoutFailingTest": [],
+   "refuses": []
+  },
+  "X05-stale-write": {
+   "told": [
+    "reports"
+   ],
+   "why": "Accepts more only (tool fix 11); the store's Map.has/get and assert.ok are 'cannot tell' or seen.",
+   "brokenPredicted": [],
+   "wrongWithoutFailingTest": [],
+   "refuses": []
+  },
+  "X06-bound-reworded": {
+   "told": [
+    "billing",
+    "bookings",
+    "front",
+    "meter",
+    "reports"
+   ],
+   "why": "Bob's rule: a changed bound line is a change.",
+   "brokenPredicted": [],
+   "wrongWithoutFailingTest": [],
+   "refuses": []
+  },
+  "X07-list-gains-name-lookup-table": {
+   "told": [
+    "billing",
+    "bookings",
+    "front",
+    "reports"
+   ],
+   "why": "As P11; bookings' check should now refuse the missing price for 'garden'.",
+   "brokenPredicted": [],
+   "wrongWithoutFailingTest": [
+    "bookings"
+   ],
+   "refuses": [
+    "bookings"
+   ]
+  },
+  "X08-new-op-name-clash": {
+   "told": [
+    "billing",
+    "reports"
+   ],
+   "why": "New rule 7: rooms now answers bookstatus, which bookings answers: billing calls bookstatus. front only wires the door; the door's list of names is unchanged.",
+   "brokenPredicted": [
+    "billing"
+   ],
+   "wrongWithoutFailingTest": [],
+   "refuses": [
+    "billing",
+    "front"
+   ]
+  },
+  "X09-message-channel": {
+   "told": [
+    "billing"
+   ],
+   "why": "Rule 26 follows the meter's test helper: billing told; meter's own check refuses the write to stderr.",
+   "brokenPredicted": [
+    "billing"
+   ],
+   "wrongWithoutFailingTest": [],
+   "refuses": [
+    "meter"
+   ],
+   "guard": "meter's own check"
+  },
+  "X10-node-timer": {
+   "told": [],
+   "why": "Listing the same; the reader now has Node's timers.",
+   "brokenPredicted": [],
+   "wrongWithoutFailingTest": [],
+   "refuses": []
+  }
+ },
+ "notes": []
+}
