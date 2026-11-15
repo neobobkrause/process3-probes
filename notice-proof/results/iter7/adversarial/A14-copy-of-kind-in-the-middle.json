@@ -1,0 +1,851 @@
+{
+  "id": "A14-copy-of-kind-in-the-middle",
+  "title": "Amount's cents is renamed minor; bookings, in the middle, wrote its own copy of the kind",
+  "provider": "money",
+  "covers": [
+    "attack: a value passed on by a third module that copied the kind instead of naming it"
+  ],
+  "tool": {
+    "firstCommentsStep": false,
+    "interfaceChanged": true,
+    "summary": "4 module(s) changed their listing; 12 entries changed in a way that tells; 4 user(s) told.",
+    "entries": [
+      {
+        "module": "money",
+        "entry": "Amount",
+        "changes": [
+          "cannot stand in",
+          "hands back differently",
+          "bound changed"
+        ],
+        "tells": "users",
+        "before": {
+          "kind": "kind",
+          "accepts": "{ cents: number; currency: \"EUR\" | \"GBP\" | \"USD\" }",
+          "handsBack": "{ cents: number; currency: \"EUR\" | \"GBP\" | \"USD\" }",
+          "bounds": [
+            "cents: whole number, 0 to 10,000,000 inclusive"
+          ],
+          "side": "both"
+        },
+        "after": {
+          "kind": "kind",
+          "accepts": "{ currency: \"EUR\" | \"GBP\" | \"USD\"; minor: number }",
+          "handsBack": "{ currency: \"EUR\" | \"GBP\" | \"USD\"; minor: number }",
+          "bounds": [
+            "minor: whole number, 0 to 10,000,000 inclusive"
+          ],
+          "side": "both"
+        }
+      },
+      {
+        "module": "money",
+        "entry": "add",
+        "changes": [
+          "cannot stand in",
+          "hands back differently",
+          "bound changed"
+        ],
+        "tells": "users",
+        "before": {
+          "kind": "function",
+          "accepts": "(arg0: { cents: number; currency: \"EUR\" | \"GBP\" | \"USD\" }, arg1: { cents: number; currency: \"EUR\" | \"GBP\" | \"USD\" })",
+          "handsBack": "{ cents: number; currency: \"EUR\" | \"GBP\" | \"USD\" }",
+          "bounds": [
+            "cents: whole number, 0 to 10,000,000 inclusive"
+          ],
+          "throws": [
+            "RangeError"
+          ]
+        },
+        "after": {
+          "kind": "function",
+          "accepts": "(arg0: { currency: \"EUR\" | \"GBP\" | \"USD\"; minor: number }, arg1: { currency: \"EUR\" | \"GBP\" | \"USD\"; minor: number })",
+          "handsBack": "{ currency: \"EUR\" | \"GBP\" | \"USD\"; minor: number }",
+          "bounds": [
+            "minor: whole number, 0 to 10,000,000 inclusive"
+          ],
+          "throws": [
+            "RangeError"
+          ]
+        }
+      },
+      {
+        "module": "money",
+        "entry": "amount",
+        "changes": [
+          "hands back differently",
+          "bound changed"
+        ],
+        "tells": "users",
+        "before": {
+          "kind": "function",
+          "accepts": "(arg0: number, arg1: \"EUR\" | \"GBP\" | \"USD\")",
+          "handsBack": "{ cents: number; currency: \"EUR\" | \"GBP\" | \"USD\" }",
+          "bounds": [
+            "cents: whole number, 0 to 10,000,000 inclusive"
+          ],
+          "throws": [
+            "RangeError"
+          ]
+        },
+        "after": {
+          "kind": "function",
+          "accepts": "(arg0: number, arg1: \"EUR\" | \"GBP\" | \"USD\")",
+          "handsBack": "{ currency: \"EUR\" | \"GBP\" | \"USD\"; minor: number }",
+          "bounds": [
+            "minor: whole number, 0 to 10,000,000 inclusive"
+          ],
+          "throws": [
+            "RangeError"
+          ]
+        }
+      },
+      {
+        "module": "money",
+        "entry": "formatAmount",
+        "changes": [
+          "cannot stand in",
+          "bound changed"
+        ],
+        "tells": "users",
+        "before": {
+          "kind": "function",
+          "accepts": "(arg0: { cents: number; currency: \"EUR\" | \"GBP\" | \"USD\" })",
+          "handsBack": "string",
+          "bounds": [
+            "cents: whole number, 0 to 10,000,000 inclusive"
+          ]
+        },
+        "after": {
+          "kind": "function",
+          "accepts": "(arg0: { currency: \"EUR\" | \"GBP\" | \"USD\"; minor: number })",
+          "handsBack": "string",
+          "bounds": [
+            "minor: whole number, 0 to 10,000,000 inclusive"
+          ]
+        }
+      },
+      {
+        "module": "money",
+        "entry": "splitEvenly",
+        "changes": [
+          "cannot stand in",
+          "hands back differently",
+          "bound changed"
+        ],
+        "tells": "users",
+        "before": {
+          "kind": "function",
+          "accepts": "(arg0: { cents: number; currency: \"EUR\" | \"GBP\" | \"USD\" }, arg1: number)",
+          "handsBack": "{ cents: number; currency: \"EUR\" | \"GBP\" | \"USD\" }[]",
+          "bounds": [
+            "cents: whole number, 0 to 10,000,000 inclusive",
+            "parts: whole number, 1 to 100"
+          ],
+          "throws": [
+            "RangeError"
+          ]
+        },
+        "after": {
+          "kind": "function",
+          "accepts": "(arg0: { currency: \"EUR\" | \"GBP\" | \"USD\"; minor: number }, arg1: number)",
+          "handsBack": "{ currency: \"EUR\" | \"GBP\" | \"USD\"; minor: number }[]",
+          "bounds": [
+            "minor: whole number, 0 to 10,000,000 inclusive",
+            "parts: whole number, 1 to 100"
+          ],
+          "throws": [
+            "RangeError"
+          ]
+        }
+      },
+      {
+        "module": "bookings",
+        "entry": "Bookings.quote",
+        "changes": [
+          "hands back differently",
+          "bound changed"
+        ],
+        "tells": "users",
+        "before": {
+          "kind": "method",
+          "accepts": "(arg0: string, arg1: number, arg2: number)",
+          "handsBack": "{ cents: number; currency: \"EUR\" | \"GBP\" | \"USD\" }",
+          "bounds": [
+            "cents: whole number, 0 to 10,000,000 inclusive"
+          ]
+        },
+        "after": {
+          "kind": "method",
+          "accepts": "(arg0: string, arg1: number, arg2: number)",
+          "handsBack": "{ currency: \"EUR\" | \"GBP\" | \"USD\"; minor: number }",
+          "bounds": [
+            "minor: whole number, 0 to 10,000,000 inclusive"
+          ]
+        }
+      },
+      {
+        "module": "meter",
+        "entry": "MeterMsg",
+        "changes": [
+          "cannot stand in",
+          "hands back differently",
+          "bound changed"
+        ],
+        "tells": "users",
+        "before": {
+          "kind": "kind",
+          "accepts": "{ cost: { cents: number; currency: \"EUR\" | \"GBP\" | \"USD\" }; kind: \"reading\"; minutes: number; room: string } | { count: number; kind: \"done\" } | { kind: \"refused\"; reason: string; room: string }",
+          "handsBack": "{ cost: { cents: number; currency: \"EUR\" | \"GBP\" | \"USD\" }; kind: \"reading\"; minutes: number; room: string } | { count: number; kind: \"done\" } | { kind: \"refused\"; reason: string; room: string }",
+          "bounds": [
+            "cents: whole number, 0 to 10,000,000 inclusive"
+          ],
+          "side": "both",
+          "channel": "stdout"
+        },
+        "after": {
+          "kind": "kind",
+          "accepts": "{ cost: { currency: \"EUR\" | \"GBP\" | \"USD\"; minor: number }; kind: \"reading\"; minutes: number; room: string } | { count: number; kind: \"done\" } | { kind: \"refused\"; reason: string; room: string }",
+          "handsBack": "{ cost: { currency: \"EUR\" | \"GBP\" | \"USD\"; minor: number }; kind: \"reading\"; minutes: number; room: string } | { count: number; kind: \"done\" } | { kind: \"refused\"; reason: string; room: string }",
+          "bounds": [
+            "minor: whole number, 0 to 10,000,000 inclusive"
+          ],
+          "side": "both",
+          "channel": "stdout"
+        }
+      },
+      {
+        "module": "billing",
+        "entry": "Billing.estimate",
+        "changes": [
+          "hands back differently",
+          "bound changed"
+        ],
+        "tells": "users",
+        "before": {
+          "kind": "method",
+          "accepts": "(arg0: string, arg1: number, arg2: number)",
+          "handsBack": "Promise<{ deposit: { cents: number; currency: \"EUR\" | \"GBP\" | \"USD\" }; total: { cents: number; currency: \"EUR\" | \"GBP\" | \"USD\" } }>",
+          "bounds": [
+            "cents: whole number, 0 to 10,000,000 inclusive"
+          ]
+        },
+        "after": {
+          "kind": "method",
+          "accepts": "(arg0: string, arg1: number, arg2: number)",
+          "handsBack": "Promise<{ deposit: { currency: \"EUR\" | \"GBP\" | \"USD\"; minor: number }; total: { currency: \"EUR\" | \"GBP\" | \"USD\"; minor: number } }>",
+          "bounds": [
+            "minor: whole number, 0 to 10,000,000 inclusive"
+          ]
+        }
+      },
+      {
+        "module": "billing",
+        "entry": "Billing.invoice",
+        "changes": [
+          "hands back differently",
+          "bound changed"
+        ],
+        "tells": "users",
+        "before": {
+          "kind": "method",
+          "accepts": "(arg0: string, arg1: number)",
+          "handsBack": "Promise<{ booking: string; instalments: { cents: number; currency: \"EUR\" | \"GBP\" | \"USD\" }[]; text: string; total: { cents: number; currency: \"EUR\" | \"GBP\" | \"USD\" } }>",
+          "bounds": [
+            "cents: whole number, 0 to 10,000,000 inclusive"
+          ]
+        },
+        "after": {
+          "kind": "method",
+          "accepts": "(arg0: string, arg1: number)",
+          "handsBack": "Promise<{ booking: string; instalments: { currency: \"EUR\" | \"GBP\" | \"USD\"; minor: number }[]; text: string; total: { currency: \"EUR\" | \"GBP\" | \"USD\"; minor: number } }>",
+          "bounds": [
+            "minor: whole number, 0 to 10,000,000 inclusive"
+          ]
+        }
+      },
+      {
+        "module": "billing",
+        "entry": "Billing.meterUsage",
+        "changes": [
+          "hands back differently",
+          "bound changed"
+        ],
+        "tells": "users",
+        "before": {
+          "kind": "method",
+          "accepts": "(arg0: { kind: \"use\"; minutes: number; room: string }[])",
+          "handsBack": "Promise<{ cents: number; currency: \"EUR\" | \"GBP\" | \"USD\" }>",
+          "bounds": [
+            "cents: whole number, 0 to 10,000,000 inclusive",
+            "minutes: whole number, 1 to 1440"
+          ]
+        },
+        "after": {
+          "kind": "method",
+          "accepts": "(arg0: { kind: \"use\"; minutes: number; room: string }[])",
+          "handsBack": "Promise<{ currency: \"EUR\" | \"GBP\" | \"USD\"; minor: number }>",
+          "bounds": [
+            "minor: whole number, 0 to 10,000,000 inclusive",
+            "minutes: whole number, 1 to 1440"
+          ]
+        }
+      },
+      {
+        "module": "billing",
+        "entry": "Estimate",
+        "changes": [
+          "hands back differently",
+          "bound changed"
+        ],
+        "tells": "users",
+        "before": {
+          "kind": "kind",
+          "handsBack": "{ deposit: { cents: number; currency: \"EUR\" | \"GBP\" | \"USD\" }; total: { cents: number; currency: \"EUR\" | \"GBP\" | \"USD\" } }",
+          "bounds": [
+            "cents: whole number, 0 to 10,000,000 inclusive"
+          ],
+          "side": "handsBack"
+        },
+        "after": {
+          "kind": "kind",
+          "handsBack": "{ deposit: { currency: \"EUR\" | \"GBP\" | \"USD\"; minor: number }; total: { currency: \"EUR\" | \"GBP\" | \"USD\"; minor: number } }",
+          "bounds": [
+            "minor: whole number, 0 to 10,000,000 inclusive"
+          ],
+          "side": "handsBack"
+        }
+      },
+      {
+        "module": "billing",
+        "entry": "Invoice",
+        "changes": [
+          "hands back differently",
+          "bound changed"
+        ],
+        "tells": "users",
+        "before": {
+          "kind": "kind",
+          "handsBack": "{ booking: string; instalments: { cents: number; currency: \"EUR\" | \"GBP\" | \"USD\" }[]; text: string; total: { cents: number; currency: \"EUR\" | \"GBP\" | \"USD\" } }",
+          "bounds": [
+            "cents: whole number, 0 to 10,000,000 inclusive"
+          ],
+          "side": "handsBack"
+        },
+        "after": {
+          "kind": "kind",
+          "handsBack": "{ booking: string; instalments: { currency: \"EUR\" | \"GBP\" | \"USD\"; minor: number }[]; text: string; total: { currency: \"EUR\" | \"GBP\" | \"USD\"; minor: number } }",
+          "bounds": [
+            "minor: whole number, 0 to 10,000,000 inclusive"
+          ],
+          "side": "handsBack"
+        }
+      }
+    ],
+    "told": [
+      "bookings",
+      "meter",
+      "billing",
+      "reports"
+    ],
+    "toldDetail": [
+      {
+        "user": "bookings",
+        "reasons": [
+          {
+            "module": "money",
+            "entry": "Amount",
+            "changes": [
+              "cannot stand in",
+              "hands back differently",
+              "bound changed"
+            ],
+            "lines": [
+              "bookings/src/index.mjs:6",
+              "bookings/src/index.mjs:52",
+              "bookings/test/index.test.mjs:31",
+              "bookings/test/index.test.mjs:32",
+              "bookings/test/index.test.mjs:33"
+            ],
+            "through": null
+          },
+          {
+            "module": "money",
+            "entry": "amount",
+            "changes": [
+              "hands back differently",
+              "bound changed"
+            ],
+            "lines": [
+              "bookings/src/index.mjs:4",
+              "bookings/src/index.mjs:102"
+            ],
+            "through": null
+          }
+        ],
+        "undeclared": []
+      },
+      {
+        "user": "meter",
+        "reasons": [
+          {
+            "module": "money",
+            "entry": "Amount",
+            "changes": [
+              "cannot stand in",
+              "hands back differently",
+              "bound changed"
+            ],
+            "lines": [
+              "meter/src/index.mjs:6",
+              "meter/src/index.mjs:24",
+              "meter/test/index.test.mjs:32",
+              "meter/test/index.test.mjs:33"
+            ],
+            "through": null
+          },
+          {
+            "module": "money",
+            "entry": "amount",
+            "changes": [
+              "hands back differently",
+              "bound changed"
+            ],
+            "lines": [
+              "meter/src/worker.mjs:5",
+              "meter/src/worker.mjs:24"
+            ],
+            "through": null
+          }
+        ],
+        "undeclared": []
+      },
+      {
+        "user": "billing",
+        "reasons": [
+          {
+            "module": "money",
+            "entry": "Amount",
+            "changes": [
+              "cannot stand in",
+              "hands back differently",
+              "bound changed"
+            ],
+            "lines": [
+              "billing/src/index.mjs:7",
+              "billing/src/index.mjs:15",
+              "billing/src/index.mjs:16",
+              "billing/src/index.mjs:24",
+              "billing/src/index.mjs:31",
+              "billing/src/index.mjs:32"
+            ],
+            "through": null
+          },
+          {
+            "module": "money",
+            "entry": "add",
+            "changes": [
+              "cannot stand in",
+              "hands back differently",
+              "bound changed"
+            ],
+            "lines": [
+              "billing/src/index.mjs:5",
+              "billing/src/index.mjs:71"
+            ],
+            "through": null
+          },
+          {
+            "module": "money",
+            "entry": "amount",
+            "changes": [
+              "hands back differently",
+              "bound changed"
+            ],
+            "lines": [
+              "billing/src/index.mjs:5",
+              "billing/src/index.mjs:55",
+              "billing/src/index.mjs:61"
+            ],
+            "through": null
+          },
+          {
+            "module": "money",
+            "entry": "formatAmount",
+            "changes": [
+              "cannot stand in",
+              "bound changed"
+            ],
+            "lines": [
+              "billing/src/index.mjs:5",
+              "billing/src/index.mjs:50"
+            ],
+            "through": null
+          },
+          {
+            "module": "money",
+            "entry": "splitEvenly",
+            "changes": [
+              "cannot stand in",
+              "hands back differently",
+              "bound changed"
+            ],
+            "lines": [
+              "billing/src/index.mjs:5",
+              "billing/src/index.mjs:45"
+            ],
+            "through": null
+          },
+          {
+            "module": "meter",
+            "entry": "MeterMsg",
+            "changes": [
+              "cannot stand in",
+              "hands back differently",
+              "bound changed"
+            ],
+            "lines": [
+              "billing/src/index.mjs:8",
+              "billing/src/index.mjs:69",
+              "billing/src/index.mjs:71",
+              "billing/src/index.mjs:72",
+              "billing/src/index.mjs:73"
+            ],
+            "through": "money"
+          }
+        ],
+        "undeclared": []
+      },
+      {
+        "user": "reports",
+        "reasons": [
+          {
+            "module": "bookings",
+            "notFollowed": [
+              "reads or calls values of unknown kind: reports/src/index.mjs:13 source.list('rooms').map; reports/src/index.mjs:13 source.list('rooms'); reports/src/index.mjs:13 source.list (+9)"
+            ],
+            "through": "money"
+          }
+        ],
+        "undeclared": []
+      }
+    ],
+    "notTold": [
+      {
+        "user": "door",
+        "why": "uses none of the entries that changed in a way that tells"
+      },
+      {
+        "user": "front",
+        "why": "uses none of the entries that changed in a way that tells"
+      }
+    ],
+    "warnings": [],
+    "commentsOnly": false,
+    "checks": {
+      "money": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 65
+      },
+      "calendar": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 64
+      },
+      "store": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 117
+      },
+      "rooms": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 90
+      },
+      "bookings": {
+        "refusedBefore": 0,
+        "refusedAfter": 7,
+        "refusals": [
+          {
+            "at": "bookings/src/index.mjs:124",
+            "code": 2741,
+            "text": "Property 'cents' is missing in type 'Amount' but required in type 'Price'.",
+            "kind": "(b) code disagrees with the stated interface of calendar, money"
+          },
+          {
+            "at": "bookings/src/index.mjs:156",
+            "code": 2741,
+            "text": "Property 'cents' is missing in type 'Amount' but required in type 'Price'.",
+            "kind": "(b) code disagrees with the stated interface of money"
+          },
+          {
+            "at": "bookings/test/index.test.mjs:31",
+            "code": 2339,
+            "text": "Property 'cents' does not exist on type 'Amount'.",
+            "kind": "(b) code disagrees with the stated interface of money"
+          },
+          {
+            "at": "bookings/test/index.test.mjs:31",
+            "code": 2339,
+            "text": "Property 'cents' does not exist on type 'Amount'.",
+            "kind": "(b) code disagrees with the stated interface of money"
+          },
+          {
+            "at": "bookings/test/index.test.mjs:32",
+            "code": 2339,
+            "text": "Property 'cents' does not exist on type 'Amount'.",
+            "kind": "(b) code disagrees with the stated interface of money"
+          },
+          {
+            "at": "bookings/test/index.test.mjs:32",
+            "code": 2339,
+            "text": "Property 'cents' does not exist on type 'Amount'.",
+            "kind": "(b) code disagrees with the stated interface of money"
+          },
+          {
+            "at": "bookings/test/index.test.mjs:33",
+            "code": 2339,
+            "text": "Property 'cents' does not exist on type 'Amount'.",
+            "kind": "(b) code disagrees with the stated interface of money"
+          }
+        ],
+        "refusalsBefore": [],
+        "ms": 87
+      },
+      "door": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 65
+      },
+      "meter": {
+        "refusedBefore": 0,
+        "refusedAfter": 4,
+        "refusals": [
+          {
+            "at": "meter/test/index.test.mjs:32",
+            "code": 2339,
+            "text": "Property 'cents' does not exist on type 'Amount'.",
+            "kind": "(b) code disagrees with the stated interface of money"
+          },
+          {
+            "at": "meter/test/index.test.mjs:32",
+            "code": 2339,
+            "text": "Property 'cents' does not exist on type 'Amount'.",
+            "kind": "(b) code disagrees with the stated interface of money"
+          },
+          {
+            "at": "meter/test/index.test.mjs:33",
+            "code": 2339,
+            "text": "Property 'cents' does not exist on type 'Amount'.",
+            "kind": "(b) code disagrees with the stated interface of money"
+          },
+          {
+            "at": "meter/test/index.test.mjs:33",
+            "code": 2339,
+            "text": "Property 'cents' does not exist on type 'Amount'.",
+            "kind": "(b) code disagrees with the stated interface of money"
+          }
+        ],
+        "refusalsBefore": [],
+        "ms": 70
+      },
+      "billing": {
+        "refusedBefore": 0,
+        "refusedAfter": 12,
+        "refusals": [
+          {
+            "at": "billing/src/index.mjs:42",
+            "code": 2322,
+            "text": "Type '(bookingId: string, instalments: number) => Promise<{ booking: string; total: Price; instalments: Amount[]; text: string; }>' is not assignable to type '(bookingId: string, instalments: number) => Promise<Invoice>'.   Type 'Promise<{ booking: string; total: Price; instalments: Amount[]; text: string; }>' is not assignable to type 'Promise<Invoice>'.     Type '{ booking: string; total: Price; instalments: Amount[]; text: string; }' is not assignable to type 'Invoice'.       Types of property 'total' are incompatible.         Property 'minor' is missing in type 'Price' but required in type 'Amount'.",
+            "kind": "(b) code disagrees with the stated interface of bookings, door, money, meter"
+          },
+          {
+            "at": "billing/src/index.mjs:45",
+            "code": 2345,
+            "text": "Argument of type 'Price' is not assignable to parameter of type 'Amount'.   Property 'minor' is missing in type 'Price' but required in type 'Amount'.",
+            "kind": "(b) code disagrees with the stated interface of money, bookings"
+          },
+          {
+            "at": "billing/src/index.mjs:50",
+            "code": 2345,
+            "text": "Argument of type 'Price' is not assignable to parameter of type 'Amount'.   Property 'minor' is missing in type 'Price' but required in type 'Amount'.",
+            "kind": "(b) code disagrees with the stated interface of bookings, money"
+          },
+          {
+            "at": "billing/src/index.mjs:53",
+            "code": 2322,
+            "text": "Type '(room: string, party: number, nights: number) => Promise<{ total: Price; deposit: Amount; }>' is not assignable to type '(room: string, party: number, nights: number) => Promise<Estimate>'.   Type 'Promise<{ total: Price; deposit: Amount; }>' is not assignable to type 'Promise<Estimate>'.     Type '{ total: Price; deposit: Amount; }' is not assignable to type 'Estimate'.       Types of property 'total' are incompatible.         Property 'minor' is missing in type 'Price' but required in type 'Amount'.",
+            "kind": "(b) code disagrees with the stated interface of bookings, door, money, meter"
+          },
+          {
+            "at": "billing/test/index.test.mjs:23",
+            "code": 2339,
+            "text": "Property 'cents' does not exist on type 'Amount'.",
+            "kind": "(b) code disagrees with the stated interface of money, bookings"
+          },
+          {
+            "at": "billing/test/index.test.mjs:25",
+            "code": 2339,
+            "text": "Property 'cents' does not exist on type 'Amount'.",
+            "kind": "(b) code disagrees with the stated interface of money"
+          },
+          {
+            "at": "billing/test/index.test.mjs:25",
+            "code": 2339,
+            "text": "Property 'cents' does not exist on type 'Amount'.",
+            "kind": "(b) code disagrees with the stated interface of money"
+          },
+          {
+            "at": "billing/test/index.test.mjs:40",
+            "code": 2339,
+            "text": "Property 'cents' does not exist on type 'Amount'.",
+            "kind": "(b) code disagrees with the stated interface of money, bookings"
+          },
+          {
+            "at": "billing/test/index.test.mjs:41",
+            "code": 2339,
+            "text": "Property 'cents' does not exist on type 'Amount'.",
+            "kind": "(b) code disagrees with the stated interface of money, bookings"
+          },
+          {
+            "at": "billing/test/index.test.mjs:52",
+            "code": 2339,
+            "text": "Property 'cents' does not exist on type 'Amount'.",
+            "kind": "(b) code disagrees with the stated interface of money"
+          },
+          {
+            "at": "billing/test/index.test.mjs:53",
+            "code": 2339,
+            "text": "Property 'cents' does not exist on type 'Amount'.",
+            "kind": "(b) code disagrees with the stated interface of money"
+          },
+          {
+            "at": "billing/test/index.test.mjs:53",
+            "code": 2339,
+            "text": "Property 'cents' does not exist on type 'Amount'.",
+            "kind": "(b) code disagrees with the stated interface of money"
+          }
+        ],
+        "refusalsBefore": [],
+        "ms": 107
+      },
+      "front": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 67
+      },
+      "reports": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 68
+      }
+    }
+  },
+  "groundTruth": {
+    "providerTests": {
+      "pass": true,
+      "failed": [],
+      "ran": 6
+    },
+    "testsBefore": {
+      "calendar": true,
+      "store": true,
+      "rooms": true,
+      "bookings": true,
+      "door": true,
+      "meter": true,
+      "billing": true,
+      "front": true,
+      "reports": true
+    },
+    "testsAfter": {
+      "calendar": {
+        "pass": true,
+        "failed": []
+      },
+      "store": {
+        "pass": true,
+        "failed": []
+      },
+      "rooms": {
+        "pass": true,
+        "failed": []
+      },
+      "bookings": {
+        "pass": false,
+        "failed": [
+          "the total grows with party and nights and is in whole cents"
+        ]
+      },
+      "door": {
+        "pass": true,
+        "failed": []
+      },
+      "meter": {
+        "pass": false,
+        "failed": [
+          "one reading per use, in order, then done"
+        ]
+      },
+      "billing": {
+        "pass": false,
+        "failed": [
+          "an invoice splits the booking total into instalments that add up to it",
+          "an estimate is what the booking then costs, with a deposit of a fifth",
+          "metered use is priced by the meter and added up"
+        ]
+      },
+      "front": {
+        "pass": false,
+        "failed": [
+          "booking with a valid form says what was booked"
+        ]
+      },
+      "reports": {
+        "pass": true,
+        "failed": []
+      }
+    },
+    "broken": [
+      "bookings",
+      "meter",
+      "billing",
+      "front"
+    ]
+  },
+  "timing": {
+    "listingMs": {
+      "before": 56,
+      "after": 59
+    },
+    "noticeMs": 637,
+    "checkMs": {
+      "money": 65,
+      "calendar": 64,
+      "store": 117,
+      "rooms": 90,
+      "bookings": 87,
+      "door": 65,
+      "meter": 70,
+      "billing": 107,
+      "front": 67,
+      "reports": 68
+    }
+  }
+}

@@ -1,0 +1,197 @@
+{
+  "id": "V04-instance-built-in-a-conditional",
+  "title": "An amount cannot be changed once made: money builds it as an instance with read-only cents and currency, and keeps one zero of each currency",
+  "provider": "money",
+  "covers": [
+    "what is handed back becomes a class instance, built in a conditional expression",
+    "rule 22's check looks only at a value standing directly in a return, declaration, field or argument"
+  ],
+  "tool": {
+    "firstCommentsStep": false,
+    "interfaceChanged": false,
+    "summary": "The listing before and after is the same. Nobody is told.",
+    "entries": [],
+    "told": [],
+    "toldDetail": [],
+    "notTold": [],
+    "warnings": [],
+    "commentsOnly": false,
+    "checks": {
+      "money": {
+        "refusedBefore": 0,
+        "refusedAfter": 2,
+        "refusals": [
+          {
+            "at": "money/src/index.mjs:59",
+            "code": "plain-data",
+            "text": "a value of the plain-data kind Amount is an instance of a class: copies keep only its own fields",
+            "kind": "(c) a rule of form: plain data is built as plain data"
+          },
+          {
+            "at": "money/src/index.mjs:59",
+            "code": "plain-data",
+            "text": "a value of the plain-data kind Amount is an instance of a class: copies keep only its own fields",
+            "kind": "(c) a rule of form: plain data is built as plain data"
+          }
+        ],
+        "refusalsBefore": [],
+        "ms": 66
+      },
+      "calendar": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 63
+      },
+      "store": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 82
+      },
+      "rooms": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 72
+      },
+      "bookings": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 116
+      },
+      "door": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 77
+      },
+      "meter": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 82
+      },
+      "billing": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 83
+      },
+      "front": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 76
+      },
+      "reports": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 77
+      }
+    }
+  },
+  "groundTruth": {
+    "providerTests": {
+      "pass": true,
+      "failed": [],
+      "ran": 6
+    },
+    "testsBefore": {
+      "calendar": true,
+      "store": true,
+      "rooms": true,
+      "bookings": true,
+      "door": true,
+      "meter": true,
+      "billing": true,
+      "front": true,
+      "reports": true
+    },
+    "testsAfter": {
+      "calendar": {
+        "pass": true,
+        "failed": []
+      },
+      "store": {
+        "pass": true,
+        "failed": []
+      },
+      "rooms": {
+        "pass": true,
+        "failed": []
+      },
+      "bookings": {
+        "pass": false,
+        "failed": [
+          "open hands back an open booking that find returns",
+          "operations answer as the table says"
+        ]
+      },
+      "door": {
+        "pass": true,
+        "failed": []
+      },
+      "meter": {
+        "pass": false,
+        "failed": [
+          "one reading per use, in order, then done"
+        ]
+      },
+      "billing": {
+        "pass": false,
+        "failed": [
+          "an invoice splits the booking total into instalments that add up to it",
+          "an estimate is what the booking then costs, with a deposit of a fifth",
+          "metered use is priced by the meter and added up"
+        ]
+      },
+      "front": {
+        "pass": false,
+        "failed": [
+          "booking with a valid form says what was booked"
+        ]
+      },
+      "reports": {
+        "pass": true,
+        "failed": []
+      }
+    },
+    "broken": [
+      "bookings",
+      "meter",
+      "billing",
+      "front"
+    ]
+  },
+  "timing": {
+    "listingMs": {
+      "before": 56,
+      "after": 67
+    },
+    "noticeMs": 653,
+    "checkMs": {
+      "money": 66,
+      "calendar": 63,
+      "store": 82,
+      "rooms": 72,
+      "bookings": 116,
+      "door": 77,
+      "meter": 82,
+      "billing": 83,
+      "front": 76,
+      "reports": 77
+    }
+  }
+}

@@ -1,0 +1,454 @@
+{
+  "id": "P28-handle-method-renamed",
+  "title": "The store handle's get is renamed read",
+  "provider": "store",
+  "covers": [
+    "factory handle method renamed, the handle reaching users in a bag of dependencies"
+  ],
+  "tool": {
+    "firstCommentsStep": false,
+    "interfaceChanged": true,
+    "summary": "1 module(s) changed their listing; 5 entries changed in a way that tells; 3 user(s) told.",
+    "entries": [
+      {
+        "module": "store",
+        "entry": "Store",
+        "changes": [
+          "removed"
+        ],
+        "lost": [
+          "get"
+        ],
+        "gained": [
+          "read"
+        ],
+        "tells": "users",
+        "before": {
+          "kind": "handle kind",
+          "handsBack": "names: get, list, put, remove"
+        },
+        "after": {
+          "kind": "handle kind",
+          "handsBack": "names: list, put, read, remove"
+        }
+      },
+      {
+        "module": "store",
+        "entry": "Store.get",
+        "changes": [
+          "removed"
+        ],
+        "before": {
+          "kind": "method",
+          "accepts": "(arg0: string, arg1: string)",
+          "handsBack": "{ id: string; value: unknown; version: number } | undefined",
+          "bounds": [
+            "id: 1 to 120 characters",
+            "table: 1 to 40 characters, each a-z, 0-9 or a hyphen",
+            "version: whole number, 1 or more"
+          ]
+        },
+        "tells": "users"
+      },
+      {
+        "module": "store",
+        "entry": "Store.read",
+        "changes": [
+          "new entry"
+        ],
+        "after": {
+          "kind": "method",
+          "accepts": "(arg0: string, arg1: string)",
+          "handsBack": "{ id: string; value: unknown; version: number } | undefined",
+          "bounds": [
+            "id: 1 to 120 characters",
+            "table: 1 to 40 characters, each a-z, 0-9 or a hyphen",
+            "version: whole number, 1 or more"
+          ]
+        },
+        "tells": "nobody"
+      },
+      {
+        "module": "store",
+        "entry": "Store.list",
+        "changes": [
+          "bound test changed"
+        ],
+        "tells": "users",
+        "before": {
+          "kind": "method",
+          "accepts": "(arg0: string)",
+          "handsBack": "{ id: string; value: unknown; version: number }[]",
+          "bounds": [
+            "id: 1 to 120 characters",
+            "table: 1 to 40 characters, each a-z, 0-9 or a hyphen",
+            "version: whole number, 1 or more"
+          ]
+        },
+        "after": {
+          "kind": "method",
+          "accepts": "(arg0: string)",
+          "handsBack": "{ id: string; value: unknown; version: number }[]",
+          "bounds": [
+            "id: 1 to 120 characters",
+            "table: 1 to 40 characters, each a-z, 0-9 or a hyphen",
+            "version: whole number, 1 or more"
+          ]
+        }
+      },
+      {
+        "module": "store",
+        "entry": "Store.put",
+        "changes": [
+          "bound test changed"
+        ],
+        "tells": "users",
+        "before": {
+          "kind": "method",
+          "accepts": "(arg0: string, arg1: string, arg2: unknown)",
+          "handsBack": "{ id: string; value: unknown; version: number }",
+          "bounds": [
+            "id: 1 to 120 characters",
+            "table: 1 to 40 characters, each a-z, 0-9 or a hyphen",
+            "version: whole number, 1 or more"
+          ]
+        },
+        "after": {
+          "kind": "method",
+          "accepts": "(arg0: string, arg1: string, arg2: unknown)",
+          "handsBack": "{ id: string; value: unknown; version: number }",
+          "bounds": [
+            "id: 1 to 120 characters",
+            "table: 1 to 40 characters, each a-z, 0-9 or a hyphen",
+            "version: whole number, 1 or more"
+          ]
+        }
+      },
+      {
+        "module": "store",
+        "entry": "Store.remove",
+        "changes": [
+          "bound test changed"
+        ],
+        "tells": "users",
+        "before": {
+          "kind": "method",
+          "accepts": "(arg0: string, arg1: string)",
+          "handsBack": "boolean",
+          "bounds": [
+            "id: 1 to 120 characters",
+            "table: 1 to 40 characters, each a-z, 0-9 or a hyphen"
+          ]
+        },
+        "after": {
+          "kind": "method",
+          "accepts": "(arg0: string, arg1: string)",
+          "handsBack": "boolean",
+          "bounds": [
+            "id: 1 to 120 characters",
+            "table: 1 to 40 characters, each a-z, 0-9 or a hyphen"
+          ]
+        }
+      }
+    ],
+    "told": [
+      "rooms",
+      "bookings",
+      "reports"
+    ],
+    "toldDetail": [
+      {
+        "user": "rooms",
+        "reasons": [
+          {
+            "module": "store",
+            "entry": "Store",
+            "changes": [
+              "removed"
+            ],
+            "lines": [
+              "rooms/src/index.mjs:5",
+              "rooms/src/index.mjs:54"
+            ],
+            "through": null
+          },
+          {
+            "module": "store",
+            "entry": "Store.get",
+            "changes": [
+              "removed"
+            ],
+            "lines": [
+              "rooms/src/index.mjs:66",
+              "rooms/src/index.mjs:73"
+            ],
+            "through": null
+          },
+          {
+            "module": "store",
+            "entry": "Store.list",
+            "changes": [
+              "bound test changed"
+            ],
+            "lines": [
+              "rooms/src/index.mjs:78"
+            ],
+            "through": null
+          },
+          {
+            "module": "store",
+            "entry": "Store.put",
+            "changes": [
+              "bound test changed"
+            ],
+            "lines": [
+              "rooms/src/index.mjs:69"
+            ],
+            "through": null
+          }
+        ],
+        "undeclared": []
+      },
+      {
+        "user": "bookings",
+        "reasons": [
+          {
+            "module": "store",
+            "entry": "Store",
+            "changes": [
+              "removed"
+            ],
+            "lines": [
+              "bookings/src/index.mjs:7",
+              "bookings/src/index.mjs:82"
+            ],
+            "through": null
+          },
+          {
+            "module": "store",
+            "entry": "Store.get",
+            "changes": [
+              "removed"
+            ],
+            "lines": [
+              "bookings/src/index.mjs:101"
+            ],
+            "through": null
+          },
+          {
+            "module": "store",
+            "entry": "Store.put",
+            "changes": [
+              "bound test changed"
+            ],
+            "lines": [
+              "bookings/src/index.mjs:122",
+              "bookings/src/index.mjs:131"
+            ],
+            "through": null
+          }
+        ],
+        "undeclared": []
+      },
+      {
+        "user": "reports",
+        "reasons": [
+          {
+            "module": "store",
+            "notFollowed": [
+              "reads or calls values of unknown kind: reports/src/index.mjs:13 source.list('rooms').map; reports/src/index.mjs:13 source.list('rooms'); reports/src/index.mjs:13 source.list (+9)"
+            ],
+            "through": null
+          }
+        ],
+        "undeclared": []
+      }
+    ],
+    "notTold": [
+      {
+        "user": "billing",
+        "why": "uses none of the entries that changed in a way that tells"
+      },
+      {
+        "user": "front",
+        "why": "uses none of the entries that changed in a way that tells"
+      }
+    ],
+    "warnings": [],
+    "commentsOnly": false,
+    "checks": {
+      "store": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 73
+      },
+      "rooms": {
+        "refusedBefore": 0,
+        "refusedAfter": 2,
+        "refusals": [
+          {
+            "at": "rooms/src/index.mjs:66",
+            "code": 2339,
+            "text": "Property 'get' does not exist on type 'Store'.",
+            "kind": "(b) code disagrees with the stated interface of store"
+          },
+          {
+            "at": "rooms/src/index.mjs:73",
+            "code": 2339,
+            "text": "Property 'get' does not exist on type 'Store'.",
+            "kind": "(b) code disagrees with the stated interface of store"
+          }
+        ],
+        "refusalsBefore": [],
+        "ms": 78
+      },
+      "bookings": {
+        "refusedBefore": 0,
+        "refusedAfter": 1,
+        "refusals": [
+          {
+            "at": "bookings/src/index.mjs:101",
+            "code": 2339,
+            "text": "Property 'get' does not exist on type 'Store'.",
+            "kind": "(b) code disagrees with the stated interface of store"
+          }
+        ],
+        "refusalsBefore": [],
+        "ms": 83
+      },
+      "door": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 78
+      },
+      "meter": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 83
+      },
+      "billing": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 91
+      },
+      "front": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 78
+      },
+      "reports": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 111
+      }
+    }
+  },
+  "groundTruth": {
+    "providerTests": {
+      "pass": true,
+      "failed": [],
+      "ran": 6
+    },
+    "testsBefore": {
+      "rooms": true,
+      "bookings": true,
+      "door": true,
+      "meter": true,
+      "billing": true,
+      "front": true,
+      "reports": true
+    },
+    "testsAfter": {
+      "rooms": {
+        "pass": false,
+        "failed": [
+          "add then find hands back the room under its slug",
+          "bound seats: whole number, 1 to 500",
+          "add refuses an unknown kind and a taken name",
+          "list filters by kind and keeps name order",
+          "roomlist operation answers with the rooms of a kind"
+        ]
+      },
+      "bookings": {
+        "pass": false,
+        "failed": [
+          "open hands back an open booking that find returns",
+          "the total grows with party and nights and is in whole cents",
+          "bound party: whole number, 1 to 200, and no more than the room's seats",
+          "bound nights: whole number, 1 to 14",
+          "bound day: a real calendar day written YYYY-MM-DD",
+          "cancel closes an open booking once; unknown rooms and bookings are refused",
+          "bound bookquote.total: what the whole stay costs, for the whole party and every night",
+          "operations answer as the table says"
+        ]
+      },
+      "door": {
+        "pass": true,
+        "failed": []
+      },
+      "meter": {
+        "pass": true,
+        "failed": []
+      },
+      "billing": {
+        "pass": false,
+        "failed": [
+          "an invoice splits the booking total into instalments that add up to it",
+          "an invoice for a cancelled booking is refused",
+          "an estimate is what the booking then costs, with a deposit of a fifth",
+          "metered use is priced by the meter and added up",
+          "metered use outside the meter's bound is refused"
+        ]
+      },
+      "front": {
+        "pass": false,
+        "failed": [
+          "booking with a valid form says what was booked",
+          "cancel names the cancelled booking"
+        ]
+      },
+      "reports": {
+        "pass": false,
+        "failed": [
+          "summary counts real bookings by state, kind and weekday"
+        ]
+      }
+    },
+    "broken": [
+      "rooms",
+      "bookings",
+      "billing",
+      "front",
+      "reports"
+    ]
+  },
+  "timing": {
+    "listingMs": {
+      "before": 87,
+      "after": 96
+    },
+    "noticeMs": 752,
+    "checkMs": {
+      "store": 73,
+      "rooms": 78,
+      "bookings": 83,
+      "door": 78,
+      "meter": 83,
+      "billing": 91,
+      "front": 78,
+      "reports": 111
+    }
+  }
+}

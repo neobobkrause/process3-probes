@@ -1,0 +1,1334 @@
+{
+  "id": "P12-bound-line-changed",
+  "title": "An amount may now be at most 500,000 cents (code and bound line both changed)",
+  "provider": "money",
+  "covers": [
+    "bound line changed"
+  ],
+  "tool": {
+    "firstCommentsStep": false,
+    "interfaceChanged": true,
+    "summary": "5 module(s) changed their listing; 30 entries changed in a way that tells; 5 user(s) told.",
+    "entries": [
+      {
+        "module": "money",
+        "entry": "Amount",
+        "changes": [
+          "bound changed"
+        ],
+        "tells": "users",
+        "before": {
+          "kind": "kind",
+          "accepts": "{ cents: number; currency: \"EUR\" | \"GBP\" | \"USD\" }",
+          "handsBack": "{ cents: number; currency: \"EUR\" | \"GBP\" | \"USD\" }",
+          "bounds": [
+            "cents: whole number, 0 to 10,000,000 inclusive"
+          ],
+          "side": "both"
+        },
+        "after": {
+          "kind": "kind",
+          "accepts": "{ cents: number; currency: \"EUR\" | \"GBP\" | \"USD\" }",
+          "handsBack": "{ cents: number; currency: \"EUR\" | \"GBP\" | \"USD\" }",
+          "bounds": [
+            "cents: whole number, 0 to 500,000 inclusive"
+          ],
+          "side": "both"
+        }
+      },
+      {
+        "module": "money",
+        "entry": "add",
+        "changes": [
+          "bound changed"
+        ],
+        "tells": "users",
+        "before": {
+          "kind": "function",
+          "accepts": "(arg0: { cents: number; currency: \"EUR\" | \"GBP\" | \"USD\" }, arg1: { cents: number; currency: \"EUR\" | \"GBP\" | \"USD\" })",
+          "handsBack": "{ cents: number; currency: \"EUR\" | \"GBP\" | \"USD\" }",
+          "bounds": [
+            "cents: whole number, 0 to 10,000,000 inclusive"
+          ],
+          "throws": [
+            "RangeError"
+          ]
+        },
+        "after": {
+          "kind": "function",
+          "accepts": "(arg0: { cents: number; currency: \"EUR\" | \"GBP\" | \"USD\" }, arg1: { cents: number; currency: \"EUR\" | \"GBP\" | \"USD\" })",
+          "handsBack": "{ cents: number; currency: \"EUR\" | \"GBP\" | \"USD\" }",
+          "bounds": [
+            "cents: whole number, 0 to 500,000 inclusive"
+          ],
+          "throws": [
+            "RangeError"
+          ]
+        }
+      },
+      {
+        "module": "money",
+        "entry": "amount",
+        "changes": [
+          "bound changed"
+        ],
+        "tells": "users",
+        "before": {
+          "kind": "function",
+          "accepts": "(arg0: number, arg1: \"EUR\" | \"GBP\" | \"USD\")",
+          "handsBack": "{ cents: number; currency: \"EUR\" | \"GBP\" | \"USD\" }",
+          "bounds": [
+            "cents: whole number, 0 to 10,000,000 inclusive"
+          ],
+          "throws": [
+            "RangeError"
+          ]
+        },
+        "after": {
+          "kind": "function",
+          "accepts": "(arg0: number, arg1: \"EUR\" | \"GBP\" | \"USD\")",
+          "handsBack": "{ cents: number; currency: \"EUR\" | \"GBP\" | \"USD\" }",
+          "bounds": [
+            "cents: whole number, 0 to 500,000 inclusive"
+          ],
+          "throws": [
+            "RangeError"
+          ]
+        }
+      },
+      {
+        "module": "money",
+        "entry": "formatAmount",
+        "changes": [
+          "bound changed"
+        ],
+        "tells": "users",
+        "before": {
+          "kind": "function",
+          "accepts": "(arg0: { cents: number; currency: \"EUR\" | \"GBP\" | \"USD\" })",
+          "handsBack": "string",
+          "bounds": [
+            "cents: whole number, 0 to 10,000,000 inclusive"
+          ]
+        },
+        "after": {
+          "kind": "function",
+          "accepts": "(arg0: { cents: number; currency: \"EUR\" | \"GBP\" | \"USD\" })",
+          "handsBack": "string",
+          "bounds": [
+            "cents: whole number, 0 to 500,000 inclusive"
+          ]
+        }
+      },
+      {
+        "module": "money",
+        "entry": "splitEvenly",
+        "changes": [
+          "bound changed"
+        ],
+        "tells": "users",
+        "before": {
+          "kind": "function",
+          "accepts": "(arg0: { cents: number; currency: \"EUR\" | \"GBP\" | \"USD\" }, arg1: number)",
+          "handsBack": "{ cents: number; currency: \"EUR\" | \"GBP\" | \"USD\" }[]",
+          "bounds": [
+            "cents: whole number, 0 to 10,000,000 inclusive",
+            "parts: whole number, 1 to 100"
+          ],
+          "throws": [
+            "RangeError"
+          ]
+        },
+        "after": {
+          "kind": "function",
+          "accepts": "(arg0: { cents: number; currency: \"EUR\" | \"GBP\" | \"USD\" }, arg1: number)",
+          "handsBack": "{ cents: number; currency: \"EUR\" | \"GBP\" | \"USD\" }[]",
+          "bounds": [
+            "cents: whole number, 0 to 500,000 inclusive",
+            "parts: whole number, 1 to 100"
+          ],
+          "throws": [
+            "RangeError"
+          ]
+        }
+      },
+      {
+        "module": "bookings",
+        "entry": "Booking",
+        "changes": [
+          "bound changed"
+        ],
+        "tells": "users",
+        "before": {
+          "kind": "kind",
+          "handsBack": "{ day: string; id: string; nights: number; note?: string; party: number; room: string; state: \"cancelled\" | \"open\"; total: { cents: number; currency: \"EUR\" | \"GBP\" | \"USD\" }; until: string }",
+          "bounds": [
+            "cents: whole number, 0 to 10,000,000 inclusive",
+            "day: a real calendar day written YYYY-MM-DD",
+            "nights: whole number, 1 to 14",
+            "party: whole number, 1 to 200, and no more than the room's seats"
+          ],
+          "side": "handsBack"
+        },
+        "after": {
+          "kind": "kind",
+          "handsBack": "{ day: string; id: string; nights: number; note?: string; party: number; room: string; state: \"cancelled\" | \"open\"; total: { cents: number; currency: \"EUR\" | \"GBP\" | \"USD\" }; until: string }",
+          "bounds": [
+            "cents: whole number, 0 to 500,000 inclusive",
+            "day: a real calendar day written YYYY-MM-DD",
+            "nights: whole number, 1 to 14",
+            "party: whole number, 1 to 200, and no more than the room's seats"
+          ],
+          "side": "handsBack"
+        }
+      },
+      {
+        "module": "bookings",
+        "entry": "BookingHandlers.bookcancel",
+        "changes": [
+          "bound changed"
+        ],
+        "tells": "users",
+        "before": {
+          "kind": "method",
+          "accepts": "(arg0: { id: string })",
+          "handsBack": "{ day: string; id: string; nights: number; note?: string; party: number; room: string; state: \"cancelled\" | \"open\"; total: { cents: number; currency: \"EUR\" | \"GBP\" | \"USD\" }; until: string }",
+          "bounds": [
+            "cents: whole number, 0 to 10,000,000 inclusive",
+            "day: a real calendar day written YYYY-MM-DD",
+            "nights: whole number, 1 to 14",
+            "party: whole number, 1 to 200, and no more than the room's seats"
+          ]
+        },
+        "after": {
+          "kind": "method",
+          "accepts": "(arg0: { id: string })",
+          "handsBack": "{ day: string; id: string; nights: number; note?: string; party: number; room: string; state: \"cancelled\" | \"open\"; total: { cents: number; currency: \"EUR\" | \"GBP\" | \"USD\" }; until: string }",
+          "bounds": [
+            "cents: whole number, 0 to 500,000 inclusive",
+            "day: a real calendar day written YYYY-MM-DD",
+            "nights: whole number, 1 to 14",
+            "party: whole number, 1 to 200, and no more than the room's seats"
+          ]
+        }
+      },
+      {
+        "module": "bookings",
+        "entry": "BookingHandlers.bookopen",
+        "changes": [
+          "bound changed"
+        ],
+        "tells": "users",
+        "before": {
+          "kind": "method",
+          "accepts": "(arg0: { day: string; nights: number; note?: string; party: number; room: string })",
+          "handsBack": "{ day: string; id: string; nights: number; note?: string; party: number; room: string; state: \"cancelled\" | \"open\"; total: { cents: number; currency: \"EUR\" | \"GBP\" | \"USD\" }; until: string }",
+          "bounds": [
+            "cents: whole number, 0 to 10,000,000 inclusive",
+            "day: a real calendar day written YYYY-MM-DD",
+            "nights: whole number, 1 to 14",
+            "party: whole number, 1 to 200, and no more than the room's seats"
+          ]
+        },
+        "after": {
+          "kind": "method",
+          "accepts": "(arg0: { day: string; nights: number; note?: string; party: number; room: string })",
+          "handsBack": "{ day: string; id: string; nights: number; note?: string; party: number; room: string; state: \"cancelled\" | \"open\"; total: { cents: number; currency: \"EUR\" | \"GBP\" | \"USD\" }; until: string }",
+          "bounds": [
+            "cents: whole number, 0 to 500,000 inclusive",
+            "day: a real calendar day written YYYY-MM-DD",
+            "nights: whole number, 1 to 14",
+            "party: whole number, 1 to 200, and no more than the room's seats"
+          ]
+        }
+      },
+      {
+        "module": "bookings",
+        "entry": "BookingHandlers.bookquote",
+        "changes": [
+          "bound changed"
+        ],
+        "tells": "users",
+        "before": {
+          "kind": "method",
+          "accepts": "(arg0: { nights: number; party: number; room: string })",
+          "handsBack": "{ total: { cents: number; currency: \"EUR\" | \"GBP\" | \"USD\" } }",
+          "bounds": [
+            "cents: whole number, 0 to 10,000,000 inclusive"
+          ]
+        },
+        "after": {
+          "kind": "method",
+          "accepts": "(arg0: { nights: number; party: number; room: string })",
+          "handsBack": "{ total: { cents: number; currency: \"EUR\" | \"GBP\" | \"USD\" } }",
+          "bounds": [
+            "cents: whole number, 0 to 500,000 inclusive"
+          ]
+        }
+      },
+      {
+        "module": "bookings",
+        "entry": "BookingHandlers.bookstatus",
+        "changes": [
+          "bound changed"
+        ],
+        "tells": "users",
+        "before": {
+          "kind": "method",
+          "accepts": "(arg0: { id: string })",
+          "handsBack": "{ room: string; state: \"cancelled\" | \"open\"; total: { cents: number; currency: \"EUR\" | \"GBP\" | \"USD\" } }",
+          "bounds": [
+            "cents: whole number, 0 to 10,000,000 inclusive"
+          ]
+        },
+        "after": {
+          "kind": "method",
+          "accepts": "(arg0: { id: string })",
+          "handsBack": "{ room: string; state: \"cancelled\" | \"open\"; total: { cents: number; currency: \"EUR\" | \"GBP\" | \"USD\" } }",
+          "bounds": [
+            "cents: whole number, 0 to 500,000 inclusive"
+          ]
+        }
+      },
+      {
+        "module": "bookings",
+        "entry": "Bookings.cancel",
+        "changes": [
+          "bound changed"
+        ],
+        "tells": "users",
+        "before": {
+          "kind": "method",
+          "accepts": "(arg0: string)",
+          "handsBack": "{ day: string; id: string; nights: number; note?: string; party: number; room: string; state: \"cancelled\" | \"open\"; total: { cents: number; currency: \"EUR\" | \"GBP\" | \"USD\" }; until: string }",
+          "bounds": [
+            "cents: whole number, 0 to 10,000,000 inclusive",
+            "day: a real calendar day written YYYY-MM-DD",
+            "nights: whole number, 1 to 14",
+            "party: whole number, 1 to 200, and no more than the room's seats"
+          ]
+        },
+        "after": {
+          "kind": "method",
+          "accepts": "(arg0: string)",
+          "handsBack": "{ day: string; id: string; nights: number; note?: string; party: number; room: string; state: \"cancelled\" | \"open\"; total: { cents: number; currency: \"EUR\" | \"GBP\" | \"USD\" }; until: string }",
+          "bounds": [
+            "cents: whole number, 0 to 500,000 inclusive",
+            "day: a real calendar day written YYYY-MM-DD",
+            "nights: whole number, 1 to 14",
+            "party: whole number, 1 to 200, and no more than the room's seats"
+          ]
+        }
+      },
+      {
+        "module": "bookings",
+        "entry": "Bookings.find",
+        "changes": [
+          "bound changed"
+        ],
+        "tells": "users",
+        "before": {
+          "kind": "method",
+          "accepts": "(arg0: string)",
+          "handsBack": "{ day: string; id: string; nights: number; note?: string; party: number; room: string; state: \"cancelled\" | \"open\"; total: { cents: number; currency: \"EUR\" | \"GBP\" | \"USD\" }; until: string } | undefined",
+          "bounds": [
+            "cents: whole number, 0 to 10,000,000 inclusive",
+            "day: a real calendar day written YYYY-MM-DD",
+            "nights: whole number, 1 to 14",
+            "party: whole number, 1 to 200, and no more than the room's seats"
+          ]
+        },
+        "after": {
+          "kind": "method",
+          "accepts": "(arg0: string)",
+          "handsBack": "{ day: string; id: string; nights: number; note?: string; party: number; room: string; state: \"cancelled\" | \"open\"; total: { cents: number; currency: \"EUR\" | \"GBP\" | \"USD\" }; until: string } | undefined",
+          "bounds": [
+            "cents: whole number, 0 to 500,000 inclusive",
+            "day: a real calendar day written YYYY-MM-DD",
+            "nights: whole number, 1 to 14",
+            "party: whole number, 1 to 200, and no more than the room's seats"
+          ]
+        }
+      },
+      {
+        "module": "bookings",
+        "entry": "Bookings.open",
+        "changes": [
+          "bound changed"
+        ],
+        "tells": "users",
+        "before": {
+          "kind": "method",
+          "accepts": "(arg0: { day: string; nights: number; note?: string; party: number; room: string })",
+          "handsBack": "{ day: string; id: string; nights: number; note?: string; party: number; room: string; state: \"cancelled\" | \"open\"; total: { cents: number; currency: \"EUR\" | \"GBP\" | \"USD\" }; until: string }",
+          "bounds": [
+            "cents: whole number, 0 to 10,000,000 inclusive",
+            "day: a real calendar day written YYYY-MM-DD",
+            "nights: whole number, 1 to 14",
+            "party: whole number, 1 to 200, and no more than the room's seats"
+          ]
+        },
+        "after": {
+          "kind": "method",
+          "accepts": "(arg0: { day: string; nights: number; note?: string; party: number; room: string })",
+          "handsBack": "{ day: string; id: string; nights: number; note?: string; party: number; room: string; state: \"cancelled\" | \"open\"; total: { cents: number; currency: \"EUR\" | \"GBP\" | \"USD\" }; until: string }",
+          "bounds": [
+            "cents: whole number, 0 to 500,000 inclusive",
+            "day: a real calendar day written YYYY-MM-DD",
+            "nights: whole number, 1 to 14",
+            "party: whole number, 1 to 200, and no more than the room's seats"
+          ]
+        }
+      },
+      {
+        "module": "bookings",
+        "entry": "Bookings.quote",
+        "changes": [
+          "bound changed"
+        ],
+        "tells": "users",
+        "before": {
+          "kind": "method",
+          "accepts": "(arg0: string, arg1: number, arg2: number)",
+          "handsBack": "{ cents: number; currency: \"EUR\" | \"GBP\" | \"USD\" }",
+          "bounds": [
+            "cents: whole number, 0 to 10,000,000 inclusive"
+          ]
+        },
+        "after": {
+          "kind": "method",
+          "accepts": "(arg0: string, arg1: number, arg2: number)",
+          "handsBack": "{ cents: number; currency: \"EUR\" | \"GBP\" | \"USD\" }",
+          "bounds": [
+            "cents: whole number, 0 to 500,000 inclusive"
+          ]
+        }
+      },
+      {
+        "module": "bookings",
+        "entry": "op:bookcancel",
+        "changes": [
+          "bound changed"
+        ],
+        "tells": "users",
+        "before": {
+          "kind": "operation",
+          "accepts": "{ id: string }",
+          "handsBack": "{ day: string; id: string; nights: number; note?: string; party: number; room: string; state: \"cancelled\" | \"open\"; total: { cents: number; currency: \"EUR\" | \"GBP\" | \"USD\" }; until: string }",
+          "bounds": [
+            "cents: whole number, 0 to 10,000,000 inclusive",
+            "day: a real calendar day written YYYY-MM-DD",
+            "nights: whole number, 1 to 14",
+            "party: whole number, 1 to 200, and no more than the room's seats"
+          ]
+        },
+        "after": {
+          "kind": "operation",
+          "accepts": "{ id: string }",
+          "handsBack": "{ day: string; id: string; nights: number; note?: string; party: number; room: string; state: \"cancelled\" | \"open\"; total: { cents: number; currency: \"EUR\" | \"GBP\" | \"USD\" }; until: string }",
+          "bounds": [
+            "cents: whole number, 0 to 500,000 inclusive",
+            "day: a real calendar day written YYYY-MM-DD",
+            "nights: whole number, 1 to 14",
+            "party: whole number, 1 to 200, and no more than the room's seats"
+          ]
+        }
+      },
+      {
+        "module": "bookings",
+        "entry": "op:bookopen",
+        "changes": [
+          "bound changed"
+        ],
+        "tells": "users",
+        "before": {
+          "kind": "operation",
+          "accepts": "{ day: string; nights: number; note?: string; party: number; room: string }",
+          "handsBack": "{ day: string; id: string; nights: number; note?: string; party: number; room: string; state: \"cancelled\" | \"open\"; total: { cents: number; currency: \"EUR\" | \"GBP\" | \"USD\" }; until: string }",
+          "bounds": [
+            "cents: whole number, 0 to 10,000,000 inclusive",
+            "day: a real calendar day written YYYY-MM-DD",
+            "nights: whole number, 1 to 14",
+            "party: whole number, 1 to 200, and no more than the room's seats"
+          ]
+        },
+        "after": {
+          "kind": "operation",
+          "accepts": "{ day: string; nights: number; note?: string; party: number; room: string }",
+          "handsBack": "{ day: string; id: string; nights: number; note?: string; party: number; room: string; state: \"cancelled\" | \"open\"; total: { cents: number; currency: \"EUR\" | \"GBP\" | \"USD\" }; until: string }",
+          "bounds": [
+            "cents: whole number, 0 to 500,000 inclusive",
+            "day: a real calendar day written YYYY-MM-DD",
+            "nights: whole number, 1 to 14",
+            "party: whole number, 1 to 200, and no more than the room's seats"
+          ]
+        }
+      },
+      {
+        "module": "bookings",
+        "entry": "op:bookquote",
+        "changes": [
+          "bound changed"
+        ],
+        "tells": "users",
+        "before": {
+          "kind": "operation",
+          "accepts": "{ nights: number; party: number; room: string }",
+          "handsBack": "{ total: { cents: number; currency: \"EUR\" | \"GBP\" | \"USD\" } }",
+          "bounds": [
+            "bookquote.total: what the whole stay costs, for the whole party and every night",
+            "cents: whole number, 0 to 10,000,000 inclusive"
+          ]
+        },
+        "after": {
+          "kind": "operation",
+          "accepts": "{ nights: number; party: number; room: string }",
+          "handsBack": "{ total: { cents: number; currency: \"EUR\" | \"GBP\" | \"USD\" } }",
+          "bounds": [
+            "bookquote.total: what the whole stay costs, for the whole party and every night",
+            "cents: whole number, 0 to 500,000 inclusive"
+          ]
+        }
+      },
+      {
+        "module": "bookings",
+        "entry": "op:bookstatus",
+        "changes": [
+          "bound changed"
+        ],
+        "tells": "users",
+        "before": {
+          "kind": "operation",
+          "accepts": "{ id: string }",
+          "handsBack": "{ room: string; state: \"cancelled\" | \"open\"; total: { cents: number; currency: \"EUR\" | \"GBP\" | \"USD\" } }",
+          "bounds": [
+            "cents: whole number, 0 to 10,000,000 inclusive"
+          ]
+        },
+        "after": {
+          "kind": "operation",
+          "accepts": "{ id: string }",
+          "handsBack": "{ room: string; state: \"cancelled\" | \"open\"; total: { cents: number; currency: \"EUR\" | \"GBP\" | \"USD\" } }",
+          "bounds": [
+            "cents: whole number, 0 to 500,000 inclusive"
+          ]
+        }
+      },
+      {
+        "module": "bookings",
+        "entry": "table:bookings",
+        "changes": [
+          "bound changed"
+        ],
+        "tells": "users",
+        "before": {
+          "kind": "stored rows",
+          "accepts": "{ day: string; id: string; nights: number; note?: string; party: number; room: string; state: \"cancelled\" | \"open\"; total: { cents: number; currency: \"EUR\" | \"GBP\" | \"USD\" }; until: string }",
+          "handsBack": "{ day: string; id: string; nights: number; note?: string; party: number; room: string; state: \"cancelled\" | \"open\"; total: { cents: number; currency: \"EUR\" | \"GBP\" | \"USD\" }; until: string }",
+          "bounds": [
+            "cents: whole number, 0 to 10,000,000 inclusive",
+            "day: a real calendar day written YYYY-MM-DD",
+            "nights: whole number, 1 to 14",
+            "party: whole number, 1 to 200, and no more than the room's seats"
+          ],
+          "side": "both"
+        },
+        "after": {
+          "kind": "stored rows",
+          "accepts": "{ day: string; id: string; nights: number; note?: string; party: number; room: string; state: \"cancelled\" | \"open\"; total: { cents: number; currency: \"EUR\" | \"GBP\" | \"USD\" }; until: string }",
+          "handsBack": "{ day: string; id: string; nights: number; note?: string; party: number; room: string; state: \"cancelled\" | \"open\"; total: { cents: number; currency: \"EUR\" | \"GBP\" | \"USD\" }; until: string }",
+          "bounds": [
+            "cents: whole number, 0 to 500,000 inclusive",
+            "day: a real calendar day written YYYY-MM-DD",
+            "nights: whole number, 1 to 14",
+            "party: whole number, 1 to 200, and no more than the room's seats"
+          ],
+          "side": "both"
+        }
+      },
+      {
+        "module": "door",
+        "entry": "AllOps",
+        "changes": [
+          "bound changed"
+        ],
+        "tells": "users",
+        "before": {
+          "kind": "kind",
+          "accepts": "{ bookcancel: { req: { id: string }; res: { day: string; id: string; nights: number; note?: string; party: number; room: string; state: \"cancelled\" | \"open\"; total: { cents: number; currency: \"EUR\" | \"GBP\" | \"USD\" }; until: string } }; bookopen: { req: { day: string; nights: number; note?: string; party: number; room: string }; res: { day: string; id: string; nights: number; note?: string; party: number; room: string; state: \"cancelled\" | \"open\"; total: { cents: number; currency: \"EUR\" | \"GBP\" | \"USD\" }; until: string } }; bookquote: { req: { nights: number; party: number; room: string }; res: { total: { cents: number; currency: \"EUR\" | \"GBP\" | \"USD\" } } }; bookstatus: { req: { id: string }; res: { room: string; state: \"cancelled\" | \"open\"; total: { cents: number; currency: \"EUR\" | \"GBP\" | \"USD\" } } }; roomlist: { req: { kind?: \"hall\" | \"kitchen\" | \"studio\" }; res: { rooms: { id: string; kind: \"hall\" | \"kitchen\" | \"studio\"; name: string; seats: number }[] } } }",
+          "handsBack": "{ bookcancel: { req: { id: string }; res: { day: string; id: string; nights: number; note?: string; party: number; room: string; state: \"cancelled\" | \"open\"; total: { cents: number; currency: \"EUR\" | \"GBP\" | \"USD\" }; until: string } }; bookopen: { req: { day: string; nights: number; note?: string; party: number; room: string }; res: { day: string; id: string; nights: number; note?: string; party: number; room: string; state: \"cancelled\" | \"open\"; total: { cents: number; currency: \"EUR\" | \"GBP\" | \"USD\" }; until: string } }; bookquote: { req: { nights: number; party: number; room: string }; res: { total: { cents: number; currency: \"EUR\" | \"GBP\" | \"USD\" } } }; bookstatus: { req: { id: string }; res: { room: string; state: \"cancelled\" | \"open\"; total: { cents: number; currency: \"EUR\" | \"GBP\" | \"USD\" } } }; roomlist: { req: { kind?: \"hall\" | \"kitchen\" | \"studio\" }; res: { rooms: { id: string; kind: \"hall\" | \"kitchen\" | \"studio\"; name: string; seats: number }[] } } }",
+          "bounds": [
+            "bookquote.total: what the whole stay costs, for the whole party and every night",
+            "cents: whole number, 0 to 10,000,000 inclusive",
+            "day: a real calendar day written YYYY-MM-DD",
+            "nights: whole number, 1 to 14",
+            "party: whole number, 1 to 200, and no more than the room's seats",
+            "seats: whole number, 1 to 500"
+          ],
+          "side": "both"
+        },
+        "after": {
+          "kind": "kind",
+          "accepts": "{ bookcancel: { req: { id: string }; res: { day: string; id: string; nights: number; note?: string; party: number; room: string; state: \"cancelled\" | \"open\"; total: { cents: number; currency: \"EUR\" | \"GBP\" | \"USD\" }; until: string } }; bookopen: { req: { day: string; nights: number; note?: string; party: number; room: string }; res: { day: string; id: string; nights: number; note?: string; party: number; room: string; state: \"cancelled\" | \"open\"; total: { cents: number; currency: \"EUR\" | \"GBP\" | \"USD\" }; until: string } }; bookquote: { req: { nights: number; party: number; room: string }; res: { total: { cents: number; currency: \"EUR\" | \"GBP\" | \"USD\" } } }; bookstatus: { req: { id: string }; res: { room: string; state: \"cancelled\" | \"open\"; total: { cents: number; currency: \"EUR\" | \"GBP\" | \"USD\" } } }; roomlist: { req: { kind?: \"hall\" | \"kitchen\" | \"studio\" }; res: { rooms: { id: string; kind: \"hall\" | \"kitchen\" | \"studio\"; name: string; seats: number }[] } } }",
+          "handsBack": "{ bookcancel: { req: { id: string }; res: { day: string; id: string; nights: number; note?: string; party: number; room: string; state: \"cancelled\" | \"open\"; total: { cents: number; currency: \"EUR\" | \"GBP\" | \"USD\" }; until: string } }; bookopen: { req: { day: string; nights: number; note?: string; party: number; room: string }; res: { day: string; id: string; nights: number; note?: string; party: number; room: string; state: \"cancelled\" | \"open\"; total: { cents: number; currency: \"EUR\" | \"GBP\" | \"USD\" }; until: string } }; bookquote: { req: { nights: number; party: number; room: string }; res: { total: { cents: number; currency: \"EUR\" | \"GBP\" | \"USD\" } } }; bookstatus: { req: { id: string }; res: { room: string; state: \"cancelled\" | \"open\"; total: { cents: number; currency: \"EUR\" | \"GBP\" | \"USD\" } } }; roomlist: { req: { kind?: \"hall\" | \"kitchen\" | \"studio\" }; res: { rooms: { id: string; kind: \"hall\" | \"kitchen\" | \"studio\"; name: string; seats: number }[] } } }",
+          "bounds": [
+            "bookquote.total: what the whole stay costs, for the whole party and every night",
+            "cents: whole number, 0 to 500,000 inclusive",
+            "day: a real calendar day written YYYY-MM-DD",
+            "nights: whole number, 1 to 14",
+            "party: whole number, 1 to 200, and no more than the room's seats",
+            "seats: whole number, 1 to 500"
+          ],
+          "side": "both"
+        }
+      },
+      {
+        "module": "door",
+        "entry": "Handlers.bookcancel",
+        "changes": [
+          "bound changed"
+        ],
+        "tells": "users",
+        "before": {
+          "kind": "method",
+          "accepts": "(arg0: { id: string })",
+          "handsBack": "{ day: string; id: string; nights: number; note?: string; party: number; room: string; state: \"cancelled\" | \"open\"; total: { cents: number; currency: \"EUR\" | \"GBP\" | \"USD\" }; until: string }",
+          "bounds": [
+            "cents: whole number, 0 to 10,000,000 inclusive",
+            "day: a real calendar day written YYYY-MM-DD",
+            "nights: whole number, 1 to 14",
+            "party: whole number, 1 to 200, and no more than the room's seats"
+          ]
+        },
+        "after": {
+          "kind": "method",
+          "accepts": "(arg0: { id: string })",
+          "handsBack": "{ day: string; id: string; nights: number; note?: string; party: number; room: string; state: \"cancelled\" | \"open\"; total: { cents: number; currency: \"EUR\" | \"GBP\" | \"USD\" }; until: string }",
+          "bounds": [
+            "cents: whole number, 0 to 500,000 inclusive",
+            "day: a real calendar day written YYYY-MM-DD",
+            "nights: whole number, 1 to 14",
+            "party: whole number, 1 to 200, and no more than the room's seats"
+          ]
+        }
+      },
+      {
+        "module": "door",
+        "entry": "Handlers.bookopen",
+        "changes": [
+          "bound changed"
+        ],
+        "tells": "users",
+        "before": {
+          "kind": "method",
+          "accepts": "(arg0: { day: string; nights: number; note?: string; party: number; room: string })",
+          "handsBack": "{ day: string; id: string; nights: number; note?: string; party: number; room: string; state: \"cancelled\" | \"open\"; total: { cents: number; currency: \"EUR\" | \"GBP\" | \"USD\" }; until: string }",
+          "bounds": [
+            "cents: whole number, 0 to 10,000,000 inclusive",
+            "day: a real calendar day written YYYY-MM-DD",
+            "nights: whole number, 1 to 14",
+            "party: whole number, 1 to 200, and no more than the room's seats"
+          ]
+        },
+        "after": {
+          "kind": "method",
+          "accepts": "(arg0: { day: string; nights: number; note?: string; party: number; room: string })",
+          "handsBack": "{ day: string; id: string; nights: number; note?: string; party: number; room: string; state: \"cancelled\" | \"open\"; total: { cents: number; currency: \"EUR\" | \"GBP\" | \"USD\" }; until: string }",
+          "bounds": [
+            "cents: whole number, 0 to 500,000 inclusive",
+            "day: a real calendar day written YYYY-MM-DD",
+            "nights: whole number, 1 to 14",
+            "party: whole number, 1 to 200, and no more than the room's seats"
+          ]
+        }
+      },
+      {
+        "module": "door",
+        "entry": "Handlers.bookquote",
+        "changes": [
+          "bound changed"
+        ],
+        "tells": "users",
+        "before": {
+          "kind": "method",
+          "accepts": "(arg0: { nights: number; party: number; room: string })",
+          "handsBack": "{ total: { cents: number; currency: \"EUR\" | \"GBP\" | \"USD\" } }",
+          "bounds": [
+            "cents: whole number, 0 to 10,000,000 inclusive"
+          ]
+        },
+        "after": {
+          "kind": "method",
+          "accepts": "(arg0: { nights: number; party: number; room: string })",
+          "handsBack": "{ total: { cents: number; currency: \"EUR\" | \"GBP\" | \"USD\" } }",
+          "bounds": [
+            "cents: whole number, 0 to 500,000 inclusive"
+          ]
+        }
+      },
+      {
+        "module": "door",
+        "entry": "Handlers.bookstatus",
+        "changes": [
+          "bound changed"
+        ],
+        "tells": "users",
+        "before": {
+          "kind": "method",
+          "accepts": "(arg0: { id: string })",
+          "handsBack": "{ room: string; state: \"cancelled\" | \"open\"; total: { cents: number; currency: \"EUR\" | \"GBP\" | \"USD\" } }",
+          "bounds": [
+            "cents: whole number, 0 to 10,000,000 inclusive"
+          ]
+        },
+        "after": {
+          "kind": "method",
+          "accepts": "(arg0: { id: string })",
+          "handsBack": "{ room: string; state: \"cancelled\" | \"open\"; total: { cents: number; currency: \"EUR\" | \"GBP\" | \"USD\" } }",
+          "bounds": [
+            "cents: whole number, 0 to 500,000 inclusive"
+          ]
+        }
+      },
+      {
+        "module": "meter",
+        "entry": "MeterMsg",
+        "changes": [
+          "bound changed"
+        ],
+        "tells": "users",
+        "before": {
+          "kind": "kind",
+          "accepts": "{ cost: { cents: number; currency: \"EUR\" | \"GBP\" | \"USD\" }; kind: \"reading\"; minutes: number; room: string } | { count: number; kind: \"done\" } | { kind: \"refused\"; reason: string; room: string }",
+          "handsBack": "{ cost: { cents: number; currency: \"EUR\" | \"GBP\" | \"USD\" }; kind: \"reading\"; minutes: number; room: string } | { count: number; kind: \"done\" } | { kind: \"refused\"; reason: string; room: string }",
+          "bounds": [
+            "cents: whole number, 0 to 10,000,000 inclusive"
+          ],
+          "side": "both",
+          "channel": "stdout"
+        },
+        "after": {
+          "kind": "kind",
+          "accepts": "{ cost: { cents: number; currency: \"EUR\" | \"GBP\" | \"USD\" }; kind: \"reading\"; minutes: number; room: string } | { count: number; kind: \"done\" } | { kind: \"refused\"; reason: string; room: string }",
+          "handsBack": "{ cost: { cents: number; currency: \"EUR\" | \"GBP\" | \"USD\" }; kind: \"reading\"; minutes: number; room: string } | { count: number; kind: \"done\" } | { kind: \"refused\"; reason: string; room: string }",
+          "bounds": [
+            "cents: whole number, 0 to 500,000 inclusive"
+          ],
+          "side": "both",
+          "channel": "stdout"
+        }
+      },
+      {
+        "module": "billing",
+        "entry": "Billing.estimate",
+        "changes": [
+          "bound changed"
+        ],
+        "tells": "users",
+        "before": {
+          "kind": "method",
+          "accepts": "(arg0: string, arg1: number, arg2: number)",
+          "handsBack": "Promise<{ deposit: { cents: number; currency: \"EUR\" | \"GBP\" | \"USD\" }; total: { cents: number; currency: \"EUR\" | \"GBP\" | \"USD\" } }>",
+          "bounds": [
+            "cents: whole number, 0 to 10,000,000 inclusive"
+          ]
+        },
+        "after": {
+          "kind": "method",
+          "accepts": "(arg0: string, arg1: number, arg2: number)",
+          "handsBack": "Promise<{ deposit: { cents: number; currency: \"EUR\" | \"GBP\" | \"USD\" }; total: { cents: number; currency: \"EUR\" | \"GBP\" | \"USD\" } }>",
+          "bounds": [
+            "cents: whole number, 0 to 500,000 inclusive"
+          ]
+        }
+      },
+      {
+        "module": "billing",
+        "entry": "Billing.invoice",
+        "changes": [
+          "bound changed"
+        ],
+        "tells": "users",
+        "before": {
+          "kind": "method",
+          "accepts": "(arg0: string, arg1: number)",
+          "handsBack": "Promise<{ booking: string; instalments: { cents: number; currency: \"EUR\" | \"GBP\" | \"USD\" }[]; text: string; total: { cents: number; currency: \"EUR\" | \"GBP\" | \"USD\" } }>",
+          "bounds": [
+            "cents: whole number, 0 to 10,000,000 inclusive"
+          ]
+        },
+        "after": {
+          "kind": "method",
+          "accepts": "(arg0: string, arg1: number)",
+          "handsBack": "Promise<{ booking: string; instalments: { cents: number; currency: \"EUR\" | \"GBP\" | \"USD\" }[]; text: string; total: { cents: number; currency: \"EUR\" | \"GBP\" | \"USD\" } }>",
+          "bounds": [
+            "cents: whole number, 0 to 500,000 inclusive"
+          ]
+        }
+      },
+      {
+        "module": "billing",
+        "entry": "Billing.meterUsage",
+        "changes": [
+          "bound changed"
+        ],
+        "tells": "users",
+        "before": {
+          "kind": "method",
+          "accepts": "(arg0: { kind: \"use\"; minutes: number; room: string }[])",
+          "handsBack": "Promise<{ cents: number; currency: \"EUR\" | \"GBP\" | \"USD\" }>",
+          "bounds": [
+            "cents: whole number, 0 to 10,000,000 inclusive",
+            "minutes: whole number, 1 to 1440"
+          ]
+        },
+        "after": {
+          "kind": "method",
+          "accepts": "(arg0: { kind: \"use\"; minutes: number; room: string }[])",
+          "handsBack": "Promise<{ cents: number; currency: \"EUR\" | \"GBP\" | \"USD\" }>",
+          "bounds": [
+            "cents: whole number, 0 to 500,000 inclusive",
+            "minutes: whole number, 1 to 1440"
+          ]
+        }
+      },
+      {
+        "module": "billing",
+        "entry": "Estimate",
+        "changes": [
+          "bound changed"
+        ],
+        "tells": "users",
+        "before": {
+          "kind": "kind",
+          "handsBack": "{ deposit: { cents: number; currency: \"EUR\" | \"GBP\" | \"USD\" }; total: { cents: number; currency: \"EUR\" | \"GBP\" | \"USD\" } }",
+          "bounds": [
+            "cents: whole number, 0 to 10,000,000 inclusive"
+          ],
+          "side": "handsBack"
+        },
+        "after": {
+          "kind": "kind",
+          "handsBack": "{ deposit: { cents: number; currency: \"EUR\" | \"GBP\" | \"USD\" }; total: { cents: number; currency: \"EUR\" | \"GBP\" | \"USD\" } }",
+          "bounds": [
+            "cents: whole number, 0 to 500,000 inclusive"
+          ],
+          "side": "handsBack"
+        }
+      },
+      {
+        "module": "billing",
+        "entry": "Invoice",
+        "changes": [
+          "bound changed"
+        ],
+        "tells": "users",
+        "before": {
+          "kind": "kind",
+          "handsBack": "{ booking: string; instalments: { cents: number; currency: \"EUR\" | \"GBP\" | \"USD\" }[]; text: string; total: { cents: number; currency: \"EUR\" | \"GBP\" | \"USD\" } }",
+          "bounds": [
+            "cents: whole number, 0 to 10,000,000 inclusive"
+          ],
+          "side": "handsBack"
+        },
+        "after": {
+          "kind": "kind",
+          "handsBack": "{ booking: string; instalments: { cents: number; currency: \"EUR\" | \"GBP\" | \"USD\" }[]; text: string; total: { cents: number; currency: \"EUR\" | \"GBP\" | \"USD\" } }",
+          "bounds": [
+            "cents: whole number, 0 to 500,000 inclusive"
+          ],
+          "side": "handsBack"
+        }
+      }
+    ],
+    "told": [
+      "bookings",
+      "meter",
+      "billing",
+      "front",
+      "reports"
+    ],
+    "toldDetail": [
+      {
+        "user": "bookings",
+        "reasons": [
+          {
+            "module": "money",
+            "entry": "Amount",
+            "changes": [
+              "bound changed"
+            ],
+            "lines": [
+              "bookings/src/index.mjs:6",
+              "bookings/src/index.mjs:23",
+              "bookings/src/index.mjs:47",
+              "bookings/src/index.mjs:55",
+              "bookings/src/index.mjs:56",
+              "bookings/test/index.test.mjs:31"
+            ],
+            "through": null
+          },
+          {
+            "module": "money",
+            "entry": "amount",
+            "changes": [
+              "bound changed"
+            ],
+            "lines": [
+              "bookings/src/index.mjs:4",
+              "bookings/src/index.mjs:97"
+            ],
+            "through": null
+          }
+        ],
+        "undeclared": []
+      },
+      {
+        "user": "meter",
+        "reasons": [
+          {
+            "module": "money",
+            "entry": "Amount",
+            "changes": [
+              "bound changed"
+            ],
+            "lines": [
+              "meter/src/index.mjs:6",
+              "meter/src/index.mjs:24",
+              "meter/test/index.test.mjs:32",
+              "meter/test/index.test.mjs:33"
+            ],
+            "through": null
+          },
+          {
+            "module": "money",
+            "entry": "amount",
+            "changes": [
+              "bound changed"
+            ],
+            "lines": [
+              "meter/src/worker.mjs:5",
+              "meter/src/worker.mjs:24"
+            ],
+            "through": null
+          }
+        ],
+        "undeclared": []
+      },
+      {
+        "user": "billing",
+        "reasons": [
+          {
+            "module": "money",
+            "entry": "Amount",
+            "changes": [
+              "bound changed"
+            ],
+            "lines": [
+              "billing/src/index.mjs:7",
+              "billing/src/index.mjs:15",
+              "billing/src/index.mjs:16",
+              "billing/src/index.mjs:24",
+              "billing/src/index.mjs:31",
+              "billing/src/index.mjs:32"
+            ],
+            "through": null
+          },
+          {
+            "module": "money",
+            "entry": "add",
+            "changes": [
+              "bound changed"
+            ],
+            "lines": [
+              "billing/src/index.mjs:5",
+              "billing/src/index.mjs:71"
+            ],
+            "through": null
+          },
+          {
+            "module": "money",
+            "entry": "amount",
+            "changes": [
+              "bound changed"
+            ],
+            "lines": [
+              "billing/src/index.mjs:5",
+              "billing/src/index.mjs:55",
+              "billing/src/index.mjs:61"
+            ],
+            "through": null
+          },
+          {
+            "module": "money",
+            "entry": "formatAmount",
+            "changes": [
+              "bound changed"
+            ],
+            "lines": [
+              "billing/src/index.mjs:5",
+              "billing/src/index.mjs:50"
+            ],
+            "through": null
+          },
+          {
+            "module": "money",
+            "entry": "splitEvenly",
+            "changes": [
+              "bound changed"
+            ],
+            "lines": [
+              "billing/src/index.mjs:5",
+              "billing/src/index.mjs:45"
+            ],
+            "through": null
+          },
+          {
+            "module": "bookings",
+            "entry": "Booking",
+            "changes": [
+              "bound changed"
+            ],
+            "lines": [
+              "billing/test/index.test.mjs:21",
+              "billing/test/index.test.mjs:22",
+              "billing/test/index.test.mjs:23",
+              "billing/test/index.test.mjs:26",
+              "billing/test/index.test.mjs:32",
+              "billing/test/index.test.mjs:33"
+            ],
+            "through": "money"
+          },
+          {
+            "module": "bookings",
+            "entry": "Bookings.cancel",
+            "changes": [
+              "bound changed"
+            ],
+            "lines": [
+              "billing/test/index.test.mjs:32"
+            ],
+            "through": "money"
+          },
+          {
+            "module": "bookings",
+            "entry": "Bookings.open",
+            "changes": [
+              "bound changed"
+            ],
+            "lines": [
+              "billing/test/index.test.mjs:20",
+              "billing/test/index.test.mjs:31",
+              "billing/test/index.test.mjs:39"
+            ],
+            "through": "money"
+          },
+          {
+            "module": "bookings",
+            "entry": "op:bookquote",
+            "changes": [
+              "bound changed"
+            ],
+            "lines": [
+              "billing/src/index.mjs:54"
+            ],
+            "through": "money"
+          },
+          {
+            "module": "bookings",
+            "entry": "op:bookstatus",
+            "changes": [
+              "bound changed"
+            ],
+            "lines": [
+              "billing/src/index.mjs:43",
+              "billing/src/index.mjs:44",
+              "billing/src/index.mjs:45",
+              "billing/src/index.mjs:48",
+              "billing/src/index.mjs:50"
+            ],
+            "through": "money"
+          },
+          {
+            "module": "meter",
+            "entry": "MeterMsg",
+            "changes": [
+              "bound changed"
+            ],
+            "lines": [
+              "billing/src/index.mjs:8",
+              "billing/src/index.mjs:69",
+              "billing/src/index.mjs:71",
+              "billing/src/index.mjs:72",
+              "billing/src/index.mjs:73"
+            ],
+            "through": "money"
+          }
+        ],
+        "undeclared": []
+      },
+      {
+        "user": "front",
+        "reasons": [
+          {
+            "module": "money",
+            "entry": "Amount",
+            "changes": [
+              "bound changed"
+            ],
+            "lines": [
+              "front/src/index.mjs:46"
+            ],
+            "through": null
+          },
+          {
+            "module": "bookings",
+            "entry": "Booking",
+            "changes": [
+              "bound changed"
+            ],
+            "lines": [
+              "front/src/index.mjs:46",
+              "front/src/index.mjs:47",
+              "front/src/index.mjs:51"
+            ],
+            "through": "money"
+          },
+          {
+            "module": "bookings",
+            "entry": "op:bookcancel",
+            "changes": [
+              "bound changed"
+            ],
+            "lines": [
+              "front/src/index.mjs:50"
+            ],
+            "through": "money"
+          },
+          {
+            "module": "bookings",
+            "entry": "op:bookopen",
+            "changes": [
+              "bound changed"
+            ],
+            "lines": [
+              "front/src/index.mjs:39"
+            ],
+            "through": "money"
+          }
+        ],
+        "undeclared": [
+          "money"
+        ]
+      },
+      {
+        "user": "reports",
+        "reasons": [
+          {
+            "module": "bookings",
+            "entry": "Booking",
+            "changes": [
+              "bound changed"
+            ],
+            "lines": [
+              "reports/test/index.test.mjs:17"
+            ],
+            "through": "money"
+          },
+          {
+            "module": "bookings",
+            "entry": "Bookings.cancel",
+            "changes": [
+              "bound changed"
+            ],
+            "lines": [
+              "reports/test/index.test.mjs:17"
+            ],
+            "through": "money"
+          },
+          {
+            "module": "bookings",
+            "entry": "Bookings.open",
+            "changes": [
+              "bound changed"
+            ],
+            "lines": [
+              "reports/test/index.test.mjs:14",
+              "reports/test/index.test.mjs:15",
+              "reports/test/index.test.mjs:16"
+            ],
+            "through": "money"
+          },
+          {
+            "module": "bookings",
+            "notFollowed": [
+              "reads or calls values of unknown kind: reports/src/index.mjs:13 source.list('rooms').map; reports/src/index.mjs:13 source.list('rooms'); reports/src/index.mjs:13 source.list (+9)"
+            ],
+            "through": "money"
+          }
+        ],
+        "undeclared": []
+      }
+    ],
+    "notTold": [
+      {
+        "user": "door",
+        "why": "uses none of the entries that changed in a way that tells"
+      }
+    ],
+    "warnings": [],
+    "commentsOnly": false,
+    "checks": {
+      "money": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 78
+      },
+      "calendar": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 72
+      },
+      "store": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 76
+      },
+      "rooms": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 91
+      },
+      "bookings": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 90
+      },
+      "door": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 69
+      },
+      "meter": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 87
+      },
+      "billing": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 90
+      },
+      "front": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 112
+      },
+      "reports": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 76
+      }
+    }
+  },
+  "groundTruth": {
+    "providerTests": {
+      "pass": true,
+      "failed": [],
+      "ran": 6
+    },
+    "testsBefore": {
+      "calendar": true,
+      "store": true,
+      "rooms": true,
+      "bookings": true,
+      "door": true,
+      "meter": true,
+      "billing": true,
+      "front": true,
+      "reports": true
+    },
+    "testsAfter": {
+      "calendar": {
+        "pass": true,
+        "failed": []
+      },
+      "store": {
+        "pass": true,
+        "failed": []
+      },
+      "rooms": {
+        "pass": true,
+        "failed": []
+      },
+      "bookings": {
+        "pass": false,
+        "failed": [
+          "bound party: whole number, 1 to 200, and no more than the room's seats"
+        ]
+      },
+      "door": {
+        "pass": true,
+        "failed": []
+      },
+      "meter": {
+        "pass": true,
+        "failed": []
+      },
+      "billing": {
+        "pass": true,
+        "failed": []
+      },
+      "front": {
+        "pass": true,
+        "failed": []
+      },
+      "reports": {
+        "pass": true,
+        "failed": []
+      }
+    },
+    "broken": [
+      "bookings"
+    ]
+  },
+  "timing": {
+    "listingMs": {
+      "before": 102,
+      "after": 64
+    },
+    "noticeMs": 627,
+    "checkMs": {
+      "money": 78,
+      "calendar": 72,
+      "store": 76,
+      "rooms": 91,
+      "bookings": 90,
+      "door": 69,
+      "meter": 87,
+      "billing": 90,
+      "front": 112,
+      "reports": 76
+    }
+  }
+}

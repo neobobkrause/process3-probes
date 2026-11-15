@@ -1,0 +1,101 @@
+{
+  "id": "V03-refusals-through-console-error",
+  "title": "The meter reports refusals with console.error, on the error stream, as errors are reported; its tests read both streams",
+  "provider": "meter",
+  "covers": [
+    "a message's channel changes through console.error; its @message channel is not updated",
+    "the bound test changes the order of its expected list only"
+  ],
+  "tool": {
+    "firstCommentsStep": false,
+    "interfaceChanged": false,
+    "summary": "The listing before and after is the same. Nobody is told.",
+    "entries": [],
+    "told": [],
+    "toldDetail": [],
+    "notTold": [],
+    "warnings": [],
+    "commentsOnly": false,
+    "checks": {
+      "meter": {
+        "refusedBefore": 0,
+        "refusedAfter": 1,
+        "refusals": [
+          {
+            "at": "meter/src/worker.mjs:23",
+            "code": "message",
+            "text": "a message written to stderr has a kind published for stdout",
+            "kind": "(c) a rule of form: a message is written with its kind, on its channel"
+          }
+        ],
+        "refusalsBefore": [],
+        "ms": 80
+      },
+      "billing": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 88
+      },
+      "front": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 93
+      },
+      "reports": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 75
+      }
+    }
+  },
+  "groundTruth": {
+    "providerTests": {
+      "pass": true,
+      "failed": [],
+      "ran": 2
+    },
+    "testsBefore": {
+      "billing": true,
+      "front": true,
+      "reports": true
+    },
+    "testsAfter": {
+      "billing": {
+        "pass": false,
+        "failed": [
+          "metered use outside the meter's bound is refused"
+        ]
+      },
+      "front": {
+        "pass": true,
+        "failed": []
+      },
+      "reports": {
+        "pass": true,
+        "failed": []
+      }
+    },
+    "broken": [
+      "billing"
+    ]
+  },
+  "timing": {
+    "listingMs": {
+      "before": 64,
+      "after": 56
+    },
+    "noticeMs": 649,
+    "checkMs": {
+      "meter": 80,
+      "billing": 88,
+      "front": 93,
+      "reports": 75
+    }
+  }
+}

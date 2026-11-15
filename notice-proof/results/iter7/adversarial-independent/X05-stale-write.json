@@ -1,0 +1,229 @@
+{
+  "id": "X05-stale-write",
+  "title": "store's put can be handed the record as it was read, and refuses the write if it has changed since",
+  "provider": "store",
+  "covers": [
+    "honest code the reader cannot follow (Map.has then get, assert.ok then use)",
+    "kind handed back now also accepted"
+  ],
+  "tool": {
+    "firstCommentsStep": false,
+    "interfaceChanged": true,
+    "summary": "1 module(s) changed their listing; 0 entries changed in a way that tells; 1 user(s) told.",
+    "entries": [
+      {
+        "module": "store",
+        "entry": "Store.put",
+        "changes": [
+          "accepts more"
+        ],
+        "tells": "nobody",
+        "before": {
+          "kind": "method",
+          "accepts": "(arg0: string, arg1: string, arg2: unknown)",
+          "handsBack": "{ id: string; value: unknown; version: number }",
+          "bounds": [
+            "id: 1 to 120 characters",
+            "table: 1 to 40 characters, each a-z, 0-9 or a hyphen",
+            "version: whole number, 1 or more"
+          ]
+        },
+        "after": {
+          "kind": "method",
+          "accepts": "(arg0: string, arg1: string, arg2: unknown, arg3?: { id: string; value: unknown; version: number })",
+          "handsBack": "{ id: string; value: unknown; version: number }",
+          "bounds": [
+            "id: 1 to 120 characters",
+            "table: 1 to 40 characters, each a-z, 0-9 or a hyphen",
+            "version: whole number, 1 or more"
+          ]
+        }
+      },
+      {
+        "module": "store",
+        "entry": "Stored",
+        "changes": [
+          "accepts more"
+        ],
+        "tells": "nobody",
+        "before": {
+          "kind": "kind",
+          "handsBack": "{ id: string; value: unknown; version: number }",
+          "bounds": [
+            "version: whole number, 1 or more"
+          ],
+          "side": "handsBack"
+        },
+        "after": {
+          "kind": "kind",
+          "accepts": "{ id: string; value: unknown; version: number }",
+          "handsBack": "{ id: string; value: unknown; version: number }",
+          "bounds": [
+            "version: whole number, 1 or more"
+          ],
+          "side": "both"
+        }
+      }
+    ],
+    "told": [
+      "reports"
+    ],
+    "toldDetail": [
+      {
+        "user": "reports",
+        "reasons": [
+          {
+            "module": "store",
+            "notFollowed": [
+              "reads or calls values of unknown kind: reports/src/index.mjs:13 source.list('rooms').map; reports/src/index.mjs:13 source.list('rooms'); reports/src/index.mjs:13 source.list (+9)"
+            ],
+            "through": null
+          }
+        ],
+        "undeclared": []
+      }
+    ],
+    "notTold": [
+      {
+        "user": "rooms",
+        "why": "uses none of the entries that changed in a way that tells"
+      },
+      {
+        "user": "bookings",
+        "why": "uses none of the entries that changed in a way that tells"
+      },
+      {
+        "user": "billing",
+        "why": "uses none of the entries that changed in a way that tells"
+      },
+      {
+        "user": "front",
+        "why": "uses none of the entries that changed in a way that tells"
+      }
+    ],
+    "warnings": [],
+    "commentsOnly": false,
+    "checks": {
+      "store": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 74
+      },
+      "rooms": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 72
+      },
+      "bookings": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 88
+      },
+      "door": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 75
+      },
+      "meter": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 70
+      },
+      "billing": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 78
+      },
+      "front": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 75
+      },
+      "reports": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 67
+      }
+    }
+  },
+  "groundTruth": {
+    "providerTests": {
+      "pass": true,
+      "failed": [],
+      "ran": 7
+    },
+    "testsBefore": {
+      "rooms": true,
+      "bookings": true,
+      "door": true,
+      "meter": true,
+      "billing": true,
+      "front": true,
+      "reports": true
+    },
+    "testsAfter": {
+      "rooms": {
+        "pass": true,
+        "failed": []
+      },
+      "bookings": {
+        "pass": true,
+        "failed": []
+      },
+      "door": {
+        "pass": true,
+        "failed": []
+      },
+      "meter": {
+        "pass": true,
+        "failed": []
+      },
+      "billing": {
+        "pass": true,
+        "failed": []
+      },
+      "front": {
+        "pass": true,
+        "failed": []
+      },
+      "reports": {
+        "pass": true,
+        "failed": []
+      }
+    },
+    "broken": []
+  },
+  "timing": {
+    "listingMs": {
+      "before": 58,
+      "after": 62
+    },
+    "noticeMs": 611,
+    "checkMs": {
+      "store": 74,
+      "rooms": 72,
+      "bookings": 88,
+      "door": 75,
+      "meter": 70,
+      "billing": 78,
+      "front": 75,
+      "reports": 67
+    }
+  }
+}

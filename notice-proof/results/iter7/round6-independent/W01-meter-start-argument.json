@@ -1,0 +1,102 @@
+{
+  "id": "W01-meter-start-argument",
+  "title": "The meter prices in the currency it is started with, its one argument (node worker.mjs EUR), and will not start without one",
+  "provider": "meter",
+  "covers": [
+    "a newly required argument to start a separately running part",
+    "no written kind holds how a running part is started"
+  ],
+  "tool": {
+    "firstCommentsStep": false,
+    "interfaceChanged": false,
+    "summary": "The listing before and after is the same. Nobody is told.",
+    "entries": [],
+    "told": [],
+    "toldDetail": [],
+    "notTold": [],
+    "warnings": [],
+    "commentsOnly": false,
+    "checks": {
+      "meter": {
+        "refusedBefore": 0,
+        "refusedAfter": 1,
+        "refusals": [
+          {
+            "at": "meter/src/worker.mjs:18",
+            "code": "message",
+            "text": "reads process.argv without a kind published with @message argv",
+            "kind": "(c) a rule of form: how a running part is started is read with its published kind"
+          }
+        ],
+        "refusalsBefore": [],
+        "ms": 112
+      },
+      "billing": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 126
+      },
+      "front": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 103
+      },
+      "reports": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 96
+      }
+    }
+  },
+  "groundTruth": {
+    "providerTests": {
+      "pass": true,
+      "failed": [],
+      "ran": 4
+    },
+    "testsBefore": {
+      "billing": true,
+      "front": true,
+      "reports": true
+    },
+    "testsAfter": {
+      "billing": {
+        "pass": false,
+        "failed": [
+          "metered use is priced by the meter and added up",
+          "metered use outside the meter's bound is refused"
+        ]
+      },
+      "front": {
+        "pass": true,
+        "failed": []
+      },
+      "reports": {
+        "pass": true,
+        "failed": []
+      }
+    },
+    "broken": [
+      "billing"
+    ]
+  },
+  "timing": {
+    "listingMs": {
+      "before": 303,
+      "after": 132
+    },
+    "noticeMs": 1099,
+    "checkMs": {
+      "meter": 112,
+      "billing": 126,
+      "front": 103,
+      "reports": 96
+    }
+  }
+}

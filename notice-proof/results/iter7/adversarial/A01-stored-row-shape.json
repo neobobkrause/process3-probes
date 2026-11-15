@@ -1,0 +1,132 @@
+{
+  "id": "A01-stored-row-shape",
+  "title": "bookings keeps its interface but stores its rows in a shorter form of its own",
+  "provider": "bookings",
+  "covers": [
+    "attack: a user reads another module's rows straight out of the shared store"
+  ],
+  "tool": {
+    "firstCommentsStep": false,
+    "interfaceChanged": false,
+    "summary": "The listing before and after is the same. Nobody is told.",
+    "entries": [],
+    "told": [],
+    "toldDetail": [],
+    "notTold": [],
+    "warnings": [],
+    "commentsOnly": false,
+    "checks": {
+      "bookings": {
+        "refusedBefore": 0,
+        "refusedAfter": 2,
+        "refusals": [
+          {
+            "at": "bookings/src/index.mjs:132",
+            "code": "rows",
+            "text": "writes into table 'bookings' a value that is not a Booking",
+            "kind": "(c) a rule of form: rows of a table are of its stated kind"
+          },
+          {
+            "at": "bookings/src/index.mjs:141",
+            "code": "rows",
+            "text": "writes into table 'bookings' a value that is not a Booking",
+            "kind": "(c) a rule of form: rows of a table are of its stated kind"
+          }
+        ],
+        "refusalsBefore": [],
+        "ms": 117
+      },
+      "door": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 92
+      },
+      "meter": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 76
+      },
+      "billing": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 115
+      },
+      "front": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 97
+      },
+      "reports": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 89
+      }
+    }
+  },
+  "groundTruth": {
+    "providerTests": {
+      "pass": true,
+      "failed": [],
+      "ran": 8
+    },
+    "testsBefore": {
+      "door": true,
+      "meter": true,
+      "billing": true,
+      "front": true,
+      "reports": true
+    },
+    "testsAfter": {
+      "door": {
+        "pass": true,
+        "failed": []
+      },
+      "meter": {
+        "pass": true,
+        "failed": []
+      },
+      "billing": {
+        "pass": true,
+        "failed": []
+      },
+      "front": {
+        "pass": true,
+        "failed": []
+      },
+      "reports": {
+        "pass": false,
+        "failed": [
+          "summary counts real bookings by state, kind and weekday"
+        ]
+      }
+    },
+    "broken": [
+      "reports"
+    ]
+  },
+  "timing": {
+    "listingMs": {
+      "before": 403,
+      "after": 202
+    },
+    "noticeMs": 917,
+    "checkMs": {
+      "bookings": 117,
+      "door": 92,
+      "meter": 76,
+      "billing": 115,
+      "front": 97,
+      "reports": 89
+    }
+  }
+}

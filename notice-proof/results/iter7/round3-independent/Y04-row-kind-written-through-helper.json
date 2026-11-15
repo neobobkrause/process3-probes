@@ -1,0 +1,223 @@
+{
+  "id": "Y04-row-kind-written-through-helper",
+  "title": "The rooms table keeps seats under capacity, in a row kind of its own (RoomRow, @storedrows rooms); Room is unchanged",
+  "provider": "rooms",
+  "covers": [
+    "a table's row kind changes, honestly marked",
+    "a user writes the table's rows through the store's test helper (seededStore), named by an object key"
+  ],
+  "tool": {
+    "firstCommentsStep": false,
+    "interfaceChanged": true,
+    "summary": "1 module(s) changed their listing; 1 entry changed in a way that tells; 2 user(s) told.",
+    "entries": [
+      {
+        "module": "rooms",
+        "entry": "RoomRow",
+        "changes": [
+          "new entry"
+        ],
+        "after": {
+          "kind": "kind",
+          "accepts": "{ capacity: number; id: string; kind: \"hall\" | \"kitchen\" | \"studio\"; name: string }",
+          "handsBack": "{ capacity: number; id: string; kind: \"hall\" | \"kitchen\" | \"studio\"; name: string }",
+          "side": "both"
+        },
+        "tells": "nobody"
+      },
+      {
+        "module": "rooms",
+        "entry": "table:rooms",
+        "changes": [
+          "cannot stand in",
+          "hands back differently",
+          "bound changed"
+        ],
+        "tells": "users",
+        "before": {
+          "kind": "stored rows",
+          "accepts": "{ id: string; kind: \"hall\" | \"kitchen\" | \"studio\"; name: string; seats: number }",
+          "handsBack": "{ id: string; kind: \"hall\" | \"kitchen\" | \"studio\"; name: string; seats: number }",
+          "bounds": [
+            "seats: whole number, 1 to 500"
+          ],
+          "side": "both"
+        },
+        "after": {
+          "kind": "stored rows",
+          "accepts": "{ capacity: number; id: string; kind: \"hall\" | \"kitchen\" | \"studio\"; name: string }",
+          "handsBack": "{ capacity: number; id: string; kind: \"hall\" | \"kitchen\" | \"studio\"; name: string }",
+          "side": "both"
+        }
+      }
+    ],
+    "told": [
+      "front",
+      "reports"
+    ],
+    "toldDetail": [
+      {
+        "user": "front",
+        "reasons": [
+          {
+            "module": "rooms",
+            "entry": "table:rooms",
+            "changes": [
+              "cannot stand in",
+              "hands back differently",
+              "bound changed"
+            ],
+            "lines": [
+              "front/test/index.test.mjs:10"
+            ],
+            "through": null
+          }
+        ],
+        "undeclared": []
+      },
+      {
+        "user": "reports",
+        "reasons": [
+          {
+            "module": "rooms",
+            "notFollowed": [
+              "reads or calls values of unknown kind: reports/src/index.mjs:13 source.list('rooms').map; reports/src/index.mjs:13 source.list('rooms'); reports/src/index.mjs:13 source.list (+9)"
+            ],
+            "through": null
+          }
+        ],
+        "undeclared": []
+      }
+    ],
+    "notTold": [
+      {
+        "user": "bookings",
+        "why": "uses none of the entries that changed in a way that tells"
+      },
+      {
+        "user": "door",
+        "why": "uses none of the entries that changed in a way that tells"
+      },
+      {
+        "user": "billing",
+        "why": "uses none of the entries that changed in a way that tells"
+      }
+    ],
+    "warnings": [],
+    "commentsOnly": false,
+    "checks": {
+      "rooms": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 71
+      },
+      "bookings": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 94
+      },
+      "door": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 103
+      },
+      "meter": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 82
+      },
+      "billing": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 98
+      },
+      "front": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 90
+      },
+      "reports": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 99
+      }
+    }
+  },
+  "groundTruth": {
+    "providerTests": {
+      "pass": true,
+      "failed": [],
+      "ran": 6
+    },
+    "testsBefore": {
+      "bookings": true,
+      "door": true,
+      "meter": true,
+      "billing": true,
+      "front": true,
+      "reports": true
+    },
+    "testsAfter": {
+      "bookings": {
+        "pass": true,
+        "failed": []
+      },
+      "door": {
+        "pass": true,
+        "failed": []
+      },
+      "meter": {
+        "pass": true,
+        "failed": []
+      },
+      "billing": {
+        "pass": true,
+        "failed": []
+      },
+      "front": {
+        "pass": false,
+        "failed": [
+          "a booking outside the bounds is refused",
+          "the room menu lists rooms with their seats"
+        ]
+      },
+      "reports": {
+        "pass": true,
+        "failed": []
+      }
+    },
+    "broken": [
+      "front"
+    ]
+  },
+  "timing": {
+    "listingMs": {
+      "before": 78,
+      "after": 73
+    },
+    "noticeMs": 589,
+    "checkMs": {
+      "rooms": 71,
+      "bookings": 94,
+      "door": 103,
+      "meter": 82,
+      "billing": 98,
+      "front": 90,
+      "reports": 99
+    }
+  }
+}
