@@ -93,7 +93,7 @@ export function declarationsOf(program, file, plainElsewhere = new Map()) {
   for (const k of Object.keys(out)) {
     // a plain kind of another module, named through import("..."), is written out too
     const wrap = (rhs) => (/[|&]|=>/.test(rhs) ? `(${rhs})` : rhs); // iteration 6: brackets only where they matter
-    out[k] = out[k].replace(/import\("[^"]+"\)\.([A-Za-z_$][\w$]*)/g, (m, name) => (plainElsewhere.has(name) ? wrap(plainElsewhere.get(name)) : m));
+    out[k] = out[k].replace(/import\("[^"]+"\)\.([A-Za-z_$][\w$]*)/g, (m, name) => (plainElsewhere.has(name) ? wrap(plainElsewhere.get(name)) : name)); // iteration 7: by its name alone, as @import writes it
     for (const [name, rhs] of plainKinds) if (k !== name) out[k] = out[k].replace(new RegExp(`\\b${name}\\b`, 'g'), wrap(rhs));
     out[k] = unbracket(out[k]);
   }

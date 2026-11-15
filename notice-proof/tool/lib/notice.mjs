@@ -20,7 +20,7 @@ export function analyse(root) {
 }
 
 /** Telling changes: those that tell the users of the entry. */
-const TELLS = new Set(['removed', 'cannot stand in', 'hands back differently', 'bound changed', 'declaration changed (not classified)']);
+const TELLS = new Set(['removed', 'cannot stand in', 'hands back differently', 'bound changed', 'declaration changed (not classified)', 'parameters moved']);
 
 /** Rewrites handle names in a canonical form, for kinds renamed with their shape unchanged. */
 function renameHandles(c, map) {
@@ -46,16 +46,19 @@ export function diffListings(moduleId, before, after) {
   }
   const renamedTo = new Set(renamed.values());
   const memberOfRenamed = (n) => [...renamed.entries()].find(([o]) => n.startsWith(o + '.'));
+  // Iteration 7 (rule 50): each member of a renamed kind is compared with the member of the same name in the new kind.
+  const pairedMember = new Map(); // old member name -> new member name
+  for (const n of Object.keys(b)) { const m = memberOfRenamed(n); if (m && !(n in a) && a[`${m[1]}${n.slice(m[0].length)}`]) pairedMember.set(n, `${m[1]}${n.slice(m[0].length)}`); }
   for (const name of [...new Set([...Object.keys(b), ...Object.keys(a)])].sort()) {
-    const eb = b[name], ea = a[name];
+    const eb = b[name];
+    let ea = a[name];
+    if (!ea && pairedMember.has(name)) ea = a[pairedMember.get(name)];
     if (renamed.has(name)) {
       out.push({ entry: name, changes: ['kind renamed, shape unchanged'], to: renamed.get(name), tells: 'users that name it' });
       continue;
     }
     if (renamedTo.has(name)) continue;
     if (!ea) {
-      const m = memberOfRenamed(name);
-      if (m && a[`${m[1]}${name.slice(m[0].length)}`]) continue; // a member of a renamed handle: follows its kind
       out.push({ entry: name, changes: ['removed'], before: describe(eb), tells: 'users' });
       continue;
     }
@@ -87,6 +90,8 @@ export function diffListings(moduleId, before, after) {
     if (!same(eb.bounds, ea.bounds)) changes.push('bound changed');
     // Iteration 2: the kinds of error raised, and a message's channel, are part of what is handed back.
     if ((!same(eb.throws ?? [], ea.throws ?? []) || (eb.channel ?? '') !== (ea.channel ?? '')) && !changes.includes('hands back differently')) changes.push('hands back differently');
+    // Iteration 7 (rule 48): a parameter's name found at another place: the parameters have moved.
+    if (eb.paramNames && ea.paramNames && eb.paramNames.some((n, i) => n !== '_' && ea.paramNames.includes(n) && ea.paramNames.indexOf(n) !== i)) changes.push('parameters moved');
     // Iteration 3 (rule 12): a member that may now be missing hands back differently.
     if (ea.optional && !eb.optional && !changes.includes('hands back differently')) changes.push('hands back differently');
     // Iteration 4 (rule 18): silent only when the entry is shown unchanged. A declaration that differs where the tool's
@@ -97,6 +102,7 @@ export function diffListings(moduleId, before, after) {
       if (bd !== ea.decl) changes.push('declaration changed (not classified)');
     }
     if (!changes.length) continue;
+    if (pairedMember.has(name)) out.push({ entry: pairedMember.get(name), changes, tells: changes.some((c) => TELLS.has(c)) ? 'users' : 'nobody', before: describe(eb), after: describe(ea) });
     out.push({
       entry: name,
       changes,

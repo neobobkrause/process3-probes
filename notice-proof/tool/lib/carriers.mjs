@@ -38,7 +38,12 @@ export function carrierOf(checker, call) {
     return { kind, member: memberName, names: null, sig };
   }
   if (kind === 'table') {
-    const a0 = call.arguments[0];
+    let a0 = call.arguments[0];
+    // iteration 7 (rule 47): a constant set to a literal name is read as that name
+    if (a0 && ts.isIdentifier(a0)) {
+      const d = checker.getSymbolAtLocation(a0)?.declarations?.[0];
+      if (d && ts.isVariableDeclaration(d) && d.initializer && ts.isVariableDeclarationList(d.parent) && d.parent.flags & ts.NodeFlags.Const) a0 = d.initializer;
+    }
     if (a0 && (ts.isStringLiteral(a0) || ts.isNoSubstitutionTemplateLiteral(a0))) return { kind, member: memberName, names: [a0.text], sig };
     return { kind, member: memberName, names: null, sig };
   }

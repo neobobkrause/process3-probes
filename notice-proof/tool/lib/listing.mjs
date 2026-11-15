@@ -23,6 +23,9 @@ function boundsFor(lines, member, memberNames) {
 }
 
 /** The kinds named by a @throws tag; {A|B} names two (iteration 6). */
+/** Iteration 7 (rule 48): the names of a signature's parameters, '_' for one written as a pattern. */
+const paramNamesOf = (sig) => sig.getParameters().map((p) => (p.name.startsWith('__') ? '_' : p.name));
+
 export const throwKinds = (tag) => (tag.typeExpression?.type?.getText?.() ?? '').split('|').map((x) => x.trim()).filter(Boolean);
 
 export function makeLister(program, tree) {
@@ -117,6 +120,7 @@ export function makeLister(program, tree) {
                 handsBack = c.ret;
               } else handsBack = C.canon(mt, h);
               entries[e] = { kind: 'method', accepts, handsBack, bounds: [...boundsFor(bounds, p.name, names), ...nestedBounds(a), ...nestedBounds(h)], where };
+              if (sigs.length) entries[e].paramNames = paramNamesOf(sigs[0]);
               // Iteration 3: a member that may be missing says so (rule 12), and errors stated on the kind (rule 10).
               const raw = checker.getTypeOfSymbol(p);
               if (p.flags & ts.SymbolFlags.Optional || (raw.flags & ts.TypeFlags.Union && raw.types.some((x) => x.flags & ts.TypeFlags.Undefined))) entries[e].optional = true;
@@ -153,7 +157,7 @@ export function makeLister(program, tree) {
         if (ctors.length) {
           // Iteration 3 (rule 17): an exported class lists what its constructor accepts, and what it builds.
           const c = C.canonSig(ctors[0], a, h);
-          entries[name] = { kind: 'class', accepts: { k: 'params', items: c.params }, handsBack: c.ret, bounds: [...ownBounds, ...nestedBounds(a), ...nestedBounds(h)], where };
+          entries[name] = { kind: 'class', accepts: { k: 'params', items: c.params }, handsBack: c.ret, bounds: [...ownBounds, ...nestedBounds(a), ...nestedBounds(h)], where, paramNames: paramNamesOf(ctors[0]) };
           const throws = tagsOf(ctors[0].declaration ?? decl, 'throws').map((tg) => tg.typeExpression?.type?.getText?.()).filter(Boolean).sort();
           if (throws.length) entries[name].throws = throws;
           // Iteration 5 (rule 27): each member of the class, static or not, is an entry of its own.
@@ -165,7 +169,7 @@ export function makeLister(program, tree) {
             const mt = checker.getTypeOfSymbol(p);
             const msigs = mt.getCallSignatures();
             const ma = newCtx(), mh = newCtx();
-            if (msigs.length) { const mc = C.canonSig(msigs[0], ma, mh); entries[e] = { kind: 'class member', accepts: { k: 'params', items: mc.params }, handsBack: mc.ret, bounds: [...nestedBounds(ma), ...nestedBounds(mh)], where }; }
+            if (msigs.length) { const mc = C.canonSig(msigs[0], ma, mh); entries[e] = { kind: 'class member', accepts: { k: 'params', items: mc.params }, handsBack: mc.ret, bounds: [...nestedBounds(ma), ...nestedBounds(mh)], where, paramNames: paramNamesOf(msigs[0]) }; }
             else entries[e] = { kind: 'class member', accepts: null, handsBack: C.canon(mt, mh), bounds: nestedBounds(mh), where };
             const md = p.declarations?.[0];
             if (md) ranges.push({ entry: e, ...rangeOf(md) });
@@ -180,6 +184,7 @@ export function makeLister(program, tree) {
             handsBack: c.ret,
             bounds: [...ownBounds, ...nestedBounds(a), ...nestedBounds(h)],
             where,
+            paramNames: paramNamesOf(sigs[0]),
           };
           // Iteration 2: the kinds of error it raises are part of what it hands back.
           const throws = [...new Set(tagsOf(decl, 'throws').flatMap(throwKinds))].sort();

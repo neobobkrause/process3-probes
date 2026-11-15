@@ -35,8 +35,8 @@ test('reading process.argv without a kind published with @message argv is refuse
 const MSG = "/**\n * @typedef {{kind: 'a'}} M\n * @message stdout\n */\n/** @param {M} m */\nexport const send = (m) => process.stdout.write(JSON.stringify(m) + '\\n');\n";
 
 test('a stream that carries messages carries only messages', () => {
-  assert.ok(chk({ 'p/src/index.mjs': MSG + "process.stdout.write('\\n');\n", ...NONE }, 'p').refusals.some((x) => /other than a message/.test(x.text)));
-  assert.ok(chk({ 'p/src/index.mjs': MSG + "console.log('ready');\n", ...NONE }, 'p').refusals.some((x) => /other than a message/.test(x.text)));
+  assert.ok(chk({ 'p/src/index.mjs': MSG + "process.stdout.write('\\n');\n", ...NONE }, 'p').refusals.some((x) => /other than a message|cannot read as one message line/.test(x.text)));
+  assert.ok(chk({ 'p/src/index.mjs': MSG + "console.log('ready');\n", ...NONE }, 'p').refusals.some((x) => /other than a message|cannot read as one message line/.test(x.text)));
   // a log line on the other stream is not a message, and is not refused
   const c = chk({ 'p/src/index.mjs': MSG + "console.error(JSON.stringify({ event: 'started' }));\n", ...NONE }, 'p');
   assert.equal(c.refused, false, JSON.stringify(c.refusals));

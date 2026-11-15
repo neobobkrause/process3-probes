@@ -19,6 +19,8 @@ interface NodeAssert {
   deepEqual<T>(actual: unknown, expected: T, message?: string | Error): asserts actual is T;
   deepStrictEqual<T>(actual: unknown, expected: T, message?: string | Error): asserts actual is T;
   notDeepEqual(actual: unknown, expected: unknown, message?: string | Error): void;
+  notStrictEqual(actual: unknown, expected: unknown, message?: string | Error): void;
+  notDeepStrictEqual(actual: unknown, expected: unknown, message?: string | Error): void;
   match(value: string, pattern: RegExp, message?: string | Error): void;
   doesNotMatch(value: string, pattern: RegExp, message?: string | Error): void;
   throws(fn: () => unknown, expected?: unknown, message?: string | Error): void;
@@ -88,7 +90,7 @@ declare class URL {
   readonly searchParams: URLSearchParams;
   toString(): string;
 }
-interface ImportMeta { url: string; dirname: string; filename: string; }
+interface ImportMeta { url: string; dirname: string; filename: string; resolve(specifier: string): string; }
 declare class TextEncoder { encode(s?: string): Uint8Array; }
 declare class TextDecoder { decode(b?: Uint8Array): string; }
 
