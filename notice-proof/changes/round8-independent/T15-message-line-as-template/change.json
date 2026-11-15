@@ -1,0 +1,10 @@
+{
+  "title": "The meter's code is tidied by the venue's linter (prefer-template): its message line is written as a template literal",
+  "provider": "meter",
+  "covers": [
+    "a message line written `${JSON.stringify(msg)}\\n`",
+    "the same bytes written",
+    "the one-line rule recognises only JSON.stringify(x) + newline"
+  ],
+  "note": "The meter writes the same bytes; every test passes; no listing changes."
+}

@@ -1,0 +1,10 @@
+{
+  "title": "meter's tests show what the meter wrote alongside their own output, so that a failing test can be read without running the meter by hand",
+  "provider": "meter",
+  "covers": [
+    "a test's console.log",
+    "the worker's standard output carries messages; the test's is another process's",
+    "rule 35 matches streams by name across the module"
+  ],
+  "note": "Only the meter's test changes; every test passes; no listing changes."
+}

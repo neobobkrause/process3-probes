@@ -1,0 +1,15 @@
+{
+  "title": "The rooms' handle is built as an instance of a class that keeps its store in a private field, so that the state of the rooms is in one place",
+  "provider": "rooms",
+  "covers": [
+    "a handle built as a class instance",
+    "its methods read this",
+    "rule 49 looks only at handles built as plain objects",
+    "users hand the methods on as values"
+  ],
+  "before": [
+    "setups/Z07-front-maps-rooms-find",
+    "setups/U07a-reports-adds-rooms-from-a-list"
+  ],
+  "note": "rooms' own tests, bookings', billing's and front's other tests call the methods on the handle and pass. front's Z07 test maps ids through rooms.find and reports' U07a test hands rooms.add to forEach: `this` is undefined, reading this.#store throws a TypeError, and both tests fail. rooms' listing and printed declarations are unchanged, so nobody is told (reports, not followed, is told only when a listing changes)."
+}

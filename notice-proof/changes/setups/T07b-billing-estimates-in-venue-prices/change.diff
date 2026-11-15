@@ -1,0 +1,19 @@
+--- before/billing/test/index.test.mjs
++++ after/billing/test/index.test.mjs
+@@ -42,6 +42,16 @@
+   assert.equal(est.deposit.currency, b.total.currency);
+ });
+ 
++test('a venue that sets its own prices gets estimates in them', async () => {
++  const store = createStore();
++  const rooms = createRooms({ store });
++  rooms.add({ name: 'Hall', kind: 'hall', seats: 300 });
++  const bookings = createBookings({ store, rooms, price: (party, nights) => 2000 * party + 500 * nights });
++  const door = createDoor({ ...bookingHandlers(bookings), ...roomHandlers(rooms) });
++  const est = await createBilling({ door }).estimate('hall', 6, 4);
++  assert.equal(est.total.cents, 2000 * 6 + 500 * 4);
++});
++
+ test('metered use is priced by the meter and added up', async () => {
+   const { billing } = system();
+   const one = await billing.meterUsage([{ kind: 'use', room: 'hall', minutes: 10 }]);

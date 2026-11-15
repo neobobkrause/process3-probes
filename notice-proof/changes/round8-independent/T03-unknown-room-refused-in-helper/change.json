@@ -1,0 +1,14 @@
+{
+  "title": "The lookup of a booking's room moves into one helper, roomOf, which refuses an unknown room with an Error, not a RangeError: it is not a value out of bounds. The @throws line on the handle is forgotten",
+  "provider": "bookings",
+  "covers": [
+    "a stated function calls a private helper that throws an unstated kind",
+    "rule 46 reads only the function's own throw statements",
+    "the kind stated on the handle is unchanged"
+  ],
+  "before": [
+    "setups/Z06a-bookings-states-quote-errors",
+    "setups/Z06b-billing-expects-range-error"
+  ],
+  "note": "bookings' own tests pass (the unknown-room test now matches the message). billing's Z06b test expects bookings' RangeError for an estimate of an unknown room and gets an Error: it fails. Nothing exported changes, so bookings' listing is the same and nobody is told."
+}

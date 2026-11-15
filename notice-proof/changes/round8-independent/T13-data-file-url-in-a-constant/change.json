@@ -1,0 +1,10 @@
+{
+  "title": "text-rules gains isReservedName: whether a name is one the venue keeps for itself, read from reserved.json, which the venue's staff keep; the file is named once, in a constant, as the meter names its program",
+  "provider": "text-rules",
+  "covers": [
+    "readFileSync at a URL held in a constant",
+    "the URL is new URL(literal, import.meta.url)",
+    "rule 44 recognises only the inline form"
+  ],
+  "note": "Every test passes. isReservedName is a new entry: nobody is told. text-rules' check should find nothing to refuse."
+}

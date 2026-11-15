@@ -1,0 +1,9 @@
+{
+  "title": "The meter writes its lines as UTF-8 whatever the platform's default, so that a room name with accents arrives as written",
+  "provider": "meter",
+  "covers": [
+    "Node's write(chunk, encoding)",
+    "the tool's description of Node has write(chunk, callback?) only"
+  ],
+  "note": "The meter writes the same bytes; every test passes; no listing changes."
+}

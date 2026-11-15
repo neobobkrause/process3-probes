@@ -1,0 +1,10 @@
+{
+  "title": "The meter writes an empty line as soon as it runs, so that whoever started it can tell it is ready; readers skip empty lines. It is written with console.log()",
+  "provider": "meter",
+  "covers": [
+    "a write to a message channel with no argument",
+    "the check records only writes that are handed data",
+    "console.log() writes an empty line to standard output"
+  ],
+  "note": "meter's own tests trim the output and skip empty lines, and pass. billing reads every line as a MeterMsg: JSON.parse('') throws in its data handler, and billing's meter tests fail. MeterInput and MeterMsg are unchanged, so nobody is told."
+}

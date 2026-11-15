@@ -1,0 +1,24 @@
+--- before/money/src/index.mjs
++++ after/money/src/index.mjs
+@@ -56,10 +56,11 @@
+ }
+ 
+ /**
+- * Splits an amount into equal parts that add up to it exactly; leftover cents go to the first parts.
++ * Splits an amount into equal parts that add up to it exactly; leftover cents go to the last parts, as the venue's
++ * accountant asks.
+  * @param {Amount} a
+  * @param {number} parts
+- * @returns {Amount[]}
++ * @returns {Array<Amount>}
+  * @bound parts: whole number, 1 to 100
+  * @throws {RangeError} when parts is outside its bound
+  */
+@@ -69,6 +70,6 @@
+   const extra = a.cents - base * parts;
+   /** @type {Amount[]} builds Amounts */
+   const out = [];
+-  for (let i = 0; i < parts; i++) out.push(amount(base + (i < extra ? 1 : 0), a.currency));
++  for (let i = 0; i < parts; i++) out.push(amount(base + (i >= parts - extra ? 1 : 0), a.currency));
+   return out;
+ }

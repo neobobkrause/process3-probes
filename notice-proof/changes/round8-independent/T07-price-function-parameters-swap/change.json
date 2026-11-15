@@ -1,0 +1,14 @@
+{
+  "title": "A venue's own price function is asked for the nights first, then the party, the order the venue's price sheet lists them; the comment, the call and bookings' own test say so",
+  "provider": "bookings",
+  "covers": [
+    "two same-kind parameters of an accepted callback change places",
+    "rule 48 compares only the entry's own parameters",
+    "the backstop prints every parameter as _"
+  ],
+  "before": [
+    "setups/T07a-bookings-takes-a-price-function",
+    "setups/T07b-billing-estimates-in-venue-prices"
+  ],
+  "note": "bookings' own tests pass. billing's T07b test hands in (party, nights) => 2000 * party + 500 * nights and expects 14,000 cents for 6 people and 4 nights; it now gets 11,000 and fails. createBookings accepts { price?: (number, number) => number; rooms; store } before and after; its own parameter is still deps; the printed declaration writes the callback's parameters as _. Nobody is told."
+}

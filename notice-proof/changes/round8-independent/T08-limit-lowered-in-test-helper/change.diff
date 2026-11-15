@@ -1,0 +1,22 @@
+--- before/money/src/index.mjs
++++ after/money/src/index.mjs
+@@ -15,7 +15,8 @@
+  * @bound cents: whole number, 0 to 10,000,000 inclusive
+  */
+ 
+-const MAX_CENTS = 10_000_000;
++// the most the venue's payment provider takes in one payment
++const MAX_CENTS = 500_000;
+ 
+ /**
+  * Makes an amount, refusing one outside its bound.
+--- before/money/test/edges.mjs
++++ after/money/test/edges.mjs
+@@ -4,6 +4,6 @@
+  * @returns {{lowest: number, highest: number}}
+  */
+ export function edgesOf(bound) {
+-  if (bound === 'cents') return { lowest: 0, highest: 10_000_000 };
++  if (bound === 'cents') return { lowest: 0, highest: 500_000 };
+   return { lowest: 1, highest: 100 };
+ }

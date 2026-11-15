@@ -1,0 +1,10 @@
+{
+  "title": "billing's tests check that a venue that sets its own prices gets estimates in them",
+  "provider": "billing",
+  "covers": [
+    "a user that hands the provider a callback, naming its parameters by position (the standing state)"
+  ],
+  "before": [
+    "setups/T07a-bookings-takes-a-price-function"
+  ]
+}

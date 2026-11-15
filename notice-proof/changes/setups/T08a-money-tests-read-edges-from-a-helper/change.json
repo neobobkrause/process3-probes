@@ -1,0 +1,7 @@
+{
+  "title": "money's bound tests read the edges of each bound from one helper, test/edges.mjs, so that an edge is written once",
+  "provider": "money",
+  "covers": [
+    "a bound test's values handed back by a helper function of another test file (the standing state)"
+  ]
+}

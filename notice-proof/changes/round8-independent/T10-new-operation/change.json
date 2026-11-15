@@ -1,0 +1,10 @@
+{
+  "title": "bookings answers a new operation, booklist: the bookings of one room, open and cancelled, in the order they were opened",
+  "provider": "bookings",
+  "covers": [
+    "a new operation, whose name no one else answers",
+    "a new member of the bookings' handle",
+    "the door's generic methods write every operation name"
+  ],
+  "note": "Everything else is unchanged; every test passes. bookings' listing gains entries only (op:booklist, BookingHandlers.booklist, Bookings.forRoom, and a name in three lists of names). The door's listing changes through bookings: Door.call and Door.get accept K extends a union that gained 'booklist'."
+}

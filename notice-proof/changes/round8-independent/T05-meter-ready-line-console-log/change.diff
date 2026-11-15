@@ -1,0 +1,13 @@
+--- before/meter/src/worker.mjs
++++ after/meter/src/worker.mjs
+@@ -11,6 +11,10 @@
+ /** @param {MeterMsg} msg */
+ const send = (msg) => process.stdout.write(JSON.stringify(msg) + '\n');
+ 
++// An empty line first, as soon as the meter runs, so that whoever started it can tell it is ready; readers skip
++// empty lines.
++console.log();
++
+ const lines = createInterface({ input: process.stdin });
+ lines.on('line', (/** @type {string} */ line) => {
+   if (line.trim() === '') return;

@@ -1,0 +1,13 @@
+--- before/meter/src/worker.mjs
++++ after/meter/src/worker.mjs
+@@ -8,8 +8,8 @@
+ 
+ let count = 0;
+ 
+-/** @param {MeterMsg} msg */
+-const send = (msg) => process.stdout.write(JSON.stringify(msg) + '\n');
++/** @param {MeterMsg} msg written as UTF-8 whatever the platform's default, so that a room name with accents arrives as written */
++const send = (msg) => process.stdout.write(JSON.stringify(msg) + '\n', 'utf8');
+ 
+ const lines = createInterface({ input: process.stdin });
+ lines.on('line', (/** @type {string} */ line) => {

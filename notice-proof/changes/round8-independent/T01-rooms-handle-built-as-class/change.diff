@@ -1,0 +1,93 @@
+--- before/rooms/src/index.mjs
++++ after/rooms/src/index.mjs
+@@ -50,37 +50,64 @@
+  */
+ 
+ /**
++ * The rooms' handle as one object that keeps its store, so that the state of the rooms is in one place (the class)
++ * rather than in a closure.
++ */
++class RoomDirectory {
++  /** @type {Store} */
++  #store;
++
++  /** @param {Store} store */
++  constructor(store) {
++    this.#store = store;
++  }
++
++  /**
++   * @param {NewRoom} input
++   * @returns {Room}
++   */
++  add(input) {
++    if (!ROOM_KINDS.includes(input.kind)) throw new RangeError(`rooms: unknown kind: ${input.kind}`);
++    if (!Number.isInteger(input.seats) || input.seats < 1 || input.seats > 500) {
++      throw new RangeError('rooms: seats out of bounds');
++    }
++    const id = slugify(input.name);
++    if (this.#store.get('rooms', id)) throw new Error(`rooms: already taken: ${id}`);
++    /** @type {Room} builds a Room */
++    const room = { id, name: input.name, kind: input.kind, seats: input.seats };
++    this.#store.put('rooms', id, room);
++    return room;
++  }
++
++  /**
++   * @param {string} id
++   * @returns {Room | undefined}
++   */
++  find(id) {
++    const rec = this.#store.get('rooms', id);
++    return rec ? /** @type {Room} checks nothing: the store holds only Rooms in this table */ (rec.value) : undefined;
++  }
++
++  /**
++   * @param {RoomKind} [kind]
++   * @returns {Room[]}
++   */
++  list(kind) {
++    return this.#store
++      .list('rooms')
++      .map((r) => /** @type {Room} */ (r.value))
++      .filter((r) => kind === undefined || r.kind === kind)
++      .sort((a, b) => a.name.localeCompare(b.name));
++  }
++}
++
++/**
+  * Makes the rooms' handle over a store.
+  * @param {{store: Store}} deps
+  * @returns {Rooms}
+  */
+ export function createRooms(deps) {
+-  const { store } = deps;
+-  return {
+-    add(input) {
+-      if (!ROOM_KINDS.includes(input.kind)) throw new RangeError(`rooms: unknown kind: ${input.kind}`);
+-      if (!Number.isInteger(input.seats) || input.seats < 1 || input.seats > 500) {
+-        throw new RangeError('rooms: seats out of bounds');
+-      }
+-      const id = slugify(input.name);
+-      if (store.get('rooms', id)) throw new Error(`rooms: already taken: ${id}`);
+-      /** @type {Room} builds a Room */
+-      const room = { id, name: input.name, kind: input.kind, seats: input.seats };
+-      store.put('rooms', id, room);
+-      return room;
+-    },
+-    find(id) {
+-      const rec = store.get('rooms', id);
+-      return rec ? /** @type {Room} checks nothing: the store holds only Rooms in this table */ (rec.value) : undefined;
+-    },
+-    list(kind) {
+-      return store
+-        .list('rooms')
+-        .map((r) => /** @type {Room} */ (r.value))
+-        .filter((r) => kind === undefined || r.kind === kind)
+-        .sort((a, b) => a.name.localeCompare(b.name));
+-    },
+-  };
++  return new RoomDirectory(deps.store);
+ }
+ 
+ /**

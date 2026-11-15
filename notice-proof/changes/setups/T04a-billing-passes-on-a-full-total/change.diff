@@ -1,0 +1,49 @@
+--- before/billing/src/index.mjs
++++ after/billing/src/index.mjs
+@@ -21,7 +21,7 @@
+  * The billing's handle.
+  * @typedef {Object} Billing
+  * @property {(bookingId: string, instalments: number) => Promise<Invoice>} invoice refuses a booking that is not open
+- * @property {(uses: MeterInput[]) => Promise<Amount>} meterUsage runs the meter and adds up its readings; refuses if the meter refuses any use
++ * @property {(uses: MeterInput[]) => Promise<Amount>} meterUsage runs the meter and adds up its readings; refuses if the meter refuses any use, or, with money's RangeError, if the total would be more than an amount can hold
+  * @property {(room: string, party: number, nights: number) => Promise<Estimate>} estimate what a stay would cost, and the deposit to ask for
+  */
+ 
+@@ -69,7 +69,14 @@
+             buffer = buffer.slice(nl + 1);
+             /** @type {MeterMsg} checks a MeterMsg by its kind */
+             const msg = JSON.parse(line);
+-            if (msg.kind === 'reading') tally.add(msg.cost);
++            if (msg.kind === 'reading') {
++              // a total larger than an amount can hold is refused with the tally's own error
++              try {
++                tally.add(msg.cost);
++              } catch (err) {
++                reject(err);
++              }
++            }
+             else if (msg.kind === 'refused') reject(new RangeError(`billing: meter refused ${msg.room}: ${msg.reason}`));
+             else if (msg.kind === 'done') resolve(tally.total);
+           }
+--- before/billing/test/index.test.mjs
++++ after/billing/test/index.test.mjs
+@@ -5,6 +5,7 @@
+ import { createBookings, bookingHandlers } from '../../bookings/src/index.mjs';
+ import { createDoor } from '../../door/src/index.mjs';
+ import { createBilling } from '../src/index.mjs';
++/** @import { MeterInput } from '../../meter/src/index.mjs' */
+ 
+ function system() {
+   const store = createStore();
+@@ -57,3 +58,11 @@
+   const { billing } = system();
+   await assert.rejects(() => billing.meterUsage([{ kind: 'use', room: 'hall', minutes: 2000 }]), RangeError);
+ });
++
++test('metered use worth more than an amount can hold is refused with a RangeError', async () => {
++  const { billing } = system();
++  /** @type {MeterInput[]} */
++  const uses = [];
++  for (let i = 0; i < 400; i++) uses.push({ kind: 'use', room: 'hall', minutes: 1440 });
++  await assert.rejects(() => billing.meterUsage(uses), RangeError);
++});

@@ -1,0 +1,10 @@
+{
+  "title": "The meter writes each message indented, so that the venue's operators can read its output; its tests read a message as starting at a line that begins with {",
+  "provider": "meter",
+  "covers": [
+    "JSON.stringify's indent argument",
+    "each message written over several lines",
+    "the one-line rule recognises the spelling, not the line"
+  ],
+  "note": "meter's own tests pass with their new reader. billing splits the meter's output at every line end and parses '{' as a message: JSON.parse throws and billing's meter tests fail. MeterMsg is unchanged; nobody is told."
+}

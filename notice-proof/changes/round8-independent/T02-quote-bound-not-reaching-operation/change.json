@@ -1,0 +1,10 @@
+{
+  "title": "A quote is given for a stay of up to three nights (a weekend); a longer stay is priced by the venue's staff. The bound is written on quote, with a test named for it",
+  "provider": "bookings",
+  "covers": [
+    "a bound newly written on a handle method",
+    "the operation handler wraps the method's answer, so it is not \"straight\"",
+    "rule 43 passes bounds on only through straight handlers"
+  ],
+  "note": "bookings' own tests pass (they quote 1 to 3 nights; open still takes up to 14). billing's estimate test asks bookquote for 4 nights through the door: bookings.quote refuses it, and the test fails. Bookings.quote's bound changes, so its users are told: none outside bookings (billing reaches quotes only through op:bookquote, which is unchanged); reports, not followed, is told because bookings' listing changed."
+}

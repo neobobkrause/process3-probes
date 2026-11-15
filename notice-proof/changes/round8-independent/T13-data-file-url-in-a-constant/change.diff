@@ -1,0 +1,60 @@
+--- before/text-rules/src/index.mjs
++++ after/text-rules/src/index.mjs
+@@ -1,9 +1,16 @@
+ /**
+  * Small rules for text that several modules share.
+  */
++import { readFileSync } from 'node:fs';
+ 
+ const SLUG_MAX = 80;
+ 
++/** The file of names the venue keeps for itself, kept by its staff, next to this one. */
++const RESERVED_FILE = new URL('./reserved.json', import.meta.url);
++
++/** The names the venue keeps for itself, lower-case. */
++const RESERVED = new Set(/** @type {string[]} */ (JSON.parse(readFileSync(RESERVED_FILE, 'utf8'))));
++
+ /**
+  * Turns a name into a slug: lower-case letters and digits joined by single hyphens.
+  * Accents are dropped, and anything that is not a letter or a digit separates words.
+@@ -44,3 +51,13 @@
+ export function titleCase(text) {
+   return text.replace(/\b([a-z])/g, (m) => m.toUpperCase());
+ }
++
++/**
++ * Says whether a name is one the venue keeps for itself (its office, its store rooms), whatever its case and the
++ * spaces around it.
++ * @param {string} text
++ * @returns {boolean}
++ */
++export function isReservedName(text) {
++  return RESERVED.has(text.trim().toLowerCase());
++}
+--- before/text-rules/src/reserved.json
++++ after/text-rules/src/reserved.json
+@@ -0,0 +1 @@
++["office", "store room", "boiler room"]
+--- before/text-rules/test/index.test.mjs
++++ after/text-rules/test/index.test.mjs
+@@ -1,6 +1,6 @@
+ import { test } from 'node:test';
+ import assert from 'node:assert/strict';
+-import { slugify, isEmail, titleCase } from '../src/index.mjs';
++import { slugify, isEmail, titleCase, isReservedName } from '../src/index.mjs';
+ 
+ test('bound text: 1 to 80 characters, with at least one letter or digit', () => {
+   assert.equal(typeof slugify('a'), 'string');
+@@ -28,6 +28,12 @@
+   assert.equal(isEmail(''), false);
+ });
+ 
++test('isReservedName knows the names the venue keeps for itself', () => {
++  assert.equal(isReservedName('Office'), true);
++  assert.equal(isReservedName('  store room '), true);
++  assert.equal(isReservedName('Main Hall'), false);
++});
++
+ test('titleCase upper-cases the first letter of each word', () => {
+   assert.equal(titleCase('small hall'), 'Small Hall');
+   assert.equal(titleCase('Hall'), 'Hall');

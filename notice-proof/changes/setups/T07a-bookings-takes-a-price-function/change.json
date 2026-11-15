@@ -1,0 +1,7 @@
+{
+  "title": "A venue that sets its own prices hands bookings a price function: what a stay costs, in euro cents, for a party and a number of nights",
+  "provider": "bookings",
+  "covers": [
+    "a provider that accepts a callback with two parameters of the same kind (the standing state)"
+  ]
+}

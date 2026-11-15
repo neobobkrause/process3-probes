@@ -1,0 +1,30 @@
+--- before/money/src/index.mjs
++++ after/money/src/index.mjs
+@@ -88,9 +88,13 @@
+   /**
+    * Adds an amount of the tally's currency.
+    * @param {Amount} a
+-   * @throws {RangeError} when the currency differs or the total would leave the bound of cents
++   * @throws {RangeError} when the currency differs
++   * @throws {Error} when the tally is full: the total would leave the bound of cents. The amount added is not out of
++   *   bounds, so this is not a RangeError.
+    */
+   add(a) {
++    if (a.currency !== this.total.currency) throw new RangeError('Tally: the currency differs');
++    if (this.total.cents + a.cents > MAX_CENTS) throw new Error('Tally: full');
+     this.total = add(this.total, a);
+   }
+ }
+--- before/money/test/index.test.mjs
++++ after/money/test/index.test.mjs
+@@ -49,3 +49,10 @@
+   assert.equal(t.total.cents, 400);
+   assert.throws(() => t.add(amount(1, 'USD')), RangeError);
+ });
++
++test('a full Tally refuses more', () => {
++  const t = new Tally('EUR');
++  t.add(amount(10_000_000, 'EUR'));
++  assert.throws(() => t.add(amount(1, 'EUR')), /full/);
++  assert.equal(t.total.cents, 10_000_000);
++});

@@ -1,0 +1,60 @@
+--- before/bookings/src/index.mjs
++++ after/bookings/src/index.mjs
+@@ -45,6 +45,7 @@
+  * @property {(id: string) => Booking} cancel cancels an open booking; refuses an unknown or already cancelled one
+  * @property {(id: string) => Booking | undefined} find
+  * @property {(room: string, party: number, nights: number) => Amount} quote what a booking would cost
++ * @property {(room: string) => Booking[]} forRoom the bookings of one room, open and cancelled, in the order they were opened
+  */
+ 
+ /**
+@@ -53,7 +54,8 @@
+  *   bookopen: {req: BookingRequest, res: Booking},
+  *   bookcancel: {req: {id: string}, res: Booking},
+  *   bookstatus: {req: {id: string}, res: {state: Booking['state'], total: Amount, room: string}},
+- *   bookquote: {req: {room: string, party: number, nights: number}, res: {total: Amount}}
++ *   bookquote: {req: {room: string, party: number, nights: number}, res: {total: Amount}},
++ *   booklist: {req: {room: string}, res: {bookings: Booking[]}}
+  * }} BookingOps
+  * @optable
+  * @bound bookquote.total: what the whole stay costs, for the whole party and every night
+@@ -104,6 +106,12 @@
+   return {
+     quote,
+     find,
++    forRoom(room) {
++      return store
++        .list('bookings')
++        .map((r) => /** @type {Booking} */ (r.value))
++        .filter((b) => b.room === room);
++    },
+     open(req) {
+       const first = parseDay(req.day);
+       const total = quote(req.room, req.party, req.nights);
+@@ -149,5 +157,6 @@
+       return { state: b.state, total: b.total, room: b.room };
+     },
+     bookquote: (req) => ({ total: bookings.quote(req.room, req.party, req.nights) }),
++    booklist: (req) => ({ bookings: bookings.forRoom(req.room) }),
+   };
+ }
+--- before/bookings/test/index.test.mjs
++++ after/bookings/test/index.test.mjs
+@@ -74,6 +74,17 @@
+   assert.equal(h.bookquote({ room: 'hall', party: 4, nights: 3 }).total.cents, b.total.cents);
+ });
+ 
++test('booklist answers with the bookings of a room, in the order they were opened', () => {
++  const { bookings } = system();
++  const a = bookings.open(req());
++  bookings.open(req({ room: 'studio', party: 2 }));
++  const c = bookings.open(req({ day: '2026-12-10' }));
++  bookings.cancel(c.id);
++  const h = bookingHandlers(bookings);
++  assert.deepEqual(h.booklist({ room: 'hall' }).bookings.map((b) => b.id), [a.id, c.id]);
++  assert.deepEqual(h.booklist({ room: 'kitchen' }).bookings, []);
++});
++
+ test('operations answer as the table says', () => {
+   const { bookings } = system();
+   const h = bookingHandlers(bookings);

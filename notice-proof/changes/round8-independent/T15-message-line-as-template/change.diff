@@ -1,0 +1,11 @@
+--- before/meter/src/worker.mjs
++++ after/meter/src/worker.mjs
+@@ -9,7 +9,7 @@
+ let count = 0;
+ 
+ /** @param {MeterMsg} msg */
+-const send = (msg) => process.stdout.write(JSON.stringify(msg) + '\n');
++const send = (msg) => process.stdout.write(`${JSON.stringify(msg)}\n`);
+ 
+ const lines = createInterface({ input: process.stdin });
+ lines.on('line', (/** @type {string} */ line) => {

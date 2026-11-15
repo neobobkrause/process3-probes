@@ -1,0 +1,15 @@
+{
+  "title": "A full tally is refused with an Error in its own words, not a RangeError: the amount added is not out of bounds, the tally is full. add's @throws lines say so",
+  "provider": "money",
+  "covers": [
+    "a class member's stated error kind changes",
+    "class members are entries, but their @throws are not in the listing",
+    "the printed declaration has no @throws"
+  ],
+  "before": [
+    "setups/Y13a-money-tally",
+    "setups/Y13b-billing-uses-tally",
+    "setups/T04a-billing-passes-on-a-full-total"
+  ],
+  "note": "money's own tests pass. billing's T04a test (400 uses of 1440 minutes, 11,520,000 cents) expects a RangeError and gets the tally's Error: it fails. Tally#add is (Amount) => void before and after, in the tool's form and in the printed declaration; its @throws are not listed, so nobody is told."
+}

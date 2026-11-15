@@ -1,0 +1,25 @@
+--- before/meter/src/worker.mjs
++++ after/meter/src/worker.mjs
+@@ -8,8 +8,8 @@
+ 
+ let count = 0;
+ 
+-/** @param {MeterMsg} msg */
+-const send = (msg) => process.stdout.write(JSON.stringify(msg) + '\n');
++/** @param {MeterMsg} msg written indented, so that the venue's operators can read the meter's output */
++const send = (msg) => process.stdout.write(JSON.stringify(msg, null, 2) + '\n');
+ 
+ const lines = createInterface({ input: process.stdin });
+ lines.on('line', (/** @type {string} */ line) => {
+--- before/meter/test/index.test.mjs
++++ after/meter/test/index.test.mjs
+@@ -15,7 +15,8 @@
+     let out = '';
+     child.stdout.on('data', (/** @type {any} */ d) => (out += d));
+     child.on('error', reject);
+-    child.on('close', () => resolve(out.trim().split('\n').filter(Boolean).map((l) => /** @type {MeterMsg} */ (JSON.parse(l)))));
++    // each message starts at a line that begins with {
++    child.on('close', () => resolve(out.trim().split(/\n(?=\{)/).filter(Boolean).map((l) => /** @type {MeterMsg} */ (JSON.parse(l)))));
+     child.stdin.end(lines.join('\n') + '\n');
+   });
+ }

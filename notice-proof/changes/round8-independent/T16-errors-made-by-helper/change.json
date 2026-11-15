@@ -1,0 +1,9 @@
+{
+  "title": "money's errors for a value outside its bound are made by one helper, outOfBounds, so that every such message names the value the same way",
+  "provider": "money",
+  "covers": [
+    "throw helper(...) where the helper's comment states it returns RangeError",
+    "the stated kinds are unchanged"
+  ],
+  "note": "Every error raised is a RangeError, as before; every test passes; no listing changes."
+}

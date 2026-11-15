@@ -1,0 +1,9 @@
+{
+  "title": "splitEvenly gives leftover cents to the last parts, as the venue's accountant asks; its comment is rewritten and writes the list as Array<Amount>",
+  "provider": "money",
+  "covers": [
+    "a different valid answer",
+    "a list kind written Array<T> where it was T[]"
+  ],
+  "note": "money's tests check that the parts add up and differ by at most a cent, and pass; billing's checks the same. splitEvenly accepts and hands back the same kinds; no bound or error changes."
+}

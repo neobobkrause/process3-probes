@@ -1,0 +1,46 @@
+--- before/bookings/src/index.mjs
++++ after/bookings/src/index.mjs
+@@ -78,12 +78,15 @@
+ }
+ 
+ /**
+- * Makes the bookings' handle.
+- * @param {{store: Store, rooms: Rooms}} deps
++ * Makes the bookings' handle. A venue that sets its own prices hands in price: what a stay costs, in euro cents, for
++ * a party and a number of nights; without it a seat costs PRICE_PER_SEAT_NIGHT a night.
++ * @param {{store: Store, rooms: Rooms, price?: (party: number, nights: number) => number}} deps
+  * @returns {Bookings}
+  */
+ export function createBookings(deps) {
+   const { store, rooms } = deps;
++  /** @type {(party: number, nights: number) => number} */
++  const priceOf = deps.price ?? ((party, nights) => PRICE_PER_SEAT_NIGHT * party * nights);
+   let next = 1;
+   /**
+    * @param {string} roomId
+@@ -94,7 +97,7 @@
+     const room = rooms.find(roomId);
+     if (!room) throw new RangeError(`bookings: unknown room: ${roomId}`);
+     checkSize(party, nights, room.seats);
+-    return amount(PRICE_PER_SEAT_NIGHT * party * nights, 'EUR');
++    return amount(priceOf(party, nights), 'EUR');
+   };
+   /** @param {string} id */
+   const find = (id) => {
+--- before/bookings/test/index.test.mjs
++++ after/bookings/test/index.test.mjs
+@@ -33,6 +33,14 @@
+   assert.equal(bookings.open(req({ party: 10, nights: 1 })).total.cents, small.cents);
+ });
+ 
++test('a venue that sets its own prices is quoted in them', () => {
++  const store = createStore();
++  const rooms = createRooms({ store });
++  rooms.add({ name: 'Hall', kind: 'hall', seats: 300 });
++  const bookings = createBookings({ store, rooms, price: (party, nights) => 1000 * party + 100 * nights });
++  assert.equal(bookings.quote('hall', 10, 2).cents, 10_200);
++});
++
+ test('bound party: whole number, 1 to 200, and no more than the room\'s seats', () => {
+   const { bookings } = system();
+   assert.equal(bookings.open(req({ party: 1 })).party, 1);

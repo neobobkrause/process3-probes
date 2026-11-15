@@ -1,0 +1,69 @@
+--- before/bookings/src/index.mjs
++++ after/bookings/src/index.mjs
+@@ -44,7 +44,9 @@
+  * @property {(req: BookingRequest) => Booking} open opens a booking; refuses one outside the bounds or for an unknown room
+  * @property {(id: string) => Booking} cancel cancels an open booking; refuses an unknown or already cancelled one
+  * @property {(id: string) => Booking | undefined} find
+- * @property {(room: string, party: number, nights: number) => Amount} quote what a booking would cost
++ * @property {(room: string, party: number, nights: number) => Amount} quote what a booking would cost; a quote is
++ *   given for a stay of up to three nights (a weekend), and a longer stay is priced by the venue's staff
++ * @bound quote.nights: whole number, 1 to 3
+  */
+ 
+ /**
+@@ -86,16 +88,27 @@
+   const { store, rooms } = deps;
+   let next = 1;
+   /**
++   * What a stay costs, for any number of nights a booking may have.
+    * @param {string} roomId
+    * @param {number} party
+    * @param {number} nights
+    */
+-  const quote = (roomId, party, nights) => {
++  const price = (roomId, party, nights) => {
+     const room = rooms.find(roomId);
+     if (!room) throw new RangeError(`bookings: unknown room: ${roomId}`);
+     checkSize(party, nights, room.seats);
+     return amount(PRICE_PER_SEAT_NIGHT * party * nights, 'EUR');
+   };
++  /**
++   * A quote: the price of a stay of up to three nights; a longer stay is priced by the venue's staff.
++   * @param {string} roomId
++   * @param {number} party
++   * @param {number} nights
++   */
++  const quote = (roomId, party, nights) => {
++    if (Number.isInteger(nights) && nights > 3) throw new RangeError('bookings: a quote is for at most 3 nights');
++    return price(roomId, party, nights);
++  };
+   /** @param {string} id */
+   const find = (id) => {
+     const rec = store.get('bookings', id);
+@@ -106,7 +119,7 @@
+     find,
+     open(req) {
+       const first = parseDay(req.day);
+-      const total = quote(req.room, req.party, req.nights);
++      const total = price(req.room, req.party, req.nights);
+       /** @type {Booking} builds a Booking */
+       const b = {
+         id: `b-${next++}`,
+--- before/bookings/test/index.test.mjs
++++ after/bookings/test/index.test.mjs
+@@ -67,6 +67,15 @@
+   assert.throws(() => bookings.open(req({ room: 'attic' })), RangeError);
+ });
+ 
++test('bound quote.nights: whole number, 1 to 3', () => {
++  const { bookings } = system();
++  assert.equal(bookings.quote('hall', 10, 1).cents, bookings.open(req({ party: 10, nights: 1 })).total.cents);
++  assert.equal(bookings.quote('hall', 10, 3).cents, bookings.open(req({ party: 10, nights: 3 })).total.cents);
++  assert.throws(() => bookings.quote('hall', 10, 0), RangeError);
++  assert.throws(() => bookings.quote('hall', 10, 4), RangeError);
++  assert.throws(() => bookings.quote('hall', 10, 1.5), RangeError);
++});
++
+ test('bound bookquote.total: what the whole stay costs, for the whole party and every night', () => {
+   const { bookings } = system();
+   const h = bookingHandlers(bookings);

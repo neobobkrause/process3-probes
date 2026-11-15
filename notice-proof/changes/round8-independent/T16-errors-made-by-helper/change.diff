@@ -1,0 +1,37 @@
+--- before/money/src/index.mjs
++++ after/money/src/index.mjs
+@@ -18,6 +18,16 @@
+ const MAX_CENTS = 10_000_000;
+ 
+ /**
++ * The error for a value outside its bound, so that every such message names the value the same way.
++ * @param {string} what
++ * @param {unknown} value
++ * @returns {RangeError}
++ */
++function outOfBounds(what, value) {
++  return new RangeError(`${what} out of bounds: ${value}`);
++}
++
++/**
+  * Makes an amount, refusing one outside its bound.
+  * @param {number} cents
+  * @param {Currency} currency
+@@ -26,7 +36,7 @@
+  */
+ export function amount(cents, currency) {
+   if (!Number.isInteger(cents) || cents < 0 || cents > MAX_CENTS) {
+-    throw new RangeError(`amount: cents out of bounds: ${cents}`);
++    throw outOfBounds('amount: cents', cents);
+   }
+   if (!CURRENCIES.includes(currency)) throw new RangeError(`amount: unknown currency: ${currency}`);
+   /** @type {Amount} builds an Amount */
+@@ -64,7 +74,7 @@
+  * @throws {RangeError} when parts is outside its bound
+  */
+ export function splitEvenly(a, parts) {
+-  if (!Number.isInteger(parts) || parts < 1 || parts > 100) throw new RangeError('splitEvenly: parts out of bounds');
++  if (!Number.isInteger(parts) || parts < 1 || parts > 100) throw outOfBounds('splitEvenly: parts', parts);
+   const base = Math.floor(a.cents / parts);
+   const extra = a.cents - base * parts;
+   /** @type {Amount[]} builds Amounts */

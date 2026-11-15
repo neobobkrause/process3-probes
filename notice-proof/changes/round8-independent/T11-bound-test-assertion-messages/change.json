@@ -1,0 +1,9 @@
+{
+  "title": "money's bound test of cents says in each assertion what it shows, so that a failure reads as a sentence",
+  "provider": "money",
+  "covers": [
+    "messages added to the assertions of a bound test",
+    "the same checks of the same values"
+  ],
+  "note": "Only the messages of five assertions are added; every value and every check is the same, and every test passes."
+}

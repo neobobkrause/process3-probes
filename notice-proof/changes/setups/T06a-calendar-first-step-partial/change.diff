@@ -1,0 +1,27 @@
+--- before/calendar/src/index.mjs
++++ after/calendar/src/index.mjs
+@@ -1,6 +1,12 @@
+ const DAY_MS = 86400000;
+ const NAMES = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+ 
++/**
++ * Reads a day written YYYY-MM-DD as midnight, UTC, of that day.
++ * @param {string} text
++ * @returns {Date}
++ * @throws {RangeError} when text is not a real day written YYYY-MM-DD
++ */
+ export function parseDay(text) {
+   const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(text);
+   if (!m) throw new RangeError('parseDay: expected YYYY-MM-DD');
+@@ -11,6 +17,11 @@
+   return d;
+ }
+ 
++/**
++ * Writes a day as YYYY-MM-DD.
++ * @param {Date} day
++ * @returns {string}
++ */
+ export function formatDay(day) {
+   return day.toISOString().slice(0, 10);
+ }

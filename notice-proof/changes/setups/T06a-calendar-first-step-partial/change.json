@@ -1,0 +1,7 @@
+{
+  "title": "calendar's first job, step one, comments only: parseDay and formatDay, the two functions the job is about, get their interface comments",
+  "provider": "calendar",
+  "covers": [
+    "a comments-only first step that describes part of the module (the standing state)"
+  ]
+}

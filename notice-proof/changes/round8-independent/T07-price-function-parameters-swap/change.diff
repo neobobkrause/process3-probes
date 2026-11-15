@@ -1,0 +1,42 @@
+--- before/bookings/src/index.mjs
++++ after/bookings/src/index.mjs
+@@ -79,14 +79,15 @@
+ 
+ /**
+  * Makes the bookings' handle. A venue that sets its own prices hands in price: what a stay costs, in euro cents, for
+- * a party and a number of nights; without it a seat costs PRICE_PER_SEAT_NIGHT a night.
+- * @param {{store: Store, rooms: Rooms, price?: (party: number, nights: number) => number}} deps
++ * a number of nights and a party, asked in that order, the order the venue's price sheet lists them; without it a
++ * seat costs PRICE_PER_SEAT_NIGHT a night.
++ * @param {{store: Store, rooms: Rooms, price?: (nights: number, party: number) => number}} deps
+  * @returns {Bookings}
+  */
+ export function createBookings(deps) {
+   const { store, rooms } = deps;
+-  /** @type {(party: number, nights: number) => number} */
+-  const priceOf = deps.price ?? ((party, nights) => PRICE_PER_SEAT_NIGHT * party * nights);
++  /** @type {(nights: number, party: number) => number} */
++  const priceOf = deps.price ?? ((nights, party) => PRICE_PER_SEAT_NIGHT * party * nights);
+   let next = 1;
+   /**
+    * @param {string} roomId
+@@ -97,7 +98,7 @@
+     const room = rooms.find(roomId);
+     if (!room) throw new RangeError(`bookings: unknown room: ${roomId}`);
+     checkSize(party, nights, room.seats);
+-    return amount(priceOf(party, nights), 'EUR');
++    return amount(priceOf(nights, party), 'EUR');
+   };
+   /** @param {string} id */
+   const find = (id) => {
+--- before/bookings/test/index.test.mjs
++++ after/bookings/test/index.test.mjs
+@@ -37,7 +37,7 @@
+   const store = createStore();
+   const rooms = createRooms({ store });
+   rooms.add({ name: 'Hall', kind: 'hall', seats: 300 });
+-  const bookings = createBookings({ store, rooms, price: (party, nights) => 1000 * party + 100 * nights });
++  const bookings = createBookings({ store, rooms, price: (nights, party) => 1000 * party + 100 * nights });
+   assert.equal(bookings.quote('hall', 10, 2).cents, 10_200);
+ });
+ 

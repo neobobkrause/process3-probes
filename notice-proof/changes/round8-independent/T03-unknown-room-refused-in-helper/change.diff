@@ -1,0 +1,52 @@
+--- before/bookings/src/index.mjs
++++ after/bookings/src/index.mjs
+@@ -5,7 +5,7 @@
+ import { parseDay, formatDay, addDays } from '../../calendar/src/index.mjs';
+ /** @import { Amount } from '../../money/src/index.mjs' */
+ /** @import { Store } from '../../store/src/index.mjs' */
+-/** @import { Rooms } from '../../rooms/src/index.mjs' */
++/** @import { Rooms, Room } from '../../rooms/src/index.mjs' */
+ 
+ /** The price of one seat for one night, in euro cents. */
+ export const PRICE_PER_SEAT_NIGHT = 1500;
+@@ -79,6 +79,19 @@
+ }
+ 
+ /**
++ * The room a booking is for. An unknown room is not a value out of bounds, so it is refused with an Error, not a
++ * RangeError, as rooms refuses a name already taken.
++ * @param {Rooms} rooms
++ * @param {string} roomId
++ * @returns {Room}
++ */
++function roomOf(rooms, roomId) {
++  const room = rooms.find(roomId);
++  if (!room) throw new Error(`bookings: unknown room: ${roomId}`);
++  return room;
++}
++
++/**
+  * Makes the bookings' handle.
+  * @param {{store: Store, rooms: Rooms}} deps
+  * @returns {Bookings}
+@@ -92,8 +105,7 @@
+    * @param {number} nights
+    */
+   const quote = (roomId, party, nights) => {
+-    const room = rooms.find(roomId);
+-    if (!room) throw new RangeError(`bookings: unknown room: ${roomId}`);
++    const room = roomOf(rooms, roomId);
+     checkSize(party, nights, room.seats);
+     return amount(PRICE_PER_SEAT_NIGHT * party * nights, 'EUR');
+   };
+--- before/bookings/test/index.test.mjs
++++ after/bookings/test/index.test.mjs
+@@ -64,7 +64,7 @@
+   assert.equal(bookings.cancel(b.id).state, 'cancelled');
+   assert.throws(() => bookings.cancel(b.id));
+   assert.throws(() => bookings.cancel('b-999'), RangeError);
+-  assert.throws(() => bookings.open(req({ room: 'attic' })), RangeError);
++  assert.throws(() => bookings.open(req({ room: 'attic' })), /unknown room/);
+ });
+ 
+ test('bound bookquote.total: what the whole stay costs, for the whole party and every night', () => {

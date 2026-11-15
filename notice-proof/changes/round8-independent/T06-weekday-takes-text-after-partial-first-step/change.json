@@ -1,0 +1,13 @@
+{
+  "title": "weekday takes the day as written, YYYY-MM-DD, since every caller had to parse it first; weekday was not among the functions the first step described",
+  "provider": "calendar",
+  "covers": [
+    "an entry with no stated kinds",
+    "what it accepts changes from a day to text",
+    "the tool's form and the printed declaration both say \"anything\""
+  ],
+  "before": [
+    "setups/T06a-calendar-first-step-partial"
+  ],
+  "note": "calendar's own tests pass. reports calls weekday(parseDay(b.day)): parseDay is now handed a Date, finds no YYYY-MM-DD in its text and throws a RangeError; reports' first test fails. weekday is (any) => string before and after, in the tool's form and in the printed declaration, so nobody is told."
+}

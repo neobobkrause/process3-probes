@@ -1,0 +1,11 @@
+{
+  "title": "billing refuses metered use worth more than an amount can hold, passing on the tally's refusal; its tests expect money's RangeError",
+  "provider": "billing",
+  "covers": [
+    "a user that depends on the error kind of a class member (the standing state)"
+  ],
+  "before": [
+    "setups/Y13a-money-tally",
+    "setups/Y13b-billing-uses-tally"
+  ]
+}
