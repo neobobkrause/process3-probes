@@ -71,7 +71,7 @@ function runUser(user) {
   const res = { files: files.length, pass: 0, fail: 0, failed: [], ms: 0, status: [] };
   for (const [top, fs1] of byTop) {
     const pre = top === 'bio-plane' ? ['--import', './test/platform-sqlite.mjs'] : [];
-    const r = sh('node', [...pre, '--test', '--test-concurrency=2', '--test-reporter=tap', ...fs1], path.join(tree, top), 1_200_000);
+    const r = sh('node', [...pre, '--test', '--test-concurrency=2', '--test-reporter=tap', ...fs1], path.join(tree, top), 900_000);
     res.ms += r.ms;
     res.status.push(r.signal ? `killed ${r.signal}` : r.status);
     const lines = r.out.split('\n');

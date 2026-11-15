@@ -1,0 +1,789 @@
+{
+ "provider": "ai-runs",
+ "reader": "TypeScript 5.6.3",
+ "firstCommentsStep": false,
+ "changedModules": [
+  {
+   "module": "ai-runs",
+   "through": null
+  }
+ ],
+ "entries": [
+  {
+   "module": "ai-runs",
+   "entry": "AiRuns",
+   "changes": [
+    "declaration changed (not classified)"
+   ],
+   "tells": "users",
+   "before": {
+    "kind": "class",
+    "accepts": "(arg0: { id?: anything; storage: { sql: anything } }, arg1?: { AGENT_WORKER?: { fetch: Function }; AI_RUN_DISPATCH_WAIT_MS?: number | string; AI_RUN_LEASE_MS?: number | string; AI_RUN_PAUSE_MAX_MS?: number | string; AI_RUN_PROBE_INTERVAL_MS?: number | string; CIVICSMITH_TEST_INSTANCE?: string; INSTANCE_NAME?: string; STORE?: anything; [key: string]: anything } | null, arg2?: { aiAccounts?: anything; aiUse?: anything; deployedModes?: string[]; gateRecords?: anything; inquiry?: anything; steps?: anything; testSet?: anything } | null)",
+    "handsBack": "handle ai-runs.AiRuns",
+    "bounds": [
+     "AI_RUN_DISPATCH_WAIT_MS: a positive number of milliseconds, else the default 10000",
+     "AI_RUN_LEASE_MS: a positive number of milliseconds, else the default 600000",
+     "AI_RUN_PAUSE_MAX_MS: a positive number of milliseconds, else the default 86400000",
+     "AI_RUN_PROBE_INTERVAL_MS: a positive number of milliseconds, else the default 60000"
+    ]
+   },
+   "after": {
+    "kind": "class",
+    "accepts": "(arg0: { id?: anything; storage: { sql: anything } }, arg1?: { AGENT_WORKER?: { fetch: Function }; AI_RUN_DISPATCH_WAIT_MS?: number | string; AI_RUN_LEASE_MS?: number | string; AI_RUN_PAUSE_MAX_MS?: number | string; AI_RUN_PROBE_INTERVAL_MS?: number | string; CIVICSMITH_TEST_INSTANCE?: string; INSTANCE_NAME?: string; STORE?: anything; [key: string]: anything } | null, arg2?: { aiAccounts?: anything; aiUse?: anything; deployedModes?: string[]; gateRecords?: anything; inquiry?: anything; steps?: anything; testSet?: anything } | null)",
+    "handsBack": "handle ai-runs.AiRuns",
+    "bounds": [
+     "AI_RUN_DISPATCH_WAIT_MS: a positive number of milliseconds, else the default 10000",
+     "AI_RUN_LEASE_MS: a positive number of milliseconds, else the default 600000",
+     "AI_RUN_PAUSE_MAX_MS: a positive number of milliseconds, else the default 86400000",
+     "AI_RUN_PROBE_INTERVAL_MS: a positive number of milliseconds, else the default 60000"
+    ]
+   }
+  },
+  {
+   "module": "ai-runs",
+   "entry": "AiRuns#gateVerdictRecord",
+   "changes": [
+    "new entry"
+   ],
+   "after": {
+    "kind": "class member",
+    "accepts": "(arg0?: anything)",
+    "handsBack": "{ at?: string; check?: null | string; code?: string; detail?: string; entry_id?: string; field?: string; ok: boolean; part?: string; reason?: string; translation?: null | string; verdict?: string }"
+   },
+   "tells": "nobody"
+  },
+  {
+   "module": "ai-runs",
+   "entry": "AiRuns#gateVerdictRecords",
+   "changes": [
+    "new entry"
+   ],
+   "after": {
+    "kind": "class member",
+    "accepts": "(arg0?: { entry_id?: null | string; part?: null | string })",
+    "handsBack": "anything[]"
+   },
+   "tells": "nobody"
+  },
+  {
+   "module": "ai-runs",
+   "entry": "GateRecordRow",
+   "changes": [
+    "new entry"
+   ],
+   "after": {
+    "kind": "kind",
+    "accepts": "{ at: string; entry_id: string; part: string; record: string; seq: number; verdict: string }",
+    "handsBack": "{ at: string; entry_id: string; part: string; record: string; seq: number; verdict: string }",
+    "side": "both"
+   },
+   "tells": "nobody"
+  },
+  {
+   "module": "ai-runs",
+   "entry": "table:ai_gate_records",
+   "changes": [
+    "new entry"
+   ],
+   "after": {
+    "kind": "stored rows",
+    "accepts": "{ at: string; entry_id: string; part: string; record: string; seq: number; verdict: string }",
+    "handsBack": "{ at: string; entry_id: string; part: string; record: string; seq: number; verdict: string }",
+    "side": "both"
+   },
+   "tells": "nobody"
+  }
+ ],
+ "told": [
+  {
+   "user": "run-productions",
+   "reasons": [
+    {
+     "module": "ai-runs",
+     "entry": "AiRuns",
+     "changes": [
+      "declaration changed (not classified)"
+     ],
+     "lines": [
+      "run-productions/src/index.mjs:786",
+      "run-productions/src/index.mjs:821",
+      "run-productions/src/index.mjs:1108",
+      "run-productions/src/index.mjs:1116",
+      "run-productions/src/index.mjs:1346"
+     ],
+     "through": null
+    },
+    {
+     "module": "ai-runs",
+     "notFollowed": [
+      "reads or calls values of unknown kind: run-productions/src/checks.mjs:421 keys.map; run-productions/src/checks.mjs:421 keys; run-productions/src/checks.mjs:421 family (+1695)"
+     ],
+     "through": null
+    }
+   ],
+   "undeclared": []
+  },
+  {
+   "user": "capture-requests",
+   "reasons": [
+    {
+     "module": "ai-runs",
+     "entry": "AiRuns",
+     "changes": [
+      "declaration changed (not classified)"
+     ],
+     "lines": [
+      "capture-requests/src/index.mjs:45",
+      "capture-requests/src/index.mjs:403",
+      "capture-requests/src/index.mjs:825",
+      "capture-requests/src/index.mjs:834",
+      "capture-requests/src/index.mjs:868",
+      "capture-requests/src/index.mjs:876"
+     ],
+     "through": null
+    },
+    {
+     "module": "ai-runs",
+     "notFollowed": [
+      "reads or calls values of unknown kind: capture-requests/src/index.mjs:120 fam; capture-requests/src/index.mjs:124 row; capture-requests/src/index.mjs:139 row (+2964)"
+     ],
+     "through": null
+    }
+   ],
+   "undeclared": []
+  },
+  {
+   "user": "skills",
+   "reasons": [
+    {
+     "module": "ai-runs",
+     "entry": "AiRuns",
+     "changes": [
+      "declaration changed (not classified)"
+     ],
+     "lines": [
+      "skills/src/skilldoctrine.mjs:236",
+      "skills/test/investigation.test.mjs:219",
+      "skills/test/readtranslation.test.mjs:143",
+      "skills/test/translation.test.mjs:221",
+      "skills/test/writing.test.mjs:129"
+     ],
+     "through": null
+    },
+    {
+     "module": "ai-runs",
+     "notFollowed": [
+      "reads or calls values of unknown kind: skills/src/skilldoctrine.mjs:260 SUGGEST_CHECKS.SUGGEST_BOILERPLATE; skills/src/skilldoctrine.mjs:261 SUGGEST_CHECKS.SUGGEST_UNWRITABLE_STATE; skills/src/skilldoctrine.mjs:262 SUGGEST_CHECKS.SUGGEST_NOT_DIFFERENT (+493)"
+     ],
+     "through": null
+    }
+   ],
+   "undeclared": []
+  },
+  {
+   "user": "question-explorer",
+   "reasons": [
+    {
+     "module": "ai-runs",
+     "entry": "AiRuns",
+     "changes": [
+      "declaration changed (not classified)"
+     ],
+     "lines": [
+      "question-explorer/src/index.mjs:531",
+      "question-explorer/src/index.mjs:621",
+      "question-explorer/src/index.mjs:657",
+      "question-explorer/src/index.mjs:687",
+      "question-explorer/src/index.mjs:701",
+      "question-explorer/src/index.mjs:723"
+     ],
+     "through": null
+    },
+    {
+     "module": "ai-runs",
+     "notFollowed": [
+      "reads or calls values of unknown kind: question-explorer/src/index.mjs:99 storage; question-explorer/src/index.mjs:119 aiRuns; question-explorer/src/index.mjs:119 aiRuns.verifications (+2387)"
+     ],
+     "through": null
+    }
+   ],
+   "undeclared": []
+  },
+  {
+   "user": "agent-steps",
+   "reasons": [
+    {
+     "module": "ai-runs",
+     "entry": "AiRuns",
+     "changes": [
+      "declaration changed (not classified)"
+     ],
+     "lines": [
+      "agent-steps/src/drive.mjs:307",
+      "agent-steps/src/work.mjs:79",
+      "agent-steps/test/readers.test.mjs:134",
+      "agent-steps/test/readers.test.mjs:137",
+      "agent-steps/test/readers.test.mjs:139",
+      "agent-steps/test/shell.mjs:58"
+     ],
+     "through": null
+    },
+    {
+     "module": "ai-runs",
+     "notFollowed": [
+      "reads or calls values of unknown kind: agent-steps/src/drive.mjs:26 env; agent-steps/src/drive.mjs:26 env.CLOCK; agent-steps/src/drive.mjs:49 askPlane (+1617)"
+     ],
+     "through": null
+    }
+   ],
+   "undeclared": []
+  },
+  {
+   "user": "agent-worker",
+   "reasons": [
+    {
+     "module": "ai-runs",
+     "entry": "AiRuns",
+     "changes": [
+      "declaration changed (not classified)"
+     ],
+     "lines": [
+      "agent-worker/src/src/index.mjs:381",
+      "agent-worker/src/src/index.mjs:396",
+      "agent-worker/src/src/index.mjs:397",
+      "agent-worker/src/src/index.mjs:407",
+      "agent-worker/src/src/index.mjs:412",
+      "agent-worker/src/src/index.mjs:416"
+     ],
+     "through": null
+    },
+    {
+     "module": "ai-runs",
+     "notFollowed": [
+      "reads or calls values of unknown kind: agent-worker/src/scripts/build.mjs:41 member.bundle; agent-worker/src/scripts/build.mjs:42 built.bytes; agent-worker/src/scripts/build.mjs:43 member.bundle (+5599)"
+     ],
+     "through": null
+    }
+   ],
+   "undeclared": []
+  },
+  {
+   "user": "ai-gate",
+   "reasons": [
+    {
+     "module": "ai-runs",
+     "entry": "AiRuns",
+     "changes": [
+      "declaration changed (not classified)"
+     ],
+     "lines": [
+      "ai-gate/src/bank.mjs:151",
+      "ai-gate/src/bank.mjs:152"
+     ],
+     "through": null
+    },
+    {
+     "module": "ai-runs",
+     "notFollowed": [
+      "reads or calls values of unknown kind: ai-gate/src/bank.mjs:37 o; ai-gate/src/bank.mjs:40 G9_TOPICS; ai-gate/src/bank.mjs:55 GROUP_NEEDS (+1166)"
+     ],
+     "through": null
+    }
+   ],
+   "undeclared": []
+  },
+  {
+   "user": "intent",
+   "reasons": [
+    {
+     "module": "ai-runs",
+     "notFollowed": [
+      "reads or calls values of unknown kind: intent/src/checks.mjs:149 row; intent/src/doc.mjs:31 lines; intent/src/doc.mjs:32 lines.indexOf (+3367)"
+     ],
+     "through": null
+    }
+   ],
+   "undeclared": []
+  },
+  {
+   "user": "case-account",
+   "reasons": [
+    {
+     "module": "ai-runs",
+     "notFollowed": [
+      "reads or calls values of unknown kind: case-account/src/document.mjs:14 given; case-account/src/document.mjs:15 given; case-account/src/document.mjs:17 comments (+1247)"
+     ],
+     "through": null
+    }
+   ],
+   "undeclared": []
+  },
+  {
+   "user": "action-plans",
+   "reasons": [
+    {
+     "module": "ai-runs",
+     "entry": "AiRuns",
+     "changes": [
+      "declaration changed (not classified)"
+     ],
+     "lines": [
+      "action-plans/src/index.mjs:1255"
+     ],
+     "through": null
+    },
+    {
+     "module": "ai-runs",
+     "notFollowed": [
+      "reads or calls values of unknown kind: action-plans/src/checks.mjs:321 row; action-plans/src/doc.mjs:40 entry; action-plans/src/doc.mjs:69 lines (+4116)"
+     ],
+     "through": null
+    }
+   ],
+   "undeclared": []
+  },
+  {
+   "user": "plan-work",
+   "reasons": [
+    {
+     "module": "ai-runs",
+     "notFollowed": [
+      "reads or calls values of unknown kind: plan-work/src/checks.mjs:53 row; plan-work/src/index.mjs:101 r; plan-work/src/index.mjs:105 a (+1934)"
+     ],
+     "through": null
+    }
+   ],
+   "undeclared": []
+  },
+  {
+   "user": "scheduler",
+   "reasons": [
+    {
+     "module": "ai-runs",
+     "entry": "AiRuns",
+     "changes": [
+      "declaration changed (not classified)"
+     ],
+     "lines": [
+      "scheduler/test/files.test.mjs:142",
+      "scheduler/test/notice-ai-runs-96.test.mjs:11",
+      "scheduler/test/notice-ai-runs-96.test.mjs:66",
+      "scheduler/test/registry.test.mjs:119",
+      "scheduler/test/registry.test.mjs:121",
+      "scheduler/test/registry.test.mjs:127"
+     ],
+     "through": null
+    },
+    {
+     "module": "ai-runs",
+     "notFollowed": [
+      "reads or calls values of unknown kind: scheduler/src/index.mjs:165 e; scheduler/src/index.mjs:194 record; scheduler/src/index.mjs:194 record.getSetting (+1325)"
+     ],
+     "through": null
+    }
+   ],
+   "undeclared": []
+  },
+  {
+   "user": "wizard-scripts",
+   "reasons": [
+    {
+     "module": "ai-runs",
+     "entry": "AiRuns",
+     "changes": [
+      "declaration changed (not classified)"
+     ],
+     "lines": [
+      "wizard-scripts/src/index.mjs:1105",
+      "wizard-scripts/src/index.mjs:1528",
+      "wizard-scripts/src/index.mjs:1529",
+      "wizard-scripts/src/index.mjs:1530",
+      "wizard-scripts/src/index.mjs:1656",
+      "wizard-scripts/test/library.test.mjs:420"
+     ],
+     "through": null
+    },
+    {
+     "module": "ai-runs",
+     "notFollowed": [
+      "reads or calls values of unknown kind: wizard-scripts/src/build-data.mjs:25 list.map((x) => `  ${JSON.stringify(x)},; wizard-scripts/src/build-data.mjs:25 list.map; wizard-scripts/src/build-data.mjs:25 list (+5568)"
+     ],
+     "through": null
+    }
+   ],
+   "undeclared": []
+  },
+  {
+   "user": "op-grades",
+   "reasons": [
+    {
+     "module": "ai-runs",
+     "notFollowed": [
+      "declares ai-runs but no use of it is found in its code",
+      "reads or calls values of unknown kind: op-grades/src/declared.mjs:37 r; op-grades/src/declared.mjs:38 r; op-grades/src/declared.mjs:42 r (+654)"
+     ],
+     "through": null
+    }
+   ],
+   "undeclared": []
+  },
+  {
+   "user": "affordances",
+   "reasons": [
+    {
+     "module": "ai-runs",
+     "entry": "AiRuns",
+     "changes": [
+      "declaration changed (not classified)"
+     ],
+     "lines": [
+      "affordances/test/sources.test.mjs:112"
+     ],
+     "through": null
+    },
+    {
+     "module": "ai-runs",
+     "notFollowed": [
+      "reads or calls values of unknown kind: affordances/src/act-help.mjs:174 T53_DECLARED_BY_OWNER[op]; affordances/src/act-help.mjs:302 MEMBERSHIP_CHECKS.HANDLE_FIXED; affordances/src/act-help.mjs:304 ACT_HELP_KEYS (+3183)"
+     ],
+     "through": null
+    }
+   ],
+   "undeclared": []
+  },
+  {
+   "user": "queue-producers",
+   "reasons": [
+    {
+     "module": "ai-runs",
+     "entry": "AiRuns",
+     "changes": [
+      "declaration changed (not classified)"
+     ],
+     "lines": [
+      "queue-producers/src/index.mjs:1439",
+      "queue-producers/src/index.mjs:1440",
+      "queue-producers/src/index.mjs:2142",
+      "queue-producers/src/index.mjs:2143",
+      "queue-producers/test/notice-ai-runs-323.test.mjs:8",
+      "queue-producers/test/notice-ai-runs-323.test.mjs:15"
+     ],
+     "through": null
+    },
+    {
+     "module": "ai-runs",
+     "notFollowed": [
+      "reads or calls values of unknown kind: queue-producers/src/index.mjs:89 r; queue-producers/src/index.mjs:102 storage; queue-producers/src/index.mjs:108 make (+4115)"
+     ],
+     "through": null
+    }
+   ],
+   "undeclared": []
+  },
+  {
+   "user": "instance-setup",
+   "reasons": [
+    {
+     "module": "ai-runs",
+     "entry": "AiRuns",
+     "changes": [
+      "declaration changed (not classified)"
+     ],
+     "lines": [
+      "instance-setup/src/setup.mjs:59",
+      "instance-setup/src/setup.mjs:254",
+      "instance-setup/src/setup.mjs:2496",
+      "instance-setup/src/setup.mjs:2513",
+      "instance-setup/src/setup.mjs:2643",
+      "instance-setup/src/setup.mjs:2645"
+     ],
+     "through": null
+    },
+    {
+     "module": "ai-runs",
+     "notFollowed": [
+      "reads or calls values of unknown kind: instance-setup/src/livefire.mjs:30 env; instance-setup/src/livefire.mjs:39 stub.fetch; instance-setup/src/livefire.mjs:39 stub (+3670)"
+     ],
+     "through": null
+    }
+   ],
+   "undeclared": []
+  },
+  {
+   "user": "instance-reports",
+   "reasons": [
+    {
+     "module": "ai-runs",
+     "notFollowed": [
+      "declares ai-runs but no use of it is found in its code"
+     ],
+     "through": null
+    }
+   ],
+   "undeclared": []
+  },
+  {
+   "user": "surface-declarations",
+   "reasons": [
+    {
+     "module": "ai-runs",
+     "notFollowed": [
+      "declares ai-runs but no use of it is found in its code"
+     ],
+     "through": null
+    }
+   ],
+   "undeclared": []
+  },
+  {
+   "user": "op-specs-late",
+   "reasons": [
+    {
+     "module": "ai-runs",
+     "notFollowed": [
+      "declares ai-runs but no use of it is found in its code"
+     ],
+     "through": null
+    }
+   ],
+   "undeclared": []
+  },
+  {
+   "user": "op-declarations",
+   "reasons": [
+    {
+     "module": "ai-runs",
+     "entry": "AiRuns",
+     "changes": [
+      "declaration changed (not classified)"
+     ],
+     "lines": [
+      "op-declarations/test/t46.test.mjs:21",
+      "op-declarations/test/t46.test.mjs:189"
+     ],
+     "through": null
+    },
+    {
+     "module": "ai-runs",
+     "notFollowed": [
+      "reads or calls values of unknown kind: op-declarations/src/compose.mjs:10 composed; op-declarations/src/compose.mjs:16 composed; op-declarations/src/declared.mjs:15 a (+3653)"
+     ],
+     "through": null
+    }
+   ],
+   "undeclared": []
+  },
+  {
+   "user": "store-door",
+   "reasons": [
+    {
+     "module": "ai-runs",
+     "entry": "AiRuns",
+     "changes": [
+      "declaration changed (not classified)"
+     ],
+     "lines": [
+      "store-door/src/dispatch.mjs:510",
+      "store-door/src/dispatch.mjs:521",
+      "store-door/src/dispatch.mjs:526"
+     ],
+     "through": null
+    },
+    {
+     "module": "ai-runs",
+     "notFollowed": [
+      "reads or calls values of unknown kind: store-door/src/dispatch.mjs:202 url.searchParams.get; store-door/src/dispatch.mjs:202 url.searchParams; store-door/src/dispatch.mjs:202 url (+1431)"
+     ],
+     "through": null
+    }
+   ],
+   "undeclared": []
+  },
+  {
+   "user": "store-jobs",
+   "reasons": [
+    {
+     "module": "ai-runs",
+     "notFollowed": [
+      "declares ai-runs but no use of it is found in its code"
+     ],
+     "through": null
+    }
+   ],
+   "undeclared": []
+  },
+  {
+   "user": "store-ask",
+   "reasons": [
+    {
+     "module": "ai-runs",
+     "notFollowed": [
+      "declares ai-runs but no use of it is found in its code"
+     ],
+     "through": null
+    }
+   ],
+   "undeclared": []
+  },
+  {
+   "user": "store-assembly",
+   "reasons": [
+    {
+     "module": "ai-runs",
+     "entry": "AiRuns",
+     "changes": [
+      "declaration changed (not classified)"
+     ],
+     "lines": [
+      "store-assembly/src/ask.mjs:414",
+      "store-assembly/src/pending.mjs:705",
+      "store-assembly/test/accepted.test.mjs:97",
+      "store-assembly/test/r9-jobs.test.mjs:53",
+      "store-assembly/test/t33.test.mjs:351",
+      "store-assembly/test/t41.test.mjs:27"
+     ],
+     "through": null
+    },
+    {
+     "module": "ai-runs",
+     "notFollowed": [
+      "reads or calls values of unknown kind: store-assembly/src/acquire-timings.mjs:25 host; store-assembly/src/acquire-timings.mjs:25 host.storage; store-assembly/src/acquire-timings.mjs:25 host.storage.sql (+7066)"
+     ],
+     "through": null
+    }
+   ],
+   "undeclared": []
+  },
+  {
+   "user": "store-request",
+   "reasons": [
+    {
+     "module": "ai-runs",
+     "entry": "AiRuns",
+     "changes": [
+      "declaration changed (not classified)"
+     ],
+     "lines": [
+      "store-request/test/door.mjs:299",
+      "store-request/test/door.mjs:307",
+      "store-request/test/door.mjs:309",
+      "store-request/test/door.mjs:391",
+      "store-request/test/door.mjs:532",
+      "store-request/test/door.mjs:776"
+     ],
+     "through": null
+    },
+    {
+     "module": "ai-runs",
+     "notFollowed": [
+      "reads or calls values of unknown kind: store-request/src/door-ops.mjs:23 res.clone().json; store-request/src/door-ops.mjs:23 res.clone(); store-request/src/door-ops.mjs:23 res.clone (+2454)"
+     ],
+     "through": null
+    }
+   ],
+   "undeclared": []
+  },
+  {
+   "user": "screens-inquiry",
+   "reasons": [
+    {
+     "module": "ai-runs",
+     "entry": "AiRuns",
+     "changes": [
+      "declaration changed (not classified)"
+     ],
+     "lines": [
+      "screens-inquiry/test/fr28-project.test.mjs:137"
+     ],
+     "through": null
+    },
+    {
+     "module": "ai-runs",
+     "notFollowed": [
+      "reads or calls values of unknown kind: screens-inquiry/src/admit.mjs:12 SCREEN_REGISTRY.find; screens-inquiry/src/admit.mjs:12 SCREEN_REGISTRY; screens-inquiry/src/admit.mjs:12 r (+17484)"
+     ],
+     "through": null
+    }
+   ],
+   "undeclared": []
+  },
+  {
+   "user": "screens-document",
+   "reasons": [
+    {
+     "module": "ai-runs",
+     "notFollowed": [
+      "declares ai-runs but no use of it is found in its code"
+     ],
+     "through": null
+    }
+   ],
+   "undeclared": []
+  },
+  {
+   "user": "control-plane",
+   "reasons": [
+    {
+     "module": "ai-runs",
+     "entry": "AiRuns",
+     "changes": [
+      "declaration changed (not classified)"
+     ],
+     "lines": [
+      "control-plane/src/draft.mjs:101",
+      "control-plane/src/draft.mjs:113",
+      "control-plane/src/index.mjs:72",
+      "control-plane/src/index.mjs:159",
+      "control-plane/src/index.mjs:371",
+      "control-plane/src/index.mjs:1003"
+     ],
+     "through": null
+    },
+    {
+     "module": "ai-runs",
+     "notFollowed": [
+      "reads or calls values of unknown kind: control-plane/src/app.mjs:29 req; control-plane/src/app.mjs:30 url; control-plane/src/app.mjs:31 p.startsWith (+12144)"
+     ],
+     "through": null
+    }
+   ],
+   "undeclared": []
+  },
+  {
+   "user": "plane",
+   "reasons": [
+    {
+     "module": "ai-runs",
+     "entry": "AiRuns",
+     "changes": [
+      "declaration changed (not classified)"
+     ],
+     "lines": [
+      "plane/test/t47.test.mjs:66",
+      "plane/test/t48.test.mjs:90"
+     ],
+     "through": null
+    },
+    {
+     "module": "ai-runs",
+     "notFollowed": [
+      "reads or calls values of unknown kind: plane/src/arrival.mjs:8 headers.get; plane/src/arrival.mjs:8 headers; plane/src/arrival.mjs:9 raw.trim (+3399)"
+     ],
+     "through": null
+    }
+   ],
+   "undeclared": []
+  }
+ ],
+ "notTold": [],
+ "warnings": [],
+ "interfaceChanged": true,
+ "summary": "1 module(s) changed their listing; 1 entry changed in a way that tells; 30 user(s) told.",
+ "replay": {
+  "change": "ai-runs:391",
+  "ms": 145145,
+  "ranAt": "2026-11-15T16:53:16.336Z",
+  "tool": "notice-proof/tool/p3tool.mjs",
+  "commentedUsers": null
+ }
+}

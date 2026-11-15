@@ -1,0 +1,1102 @@
+{
+ "setup-words": {
+  "sourceLines": 6662,
+  "files": 3,
+  "users": 213
+ },
+ "record-grammar": {
+  "sourceLines": 2654,
+  "files": 15,
+  "users": 132
+ },
+ "jurisdictions": {
+  "sourceLines": 19819,
+  "files": 9,
+  "users": 61
+ },
+ "civil-time": {
+  "sourceLines": 1528,
+  "files": 9,
+  "users": 51
+ },
+ "calc-grammar": {
+  "sourceLines": 1441,
+  "files": 6,
+  "users": 15
+ },
+ "connection-grammar": {
+  "sourceLines": 847,
+  "files": 7,
+  "users": 23
+ },
+ "test-support": {
+  "sourceLines": 0,
+  "files": 0,
+  "users": 153
+ },
+ "runtime-limits": {
+  "sourceLines": 731,
+  "files": 5,
+  "users": 58
+ },
+ "signatures": {
+  "sourceLines": 1150,
+  "files": 3,
+  "users": 29
+ },
+ "bundler": {
+  "sourceLines": 4739,
+  "files": 11,
+  "users": 10
+ },
+ "court-citations": {
+  "sourceLines": 4535,
+  "files": 4,
+  "users": 1
+ },
+ "id-spaces": {
+  "sourceLines": 714,
+  "files": 1,
+  "users": 8
+ },
+ "subresources": {
+  "sourceLines": 1620,
+  "files": 1,
+  "users": 13
+ },
+ "ooxml": {
+  "sourceLines": 2623,
+  "files": 1,
+  "users": 17
+ },
+ "structured-text-reader": {
+  "sourceLines": 1504,
+  "files": 7,
+  "users": 2
+ },
+ "mail-reader": {
+  "sourceLines": 1068,
+  "files": 5,
+  "users": 5
+ },
+ "csv-reader": {
+  "sourceLines": 1338,
+  "files": 1,
+  "users": 6
+ },
+ "office-readers": {
+  "sourceLines": 4730,
+  "files": 5,
+  "users": 8
+ },
+ "odf-reader": {
+  "sourceLines": 2903,
+  "files": 1,
+  "users": 6
+ },
+ "pdf-reader": {
+  "sourceLines": 5782,
+  "files": 1,
+  "users": 11
+ },
+ "format-registry": {
+  "sourceLines": 1012,
+  "files": 1,
+  "users": 10
+ },
+ "text-chain": {
+  "sourceLines": 2129,
+  "files": 1,
+  "users": 20
+ },
+ "site-profiles": {
+  "sourceLines": 1127,
+  "files": 9,
+  "users": 2
+ },
+ "docprofile": {
+  "sourceLines": 1420,
+  "files": 6,
+  "users": 14
+ },
+ "doctypes": {
+  "sourceLines": 4291,
+  "files": 12,
+  "users": 7
+ },
+ "legistar-reader": {
+  "sourceLines": 526,
+  "files": 1,
+  "users": 5
+ },
+ "roster-reader": {
+  "sourceLines": 1122,
+  "files": 7,
+  "users": 2
+ },
+ "court-doctypes": {
+  "sourceLines": 1055,
+  "files": 6,
+  "users": 6
+ },
+ "register-readers": {
+  "sourceLines": 1299,
+  "files": 6,
+  "users": 3
+ },
+ "budget-doctypes": {
+  "sourceLines": 1067,
+  "files": 6,
+  "users": 2
+ },
+ "image-codecs": {
+  "sourceLines": 3584,
+  "files": 6,
+  "users": 3
+ },
+ "pdf-pixels": {
+  "sourceLines": 1757,
+  "files": 4,
+  "users": 4
+ },
+ "image-cover": {
+  "sourceLines": 2527,
+  "files": 11,
+  "users": 4
+ },
+ "doc-clean": {
+  "sourceLines": 1275,
+  "files": 7,
+  "users": 4
+ },
+ "pdf-worker": {
+  "sourceLines": 5745,
+  "files": 12,
+  "users": 4
+ },
+ "ocr-worker": {
+  "sourceLines": 2182,
+  "files": 9,
+  "users": 4
+ },
+ "sheet-worker": {
+  "sourceLines": 967,
+  "files": 10,
+  "users": 2
+ },
+ "file-scanner": {
+  "sourceLines": 3074,
+  "files": 20,
+  "users": 4
+ },
+ "reader-container": {
+  "sourceLines": 1180,
+  "files": 14,
+  "users": 0
+ },
+ "jurisdictions-b": {
+  "sourceLines": 0,
+  "files": 0,
+  "users": 0
+ },
+ "jurisdictions-c": {
+  "sourceLines": 0,
+  "files": 0,
+  "users": 0
+ },
+ "member-roster": {
+  "sourceLines": 3106,
+  "files": 6,
+  "users": 12
+ },
+ "record-core": {
+  "sourceLines": 2559,
+  "files": 3,
+  "users": 116
+ },
+ "membership": {
+  "sourceLines": 1718,
+  "files": 4,
+  "users": 116
+ },
+ "project-roster": {
+  "sourceLines": 1726,
+  "files": 3,
+  "users": 31
+ },
+ "ai-catalogue": {
+  "sourceLines": 1872,
+  "files": 7,
+  "users": 12
+ },
+ "ai-accounts": {
+  "sourceLines": 3664,
+  "files": 12,
+  "users": 30
+ },
+ "credentials": {
+  "sourceLines": 2821,
+  "files": 3,
+  "users": 42
+ },
+ "promotion": {
+  "sourceLines": 4014,
+  "files": 9,
+  "users": 63
+ },
+ "ai-accounts-lists": {
+  "sourceLines": 0,
+  "files": 0,
+  "users": 0
+ },
+ "host-governor": {
+  "sourceLines": 464,
+  "files": 2,
+  "users": 12
+ },
+ "provenance": {
+  "sourceLines": 3551,
+  "files": 6,
+  "users": 73
+ },
+ "attestation": {
+  "sourceLines": 603,
+  "files": 4,
+  "users": 14
+ },
+ "provenance-routes": {
+  "sourceLines": 1233,
+  "files": 4,
+  "users": 8
+ },
+ "capture-sources": {
+  "sourceLines": 2906,
+  "files": 8,
+  "users": 11
+ },
+ "acquisition": {
+  "sourceLines": 5858,
+  "files": 10,
+  "users": 33
+ },
+ "capture": {
+  "sourceLines": 5355,
+  "files": 6,
+  "users": 44
+ },
+ "file-safety": {
+  "sourceLines": 3724,
+  "files": 9,
+  "users": 15
+ },
+ "doorbell": {
+  "sourceLines": 1363,
+  "files": 4,
+  "users": 13
+ },
+ "mail-door": {
+  "sourceLines": 832,
+  "files": 3,
+  "users": 6
+ },
+ "sources": {
+  "sourceLines": 1153,
+  "files": 3,
+  "users": 16
+ },
+ "acquisition-owed": {
+  "sourceLines": 0,
+  "files": 0,
+  "users": 0
+ },
+ "acquisition-archives": {
+  "sourceLines": 0,
+  "files": 0,
+  "users": 0
+ },
+ "held-captures": {
+  "sourceLines": 0,
+  "files": 0,
+  "users": 0
+ },
+ "member-upload": {
+  "sourceLines": 0,
+  "files": 0,
+  "users": 0
+ },
+ "calibration": {
+  "sourceLines": 1048,
+  "files": 4,
+  "users": 7
+ },
+ "reader-contract": {
+  "sourceLines": 2825,
+  "files": 2,
+  "users": 1
+ },
+ "reading-pipeline": {
+  "sourceLines": 1940,
+  "files": 3,
+  "users": 7
+ },
+ "extraction": {
+  "sourceLines": 5503,
+  "files": 10,
+  "users": 39
+ },
+ "content": {
+  "sourceLines": 4144,
+  "files": 7,
+  "users": 50
+ },
+ "entities": {
+  "sourceLines": 2897,
+  "files": 4,
+  "users": 50
+ },
+ "events": {
+  "sourceLines": 2999,
+  "files": 9,
+  "users": 31
+ },
+ "lines": {
+  "sourceLines": 1060,
+  "files": 4,
+  "users": 19
+ },
+ "local-facts": {
+  "sourceLines": 2486,
+  "files": 6,
+  "users": 21
+ },
+ "connections": {
+  "sourceLines": 3270,
+  "files": 9,
+  "users": 38
+ },
+ "observation-log": {
+  "sourceLines": 3219,
+  "files": 4,
+  "users": 26
+ },
+ "law-relations": {
+  "sourceLines": 933,
+  "files": 3,
+  "users": 2
+ },
+ "standards": {
+  "sourceLines": 3677,
+  "files": 5,
+  "users": 29
+ },
+ "progressions": {
+  "sourceLines": 2248,
+  "files": 3,
+  "users": 17
+ },
+ "money": {
+  "sourceLines": 1871,
+  "files": 3,
+  "users": 21
+ },
+ "money-checks": {
+  "sourceLines": 1026,
+  "files": 3,
+  "users": 9
+ },
+ "duties": {
+  "sourceLines": 2283,
+  "files": 4,
+  "users": 23
+ },
+ "people": {
+  "sourceLines": 2328,
+  "files": 3,
+  "users": 18
+ },
+ "explore": {
+  "sourceLines": 1689,
+  "files": 12,
+  "users": 7
+ },
+ "bias": {
+  "sourceLines": 1918,
+  "files": 3,
+  "users": 16
+ },
+ "query-language": {
+  "sourceLines": 3028,
+  "files": 1,
+  "users": 5
+ },
+ "retrieval-browse": {
+  "sourceLines": 1449,
+  "files": 6,
+  "users": 2
+ },
+ "retrieval": {
+  "sourceLines": 3138,
+  "files": 10,
+  "users": 37
+ },
+ "calculations": {
+  "sourceLines": 4286,
+  "files": 6,
+  "users": 16
+ },
+ "workbooks": {
+  "sourceLines": 1746,
+  "files": 7,
+  "users": 5
+ },
+ "registers": {
+  "sourceLines": 2392,
+  "files": 10,
+  "users": 7
+ },
+ "inquiry-grammar": {
+  "sourceLines": 2176,
+  "files": 3,
+  "users": 21
+ },
+ "accepted-work": {
+  "sourceLines": 263,
+  "files": 2,
+  "users": 12
+ },
+ "leg-earning": {
+  "sourceLines": 1468,
+  "files": 2,
+  "users": 11
+ },
+ "inquiry": {
+  "sourceLines": 4272,
+  "files": 8,
+  "users": 38
+ },
+ "hypotheses": {
+  "sourceLines": 1406,
+  "files": 3,
+  "users": 9
+ },
+ "steps": {
+  "sourceLines": 1792,
+  "files": 3,
+  "users": 14
+ },
+ "citation": {
+  "sourceLines": 2197,
+  "files": 4,
+  "users": 12
+ },
+ "basis-version-grammar": {
+  "sourceLines": 1128,
+  "files": 3,
+  "users": 1
+ },
+ "basis-versions": {
+  "sourceLines": 2925,
+  "files": 6,
+  "users": 32
+ },
+ "strength": {
+  "sourceLines": 3193,
+  "files": 7,
+  "users": 22
+ },
+ "contradiction": {
+  "sourceLines": 3834,
+  "files": 6,
+  "users": 16
+ },
+ "run-rules": {
+  "sourceLines": 2641,
+  "files": 7,
+  "users": 20
+ },
+ "agent-harness": {
+  "sourceLines": 1995,
+  "files": 2,
+  "users": 8
+ },
+ "agent-model": {
+  "sourceLines": 2860,
+  "files": 16,
+  "users": 7
+ },
+ "ai-use": {
+  "sourceLines": 2397,
+  "files": 3,
+  "users": 19
+ },
+ "ai-runs": {
+  "sourceLines": 4839,
+  "files": 2,
+  "users": 30
+ },
+ "run-productions": {
+  "sourceLines": 2339,
+  "files": 4,
+  "users": 11
+ },
+ "capture-requests": {
+  "sourceLines": 2774,
+  "files": 3,
+  "users": 16
+ },
+ "reading-guides": {
+  "sourceLines": 1312,
+  "files": 5,
+  "users": 8
+ },
+ "skills": {
+  "sourceLines": 2923,
+  "files": 2,
+  "users": 6
+ },
+ "question-explorer": {
+  "sourceLines": 1322,
+  "files": 4,
+  "users": 7
+ },
+ "answers": {
+  "sourceLines": 1949,
+  "files": 10,
+  "users": 19
+ },
+ "agent-steps": {
+  "sourceLines": 2043,
+  "files": 11,
+  "users": 3
+ },
+ "agent-runner": {
+  "sourceLines": 1156,
+  "files": 17,
+  "users": 1
+ },
+ "agent-drafts": {
+  "sourceLines": 800,
+  "files": 3,
+  "users": 1
+ },
+ "agent-worker": {
+  "sourceLines": 2789,
+  "files": 12,
+  "users": 7
+ },
+ "ai-gate": {
+  "sourceLines": 2379,
+  "files": 14,
+  "users": 5
+ },
+ "intent": {
+  "sourceLines": 2276,
+  "files": 5,
+  "users": 11
+ },
+ "investigation": {
+  "sourceLines": 2065,
+  "files": 5,
+  "users": 11
+ },
+ "reevaluation": {
+  "sourceLines": 3469,
+  "files": 3,
+  "users": 13
+ },
+ "case-grammar": {
+  "sourceLines": 3511,
+  "files": 21,
+  "users": 17
+ },
+ "corpus-export": {
+  "sourceLines": 1435,
+  "files": 5,
+  "users": 10
+ },
+ "case-carriage": {
+  "sourceLines": 1760,
+  "files": 3,
+  "users": 12
+ },
+ "case-tensions": {
+  "sourceLines": 982,
+  "files": 3,
+  "users": 11
+ },
+ "publication": {
+  "sourceLines": 4974,
+  "files": 6,
+  "users": 27
+ },
+ "publish-schedule": {
+  "sourceLines": 682,
+  "files": 4,
+  "users": 10
+ },
+ "docket": {
+  "sourceLines": 1790,
+  "files": 4,
+  "users": 12
+ },
+ "public-read": {
+  "sourceLines": 4371,
+  "files": 12,
+  "users": 15
+ },
+ "project-stage": {
+  "sourceLines": 381,
+  "files": 1,
+  "users": 4
+ },
+ "network-notices": {
+  "sourceLines": 1440,
+  "files": 4,
+  "users": 11
+ },
+ "case-catalogue": {
+  "sourceLines": 1116,
+  "files": 1,
+  "users": 2
+ },
+ "ratification": {
+  "sourceLines": 4102,
+  "files": 9,
+  "users": 9
+ },
+ "case-checker": {
+  "sourceLines": 2311,
+  "files": 9,
+  "users": 7
+ },
+ "case-import": {
+  "sourceLines": 2783,
+  "files": 4,
+  "users": 14
+ },
+ "case-disclosures": {
+  "sourceLines": 2572,
+  "files": 6,
+  "users": 6
+ },
+ "case-account": {
+  "sourceLines": 925,
+  "files": 4,
+  "users": 9
+ },
+ "case-inputs": {
+  "sourceLines": 1602,
+  "files": 5,
+  "users": 11
+ },
+ "case-authoring": {
+  "sourceLines": 3164,
+  "files": 4,
+  "users": 11
+ },
+ "review": {
+  "sourceLines": 1734,
+  "files": 3,
+  "users": 9
+ },
+ "case-check": {
+  "sourceLines": 423,
+  "files": 3,
+  "users": 8
+ },
+ "conformance": {
+  "sourceLines": 2740,
+  "files": 3,
+  "users": 15
+ },
+ "consequences": {
+  "sourceLines": 2140,
+  "files": 4,
+  "users": 11
+ },
+ "action-grammar": {
+  "sourceLines": 2587,
+  "files": 5,
+  "users": 11
+ },
+ "action-records": {
+  "sourceLines": 1130,
+  "files": 2,
+  "users": 8
+ },
+ "actions": {
+  "sourceLines": 3798,
+  "files": 2,
+  "users": 19
+ },
+ "action-holds": {
+  "sourceLines": 1315,
+  "files": 3,
+  "users": 12
+ },
+ "action-clocks": {
+  "sourceLines": 2274,
+  "files": 5,
+  "users": 15
+ },
+ "action-replies": {
+  "sourceLines": 690,
+  "files": 3,
+  "users": 8
+ },
+ "filing-templates": {
+  "sourceLines": 1987,
+  "files": 4,
+  "users": 11
+ },
+ "filings": {
+  "sourceLines": 3854,
+  "files": 6,
+  "users": 12
+ },
+ "escalation": {
+  "sourceLines": 2350,
+  "files": 5,
+  "users": 12
+ },
+ "action-plans": {
+  "sourceLines": 3457,
+  "files": 5,
+  "users": 12
+ },
+ "plan-work": {
+  "sourceLines": 1427,
+  "files": 3,
+  "users": 8
+ },
+ "monitoring": {
+  "sourceLines": 4262,
+  "files": 4,
+  "users": 12
+ },
+ "following": {
+  "sourceLines": 2902,
+  "files": 7,
+  "users": 10
+ },
+ "link-sweep": {
+  "sourceLines": 1232,
+  "files": 5,
+  "users": 7
+ },
+ "scheduler": {
+  "sourceLines": 1091,
+  "files": 1,
+  "users": 7
+ },
+ "wizard-scripts": {
+  "sourceLines": 2930,
+  "files": 11,
+  "users": 19
+ },
+ "op-grades-folds": {
+  "sourceLines": 1659,
+  "files": 15,
+  "users": 1
+ },
+ "op-grades": {
+  "sourceLines": 2036,
+  "files": 3,
+  "users": 7
+ },
+ "affordances": {
+  "sourceLines": 2996,
+  "files": 6,
+  "users": 7
+ },
+ "tasks": {
+  "sourceLines": 1709,
+  "files": 3,
+  "users": 7
+ },
+ "machinery-producers": {
+  "sourceLines": 1225,
+  "files": 1,
+  "users": 3
+ },
+ "action-producers": {
+  "sourceLines": 1571,
+  "files": 2,
+  "users": 4
+ },
+ "queue-producers": {
+  "sourceLines": 3856,
+  "files": 3,
+  "users": 4
+ },
+ "notice-producers": {
+  "sourceLines": 2006,
+  "files": 2,
+  "users": 5
+ },
+ "queue": {
+  "sourceLines": 3650,
+  "files": 5,
+  "users": 8
+ },
+ "translations": {
+  "sourceLines": 1027,
+  "files": 4,
+  "users": 11
+ },
+ "instance-setup": {
+  "sourceLines": 4348,
+  "files": 3,
+  "users": 18
+ },
+ "instance-updates": {
+  "sourceLines": 0,
+  "files": 0,
+  "users": 1
+ },
+ "instance-reports": {
+  "sourceLines": 0,
+  "files": 0,
+  "users": 0
+ },
+ "op-capabilities": {
+  "sourceLines": 933,
+  "files": 1,
+  "users": 2
+ },
+ "surface-declarations": {
+  "sourceLines": 0,
+  "files": 0,
+  "users": 1
+ },
+ "op-specs-late": {
+  "sourceLines": 0,
+  "files": 0,
+  "users": 1
+ },
+ "op-declarations": {
+  "sourceLines": 3716,
+  "files": 10,
+  "users": 21
+ },
+ "admission": {
+  "sourceLines": 1680,
+  "files": 3,
+  "users": 7
+ },
+ "answer-envelope": {
+  "sourceLines": 915,
+  "files": 3,
+  "users": 8
+ },
+ "store-door": {
+  "sourceLines": 918,
+  "files": 4,
+  "users": 3
+ },
+ "signin-door": {
+  "sourceLines": 376,
+  "files": 2,
+  "users": 5
+ },
+ "store-jobs": {
+  "sourceLines": 0,
+  "files": 0,
+  "users": 2
+ },
+ "store-ask": {
+  "sourceLines": 0,
+  "files": 0,
+  "users": 1
+ },
+ "store-assembly": {
+  "sourceLines": 3925,
+  "files": 16,
+  "users": 3
+ },
+ "store-request": {
+  "sourceLines": 558,
+  "files": 2,
+  "users": 13
+ },
+ "interface-assets": {
+  "sourceLines": 236,
+  "files": 4,
+  "users": 12
+ },
+ "interface-shell": {
+  "sourceLines": 3550,
+  "files": 2,
+  "users": 18
+ },
+ "interface-shell-t50-t51": {
+  "sourceLines": 0,
+  "files": 0,
+  "users": 0
+ },
+ "interface-shell-t53": {
+  "sourceLines": 0,
+  "files": 0,
+  "users": 0
+ },
+ "screens-entry": {
+  "sourceLines": 1233,
+  "files": 8,
+  "users": 2
+ },
+ "screens-wizards": {
+  "sourceLines": 954,
+  "files": 4,
+  "users": 1
+ },
+ "screens-settings": {
+  "sourceLines": 5050,
+  "files": 18,
+  "users": 6
+ },
+ "screens-ai": {
+  "sourceLines": 523,
+  "files": 4,
+  "users": 1
+ },
+ "screens-intake": {
+  "sourceLines": 3275,
+  "files": 9,
+  "users": 5
+ },
+ "screens-intake-rounds": {
+  "sourceLines": 0,
+  "files": 0,
+  "users": 0
+ },
+ "screens-daily": {
+  "sourceLines": 4377,
+  "files": 23,
+  "users": 2
+ },
+ "screens-inquiry": {
+  "sourceLines": 7068,
+  "files": 10,
+  "users": 2
+ },
+ "screens-document": {
+  "sourceLines": 0,
+  "files": 0,
+  "users": 1
+ },
+ "screens-document-beta": {
+  "sourceLines": 0,
+  "files": 0,
+  "users": 0
+ },
+ "screens-investigate": {
+  "sourceLines": 3618,
+  "files": 17,
+  "users": 1
+ },
+ "screens-publish": {
+  "sourceLines": 4026,
+  "files": 15,
+  "users": 2
+ },
+ "screens-public": {
+  "sourceLines": 0,
+  "files": 0,
+  "users": 0
+ },
+ "screens-action": {
+  "sourceLines": 5744,
+  "files": 20,
+  "users": 3
+ },
+ "screens-plan": {
+  "sourceLines": 0,
+  "files": 0,
+  "users": 1
+ },
+ "screens-matter": {
+  "sourceLines": 0,
+  "files": 0,
+  "users": 1
+ },
+ "control-plane": {
+  "sourceLines": 3006,
+  "files": 10,
+  "users": 4
+ },
+ "control-plane-door-reading": {
+  "sourceLines": 0,
+  "files": 0,
+  "users": 0
+ },
+ "control-plane-door-pages": {
+  "sourceLines": 0,
+  "files": 0,
+  "users": 0
+ },
+ "control-plane-store-request": {
+  "sourceLines": 0,
+  "files": 0,
+  "users": 0
+ },
+ "plane": {
+  "sourceLines": 424,
+  "files": 6,
+  "users": 0
+ },
+ "installer-steps": {
+  "sourceLines": 2232,
+  "files": 19,
+  "users": 4
+ },
+ "installer": {
+  "sourceLines": 5927,
+  "files": 30,
+  "users": 4
+ },
+ "installer-check": {
+  "sourceLines": 0,
+  "files": 0,
+  "users": 0
+ },
+ "installer-places": {
+  "sourceLines": 0,
+  "files": 0,
+  "users": 0
+ },
+ "installer-copies": {
+  "sourceLines": 0,
+  "files": 0,
+  "users": 0
+ },
+ "site": {
+  "sourceLines": 546,
+  "files": 4,
+  "users": 0
+ },
+ "stewards": {
+  "sourceLines": 947,
+  "files": 6,
+  "users": 0
+ },
+ "ai-issuer": {
+  "sourceLines": 0,
+  "files": 0,
+  "users": 0
+ },
+ "journey-check": {
+  "sourceLines": 4643,
+  "files": 24,
+  "users": 0
+ },
+ "load-check": {
+  "sourceLines": 0,
+  "files": 0,
+  "users": 0
+ },
+ "ux-design": {
+  "sourceLines": 6749,
+  "files": 13,
+  "users": 0
+ }
+}

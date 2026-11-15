@@ -1,5 +1,5 @@
 {
- "written": "2026-11-15T15:50:54.652Z",
+ "written": "2026-11-15T16:54:30.165Z",
  "method": "see the header of adaptor/effort.mjs",
  "providers": {
   "ai-runs": {
@@ -1194,6 +1194,63 @@
      "commentsOnly": true,
      "notes": "Comments added: AccountState.flagged_at and .health, kind AccountHealth, @returns on private _healthOf, the two new methods, the two new ops in AiAccountsOps with three bound lines. Real after REFUSED (278: 145 code, 113 tests, 2 (b) and 18 (c) from new tests importing store-assembly's test fixture); commented 570, the same 2 source refusals of mine.",
      "minutes": 1.65
+    },
+    {
+     "step": "carry to main 0dea5a6",
+     "start": "2026-11-15T16:42:27Z",
+     "end": "2026-11-15T16:50:08Z",
+     "sourceLinesRead": 3720,
+     "testLinesRead": 0,
+     "kindsUndetermined": [
+      {
+       "what": "AiAccountsDeps.sql, .core, .membership; AiAccountsOptions.record, .membership",
+       "why": "SqlStorage, record-core and membership state no kind; written *"
+      },
+      {
+       "what": "NoticeAnswer.text, GROUP_KEY_NOTICE_TEXT, PROJECT_KEY_NOTICE_TEXT, Refusal.translation/detail, DeclaredOp.description",
+       "why": "setup-words' word()/localize() state no kind; written *"
+      },
+      {
+       "what": "Act.kind and accountReferenceSet's kind",
+       "why": "the code accepts any value and refuses others (ACCOUNT_KINDS.includes, ACT_KINDS.includes); a string | null kind makes the reader refuse includes(null); written * with a bound"
+      },
+      {
+       "what": "start()'s revoked",
+       "why": "membership's registration answer, no stated kind"
+      },
+      {
+       "what": "aiAccountsOps' a",
+       "why": "credentials passes its own instance, which answers the same names by delegation and holds this one as accounts; written AiAccounts | null as the earlier helper did, so the reader refuses a?.accounts on the dead branch"
+      }
+     ],
+     "falseStarts": [
+      "typed DECLARED_OPS as Readonly<Object<string, DeclaredOp>> in the first draft: it would have hidden the op names from the listing; dropped before the first check (the literal names them)"
+     ],
+     "corrections": [
+      "noAccount's scope includes true (accountReferenceFor passes it): added @param on the private #noAccount so the public noAccount's kind checks (also removes two real refusals)",
+      "KEPT_AWAY_UNREADABLE typed Refusal & {keep_away: KeepAwayWho}: with Refusal alone aiKeptAway's spread of its optional keep_away was refused"
+     ],
+     "timeWentTo": {
+      "reading the module's code": "about 3 min (main's index.mjs whole, schema's tables, checks)",
+      "reading the earlier comments": "about 1 min (124-before index.mjs, the JSDoc of the 25 shared methods, 124-after legacy.mjs)",
+      "reading call sites in users": "under 1 min (aiAccountsOps' callers, credentials' delegation)",
+      "tracing data shapes": "about 1 min",
+      "finding bounds in code": "under 1 min",
+      "running and reading the check": "about 1 min (builds about 30 s each)",
+      "resolving merge conflicts": "under 1 min (deciding the merge gives nothing)",
+      "writing the comments": "about 1 min (wall clock; about 720 lines)",
+      "writing the expected answer": "0 (not asked)"
+     },
+     "checkRefusalsBefore": 153,
+     "checkRefusalsAfter": 371,
+     "commentsOnly": true,
+     "linesCarriedMechanically": 0,
+     "linesCopiedVerbatimByHand": 451,
+     "linesWrittenOrRewritten": 221,
+     "listingAnythingBefore": 63,
+     "listingAnythingAfter": 122,
+     "notes": "git merge-file carried nothing usable: index.mjs's first conflict was the whole kinds block against main's whole class, and checks.mjs's two were comments on code main lacks. So the comments were inserted by hand (by anchor) into main's real index.mjs: 719 added lines, 672 not blank; 451 of these are identical to a line of the earlier helper's (182 of them bare /** and */ delimiters, so about 269 substantive lines copied: Refusal, MembershipRefusal, KeepAway*, LimitOf, UseSwitches, the keep-away and change rows, the use_ column lines, and the @param/@returns of the shared methods), 221 written or rewritten (the pre-T53 kinds: ReferenceState, SigninState, GroupKeyFacts, AccountUsesOfAnswer with kind and accounts, AccountForAnswer with key and kind, ServingAccount, ProjectAccountOwners, Suspension, ClearedNotice, the 24 ops of AiAccountsOps, and @storedrows kinds for 8 tables T53 dropped or renamed). Only index.mjs differs from main's real files. Real: REFUSED (153) = 30 src code, 2 src form, 115 test code, 6 test form; 436 cannot tell. Commented: REFUSED (371) = 16 src code (14 of the real 30 gone; 2 from my lines, both the earlier helper's two again: #sealKey's encode(this.#sealSecret) behind the #seal() guard the reader cannot follow, and a?.accounts on the dead branch after instanceof), 2 src form, 314 test code (about 199 new: tests read r.reason / r.code / r.uses on the union answers, or call with values chosen to be refused), 6 test form, 33 (d) bounds without a named test (expected, not fixed); 471 cannot tell. Listing: entries 72 -> 186 (42 kinds, 24 ops and their table, 11 stored tables), 'anything' lines 63 -> 122 (Refusal's and MembershipRefusal's index signature, the services, word()'s texts, AI_ACCOUNT_CHECKS/AI_WORDS). Not carried: the comments on everything T53 added (37 methods, their kinds: AccountState, Means, Credential, Hop*, ChecksInForce, Gateway*, CreditsStop, TermsNotice, AccountNotice, MigrateAnswer, the T53 ops and rows, the 7 layer files), and checks.mjs's two (made, fillSentence): main has none of that code.",
+     "minutes": 7.68
     }
    ],
    "states": [
@@ -1572,6 +1629,11 @@
      "t": "2026-11-15T15:44:33Z",
      "event": "note",
      "text": "Done. The four carries between changes (124 after to 188 before, and on) merged nothing: the real code did not change between the replayed changes, so there was no gap step. Total wall time about 23 minutes, of which the first comments about 15."
+    },
+    {
+     "t": "2026-11-15T16:44:16Z",
+     "event": "note",
+     "text": "main 0dea5a6's ai-accounts is pre-T53: one index.mjs (1,788 lines) with a class of true #private members, schema.mjs and checks.mjs; no layer files. git merge-file: checks.mjs 2 conflicts, both the 124-before helper's comments on code main lacks (made, fillSentence), so nothing carries there; index.mjs 4 conflicts, the first one the whole 628-line kinds block against main's whole class (1,640 lines): the merge carries nothing by itself. Public names: 23 methods only on main (the pre-T53 reference, group key, project account, subscription acts), 25 in both (most with different arguments: owner instead of account_id), 37 of 124-before's gone. Decided: write main's comments by hand into main's real index.mjs, reusing the 124-before kinds that still fit (Refusal, MembershipRefusal, KeepAway*, LimitOf, UseSwitches, AccountChange, AccountHistoryAnswer, the keep-away and change rows, aiAccountsOf/aiAccountsOps' param lines) and, for the old acts, the shapes the same helper wrote in 124-after's legacy.mjs (deprecated old forms of these very methods). Real state: check REFUSED (153) = 30 src code, 2 src form, 115 test code, 6 test form; 436 cannot tell; listing 'anything' 63."
     }
    ]
   },
