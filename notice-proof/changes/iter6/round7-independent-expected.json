@@ -1,0 +1,216 @@
+{
+ "about": "Expected answers for round 7 (changes/round7-independent.py), written by an independent adversary against the sixth design (notes/iteration-6-design.md) BEFORE anything was run on these changes. The adversary read the rules, the design notes up to their 'Defects' sections, the tool's code, the product and the earlier series; it read no results, readings, development log or learning loop, and ran the tool and tests only on the unchanged product. 'told' is what the RULES say; where the rules call for a refusal that stops the change, 'refuses' names it and 'guard' says which check, and 'told' is what the listing alone would call for.",
+ "notes": [
+  "Break-untold attacks (defeat = nobody told, the guard does not refuse, and the predicted user's tests fail): U01 U02 U03 U04 U05 U06 U07 U08 U09 U10.",
+  "False refusals (defeat = the provider's own check refuses honest code): U11 U12 U13.",
+  "Told for nothing (defeat = anyone told): U14 U15 U16.",
+  "U01/U02 aim at the rows rule from two sides: a table with no owner, and a table name the check cannot read. U03, U04, U05 and U09 are rules of form that recognise one spelling of what they forbid (throw new, a write holding JSON.stringify or a variable, process.env, import/import()). U06 is the fingerprint's reach (JSON data). U07, U08 and U10 are interface facts neither the tool's form nor the printed declaration holds, or holds and does not compare (receiver, parameter order, members of a renamed handle).",
+  "U06's change touches only money/src/limits.json and a comment; limits.json is not one of the module's .mjs files.",
+  "U07, U08, U09 and U10 rely on set-ups (U07a, U08a, U09a+U09b, Z07) that put a user in a state an ordinary job could write; U09b is the one the rules should already refuse (refusesBefore).",
+  "U08: rules round 1 rule 3 counts a renamed parameter as 'cannot stand in'; the design notes' later choice to leave parameter names out of the printed declaration (iteration 5, change 22) is a tool decision, not a rule. reports is listed as told because the interface as written changed and reports is not followed."
+ ],
+ "changes": {
+  "U01-table-renamed-mark-forgotten": {
+   "told": [],
+   "why": "Rule 2: a shared table's rows have one written kind, owned by the module that writes them, marked @storedrows on the kind. After the change bookings writes the table bookings-2, which no kind is marked for, while its mark still names bookings, a table it no longer writes: its comments disagree with its code (rule 5a), so bookings' own check must refuse, which stops the change. The listing is unchanged (table:bookings comes from the mark), so no one is told by it.",
+   "brokenPredicted": [
+    "reports"
+   ],
+   "wrongWithoutFailingTest": [],
+   "refuses": [
+    "bookings"
+   ],
+   "guard": "bookings' own check (rules 2 and 5a)",
+   "attack": "Hole in the rows rule: the check compares a write only with the kind of a table that has an owner; a write to a table nobody owns, and a mark naming a table its owner no longer writes, are both passed. An ordinary job renames its table (versioned by row shape) and forgets the mark eighty lines up. Defeat: bookings' check passes, nobody is told (bookings' listing is the same, so reports, not followed, is not told either), and reports' first test fails (it lists table 'bookings', now empty).",
+   "realistic": true
+  },
+  "U02-table-name-in-constant-rows-compact": {
+   "told": [],
+   "why": "Rule 2: every write to a table must give a value of its stated kind. bookings now writes rows without day into its table bookings, whose rows are Booking: bookings' own check must refuse the two writes, which stops the change. The listing is unchanged, so no one is told by it.",
+   "brokenPredicted": [
+    "reports"
+   ],
+   "wrongWithoutFailingTest": [],
+   "refuses": [
+    "bookings"
+   ],
+   "guard": "bookings' own check (rule 2)",
+   "attack": "Hole in the rows rule: the check reads a table's name only from a literal argument (carriers.mjs) and skips the rule entirely when the name is not readable (check.mjs: `c.member === 'put' && c.names`). Hoisting a repeated table name into a constant is an ordinary tidy-up; it switches the rule off, and A01's break (rows in a shape of bookings' own) comes back. Defeat: bookings' check passes, nobody is told, reports' first test fails (parseDay(undefined) throws).",
+   "realistic": true
+  },
+  "U03-coded-error-through-object-assign": {
+   "told": [],
+   "why": "Rule 36: a thrown kind must be a stated kind wherever the error is stated, the kind included. quote, a member of Bookings, is stated to throw RangeError (@throws on the kind, set-up Z06a) and now throws an Error: bookings' own check must refuse, which stops the change. The stated errors, and so the listing, are unchanged.",
+   "brokenPredicted": [
+    "billing"
+   ],
+   "wrongWithoutFailingTest": [],
+   "refuses": [
+    "bookings"
+   ],
+   "guard": "bookings' own check (rule 36)",
+   "attack": "Hole in rule 36: the check looks only at `throw new X` with X a name; `throw Object.assign(new Error(msg), { code })`, Node's own way of giving an error a code, is never compared. Defeat: bookings' check passes, nobody is told (op:bookquote still inherits the stated RangeError), billing's Z06b test (estimate for an unknown room rejects with RangeError) fails.",
+   "realistic": true
+  },
+  "U04-messages-encoded-by-named-function": {
+   "told": [],
+   "why": "Rules 8, 19 and 35: messages on a channel are written one per line, and a stream that carries messages carries nothing else. The meter now writes an empty line after each message on standard output: meter's own check must refuse, which stops the change. MeterInput and MeterMsg are unchanged, so no one is told by the listing.",
+   "brokenPredicted": [
+    "billing"
+   ],
+   "wrongWithoutFailingTest": [],
+   "refuses": [
+    "meter"
+   ],
+   "guard": "meter's own check (rules 19 and 35)",
+   "attack": "Hole in rules 19 and 35: the check finds a message only as a JSON.stringify in what a write is handed, following variables set in the same file, not named functions. With `process.stdout.write(encode(msg))` and `function encode`, no write holds a message as far as the check can see: rule 19 has nothing to look at, and rule 35 sees no stream that carries messages. Defeat: meter's check passes, nobody is told, billing's meter tests fail (JSON.parse('') in its data handler); the meter's own test skips empty lines and passes.",
+   "realistic": true
+  },
+  "U05-start-environment-through-node-process": {
+   "told": [],
+   "why": "Rule 34: code that reads the environment reads it into a kind published with @message env. The worker reads env.METER_CURRENCY (env imported from node:process) with no such kind: meter's own check must refuse, which stops the change. No entry of the meter changes, so no one is told by the listing (had the job published the kind, billing would be told of a new required setting).",
+   "brokenPredicted": [
+    "billing"
+   ],
+   "wrongWithoutFailingTest": [],
+   "refuses": [
+    "meter"
+   ],
+   "guard": "meter's own check (rule 34)",
+   "attack": "Hole in rule 34: the check matches the spelling process.env / process.argv. `import { env } from 'node:process'` is the idiomatic modern spelling (`import process from 'node:process'` would still be caught), and the reader, with no description of node:process, only 'cannot tell'. The meter's own helper sets METER_CURRENCY through a default parameter, and the pair it adds to the bound test's helper (`on('error')`) is one the helper already made, so the minutes bound test's fingerprint is unchanged. Defeat: meter's check passes, nobody is told, billing's two meter tests fail (the meter stops at once).",
+   "realistic": true
+  },
+  "U06-limit-lowered-in-json": {
+   "told": [
+    "billing",
+    "bookings",
+    "front",
+    "meter",
+    "reports"
+   ],
+   "why": "Rules 4, 15, 26 and 42: a bound test is compared by the (check, value) pairs it makes, a limit held in a named value of its own module included; what the cents bound test checks moved from 10,000,000 to 500,000 while its line did not, so the cents bound counts as changed and the users of every entry that carries it are told: bookings (amount, Amount), meter (amount), billing (amount, add, formatAmount, splitEvenly, and bookings' operations), front (Amount's fields, bookings' operations), reports (not followed, bookings' listing carries the line). No interface kind changes, so no told user's check refuses.",
+   "brokenPredicted": [
+    "bookings"
+   ],
+   "wrongWithoutFailingTest": [],
+   "refuses": [],
+   "attack": "Hole in the bound-test fingerprint: it follows constants of the test file, named imports and `import * as` of the module's source (rules 26, 42), not values read from a JSON file of the module (`import limits from '../src/limits.json' with { type: 'json' }`). Set-up U06a is V08's honest change (the treasurer keeps the limit in limits.json) plus tests that name the limit once, as Z02/W17 did. Only limits.json changes (it is not even one of the module's .mjs files). Defeat: nobody is told; bookings' bound party test (200 people, 2 nights: 600,000 cents) fails.",
+   "realistic": true
+  },
+  "U07-method-now-needs-its-handle": {
+   "told": [
+    "reports"
+   ],
+   "why": "Rooms.add is declared as a property holding a function, (input: NewRoom) => Room: by its kind it may be called on its own. It now needs its handle as receiver (this.find), so a call without the handle is newly refused (rule 3): the users of Rooms.add that call it so must be told: reports (set-up U07a hands rooms.add to forEach). A refusal by rooms' own check (code that disagrees with its stated kind, rule 5a) would also stop it.",
+   "brokenPredicted": [
+    "reports"
+   ],
+   "wrongWithoutFailingTest": [],
+   "refuses": [],
+   "guard": "or rooms' own check (rule 5a)",
+   "attack": "Hole: what a handed-out method needs of its receiver is in no kind, in neither the tool's form nor the printed declaration, and TypeScript types `this` in an object-literal method from the literal's kind, so the check finds nothing. Asking the handle's own find is an ordinary refactor. Defeat: rooms' listing is unchanged, so nobody is told (reports, not followed, is told only when the listing changes); rooms' check and tests pass; reports' first test fails with a TypeError.",
+   "realistic": true
+  },
+  "U08-same-kind-parameters-swap-places": {
+   "told": [
+    "billing",
+    "reports"
+   ],
+   "why": "Round 1 rule 3: for what an entry accepts, users are told when the new cannot stand in for the old, a renamed parameter included. Bookings.quote's second parameter was the party and is now the nights, and its third the reverse: a call written for the old order means something else. billing calls bookings.quote by position (set-up U08a); reports is not followed and the interface as written changed.",
+   "brokenPredicted": [
+    "billing"
+   ],
+   "wrongWithoutFailingTest": [],
+   "refuses": [],
+   "attack": "Hole: parameter names are in neither the tool's own form nor, since iteration 5 (V12), the printed declaration, so two parameters of one kind that change places leave (string, number, number) => Amount unchanged. The job updates every caller inside bookings and its own tests (the price is symmetric, so its own checks barely move). Defeat: nobody is told; billing's set-up test calls quote('hall', 20, 3), now 20 nights, refused.",
+   "realistic": true
+  },
+  "U09-price-sheet-in-euros": {
+   "told": [],
+   "why": "Rules 28 and 38: only a module's interface files are imported, however they are loaded. front's set-up U09b loads bookings/src/prices.json, not an interface file of bookings, with readFileSync: front's own check must refuse the set-up state, so the user never reaches past the interface. The change itself leaves bookings' listing unchanged (PRICE_PER_SEAT_NIGHT is a number, 1500), so no one is told.",
+   "brokenPredicted": [
+    "front"
+   ],
+   "wrongWithoutFailingTest": [],
+   "refuses": [],
+   "guard": "front's own check in its set-up job (rules 28 and 38)",
+   "refusesBefore": [
+    "front"
+   ],
+   "attack": "Hole in rules 28/38: the check looks at import statements and import(); a file read with readFileSync is loaded too, and rule 40 asks only for a stated kind. The front desk reads the venue's price sheet afresh (so a price the staff change shows at once), a reason to read rather than import. Defeat: front's check passes in the set-up; bookings' change tells nobody; front's price-line test fails ('NaN EUR').",
+   "realistic": true
+  },
+  "U10-handle-renamed-member-changed": {
+   "told": [
+    "bookings",
+    "front",
+    "reports"
+   ],
+   "why": "Rooms is renamed RoomDirectory: users that name it are told (bookings, through its @import; its check then refuses the missing name). Rooms.find accepts more (an optional kind), and front hands find on as a value (set-up Z07), so front is told (rule 24); its check refuses map handing an index where a RoomKind is expected. reports is not followed and rooms' listing changed.",
+   "brokenPredicted": [
+    "front"
+   ],
+   "wrongWithoutFailingTest": [],
+   "refuses": [
+    "bookings",
+    "front"
+   ],
+   "attack": "Hole in the comparison of a renamed handle kind: when a handle kind is renamed with the same list of members, diffListings skips the members of the old name and of the new (memberOfRenamed ... continue) without comparing them, so a change to a member in the same job is never seen, by the tool's form or by the backstop. Renaming a handle while adding to one of its methods is an ordinary one-job refactor. Defeat: bookings and reports are told, front is not; front's Z07 test fails (map hands the index as the kind).",
+   "realistic": true
+  },
+  "U11-test-uses-notStrictEqual": {
+   "told": [],
+   "why": "A test of the store's own behaviour, written with node:assert's notStrictEqual: no comment disagrees with anything, no listing changes. No one is told and nothing is refused.",
+   "brokenPredicted": [],
+   "wrongWithoutFailingTest": [],
+   "refuses": [],
+   "attack": "False refusal: the tool's description of node:assert (tool/lib/node.d.ts) has no notStrictEqual (nor notDeepStrictEqual, ifError ...), and 'property does not exist' on it is not among the 'cannot tell' exceptions, so store's check refuses its own honest test as '(a) a comment disagrees with this module's tests'. Defeat: store's check refuses.",
+   "realistic": true
+  },
+  "U12-worker-path-through-import-meta-resolve": {
+   "told": [],
+   "why": "WORKER_FILE is still a string (its kind is stated), the program it names is the same; nothing else changes. No one is told and nothing is refused.",
+   "brokenPredicted": [],
+   "wrongWithoutFailingTest": [],
+   "refuses": [],
+   "attack": "False refusal: import.meta.resolve is stable and synchronous in Node 22, but the tool's description of ImportMeta has only url, dirname and filename, so 'Property resolve does not exist on type ImportMeta' is refused as '(a) a comment disagrees with this module's code'. (node:url itself is only 'cannot tell'.) The bound test's fingerprint still reads './worker.mjs' from WORKER_FILE's initializer, so no bound moves. Defeat: meter's check refuses.",
+   "realistic": true
+  },
+  "U13-error-subclass-of-stated-kind": {
+   "told": [],
+   "why": "amount still throws a RangeError for an amount out of bounds (AmountRangeError extends RangeError), as its @throws line states; every caller's assert.throws(..., RangeError) still passes; the class is not exported and no listing changes. No one is told and nothing is refused.",
+   "brokenPredicted": [],
+   "wrongWithoutFailingTest": [],
+   "refuses": [],
+   "attack": "False refusal: rule 29 compares the name in `throw new X` with the stated names, so a subclass of the stated kind, which is that kind, is refused as a comment that disagrees with the code. Stating @throws {AmountRangeError} instead would change the listing and tell every user of amount for nothing: honest code pays either way. Defeat: money's check refuses.",
+   "realistic": true
+  },
+  "U14-inline-import-to-at-import": {
+   "told": [],
+   "why": "seededStore accepts and hands back the same kinds (the store's handle, Store); only the way the comment names Store changes. No one is told.",
+   "brokenPredicted": [],
+   "wrongWithoutFailingTest": [],
+   "refuses": [],
+   "attack": "Told for nothing: TypeScript prints a declaration as the comment wrote it, so the backstop sees `import(\"./index.mjs\").Store` become `Store` while the tool's own form is unchanged, and calls seededStore 'declaration changed (not classified)'. Defeat: front (which seeds its tests' store with seededStore) is told.",
+   "realistic": true
+  },
+  "U15-functions-written-as-arrows": {
+   "told": [],
+   "why": "isEmail and titleCase accept and hand back the same kinds; only how they are written changes. No one is told.",
+   "brokenPredicted": [],
+   "wrongWithoutFailingTest": [],
+   "refuses": [],
+   "attack": "Told for nothing: the tool's own form lists both as the same functions, but TypeScript prints `export const isEmail: (_: string) => boolean` where it printed `export function isEmail(_: string): boolean`, so the backstop tells. Defeat: front (which uses both) is told.",
+   "realistic": true
+  },
+  "U16-equal-written-strictEqual": {
+   "told": [],
+   "why": "In node:assert/strict, equal is strictEqual: the bound tests check the same values the same way (rule 15: rewriting a bound test with the same values and checks is not a change). No listing changes. No one is told.",
+   "brokenPredicted": [],
+   "wrongWithoutFailingTest": [],
+   "refuses": [],
+   "attack": "Told for nothing: rule 26's fingerprint takes a check by its name, so equal -> strictEqual changes the pairs of both bound tests (cents and parts) and the tool treats both bounds as changed. Defeat: anyone told; predicted: billing, bookings, front, meter and reports (the users of every entry that carries the cents or the parts line).",
+   "realistic": true
+  }
+ }
+}
