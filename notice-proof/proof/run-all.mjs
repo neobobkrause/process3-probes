@@ -34,3 +34,9 @@ for (const series of SERIES) {
 
 step('measurements');
 node(['proof/measure.mjs']);
+
+step('the tool against the old rule (tell every declaring module), on all changes');
+node(['proof/old-rule.mjs']);
+
+step('history of the designs and rounds, from the committed comparisons');
+node(['proof/history.mjs']);

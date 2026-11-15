@@ -1,0 +1,16 @@
+{
+  "changes": 150,
+  "needed": 99,
+  "tool": {
+    "notices": 182,
+    "forNothing": 111,
+    "missed": 28,
+    "missedBroken": 40
+  },
+  "old": {
+    "notices": 474,
+    "forNothing": 376,
+    "missed": 1,
+    "missedBroken": 4
+  }
+}

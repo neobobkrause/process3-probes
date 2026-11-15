@@ -10,7 +10,7 @@ export const ROOT = path.resolve(HERE, '..');
 export const PRODUCT = path.join(ROOT, 'product');
 export const SCRATCH = path.join(ROOT, '.scratch');
 /** Which round of the design is being run: iter1 (the first design) or iter2 (and later). */
-export const ROUND = process.env.ROUND || 'iter2';
+export const ROUND = process.env.ROUND || 'iter7';
 /** Where a round keeps its expected answers and readings. */
 export const answersFile = (series, kind) => (ROUND === 'iter1' ? path.join(ROOT, 'changes', `${series}-${kind}.json`) : path.join(ROOT, 'changes', ROUND, `${series}-${kind}.json`));
 
