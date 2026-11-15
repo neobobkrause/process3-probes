@@ -1,0 +1,539 @@
+{
+  "changes": 12,
+  "matchesRules": 9,
+  "notices": 15,
+  "needed": 11,
+  "holes": [
+    {
+      "id": "A01-stored-row-shape",
+      "users": [
+        "reports"
+      ]
+    },
+    {
+      "id": "A04-message-kind-not-shared",
+      "users": [
+        "billing"
+      ]
+    },
+    {
+      "id": "A06-error-kind-changed",
+      "users": [
+        "billing"
+      ]
+    },
+    {
+      "id": "A07-bound-test-moved-line-not",
+      "users": [
+        "front"
+      ]
+    }
+  ],
+  "caughtByGuard": [],
+  "unneeded": [
+    {
+      "id": "A03-reexported-function",
+      "user": "reports"
+    },
+    {
+      "id": "A10-kind-split-same-shape",
+      "user": "billing"
+    },
+    {
+      "id": "A10-kind-split-same-shape",
+      "user": "front"
+    },
+    {
+      "id": "A10-kind-split-same-shape",
+      "user": "reports"
+    },
+    {
+      "id": "A12-caught-error-makes-user-unfollowed",
+      "user": "front"
+    },
+    {
+      "id": "A12-caught-error-makes-user-unfollowed",
+      "user": "reports"
+    },
+    {
+      "id": "A13-computed-member-renamed",
+      "user": "reports"
+    },
+    {
+      "id": "A14-copy-of-kind-in-the-middle",
+      "user": "reports"
+    }
+  ],
+  "falseRefusals": 13,
+  "refusals": 37,
+  "rows": [
+    {
+      "id": "A01-stored-row-shape",
+      "title": "bookings keeps its interface but stores its rows in a shorter form of its own",
+      "provider": "bookings",
+      "exp": [],
+      "told": [],
+      "matches": true,
+      "broken": [
+        "reports"
+      ],
+      "needs": [
+        "reports"
+      ],
+      "through": [],
+      "refusals": [],
+      "verdict": "HOLE: reports needed a change and was not told",
+      "providerTests": true,
+      "firstCommentsStep": false,
+      "timing": {
+        "listingMs": {
+          "before": 415,
+          "after": 245
+        },
+        "noticeMs": 1033,
+        "checkMs": {
+          "bookings": 192,
+          "door": 170,
+          "meter": 167,
+          "billing": 225,
+          "front": 222,
+          "reports": 177
+        }
+      }
+    },
+    {
+      "id": "A03-reexported-function",
+      "title": "slugify joins words with underscores; front reaches slugify only through rooms' re-export",
+      "provider": "text-rules",
+      "exp": [
+        "front",
+        "reports",
+        "rooms"
+      ],
+      "told": [
+        "front",
+        "reports",
+        "rooms"
+      ],
+      "matches": true,
+      "broken": [
+        "front",
+        "rooms"
+      ],
+      "needs": [
+        "front",
+        "rooms"
+      ],
+      "through": [],
+      "refusals": [],
+      "verdict": "held; 1 told for nothing",
+      "providerTests": true,
+      "firstCommentsStep": false,
+      "timing": {
+        "listingMs": {
+          "before": 155,
+          "after": 168
+        },
+        "noticeMs": 730,
+        "checkMs": {
+          "text-rules": 195,
+          "money": 166,
+          "calendar": 155,
+          "store": 187,
+          "rooms": 218,
+          "bookings": 234,
+          "door": 217,
+          "meter": 195,
+          "billing": 178,
+          "front": 201,
+          "reports": 195
+        }
+      }
+    },
+    {
+      "id": "A04-message-kind-not-shared",
+      "title": "The meter's reading carries price in place of cost; billing kept its own copy of the message kind",
+      "provider": "meter",
+      "exp": [],
+      "told": [],
+      "matches": true,
+      "broken": [
+        "billing"
+      ],
+      "needs": [
+        "billing"
+      ],
+      "through": [],
+      "refusals": [],
+      "verdict": "HOLE: billing needed a change and was not told",
+      "providerTests": true,
+      "firstCommentsStep": false,
+      "timing": {
+        "listingMs": {
+          "before": 193,
+          "after": 188
+        },
+        "noticeMs": 789,
+        "checkMs": {
+          "meter": 171,
+          "billing": 169,
+          "front": 214,
+          "reports": 174
+        }
+      }
+    },
+    {
+      "id": "A06-error-kind-changed",
+      "title": "splitEvenly now throws TypeError, not RangeError, outside its bound; its @throws comment says so",
+      "provider": "money",
+      "exp": [
+        "billing"
+      ],
+      "told": [],
+      "matches": false,
+      "broken": [
+        "billing"
+      ],
+      "needs": [
+        "billing"
+      ],
+      "through": [],
+      "refusals": [],
+      "verdict": "HOLE: billing needed a change and was not told",
+      "providerTests": true,
+      "firstCommentsStep": false,
+      "timing": {
+        "listingMs": {
+          "before": 191,
+          "after": 183
+        },
+        "noticeMs": 852,
+        "checkMs": {
+          "money": 204,
+          "calendar": 156,
+          "store": 205,
+          "rooms": 252,
+          "bookings": 186,
+          "door": 177,
+          "meter": 170,
+          "billing": 188,
+          "front": 181,
+          "reports": 157
+        }
+      }
+    },
+    {
+      "id": "A07-bound-test-moved-line-not",
+      "title": "A party may now be at most 100; the job moved its own bound test to 100 but left the bound line and the test's name",
+      "provider": "bookings",
+      "exp": [],
+      "told": [],
+      "matches": true,
+      "broken": [
+        "front"
+      ],
+      "needs": [
+        "front"
+      ],
+      "through": [],
+      "refusals": [],
+      "verdict": "HOLE: front needed a change and was not told",
+      "providerTests": true,
+      "firstCommentsStep": false,
+      "timing": {
+        "listingMs": {
+          "before": 162,
+          "after": 170
+        },
+        "noticeMs": 600,
+        "checkMs": {
+          "bookings": 261,
+          "door": 175,
+          "meter": 190,
+          "billing": 219,
+          "front": 194,
+          "reports": 178
+        }
+      }
+    },
+    {
+      "id": "A08-request-line-built-in-steps",
+      "title": "billing builds its request line in two steps; the code is right",
+      "provider": "billing",
+      "exp": [],
+      "told": [],
+      "matches": true,
+      "broken": [],
+      "needs": [],
+      "through": [],
+      "refusals": [
+        "billing (6)"
+      ],
+      "verdict": "held; FALSE REFUSAL of billing (6 lines)",
+      "providerTests": true,
+      "firstCommentsStep": false,
+      "timing": {
+        "listingMs": {
+          "before": 178,
+          "after": 158
+        },
+        "noticeMs": 616,
+        "checkMs": {
+          "billing": 189,
+          "front": 165,
+          "reports": 170
+        }
+      }
+    },
+    {
+      "id": "A09-assert-narrowing",
+      "title": "meter's test narrows a message with assert.equal before reading its fields; the test is right",
+      "provider": "meter",
+      "exp": [],
+      "told": [],
+      "matches": true,
+      "broken": [],
+      "needs": [],
+      "through": [],
+      "refusals": [
+        "meter (7)"
+      ],
+      "verdict": "held; FALSE REFUSAL of meter (7 lines)",
+      "providerTests": true,
+      "firstCommentsStep": false,
+      "timing": {
+        "listingMs": {
+          "before": 166,
+          "after": 205
+        },
+        "noticeMs": 709,
+        "checkMs": {
+          "meter": 215,
+          "billing": 171,
+          "front": 158,
+          "reports": 227
+        }
+      }
+    },
+    {
+      "id": "A10-kind-split-same-shape",
+      "title": "Booking is rewritten as two parts joined; its shape is the same",
+      "provider": "bookings",
+      "exp": [
+        "reports"
+      ],
+      "told": [
+        "billing",
+        "front",
+        "reports"
+      ],
+      "matches": false,
+      "broken": [],
+      "needs": [],
+      "through": [],
+      "refusals": [],
+      "verdict": "held; 3 told for nothing",
+      "providerTests": true,
+      "firstCommentsStep": false,
+      "timing": {
+        "listingMs": {
+          "before": 169,
+          "after": 196
+        },
+        "noticeMs": 631,
+        "checkMs": {
+          "bookings": 207,
+          "door": 163,
+          "meter": 209,
+          "billing": 192,
+          "front": 182,
+          "reports": 163
+        }
+      }
+    },
+    {
+      "id": "A11-string-spelled-String",
+      "title": "slugify's comment writes String where it wrote string",
+      "provider": "text-rules",
+      "exp": [],
+      "told": [],
+      "matches": true,
+      "broken": [],
+      "needs": [],
+      "through": [],
+      "refusals": [],
+      "verdict": "held",
+      "providerTests": true,
+      "firstCommentsStep": false,
+      "timing": {
+        "listingMs": {
+          "before": 158,
+          "after": 209
+        },
+        "noticeMs": 612,
+        "checkMs": {
+          "text-rules": 149,
+          "money": 171,
+          "calendar": 166,
+          "store": 187,
+          "rooms": 193,
+          "bookings": 197,
+          "door": 206,
+          "meter": 191,
+          "billing": 232,
+          "front": 214,
+          "reports": 156
+        }
+      }
+    },
+    {
+      "id": "A12-caught-error-makes-user-unfollowed",
+      "title": "Opening a booking accepts an optional arrival time (accepts more); front's tests read a caught error's message",
+      "provider": "bookings",
+      "exp": [
+        "reports"
+      ],
+      "told": [
+        "front",
+        "reports"
+      ],
+      "matches": false,
+      "broken": [],
+      "needs": [],
+      "through": [],
+      "refusals": [],
+      "verdict": "held; 2 told for nothing",
+      "providerTests": true,
+      "firstCommentsStep": false,
+      "timing": {
+        "listingMs": {
+          "before": 231,
+          "after": 242
+        },
+        "noticeMs": 697,
+        "checkMs": {
+          "bookings": 172,
+          "door": 158,
+          "meter": 209,
+          "billing": 163,
+          "front": 206,
+          "reports": 182
+        }
+      }
+    },
+    {
+      "id": "A13-computed-member-renamed",
+      "title": "The store handle's get is renamed read; rooms calls it by a computed name",
+      "provider": "store",
+      "exp": [
+        "bookings",
+        "reports",
+        "rooms"
+      ],
+      "told": [
+        "bookings",
+        "reports",
+        "rooms"
+      ],
+      "matches": true,
+      "broken": [
+        "billing",
+        "bookings",
+        "front",
+        "reports",
+        "rooms"
+      ],
+      "needs": [
+        "bookings",
+        "rooms"
+      ],
+      "through": [
+        "billing",
+        "front",
+        "reports"
+      ],
+      "refusals": [
+        "bookings (1)"
+      ],
+      "verdict": "held; 1 told for nothing",
+      "providerTests": true,
+      "firstCommentsStep": false,
+      "timing": {
+        "listingMs": {
+          "before": 182,
+          "after": 156
+        },
+        "noticeMs": 722,
+        "checkMs": {
+          "store": 182,
+          "rooms": 185,
+          "bookings": 197,
+          "door": 187,
+          "meter": 186,
+          "billing": 187,
+          "front": 164,
+          "reports": 232
+        }
+      }
+    },
+    {
+      "id": "A14-copy-of-kind-in-the-middle",
+      "title": "Amount's cents is renamed minor; bookings, in the middle, wrote its own copy of the kind",
+      "provider": "money",
+      "exp": [
+        "billing",
+        "bookings",
+        "meter",
+        "reports"
+      ],
+      "told": [
+        "billing",
+        "bookings",
+        "meter",
+        "reports"
+      ],
+      "matches": true,
+      "broken": [
+        "billing",
+        "bookings",
+        "front",
+        "meter"
+      ],
+      "needs": [
+        "billing",
+        "bookings",
+        "meter"
+      ],
+      "through": [
+        "front"
+      ],
+      "refusals": [
+        "bookings (7)",
+        "meter (4)",
+        "billing (12)"
+      ],
+      "verdict": "held; 1 told for nothing",
+      "providerTests": true,
+      "firstCommentsStep": false,
+      "timing": {
+        "listingMs": {
+          "before": 159,
+          "after": 169
+        },
+        "noticeMs": 872,
+        "checkMs": {
+          "money": 178,
+          "calendar": 158,
+          "store": 226,
+          "rooms": 186,
+          "bookings": 184,
+          "door": 167,
+          "meter": 181,
+          "billing": 217,
+          "front": 261,
+          "reports": 266
+        }
+      }
+    }
+  ]
+}

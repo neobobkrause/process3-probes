@@ -157,7 +157,7 @@
       "user": "reports"
     }
   ],
-  "falseRefusalsJudged": "see report",
+  "falseRefusals": 0,
   "refusals": 63,
   "rows": [
     {

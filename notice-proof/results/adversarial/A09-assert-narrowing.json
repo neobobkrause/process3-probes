@@ -1,0 +1,132 @@
+{
+  "id": "A09-assert-narrowing",
+  "title": "meter's test narrows a message with assert.equal before reading its fields; the test is right",
+  "provider": "meter",
+  "covers": [
+    "attack: make the check refuse honest code (narrowing the reader cannot see)"
+  ],
+  "tool": {
+    "firstCommentsStep": false,
+    "interfaceChanged": false,
+    "summary": "The listing before and after is the same. Nobody is told.",
+    "entries": [],
+    "told": [],
+    "toldDetail": [],
+    "notTold": [],
+    "warnings": [],
+    "commentsOnly": false,
+    "checks": {
+      "meter": {
+        "refusedBefore": 0,
+        "refusedAfter": 7,
+        "refusals": [
+          {
+            "at": "meter/test/index.test.mjs:33",
+            "code": 2339,
+            "text": "Property 'room' does not exist on type 'MeterMsg'.   Property 'room' does not exist on type '{ kind: \"done\"; count: number; }'.",
+            "kind": "(a) a comment disagrees with this module's tests"
+          },
+          {
+            "at": "meter/test/index.test.mjs:33",
+            "code": 2339,
+            "text": "Property 'room' does not exist on type 'MeterMsg'.   Property 'room' does not exist on type '{ kind: \"done\"; count: number; }'.",
+            "kind": "(a) a comment disagrees with this module's tests"
+          },
+          {
+            "at": "meter/test/index.test.mjs:34",
+            "code": 2339,
+            "text": "Property 'cost' does not exist on type 'MeterMsg'.   Property 'cost' does not exist on type '{ kind: \"refused\"; room: string; reason: string; }'.",
+            "kind": "(a) a comment disagrees with this module's tests"
+          },
+          {
+            "at": "meter/test/index.test.mjs:34",
+            "code": 2339,
+            "text": "Property 'cost' does not exist on type 'MeterMsg'.   Property 'cost' does not exist on type '{ kind: \"refused\"; room: string; reason: string; }'.",
+            "kind": "(a) a comment disagrees with this module's tests"
+          },
+          {
+            "at": "meter/test/index.test.mjs:35",
+            "code": 2339,
+            "text": "Property 'cost' does not exist on type 'MeterMsg'.   Property 'cost' does not exist on type '{ kind: \"refused\"; room: string; reason: string; }'.",
+            "kind": "(a) a comment disagrees with this module's tests"
+          },
+          {
+            "at": "meter/test/index.test.mjs:35",
+            "code": 2339,
+            "text": "Property 'cost' does not exist on type 'MeterMsg'.   Property 'cost' does not exist on type '{ kind: \"refused\"; room: string; reason: string; }'.",
+            "kind": "(a) a comment disagrees with this module's tests"
+          },
+          {
+            "at": "meter/test/index.test.mjs:36",
+            "code": 2339,
+            "text": "Property 'count' does not exist on type 'MeterMsg'.   Property 'count' does not exist on type '{ kind: \"reading\"; room: string; minutes: number; cost: Amount; }'.",
+            "kind": "(a) a comment disagrees with this module's tests"
+          }
+        ],
+        "refusalsBefore": [],
+        "ms": 215
+      },
+      "billing": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 171
+      },
+      "front": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 158
+      },
+      "reports": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 227
+      }
+    }
+  },
+  "groundTruth": {
+    "providerTests": {
+      "pass": true,
+      "failed": [],
+      "ran": 2
+    },
+    "testsBefore": {
+      "billing": true,
+      "front": true,
+      "reports": true
+    },
+    "testsAfter": {
+      "billing": {
+        "pass": true,
+        "failed": []
+      },
+      "front": {
+        "pass": true,
+        "failed": []
+      },
+      "reports": {
+        "pass": true,
+        "failed": []
+      }
+    },
+    "broken": []
+  },
+  "timing": {
+    "listingMs": {
+      "before": 166,
+      "after": 205
+    },
+    "noticeMs": 709,
+    "checkMs": {
+      "meter": 215,
+      "billing": 171,
+      "front": 158,
+      "reports": 227
+    }
+  }
+}

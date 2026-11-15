@@ -14,7 +14,7 @@ const S = (a) => [...new Set(a)].sort();
 const list = (a) => (a.length ? a.join(', ') : 'none');
 
 const rows = [];
-const sum = { changes: 0, matchesRules: 0, notices: 0, needed: 0, holes: [], caughtByGuard: [], unneeded: [], falseRefusalsJudged: 'see report', refusals: 0 };
+const sum = { changes: 0, matchesRules: 0, notices: 0, needed: 0, holes: [], caughtByGuard: [], unneeded: [], falseRefusals: 0, refusals: 0 };
 for (const id of ids) {
   const r = JSON.parse(fs.readFileSync(path.join(dir, `${id}.json`), 'utf8'));
   const e = expected[id], g = reading[id];
@@ -29,10 +29,13 @@ for (const id of ids) {
   sum.changes++; if (matches) sum.matchesRules++;
   sum.notices += told.length; sum.needed += needs.length;
   const holeUsers = S([...missed, ...brokenUntold]);
+  const falseRef = Object.entries(g.falseRefusals ?? {});
+  sum.falseRefusals += falseRef.reduce((n, [, k]) => n + k, 0);
   let verdict;
   if (holeUsers.length && g.guard) { verdict = `not told, stopped by another guard: ${g.guard}`; sum.caughtByGuard.push({ id, users: holeUsers, guard: g.guard }); }
   else if (holeUsers.length) { verdict = `HOLE: ${holeUsers.join(', ')} needed a change and was not told`; sum.holes.push({ id, users: holeUsers }); }
   else verdict = unneeded.length ? `held; ${unneeded.length} told for nothing` : 'held';
+  if (falseRef.length) verdict += `; FALSE REFUSAL of ${falseRef.map(([m, k]) => `${m} (${k} lines)`).join(', ')}`;
   for (const u of unneeded) sum.unneeded.push({ id, user: u });
   rows.push({ id, title: r.title, provider: r.provider, exp, told, matches, broken, needs, through, refusals, verdict, providerTests: r.groundTruth.providerTests.pass, firstCommentsStep: r.tool.firstCommentsStep, timing: r.timing });
 }
@@ -43,4 +46,4 @@ for (const x of rows) {
 fs.writeFileSync(path.join(ROOT, 'results', `${series}-table.md`), T.join('\n') + '\n');
 fs.writeFileSync(path.join(ROOT, 'results', `${series}-summary.json`), JSON.stringify({ ...sum, rows }, null, 2) + '\n');
 console.log(T.join('\n'));
-console.log(JSON.stringify({ changes: sum.changes, matchesRules: sum.matchesRules, notices: sum.notices, needed: sum.needed, holes: sum.holes, caughtByGuard: sum.caughtByGuard.map((c) => c.id), unneeded: sum.unneeded.length, refusals: sum.refusals }));
+console.log(JSON.stringify({ changes: sum.changes, matchesRules: sum.matchesRules, notices: sum.notices, needed: sum.needed, holes: sum.holes, caughtByGuard: sum.caughtByGuard.map((c) => c.id), unneeded: sum.unneeded.length, refusals: sum.refusals, falseRefusals: sum.falseRefusals, differsFromRules: rows.filter((r) => !r.matches).map((r) => r.id) }));

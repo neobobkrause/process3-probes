@@ -1,0 +1,113 @@
+{
+  "id": "A08-request-line-built-in-steps",
+  "title": "billing builds its request line in two steps; the code is right",
+  "provider": "billing",
+  "covers": [
+    "attack: make the check refuse honest code (a call by name the reader cannot read)"
+  ],
+  "tool": {
+    "firstCommentsStep": false,
+    "interfaceChanged": false,
+    "summary": "The listing before and after is the same. Nobody is told.",
+    "entries": [],
+    "told": [],
+    "toldDetail": [],
+    "notTold": [],
+    "warnings": [],
+    "commentsOnly": false,
+    "checks": {
+      "billing": {
+        "refusedBefore": 0,
+        "refusedAfter": 6,
+        "refusals": [
+          {
+            "at": "billing/src/index.mjs:45",
+            "code": 2345,
+            "text": "Argument of type 'string' is not assignable to parameter of type '`op=bookopen&${string}` | `op=bookcancel&${string}` | `op=bookstatus&${string}` | `op=bookquote&${string}` | `op=roomlist&${string}`'.",
+            "kind": "(b) code disagrees with the stated interface of door"
+          },
+          {
+            "at": "billing/src/index.mjs:46",
+            "code": 2339,
+            "text": "Property 'state' does not exist on type 'Booking | { state: \"open\" | \"cancelled\"; total: Amount; room: string; } | { total: Amount; } | { rooms: Room[]; }'.   Property 'state' does not exist on type '{ total: Amount; }'.",
+            "kind": "(a) a comment disagrees with this module's code"
+          },
+          {
+            "at": "billing/src/index.mjs:47",
+            "code": 2339,
+            "text": "Property 'total' does not exist on type 'Booking | { state: \"open\" | \"cancelled\"; total: Amount; room: string; } | { total: Amount; } | { rooms: Room[]; }'.   Property 'total' does not exist on type '{ rooms: Room[]; }'.",
+            "kind": "(b) code disagrees with the stated interface of money"
+          },
+          {
+            "at": "billing/src/index.mjs:50",
+            "code": 2339,
+            "text": "Property 'total' does not exist on type 'Booking | { state: \"open\" | \"cancelled\"; total: Amount; room: string; } | { total: Amount; } | { rooms: Room[]; }'.   Property 'total' does not exist on type '{ rooms: Room[]; }'.",
+            "kind": "(b) code disagrees with the stated interface of money"
+          },
+          {
+            "at": "billing/src/index.mjs:52",
+            "code": 2339,
+            "text": "Property 'room' does not exist on type 'Booking | { state: \"open\" | \"cancelled\"; total: Amount; room: string; } | { total: Amount; } | { rooms: Room[]; }'.   Property 'room' does not exist on type '{ total: Amount; }'.",
+            "kind": "(b) code disagrees with the stated interface of money"
+          },
+          {
+            "at": "billing/src/index.mjs:52",
+            "code": 2339,
+            "text": "Property 'total' does not exist on type 'Booking | { state: \"open\" | \"cancelled\"; total: Amount; room: string; } | { total: Amount; } | { rooms: Room[]; }'.   Property 'total' does not exist on type '{ rooms: Room[]; }'.",
+            "kind": "(b) code disagrees with the stated interface of money"
+          }
+        ],
+        "refusalsBefore": [],
+        "ms": 189
+      },
+      "front": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 165
+      },
+      "reports": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 170
+      }
+    }
+  },
+  "groundTruth": {
+    "providerTests": {
+      "pass": true,
+      "failed": [],
+      "ran": 5
+    },
+    "testsBefore": {
+      "front": true,
+      "reports": true
+    },
+    "testsAfter": {
+      "front": {
+        "pass": true,
+        "failed": []
+      },
+      "reports": {
+        "pass": true,
+        "failed": []
+      }
+    },
+    "broken": []
+  },
+  "timing": {
+    "listingMs": {
+      "before": 178,
+      "after": 158
+    },
+    "noticeMs": 616,
+    "checkMs": {
+      "billing": 189,
+      "front": 165,
+      "reports": 170
+    }
+  }
+}

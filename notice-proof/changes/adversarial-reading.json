@@ -1,0 +1,17 @@
+{
+  "about": "Ground truth by reading for the proof session's adversarial round, written by Claude AFTER the results were seen, independently of what the tool said. Fields as in planned-reading.json, plus 'falseRefusals': refusals judged not to be real disagreements (the code is right; the reader could not tell), with the count of refusal lines.",
+  "changes": {
+    "A01-stored-row-shape": { "needs": ["reports"], "note": "reports reads bookings' rows from the store as 'anything'. Nothing in any listing describes those rows, so no listing changes." },
+    "A03-reexported-function": { "needs": ["rooms", "front"], "note": "rooms' own test checks its ids against the old slug form (hyphens): it is right to be told, because the bound of the slug changed." },
+    "A04-message-kind-not-shared": { "needs": ["billing"], "note": "billing kept its own copy of the message kind. Nothing checks that both running parts use the one shared kind." },
+    "A06-error-kind-changed": { "needs": ["billing"], "note": "The listing has no place for the kinds of error a function raises (@throws is read as an explanation)." },
+    "A07-bound-test-moved-line-not": { "needs": ["front"], "note": "bookings' test named 'bound party: whole number, 1 to 200' now tests 100. Nothing compares a bound test with the bound line it is named for." },
+    "A08-request-line-built-in-steps": { "needs": [], "falseRefusals": { "billing": 6 }, "note": "One cause: the reader cannot read a request line built in two steps, so it calls the line plain text and then cannot type the answer; every later use of the answer is refused too. The code is right." },
+    "A09-assert-narrowing": { "needs": [], "falseRefusals": { "meter": 7 }, "note": "One cause: Node's assert has no description the reader can use, so it cannot see that assert.equal(a.kind, 'reading') rules out the other kinds. The test is right." },
+    "A10-kind-split-same-shape": { "needs": [], "note": "A defect of this tool, not of the method: when a kind is written as two kinds joined (&), the tool does not gather the bound lines of the parts, so every entry handing back a Booking appears to have lost its bounds." },
+    "A11-string-spelled-String": { "needs": [] },
+    "A12-caught-error-makes-user-unfollowed": { "needs": [], "note": "front's tests read e.message of a caught error. The tool counts that as reading a value of unknown kind and stops following front for every provider." },
+    "A13-computed-member-renamed": { "needs": ["rooms", "bookings"], "throughOnly": ["billing", "front", "reports"] },
+    "A14-copy-of-kind-in-the-middle": { "needs": ["bookings", "meter", "billing"], "throughOnly": ["front"], "note": "front fails only because bookings now passes on an Amount where its own comment promises a Price; bookings' check refuses exactly that line, so the cause is pointed at. front will be told when bookings' job changes Price." }
+  }
+}
