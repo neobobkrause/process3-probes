@@ -1,0 +1,8 @@
+{
+  "title": "titleCase is removed",
+  "provider": "text-rules",
+  "covers": [
+    "function removed",
+    "function imported by name"
+  ]
+}

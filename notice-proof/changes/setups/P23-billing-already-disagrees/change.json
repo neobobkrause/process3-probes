@@ -1,0 +1,7 @@
+{
+  "title": "Billing calls formatAmount with an extra argument its comment does not have",
+  "provider": "billing",
+  "covers": [
+    "a user that already disagrees with its provider (the standing state)"
+  ]
+}

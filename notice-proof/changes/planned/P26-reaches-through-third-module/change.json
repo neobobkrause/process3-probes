@@ -1,0 +1,7 @@
+{
+  "title": "Amount's field cents is renamed minor; front reads it only from what bookings passes on",
+  "provider": "money",
+  "covers": [
+    "change that reaches a user only through a third module that passes a value on"
+  ]
+}

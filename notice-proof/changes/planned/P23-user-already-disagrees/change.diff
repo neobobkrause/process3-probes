@@ -1,0 +1,38 @@
+--- before/money/src/index.mjs
++++ after/money/src/index.mjs
+@@ -59,7 +59,7 @@
+  * Splits an amount into equal parts that add up to it exactly; leftover cents go to the first parts.
+  * @param {Amount} a
+  * @param {number} parts
+- * @returns {Amount[]}
++ * @returns {{parts: Amount[], each: number}} the parts, and the smallest part in cents
+  * @bound parts: whole number, 1 to 100
+  * @throws {RangeError} when parts is outside its bound
+  */
+@@ -70,5 +70,5 @@
+   /** @type {Amount[]} builds Amounts */
+   const out = [];
+   for (let i = 0; i < parts; i++) out.push(amount(base + (i < extra ? 1 : 0), a.currency));
+-  return out;
++  return { parts: out, each: base };
+ }
+--- before/money/test/index.test.mjs
++++ after/money/test/index.test.mjs
+@@ -28,14 +28,14 @@
+ });
+ 
+ test('bound parts: whole number, 1 to 100', () => {
+-  assert.equal(splitEvenly(amount(100, 'EUR'), 1).length, 1);
+-  assert.equal(splitEvenly(amount(100, 'EUR'), 100).length, 100);
++  assert.equal(splitEvenly(amount(100, 'EUR'), 1).parts.length, 1);
++  assert.equal(splitEvenly(amount(100, 'EUR'), 100).parts.length, 100);
+   assert.throws(() => splitEvenly(amount(100, 'EUR'), 0), RangeError);
+   assert.throws(() => splitEvenly(amount(100, 'EUR'), 101), RangeError);
+ });
+ 
+ test('splitEvenly parts add up exactly and differ by at most one cent', () => {
+-  const parts = splitEvenly(amount(1001, 'GBP'), 3);
++  const { parts } = splitEvenly(amount(1001, 'GBP'), 3);
+   assert.equal(parts.reduce((s, p) => s + p.cents, 0), 1001);
+   const c = parts.map((p) => p.cents);
+   assert.ok(Math.max(...c) - Math.min(...c) <= 1);

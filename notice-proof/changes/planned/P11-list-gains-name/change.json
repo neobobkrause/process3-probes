@@ -1,0 +1,8 @@
+{
+  "title": "A new kind of room: garden",
+  "provider": "rooms",
+  "covers": [
+    "list gains a name",
+    "exported list that users read"
+  ]
+}

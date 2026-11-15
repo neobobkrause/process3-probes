@@ -1,0 +1,7 @@
+{
+  "title": "The meter's reading now carries price where it carried cost",
+  "provider": "meter",
+  "covers": [
+    "message's kind changed between two separately running parts"
+  ]
+}

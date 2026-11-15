@@ -1,0 +1,34 @@
+--- before/meter/src/index.mjs
++++ after/meter/src/index.mjs
+@@ -20,7 +20,7 @@
+ /**
+  * What the meter sends back: a reading for each use it was sent, in the same order, then done once its input ends.
+  * A use outside its bound gets a refusal in place of a reading.
+- * @typedef {{kind: 'reading', room: string, minutes: number, cost: Amount}
++ * @typedef {{kind: 'reading', room: string, minutes: number, price: Amount}
+  *   | {kind: 'refused', room: string, reason: string}
+  *   | {kind: 'done', count: number}} MeterMsg
+  */
+--- before/meter/src/worker.mjs
++++ after/meter/src/worker.mjs
+@@ -21,6 +21,6 @@
+     return;
+   }
+   count++;
+-  send({ kind: 'reading', room: input.room, minutes: input.minutes, cost: amount(input.minutes * RATE_CENTS_PER_MINUTE, 'EUR') });
++  send({ kind: 'reading', room: input.room, minutes: input.minutes, price: amount(input.minutes * RATE_CENTS_PER_MINUTE, 'EUR') });
+ });
+ lines.on('close', () => send({ kind: 'done', count }));
+--- before/meter/test/index.test.mjs
++++ after/meter/test/index.test.mjs
+@@ -29,8 +29,8 @@
+   const [a, b, done] = msgs;
+   if (a.kind !== 'reading' || b.kind !== 'reading' || done.kind !== 'done') return assert.fail('unexpected kinds');
+   assert.deepEqual([a.room, b.room], ['hall', 'studio']);
+-  assert.ok(a.cost.cents > b.cost.cents);
+-  assert.equal(a.cost.cents, b.cost.cents * 30);
++  assert.ok(a.price.cents > b.price.cents);
++  assert.equal(a.price.cents, b.price.cents * 30);
+   assert.equal(done.count, 2);
+ });
+ 

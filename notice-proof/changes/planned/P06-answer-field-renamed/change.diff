@@ -1,0 +1,38 @@
+--- before/rooms/src/index.mjs
++++ after/rooms/src/index.mjs
+@@ -15,8 +15,8 @@
+  * @property {string} id the room's slug, made from its name
+  * @property {string} name
+  * @property {RoomKind} kind
+- * @property {number} seats
+- * @bound seats: whole number, 1 to 500
++ * @property {number} capacity
++ * @bound capacity: whole number, 1 to 500
+  */
+ 
+ /**
+@@ -64,7 +64,7 @@
+       const id = slugify(input.name);
+       if (store.get('rooms', id)) throw new Error(`rooms: already taken: ${id}`);
+       /** @type {Room} builds a Room */
+-      const room = { id, name: input.name, kind: input.kind, seats: input.seats };
++      const room = { id, name: input.name, kind: input.kind, capacity: input.seats };
+       store.put('rooms', id, room);
+       return room;
+     },
+--- before/rooms/test/index.test.mjs
++++ after/rooms/test/index.test.mjs
+@@ -13,10 +13,10 @@
+   assert.equal(rooms.find('nowhere'), undefined);
+ });
+ 
+-test('bound seats: whole number, 1 to 500', () => {
++test('bound capacity: whole number, 1 to 500', () => {
+   const rooms = fresh();
+-  assert.equal(rooms.add({ name: 'One', kind: 'studio', seats: 1 }).seats, 1);
+-  assert.equal(rooms.add({ name: 'Many', kind: 'hall', seats: 500 }).seats, 500);
++  assert.equal(rooms.add({ name: 'One', kind: 'studio', seats: 1 }).capacity, 1);
++  assert.equal(rooms.add({ name: 'Many', kind: 'hall', seats: 500 }).capacity, 500);
+   assert.throws(() => rooms.add({ name: 'None', kind: 'hall', seats: 0 }), RangeError);
+   assert.throws(() => rooms.add({ name: 'Too', kind: 'hall', seats: 501 }), RangeError);
+   assert.throws(() => rooms.add({ name: 'Half', kind: 'hall', seats: 2.5 }), RangeError);

@@ -1,0 +1,7 @@
+{
+  "title": "An amount may now be at most 500,000 cents (code and bound line both changed)",
+  "provider": "money",
+  "covers": [
+    "bound line changed"
+  ]
+}

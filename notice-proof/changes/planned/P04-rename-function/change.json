@@ -1,0 +1,7 @@
+{
+  "title": "splitEvenly is renamed splitAmount",
+  "provider": "money",
+  "covers": [
+    "function renamed"
+  ]
+}

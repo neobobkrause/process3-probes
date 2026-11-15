@@ -1,0 +1,7 @@
+{
+  "title": "The store handle's get is renamed read",
+  "provider": "store",
+  "covers": [
+    "factory handle method renamed, the handle reaching users in a bag of dependencies"
+  ]
+}

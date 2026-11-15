@@ -1,0 +1,8 @@
+{
+  "title": "The bookcancel operation is retired (cancelling stays possible through the handle)",
+  "provider": "bookings",
+  "covers": [
+    "operation retired",
+    "operation called by name through the door"
+  ]
+}

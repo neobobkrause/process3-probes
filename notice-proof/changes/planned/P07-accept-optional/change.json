@@ -1,0 +1,7 @@
+{
+  "title": "Opening a booking accepts an optional arrival time",
+  "provider": "bookings",
+  "covers": [
+    "one more optional thing accepted"
+  ]
+}

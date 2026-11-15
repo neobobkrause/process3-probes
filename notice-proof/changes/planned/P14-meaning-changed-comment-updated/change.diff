@@ -1,0 +1,44 @@
+--- before/bookings/src/index.mjs
++++ after/bookings/src/index.mjs
+@@ -55,7 +55,7 @@
+  *   bookquote: {req: {room: string, party: number, nights: number}, res: {total: Amount}}
+  * }} BookingOps
+  * @optable
+- * @bound bookquote.total: what the whole stay costs, for the whole party and every night
++ * @bound bookquote.total: what one night costs, for the whole party
+  */
+ 
+ /**
+@@ -147,6 +147,6 @@
+       if (!b) throw new RangeError(`bookings: unknown booking: ${req.id}`);
+       return { state: b.state, total: b.total, room: b.room };
+     },
+-    bookquote: (req) => ({ total: bookings.quote(req.room, req.party, req.nights) }),
++    bookquote: (req) => ({ total: bookings.quote(req.room, req.party, 1) }),
+   };
+ }
+--- before/bookings/test/index.test.mjs
++++ after/bookings/test/index.test.mjs
+@@ -67,11 +67,11 @@
+   assert.throws(() => bookings.open(req({ room: 'attic' })), RangeError);
+ });
+ 
+-test('bound bookquote.total: what the whole stay costs, for the whole party and every night', () => {
++test('bound bookquote.total: what one night costs, for the whole party', () => {
+   const { bookings } = system();
+   const h = bookingHandlers(bookings);
+   const b = h.bookopen(req({ party: 4, nights: 3 }));
+-  assert.equal(h.bookquote({ room: 'hall', party: 4, nights: 3 }).total.cents, b.total.cents);
++  assert.equal(h.bookquote({ room: 'hall', party: 4, nights: 3 }).total.cents * 3, b.total.cents);
+ });
+ 
+ test('operations answer as the table says', () => {
+@@ -79,7 +79,7 @@
+   const h = bookingHandlers(bookings);
+   const b = h.bookopen(req());
+   assert.deepEqual(h.bookstatus({ id: b.id }), { state: 'open', total: b.total, room: 'hall' });
+-  assert.deepEqual(h.bookquote({ room: 'hall', party: 10, nights: 2 }).total, b.total);
++  assert.equal(h.bookquote({ room: 'hall', party: 10, nights: 2 }).total.cents * 2, b.total.cents);
+   assert.equal(h.bookcancel({ id: b.id }).state, 'cancelled');
+   assert.throws(() => h.bookstatus({ id: 'b-999' }), RangeError);
+ });

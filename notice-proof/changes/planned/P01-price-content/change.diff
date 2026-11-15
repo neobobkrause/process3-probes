@@ -1,0 +1,11 @@
+--- before/bookings/src/index.mjs
++++ after/bookings/src/index.mjs
+@@ -8,7 +8,7 @@
+ /** @import { Rooms } from '../../rooms/src/index.mjs' */
+ 
+ /** The price of one seat for one night, in euro cents. */
+-export const PRICE_PER_SEAT_NIGHT = 1500;
++export const PRICE_PER_SEAT_NIGHT = 1800;
+ 
+ /**
+  * A booking.

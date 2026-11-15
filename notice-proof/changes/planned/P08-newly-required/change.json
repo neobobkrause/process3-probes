@@ -1,0 +1,7 @@
+{
+  "title": "Opening a booking now requires a contact email",
+  "provider": "bookings",
+  "covers": [
+    "field newly required"
+  ]
+}

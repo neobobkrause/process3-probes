@@ -1,0 +1,7 @@
+{
+  "title": "The kind Amount is renamed Money; its shape is unchanged",
+  "provider": "money",
+  "covers": [
+    "kind renamed with its shape unchanged"
+  ]
+}

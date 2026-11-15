@@ -1,0 +1,11 @@
+--- before/billing/src/index.mjs
++++ after/billing/src/index.mjs
+@@ -47,7 +47,7 @@
+         booking: bookingId,
+         total: status.total,
+         instalments: parts,
+-        text: `Invoice for ${bookingId} (${status.room}): ${formatAmount(status.total)} in ${parts.length} payment(s)`,
++        text: `Invoice for ${bookingId} (${status.room}): ${formatAmount(status.total, 'long')} in ${parts.length} payment(s)`,
+       };
+     },
+     async estimate(room, party, nights) {

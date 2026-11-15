@@ -1,0 +1,7 @@
+{
+  "title": "slugify's explanation is reworded; no bound line changes",
+  "provider": "text-rules",
+  "covers": [
+    "explanation in a comment reworded"
+  ]
+}

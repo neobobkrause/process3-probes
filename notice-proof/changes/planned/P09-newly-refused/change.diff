@@ -1,0 +1,92 @@
+--- before/store/src/index.mjs
++++ after/store/src/index.mjs
+@@ -15,7 +15,7 @@
+ /**
+  * The store's handle.
+  * @typedef {Object} Store
+- * @property {(table: string, id: string, value: unknown) => Stored} put writes a record and hands back what is now held
++ * @property {(table: string, id: string, value: object) => Stored} put writes a record and hands back what is now held; the value must be an object
+  * @property {(table: string, id: string) => Stored | undefined} get
+  * @property {(table: string) => Stored[]} list all records of a table, in the order they were first written
+  * @property {(table: string, id: string) => boolean} remove says whether there was a record to remove
+@@ -56,6 +56,7 @@
+   return {
+     put(table, id, value) {
+       checkNames(table, id);
++      if (typeof value !== 'object' || value === null) throw new TypeError('store: a value must be an object');
+       const t = tableOf(table);
+       const old = t.get(id);
+       /** @type {Stored} builds a Stored */
+--- before/store/src/testing.mjs
++++ after/store/src/testing.mjs
+@@ -5,7 +5,7 @@
+ 
+ /**
+  * Makes a store already holding the given records, each written once.
+- * @param {Object<string, Array<{id: string, value: unknown}>>} tables the records to put, by table name
++ * @param {Object<string, Array<{id: string, value: object}>>} tables the records to put, by table name
+  * @returns {import('./index.mjs').Store}
+  */
+ export function seededStore(tables) {
+--- before/store/test/index.test.mjs
++++ after/store/test/index.test.mjs
+@@ -15,17 +15,17 @@
+ 
+ test('bound version: whole number, 1 or more', () => {
+   const s = createStore();
+-  const first = s.put('t', 'x', 1);
++  const first = s.put('t', 'x', { n: 1 });
+   assert.ok(Number.isInteger(first.version) && first.version >= 1);
+-  const second = s.put('t', 'x', 2);
++  const second = s.put('t', 'x', { n: 2 });
+   assert.ok(second.version > first.version);
+ });
+ 
+ test('bound table: 1 to 40 characters, each a-z, 0-9 or a hyphen', () => {
+   const s = createStore();
+-  s.put('a', '1', 0);
+-  s.put('a'.repeat(40), '1', 0);
+-  s.put('a-0', '1', 0);
++  s.put('a', '1', {});
++  s.put('a'.repeat(40), '1', {});
++  s.put('a-0', '1', {});
+   assert.throws(() => s.put('', '1', 0), RangeError);
+   assert.throws(() => s.put('a'.repeat(41), '1', 0), RangeError);
+   assert.throws(() => s.put('Big', '1', 0), RangeError);
+@@ -34,24 +34,29 @@
+ 
+ test('bound id: 1 to 120 characters', () => {
+   const s = createStore();
+-  s.put('t', 'x', 0);
+-  s.put('t', 'x'.repeat(120), 0);
++  s.put('t', 'x', {});
++  s.put('t', 'x'.repeat(120), {});
+   assert.throws(() => s.put('t', '', 0), RangeError);
+   assert.throws(() => s.get('t', 'x'.repeat(121)), RangeError);
+ });
+ 
++test('a value that is not an object is refused', () => {
++  const s = createStore();
++  assert.throws(() => s.put('t', 'x', /** @type {any} */ (5)), TypeError);
++});
++
+ test('list keeps first-written order; remove says whether a record was there', () => {
+   const s = createStore();
+-  s.put('t', 'b', 1);
+-  s.put('t', 'a', 2);
+-  s.put('t', 'b', 3);
++  s.put('t', 'b', { n: 1 });
++  s.put('t', 'a', { n: 2 });
++  s.put('t', 'b', { n: 3 });
+   assert.deepEqual(s.list('t').map((r) => r.id), ['b', 'a']);
+   assert.equal(s.remove('t', 'a'), true);
+   assert.equal(s.remove('t', 'a'), false);
+ });
+ 
+ test('seededStore holds the given records', () => {
+-  const s = seededStore({ t: [{ id: 'x', value: 5 }], u: [] });
+-  assert.equal(s.get('t', 'x')?.value, 5);
++  const s = seededStore({ t: [{ id: 'x', value: { n: 5 } }], u: [] });
++  assert.deepEqual(s.get('t', 'x')?.value, { n: 5 });
+   assert.deepEqual(s.list('u'), []);
+ });

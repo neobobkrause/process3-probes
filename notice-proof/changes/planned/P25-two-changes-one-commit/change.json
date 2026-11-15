@@ -1,0 +1,7 @@
+{
+  "title": "rooms: adding a room accepts an optional floor, and roomlist's answer renames rooms to items",
+  "provider": "rooms",
+  "covers": [
+    "two different changes in one commit"
+  ]
+}

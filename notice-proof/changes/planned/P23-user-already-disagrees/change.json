@@ -1,0 +1,10 @@
+{
+  "title": "splitEvenly now hands back {parts, each}; billing already disagreed with money before this",
+  "provider": "money",
+  "covers": [
+    "a user that already disagrees with its provider's stated interface"
+  ],
+  "before": [
+    "setups/P23-billing-already-disagrees"
+  ]
+}

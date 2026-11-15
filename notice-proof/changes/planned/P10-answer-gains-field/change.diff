@@ -1,0 +1,28 @@
+--- before/bookings/src/index.mjs
++++ after/bookings/src/index.mjs
+@@ -21,6 +21,7 @@
+  * @property {number} party how many people
+  * @property {'open' | 'cancelled'} state
+  * @property {Amount} total what the booking costs
++ * @property {string} created when the booking was opened, as an ISO date and time
+  * @property {string} [note]
+  * @bound day: a real calendar day written YYYY-MM-DD
+  * @bound nights: whole number, 1 to 14
+@@ -116,6 +117,7 @@
+         party: req.party,
+         state: 'open',
+         total,
++        created: new Date().toISOString(),
+       };
+       if (req.note !== undefined) b.note = req.note;
+       store.put('bookings', b.id, b);
+--- before/bookings/test/index.test.mjs
++++ after/bookings/test/index.test.mjs
+@@ -21,6 +21,7 @@
+   assert.equal(b.state, 'open');
+   assert.equal(b.until, '2026-12-03');
+   assert.equal(b.note, 'choir');
++  assert.ok(!Number.isNaN(Date.parse(b.created)));
+   assert.deepEqual(bookings.find(b.id), b);
+ });
+ 

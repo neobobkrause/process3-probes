@@ -1,0 +1,9 @@
+{
+  "title": "A party may now be at most 100 in the code; bound line and tests left as they were",
+  "provider": "bookings",
+  "covers": [
+    "code changed and comment forgotten, where only running code enforces it",
+    "bound enforced only by running code"
+  ],
+  "note": "The job changed one number in the code and nothing else. Its own test named for the party bound is left as it was."
+}

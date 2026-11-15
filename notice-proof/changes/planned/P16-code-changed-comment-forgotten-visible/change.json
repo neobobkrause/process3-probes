@@ -1,0 +1,8 @@
+{
+  "title": "isEmail now hands back {ok, reason}; its comment still says boolean",
+  "provider": "text-rules",
+  "covers": [
+    "code changed and comment forgotten, where the tool can see it"
+  ],
+  "note": "The job changed its code and its own tests, and forgot the @returns comment."
+}

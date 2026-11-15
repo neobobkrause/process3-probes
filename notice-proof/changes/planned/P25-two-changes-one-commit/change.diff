@@ -1,0 +1,46 @@
+--- before/rooms/src/index.mjs
++++ after/rooms/src/index.mjs
+@@ -25,6 +25,7 @@
+  * @property {string} name
+  * @property {RoomKind} kind
+  * @property {number} seats
++ * @property {number} [floor] which floor the room is on; checked, not kept
+  */
+ 
+ /**
+@@ -38,7 +39,7 @@
+ /**
+  * The operations rooms answers by name through the door.
+  * @typedef {{
+- *   roomlist: {req: {kind?: RoomKind}, res: {rooms: Room[]}}
++ *   roomlist: {req: {kind?: RoomKind}, res: {items: Room[]}}
+  * }} RoomOps
+  * @optable
+  */
+@@ -58,6 +59,7 @@
+   return {
+     add(input) {
+       if (!ROOM_KINDS.includes(input.kind)) throw new RangeError(`rooms: unknown kind: ${input.kind}`);
++      if (input.floor !== undefined && !Number.isInteger(input.floor)) throw new RangeError('rooms: floor must be whole');
+       if (!Number.isInteger(input.seats) || input.seats < 1 || input.seats > 500) {
+         throw new RangeError('rooms: seats out of bounds');
+       }
+@@ -89,6 +91,6 @@
+  */
+ export function roomHandlers(rooms) {
+   return {
+-    roomlist: (req) => ({ rooms: rooms.list(req.kind) }),
++    roomlist: (req) => ({ items: rooms.list(req.kind) }),
+   };
+ }
+--- before/rooms/test/index.test.mjs
++++ after/rooms/test/index.test.mjs
+@@ -44,6 +44,6 @@
+   rooms.add({ name: 'Kitchen', kind: 'kitchen', seats: 8 });
+   rooms.add({ name: 'Hall', kind: 'hall', seats: 80 });
+   const h = roomHandlers(rooms);
+-  assert.deepEqual(h.roomlist({ kind: 'kitchen' }).rooms.map((r) => r.kind), ['kitchen']);
+-  assert.equal(h.roomlist({}).rooms.length, 2);
++  assert.deepEqual(h.roomlist({ kind: 'kitchen' }).items.map((r) => r.kind), ['kitchen']);
++  assert.equal(h.roomlist({}).items.length, 2);
+ });

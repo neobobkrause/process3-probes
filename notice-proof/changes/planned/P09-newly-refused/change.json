@@ -1,0 +1,8 @@
+{
+  "title": "The store refuses a value that is not an object",
+  "provider": "store",
+  "covers": [
+    "value newly refused",
+    "test helper published by a provider"
+  ]
+}

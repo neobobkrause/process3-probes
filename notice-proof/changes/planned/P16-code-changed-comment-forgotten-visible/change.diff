@@ -1,0 +1,30 @@
+--- before/text-rules/src/index.mjs
++++ after/text-rules/src/index.mjs
+@@ -33,7 +33,9 @@
+  * @returns {boolean}
+  */
+ export function isEmail(text) {
+-  return typeof text === 'string' && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(text);
++  if (typeof text !== 'string' || text === '') return { ok: false, reason: 'empty' };
++  if (/\s/.test(text)) return { ok: false, reason: 'has spaces' };
++  return /^[^@]+@[^@]+\.[^@]+$/.test(text) ? { ok: true } : { ok: false, reason: 'not name@place.domain' };
+ }
+ 
+ /**
+--- before/text-rules/test/index.test.mjs
++++ after/text-rules/test/index.test.mjs
+@@ -22,10 +22,10 @@
+ });
+ 
+ test('isEmail recognises addresses and refuses others', () => {
+-  assert.equal(isEmail('ann@example.org'), true);
+-  assert.equal(isEmail('ann@example'), false);
+-  assert.equal(isEmail('ann example@x.org'), false);
+-  assert.equal(isEmail(''), false);
++  assert.equal(isEmail('ann@example.org').ok, true);
++  assert.equal(isEmail('ann@example').ok, false);
++  assert.equal(isEmail('ann example@x.org').ok, false);
++  assert.equal(isEmail('').ok, false);
+ });
+ 
+ test('titleCase upper-cases the first letter of each word', () => {

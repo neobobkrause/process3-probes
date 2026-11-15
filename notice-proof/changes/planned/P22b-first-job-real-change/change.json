@@ -1,0 +1,10 @@
+{
+  "title": "calendar's first job, step two: addDays refuses a number of days that is not whole",
+  "provider": "calendar",
+  "covers": [
+    "the first job on the module without comments: the real change"
+  ],
+  "before": [
+    "P22a-first-job-comments-step"
+  ]
+}

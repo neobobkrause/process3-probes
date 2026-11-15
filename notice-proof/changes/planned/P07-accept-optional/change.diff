@@ -1,0 +1,35 @@
+--- before/bookings/src/index.mjs
++++ after/bookings/src/index.mjs
+@@ -35,6 +35,7 @@
+  * @property {number} nights
+  * @property {number} party
+  * @property {string} [note]
++ * @property {'morning' | 'afternoon' | 'evening'} [arrival] when the party expects to arrive; checked, not kept
+  */
+ 
+ /**
+@@ -105,6 +106,9 @@
+     find,
+     open(req) {
+       const first = parseDay(req.day);
++      if (req.arrival !== undefined && !['morning', 'afternoon', 'evening'].includes(req.arrival)) {
++        throw new RangeError('bookings: unknown arrival');
++      }
+       const total = quote(req.room, req.party, req.nights);
+       /** @type {Booking} builds a Booking */
+       const b = {
+--- before/bookings/test/index.test.mjs
++++ after/bookings/test/index.test.mjs
+@@ -43,6 +43,12 @@
+   assert.throws(() => bookings.open(req({ room: 'studio', party: 13 })), RangeError);
+ });
+ 
++test('an arrival time is accepted and checked', () => {
++  const { bookings } = system();
++  assert.equal(bookings.open(req({ arrival: 'evening' })).state, 'open');
++  assert.throws(() => bookings.open(req({ arrival: /** @type {any} */ ('midnight') })), RangeError);
++});
++
+ test('bound nights: whole number, 1 to 14', () => {
+   const { bookings } = system();
+   assert.equal(bookings.open(req({ nights: 1 })).nights, 1);

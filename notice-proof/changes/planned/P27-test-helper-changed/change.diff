@@ -1,0 +1,32 @@
+--- before/store/src/testing.mjs
++++ after/store/src/testing.mjs
+@@ -4,14 +4,12 @@
+ import { createStore } from './index.mjs';
+ 
+ /**
+- * Makes a store already holding the given records, each written once.
+- * @param {Object<string, Array<{id: string, value: unknown}>>} tables the records to put, by table name
++ * Makes a store already holding the given records, each written once, in the order given.
++ * @param {Array<{table: string, id: string, value: unknown}>} rows the records to put
+  * @returns {import('./index.mjs').Store}
+  */
+-export function seededStore(tables) {
++export function seededStore(rows) {
+   const store = createStore();
+-  for (const [table, rows] of Object.entries(tables)) {
+-    for (const row of rows) store.put(table, row.id, row.value);
+-  }
++  for (const row of rows) store.put(row.table, row.id, row.value);
+   return store;
+ }
+--- before/store/test/index.test.mjs
++++ after/store/test/index.test.mjs
+@@ -51,7 +51,7 @@
+ });
+ 
+ test('seededStore holds the given records', () => {
+-  const s = seededStore({ t: [{ id: 'x', value: 5 }], u: [] });
++  const s = seededStore([{ table: 't', id: 'x', value: 5 }]);
+   assert.equal(s.get('t', 'x')?.value, 5);
+   assert.deepEqual(s.list('u'), []);
+ });

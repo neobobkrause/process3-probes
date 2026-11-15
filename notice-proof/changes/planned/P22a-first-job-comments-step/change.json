@@ -1,0 +1,8 @@
+{
+  "title": "calendar's first job, step one: interface comments added, describing the module as it stands",
+  "provider": "calendar",
+  "covers": [
+    "the first job on the module without comments: the comments-only step",
+    "module that starts with no interface comments"
+  ]
+}

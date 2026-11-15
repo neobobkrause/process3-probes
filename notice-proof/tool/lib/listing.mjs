@@ -24,12 +24,13 @@ export function makeLister(program, tree) {
   const checker = program.getTypeChecker();
   const C = makeCanon(checker, tree);
 
-  /** The bound lines of every kind of plain data written out inside an entry, each prefixed by its kind's name. */
+  /**
+   * The bound lines of every kind of plain data written out inside an entry. Decided: they are listed as written,
+   * without the kind's name, so that renaming a kind does not look like a changed bound.
+   */
   function nestedBounds(kctx) {
     const out = [];
-    for (const [key, decl] of [...kctx.kinds.entries()].sort()) {
-      for (const tag of tagsOf(decl, 'bound')) out.push(`${key.split('.').slice(1).join('.')}: ${tagText(tag)}`);
-    }
+    for (const [, decl] of [...kctx.kinds.entries()].sort()) for (const tag of tagsOf(decl, 'bound')) out.push(tagText(tag));
     return out;
   }
 

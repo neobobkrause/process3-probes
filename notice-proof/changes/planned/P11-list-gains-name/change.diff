@@ -1,0 +1,11 @@
+--- before/rooms/src/index.mjs
++++ after/rooms/src/index.mjs
+@@ -5,7 +5,7 @@
+ /** @import { Store } from '../../store/src/index.mjs' */
+ 
+ /** The kinds of room there are. */
+-export const ROOM_KINDS = Object.freeze(/** @type {const} */ (['hall', 'studio', 'kitchen']));
++export const ROOM_KINDS = Object.freeze(/** @type {const} */ (['hall', 'studio', 'kitchen', 'garden']));
+ 
+ /** @typedef {typeof ROOM_KINDS[number]} RoomKind */
+ 

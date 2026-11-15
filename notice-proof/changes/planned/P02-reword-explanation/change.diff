@@ -1,0 +1,13 @@
+--- before/text-rules/src/index.mjs
++++ after/text-rules/src/index.mjs
+@@ -5,8 +5,8 @@
+ const SLUG_MAX = 80;
+ 
+ /**
+- * Turns a name into a slug: lower-case letters and digits joined by single hyphens.
+- * Accents are dropped, and anything that is not a letter or a digit separates words.
++ * Makes a slug out of a name. Letters lose their accents and become lower case; each run of
++ * other characters becomes a single hyphen, and hyphens at either end are dropped.
+  * @param {string} text the name to turn into a slug
+  * @returns {string} the slug
+  * @bound text: 1 to 80 characters, with at least one letter or digit

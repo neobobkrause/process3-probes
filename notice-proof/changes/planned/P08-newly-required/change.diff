@@ -1,0 +1,46 @@
+--- before/bookings/src/index.mjs
++++ after/bookings/src/index.mjs
+@@ -34,7 +34,9 @@
+  * @property {string} day
+  * @property {number} nights
+  * @property {number} party
++ * @property {string} contact an email address to reach the party
+  * @property {string} [note]
++ * @bound contact: an email address, something@something.something
+  */
+ 
+ /**
+@@ -104,6 +106,9 @@
+     quote,
+     find,
+     open(req) {
++      if (typeof req.contact !== 'string' || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(req.contact)) {
++        throw new RangeError('bookings: a contact email is needed');
++      }
+       const first = parseDay(req.day);
+       const total = quote(req.room, req.party, req.nights);
+       /** @type {Booking} builds a Booking */
+--- before/bookings/test/index.test.mjs
++++ after/bookings/test/index.test.mjs
+@@ -12,7 +12,7 @@
+   return { store, rooms, bookings: createBookings({ store, rooms }) };
+ }
+ const req = (/** @type {Partial<import('../src/index.mjs').BookingRequest>} */ over = {}) => ({
+-  room: 'hall', day: '2026-12-01', nights: 2, party: 10, ...over,
++  room: 'hall', day: '2026-12-01', nights: 2, party: 10, contact: 'desk@example.org', ...over,
+ });
+ 
+ test('open hands back an open booking that find returns', () => {
+@@ -43,6 +43,12 @@
+   assert.throws(() => bookings.open(req({ room: 'studio', party: 13 })), RangeError);
+ });
+ 
++test('bound contact: an email address, something@something.something', () => {
++  const { bookings } = system();
++  assert.equal(bookings.open(req({ contact: 'a@b.cd' })).state, 'open');
++  assert.throws(() => bookings.open(req({ contact: 'nobody' })), RangeError);
++});
++
+ test('bound nights: whole number, 1 to 14', () => {
+   const { bookings } = system();
+   assert.equal(bookings.open(req({ nights: 1 })).nights, 1);

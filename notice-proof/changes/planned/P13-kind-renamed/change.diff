@@ -1,0 +1,71 @@
+--- before/money/src/index.mjs
++++ after/money/src/index.mjs
+@@ -9,7 +9,7 @@
+ 
+ /**
+  * An amount of money.
+- * @typedef {Object} Amount
++ * @typedef {Object} Money
+  * @property {number} cents the amount in whole cents
+  * @property {Currency} currency
+  * @bound cents: whole number, 0 to 10,000,000 inclusive
+@@ -21,7 +21,7 @@
+  * Makes an amount, refusing one outside its bound.
+  * @param {number} cents
+  * @param {Currency} currency
+- * @returns {Amount}
++ * @returns {Money}
+  * @throws {RangeError} when cents is outside its bound or the currency is not one of CURRENCIES
+  */
+ export function amount(cents, currency) {
+@@ -29,16 +29,16 @@
+     throw new RangeError(`amount: cents out of bounds: ${cents}`);
+   }
+   if (!CURRENCIES.includes(currency)) throw new RangeError(`amount: unknown currency: ${currency}`);
+-  /** @type {Amount} builds an Amount */
++  /** @type {Money} builds an Money */
+   const out = { cents, currency };
+   return out;
+ }
+ 
+ /**
+  * Adds two amounts of the same currency.
+- * @param {Amount} a
+- * @param {Amount} b
+- * @returns {Amount}
++ * @param {Money} a
++ * @param {Money} b
++ * @returns {Money}
+  * @throws {RangeError} when the currencies differ or the sum is outside the bound of cents
+  */
+ export function add(a, b) {
+@@ -48,7 +48,7 @@
+ 
+ /**
+  * Writes an amount for people to read.
+- * @param {Amount} a
++ * @param {Money} a
+  * @returns {string}
+  */
+ export function formatAmount(a) {
+@@ -57,9 +57,9 @@
+ 
+ /**
+  * Splits an amount into equal parts that add up to it exactly; leftover cents go to the first parts.
+- * @param {Amount} a
++ * @param {Money} a
+  * @param {number} parts
+- * @returns {Amount[]}
++ * @returns {Money[]}
+  * @bound parts: whole number, 1 to 100
+  * @throws {RangeError} when parts is outside its bound
+  */
+@@ -67,7 +67,7 @@
+   if (!Number.isInteger(parts) || parts < 1 || parts > 100) throw new RangeError('splitEvenly: parts out of bounds');
+   const base = Math.floor(a.cents / parts);
+   const extra = a.cents - base * parts;
+-  /** @type {Amount[]} builds Amounts */
++  /** @type {Money[]} builds Amounts */
+   const out = [];
+   for (let i = 0; i < parts; i++) out.push(amount(base + (i < extra ? 1 : 0), a.currency));
+   return out;

@@ -1,0 +1,11 @@
+--- before/bookings/src/index.mjs
++++ after/bookings/src/index.mjs
+@@ -70,7 +70,7 @@
+  * @param {number} seats
+  */
+ function checkSize(party, nights, seats) {
+-  if (!Number.isInteger(party) || party < 1 || party > 200 || party > seats) {
++  if (!Number.isInteger(party) || party < 1 || party > 100 || party > seats) {
+     throw new RangeError('bookings: party out of bounds');
+   }
+   if (!Number.isInteger(nights) || nights < 1 || nights > 14) throw new RangeError('bookings: nights out of bounds');

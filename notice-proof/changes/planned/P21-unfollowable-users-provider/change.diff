@@ -1,0 +1,38 @@
+--- before/store/src/index.mjs
++++ after/store/src/index.mjs
+@@ -19,6 +19,7 @@
+  * @property {(table: string, id: string) => Stored | undefined} get
+  * @property {(table: string) => Stored[]} list all records of a table, in the order they were first written
+  * @property {(table: string, id: string) => boolean} remove says whether there was a record to remove
++ * @property {(table: string) => number} count how many records a table holds
+  * @bound table: 1 to 40 characters, each a-z, 0-9 or a hyphen
+  * @bound id: 1 to 120 characters
+  */
+@@ -76,5 +77,9 @@
+       checkNames(table, id);
+       return tableOf(table).delete(id);
+     },
++    count(table) {
++      checkNames(table);
++      return tableOf(table).size;
++    },
+   };
+ }
+--- before/store/test/index.test.mjs
++++ after/store/test/index.test.mjs
+@@ -50,6 +50,15 @@
+   assert.equal(s.remove('t', 'a'), false);
+ });
+ 
++test('count says how many records a table holds', () => {
++  const s = createStore();
++  assert.equal(s.count('t'), 0);
++  s.put('t', 'a', 1);
++  s.put('t', 'a', 2);
++  s.put('t', 'b', 3);
++  assert.equal(s.count('t'), 2);
++});
++
+ test('seededStore holds the given records', () => {
+   const s = seededStore({ t: [{ id: 'x', value: 5 }], u: [] });
+   assert.equal(s.get('t', 'x')?.value, 5);

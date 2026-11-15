@@ -1,0 +1,31 @@
+--- before/bookings/src/index.mjs
++++ after/bookings/src/index.mjs
+@@ -51,7 +51,7 @@
+  * @typedef {{
+  *   bookopen: {req: BookingRequest, res: Booking},
+  *   bookcancel: {req: {id: string}, res: Booking},
+- *   bookstatus: {req: {id: string}, res: {state: Booking['state'], total: Amount, room: string}},
++ *   bookstatus: {req: {id: string}, res: {state: Booking['state'], total: Amount}},
+  *   bookquote: {req: {room: string, party: number, nights: number}, res: {total: Amount}}
+  * }} BookingOps
+  * @optable
+@@ -145,7 +145,7 @@
+     bookstatus: (req) => {
+       const b = bookings.find(req.id);
+       if (!b) throw new RangeError(`bookings: unknown booking: ${req.id}`);
+-      return { state: b.state, total: b.total, room: b.room };
++      return { state: b.state, total: b.total };
+     },
+     bookquote: (req) => ({ total: bookings.quote(req.room, req.party, req.nights) }),
+   };
+--- before/bookings/test/index.test.mjs
++++ after/bookings/test/index.test.mjs
+@@ -78,7 +78,7 @@
+   const { bookings } = system();
+   const h = bookingHandlers(bookings);
+   const b = h.bookopen(req());
+-  assert.deepEqual(h.bookstatus({ id: b.id }), { state: 'open', total: b.total, room: 'hall' });
++  assert.deepEqual(h.bookstatus({ id: b.id }), { state: 'open', total: b.total });
+   assert.deepEqual(h.bookquote({ room: 'hall', party: 10, nights: 2 }).total, b.total);
+   assert.equal(h.bookcancel({ id: b.id }).state, 'cancelled');
+   assert.throws(() => h.bookstatus({ id: 'b-999' }), RangeError);

@@ -1,0 +1,8 @@
+{
+  "title": "bookstatus no longer hands back the room",
+  "provider": "bookings",
+  "covers": [
+    "field of an answer removed",
+    "operation called by name in a request line"
+  ]
+}

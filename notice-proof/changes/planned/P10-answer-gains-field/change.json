@@ -1,0 +1,7 @@
+{
+  "title": "A booking now also says when it was opened",
+  "provider": "bookings",
+  "covers": [
+    "answer gains a field"
+  ]
+}

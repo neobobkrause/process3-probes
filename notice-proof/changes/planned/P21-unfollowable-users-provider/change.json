@@ -1,0 +1,8 @@
+{
+  "title": "The store gains a count method",
+  "provider": "store",
+  "covers": [
+    "any change to the provider of the user that cannot be followed",
+    "new entry added"
+  ]
+}

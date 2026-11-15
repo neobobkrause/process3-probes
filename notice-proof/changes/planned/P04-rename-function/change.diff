@@ -1,0 +1,44 @@
+--- before/money/src/index.mjs
++++ after/money/src/index.mjs
+@@ -63,8 +63,8 @@
+  * @bound parts: whole number, 1 to 100
+  * @throws {RangeError} when parts is outside its bound
+  */
+-export function splitEvenly(a, parts) {
+-  if (!Number.isInteger(parts) || parts < 1 || parts > 100) throw new RangeError('splitEvenly: parts out of bounds');
++export function splitAmount(a, parts) {
++  if (!Number.isInteger(parts) || parts < 1 || parts > 100) throw new RangeError('splitAmount: parts out of bounds');
+   const base = Math.floor(a.cents / parts);
+   const extra = a.cents - base * parts;
+   /** @type {Amount[]} builds Amounts */
+--- before/money/test/index.test.mjs
++++ after/money/test/index.test.mjs
+@@ -1,6 +1,6 @@
+ import { test } from 'node:test';
+ import assert from 'node:assert/strict';
+-import { amount, add, formatAmount, splitEvenly, CURRENCIES } from '../src/index.mjs';
++import { amount, add, formatAmount, splitAmount, CURRENCIES } from '../src/index.mjs';
+ 
+ test('bound cents: whole number, 0 to 10,000,000 inclusive', () => {
+   assert.equal(amount(0, 'EUR').cents, 0);
+@@ -28,14 +28,14 @@
+ });
+ 
+ test('bound parts: whole number, 1 to 100', () => {
+-  assert.equal(splitEvenly(amount(100, 'EUR'), 1).length, 1);
+-  assert.equal(splitEvenly(amount(100, 'EUR'), 100).length, 100);
+-  assert.throws(() => splitEvenly(amount(100, 'EUR'), 0), RangeError);
+-  assert.throws(() => splitEvenly(amount(100, 'EUR'), 101), RangeError);
++  assert.equal(splitAmount(amount(100, 'EUR'), 1).length, 1);
++  assert.equal(splitAmount(amount(100, 'EUR'), 100).length, 100);
++  assert.throws(() => splitAmount(amount(100, 'EUR'), 0), RangeError);
++  assert.throws(() => splitAmount(amount(100, 'EUR'), 101), RangeError);
+ });
+ 
+-test('splitEvenly parts add up exactly and differ by at most one cent', () => {
+-  const parts = splitEvenly(amount(1001, 'GBP'), 3);
++test('splitAmount parts add up exactly and differ by at most one cent', () => {
++  const parts = splitAmount(amount(1001, 'GBP'), 3);
+   assert.equal(parts.reduce((s, p) => s + p.cents, 0), 1001);
+   const c = parts.map((p) => p.cents);
+   assert.ok(Math.max(...c) - Math.min(...c) <= 1);

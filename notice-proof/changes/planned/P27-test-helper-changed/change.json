@@ -1,0 +1,7 @@
+{
+  "title": "The store's test helper seededStore now takes a list of rows, each naming its table",
+  "provider": "store",
+  "covers": [
+    "test helper that a provider publishes and a user's tests import"
+  ]
+}
