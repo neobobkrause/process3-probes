@@ -1,0 +1,156 @@
+{
+ "about": "Expected answers under iteration 6 of the design (notes/iteration-6-design.md), written by Claude (the proof session) BEFORE any change was run on iteration 6. The writer had seen every earlier result; the next fresh adversarial round is the blind test. Where a change's answer is unchanged from iteration 5 it is copied.",
+ "changes": {
+  "V01-accepts-more-hides-static": {
+   "told": [
+    "billing"
+   ],
+   "why": "Rule 27: Tally.sum is an entry of its own; its change tells billing whatever the constructor does.",
+   "brokenPredicted": [
+    "billing"
+   ],
+   "wrongWithoutFailingTest": [],
+   "refuses": [
+    "billing"
+   ]
+  },
+  "V02-bound-values-in-mapped-list": {
+   "told": [
+    "billing"
+   ],
+   "why": "Rule 32: the list a check runs over counts: the minutes bound counts as changed; billing uses MeterInput.",
+   "brokenPredicted": [],
+   "wrongWithoutFailingTest": [],
+   "refuses": []
+  },
+  "V03-refusals-through-console-error": {
+   "told": [],
+   "why": "Rule 30: console.error writes MeterMsg to stderr: meter's own check refuses.",
+   "brokenPredicted": [
+    "billing"
+   ],
+   "wrongWithoutFailingTest": [],
+   "refuses": [
+    "meter"
+   ],
+   "guard": "meter's own check (rule 30)"
+  },
+  "V04-instance-built-in-a-conditional": {
+   "told": [],
+   "why": "Rule 31: money's own check refuses the class instance in a branch.",
+   "brokenPredicted": [
+    "billing",
+    "bookings",
+    "front",
+    "meter"
+   ],
+   "wrongWithoutFailingTest": [],
+   "refuses": [
+    "money"
+   ],
+   "guard": "money's own check (rule 31)"
+  },
+  "V05-error-kind-in-bound-test": {
+   "told": [
+    "billing"
+   ],
+   "why": "Rule 32: the error kind named in the bound test changed: billing told; rule 29: money throws a kind its comment does not state: money's own check refuses.",
+   "brokenPredicted": [
+    "billing"
+   ],
+   "wrongWithoutFailingTest": [],
+   "refuses": [
+    "money"
+   ],
+   "guard": "money's own check (rule 29)"
+  },
+  "V06-non-interface-file-renamed": {
+   "told": [],
+   "why": "Rule 28: front's set-up imports a file of bookings that is not an interface file: front's check refuses it, before and after, so that state could not have been merged.",
+   "brokenPredicted": [
+    "front"
+   ],
+   "wrongWithoutFailingTest": [],
+   "refuses": [
+    "front"
+   ],
+   "guard": "front's own check refuses the set-up (rule 28)",
+   "refusesBefore": [
+    "front"
+   ]
+  },
+  "V07-write-with-callback": {
+   "told": [],
+   "why": "No refusal: write's callback is described, and only the data is checked.",
+   "brokenPredicted": [],
+   "wrongWithoutFailingTest": [],
+   "refuses": []
+  },
+  "V08-limit-read-from-json": {
+   "told": [],
+   "why": "No refusal: the reader reads JSON modules.",
+   "brokenPredicted": [],
+   "wrongWithoutFailingTest": [],
+   "refuses": []
+  },
+  "V09-pop-after-length-check": {
+   "told": [
+    "reports"
+   ],
+   "why": "A new entry; pop() is 'cannot tell'; reports not followed.",
+   "brokenPredicted": [],
+   "wrongWithoutFailingTest": [],
+   "refuses": []
+  },
+  "V10-checked-cast-to-kind": {
+   "told": [
+    "reports"
+   ],
+   "why": "A new entry; reports not followed.",
+   "brokenPredicted": [],
+   "wrongWithoutFailingTest": [],
+   "refuses": []
+  },
+  "V11-door-copy-in-two-steps": {
+   "told": [
+    "billing",
+    "front"
+   ],
+   "why": "Door states new errors (told rightly); the copy in two steps is not a message: no refusal.",
+   "brokenPredicted": [],
+   "wrongWithoutFailingTest": [],
+   "refuses": []
+  },
+  "V12-destructured-parameter": {
+   "told": [],
+   "why": "Parameter names and shapes are left out of the printed declaration.",
+   "brokenPredicted": [],
+   "wrongWithoutFailingTest": [],
+   "refuses": []
+  },
+  "V13-states-named": {
+   "told": [
+    "reports"
+   ],
+   "why": "A new entry (BookingState); Booking's printed declaration is the same with the named union written out; reports not followed.",
+   "brokenPredicted": [],
+   "wrongWithoutFailingTest": [],
+   "refuses": []
+  },
+  "V14-overload-added": {
+   "told": [],
+   "why": "Rule 33: an added overload that keeps the old one only accepts more.",
+   "brokenPredicted": [],
+   "wrongWithoutFailingTest": [],
+   "refuses": []
+  },
+  "V15-bound-test-through-helper": {
+   "told": [],
+   "why": "Rule 32: values handed to the helper's parameters are followed: same pairs.",
+   "brokenPredicted": [],
+   "wrongWithoutFailingTest": [],
+   "refuses": []
+  }
+ },
+ "notes": []
+}

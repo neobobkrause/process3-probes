@@ -1,0 +1,211 @@
+{
+ "about": "Expected answers under iteration 6 of the design (notes/iteration-6-design.md), written by Claude (the proof session) BEFORE any change was run on iteration 6. The writer had seen every earlier result; the next fresh adversarial round is the blind test. Where a change's answer is unchanged from iteration 5 it is copied. The round-6 answers were first written by the independent adversary against iteration 5 (changes/iter5/round6-independent-expected.json); they are copied here, changed only where iteration 6's rules change them.",
+ "notes": [
+  "W01: under rule 34 (iteration 6) the start argument must be read into a kind published with @message argv; the change reads process.argv without one, so meter's own check must refuse it, and the change is stopped there. No entry changes, so by the listing no one is told; the rules' answer is a refusal, as for W02. Under iteration 5 the answer was 'billing told'.",
+  "W02 is stopped by rule 35, W03 by rule 36, W05 (set-up state) by rule 38: each is a refusal by a check, not a notice.",
+  "W06: rule 39 (iteration 6) now agrees with round 1's rule 3: billing is told.",
+  "W10 and W11 are no longer called for by the rules (rule 40): no refusal is expected."
+ ],
+ "changes": {
+  "W01-meter-start-argument": {
+   "told": [],
+   "why": "Under rule 34 (iteration 6) a running part's start arguments are read into a kind published with @message argv; the meter reads process.argv[2] with no such kind, so its own check refuses the change. No entry of the meter changes (WORKER_FILE, MeterInput and MeterMsg are the same), so no one is told by the listing. Had the job published the argument's kind, billing would be told of the new kind (rule 3).",
+   "brokenPredicted": [
+    "billing"
+   ],
+   "wrongWithoutFailingTest": [],
+   "refuses": [
+    "meter"
+   ],
+   "attack": "Hole: the start contract of a separately running part (its command line) is interface no written kind holds. The meter's own test helper starts it in euros through a default parameter, which the minutes bound test's fingerprint does not see, so no bound counts as changed either. Defeat: billing's two meter tests fail (the meter stops at once, billing's promise never settles) and nobody is told; meter's check and tests pass.",
+   "realistic": true,
+   "guard": "meter's own check (rule 34)"
+  },
+  "W02-meter-ready-line": {
+   "told": [],
+   "why": "MeterInput and MeterMsg are unchanged, so no entry changes. But the meter now writes something that is not a message on its message channel, which rules 8 and 19 forbid (one message per line, nothing else on the channel): meter's own check should refuse, which stops the change.",
+   "brokenPredicted": [
+    "billing"
+   ],
+   "wrongWithoutFailingTest": [],
+   "refuses": [
+    "meter"
+   ],
+   "guard": "meter's own check (rules 8 and 19)",
+   "attack": "Hole in rule 19's check: it looks only at writes that hold a JSON.stringify; process.stdout.write('\\n') holds none. The meter's own test skips empty lines (filter(Boolean)) and passes unchanged; billing parses every line and JSON.parse('') throws in its data handler. Same break as Z03, by a spelling the fifth design does not look at. Defeat: meter's check does not refuse, nobody is told, billing's meter tests fail.",
+   "realistic": true
+  },
+  "W03-error-stated-on-kind-not-checked": {
+   "told": [],
+   "why": "The code now throws Error for an unknown room while the Bookings kind still states '@throws {RangeError} quote when the room is unknown' (set-up Z06a): a comment that disagrees with the code, which rule 29 exists to refuse. If the check refuses, the change is stopped and no one needs telling; the listing (stated errors) is unchanged.",
+   "brokenPredicted": [
+    "billing"
+   ],
+   "wrongWithoutFailingTest": [],
+   "refuses": [
+    "bookings"
+   ],
+   "guard": "bookings' own check (rule 29)",
+   "attack": "Hole in rule 29: it compares a throw only with @throws written on the function or method itself. Rule 10 lets errors be stated on the kind instead, and then the function that throws (the local quote) states nothing and is never checked. An ordinary job changes the throw (Z06's honest reason) and forgets the @throws line fifty lines up. Defeat: bookings' check passes, nobody is told (op:bookquote still inherits the stated RangeError), billing's estimate test (Z06b) fails.",
+   "realistic": true
+  },
+  "W04-bound-on-built-method": {
+   "told": [
+    "billing",
+    "front",
+    "reports"
+   ],
+   "why": "Bookings.open (and op:bookopen, whose handler hands its call to it) newly refuse a note over 140 characters, and a new bound line says so: by rule 3 newly refused and a changed bound tell. front calls bookopen through the door; billing's tests call bookings.open; reports is not followed for bookings.",
+   "brokenPredicted": [],
+   "wrongWithoutFailingTest": [
+    "front"
+   ],
+   "refuses": [],
+   "attack": "Hole: rule 10 lets a method's errors be stated on its own comment where the object is built, and the listing reads @throws from there; it reads @bound only from kinds and functions. The job states the new bound in that same comment, with its error, and adds a test named for it, so check (d) is satisfied. No listed entry carries the line and the test is new (not 'moved'). Defeat: nobody is told; front's form still lets any note through and its comment states no bound (no test of front uses a long note).",
+   "realistic": true
+  },
+  "W05-price-list-in-euros": {
+   "told": [],
+   "why": "bookings changes only src/prices.mjs, which is not an interface file, and PRICE_PER_SEAT_NIGHT stays a number: no entry changes, so no one is told. front reaches that file with import(): by rule 28 front's own check refuses that state (before and after), so it could not have been merged.",
+   "brokenPredicted": [
+    "front"
+   ],
+   "wrongWithoutFailingTest": [],
+   "refuses": [
+    "front"
+   ],
+   "guard": "front's own check refuses the set-up (rule 28)",
+   "refusesBefore": [
+    "front"
+   ],
+   "attack": "Hole in rule 28's check: it looks at import and export statements only; await import('../../bookings/src/prices.mjs') is an expression. front's set-up passes its own check, front stays followed fully through its other uses of bookings, and no entry holds what it uses. Defeat: front's check does not refuse the import() (before or after), nobody is told, front's price menu test fails (SEAT_NIGHT_CENTS is undefined).",
+   "realistic": true
+  },
+  "W06-old-overload-kept-behind": {
+   "told": [
+    "billing"
+   ],
+   "why": "Every call of formatAmount with a list now reaches the new first list overload and gets string[]: what the function hands back for a list changed, which by rule 3 tells its users; billing calls it with a list. Rule 33 read by its letter (every old signature is kept) says no one: the rules disagree, and the base rule is the one that matches what happens to every old call.",
+   "brokenPredicted": [
+    "billing"
+   ],
+   "wrongWithoutFailingTest": [],
+   "refuses": [],
+   "attack": "Hole in rule 33 (and its skipped backstop): TypeScript answers a call with the first overload that fits, so an old signature kept behind a new one with the same parameters is never reached. The tool compares the set of (parameters, answer) pairs, finds every old pair, says 'accepts more' and skips the backstop. Defeat: nobody is told; billing's invoice test fails (the lines come out joined by commas). Needs a job that believes a kept overload keeps old callers: contrived.",
+   "realistic": false
+  },
+  "W07-throws-union": {
+   "told": [
+    "rooms"
+   ],
+   "why": "slugify now raises TypeError, a new kind, for a value that is not text: what it hands back changed (iteration 2, rule 1), so its users are told; rooms uses slugify (and passes text, so nothing breaks). The code is honest: every throw is a kind its @throws names.",
+   "brokenPredicted": [],
+   "wrongWithoutFailingTest": [],
+   "refuses": [],
+   "attack": "False refusal: rule 29 compares the name in each throw with the TEXT of each @throws kind; {TypeError|RangeError} is one text, 'TypeError|RangeError', equal to neither. text-rules' own check should refuse all three throws of slugify. Defeat: text-rules' check refuses, which stops an honest change (a union in @throws is ordinary JSDoc).",
+   "realistic": true
+  },
+  "W08-cast-after-has": {
+   "told": [
+    "reports"
+   ],
+   "why": "Rooms.pick is a new entry, which has no users; reports is not followed for rooms and is told whenever rooms' listing changes.",
+   "brokenPredicted": [],
+   "wrongWithoutFailingTest": [],
+   "refuses": [],
+   "attack": "False refusal: rule 14 refuses a cast from a known kind to a product kind it is not. byId.get(id) is Room | undefined; the cast to Room is how JSDoc says 'it is there', after byId.has(id) was checked for every id. Iteration 5 made the same 'possibly missing' from Map.get 'cannot tell'; said out loud with a cast, it is refused. Defeat: rooms' check refuses.",
+   "realistic": true
+  },
+  "W09-row-written-in-place": {
+   "told": [],
+   "why": "cancel writes the same row and hands back the same booking (read back from the store): content only, the listing is the same.",
+   "brokenPredicted": [],
+   "wrongWithoutFailingTest": [],
+   "refuses": [],
+   "attack": "False refusal: rule 2's check asks whether the value written to the bookings table is assignable to Booking. The row is written in place, { ...b, state: 'cancelled' }, as an argument where the store's put expects unknown; the reader widens 'cancelled' to text, and { state: string, ... } is not a Booking. The row is a valid Booking. Defeat: bookings' check refuses 'a value that is not a Booking'.",
+   "realistic": true
+  },
+  "W10-json-settings-file": {
+   "told": [],
+   "why": "isReservedName is a new entry; rooms and front are followed fully for text-rules. Reading a settings file is not a message between running parts.",
+   "brokenPredicted": [],
+   "wrongWithoutFailingTest": [],
+   "refuses": [],
+   "attack": "False refusal by the rule itself: iteration 2's rule 3 (and its check) refuses every JSON.parse whose result is not given a @message kind, except a copy. A JSON file of settings kept by the venue's staff is read with JSON.parse(readFileSync(...)), the ordinary way in Node; there is no sender and no message kind to give it. Defeat: text-rules' check refuses.",
+   "realistic": true
+  },
+  "W11-structured-log-line": {
+   "told": [],
+   "why": "No kind changes; a log line for operators is not a message between running parts.",
+   "brokenPredicted": [],
+   "wrongWithoutFailingTest": [],
+   "refuses": [],
+   "attack": "False refusal by the rule itself: rules 5 and 30 refuse any JSON.stringify written to a standard stream (console.error included) unless it is of a @message kind for that stream. One line of JSON per event on the error stream is the ordinary form of a structured log. Defeat: door's check refuses.",
+   "realistic": true
+  },
+  "W12-error-code": {
+   "told": [],
+   "why": "The kind of error is unchanged (RangeError); it only carries a code. The listing is the same.",
+   "brokenPredicted": [],
+   "wrongWithoutFailingTest": [],
+   "refuses": [],
+   "attack": "False refusal: err.code = '...' on a new RangeError is Node's ordinary way of giving an error a code. The reader complains that RangeError has no property code (2339), a complaint not in the 'cannot tell' list, and the check files it as '(a) a comment disagrees with this module's code', though no comment is involved and the code is right. Defeat: money's check refuses.",
+   "realistic": true
+  },
+  "W13-fields-reordered": {
+   "told": [],
+   "why": "Only the order of Booking's @property lines changes (and an explanation): every kind, bound and error is the same.",
+   "brokenPredicted": [],
+   "wrongWithoutFailingTest": [],
+   "refuses": [],
+   "attack": "Told for nothing: the tool's own form sorts members; the backstop (rule 18) prints the declaration with members in the order written, so Booking and table:bookings count as 'declaration changed (not classified)'. Defeat: the tool tells billing and front (they read fields of a Booking) and reports, for nothing.",
+   "realistic": true
+  },
+  "W14-list-kind-named": {
+   "told": [],
+   "why": "A new kind, Parts, which has no users; splitEvenly hands back the same kind, Amount[], under a name.",
+   "brokenPredicted": [],
+   "wrongWithoutFailingTest": [],
+   "refuses": [],
+   "attack": "Told for nothing: iteration 5 writes a plain kind of the module out where it is used, in brackets, and removes the brackets again only around a union (V13's case). splitEvenly's printed declaration becomes '... : (Amount[])' where it was '... : Amount[]'. Defeat: the tool tells billing (it calls splitEvenly) for nothing.",
+   "realistic": true
+  },
+  "W15-export-list": {
+   "told": [],
+   "why": "The same functions with the same comments are exported; only where the word export is written changes.",
+   "brokenPredicted": [],
+   "wrongWithoutFailingTest": [],
+   "refuses": [],
+   "attack": "Told for nothing: the backstop prints each exported name's statement. With an export list, slugify's printed text becomes 'declare function slugify(...); export { slugify, isEmail, titleCase };' where it was 'export function slugify(...)', and every later name added to the list changes all of them again. Defeat: the tool tells rooms (slugify) and front (isEmail, titleCase) for nothing.",
+   "realistic": true
+  },
+  "W16-store-gains-id": {
+   "told": [
+    "reports"
+   ],
+   "why": "Store.id is a new entry, which has no users (rule 3); reports is not followed for store and is told whenever store's listing changes.",
+   "brokenPredicted": [],
+   "wrongWithoutFailingTest": [],
+   "refuses": [],
+   "attack": "Told for nothing: a bound line on a handle kind belongs to the member its first word names, or to every member when it names none. 'id: 1 to 120 characters' named no member; once the store has a method called id, it belongs to that method alone, and get, list, put and remove each 'lose' a bound. Defeat: the tool tells rooms and bookings (bound changed on the store methods they call) for nothing. It also leaves the id bound off those four methods from then on, so a later change to it would reach only users of id.",
+   "realistic": true
+  },
+  "W17-limit-read-through-namespace": {
+   "told": [
+    "billing",
+    "bookings",
+    "front",
+    "meter",
+    "reports"
+   ],
+   "why": "The bound of cents changed in code (10,000,000 to 500,000); its bound line was forgotten. As in Z02, rule 26 means a bound test whose limit, read from the module's own source, changed counts as a changed bound: everyone who uses an entry carrying the cents line is told (bookings, meter, billing directly; front, billing and reports through bookings).",
+   "brokenPredicted": [
+    "bookings"
+   ],
+   "wrongWithoutFailingTest": [],
+   "refuses": [],
+   "attack": "Hole in rule 26: the fingerprint counts constants a bound test imports from its own module by name; a test that reads the module as a namespace (money.MAX_CENTS) holds no value it sees, and the test file itself does not change. Same careless job as Z02, by an ordinary import style. Defeat: nobody is told; bookings' bound party test (200 people, 2 nights, 600,000 cents) fails.",
+   "realistic": true
+  }
+ }
+}
