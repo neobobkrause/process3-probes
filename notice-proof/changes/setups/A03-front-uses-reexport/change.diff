@@ -1,0 +1,52 @@
+--- before/rooms/src/index.mjs
++++ after/rooms/src/index.mjs
+@@ -2,6 +2,7 @@
+  * The rooms that can be booked.
+  */
+ import { slugify } from '../../text-rules/src/index.mjs';
++export { slugify } from '../../text-rules/src/index.mjs';
+ /** @import { Store } from '../../store/src/index.mjs' */
+ 
+ /** The kinds of room there are. */
+--- before/front/src/index.mjs
++++ after/front/src/index.mjs
+@@ -2,7 +2,16 @@
+  * The front desk: what people see when they book.
+  */
+ import { isEmail, titleCase } from '../../text-rules/src/index.mjs';
+-import { ROOM_KINDS } from '../../rooms/src/index.mjs';
++import { ROOM_KINDS, slugify } from '../../rooms/src/index.mjs';
++
++/**
++ * The id a room of this name has.
++ * @param {string} name
++ * @returns {string}
++ */
++export function roomIdFor(name) {
++  return slugify(name);
++}
+ /** @import { RoomKind } from '../../rooms/src/index.mjs' */
+ /** @import { Door } from '../../door/src/index.mjs' */
+ 
+--- before/front/test/index.test.mjs
++++ after/front/test/index.test.mjs
+@@ -4,7 +4,7 @@
+ import { createRooms, roomHandlers } from '../../rooms/src/index.mjs';
+ import { createBookings, bookingHandlers } from '../../bookings/src/index.mjs';
+ import { createDoor } from '../../door/src/index.mjs';
+-import { createFront } from '../src/index.mjs';
++import { createFront, roomIdFor } from '../src/index.mjs';
+ 
+ function system() {
+   const store = seededStore({
+@@ -27,6 +27,10 @@
+   assert.match(r.text, /\d+\.\d\d/);
+ });
+ 
++test('a room id is the slug of its name', () => {
++  assert.equal(roomIdFor('Big Hall'), 'big-hall');
++});
++
+ test('booking needs a valid email', async () => {
+   const front = system();
+   await assert.rejects(() => front.book({ email: 'nope', room: 'big-hall', day: '2026-12-05', nights: 1, party: 2 }), RangeError);

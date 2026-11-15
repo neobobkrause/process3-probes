@@ -1,0 +1,7 @@
+{
+  "title": "bookings writes the total with a kind of its own, Price, a copy of money's Amount",
+  "provider": "bookings",
+  "covers": [
+    "setup"
+  ]
+}

@@ -1,0 +1,10 @@
+{
+  "title": "The meter's reading carries price in place of cost; billing kept its own copy of the message kind",
+  "provider": "meter",
+  "covers": [
+    "attack: two running parts that do not share one written kind for their message"
+  ],
+  "before": [
+    "setups/A04-billing-own-copy-of-message-kind"
+  ]
+}

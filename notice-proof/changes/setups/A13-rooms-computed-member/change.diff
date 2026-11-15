@@ -1,0 +1,19 @@
+--- before/rooms/src/index.mjs
++++ after/rooms/src/index.mjs
+@@ -62,14 +62,14 @@
+         throw new RangeError('rooms: seats out of bounds');
+       }
+       const id = slugify(input.name);
+-      if (store.get('rooms', id)) throw new Error(`rooms: already taken: ${id}`);
++      if (store[/** @type {any} */ ('get')]('rooms', id)) throw new Error(`rooms: already taken: ${id}`);
+       /** @type {Room} builds a Room */
+       const room = { id, name: input.name, kind: input.kind, seats: input.seats };
+       store.put('rooms', id, room);
+       return room;
+     },
+     find(id) {
+-      const rec = store.get('rooms', id);
++      const rec = store[/** @type {any} */ ('get')]('rooms', id);
+       return rec ? /** @type {Room} checks nothing: the store holds only Rooms in this table */ (rec.value) : undefined;
+     },
+     list(kind) {

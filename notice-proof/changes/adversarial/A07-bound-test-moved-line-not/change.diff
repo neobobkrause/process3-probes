@@ -1,0 +1,26 @@
+--- before/bookings/src/index.mjs
++++ after/bookings/src/index.mjs
+@@ -70,7 +70,7 @@
+  * @param {number} seats
+  */
+ function checkSize(party, nights, seats) {
+-  if (!Number.isInteger(party) || party < 1 || party > 200 || party > seats) {
++  if (!Number.isInteger(party) || party < 1 || party > 100 || party > seats) {
+     throw new RangeError('bookings: party out of bounds');
+   }
+   if (!Number.isInteger(nights) || nights < 1 || nights > 14) throw new RangeError('bookings: nights out of bounds');
+--- before/bookings/test/index.test.mjs
++++ after/bookings/test/index.test.mjs
+@@ -36,10 +36,10 @@
+ test('bound party: whole number, 1 to 200, and no more than the room\'s seats', () => {
+   const { bookings } = system();
+   assert.equal(bookings.open(req({ party: 1 })).party, 1);
+-  assert.equal(bookings.open(req({ party: 200 })).party, 200);
++  assert.equal(bookings.open(req({ party: 100 })).party, 100);
+   assert.equal(bookings.open(req({ room: 'studio', party: 12 })).party, 12);
+   assert.throws(() => bookings.open(req({ party: 0 })), RangeError);
+-  assert.throws(() => bookings.open(req({ party: 201 })), RangeError);
++  assert.throws(() => bookings.open(req({ party: 101 })), RangeError);
+   assert.throws(() => bookings.open(req({ room: 'studio', party: 13 })), RangeError);
+ });
+ 

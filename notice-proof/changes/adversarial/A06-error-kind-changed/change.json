@@ -1,0 +1,10 @@
+{
+  "title": "splitEvenly now throws TypeError, not RangeError, outside its bound; its @throws comment says so",
+  "provider": "money",
+  "covers": [
+    "attack: the kind of error a provider raises is part of what it hands back, but not of the listing"
+  ],
+  "before": [
+    "setups/A06-billing-expects-range-error"
+  ]
+}

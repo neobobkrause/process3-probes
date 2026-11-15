@@ -1,0 +1,7 @@
+{
+  "title": "rooms calls the store's get by a computed name",
+  "provider": "rooms",
+  "covers": [
+    "setup"
+  ]
+}

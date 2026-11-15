@@ -1,0 +1,7 @@
+{
+  "title": "rooms re-exports slugify; front imports it from rooms",
+  "provider": "front",
+  "covers": [
+    "setup"
+  ]
+}

@@ -1,0 +1,10 @@
+{
+  "title": "slugify joins words with underscores; front reaches slugify only through rooms' re-export",
+  "provider": "text-rules",
+  "covers": [
+    "attack: a function reached through another module's re-export"
+  ],
+  "before": [
+    "setups/A03-front-uses-reexport"
+  ]
+}

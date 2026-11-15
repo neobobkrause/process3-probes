@@ -1,0 +1,15 @@
+--- before/billing/test/index.test.mjs
++++ after/billing/test/index.test.mjs
+@@ -26,6 +26,12 @@
+   assert.ok(inv.text.includes(b.id));
+ });
+ 
++test('an invoice in more instalments than allowed is refused', async () => {
++  const { bookings, billing } = system();
++  const b = bookings.open({ room: 'hall', day: '2026-12-01', nights: 1, party: 2 });
++  await assert.rejects(() => billing.invoice(b.id, 101), RangeError);
++});
++
+ test('an invoice for a cancelled booking is refused', async () => {
+   const { bookings, billing } = system();
+   const b = bookings.open({ room: 'hall', day: '2026-12-01', nights: 1, party: 2 });

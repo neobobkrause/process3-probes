@@ -1,0 +1,7 @@
+{
+  "title": "billing builds its request line in two steps; the code is right",
+  "provider": "billing",
+  "covers": [
+    "attack: make the check refuse honest code (a call by name the reader cannot read)"
+  ]
+}

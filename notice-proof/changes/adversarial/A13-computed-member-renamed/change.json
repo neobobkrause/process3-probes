@@ -1,0 +1,10 @@
+{
+  "title": "The store handle's get is renamed read; rooms calls it by a computed name",
+  "provider": "store",
+  "covers": [
+    "attack: a use the tool cannot see by name"
+  ],
+  "before": [
+    "setups/A13-rooms-computed-member"
+  ]
+}

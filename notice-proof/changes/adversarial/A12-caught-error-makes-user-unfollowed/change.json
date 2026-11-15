@@ -1,0 +1,10 @@
+{
+  "title": "Opening a booking accepts an optional arrival time (accepts more); front's tests read a caught error's message",
+  "provider": "bookings",
+  "covers": [
+    "attack: make the tool tell for nothing (a user made \"not followed\" by a value that has nothing to do with its providers)"
+  ],
+  "before": [
+    "setups/A12-front-test-reads-error"
+  ]
+}

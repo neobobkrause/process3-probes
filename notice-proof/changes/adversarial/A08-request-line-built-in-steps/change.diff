@@ -1,0 +1,13 @@
+--- before/billing/src/index.mjs
++++ after/billing/src/index.mjs
+@@ -40,7 +40,9 @@
+ export function createBilling(deps) {
+   return {
+     async invoice(bookingId, instalments) {
+-      const status = await deps.door.get(`op=bookstatus&id=${bookingId}`);
++      let line = 'op=bookstatus';
++      line += `&id=${encodeURIComponent(bookingId)}`;
++      const status = await deps.door.get(line);
+       if (status.state !== 'open') throw new Error(`billing: booking ${bookingId} is not open`);
+       const parts = splitEvenly(status.total, instalments);
+       return {

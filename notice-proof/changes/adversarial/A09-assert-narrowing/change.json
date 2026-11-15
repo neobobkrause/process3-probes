@@ -1,0 +1,8 @@
+{
+  "title": "meter's test narrows a message with assert.equal before reading its fields; the test is right",
+  "provider": "meter",
+  "covers": [
+    "attack: make the check refuse honest code (narrowing the reader cannot see)"
+  ],
+  "note": "Known from development (notes/development-log.md, item 2) before this round was written."
+}

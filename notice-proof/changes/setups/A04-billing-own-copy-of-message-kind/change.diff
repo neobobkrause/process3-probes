@@ -1,0 +1,20 @@
+--- before/billing/src/index.mjs
++++ after/billing/src/index.mjs
+@@ -5,7 +5,7 @@
+ import { amount, add, formatAmount, splitEvenly } from '../../money/src/index.mjs';
+ import { WORKER_FILE } from '../../meter/src/index.mjs';
+ /** @import { Amount } from '../../money/src/index.mjs' */
+-/** @import { MeterInput, MeterMsg } from '../../meter/src/index.mjs' */
++/** @import { MeterInput } from '../../meter/src/index.mjs' */
+ /** @import { Door } from '../../door/src/index.mjs' */
+ 
+ /**
+@@ -66,7 +66,7 @@
+           while ((nl = buffer.indexOf('\n')) >= 0) {
+             const line = buffer.slice(0, nl);
+             buffer = buffer.slice(nl + 1);
+-            /** @type {MeterMsg} checks a MeterMsg by its kind */
++            /** @type {{kind: 'reading', room: string, minutes: number, cost: Amount} | {kind: 'refused', room: string, reason: string} | {kind: 'done', count: number}} checks a message by its kind (billing's own copy) */
+             const msg = JSON.parse(line);
+             if (msg.kind === 'reading') total = add(total, msg.cost);
+             else if (msg.kind === 'refused') reject(new RangeError(`billing: meter refused ${msg.room}: ${msg.reason}`));

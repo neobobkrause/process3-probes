@@ -1,0 +1,7 @@
+{
+  "title": "bookings keeps its interface but stores its rows in a shorter form of its own",
+  "provider": "bookings",
+  "covers": [
+    "attack: a user reads another module's rows straight out of the shared store"
+  ]
+}

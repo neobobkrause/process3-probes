@@ -1,0 +1,7 @@
+{
+  "title": "billing's tests expect a RangeError when an invoice asks for too many instalments",
+  "provider": "billing",
+  "covers": [
+    "setup"
+  ]
+}

@@ -1,0 +1,51 @@
+--- before/store/src/index.mjs
++++ after/store/src/index.mjs
+@@ -16,7 +16,7 @@
+  * The store's handle.
+  * @typedef {Object} Store
+  * @property {(table: string, id: string, value: unknown) => Stored} put writes a record and hands back what is now held
+- * @property {(table: string, id: string) => Stored | undefined} get
++ * @property {(table: string, id: string) => Stored | undefined} read
+  * @property {(table: string) => Stored[]} list all records of a table, in the order they were first written
+  * @property {(table: string, id: string) => boolean} remove says whether there was a record to remove
+  * @bound table: 1 to 40 characters, each a-z, 0-9 or a hyphen
+@@ -63,7 +63,7 @@
+       t.set(id, rec);
+       return structuredClone(rec);
+     },
+-    get(table, id) {
++    read(table, id) {
+       checkNames(table, id);
+       const rec = tableOf(table).get(id);
+       return rec ? structuredClone(rec) : undefined;
+--- before/store/test/index.test.mjs
++++ after/store/test/index.test.mjs
+@@ -8,9 +8,9 @@
+   const v = { a: 1 };
+   s.put('t', 'x', v);
+   v.a = 2;
+-  const got = s.get('t', 'x');
++  const got = s.read('t', 'x');
+   assert.deepEqual(got?.value, { a: 1 });
+-  assert.equal(s.get('t', 'missing'), undefined);
++  assert.equal(s.read('t', 'missing'), undefined);
+ });
+ 
+ test('bound version: whole number, 1 or more', () => {
+@@ -37,7 +37,7 @@
+   s.put('t', 'x', 0);
+   s.put('t', 'x'.repeat(120), 0);
+   assert.throws(() => s.put('t', '', 0), RangeError);
+-  assert.throws(() => s.get('t', 'x'.repeat(121)), RangeError);
++  assert.throws(() => s.read('t', 'x'.repeat(121)), RangeError);
+ });
+ 
+ test('list keeps first-written order; remove says whether a record was there', () => {
+@@ -52,6 +52,6 @@
+ 
+ test('seededStore holds the given records', () => {
+   const s = seededStore({ t: [{ id: 'x', value: 5 }], u: [] });
+-  assert.equal(s.get('t', 'x')?.value, 5);
++  assert.equal(s.read('t', 'x')?.value, 5);
+   assert.deepEqual(s.list('u'), []);
+ });

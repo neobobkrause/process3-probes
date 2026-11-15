@@ -1,0 +1,7 @@
+{
+  "title": "front's tests read the message of a caught error",
+  "provider": "front",
+  "covers": [
+    "setup"
+  ]
+}

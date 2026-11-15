@@ -1,0 +1,28 @@
+--- before/money/src/index.mjs
++++ after/money/src/index.mjs
+@@ -61,10 +61,10 @@
+  * @param {number} parts
+  * @returns {Amount[]}
+  * @bound parts: whole number, 1 to 100
+- * @throws {RangeError} when parts is outside its bound
++ * @throws {TypeError} when parts is outside its bound
+  */
+ export function splitEvenly(a, parts) {
+-  if (!Number.isInteger(parts) || parts < 1 || parts > 100) throw new RangeError('splitEvenly: parts out of bounds');
++  if (!Number.isInteger(parts) || parts < 1 || parts > 100) throw new TypeError('splitEvenly: parts out of bounds');
+   const base = Math.floor(a.cents / parts);
+   const extra = a.cents - base * parts;
+   /** @type {Amount[]} builds Amounts */
+--- before/money/test/index.test.mjs
++++ after/money/test/index.test.mjs
+@@ -30,8 +30,8 @@
+ test('bound parts: whole number, 1 to 100', () => {
+   assert.equal(splitEvenly(amount(100, 'EUR'), 1).length, 1);
+   assert.equal(splitEvenly(amount(100, 'EUR'), 100).length, 100);
+-  assert.throws(() => splitEvenly(amount(100, 'EUR'), 0), RangeError);
+-  assert.throws(() => splitEvenly(amount(100, 'EUR'), 101), RangeError);
++  assert.throws(() => splitEvenly(amount(100, 'EUR'), 0), TypeError);
++  assert.throws(() => splitEvenly(amount(100, 'EUR'), 101), TypeError);
+ });
+ 
+ test('splitEvenly parts add up exactly and differ by at most one cent', () => {

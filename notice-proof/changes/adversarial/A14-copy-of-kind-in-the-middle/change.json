@@ -1,0 +1,10 @@
+{
+  "title": "Amount's cents is renamed minor; bookings, in the middle, wrote its own copy of the kind",
+  "provider": "money",
+  "covers": [
+    "attack: a value passed on by a third module that copied the kind instead of naming it"
+  ],
+  "before": [
+    "setups/A14-bookings-own-price-kind"
+  ]
+}

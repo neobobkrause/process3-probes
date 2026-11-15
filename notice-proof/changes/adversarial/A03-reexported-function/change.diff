@@ -1,0 +1,45 @@
+--- before/text-rules/src/index.mjs
++++ after/text-rules/src/index.mjs
+@@ -10,7 +10,7 @@
+  * @param {string} text the name to turn into a slug
+  * @returns {string} the slug
+  * @bound text: 1 to 80 characters, with at least one letter or digit
+- * @bound result: only a-z, 0-9 and single hyphens between them
++ * @bound result: only a-z, 0-9 and single underscores between them
+  * @throws {RangeError} when text is outside its bound
+  */
+ export function slugify(text) {
+@@ -21,8 +21,8 @@
+     .normalize('NFKD')
+     .replace(/[̀-ͯ]/g, '')
+     .toLowerCase()
+-    .replace(/[^a-z0-9]+/g, '-')
+-    .replace(/^-+|-+$/g, '');
++    .replace(/[^a-z0-9]+/g, '_')
++    .replace(/^_+|_+$/g, '');
+   if (slug === '') throw new RangeError('slugify: text needs at least one letter or digit');
+   return slug;
+ }
+--- before/text-rules/test/index.test.mjs
++++ after/text-rules/test/index.test.mjs
+@@ -10,15 +10,15 @@
+   assert.throws(() => slugify('!!! ---'), RangeError);
+ });
+ 
+-test('bound result: only a-z, 0-9 and single hyphens between them', () => {
++test('bound result: only a-z, 0-9 and single underscores between them', () => {
+   for (const t of ['Main Hall', '  Café  Øst ', 'A--B', 'x_y z', 'Room 12']) {
+-    assert.match(slugify(t), /^[a-z0-9]+(-[a-z0-9]+)*$/);
++    assert.match(slugify(t), /^[a-z0-9]+(_[a-z0-9]+)*$/);
+   }
+ });
+ 
+-test('slugify keeps the words in order, joined by hyphens', () => {
+-  assert.equal(slugify('Main Hall'), 'main-hall');
+-  assert.equal(slugify('Café Øst 2'), 'cafe-st-2');
++test('slugify keeps the words in order, joined by underscores', () => {
++  assert.equal(slugify('Main Hall'), 'main_hall');
++  assert.equal(slugify('Café Øst 2'), 'cafe_st_2');
+ });
+ 
+ test('isEmail recognises addresses and refuses others', () => {

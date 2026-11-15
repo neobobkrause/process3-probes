@@ -1,0 +1,7 @@
+{
+  "title": "billing reads the meter's messages with its own copy of their kind, not the shared one",
+  "provider": "billing",
+  "covers": [
+    "setup"
+  ]
+}

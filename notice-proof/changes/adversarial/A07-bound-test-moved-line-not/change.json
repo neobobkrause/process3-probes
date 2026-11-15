@@ -1,0 +1,7 @@
+{
+  "title": "A party may now be at most 100; the job moved its own bound test to 100 but left the bound line and the test's name",
+  "provider": "bookings",
+  "covers": [
+    "attack: the test named for a bound no longer tests what its name and the bound line say"
+  ]
+}

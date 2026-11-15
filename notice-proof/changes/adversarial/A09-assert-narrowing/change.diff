@@ -1,0 +1,13 @@
+--- before/meter/test/index.test.mjs
++++ after/meter/test/index.test.mjs
+@@ -27,7 +27,9 @@
+   ]);
+   assert.deepEqual(msgs.map((m) => m.kind), ['reading', 'reading', 'done']);
+   const [a, b, done] = msgs;
+-  if (a.kind !== 'reading' || b.kind !== 'reading' || done.kind !== 'done') return assert.fail('unexpected kinds');
++  assert.equal(a.kind, 'reading');
++  assert.equal(b.kind, 'reading');
++  assert.equal(done.kind, 'done');
+   assert.deepEqual([a.room, b.room], ['hall', 'studio']);
+   assert.ok(a.cost.cents > b.cost.cents);
+   assert.equal(a.cost.cents, b.cost.cents * 30);

@@ -1,0 +1,34 @@
+--- before/bookings/src/index.mjs
++++ after/bookings/src/index.mjs
+@@ -20,7 +20,7 @@
+  * @property {number} nights
+  * @property {number} party how many people
+  * @property {'open' | 'cancelled'} state
+- * @property {Amount} total what the booking costs
++ * @property {Price} total what the booking costs
+  * @property {string} [note]
+  * @bound day: a real calendar day written YYYY-MM-DD
+  * @bound nights: whole number, 1 to 14
+@@ -28,6 +28,11 @@
+  */
+ 
+ /**
++ * A price, as bookings writes it.
++ * @typedef {{cents: number, currency: 'EUR' | 'USD' | 'GBP'}} Price
++ */
++
++/**
+  * What it takes to open a booking.
+  * @typedef {Object} BookingRequest
+  * @property {string} room the room's id
+@@ -51,8 +56,8 @@
+  * @typedef {{
+  *   bookopen: {req: BookingRequest, res: Booking},
+  *   bookcancel: {req: {id: string}, res: Booking},
+- *   bookstatus: {req: {id: string}, res: {state: Booking['state'], total: Amount, room: string}},
+- *   bookquote: {req: {room: string, party: number, nights: number}, res: {total: Amount}}
++ *   bookstatus: {req: {id: string}, res: {state: Booking['state'], total: Price, room: string}},
++ *   bookquote: {req: {room: string, party: number, nights: number}, res: {total: Price}}
+  * }} BookingOps
+  * @optable
+  * @bound bookquote.total: what the whole stay costs, for the whole party and every night
