@@ -51,7 +51,13 @@ export function declarationsOf(program, file, plainElsewhere = new Map()) {
   const parsed = ts.createSourceFile('decl.d.ts', text, ts.ScriptTarget.ES2022, true, ts.ScriptKind.TS);
   // Iteration 5: a parameter's name or written shape ({ store } or deps) is not part of the interface.
   const unname = (ctx) => (root) => {
-    const visit = (n) => ts.isParameter(n) ? ts.factory.updateParameterDeclaration(n, n.modifiers, n.dotDotDotToken, ts.factory.createIdentifier('_'), n.questionToken, n.type ? ts.visitNode(n.type, visit) : n.type, undefined) : ts.visitEachChild(n, visit, ctx);
+    const memberName = (m) => (m.name && (ts.isIdentifier(m.name) || ts.isStringLiteral(m.name)) ? m.name.text : '');
+    const visit = (n) => {
+      if (ts.isParameter(n)) return ts.factory.updateParameterDeclaration(n, n.modifiers, n.dotDotDotToken, ts.factory.createIdentifier('_'), n.questionToken, n.type ? ts.visitNode(n.type, visit) : n.type, undefined);
+      // Iteration 6: an object kind's fields in a fixed order
+      if (ts.isTypeLiteralNode(n)) { const v = ts.visitEachChild(n, visit, ctx); return ts.factory.updateTypeLiteralNode(v, ts.factory.createNodeArray([...v.members].sort((a, b) => (memberName(a) < memberName(b) ? -1 : memberName(a) > memberName(b) ? 1 : 0)))); }
+      return ts.visitEachChild(n, visit, ctx);
+    };
     return ts.visitNode(root, visit);
   };
   const d = ts.transform(parsed, [unname]).transformed[0];
@@ -86,8 +92,9 @@ export function declarationsOf(program, file, plainElsewhere = new Map()) {
   const unbracket = (t) => { let prev; do { prev = t; t = t.replace(/\(([^()]*\|[^()]*)\)/g, '$1'); } while (t !== prev); return t; };
   for (const k of Object.keys(out)) {
     // a plain kind of another module, named through import("..."), is written out too
-    out[k] = out[k].replace(/import\("[^"]+"\)\.([A-Za-z_$][\w$]*)/g, (m, name) => (plainElsewhere.has(name) ? `(${plainElsewhere.get(name)})` : m));
-    for (const [name, rhs] of plainKinds) if (k !== name) out[k] = out[k].replace(new RegExp(`\\b${name}\\b`, 'g'), `(${rhs})`);
+    const wrap = (rhs) => (/[|&]|=>/.test(rhs) ? `(${rhs})` : rhs); // iteration 6: brackets only where they matter
+    out[k] = out[k].replace(/import\("[^"]+"\)\.([A-Za-z_$][\w$]*)/g, (m, name) => (plainElsewhere.has(name) ? wrap(plainElsewhere.get(name)) : m));
+    for (const [name, rhs] of plainKinds) if (k !== name) out[k] = out[k].replace(new RegExp(`\\b${name}\\b`, 'g'), wrap(rhs));
     out[k] = unbracket(out[k]);
   }
   Object.defineProperty(out, '__plain', { value: plainKinds, enumerable: false });

@@ -76,7 +76,7 @@ export function diffListings(moduleId, before, after) {
     // Iteration 5 (rule 33): an added overload that keeps every old signature only accepts more.
     const sigPairs = (e) => e.accepts?.k === 'overloads' ? e.accepts.of.map((p, i) => JSON.stringify([p, e.handsBack.of[i]])) : e.accepts?.k === 'params' ? [JSON.stringify([e.accepts, e.handsBack])] : null;
     const pb = sigPairs(eb), pa = sigPairs(ea);
-    if (pb && pa && (eb.accepts?.k === 'overloads' || ea.accepts?.k === 'overloads') && pb.every((x) => pa.includes(x)) && same(eb.bounds, ea.bounds) && same(eb.throws ?? [], ea.throws ?? [])) {
+    if (pb && pa && (eb.accepts?.k === 'overloads' || ea.accepts?.k === 'overloads') && pb.every((x, i) => pa[i] === x) && same(eb.bounds, ea.bounds) && same(eb.throws ?? [], ea.throws ?? [])) {
       if (pa.length > pb.length) out.push({ entry: name, changes: ['accepts more'], tells: 'nobody', before: describe(eb), after: describe(ea) });
       continue;
     }

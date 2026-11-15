@@ -13,12 +13,17 @@ const newCtx = () => ({ kinds: new Map(), stack: [] });
 
 /** Bound lines of a kind, split among its members: "member: ..." or "member.x ..." belongs to that member. */
 function boundsFor(lines, member, memberNames) {
+  // Iteration 6 (rule 41): a line belongs to one member only when written "member.<rest>"; any other line belongs to
+  // every member, so a new member's name cannot capture a line.
   return lines.filter((l) => {
-    const subject = l.split(/[:.\s]/)[0];
-    if (subject === member) return true;
-    return !memberNames.includes(subject); // a line about no particular member belongs to all of them
+    const m = /^([A-Za-z_$][\w$]*)\./.exec(l);
+    if (m && memberNames.includes(m[1])) return m[1] === member;
+    return true;
   });
 }
+
+/** The kinds named by a @throws tag; {A|B} names two (iteration 6). */
+export const throwKinds = (tag) => (tag.typeExpression?.type?.getText?.() ?? '').split('|').map((x) => x.trim()).filter(Boolean);
 
 export function makeLister(program, tree) {
   const checker = program.getTypeChecker();
@@ -38,9 +43,8 @@ export function makeLister(program, tree) {
   function kindThrows(decl, member, memberNames) {
     const out = [];
     for (const tag of tagsOf(decl, 'throws')) {
-      const kindText = tag.typeExpression?.type?.getText?.() ?? '';
       const subject = tagText(tag).split(/[:.\s]/)[0];
-      if (kindText && (subject === member || !memberNames.includes(subject))) out.push(kindText);
+      if (subject === member || !memberNames.includes(subject)) out.push(...throwKinds(tag));
     }
     return [...new Set(out)].sort();
   }
@@ -178,7 +182,7 @@ export function makeLister(program, tree) {
             where,
           };
           // Iteration 2: the kinds of error it raises are part of what it hands back.
-          const throws = [...new Set(tagsOf(decl, 'throws').map((tg) => tg.typeExpression?.type?.getText?.() ?? tagText(tg).split(/\s+/)[0]).filter(Boolean))].sort();
+          const throws = [...new Set(tagsOf(decl, 'throws').flatMap(throwKinds))].sort();
           // Iteration 4: every overload is listed.
           if (sigs.length > 1) {
             const all = sigs.map((sg) => C.canonSig(sg, a, h));
@@ -228,8 +232,14 @@ export function makeLister(program, tree) {
             const ps = checker.getPropertyOfType(ct, prop.name.text);
             const target = entryOfDecl(ps?.declarations?.[0]);
             if (!target || !entries[target]) continue;
-            const stated = tagsOf(prop, 'throws').map((tg) => tg.typeExpression?.type?.getText?.()).filter(Boolean);
+            // the comment of the method, or, for a shorthand member ({ quote }), of the variable it names
+            let doc = prop;
+            if (ts.isShorthandPropertyAssignment(prop)) { const vd = checker.getShorthandAssignmentValueSymbol(prop)?.declarations?.[0]; if (vd) doc = vd; }
+            const stated = tagsOf(doc, 'throws').flatMap(throwKinds);
             if (stated.length) entries[target].throws = [...new Set([...(entries[target].throws ?? []), ...stated])].sort();
+            // Iteration 6 (rule 37): a bound written where the object is built belongs to that member.
+            const bnds = tagsOf(doc, 'bound').map(tagText);
+            if (bnds.length) entries[target].bounds = [...new Set([...(entries[target].bounds ?? []), ...bnds])].sort();
             // Iteration 4 (rule 23): every listed entry called anywhere in the method's body passes its errors on.
             const fn = ts.isMethodDeclaration(prop) ? prop : ts.isPropertyAssignment(prop) && (ts.isArrowFunction(prop.initializer) || ts.isFunctionExpression(prop.initializer)) ? prop.initializer : null;
             const calls = [];

@@ -6,6 +6,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { ts, makeProgram, tagsOf, tagText } from './ts.mjs';
 import { carrierOf } from './carriers.mjs';
+import { throwKinds } from './listing.mjs';
 
 /**
  * Complaints that mean "I cannot tell", never a disagreement. Decided here:
@@ -148,6 +149,68 @@ export function check(tree, moduleId) {
     return found;
   };
 
+  // Iteration 6 (tool change 30): a row written in place ({ ...b, state: 'cancelled' }) is compared field by field,
+  // each written value with its own literal kind, since the store's put takes any value and keeps no literal.
+  const literalType = (x) => {
+    while (ts.isParenthesizedExpression(x)) x = x.expression;
+    if (ts.isStringLiteral(x) || ts.isNoSubstitutionTemplateLiteral(x)) return checker.getStringLiteralType(x.text);
+    if (ts.isNumericLiteral(x)) return checker.getNumberLiteralType(Number(x.text.replace(/_/g, '')));
+    if (x.kind === ts.SyntaxKind.TrueKeyword) return checker.getTrueType?.() ?? checker.getTypeAtLocation(x);
+    if (x.kind === ts.SyntaxKind.FalseKeyword) return checker.getFalseType?.() ?? checker.getTypeAtLocation(x);
+    return checker.getTypeAtLocation(x);
+  };
+  const rowFits = (arg, rowType) => {
+    if (checker.isTypeAssignableTo(checker.getTypeAtLocation(arg), rowType)) return true;
+    let x = arg;
+    while (ts.isParenthesizedExpression(x)) x = x.expression;
+    if (!ts.isObjectLiteralExpression(x)) return false;
+    for (const prop of checker.getPropertiesOfType(rowType)) {
+      const want = checker.getTypeOfSymbol(prop);
+      let got = null;
+      for (const el of x.properties) {
+        if ((ts.isPropertyAssignment(el) || ts.isShorthandPropertyAssignment(el)) && el.name && ts.isIdentifier(el.name) && el.name.text === prop.name) got = ts.isPropertyAssignment(el) ? literalType(el.initializer) : checker.getTypeAtLocation(el.name);
+        else if (ts.isSpreadAssignment(el)) { const sp = checker.getPropertyOfType(checker.getTypeAtLocation(el.expression), prop.name); if (sp) got = checker.getTypeOfSymbol(sp); }
+      }
+      if (got === null) { if (!(prop.flags & ts.SymbolFlags.Optional)) return false; continue; }
+      if (!checker.isTypeAssignableTo(got, want)) return false;
+    }
+    return true;
+  };
+  // Iteration 6 (rule 36): errors stated on a kind for a member reach the function that builds that member.
+  const kindThrows = new Map();
+  const throwsOnKind = (t, member) => {
+    const out = [];
+    for (const sym of [t.aliasSymbol, t.symbol]) for (const d of sym?.declarations ?? []) {
+      const tags = ts.isJSDocTypedefTag(d) && d.parent && ts.isJSDoc(d.parent) ? (d.parent.tags ?? []) : [];
+      const names = checker.getPropertiesOfType(t).map((p) => p.name);
+      for (const tg of tags) {
+        if (tg.tagName.text !== 'throws') continue;
+        const subject = tagText(tg).split(/[:.\s]/)[0];
+        if (subject === member || !names.includes(subject)) out.push(...throwKinds(tg));
+      }
+    }
+    return out;
+  };
+  for (const f of mod.src) {
+    const sf = program.getSourceFile(f);
+    if (!sf) continue;
+    walk(sf, (n) => {
+      if (!ts.isObjectLiteralExpression(n)) return;
+      const ct = checker.getContextualType(n);
+      if (!ct || !productKind(ct)) return;
+      for (const el of n.properties) {
+        const name = el.name && (ts.isIdentifier(el.name) || ts.isStringLiteral(el.name)) ? el.name.text : null;
+        if (!name) continue;
+        let fn = ts.isMethodDeclaration(el) ? el : ts.isPropertyAssignment(el) ? el.initializer : null;
+        if (ts.isShorthandPropertyAssignment(el)) { const vd = checker.getShorthandAssignmentValueSymbol(el)?.declarations?.[0]; fn = vd && ts.isVariableDeclaration(vd) ? vd.initializer : (vd && ts.isFunctionDeclaration(vd) ? vd : null); }
+        if (!fn || !ts.isFunctionLike(fn)) continue;
+        const k = throwsOnKind(ct, name);
+        if (k.length) kindThrows.set(fn, [...(kindThrows.get(fn) ?? []), ...k]);
+      }
+    });
+  }
+  const writes = [];
+
   for (const f of mod.files) {
     const sf = program.getSourceFile(f);
     if (!sf) continue;
@@ -200,6 +263,11 @@ export function check(tree, moduleId) {
       if (guardedGet(node)) {
         cannotTell.push({ at, code: d.code, why: 'a get guarded by has, which the reader cannot see', text });
         continue;
+      }
+      // Iteration 6: a property added to an error object (err.code = '...'), Node's own way.
+      if (d.code === 2339 && ts.isPropertyAccessExpression(node.parent) && node.parent.name === node) {
+        const rt = checker.getTypeAtLocation(node.parent.expression);
+        if ((rt.symbol?.declarations ?? []).some((x) => x.getSourceFile().isDeclarationFile) && /Error$/.test(rt.symbol?.name ?? '')) { cannotTell.push({ at, code: d.code, why: 'a property added to an error object', text }); continue; }
       }
       // Asking a list or set whether it holds a value wider than its own kind: the reader types it too narrowly.
       const call = node.parent?.parent && ts.isCallExpression(node.parent.parent) ? node.parent.parent : node.parent && ts.isCallExpression(node.parent) ? node.parent : null;
@@ -255,12 +323,35 @@ export function check(tree, moduleId) {
       const other = tree.moduleOfFile(target);
       if (other && other !== moduleId && !tree.byId.get(other).public.includes(target)) refusals.push({ at: lineAt(sf, st, tree.root), code: 'import', text: `imports ${path.relative(tree.root, target)}, which is not one of ${other}'s interface files`, kind: "(c) a rule of form: only a module's interface files are imported" });
     }
+    // Iteration 6 (rule 38): however it is loaded, import() included.
+    walk(sf, (n) => {
+      if (!(ts.isCallExpression(n) && n.expression.kind === ts.SyntaxKind.ImportKeyword)) return;
+      const a0 = n.arguments[0];
+      if (!a0 || !(ts.isStringLiteral(a0) || ts.isNoSubstitutionTemplateLiteral(a0))) { refusals.push({ at: lineAt(sf, n, tree.root), code: 'import', text: 'imports a file the tool cannot name (import() of a computed name)', kind: "(c) a rule of form: only a module's interface files are imported" }); return; }
+      if (!a0.text.startsWith('.')) return;
+      const target = path.resolve(path.dirname(f), a0.text);
+      const other = tree.moduleOfFile(target);
+      if (other && other !== moduleId && !tree.byId.get(other).public.includes(target)) refusals.push({ at: lineAt(sf, n, tree.root), code: 'import', text: `imports ${path.relative(tree.root, target)}, which is not one of ${other}'s interface files`, kind: "(c) a rule of form: only a module's interface files are imported" });
+    });
+    // Iteration 6 (rule 34): how a running part is started (process.argv, process.env) is read into a kind published
+    // with @message argv or @message env.
+    walk(sf, (n) => {
+      if (!(ts.isPropertyAccessExpression(n) && ts.isIdentifier(n.expression) && n.expression.text === 'process' && ['argv', 'env'].includes(n.name.text))) return;
+      const channel = n.name.text;
+      let ok = false;
+      for (let a = n.parent; a && !ts.isStatement(a) && !ok; a = a.parent) {
+        const tn = ts.isParenthesizedExpression(a) ? ts.getJSDocType(a) : ts.isVariableDeclaration(a) ? (ts.getJSDocType(a) ?? ts.getJSDocType(a.parent.parent)) : undefined;
+        if (tn) ok = (messageChannelsOf(checker.getTypeFromTypeNode(tn)) ?? []).includes(channel);
+      }
+      if (!ok) refusals.push({ at: lineAt(sf, n, tree.root), code: 'message', text: `reads process.${channel} without a kind published with @message ${channel}`, kind: '(c) a rule of form: how a running part is started is read with its published kind' });
+    });
     // Iteration 5 (rule 29): where a function or method states its errors, it throws only kinds it states.
     walk(sf, (n) => {
       if (!(ts.isFunctionDeclaration(n) || ts.isMethodDeclaration(n) || ts.isArrowFunction(n) || ts.isFunctionExpression(n))) return;
       let host = n;
       if ((ts.isArrowFunction(n) || ts.isFunctionExpression(n)) && n.parent && (ts.isVariableDeclaration(n.parent) || ts.isPropertyAssignment(n.parent))) host = n.parent;
-      const stated = [...tagsOf(host, 'throws'), ...(host !== n ? tagsOf(n, 'throws') : [])].map((t) => t.typeExpression?.type?.getText?.()).filter(Boolean);
+      // iteration 6: {A|B} names two kinds; errors stated on the kind for the member this function builds count too (rule 36)
+      const stated = [...[...tagsOf(host, 'throws'), ...(host !== n ? tagsOf(n, 'throws') : [])].flatMap(throwKinds), ...(kindThrows.get(n) ?? [])];
       if (!stated.length || !n.body) return;
       const own = (m) => {
         if (m !== n.body && ts.isFunctionLike(m)) return; // a nested function states its own
@@ -293,7 +384,7 @@ export function check(tree, moduleId) {
         if (!productKind(target)) return;
         const source = checker.getTypeAtLocation(n.expression);
         if (source.flags & (ts.TypeFlags.Any | ts.TypeFlags.Unknown)) return;
-        if (!checker.isTypeAssignableTo(source, target)) refusals.push({ at: lineAt(sf, n, tree.root), code: 'cast', text: `a cast makes a value of another kind pass as ${kindName(target)}`, kind: '(a) a comment (a cast) disagrees with the code' });
+        if (!checker.isTypeAssignableTo(source, target) && !checker.isTypeAssignableTo(checker.getNonNullableType(source), target)) refusals.push({ at: lineAt(sf, n, tree.root), code: 'cast', text: `a cast makes a value of another kind pass as ${kindName(target)}`, kind: '(a) a comment (a cast) disagrees with the code' });
       }
     });
 
@@ -313,7 +404,7 @@ export function check(tree, moduleId) {
           const valueIndex = c.sig.getParameters().findIndex((p) => p.name === 'value');
           const arg = n.arguments[valueIndex >= 0 ? valueIndex : 2];
           const rowType = rowTypeOf(owner);
-          if (arg && rowType && !checker.isTypeAssignableTo(checker.getTypeAtLocation(arg), rowType)) {
+          if (arg && rowType && !rowFits(arg, rowType)) {
             refusals.push({ at: lineAt(sf, n, tree.root), code: 'rows', text: `writes into table '${table}' a value that is not a ${owner.name}`, kind: '(c) a rule of form: rows of a table are of its stated kind' });
           }
         }
@@ -329,6 +420,14 @@ export function check(tree, moduleId) {
         let p = n.parent;
         while (p && ts.isParenthesizedExpression(p) && !ts.getJSDocType(p)) p = p.parent;
         const typeNode = (p && (ts.isParenthesizedExpression(p) || ts.isVariableDeclaration(p)) && (ts.getJSDocType(p) ?? (ts.isVariableDeclaration(p) ? ts.getJSDocType(p.parent.parent) : undefined))) || undefined;
+        // Iteration 6 (rule 40): a file read with readFileSync is not a message; it needs a stated kind only.
+        let src = a0;
+        if (src && ts.isIdentifier(src)) { const dcl = checker.getSymbolAtLocation(src)?.declarations?.[0]; if (dcl && ts.isVariableDeclaration(dcl) && dcl.initializer) src = dcl.initializer; }
+        const isFile = src && ts.isCallExpression(src) && /(^|\.)readFileSync$/.test(src.expression.getText(sf));
+        if (isFile) {
+          if (!typeNode) refusals.push({ at: lineAt(sf, n, tree.root), code: 'file-kind', text: 'a file is read and parsed without a stated kind', kind: '(c) a rule of form: what is read from a file is given a stated kind' });
+          return;
+        }
         const ok = typeNode && messageChannelsOf(checker.getTypeFromTypeNode(typeNode));
         if (!ok) refusals.push({ at: lineAt(sf, n, tree.root), code: 'message', text: 'a message is read without a kind its sender publishes (@message)', kind: '(c) a rule of form: a message is read with its sender\'s kind' });
       }
@@ -361,6 +460,10 @@ export function check(tree, moduleId) {
         const data = isConsole ? n.arguments : n.arguments.slice(0, 1); // iteration 5: a write's callback is not data
         for (const a of data) find(a, 0);
         const messages = stringified.filter((js) => js.arguments[0] && messageChannelsOf(checker.getTypeAtLocation(js.arguments[0])));
+        // Iteration 6 (rule 35): remember every write, to see later whether a stream that carries messages carries anything else
+        if (data.length) writes.push({ at: lineAt(sf, n, tree.root), streams, message: messages.length > 0 });
+        // Iteration 6 (rule 40): a log line written with console is a message only if what it writes has a message kind
+        if (isConsole && !messages.length) return;
         if (!streams.length) {
           if (messages.length) refusals.push({ at: lineAt(sf, n, tree.root), code: 'message', text: 'a message is written where the tool cannot tell which channel', kind: '(c) a rule of form: a message is written where its channel can be read' });
           return;
@@ -392,6 +495,14 @@ export function check(tree, moduleId) {
         }
       }
     });
+  }
+
+  // Iteration 6 (rule 35): a stream that carries messages carries only messages.
+  const messageStreams = new Set(writes.filter((w) => w.message).flatMap((w) => w.streams));
+  for (const w of writes) {
+    if (w.message) continue;
+    const both = w.streams.filter((x) => messageStreams.has(x));
+    if (both.length) refusals.push({ at: w.at, code: 'message', text: `writes something other than a message to ${both.join(' and ')}, which carries messages`, kind: '(c) a rule of form: a stream that carries messages carries only messages' });
   }
 
   // (d) Every bound line has a test named for it, and every test named for a bound has its line.
@@ -457,6 +568,9 @@ function fingerprint(node, sf) {
       const init = consts.get((el.propertyName ?? el.name).text);
       if (init) imported.set(el.name.text, init);
     }
+    // iteration 6 (rule 42): import * as m, read as m.NAME
+    const nb = st.importClause?.namedBindings;
+    if (nb && ts.isNamespaceImport(nb)) for (const [k, init] of consts) imported.set(`${nb.name.text}.${k}`, init);
   }
   const valueOf = (n) => (ts.isNumericLiteral(n) ? 'n:' + Number(n.text.replace(/_/g, '')) : ts.isStringLiteral(n) || ts.isNoSubstitutionTemplateLiteral(n) || ts.isRegularExpressionLiteral(n) ? 's:' + n.text
     : ts.isPrefixUnaryExpression(n) && n.operator === ts.SyntaxKind.MinusToken && ts.isNumericLiteral(n.operand) ? 'n:-' + Number(n.operand.text.replace(/_/g, '')) : null);
@@ -467,6 +581,7 @@ function fingerprint(node, sf) {
   const valuesIn = (n, out, depth = 0) => {
     const v = valueOf(n);
     if (v) { out.add(v); return; }
+    if (ts.isPropertyAccessExpression(n) && imported.has(n.getText(sf).replace(/\s+/g, ''))) { if (depth < 3) valuesIn(imported.get(n.getText(sf).replace(/\s+/g, '')), out, depth + 1); return; }
     if (ts.isIdentifier(n)) {
       if (/Error$/.test(n.text)) out.add('e:' + n.text); // an error kind named in a check (iteration 5)
       if (loopValues.has(n.text)) for (const x of loopValues.get(n.text)) out.add(x);
