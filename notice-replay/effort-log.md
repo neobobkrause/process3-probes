@@ -15,3 +15,4 @@ Written as the work goes, by Claude (the replay session) and, per provider, by t
 | 15:18 | 15:20 | Wrote `state.mjs`, `carry.mjs`, `extract.mjs`, `changes.py`, the helpers' brief (`HELPER_BRIEF.md`) and this log | clock read at 15:20 |
 | 15:21 | | Started six helpers, one per provider, each with `HELPER_BRIEF.md`; they work at the same time | |
 | 15:21 | 15:25 | While the helpers work: wrote `adaptor/effort.mjs` (counts from the commented files), `replay/run.mjs` (the notices), `replay/compare.mjs`, `replay/tests.mjs` (users' tests before and after, in a scratch copy) and `adaptor/reach.py` (users directly and through other modules); started the test run of ai-runs 96 | the users' tests can be run at the recorded commits: one scratch copy, packages from the npm registry, the product's own test preparation |
+| 15:25 | | Started a seventh helper to make one user (plan-work, about 1,430 lines) followable by the tool, timeboxed to about 2 hours | |

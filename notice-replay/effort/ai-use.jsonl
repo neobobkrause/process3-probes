@@ -1,1 +1,2 @@
 {"t": "2026-11-15T15:21:02Z", "event": "start", "step": "first comments"}
+{"t": "2026-11-15T15:25:21Z", "event": "note", "text": "Read the brief, the proof's rules, bookings/store examples, listing.mjs (308 lines) and parts of check.mjs (~150 lines) to learn what the tool reads; then the module's 3 source files (1310 lines) and call sites in users (grep, ~60 lines). Real state: check refuses 179 (39 in src, 138 in tests, 2 rules of form), 305 cannot-tell; listing 99 anything. Private #members of class AiUse are listed as entries (AiUse##x), contributing many 'anything'."}
