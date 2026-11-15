@@ -1,0 +1,227 @@
+{
+  "id": "P16-code-changed-comment-forgotten-visible",
+  "title": "isEmail now hands back {ok, reason}; its comment still says boolean",
+  "provider": "text-rules",
+  "covers": [
+    "code changed and comment forgotten, where the tool can see it"
+  ],
+  "tool": {
+    "firstCommentsStep": false,
+    "interfaceChanged": false,
+    "summary": "The listing before and after is the same. Nobody is told.",
+    "entries": [],
+    "told": [],
+    "toldDetail": [],
+    "notTold": [],
+    "warnings": [],
+    "commentsOnly": false,
+    "checks": {
+      "text-rules": {
+        "refusedBefore": 0,
+        "refusedAfter": 7,
+        "refusals": [
+          {
+            "at": "text-rules/src/index.mjs:36",
+            "code": 2322,
+            "text": "Type '{ ok: boolean; reason: string; }' is not assignable to type 'boolean'.",
+            "kind": "(a) a comment disagrees with this module's code"
+          },
+          {
+            "at": "text-rules/src/index.mjs:37",
+            "code": 2322,
+            "text": "Type '{ ok: boolean; reason: string; }' is not assignable to type 'boolean'.",
+            "kind": "(a) a comment disagrees with this module's code"
+          },
+          {
+            "at": "text-rules/src/index.mjs:38",
+            "code": 2322,
+            "text": "Type '{ ok: boolean; } | { ok: boolean; reason: string; }' is not assignable to type 'boolean'.   Type '{ ok: boolean; }' is not assignable to type 'boolean'.",
+            "kind": "(a) a comment disagrees with this module's code"
+          },
+          {
+            "at": "text-rules/test/index.test.mjs:25",
+            "code": 2339,
+            "text": "Property 'ok' does not exist on type 'boolean'.",
+            "kind": "(a) a comment disagrees with this module's tests"
+          },
+          {
+            "at": "text-rules/test/index.test.mjs:26",
+            "code": 2339,
+            "text": "Property 'ok' does not exist on type 'boolean'.",
+            "kind": "(a) a comment disagrees with this module's tests"
+          },
+          {
+            "at": "text-rules/test/index.test.mjs:27",
+            "code": 2339,
+            "text": "Property 'ok' does not exist on type 'boolean'.",
+            "kind": "(a) a comment disagrees with this module's tests"
+          },
+          {
+            "at": "text-rules/test/index.test.mjs:28",
+            "code": 2339,
+            "text": "Property 'ok' does not exist on type 'boolean'.",
+            "kind": "(a) a comment disagrees with this module's tests"
+          }
+        ],
+        "refusalsBefore": [],
+        "ms": 153
+      },
+      "money": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 182
+      },
+      "calendar": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 240
+      },
+      "store": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 221
+      },
+      "rooms": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 191
+      },
+      "bookings": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 233
+      },
+      "door": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 234
+      },
+      "meter": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 274
+      },
+      "billing": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 261
+      },
+      "front": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 227
+      },
+      "reports": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 236
+      }
+    }
+  },
+  "groundTruth": {
+    "providerTests": {
+      "pass": true,
+      "failed": [],
+      "ran": 5
+    },
+    "testsBefore": {
+      "money": true,
+      "calendar": true,
+      "store": true,
+      "rooms": true,
+      "bookings": true,
+      "door": true,
+      "meter": true,
+      "billing": true,
+      "front": true,
+      "reports": true
+    },
+    "testsAfter": {
+      "money": {
+        "pass": true,
+        "failed": []
+      },
+      "calendar": {
+        "pass": true,
+        "failed": []
+      },
+      "store": {
+        "pass": true,
+        "failed": []
+      },
+      "rooms": {
+        "pass": true,
+        "failed": []
+      },
+      "bookings": {
+        "pass": true,
+        "failed": []
+      },
+      "door": {
+        "pass": true,
+        "failed": []
+      },
+      "meter": {
+        "pass": true,
+        "failed": []
+      },
+      "billing": {
+        "pass": true,
+        "failed": []
+      },
+      "front": {
+        "pass": false,
+        "failed": [
+          "booking needs a valid email"
+        ]
+      },
+      "reports": {
+        "pass": true,
+        "failed": []
+      }
+    },
+    "broken": [
+      "front"
+    ]
+  },
+  "timing": {
+    "listingMs": {
+      "before": 175,
+      "after": 173
+    },
+    "noticeMs": 647,
+    "checkMs": {
+      "text-rules": 153,
+      "money": 182,
+      "calendar": 240,
+      "store": 221,
+      "rooms": 191,
+      "bookings": 233,
+      "door": 234,
+      "meter": 274,
+      "billing": 261,
+      "front": 227,
+      "reports": 236
+    }
+  }
+}
