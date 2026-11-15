@@ -249,26 +249,26 @@ Each is in the tool's code, and each can be overruled.
 
 ## Measurements
 
-On the made-up product as committed, Node 22.23.4, TypeScript 5.6.3, in this container, design 7 (measured, `results/iter7/measurements.json`):
+On the made-up product as committed, Node 22.23.4, TypeScript 5.6.3, in this container, design 7 (measured, `results/iter7/measurements.json`, from the final rerun; timings vary from run to run):
 
 | Module | `listing` (ms, median of 5) | `check` (ms, median of 5) | Code lines | Comment lines (source) | of which lines with a tag |
 | --- | --- | --- | --- | --- | --- |
-| text-rules | 81 | 85 | 20 | 22 | 9 |
-| money | 58 | 90 | 51 | 19 | 9 |
-| calendar | 46 | 64 | 23 | 0 | 0 |
-| store | 86 | 90 | 58 | 37 | 18 |
-| rooms | 90 | 87 | 42 | 46 | 22 |
-| bookings | 101 | 96 | 74 | 72 | 40 |
-| door | 153 | 89 | 21 | 30 | 12 |
-| meter | 68 | 80 | 19 | 28 | 9 |
-| billing | 142 | 95 | 45 | 32 | 17 |
-| front | 101 | 74 | 31 | 28 | 16 |
-| reports | 75 | 73 | 17 | 11 | 5 |
+| text-rules | 78 | 76 | 20 | 22 | 9 |
+| money | 76 | 97 | 51 | 19 | 9 |
+| calendar | 56 | 62 | 23 | 0 | 0 |
+| store | 76 | 118 | 58 | 37 | 18 |
+| rooms | 111 | 111 | 42 | 46 | 22 |
+| bookings | 127 | 125 | 74 | 72 | 40 |
+| door | 122 | 71 | 21 | 30 | 12 |
+| meter | 56 | 80 | 19 | 28 | 9 |
+| billing | 116 | 84 | 45 | 32 | 17 |
+| front | 89 | 72 | 31 | 28 | 16 |
+| reports | 81 | 68 | 17 | 11 | 5 |
 
 - Comment lines against code lines in the modules' source: 325 against 401, 0.81 per code line (measured; a line with both counts as code). In the tests: 14 against 444.
-- `notice`, which reads the whole product twice: median 641 ms, slowest 1,141 ms, over 150 changes (measured).
+- `notice`, which reads the whole product twice: median 586 ms, slowest 1,088 ms, over 150 changes (measured).
 - The tool against the old rule, over 150 changes (measured, `results/iter7/old-rule.json`): notices 182 against 474; for nothing 111 against 376; users that needed a change and were missed: 9 (round 8's holes; 31 more stopped by a check) against 1 for the old rule (a user reached only through a third module).
-- The rerun of everything (`npm run proof`): RUNALL_TIME (measured once).
+- The rerun of everything (`npm run proof`): 7 minutes (420 seconds, measured once, in this container); it reproduced every answer of the committed results, differing only in timings, which vary from run to run.
 
 ## What this proof does not show
 

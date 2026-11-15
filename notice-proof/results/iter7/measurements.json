@@ -2,8 +2,8 @@
   "measuredOn": "the made-up product as committed (baseline), Node v22.23.4, TypeScript 5.6.3",
   "modules": {
     "text-rules": {
-      "listingMsMedian": 81,
-      "checkMsMedian": 85,
+      "listingMsMedian": 78,
+      "checkMsMedian": 76,
       "srcCodeLines": 20,
       "srcCommentLines": 22,
       "srcInterfaceTagLines": 9,
@@ -11,8 +11,8 @@
       "testCommentLines": 0
     },
     "money": {
-      "listingMsMedian": 58,
-      "checkMsMedian": 90,
+      "listingMsMedian": 76,
+      "checkMsMedian": 97,
       "srcCodeLines": 51,
       "srcCommentLines": 19,
       "srcInterfaceTagLines": 9,
@@ -20,8 +20,8 @@
       "testCommentLines": 0
     },
     "calendar": {
-      "listingMsMedian": 46,
-      "checkMsMedian": 64,
+      "listingMsMedian": 56,
+      "checkMsMedian": 62,
       "srcCodeLines": 23,
       "srcCommentLines": 0,
       "srcInterfaceTagLines": 0,
@@ -29,8 +29,8 @@
       "testCommentLines": 0
     },
     "store": {
-      "listingMsMedian": 86,
-      "checkMsMedian": 90,
+      "listingMsMedian": 76,
+      "checkMsMedian": 118,
       "srcCodeLines": 58,
       "srcCommentLines": 37,
       "srcInterfaceTagLines": 18,
@@ -38,8 +38,8 @@
       "testCommentLines": 0
     },
     "rooms": {
-      "listingMsMedian": 90,
-      "checkMsMedian": 87,
+      "listingMsMedian": 111,
+      "checkMsMedian": 111,
       "srcCodeLines": 42,
       "srcCommentLines": 46,
       "srcInterfaceTagLines": 22,
@@ -47,8 +47,8 @@
       "testCommentLines": 0
     },
     "bookings": {
-      "listingMsMedian": 101,
-      "checkMsMedian": 96,
+      "listingMsMedian": 127,
+      "checkMsMedian": 125,
       "srcCodeLines": 74,
       "srcCommentLines": 72,
       "srcInterfaceTagLines": 40,
@@ -56,8 +56,8 @@
       "testCommentLines": 0
     },
     "door": {
-      "listingMsMedian": 153,
-      "checkMsMedian": 89,
+      "listingMsMedian": 122,
+      "checkMsMedian": 71,
       "srcCodeLines": 21,
       "srcCommentLines": 30,
       "srcInterfaceTagLines": 12,
@@ -65,7 +65,7 @@
       "testCommentLines": 8
     },
     "meter": {
-      "listingMsMedian": 68,
+      "listingMsMedian": 56,
       "checkMsMedian": 80,
       "srcCodeLines": 19,
       "srcCommentLines": 28,
@@ -74,8 +74,8 @@
       "testCommentLines": 6
     },
     "billing": {
-      "listingMsMedian": 142,
-      "checkMsMedian": 95,
+      "listingMsMedian": 116,
+      "checkMsMedian": 84,
       "srcCodeLines": 45,
       "srcCommentLines": 32,
       "srcInterfaceTagLines": 17,
@@ -83,8 +83,8 @@
       "testCommentLines": 0
     },
     "front": {
-      "listingMsMedian": 101,
-      "checkMsMedian": 74,
+      "listingMsMedian": 89,
+      "checkMsMedian": 72,
       "srcCodeLines": 31,
       "srcCommentLines": 28,
       "srcInterfaceTagLines": 16,
@@ -92,8 +92,8 @@
       "testCommentLines": 0
     },
     "reports": {
-      "listingMsMedian": 75,
-      "checkMsMedian": 73,
+      "listingMsMedian": 81,
+      "checkMsMedian": 68,
       "srcCodeLines": 17,
       "srcCommentLines": 11,
       "srcInterfaceTagLines": 5,
@@ -111,8 +111,8 @@
   },
   "noticeMs": {
     "changes": 150,
-    "median": 641,
-    "max": 1141,
-    "min": 488
+    "median": 586,
+    "max": 1088,
+    "min": 414
   }
 }
