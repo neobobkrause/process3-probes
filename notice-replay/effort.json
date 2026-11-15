@@ -1,0 +1,3791 @@
+{
+ "written": "2026-11-15T15:50:54.652Z",
+ "method": "see the header of adaptor/effort.mjs",
+ "providers": {
+  "ai-runs": {
+   "steps": [
+    {
+     "step": "first comments",
+     "start": "2026-11-15T15:21:02Z",
+     "end": "2026-11-15T15:33:48Z",
+     "sourceLinesRead": 3972,
+     "testLinesRead": 110,
+     "kindsUndetermined": [
+      {
+       "what": "RunsDeps.inquiry, steps, aiUse, aiAccounts (the handles of four other modules)",
+       "why": "none of those modules states a kind; written *"
+      },
+      {
+       "what": "RunsCtx.storage.sql and RunsEnv.STORE",
+       "why": "Cloudflare's SqlStorage and Durable Object namespace; no kind in the product; written *"
+      },
+      {
+       "what": "ai-use's refusal extras (period, whose, scope, unit, use), its estimate (OpenManyAnswer.estimate) and its actualOf figures (RunCost)",
+       "why": "ai-use states no kind; the refusal is spread into open's and tick's answers"
+      },
+      {
+       "what": "bias's manifest bundles (RunBias.manifest/now bundles, LensAtOpen bundles' revision) and close's bias_debt",
+       "why": "bias states no kind"
+      },
+      {
+       "what": "observation-log's entry and refusal (TickRequest.log, TickAnswer.refused, WakeEntry.unwritable)",
+       "why": "observation-log states no kind"
+      },
+      {
+       "what": "run-rules' refusals relayed whole (RunGateAnswer.refusal, consumeBound's answer, testBarRecord's refusal) and membership's listenerRefusal (Registration)",
+       "why": "run-rules and membership state no kind; I wrote RuleRefusal for the shape I saw but left the relayed ones *"
+      },
+      {
+       "what": "a run's state (scratch), a verification's evidence, a usage entry's usage, a step's place",
+       "why": "opaque by design (stored verbatim or judged by another module)"
+      }
+     ],
+     "falseStarts": [
+      "Wrote the multi-shape answers (open, tick, close, read, list, spawn, log, openMany, verification, run gate) as exact discriminated unions; the module's tests read fields without narrowing and drew about 150 new refusals; rewrote each as one kind with optional members",
+      "Placed @bound lines between @property lines; TypeScript's reader ends a typedef at the first unknown tag, silently dropping later members (TickDone.ended, DispatchOutcome.status, WorkProduct.registered); moved every @bound after the members",
+      "Put read's @param/@returns into a /* */ comment (not JSDoc) above it; they were not read"
+     ],
+     "corrections": [
+      "Literal kinds widened where the code builds the value in an un-annotated local or closure (started, ok, DispatchOutcome.state, segment_end.next, WorkProduct.lens.basis, LensAtOpen.unreadable): TypeScript widens them and the check refused the literal",
+      "Two local closures given a @type comment (open's and listInContext's refusal builders) and one local (tickAndContinue's dispatch) a @type, so their literals keep their kinds",
+      "Typing public parameters made private helpers that default a parameter to null infer the kind null, so I had to add @param to four private helpers (#aiRunProjectGate, #aiRunTerminate, #standardForRun, #shed) and drop the @returns of #aiRunDispatch",
+      "Echoed run ids typed string | undefined (the request's run is optional because every method defaults its argument to {})",
+      "OpenManyRequest.owner widened to * because the code's own inference of #accountFor's answer refused string | null",
+      "Added ai-use's refusal extras to OpenAnswer and TickAnswer after tests read them"
+     ],
+     "timeWentTo": {
+      "reading the module's code": "about 5 min",
+      "reading call sites in users": "about 1 min",
+      "tracing data shapes": "about 2 min",
+      "finding bounds in code": "about 1 min",
+      "running and reading the check": "about 3 min",
+      "resolving merge conflicts": "0",
+      "writing the expected answer": "0"
+     },
+     "checkRefusalsBefore": 327,
+     "checkRefusalsAfter": 387,
+     "commentsOnly": true,
+     "notes": "Check before: 327 refused (140 code, 174 tests, 13 form). After: 387 = 74 code, 256 tests, 13 form, 44 bound-test (d). Against the real state: 75 earlier refusals gone (the reader now knows the answers' shapes), 91 new besides (d): 61 'Object is possibly null' where a test reads runFor/read/boundOf/partAdmitted without a null check (the kind is honestly nullable), about 27 where a test deliberately passes a wrong kind to prove a refusal (usage: 'x', viewer: 7, a credential field) or reads an optional field directly (note, detail), and 3 pre-existing refusals whose text changed. Listing 'anything' lines: 159 before, 202 after; after, 94 are on private #members (listed as entries but unreachable by users) and 108 on public entries, every one a * I wrote for another module's kind or an opaque value, or the class entry writing out its private members. Wall time is by the clock; sourceLinesRead counts index.mjs 3651 + schema.mjs 161 + run-rules and the tool's listing/check code skimmed (about 160).",
+     "minutes": 12.77
+    },
+    {
+     "step": "update ai-runs:96",
+     "start": "2026-11-15T15:33:51Z",
+     "end": "2026-11-15T15:37:59Z",
+     "sourceLinesRead": 1763,
+     "testLinesRead": 45,
+     "kindsUndetermined": [
+      {
+       "what": "the label's provider, host, model_version, account_level, owner (UsageLabel)",
+       "why": "agent-model composes them and states no kind; written *"
+      },
+      {
+       "what": "a log entry's read and disagree, a segment's end and hop_in as recorded, a hold's recipient, a member's end_refusal",
+       "why": "observation-log's and ai-accounts' shapes, not stated; written *"
+      },
+      {
+       "what": "Gate 1's records (registerGateVerdicts) and the scheduler slot's answer (registerHealthProbe)",
+       "why": "ai-gate and scheduler state no kind"
+      }
+     ],
+     "falseStarts": [],
+     "corrections": [
+      "RunHeld.payer_change: the code builds it as null when there is no change, my first kind said absent"
+     ],
+     "timeWentTo": {
+      "reading the module's code": "about 4 min (a 1,763-line diff)",
+      "reading call sites in users": "0",
+      "tracing data shapes": "about 2 min",
+      "finding bounds in code": "about 1 min",
+      "running and reading the check": "about 1 min",
+      "resolving merge conflicts": "about 1 min (5 conflicts, all on the JSDoc next to changed lines)",
+      "writing the expected answer": "about 2 min"
+     },
+     "checkRefusalsBefore": 423,
+     "checkRefusalsAfter": 486,
+     "commentsOnly": true,
+     "notes": "The real after state checks at 423 (the real before was 327). With my comments 486: 98 code, 309 tests, 20 form, 59 bound-test. New against the real after besides (d): 106, of which 65 tests reading a nullable answer, the rest tests passing deliberately wrong kinds (now including labels lacking fields) and 6 pre-existing source refusals whose text changed. About 30 new entries and 20 new kinds written; the rename touched six kinds.",
+     "minutes": 4.13
+    },
+    {
+     "step": "gap before ai-runs:213",
+     "start": "2026-11-15T15:37:59Z",
+     "end": "2026-11-15T15:38:15Z",
+     "sourceLinesRead": 0,
+     "testLinesRead": 0,
+     "kindsUndetermined": [],
+     "falseStarts": [],
+     "corrections": [],
+     "timeWentTo": {
+      "reading the module's code": "0",
+      "reading call sites in users": "0",
+      "tracing data shapes": "0",
+      "finding bounds in code": "0",
+      "running and reading the check": "0",
+      "resolving merge conflicts": "0",
+      "writing the expected answer": "0"
+     },
+     "checkRefusalsBefore": null,
+     "checkRefusalsAfter": null,
+     "commentsOnly": true,
+     "notes": "Mechanical: the provider's source did not change between 96's after and 213's before (merged empty, files identical).",
+     "minutes": 0.27
+    },
+    {
+     "step": "update ai-runs:213",
+     "start": "2026-11-15T15:38:15Z",
+     "end": "2026-11-15T15:39:02Z",
+     "sourceLinesRead": 34,
+     "testLinesRead": 0,
+     "kindsUndetermined": [],
+     "falseStarts": [],
+     "corrections": [],
+     "timeWentTo": {
+      "reading the module's code": "under 1 min",
+      "reading call sites in users": "0",
+      "tracing data shapes": "0",
+      "finding bounds in code": "0",
+      "running and reading the check": "about 1 min",
+      "resolving merge conflicts": "0 (merged cleanly)",
+      "writing the expected answer": "under 1 min"
+     },
+     "checkRefusalsBefore": 435,
+     "checkRefusalsAfter": 499,
+     "commentsOnly": true,
+     "notes": "A private helper gained an optional parameter; no comment changed. The check counts are the real after state (435) and mine (499); the difference is the same set as at 96.",
+     "minutes": 0.78
+    },
+    {
+     "step": "gap before ai-runs:323",
+     "start": "2026-11-15T15:39:02Z",
+     "end": "2026-11-15T15:39:09Z",
+     "sourceLinesRead": 0,
+     "testLinesRead": 0,
+     "kindsUndetermined": [],
+     "falseStarts": [],
+     "corrections": [],
+     "timeWentTo": {
+      "reading the module's code": "0",
+      "reading call sites in users": "0",
+      "tracing data shapes": "0",
+      "finding bounds in code": "0",
+      "running and reading the check": "0",
+      "resolving merge conflicts": "0",
+      "writing the expected answer": "0"
+     },
+     "checkRefusalsBefore": null,
+     "checkRefusalsAfter": null,
+     "commentsOnly": true,
+     "notes": "Mechanical: no source change between 213's after and 323's before.",
+     "minutes": 0.12
+    },
+    {
+     "step": "update ai-runs:323",
+     "start": "2026-11-15T15:39:09Z",
+     "end": "2026-11-15T15:40:57Z",
+     "sourceLinesRead": 72,
+     "testLinesRead": 0,
+     "kindsUndetermined": [],
+     "falseStarts": [],
+     "corrections": [
+      "pathReadyRead's local closure widened ok: true to boolean; gave the closure a @type comment, as at the first step"
+     ],
+     "timeWentTo": {
+      "reading the module's code": "about 1 min",
+      "reading call sites in users": "0",
+      "tracing data shapes": "under 1 min",
+      "finding bounds in code": "under 1 min",
+      "running and reading the check": "about 2 min",
+      "resolving merge conflicts": "0 (merged cleanly)",
+      "writing the expected answer": "about 1 min"
+     },
+     "checkRefusalsBefore": 453,
+     "checkRefusalsAfter": 517,
+     "commentsOnly": true,
+     "notes": "New op, new method, new static, new answer kind, two bound lines on PathState. The behavioural change (no source registered now reads not ready, so dispatches are withheld) has no kind to carry it.",
+     "minutes": 1.8
+    },
+    {
+     "step": "gap before ai-runs:348",
+     "start": "2026-11-15T15:40:57Z",
+     "end": "2026-11-15T15:41:04Z",
+     "sourceLinesRead": 0,
+     "testLinesRead": 0,
+     "kindsUndetermined": [],
+     "falseStarts": [],
+     "corrections": [],
+     "timeWentTo": {
+      "reading the module's code": "0",
+      "reading call sites in users": "0",
+      "tracing data shapes": "0",
+      "finding bounds in code": "0",
+      "running and reading the check": "0",
+      "resolving merge conflicts": "0",
+      "writing the expected answer": "0"
+     },
+     "checkRefusalsBefore": null,
+     "checkRefusalsAfter": null,
+     "commentsOnly": true,
+     "notes": "Mechanical: no source change.",
+     "minutes": 0.12
+    },
+    {
+     "step": "update ai-runs:348",
+     "start": "2026-11-15T15:41:04Z",
+     "end": "2026-11-15T15:42:28Z",
+     "sourceLinesRead": 50,
+     "testLinesRead": 0,
+     "kindsUndetermined": [],
+     "falseStarts": [],
+     "corrections": [],
+     "timeWentTo": {
+      "reading the module's code": "about 1 min",
+      "reading call sites in users": "0",
+      "tracing data shapes": "under 1 min",
+      "finding bounds in code": "under 1 min",
+      "running and reading the check": "about 1 min",
+      "resolving merge conflicts": "0 (merged cleanly)",
+      "writing the expected answer": "about 1 min"
+     },
+     "checkRefusalsBefore": 456,
+     "checkRefusalsAfter": 521,
+     "commentsOnly": true,
+     "notes": "One new optional argument with a bound, one new refusal field.",
+     "minutes": 1.4
+    },
+    {
+     "step": "gap before ai-runs:391",
+     "start": "2026-11-15T15:42:28Z",
+     "end": "2026-11-15T15:42:35Z",
+     "sourceLinesRead": 0,
+     "testLinesRead": 0,
+     "kindsUndetermined": [],
+     "falseStarts": [],
+     "corrections": [],
+     "timeWentTo": {
+      "reading the module's code": "0",
+      "reading call sites in users": "0",
+      "tracing data shapes": "0",
+      "finding bounds in code": "0",
+      "running and reading the check": "0",
+      "resolving merge conflicts": "0",
+      "writing the expected answer": "0"
+     },
+     "checkRefusalsBefore": null,
+     "checkRefusalsAfter": null,
+     "commentsOnly": true,
+     "notes": "Mechanical: no source change.",
+     "minutes": 0.12
+    },
+    {
+     "step": "update ai-runs:391",
+     "start": "2026-11-15T15:42:35Z",
+     "end": "2026-11-15T15:43:57Z",
+     "sourceLinesRead": 107,
+     "testLinesRead": 7,
+     "kindsUndetermined": [
+      {
+       "what": "ai-gate's Gate 1 record (gateVerdictRecord's argument, gateVerdictRecords' items)",
+       "why": "ai-gate states no kind; written * with a bound naming run-rules' checkGateRecord"
+      }
+     ],
+     "falseStarts": [],
+     "corrections": [],
+     "timeWentTo": {
+      "reading the module's code": "about 1 min",
+      "reading call sites in users": "0",
+      "tracing data shapes": "under 1 min",
+      "finding bounds in code": "under 1 min",
+      "running and reading the check": "about 1 min",
+      "resolving merge conflicts": "0 (merged cleanly)",
+      "writing the expected answer": "about 1 min"
+     },
+     "checkRefusalsBefore": 462,
+     "checkRefusalsAfter": 526,
+     "commentsOnly": true,
+     "notes": "Two new methods and a new table. The new test file draws 2 refusals from TypeScript's union inference over a test table (an entry_id and a passed flag in one array), not from a wrong comment.",
+     "minutes": 1.37
+    },
+    {
+     "step": "gap before ai-runs:485",
+     "start": "2026-11-15T15:43:57Z",
+     "end": "2026-11-15T15:44:04Z",
+     "sourceLinesRead": 0,
+     "testLinesRead": 0,
+     "kindsUndetermined": [],
+     "falseStarts": [],
+     "corrections": [],
+     "timeWentTo": {
+      "reading the module's code": "0",
+      "reading call sites in users": "0",
+      "tracing data shapes": "0",
+      "finding bounds in code": "0",
+      "running and reading the check": "0",
+      "resolving merge conflicts": "0",
+      "writing the expected answer": "0"
+     },
+     "checkRefusalsBefore": null,
+     "checkRefusalsAfter": null,
+     "commentsOnly": true,
+     "notes": "Mechanical: no source change.",
+     "minutes": 0.12
+    },
+    {
+     "step": "update ai-runs:485",
+     "start": "2026-11-15T15:44:04Z",
+     "end": "2026-11-15T15:45:09Z",
+     "sourceLinesRead": 37,
+     "testLinesRead": 0,
+     "kindsUndetermined": [],
+     "falseStarts": [],
+     "corrections": [],
+     "timeWentTo": {
+      "reading the module's code": "under 1 min",
+      "reading call sites in users": "0",
+      "tracing data shapes": "0",
+      "finding bounds in code": "0",
+      "running and reading the check": "about 1 min",
+      "resolving merge conflicts": "0 (merged cleanly)",
+      "writing the expected answer": "under 1 min"
+     },
+     "checkRefusalsBefore": 464,
+     "checkRefusalsAfter": 528,
+     "commentsOnly": true,
+     "notes": "Body change inside openMany; the comment's description of the estimate already said 'ai-use's estimate', so nothing changed.",
+     "minutes": 1.08
+    },
+    {
+     "step": "gap before ai-runs:1004",
+     "start": "2026-11-15T15:45:09Z",
+     "end": "2026-11-15T15:45:15Z",
+     "sourceLinesRead": 0,
+     "testLinesRead": 0,
+     "kindsUndetermined": [],
+     "falseStarts": [],
+     "corrections": [],
+     "timeWentTo": {
+      "reading the module's code": "0",
+      "reading call sites in users": "0",
+      "tracing data shapes": "0",
+      "finding bounds in code": "0",
+      "running and reading the check": "0",
+      "resolving merge conflicts": "0",
+      "writing the expected answer": "0"
+     },
+     "checkRefusalsBefore": null,
+     "checkRefusalsAfter": null,
+     "commentsOnly": true,
+     "notes": "Mechanical: no source change.",
+     "minutes": 0.1
+    },
+    {
+     "step": "update ai-runs:1004",
+     "start": "2026-11-15T15:45:16Z",
+     "end": "2026-11-15T15:47:52Z",
+     "sourceLinesRead": 175,
+     "testLinesRead": 2,
+     "kindsUndetermined": [],
+     "falseStarts": [],
+     "corrections": [
+      "#cascadeReady (private) needed @returns and a @type on its local closure, because pathReadyRead hands its answer back and the closure widened ok: true",
+      "groupTestSet's answer gained field after the new test read it"
+     ],
+     "timeWentTo": {
+      "reading the module's code": "about 2 min",
+      "reading call sites in users": "0",
+      "tracing data shapes": "about 1 min",
+      "finding bounds in code": "about 1 min",
+      "running and reading the check": "about 2 min",
+      "resolving merge conflicts": "about 2 min (2 conflicts; one moved hiddenRuns' tags to a new block)",
+      "writing the expected answer": "about 2 min"
+     },
+     "checkRefusalsBefore": 478,
+     "checkRefusalsAfter": 542,
+     "commentsOnly": true,
+     "notes": "The real change split hiddenRuns from its JSDoc by inserting new exports between them: the merge conflict was exactly there, and a careless resolution would have attached hiddenRuns' @param/@returns to ANSWER_MARKS.",
+     "minutes": 2.6
+    },
+    {
+     "step": "gap before ai-runs:1073",
+     "start": "2026-11-15T15:47:52Z",
+     "end": "2026-11-15T15:47:59Z",
+     "sourceLinesRead": 0,
+     "testLinesRead": 0,
+     "kindsUndetermined": [],
+     "falseStarts": [],
+     "corrections": [],
+     "timeWentTo": {
+      "reading the module's code": "0",
+      "reading call sites in users": "0",
+      "tracing data shapes": "0",
+      "finding bounds in code": "0",
+      "running and reading the check": "0",
+      "resolving merge conflicts": "0",
+      "writing the expected answer": "0"
+     },
+     "checkRefusalsBefore": null,
+     "checkRefusalsAfter": null,
+     "commentsOnly": true,
+     "notes": "Mechanical: no source change.",
+     "minutes": 0.12
+    },
+    {
+     "step": "update ai-runs:1073",
+     "start": "2026-11-15T15:47:59Z",
+     "end": "2026-11-15T15:49:00Z",
+     "sourceLinesRead": 0,
+     "testLinesRead": 45,
+     "kindsUndetermined": [],
+     "falseStarts": [],
+     "corrections": [],
+     "timeWentTo": {
+      "reading the module's code": "0",
+      "reading call sites in users": "0",
+      "tracing data shapes": "0",
+      "finding bounds in code": "0",
+      "running and reading the check": "about 1 min",
+      "resolving merge conflicts": "0",
+      "writing the expected answer": "under 1 min"
+     },
+     "checkRefusalsBefore": 485,
+     "checkRefusalsAfter": 549,
+     "commentsOnly": true,
+     "notes": "Test-only change; nothing to comment.",
+     "minutes": 1.02
+    }
+   ],
+   "states": [
+    {
+     "change": "ai-runs:96",
+     "side": "before",
+     "sourceLines": 3814,
+     "linesAdded": 1065,
+     "linesRemoved": 43,
+     "commentLinesAdded": 997,
+     "blocksAdded": 93,
+     "tags": {
+      "typedef": 66,
+      "property": 485,
+      "bound": 45,
+      "optable": 1,
+      "storedrows": 7,
+      "type": 14,
+      "param": 61,
+      "returns": 49
+     },
+     "tagsRemoved": {}
+    },
+    {
+     "change": "ai-runs:96",
+     "side": "after",
+     "sourceLines": 4636,
+     "linesAdded": 1366,
+     "linesRemoved": 55,
+     "commentLinesAdded": 1282,
+     "blocksAdded": 122,
+     "tags": {
+      "typedef": 82,
+      "property": 623,
+      "bound": 60,
+      "optable": 1,
+      "storedrows": 9,
+      "type": 23,
+      "param": 77,
+      "returns": 63
+     },
+     "tagsRemoved": {},
+     "againstPrevious": {
+      "commentLinesNet": 285,
+      "blocksNet": 29,
+      "tagsNet": {
+       "typedef": 16,
+       "property": 138,
+       "bound": 15,
+       "optable": 0,
+       "storedrows": 2,
+       "type": 9,
+       "param": 16,
+       "returns": 14
+      }
+     }
+    },
+    {
+     "change": "ai-runs:213",
+     "side": "before",
+     "sourceLines": 4636,
+     "linesAdded": 1366,
+     "linesRemoved": 55,
+     "commentLinesAdded": 1282,
+     "blocksAdded": 122,
+     "tags": {
+      "typedef": 82,
+      "property": 623,
+      "bound": 60,
+      "optable": 1,
+      "storedrows": 9,
+      "type": 23,
+      "param": 77,
+      "returns": 63
+     },
+     "tagsRemoved": {},
+     "againstPrevious": {
+      "commentLinesNet": 0,
+      "blocksNet": 0,
+      "tagsNet": {
+       "typedef": 0,
+       "property": 0,
+       "bound": 0,
+       "optable": 0,
+       "storedrows": 0,
+       "type": 0,
+       "param": 0,
+       "returns": 0
+      }
+     }
+    },
+    {
+     "change": "ai-runs:213",
+     "side": "after",
+     "sourceLines": 4640,
+     "linesAdded": 1366,
+     "linesRemoved": 55,
+     "commentLinesAdded": 1282,
+     "blocksAdded": 122,
+     "tags": {
+      "typedef": 82,
+      "property": 623,
+      "bound": 60,
+      "optable": 1,
+      "storedrows": 9,
+      "type": 23,
+      "param": 77,
+      "returns": 63
+     },
+     "tagsRemoved": {},
+     "againstPrevious": {
+      "commentLinesNet": 0,
+      "blocksNet": 0,
+      "tagsNet": {
+       "typedef": 0,
+       "property": 0,
+       "bound": 0,
+       "optable": 0,
+       "storedrows": 0,
+       "type": 0,
+       "param": 0,
+       "returns": 0
+      }
+     }
+    },
+    {
+     "change": "ai-runs:323",
+     "side": "before",
+     "sourceLines": 4640,
+     "linesAdded": 1366,
+     "linesRemoved": 55,
+     "commentLinesAdded": 1282,
+     "blocksAdded": 122,
+     "tags": {
+      "typedef": 82,
+      "property": 623,
+      "bound": 60,
+      "optable": 1,
+      "storedrows": 9,
+      "type": 23,
+      "param": 77,
+      "returns": 63
+     },
+     "tagsRemoved": {},
+     "againstPrevious": {
+      "commentLinesNet": 0,
+      "blocksNet": 0,
+      "tagsNet": {
+       "typedef": 0,
+       "property": 0,
+       "bound": 0,
+       "optable": 0,
+       "storedrows": 0,
+       "type": 0,
+       "param": 0,
+       "returns": 0
+      }
+     }
+    },
+    {
+     "change": "ai-runs:323",
+     "side": "after",
+     "sourceLines": 4670,
+     "linesAdded": 1385,
+     "linesRemoved": 56,
+     "commentLinesAdded": 1300,
+     "blocksAdded": 125,
+     "tags": {
+      "typedef": 83,
+      "property": 628,
+      "bound": 62,
+      "optable": 1,
+      "storedrows": 9,
+      "type": 25,
+      "param": 78,
+      "returns": 64
+     },
+     "tagsRemoved": {},
+     "againstPrevious": {
+      "commentLinesNet": 18,
+      "blocksNet": 3,
+      "tagsNet": {
+       "typedef": 1,
+       "property": 5,
+       "bound": 2,
+       "optable": 0,
+       "storedrows": 0,
+       "type": 2,
+       "param": 1,
+       "returns": 1
+      }
+     }
+    },
+    {
+     "change": "ai-runs:348",
+     "side": "before",
+     "sourceLines": 4670,
+     "linesAdded": 1385,
+     "linesRemoved": 56,
+     "commentLinesAdded": 1300,
+     "blocksAdded": 125,
+     "tags": {
+      "typedef": 83,
+      "property": 628,
+      "bound": 62,
+      "optable": 1,
+      "storedrows": 9,
+      "type": 25,
+      "param": 78,
+      "returns": 64
+     },
+     "tagsRemoved": {},
+     "againstPrevious": {
+      "commentLinesNet": 0,
+      "blocksNet": 0,
+      "tagsNet": {
+       "typedef": 0,
+       "property": 0,
+       "bound": 0,
+       "optable": 0,
+       "storedrows": 0,
+       "type": 0,
+       "param": 0,
+       "returns": 0
+      }
+     }
+    },
+    {
+     "change": "ai-runs:348",
+     "side": "after",
+     "sourceLines": 4688,
+     "linesAdded": 1388,
+     "linesRemoved": 56,
+     "commentLinesAdded": 1303,
+     "blocksAdded": 125,
+     "tags": {
+      "typedef": 83,
+      "property": 630,
+      "bound": 63,
+      "optable": 1,
+      "storedrows": 9,
+      "type": 25,
+      "param": 78,
+      "returns": 64
+     },
+     "tagsRemoved": {},
+     "againstPrevious": {
+      "commentLinesNet": 3,
+      "blocksNet": 0,
+      "tagsNet": {
+       "typedef": 0,
+       "property": 2,
+       "bound": 1,
+       "optable": 0,
+       "storedrows": 0,
+       "type": 0,
+       "param": 0,
+       "returns": 0
+      }
+     }
+    },
+    {
+     "change": "ai-runs:391",
+     "side": "before",
+     "sourceLines": 4688,
+     "linesAdded": 1388,
+     "linesRemoved": 56,
+     "commentLinesAdded": 1303,
+     "blocksAdded": 125,
+     "tags": {
+      "typedef": 83,
+      "property": 630,
+      "bound": 63,
+      "optable": 1,
+      "storedrows": 9,
+      "type": 25,
+      "param": 78,
+      "returns": 64
+     },
+     "tagsRemoved": {},
+     "againstPrevious": {
+      "commentLinesNet": 0,
+      "blocksNet": 0,
+      "tagsNet": {
+       "typedef": 0,
+       "property": 0,
+       "bound": 0,
+       "optable": 0,
+       "storedrows": 0,
+       "type": 0,
+       "param": 0,
+       "returns": 0
+      }
+     }
+    },
+    {
+     "change": "ai-runs:391",
+     "side": "after",
+     "sourceLines": 4737,
+     "linesAdded": 1409,
+     "linesRemoved": 58,
+     "commentLinesAdded": 1323,
+     "blocksAdded": 126,
+     "tags": {
+      "typedef": 84,
+      "property": 636,
+      "bound": 64,
+      "optable": 1,
+      "storedrows": 10,
+      "type": 25,
+      "param": 80,
+      "returns": 66
+     },
+     "tagsRemoved": {},
+     "againstPrevious": {
+      "commentLinesNet": 20,
+      "blocksNet": 1,
+      "tagsNet": {
+       "typedef": 1,
+       "property": 6,
+       "bound": 1,
+       "optable": 0,
+       "storedrows": 1,
+       "type": 0,
+       "param": 2,
+       "returns": 2
+      }
+     }
+    },
+    {
+     "change": "ai-runs:485",
+     "side": "before",
+     "sourceLines": 4737,
+     "linesAdded": 1409,
+     "linesRemoved": 58,
+     "commentLinesAdded": 1323,
+     "blocksAdded": 126,
+     "tags": {
+      "typedef": 84,
+      "property": 636,
+      "bound": 64,
+      "optable": 1,
+      "storedrows": 10,
+      "type": 25,
+      "param": 80,
+      "returns": 66
+     },
+     "tagsRemoved": {},
+     "againstPrevious": {
+      "commentLinesNet": 0,
+      "blocksNet": 0,
+      "tagsNet": {
+       "typedef": 0,
+       "property": 0,
+       "bound": 0,
+       "optable": 0,
+       "storedrows": 0,
+       "type": 0,
+       "param": 0,
+       "returns": 0
+      }
+     }
+    },
+    {
+     "change": "ai-runs:485",
+     "side": "after",
+     "sourceLines": 4740,
+     "linesAdded": 1409,
+     "linesRemoved": 58,
+     "commentLinesAdded": 1323,
+     "blocksAdded": 126,
+     "tags": {
+      "typedef": 84,
+      "property": 636,
+      "bound": 64,
+      "optable": 1,
+      "storedrows": 10,
+      "type": 25,
+      "param": 80,
+      "returns": 66
+     },
+     "tagsRemoved": {},
+     "againstPrevious": {
+      "commentLinesNet": 0,
+      "blocksNet": 0,
+      "tagsNet": {
+       "typedef": 0,
+       "property": 0,
+       "bound": 0,
+       "optable": 0,
+       "storedrows": 0,
+       "type": 0,
+       "param": 0,
+       "returns": 0
+      }
+     }
+    },
+    {
+     "change": "ai-runs:1004",
+     "side": "before",
+     "sourceLines": 4740,
+     "linesAdded": 1409,
+     "linesRemoved": 58,
+     "commentLinesAdded": 1323,
+     "blocksAdded": 126,
+     "tags": {
+      "typedef": 84,
+      "property": 636,
+      "bound": 64,
+      "optable": 1,
+      "storedrows": 10,
+      "type": 25,
+      "param": 80,
+      "returns": 66
+     },
+     "tagsRemoved": {},
+     "againstPrevious": {
+      "commentLinesNet": 0,
+      "blocksNet": 0,
+      "tagsNet": {
+       "typedef": 0,
+       "property": 0,
+       "bound": 0,
+       "optable": 0,
+       "storedrows": 0,
+       "type": 0,
+       "param": 0,
+       "returns": 0
+      }
+     }
+    },
+    {
+     "change": "ai-runs:1004",
+     "side": "after",
+     "sourceLines": 4841,
+     "linesAdded": 1433,
+     "linesRemoved": 60,
+     "commentLinesAdded": 1346,
+     "blocksAdded": 130,
+     "tags": {
+      "typedef": 85,
+      "property": 640,
+      "bound": 68,
+      "optable": 1,
+      "storedrows": 10,
+      "type": 28,
+      "param": 81,
+      "returns": 68
+     },
+     "tagsRemoved": {},
+     "againstPrevious": {
+      "commentLinesNet": 23,
+      "blocksNet": 4,
+      "tagsNet": {
+       "typedef": 1,
+       "property": 4,
+       "bound": 4,
+       "optable": 0,
+       "storedrows": 0,
+       "type": 3,
+       "param": 1,
+       "returns": 2
+      }
+     }
+    },
+    {
+     "change": "ai-runs:1073",
+     "side": "before",
+     "sourceLines": 4841,
+     "linesAdded": 1433,
+     "linesRemoved": 60,
+     "commentLinesAdded": 1346,
+     "blocksAdded": 130,
+     "tags": {
+      "typedef": 85,
+      "property": 640,
+      "bound": 68,
+      "optable": 1,
+      "storedrows": 10,
+      "type": 28,
+      "param": 81,
+      "returns": 68
+     },
+     "tagsRemoved": {},
+     "againstPrevious": {
+      "commentLinesNet": 0,
+      "blocksNet": 0,
+      "tagsNet": {
+       "typedef": 0,
+       "property": 0,
+       "bound": 0,
+       "optable": 0,
+       "storedrows": 0,
+       "type": 0,
+       "param": 0,
+       "returns": 0
+      }
+     }
+    },
+    {
+     "change": "ai-runs:1073",
+     "side": "after",
+     "sourceLines": 4841,
+     "linesAdded": 1433,
+     "linesRemoved": 60,
+     "commentLinesAdded": 1346,
+     "blocksAdded": 130,
+     "tags": {
+      "typedef": 85,
+      "property": 640,
+      "bound": 68,
+      "optable": 1,
+      "storedrows": 10,
+      "type": 28,
+      "param": 81,
+      "returns": 68
+     },
+     "tagsRemoved": {},
+     "againstPrevious": {
+      "commentLinesNet": 0,
+      "blocksNet": 0,
+      "tagsNet": {
+       "typedef": 0,
+       "property": 0,
+       "bound": 0,
+       "optable": 0,
+       "storedrows": 0,
+       "type": 0,
+       "param": 0,
+       "returns": 0
+      }
+     }
+    }
+   ],
+   "notes": [
+    {
+     "t": "2026-11-15T15:25:11Z",
+     "event": "note",
+     "text": "Read all of index.mjs (3651 lines) and schema.mjs (161) before writing a comment; the class AiRuns is the interface (about 45 public members), almost every answer is an ad-hoc object built from SQL rows, so the checker sees them as any and cannot verify the kinds I state against the code. The listing also lists every private #member of the class as an entry (about 60 of them)."
+    },
+    {
+     "t": "2026-11-15T15:31:12Z",
+     "event": "note",
+     "text": "False start: I wrote the answers as exact unions (started/refused, found/not found). The source then checked, but the module's own tests read fields without narrowing (r.code on an answer they know refused), drawing about 150 new 'comment disagrees with tests' refusals. Rewriting each multi-shape answer as one kind with optional members, which is how the code and its readers treat them. Also found: a @bound line placed between @property lines ends the typedef in TypeScript's reader, silently dropping every later member (TickDone.ended, DispatchOutcome.status, WorkProduct.registered); bounds must come after all members."
+    },
+    {
+     "t": "2026-11-15T15:47:52Z",
+     "event": "note",
+     "text": "At 1004 the real code inserted new exports between hiddenRuns' JSDoc and the function, so the JSDoc now precedes ANSWER_MARKS. My tags for hiddenRuns had to move to a new block; a mechanical resolution would have given ANSWER_MARKS hiddenRuns' @param and @returns."
+    }
+   ]
+  },
+  "ai-accounts": {
+   "steps": [
+    {
+     "step": "first comments",
+     "start": "2026-11-15T15:21:02Z",
+     "end": "2026-11-15T15:36:28Z",
+     "sourceLinesRead": 3142,
+     "testLinesRead": 0,
+     "kindsUndetermined": [
+      {
+       "what": "AiAccountsDeps.sql / the Durable Object's SQL storage",
+       "why": "Cloudflare's SqlStorage is not a product kind; written *"
+      },
+      {
+       "what": "AiAccountsDeps.core, AiAccountsOptions.record (record-core's service)",
+       "why": "record-core states no kind; written *"
+      },
+      {
+       "what": "AiAccountsDeps.membership, AiAccountsOptions.membership (membership's service)",
+       "why": "membership states no kind; written * (and MembershipRefusal written as the shape relied on, ok: boolean as the reader infers it)"
+      },
+      {
+       "what": "AiAccountsDeps.catalogue, AiAccountsOptions.catalogue (ai-catalogue's service), entriesOffered's entries",
+       "why": "ai-catalogue states no kind at this state; written *"
+      },
+      {
+       "what": "the translation of AI_ACCOUNT_CHECKS rows, AI_WORDS, DeclaredOp.description",
+       "why": "setup-words' word()/localize() state no kind"
+      },
+      {
+       "what": "Act.kind",
+       "why": "the code accepts any value and refuses others; a string kind makes the reader refuse PART_OF_KIND[act.kind] (undefined as an index); written *"
+      },
+      {
+       "what": "start()'s answer {revoked, left}",
+       "why": "membership's registration answers, no stated kind"
+      }
+     ],
+     "falseStarts": [
+      "typed answers as Refusal | Answer with Refusal a plain object kind: the reader refused ~420 property reads in tests and in the module (r.entries on a Refusal); added an index signature to Refusal (a site adds members of its own)",
+      "typed ChecksInForce as {checks,sources} | {unreadable: true}: the module's own reads (force.unreadable, force.checks) were refused; rewrote it with ?: undefined members so it discriminates",
+      "typed Act.kind as string: PART_OF_KIND[actOf.kind] refused (undefined index); changed to *",
+      "typed answers echoing the request's owner/level/provider/plan as string: refused because the request's own is string | null (a guard in an untyped private helper the reader cannot follow); loosened to string | null"
+     ],
+     "corrections": [
+      "sql made optional in AiAccountsDeps (the constructor defaults its argument to {})",
+      "gatewayKeyEnter's key written * with a bound (the code accepts any value and refuses non-strings)",
+      "aiAccountsOps' a written AiAccounts | null (a test lists the ops over null)",
+      "added @type on four local declarations (base Credential, LimitOf[] out, AccountNotice[] out, sources/s in checksInForce) and on two private fields (_gatewayPort, _disclosureSource), and @returns on private _row, _refuse, _stateOf, _partialOf, _credentialOf, _gatewayHeld, _ceiling, and @param on _hopFor, so the interface's kinds could be checked"
+     ],
+     "timeWentTo": {
+      "reading the module's code": "about 5 min",
+      "reading call sites in users": "about 1 min",
+      "tracing data shapes": "about 2 min",
+      "finding bounds in code": "about 1 min",
+      "running and reading the check": "about 4 min",
+      "resolving merge conflicts": "0",
+      "writing the expected answer": "0",
+      "writing the comments": "about 2 min"
+     },
+     "checkRefusalsBefore": 236,
+     "checkRefusalsAfter": 514,
+     "commentsOnly": true,
+     "notes": "Real state: REFUSED (236) = 118 code, 106 tests, 12 rule of form; 622 cannot tell. Commented: REFUSED (514) = 67 code (53 of the real ones gone, 2 new: base.mjs _sealKey encode(this._sealSecret) where the reader cannot follow the _seal() guard, and index.mjs a?.accounts on the dead branch after instanceof), 387 tests (about 280 new: tests read refusal members such as r.reason on the union Refusal | Answer, call with values chosen to be refused (on: 'yes', token: 42), or read r.x of a | null answer), 12 rule of form (JSON.parse of stored JSON columns read as messages, unchanged), 48 (d) bounds without a named test (expected, not fixed); 635 cannot tell. Listing: 'anything' lines 267 -> 356; entries with anything 185 (109 private) -> 264 (110 private) among about 400 entries (was 228): the 90 private _members are left uncommented (the module's own by its stated convention), every answer carries Refusal's index signature (*), and services are *. Clock times are short because the work ran fast in wall time; the effort is in the lines read and written.",
+     "minutes": 15.43
+    },
+    {
+     "step": "update ai-accounts:124",
+     "start": "2026-11-15T15:36:42Z",
+     "end": "2026-11-15T15:39:23Z",
+     "sourceLinesRead": 380,
+     "testLinesRead": 100,
+     "kindsUndetermined": [],
+     "falseStarts": [
+      "the old form of accountUses built its base with a conditional whose literal branch the reader widened (ok: boolean): refused until a @type on the local declaration"
+     ],
+     "corrections": [],
+     "timeWentTo": {
+      "reading the module's code": "about 2 min (legacy.mjs, 371 new lines)",
+      "reading call sites in users": "0",
+      "tracing data shapes": "about 1 min",
+      "finding bounds in code": "under 1 min",
+      "running and reading the check": "about 1 min",
+      "resolving merge conflicts": "under 1 min (one conflict: the kinds block beside the changed class line)",
+      "writing the expected answer": "about 1 min",
+      "writing the comments": "about 2 min"
+     },
+     "checkRefusalsBefore": 261,
+     "checkRefusalsAfter": 553,
+     "commentsOnly": true,
+     "notes": "Real after: REFUSED (261) = 140 code, 109 tests, 12 form. Commented after: 553 = 67 code (the same 2 of mine as before), 423 tests, 12 form, 51 bounds without a test. New: 14 deprecated methods commented, 4 overrides commented with the union of both forms, 5 new kinds, AccountForAnswer and AccountUsesAnswer gained optional members; accountUsesOf's base-layer @returns widened to the shared kind so the override stays compatible.",
+     "minutes": 2.68
+    },
+    {
+     "step": "update ai-accounts:188",
+     "start": "2026-11-15T15:39:47Z",
+     "end": "2026-11-15T15:40:30Z",
+     "sourceLinesRead": 25,
+     "testLinesRead": 30,
+     "kindsUndetermined": [],
+     "falseStarts": [],
+     "corrections": [],
+     "timeWentTo": {
+      "reading the module's code": "under 1 min (a 15-line diff)",
+      "reading call sites in users": "0",
+      "tracing data shapes": "0",
+      "finding bounds in code": "under 1 min (whether the stamp's form is a bound: my comments state none)",
+      "running and reading the check": "under 1 min",
+      "resolving merge conflicts": "0 (merged cleanly)",
+      "writing the expected answer": "under 1 min"
+     },
+     "checkRefusalsBefore": 265,
+     "checkRefusalsAfter": 557,
+     "commentsOnly": true,
+     "notes": "No comment changed: 188-after equals 188-before plus the real change merged. Real after REFUSED (265); commented 557, the same 2 source refusals of mine.",
+     "minutes": 0.72
+    },
+    {
+     "step": "update ai-accounts:316",
+     "start": "2026-11-15T15:40:36Z",
+     "end": "2026-11-15T15:41:18Z",
+     "sourceLinesRead": 20,
+     "testLinesRead": 0,
+     "kindsUndetermined": [],
+     "falseStarts": [],
+     "corrections": [],
+     "timeWentTo": {
+      "reading the module's code": "under 1 min (a 6-line diff)",
+      "reading call sites in users": "0",
+      "tracing data shapes": "0",
+      "finding bounds in code": "0",
+      "running and reading the check": "under 1 min",
+      "resolving merge conflicts": "0 (merged cleanly)",
+      "writing the expected answer": "under 1 min"
+     },
+     "checkRefusalsBefore": 268,
+     "checkRefusalsAfter": 560,
+     "commentsOnly": true,
+     "notes": "No comment changed. Real after REFUSED (268); commented 560, the same 2 source refusals of mine.",
+     "minutes": 0.7
+    },
+    {
+     "step": "update ai-accounts:483",
+     "start": "2026-11-15T15:41:23Z",
+     "end": "2026-11-15T15:42:31Z",
+     "sourceLinesRead": 50,
+     "testLinesRead": 0,
+     "kindsUndetermined": [],
+     "falseStarts": [],
+     "corrections": [],
+     "timeWentTo": {
+      "reading the module's code": "about 1 min (a 50-line diff of DECLARED_OPS)",
+      "reading call sites in users": "0",
+      "tracing data shapes": "0",
+      "finding bounds in code": "0",
+      "running and reading the check": "under 1 min",
+      "resolving merge conflicts": "0 (merged cleanly)",
+      "writing the expected answer": "under 1 min",
+      "writing the comments": "under 1 min (one line: DeclaredOp.weight's union)"
+     },
+     "checkRefusalsBefore": 268,
+     "checkRefusalsAfter": 560,
+     "commentsOnly": true,
+     "notes": "One comment line changed: DeclaredOp.weight's union of grades. Without it the reader would refuse each row whose weight is 'reversible' or 'terminal' (D's extra is typed by the union).",
+     "minutes": 1.13
+    },
+    {
+     "step": "update ai-accounts:1098",
+     "start": "2026-11-15T15:42:36Z",
+     "end": "2026-11-15T15:44:15Z",
+     "sourceLinesRead": 90,
+     "testLinesRead": 0,
+     "kindsUndetermined": [],
+     "falseStarts": [],
+     "corrections": [],
+     "timeWentTo": {
+      "reading the module's code": "about 1 min (a 90-line diff)",
+      "reading call sites in users": "0",
+      "tracing data shapes": "under 1 min (where AccountState flows: accountState, accountsOf, two ops)",
+      "finding bounds in code": "under 1 min (reused the reference and token bounds)",
+      "running and reading the check": "under 1 min",
+      "resolving merge conflicts": "0 (merged cleanly)",
+      "writing the expected answer": "about 1 min",
+      "writing the comments": "about 1 min"
+     },
+     "checkRefusalsBefore": 278,
+     "checkRefusalsAfter": 570,
+     "commentsOnly": true,
+     "notes": "Comments added: AccountState.flagged_at and .health, kind AccountHealth, @returns on private _healthOf, the two new methods, the two new ops in AiAccountsOps with three bound lines. Real after REFUSED (278: 145 code, 113 tests, 2 (b) and 18 (c) from new tests importing store-assembly's test fixture); commented 570, the same 2 source refusals of mine.",
+     "minutes": 1.65
+    }
+   ],
+   "states": [
+    {
+     "change": "ai-accounts:124",
+     "side": "before",
+     "sourceLines": 3292,
+     "linesAdded": 951,
+     "linesRemoved": 0,
+     "commentLinesAdded": 894,
+     "blocksAdded": 151,
+     "tags": {
+      "import": 7,
+      "returns": 78,
+      "param": 82,
+      "bound": 54,
+      "type": 9,
+      "typedef": 55,
+      "property": 257,
+      "optable": 1,
+      "storedrows": 10,
+      "throws": 2
+     },
+     "tagsRemoved": {}
+    },
+    {
+     "change": "ai-accounts:124",
+     "side": "after",
+     "sourceLines": 3667,
+     "linesAdded": 1066,
+     "linesRemoved": 18,
+     "commentLinesAdded": 1004,
+     "blocksAdded": 160,
+     "tags": {
+      "import": 8,
+      "returns": 98,
+      "param": 99,
+      "bound": 58,
+      "type": 10,
+      "typedef": 60,
+      "property": 285,
+      "optable": 1,
+      "storedrows": 10,
+      "throws": 2
+     },
+     "tagsRemoved": {},
+     "againstPrevious": {
+      "commentLinesNet": 110,
+      "blocksNet": 9,
+      "tagsNet": {
+       "import": 1,
+       "returns": 20,
+       "param": 17,
+       "bound": 4,
+       "type": 1,
+       "typedef": 5,
+       "property": 28,
+       "optable": 0,
+       "storedrows": 0,
+       "throws": 0
+      }
+     }
+    },
+    {
+     "change": "ai-accounts:188",
+     "side": "before",
+     "sourceLines": 3667,
+     "linesAdded": 1066,
+     "linesRemoved": 18,
+     "commentLinesAdded": 1004,
+     "blocksAdded": 160,
+     "tags": {
+      "import": 8,
+      "returns": 98,
+      "param": 99,
+      "bound": 58,
+      "type": 10,
+      "typedef": 60,
+      "property": 285,
+      "optable": 1,
+      "storedrows": 10,
+      "throws": 2
+     },
+     "tagsRemoved": {},
+     "againstPrevious": {
+      "commentLinesNet": 0,
+      "blocksNet": 0,
+      "tagsNet": {
+       "import": 0,
+       "returns": 0,
+       "param": 0,
+       "bound": 0,
+       "type": 0,
+       "typedef": 0,
+       "property": 0,
+       "optable": 0,
+       "storedrows": 0,
+       "throws": 0
+      }
+     }
+    },
+    {
+     "change": "ai-accounts:188",
+     "side": "after",
+     "sourceLines": 3672,
+     "linesAdded": 1066,
+     "linesRemoved": 18,
+     "commentLinesAdded": 1004,
+     "blocksAdded": 160,
+     "tags": {
+      "import": 8,
+      "returns": 98,
+      "param": 99,
+      "bound": 58,
+      "type": 10,
+      "typedef": 60,
+      "property": 285,
+      "optable": 1,
+      "storedrows": 10,
+      "throws": 2
+     },
+     "tagsRemoved": {},
+     "againstPrevious": {
+      "commentLinesNet": 0,
+      "blocksNet": 0,
+      "tagsNet": {
+       "import": 0,
+       "returns": 0,
+       "param": 0,
+       "bound": 0,
+       "type": 0,
+       "typedef": 0,
+       "property": 0,
+       "optable": 0,
+       "storedrows": 0,
+       "throws": 0
+      }
+     }
+    },
+    {
+     "change": "ai-accounts:316",
+     "side": "before",
+     "sourceLines": 3672,
+     "linesAdded": 1066,
+     "linesRemoved": 18,
+     "commentLinesAdded": 1004,
+     "blocksAdded": 160,
+     "tags": {
+      "import": 8,
+      "returns": 98,
+      "param": 99,
+      "bound": 58,
+      "type": 10,
+      "typedef": 60,
+      "property": 285,
+      "optable": 1,
+      "storedrows": 10,
+      "throws": 2
+     },
+     "tagsRemoved": {},
+     "againstPrevious": {
+      "commentLinesNet": 0,
+      "blocksNet": 0,
+      "tagsNet": {
+       "import": 0,
+       "returns": 0,
+       "param": 0,
+       "bound": 0,
+       "type": 0,
+       "typedef": 0,
+       "property": 0,
+       "optable": 0,
+       "storedrows": 0,
+       "throws": 0
+      }
+     }
+    },
+    {
+     "change": "ai-accounts:316",
+     "side": "after",
+     "sourceLines": 3674,
+     "linesAdded": 1066,
+     "linesRemoved": 18,
+     "commentLinesAdded": 1004,
+     "blocksAdded": 160,
+     "tags": {
+      "import": 8,
+      "returns": 98,
+      "param": 99,
+      "bound": 58,
+      "type": 10,
+      "typedef": 60,
+      "property": 285,
+      "optable": 1,
+      "storedrows": 10,
+      "throws": 2
+     },
+     "tagsRemoved": {},
+     "againstPrevious": {
+      "commentLinesNet": 0,
+      "blocksNet": 0,
+      "tagsNet": {
+       "import": 0,
+       "returns": 0,
+       "param": 0,
+       "bound": 0,
+       "type": 0,
+       "typedef": 0,
+       "property": 0,
+       "optable": 0,
+       "storedrows": 0,
+       "throws": 0
+      }
+     }
+    },
+    {
+     "change": "ai-accounts:483",
+     "side": "before",
+     "sourceLines": 3674,
+     "linesAdded": 1066,
+     "linesRemoved": 18,
+     "commentLinesAdded": 1004,
+     "blocksAdded": 160,
+     "tags": {
+      "import": 8,
+      "returns": 98,
+      "param": 99,
+      "bound": 58,
+      "type": 10,
+      "typedef": 60,
+      "property": 285,
+      "optable": 1,
+      "storedrows": 10,
+      "throws": 2
+     },
+     "tagsRemoved": {},
+     "againstPrevious": {
+      "commentLinesNet": 0,
+      "blocksNet": 0,
+      "tagsNet": {
+       "import": 0,
+       "returns": 0,
+       "param": 0,
+       "bound": 0,
+       "type": 0,
+       "typedef": 0,
+       "property": 0,
+       "optable": 0,
+       "storedrows": 0,
+       "throws": 0
+      }
+     }
+    },
+    {
+     "change": "ai-accounts:483",
+     "side": "after",
+     "sourceLines": 3676,
+     "linesAdded": 1066,
+     "linesRemoved": 18,
+     "commentLinesAdded": 1004,
+     "blocksAdded": 160,
+     "tags": {
+      "import": 8,
+      "returns": 98,
+      "param": 99,
+      "bound": 58,
+      "type": 10,
+      "typedef": 60,
+      "property": 285,
+      "optable": 1,
+      "storedrows": 10,
+      "throws": 2
+     },
+     "tagsRemoved": {},
+     "againstPrevious": {
+      "commentLinesNet": 0,
+      "blocksNet": 0,
+      "tagsNet": {
+       "import": 0,
+       "returns": 0,
+       "param": 0,
+       "bound": 0,
+       "type": 0,
+       "typedef": 0,
+       "property": 0,
+       "optable": 0,
+       "storedrows": 0,
+       "throws": 0
+      }
+     }
+    },
+    {
+     "change": "ai-accounts:1098",
+     "side": "before",
+     "sourceLines": 3676,
+     "linesAdded": 1066,
+     "linesRemoved": 18,
+     "commentLinesAdded": 1004,
+     "blocksAdded": 160,
+     "tags": {
+      "import": 8,
+      "returns": 98,
+      "param": 99,
+      "bound": 58,
+      "type": 10,
+      "typedef": 60,
+      "property": 285,
+      "optable": 1,
+      "storedrows": 10,
+      "throws": 2
+     },
+     "tagsRemoved": {},
+     "againstPrevious": {
+      "commentLinesNet": 0,
+      "blocksNet": 0,
+      "tagsNet": {
+       "import": 0,
+       "returns": 0,
+       "param": 0,
+       "bound": 0,
+       "type": 0,
+       "typedef": 0,
+       "property": 0,
+       "optable": 0,
+       "storedrows": 0,
+       "throws": 0
+      }
+     }
+    },
+    {
+     "change": "ai-accounts:1098",
+     "side": "after",
+     "sourceLines": 3739,
+     "linesAdded": 1093,
+     "linesRemoved": 18,
+     "commentLinesAdded": 1030,
+     "blocksAdded": 164,
+     "tags": {
+      "import": 8,
+      "returns": 101,
+      "param": 101,
+      "bound": 64,
+      "type": 10,
+      "typedef": 61,
+      "property": 289,
+      "optable": 1,
+      "storedrows": 10,
+      "throws": 2
+     },
+     "tagsRemoved": {},
+     "againstPrevious": {
+      "commentLinesNet": 26,
+      "blocksNet": 4,
+      "tagsNet": {
+       "import": 0,
+       "returns": 3,
+       "param": 2,
+       "bound": 6,
+       "type": 0,
+       "typedef": 1,
+       "property": 4,
+       "optable": 0,
+       "storedrows": 0,
+       "throws": 0
+      }
+     }
+    }
+   ],
+   "notes": [
+    {
+     "t": "2026-11-15T15:28:12Z",
+     "event": "note",
+     "text": "Read all 11 source files (~3,140 lines) and users' import sites; decided: comment the 73 public class members, the 28 module exports, an @optable kind for aiAccountsOps' 38 ops, and @storedrows kinds for the SQL tables; leave the 90 underscore members (the module's own by its stated convention) uncommented except the two refusal builders; services sql/core/membership/catalogue written as * (no stated kind)."
+    },
+    {
+     "t": "2026-11-15T15:44:33Z",
+     "event": "note",
+     "text": "Done. The four carries between changes (124 after to 188 before, and on) merged nothing: the real code did not change between the replayed changes, so there was no gap step. Total wall time about 23 minutes, of which the first comments about 15."
+    }
+   ]
+  },
+  "op-declarations": {
+   "steps": [
+    {
+     "step": "first comments",
+     "start": "2026-11-15T15:21:03Z",
+     "end": "2026-11-15T15:33:01Z",
+     "sourceLinesRead": 1720,
+     "testLinesRead": 40,
+     "kindsUndetermined": [
+      {
+       "what": "ActToDecorate.prompt, .proposal, .purposes and DecoratedAct.rung, .prompt, .proposal, .purposes",
+       "why": "affordances (not commented, not a module the tool lists here) builds them; its ACTS rows and RUNGS table hold values of several shapes, so written as *"
+      }
+     ],
+     "falseStarts": [
+      "Wrote classes, machineClasses and stamps as exact unions ('admin'|'member'|'probe'|'daemon', the eleven stamp names): every `.includes(someString)` in tests and users, and every owner row written without as-const, became a refusal; widened to readonly string[] with a @bound line naming the closed set",
+      "Wrote the session sets as ReadonlySet<string>: it lacks the refusing add/delete/clear the tests call and claims ES2025 set methods FrozenSet does not have; rewrote as Iterable<string> & an explicit method list"
+     ],
+     "corrections": [
+      "QUERY helpers in t48.mjs and t50.mjs given @param {string} key so the families' actor key is no longer anything"
+     ],
+     "timeWentTo": {
+      "reading the module's code": "about 4 min",
+      "reading call sites in users": "about 1 min",
+      "tracing data shapes": "about 2 min",
+      "finding bounds in code": "about 1 min",
+      "running and reading the check": "about 2 min",
+      "resolving merge conflicts": "0",
+      "writing the expected answer": "0",
+      "reading the brief, proof and tool": "about 1 min"
+     },
+     "checkRefusalsBefore": 143,
+     "checkRefusalsAfter": 232,
+     "commentsOnly": true,
+     "notes": "Listing 'anything' lines: 114 before, 4 after (all from affordances' fields written *). +89 refusals: 16 bound lines without tests (expected); 73 in this module's own tests where the tests do what the stated kind forbids or the reader cannot follow them: 33 tests that index the module namespace by a name from a list (O[name].includes, now a union of every export's kind), 19 reads of a field that may be null/undefined without a check (classes null on a public op, machineClasses optional, actor null), 10 deliberate writes to frozen data inside assert.throws (purity, R5, R69 tests), 10 tuple/find inferences in tests, 1 `{}` built by assignment passed to registerDeclaredOps. None says a comment is false of the code. Every one of the 107 exports is a lazy Proxy the reader sees as anything, so the stated kinds are attached with @type on each export and nothing in the module can check them against build(). No @optable: see the note. The share/family constants of the public t48/t50/t51 files and REAUTH_ACTS (t47) keep their inferred frozen literal kinds, which are already exact (op names and kinds, but also each cite string). sourceLinesRead counts index.mjs (~1450 lines read in parts), compose/declared/t47/t48/t51 (~240) and affordances' decorate (~30); I also read ~200 lines of call sites in users and ~900 lines of the brief, the proof's rules and the tool's listing/usage code, not counted there. testLinesRead: ~40 lines of tests read to judge the new refusals.",
+     "minutes": 11.97
+    },
+    {
+     "step": "update op-declarations:95",
+     "start": "2026-11-15T15:33:05Z",
+     "end": "2026-11-15T15:34:20Z",
+     "sourceLinesRead": 324,
+     "testLinesRead": 12,
+     "kindsUndetermined": [],
+     "falseStarts": [],
+     "corrections": [],
+     "timeWentTo": {
+      "reading the module's code": "about 2 min (the 324-line source diff)",
+      "reading call sites in users": "0",
+      "tracing data shapes": "0",
+      "finding bounds in code": "0",
+      "running and reading the check": "about 1 min",
+      "resolving merge conflicts": "0 (none)",
+      "writing the expected answer": "about 1 min"
+     },
+     "checkRefusalsBefore": 149,
+     "checkRefusalsAfter": 240,
+     "commentsOnly": true,
+     "notes": "checkRefusalsBefore is the real after state, checkRefusalsAfter the commented after state. No comment changed: the change adds and retires op names, which are content under my first-step decision. The +91 over the real state are the same categories as the first step plus one nullable read in the new notice-membership-77 test.",
+     "minutes": 1.25
+    },
+    {
+     "step": "update op-declarations:167",
+     "start": "2026-11-15T15:34:30Z",
+     "end": "2026-11-15T15:35:10Z",
+     "sourceLinesRead": 45,
+     "testLinesRead": 0,
+     "kindsUndetermined": [],
+     "falseStarts": [],
+     "corrections": [],
+     "timeWentTo": {
+      "reading the module's code": "about 1 min (45-line source diff)",
+      "reading call sites in users": "0",
+      "tracing data shapes": "0",
+      "finding bounds in code": "0",
+      "running and reading the check": "about 1 min",
+      "resolving merge conflicts": "0 (none)",
+      "writing the expected answer": "under 1 min"
+     },
+     "checkRefusalsBefore": 155,
+     "checkRefusalsAfter": 246,
+     "commentsOnly": true,
+     "notes": "Before = real after state, after = commented after state. No comment changed.",
+     "minutes": 0.67
+    },
+    {
+     "step": "update op-declarations:289",
+     "start": "2026-11-15T15:35:17Z",
+     "end": "2026-11-15T15:36:03Z",
+     "sourceLinesRead": 20,
+     "testLinesRead": 0,
+     "kindsUndetermined": [],
+     "falseStarts": [],
+     "corrections": [],
+     "timeWentTo": {
+      "reading the module's code": "under 1 min (20-line diff of t47.mjs)",
+      "reading call sites in users": "under 1 min (who reads REAUTH_ACTS: admission)",
+      "tracing data shapes": "0",
+      "finding bounds in code": "0",
+      "running and reading the check": "about 1 min",
+      "resolving merge conflicts": "0 (none)",
+      "writing the expected answer": "under 1 min"
+     },
+     "checkRefusalsBefore": 157,
+     "checkRefusalsAfter": 248,
+     "commentsOnly": true,
+     "notes": "Before = real after state, after = commented after state. The change touches t47.mjs, which carries no comment of mine; no comment changed.",
+     "minutes": 0.77
+    },
+    {
+     "step": "update op-declarations:321",
+     "start": "2026-11-15T15:36:09Z",
+     "end": "2026-11-15T15:36:50Z",
+     "sourceLinesRead": 20,
+     "testLinesRead": 0,
+     "kindsUndetermined": [],
+     "falseStarts": [],
+     "corrections": [],
+     "timeWentTo": {
+      "reading the module's code": "under 1 min (20-line diff)",
+      "reading call sites in users": "0",
+      "tracing data shapes": "0",
+      "finding bounds in code": "0",
+      "running and reading the check": "about 1 min",
+      "resolving merge conflicts": "0 (none)",
+      "writing the expected answer": "under 1 min"
+     },
+     "checkRefusalsBefore": 161,
+     "checkRefusalsAfter": 252,
+     "commentsOnly": true,
+     "notes": "Before = real after state, after = commented after state. No comment changed.",
+     "minutes": 0.68
+    }
+   ],
+   "states": [
+    {
+     "change": "op-declarations:95",
+     "side": "before",
+     "sourceLines": 3479,
+     "linesAdded": 307,
+     "linesRemoved": 107,
+     "commentLinesAdded": 306,
+     "blocksAdded": 138,
+     "tags": {
+      "typedef": 25,
+      "property": 66,
+      "bound": 18,
+      "throws": 2,
+      "param": 5,
+      "returns": 3,
+      "type": 108
+     },
+     "tagsRemoved": {}
+    },
+    {
+     "change": "op-declarations:95",
+     "side": "after",
+     "sourceLines": 3523,
+     "linesAdded": 307,
+     "linesRemoved": 107,
+     "commentLinesAdded": 306,
+     "blocksAdded": 138,
+     "tags": {
+      "typedef": 25,
+      "property": 66,
+      "bound": 18,
+      "throws": 2,
+      "param": 5,
+      "returns": 3,
+      "type": 108
+     },
+     "tagsRemoved": {},
+     "againstPrevious": {
+      "commentLinesNet": 0,
+      "blocksNet": 0,
+      "tagsNet": {
+       "typedef": 0,
+       "property": 0,
+       "bound": 0,
+       "throws": 0,
+       "param": 0,
+       "returns": 0,
+       "type": 0
+      }
+     }
+    },
+    {
+     "change": "op-declarations:167",
+     "side": "before",
+     "sourceLines": 3523,
+     "linesAdded": 307,
+     "linesRemoved": 107,
+     "commentLinesAdded": 306,
+     "blocksAdded": 138,
+     "tags": {
+      "typedef": 25,
+      "property": 66,
+      "bound": 18,
+      "throws": 2,
+      "param": 5,
+      "returns": 3,
+      "type": 108
+     },
+     "tagsRemoved": {},
+     "againstPrevious": {
+      "commentLinesNet": 0,
+      "blocksNet": 0,
+      "tagsNet": {
+       "typedef": 0,
+       "property": 0,
+       "bound": 0,
+       "throws": 0,
+       "param": 0,
+       "returns": 0,
+       "type": 0
+      }
+     }
+    },
+    {
+     "change": "op-declarations:167",
+     "side": "after",
+     "sourceLines": 3528,
+     "linesAdded": 307,
+     "linesRemoved": 107,
+     "commentLinesAdded": 306,
+     "blocksAdded": 138,
+     "tags": {
+      "typedef": 25,
+      "property": 66,
+      "bound": 18,
+      "throws": 2,
+      "param": 5,
+      "returns": 3,
+      "type": 108
+     },
+     "tagsRemoved": {},
+     "againstPrevious": {
+      "commentLinesNet": 0,
+      "blocksNet": 0,
+      "tagsNet": {
+       "typedef": 0,
+       "property": 0,
+       "bound": 0,
+       "throws": 0,
+       "param": 0,
+       "returns": 0,
+       "type": 0
+      }
+     }
+    },
+    {
+     "change": "op-declarations:289",
+     "side": "before",
+     "sourceLines": 3528,
+     "linesAdded": 307,
+     "linesRemoved": 107,
+     "commentLinesAdded": 306,
+     "blocksAdded": 138,
+     "tags": {
+      "typedef": 25,
+      "property": 66,
+      "bound": 18,
+      "throws": 2,
+      "param": 5,
+      "returns": 3,
+      "type": 108
+     },
+     "tagsRemoved": {},
+     "againstPrevious": {
+      "commentLinesNet": 0,
+      "blocksNet": 0,
+      "tagsNet": {
+       "typedef": 0,
+       "property": 0,
+       "bound": 0,
+       "throws": 0,
+       "param": 0,
+       "returns": 0,
+       "type": 0
+      }
+     }
+    },
+    {
+     "change": "op-declarations:289",
+     "side": "after",
+     "sourceLines": 3533,
+     "linesAdded": 307,
+     "linesRemoved": 107,
+     "commentLinesAdded": 306,
+     "blocksAdded": 138,
+     "tags": {
+      "typedef": 25,
+      "property": 66,
+      "bound": 18,
+      "throws": 2,
+      "param": 5,
+      "returns": 3,
+      "type": 108
+     },
+     "tagsRemoved": {},
+     "againstPrevious": {
+      "commentLinesNet": 0,
+      "blocksNet": 0,
+      "tagsNet": {
+       "typedef": 0,
+       "property": 0,
+       "bound": 0,
+       "throws": 0,
+       "param": 0,
+       "returns": 0,
+       "type": 0
+      }
+     }
+    },
+    {
+     "change": "op-declarations:321",
+     "side": "before",
+     "sourceLines": 3533,
+     "linesAdded": 307,
+     "linesRemoved": 107,
+     "commentLinesAdded": 306,
+     "blocksAdded": 138,
+     "tags": {
+      "typedef": 25,
+      "property": 66,
+      "bound": 18,
+      "throws": 2,
+      "param": 5,
+      "returns": 3,
+      "type": 108
+     },
+     "tagsRemoved": {},
+     "againstPrevious": {
+      "commentLinesNet": 0,
+      "blocksNet": 0,
+      "tagsNet": {
+       "typedef": 0,
+       "property": 0,
+       "bound": 0,
+       "throws": 0,
+       "param": 0,
+       "returns": 0,
+       "type": 0
+      }
+     }
+    },
+    {
+     "change": "op-declarations:321",
+     "side": "after",
+     "sourceLines": 3535,
+     "linesAdded": 307,
+     "linesRemoved": 107,
+     "commentLinesAdded": 306,
+     "blocksAdded": 138,
+     "tags": {
+      "typedef": 25,
+      "property": 66,
+      "bound": 18,
+      "throws": 2,
+      "param": 5,
+      "returns": 3,
+      "type": 108
+     },
+     "tagsRemoved": {},
+     "againstPrevious": {
+      "commentLinesNet": 0,
+      "blocksNet": 0,
+      "tagsNet": {
+       "typedef": 0,
+       "property": 0,
+       "bound": 0,
+       "throws": 0,
+       "param": 0,
+       "returns": 0,
+       "type": 0
+      }
+     }
+    }
+   ],
+   "notes": [
+    {
+     "t": "2026-11-15T15:28:13Z",
+     "event": "note",
+     "text": "Decided not to mark OPS (or any table) @optable: op-declarations answers none of the ~1030 ops it declares (their owners do), the names are built at run time from hand rows, 60-odd families with seven share files, aliases and owners' registered declarations, and every export is a lazy proxy the reader sees as anything, so a hand-written list of names could not be checked against the code and would make this module a second answerer of each owner's op names (rule 7). Kinds of the tables are stated exactly; the names stay content."
+    },
+    {
+     "t": "2026-11-15T15:34:30Z",
+     "event": "note",
+     "text": "Carry from op-declarations:95 after to op-declarations:167 before: nothing merged, the provider's commented files are unchanged in the gap; mechanical, no gap step."
+    },
+    {
+     "t": "2026-11-15T15:35:17Z",
+     "event": "note",
+     "text": "Carry from op-declarations:167 after to op-declarations:289 before: nothing merged; mechanical, no gap step."
+    },
+    {
+     "t": "2026-11-15T15:36:09Z",
+     "event": "note",
+     "text": "Carry from op-declarations:289 after to op-declarations:321 before: nothing merged; mechanical, no gap step."
+    }
+   ]
+  },
+  "ai-catalogue": {
+   "steps": [
+    {
+     "step": "first comments",
+     "start": "2026-11-15T15:21:03Z",
+     "end": "2026-11-15T15:33:30Z",
+     "sourceLinesRead": 1670,
+     "testLinesRead": 176,
+     "kindsUndetermined": [
+      {
+       "what": "GateLimit.value, Characteristic.value and .conditions, PriceBasis currency/period/includes/limits, LibraryRow.speed.window, CombinedResult.window/groups wilson bounds/limits, TestedAi.developer fields, HostProfile mappings/pin_map/features",
+       "why": "validate.mjs checks only that the key is there (or that it is an object or list); no code reads them; written unknown or Object"
+      },
+      {
+       "what": "EntryPrices.tiers items",
+       "why": "checked only to be plain objects"
+      },
+      {
+       "what": "BindingTerm.version",
+       "why": "checked as String(version) being text of at most 64 characters; written string | number"
+      },
+      {
+       "what": "record-core declareTable's answer (RecordCoreUse.declareTable hands back any)",
+       "why": "record-core states no kind; the code reads answer.ok, answer.reason, answer.table"
+      },
+      {
+       "what": "the rows SqlStorage.exec hands back (Iterable<any>)",
+       "why": "the Durable Object's SQL is outside the product; rows are read by column name"
+      },
+      {
+       "what": "the signature check's own refusal reasons (RefusedMembers.code: string)",
+       "why": "sshsig.mjs (signatures) states no kind; the reasons pass through unchanged (MALFORMED, NOT_NEWER, UNKNOWN_KEY, NAMESPACE, ...)"
+      }
+     ],
+     "falseStarts": [
+      "First draft used exact discriminated unions for answers that may be refusals and for catalogueState's short form, and narrow accepted kinds; the module's own tests read r.code / r.entries / s.seq without narrowing and pass wrong values on purpose, drawing 101 new refusals. Rewrote each such answer as one kind with ok: boolean and the members of both outcomes optional, and widened accepted kinds to what the code takes and refuses.",
+      "Typed MOVES as Record<Lifecycle, readonly Lifecycle[]>: the nested Object.freeze does not take the contextual kind; dropped the @type (the inferred kind is already exact in keys)."
+     ],
+     "corrections": [
+      "ReceiveAnswer.outcome made optional (inherited from PayloadAnswer): the code builds the refused answer through refusal()'s fields, which the reader cannot see carries outcome.",
+      "isObj given a type-guard comment so the read methods' `isObj(opts) ? opts : {}` narrows."
+     ],
+     "timeWentTo": {
+      "reading the module's code": "about 4 min",
+      "reading call sites in users": "about 1 min",
+      "tracing data shapes": "about 3 min (validate.mjs is the payload's schema)",
+      "finding bounds in code": "about 1 min (read with the shapes)",
+      "running and reading the check": "about 3 min",
+      "resolving merge conflicts": "0",
+      "writing the expected answer": "0"
+     },
+     "checkRefusalsBefore": 85,
+     "checkRefusalsAfter": 179,
+     "commentsOnly": true,
+     "notes": "After 179 = 100 bounds without a test (expected) + 42 in src (all the reader's guesses about uncommented internals: #view/#pending typed null, sshsig's verify union, validate's ctx object, TextDecoder; down from 65) + 18 in tests that were there before in kind (fixture helpers' defaults, never[]) + 19 in tests caused by honest kinds the tests read without a guard: 14 'Object is possibly null' on entryOf/profileOf/testedOf (code 2531, which the tool does not count as 'cannot tell' though it counts 2533 and 18047), 4 on EntryPrices|Open and CheckAnswer's Open, 1 on warning_version string|null. Listing 'anything': 81 before, 40 after: 38 in the class's private # members (listed as entries by the tool; not interface, left untyped), 2 are my deliberate any (RecordCoreUse.declareTable's answer, SqlStorage rows). Bound lines written: about 100. Wall time is short because reading and writing go fast for me; a person would take far longer on validate.mjs's 578 lines.",
+     "minutes": 12.45
+    },
+    {
+     "step": "update ai-catalogue:194",
+     "start": "2026-11-15T15:33:35Z",
+     "end": "2026-11-15T15:35:45Z",
+     "sourceLinesRead": 128,
+     "testLinesRead": 54,
+     "kindsUndetermined": [],
+     "falseStarts": [
+      "Typed seedOf's doc as CataloguePayload: the tests build payloads as loose literals (kind: string), so it drew a refusal; the code reads only seq, schema_version and issued_at, so the parameter now says that."
+     ],
+     "corrections": [
+      "SEED_PAYLOAD's @type did not hold through Object.freeze (nested literals widened); replaced by a cast on the literal inside the freeze."
+     ],
+     "timeWentTo": {
+      "reading the module's code": "about 1 min",
+      "reading call sites in users": "0 (no user uses the seed yet)",
+      "tracing data shapes": "under 1 min",
+      "finding bounds in code": "under 1 min",
+      "running and reading the check": "about 1 min",
+      "resolving merge conflicts": "about 1 min (two conflicts: the constructor's and aiCatalogueOf's signatures, both lines my comments sit on)",
+      "writing the expected answer": "about 1 min"
+     },
+     "checkRefusalsBefore": 96,
+     "checkRefusalsAfter": 188,
+     "commentsOnly": true,
+     "notes": "checkRefusalsBefore is the real after state uncommented (96); after with comments 188 = 103 bounds without a test + 85 others (79 at the commented before; the 6 new are in the tests' own fixtures and messages: world()'s untyped seed option, JSON.parse in seed.test). New file seed.mjs copied in and commented (5 comments, 3 new kinds in index.mjs, CatalogueEnv gained two members).",
+     "minutes": 2.17
+    },
+    {
+     "step": "update ai-catalogue:204",
+     "start": "2026-11-15T15:35:50Z",
+     "end": "2026-11-15T15:36:14Z",
+     "sourceLinesRead": 12,
+     "testLinesRead": 41,
+     "kindsUndetermined": [],
+     "falseStarts": [],
+     "corrections": [],
+     "timeWentTo": {
+      "reading the module's code": "under 1 min",
+      "reading call sites in users": "0",
+      "tracing data shapes": "0",
+      "finding bounds in code": "0",
+      "running and reading the check": "about 1 min",
+      "resolving merge conflicts": "0 (merged mechanically)",
+      "writing the expected answer": "under 1 min"
+     },
+     "checkRefusalsBefore": 97,
+     "checkRefusalsAfter": 189,
+     "commentsOnly": true,
+     "notes": "A comment-only change to the provider's code (seed.mjs header) plus a new test. The one new refusal against 194-after is in the new test (world({keys: null}) against the fixture's own default).",
+     "minutes": 0.4
+    },
+    {
+     "step": "update ai-catalogue:317",
+     "start": "2026-11-15T15:36:19Z",
+     "end": "2026-11-15T15:38:22Z",
+     "sourceLinesRead": 250,
+     "testLinesRead": 40,
+     "kindsUndetermined": [],
+     "falseStarts": [
+      "Typed CatalogueEnv.AI_CATALOGUE_DEVELOPMENT_KEY as string; a test hands numbers and null on purpose and the code checks typeof, so it is unknown."
+     ],
+     "corrections": [],
+     "timeWentTo": {
+      "reading the module's code": "about 2 min (dev-key.mjs, 190 lines)",
+      "reading call sites in users": "0",
+      "tracing data shapes": "under 1 min",
+      "finding bounds in code": "about 1 min (dev-key's refusals)",
+      "running and reading the check": "about 2 min (rule 34's refusals on dev-key.mjs, and how the check accepts a start kind)",
+      "resolving merge conflicts": "about 1 min (seed.mjs: my @import beside a new import; catalogueKeysFor's comment rewritten by the change)",
+      "writing the expected answer": "about 1 min"
+     },
+     "checkRefusalsBefore": 116,
+     "checkRefusalsAfter": 205,
+     "commentsOnly": true,
+     "notes": "The real after state draws 8 rule-34 refusals in dev-key.mjs (process.argv and process.env read without a published start kind) and 4 in the test helper fake-wrangler.mjs. I wrote the two start kinds and wrapped the 8 reads in casts in dev-key.mjs; the test helper I left alone (a test double). After 205 = 108 bounds without a test + 97 others.",
+     "minutes": 2.05
+    },
+    {
+     "step": "update ai-catalogue:336",
+     "start": "2026-11-15T15:38:27Z",
+     "end": "2026-11-15T15:39:03Z",
+     "sourceLinesRead": 40,
+     "testLinesRead": 0,
+     "kindsUndetermined": [],
+     "falseStarts": [],
+     "corrections": [],
+     "timeWentTo": {
+      "reading the module's code": "about 1 min",
+      "reading call sites in users": "0",
+      "tracing data shapes": "0",
+      "finding bounds in code": "under 1 min (CF_TOKEN now required in a dry run)",
+      "running and reading the check": "about 1 min",
+      "resolving merge conflicts": "0 (merged mechanically)",
+      "writing the expected answer": "under 1 min"
+     },
+     "checkRefusalsBefore": 117,
+     "checkRefusalsAfter": 206,
+     "commentsOnly": true,
+     "notes": "One bound line changed (DevKeyEnv CF_TOKEN). Did not read the test diff (45 lines), since the source diff was enough to see what the command now requires.",
+     "minutes": 0.6
+    },
+    {
+     "step": "update ai-catalogue:484",
+     "start": "2026-11-15T15:39:08Z",
+     "end": "2026-11-15T15:40:31Z",
+     "sourceLinesRead": 110,
+     "testLinesRead": 0,
+     "kindsUndetermined": [
+      {
+       "what": "DEVELOPMENT_SEED_PAYLOAD's kind",
+       "why": "built by helpers whose answers the reader widens (answer: string); giving it CataloguePayload would need the helpers typed; left to inference"
+      }
+     ],
+     "falseStarts": [
+      "Cast DEVELOPMENT_SEED_PAYLOAD to CataloguePayload as I did SEED_PAYLOAD; the check refused it (rule 14: a cast makes a value of another kind pass), because the nested helpers' answers are widened. Dropped the cast."
+     ],
+     "corrections": [],
+     "timeWentTo": {
+      "reading the module's code": "about 1 min",
+      "reading call sites in users": "0",
+      "tracing data shapes": "about 1 min (the development payload against my kinds)",
+      "finding bounds in code": "0",
+      "running and reading the check": "about 2 min",
+      "resolving merge conflicts": "under 1 min (dev-key main's signature, where my cast sits)",
+      "writing the expected answer": "about 1 min"
+     },
+     "checkRefusalsBefore": 129,
+     "checkRefusalsAfter": 216,
+     "commentsOnly": true,
+     "notes": "After 216 = 108 bounds + 108 others; the others added since 336 are in the new and changed tests (fixture's world() options, keys: null, delete on a required member).",
+     "minutes": 1.38
+    },
+    {
+     "step": "update ai-catalogue:611",
+     "start": "2026-11-15T15:40:37Z",
+     "end": "2026-11-15T15:41:37Z",
+     "sourceLinesRead": 25,
+     "testLinesRead": 0,
+     "kindsUndetermined": [],
+     "falseStarts": [],
+     "corrections": [],
+     "timeWentTo": {
+      "reading the module's code": "under 1 min",
+      "reading call sites in users": "0",
+      "tracing data shapes": "under 1 min",
+      "finding bounds in code": "0",
+      "running and reading the check": "about 1 min",
+      "resolving merge conflicts": "about 1 min (seed.mjs: my comment on DEVELOPMENT_SEED where the change inserted a constant before it)",
+      "writing the expected answer": "under 1 min"
+     },
+     "checkRefusalsBefore": 132,
+     "checkRefusalsAfter": 218,
+     "commentsOnly": true,
+     "notes": "Gave DEVELOPMENT_ADAPTERS its kind, with a cast on the reduce's empty accumulator (otherwise the reader types it {} and the kind would not hold). The two new refusals are in the new test.",
+     "minutes": 1
+    },
+    {
+     "step": "update ai-catalogue:1097",
+     "start": "2026-11-15T15:41:44Z",
+     "end": "2026-11-15T15:45:47Z",
+     "sourceLinesRead": 150,
+     "testLinesRead": 20,
+     "kindsUndetermined": [
+      {
+       "what": "OpDeclaration.classes, written readonly string[]",
+       "why": "the nested Object.freeze widens ['admin','member'] to string[]; a bound line says each is admin or member"
+      }
+     ],
+     "falseStarts": [
+      "Put a @bound line between @property lines of OpDeclaration; TypeScript's reader ends a typedef's members at the first other tag, so the later members vanished and the tests drew 4 refusals. Moved the bound after the members.",
+      "Wrote CatalogueReadEntry.listing as Listing and ResultSubject.on_list without null: #listingOf and #stateOf can answer null as the reader sees them; made both nullable."
+     ],
+     "corrections": [
+      "Two internal casts so the answers check: the per-part `offered` accumulator ({} typed as the map), and the literal 'not_listed'."
+     ],
+     "timeWentTo": {
+      "reading the module's code": "about 2 min (118 new lines in index.mjs)",
+      "reading call sites in users": "0 (the screens' module is not in this replay's users)",
+      "tracing data shapes": "about 3 min (the two read answers, each built from several existing ones)",
+      "finding bounds in code": "under 1 min",
+      "running and reading the check": "about 3 min (three rounds)",
+      "resolving merge conflicts": "about 2 min (two: CATALOGUE_ADDRESS beside my @type on CHECK_TRIGGERS, and the new methods inserted before my comment on checks())",
+      "writing the expected answer": "about 2 min"
+     },
+     "checkRefusalsBefore": 138,
+     "checkRefusalsAfter": 229,
+     "commentsOnly": true,
+     "notes": "After 229 = 110 bounds without a test + 119 others. Of the new refusals against 611-after, 3 are mine in kind: a new test does new URL(pullRequest(...).url), and url is optional in my single-object PullRequestAnswer (the price of the choice made at the first step). The rest are in the new test file (store-assembly's test fixture imported, a local evidence literal) or the reader's existing 'never' guesses at new lines.",
+     "minutes": 4.05
+    }
+   ],
+   "states": [
+    {
+     "change": "ai-catalogue:194",
+     "side": "before",
+     "sourceLines": 1470,
+     "linesAdded": 929,
+     "linesRemoved": 24,
+     "commentLinesAdded": 868,
+     "blocksAdded": 119,
+     "tags": {
+      "typedef": 77,
+      "property": 323,
+      "bound": 112,
+      "type": 16,
+      "param": 29,
+      "returns": 30,
+      "import": 4,
+      "template": 3,
+      "storedrows": 4,
+      "throws": 2
+     },
+     "tagsRemoved": {}
+    },
+    {
+     "change": "ai-catalogue:194",
+     "side": "after",
+     "sourceLines": 1564,
+     "linesAdded": 991,
+     "linesRemoved": 31,
+     "commentLinesAdded": 927,
+     "blocksAdded": 130,
+     "tags": {
+      "typedef": 80,
+      "property": 334,
+      "bound": 115,
+      "type": 20,
+      "param": 34,
+      "returns": 33,
+      "import": 5,
+      "template": 3,
+      "storedrows": 4,
+      "throws": 2
+     },
+     "tagsRemoved": {},
+     "againstPrevious": {
+      "commentLinesNet": 59,
+      "blocksNet": 11,
+      "tagsNet": {
+       "typedef": 3,
+       "property": 11,
+       "bound": 3,
+       "type": 4,
+       "param": 5,
+       "returns": 3,
+       "import": 1,
+       "template": 0,
+       "storedrows": 0,
+       "throws": 0
+      }
+     }
+    },
+    {
+     "change": "ai-catalogue:204",
+     "side": "before",
+     "sourceLines": 1564,
+     "linesAdded": 991,
+     "linesRemoved": 31,
+     "commentLinesAdded": 927,
+     "blocksAdded": 130,
+     "tags": {
+      "typedef": 80,
+      "property": 334,
+      "bound": 115,
+      "type": 20,
+      "param": 34,
+      "returns": 33,
+      "import": 5,
+      "template": 3,
+      "storedrows": 4,
+      "throws": 2
+     },
+     "tagsRemoved": {},
+     "againstPrevious": {
+      "commentLinesNet": 0,
+      "blocksNet": 0,
+      "tagsNet": {
+       "typedef": 0,
+       "property": 0,
+       "bound": 0,
+       "type": 0,
+       "param": 0,
+       "returns": 0,
+       "import": 0,
+       "template": 0,
+       "storedrows": 0,
+       "throws": 0
+      }
+     }
+    },
+    {
+     "change": "ai-catalogue:204",
+     "side": "after",
+     "sourceLines": 1565,
+     "linesAdded": 991,
+     "linesRemoved": 31,
+     "commentLinesAdded": 927,
+     "blocksAdded": 130,
+     "tags": {
+      "typedef": 80,
+      "property": 334,
+      "bound": 115,
+      "type": 20,
+      "param": 34,
+      "returns": 33,
+      "import": 5,
+      "template": 3,
+      "storedrows": 4,
+      "throws": 2
+     },
+     "tagsRemoved": {},
+     "againstPrevious": {
+      "commentLinesNet": 0,
+      "blocksNet": 0,
+      "tagsNet": {
+       "typedef": 0,
+       "property": 0,
+       "bound": 0,
+       "type": 0,
+       "param": 0,
+       "returns": 0,
+       "import": 0,
+       "template": 0,
+       "storedrows": 0,
+       "throws": 0
+      }
+     }
+    },
+    {
+     "change": "ai-catalogue:317",
+     "side": "before",
+     "sourceLines": 1565,
+     "linesAdded": 991,
+     "linesRemoved": 31,
+     "commentLinesAdded": 927,
+     "blocksAdded": 130,
+     "tags": {
+      "typedef": 80,
+      "property": 334,
+      "bound": 115,
+      "type": 20,
+      "param": 34,
+      "returns": 33,
+      "import": 5,
+      "template": 3,
+      "storedrows": 4,
+      "throws": 2
+     },
+     "tagsRemoved": {},
+     "againstPrevious": {
+      "commentLinesNet": 0,
+      "blocksNet": 0,
+      "tagsNet": {
+       "typedef": 0,
+       "property": 0,
+       "bound": 0,
+       "type": 0,
+       "param": 0,
+       "returns": 0,
+       "import": 0,
+       "template": 0,
+       "storedrows": 0,
+       "throws": 0
+      }
+     }
+    },
+    {
+     "change": "ai-catalogue:317",
+     "side": "after",
+     "sourceLines": 1780,
+     "linesAdded": 1014,
+     "linesRemoved": 36,
+     "commentLinesAdded": 948,
+     "blocksAdded": 136,
+     "tags": {
+      "typedef": 82,
+      "property": 335,
+      "bound": 120,
+      "type": 28,
+      "param": 34,
+      "returns": 33,
+      "message": 2,
+      "import": 5,
+      "template": 3,
+      "storedrows": 4,
+      "throws": 2
+     },
+     "tagsRemoved": {},
+     "againstPrevious": {
+      "commentLinesNet": 21,
+      "blocksNet": 6,
+      "tagsNet": {
+       "typedef": 2,
+       "property": 1,
+       "bound": 5,
+       "type": 8,
+       "param": 0,
+       "returns": 0,
+       "message": 2,
+       "import": 0,
+       "template": 0,
+       "storedrows": 0,
+       "throws": 0
+      }
+     }
+    },
+    {
+     "change": "ai-catalogue:336",
+     "side": "before",
+     "sourceLines": 1780,
+     "linesAdded": 1014,
+     "linesRemoved": 36,
+     "commentLinesAdded": 948,
+     "blocksAdded": 136,
+     "tags": {
+      "typedef": 82,
+      "property": 335,
+      "bound": 120,
+      "type": 28,
+      "param": 34,
+      "returns": 33,
+      "message": 2,
+      "import": 5,
+      "template": 3,
+      "storedrows": 4,
+      "throws": 2
+     },
+     "tagsRemoved": {},
+     "againstPrevious": {
+      "commentLinesNet": 0,
+      "blocksNet": 0,
+      "tagsNet": {
+       "typedef": 0,
+       "property": 0,
+       "bound": 0,
+       "type": 0,
+       "param": 0,
+       "returns": 0,
+       "message": 0,
+       "import": 0,
+       "template": 0,
+       "storedrows": 0,
+       "throws": 0
+      }
+     }
+    },
+    {
+     "change": "ai-catalogue:336",
+     "side": "after",
+     "sourceLines": 1786,
+     "linesAdded": 1014,
+     "linesRemoved": 36,
+     "commentLinesAdded": 948,
+     "blocksAdded": 136,
+     "tags": {
+      "typedef": 82,
+      "property": 335,
+      "bound": 120,
+      "type": 28,
+      "param": 34,
+      "returns": 33,
+      "message": 2,
+      "import": 5,
+      "template": 3,
+      "storedrows": 4,
+      "throws": 2
+     },
+     "tagsRemoved": {},
+     "againstPrevious": {
+      "commentLinesNet": 0,
+      "blocksNet": 0,
+      "tagsNet": {
+       "typedef": 0,
+       "property": 0,
+       "bound": 0,
+       "type": 0,
+       "param": 0,
+       "returns": 0,
+       "message": 0,
+       "import": 0,
+       "template": 0,
+       "storedrows": 0,
+       "throws": 0
+      }
+     }
+    },
+    {
+     "change": "ai-catalogue:484",
+     "side": "before",
+     "sourceLines": 1786,
+     "linesAdded": 1014,
+     "linesRemoved": 36,
+     "commentLinesAdded": 948,
+     "blocksAdded": 136,
+     "tags": {
+      "typedef": 82,
+      "property": 335,
+      "bound": 120,
+      "type": 28,
+      "param": 34,
+      "returns": 33,
+      "message": 2,
+      "import": 5,
+      "template": 3,
+      "storedrows": 4,
+      "throws": 2
+     },
+     "tagsRemoved": {},
+     "againstPrevious": {
+      "commentLinesNet": 0,
+      "blocksNet": 0,
+      "tagsNet": {
+       "typedef": 0,
+       "property": 0,
+       "bound": 0,
+       "type": 0,
+       "param": 0,
+       "returns": 0,
+       "message": 0,
+       "import": 0,
+       "template": 0,
+       "storedrows": 0,
+       "throws": 0
+      }
+     }
+    },
+    {
+     "change": "ai-catalogue:484",
+     "side": "after",
+     "sourceLines": 1862,
+     "linesAdded": 1025,
+     "linesRemoved": 39,
+     "commentLinesAdded": 959,
+     "blocksAdded": 139,
+     "tags": {
+      "typedef": 82,
+      "property": 335,
+      "bound": 120,
+      "type": 29,
+      "param": 35,
+      "returns": 34,
+      "message": 2,
+      "import": 5,
+      "template": 3,
+      "storedrows": 4,
+      "throws": 2
+     },
+     "tagsRemoved": {},
+     "againstPrevious": {
+      "commentLinesNet": 11,
+      "blocksNet": 3,
+      "tagsNet": {
+       "typedef": 0,
+       "property": 0,
+       "bound": 0,
+       "type": 1,
+       "param": 1,
+       "returns": 1,
+       "message": 0,
+       "import": 0,
+       "template": 0,
+       "storedrows": 0,
+       "throws": 0
+      }
+     }
+    },
+    {
+     "change": "ai-catalogue:611",
+     "side": "before",
+     "sourceLines": 1862,
+     "linesAdded": 1025,
+     "linesRemoved": 39,
+     "commentLinesAdded": 959,
+     "blocksAdded": 139,
+     "tags": {
+      "typedef": 82,
+      "property": 335,
+      "bound": 120,
+      "type": 29,
+      "param": 35,
+      "returns": 34,
+      "message": 2,
+      "import": 5,
+      "template": 3,
+      "storedrows": 4,
+      "throws": 2
+     },
+     "tagsRemoved": {},
+     "againstPrevious": {
+      "commentLinesNet": 0,
+      "blocksNet": 0,
+      "tagsNet": {
+       "typedef": 0,
+       "property": 0,
+       "bound": 0,
+       "type": 0,
+       "param": 0,
+       "returns": 0,
+       "message": 0,
+       "import": 0,
+       "template": 0,
+       "storedrows": 0,
+       "throws": 0
+      }
+     }
+    },
+    {
+     "change": "ai-catalogue:611",
+     "side": "after",
+     "sourceLines": 1879,
+     "linesAdded": 1029,
+     "linesRemoved": 41,
+     "commentLinesAdded": 963,
+     "blocksAdded": 140,
+     "tags": {
+      "typedef": 82,
+      "property": 335,
+      "bound": 120,
+      "type": 31,
+      "param": 35,
+      "returns": 34,
+      "message": 2,
+      "import": 5,
+      "template": 3,
+      "storedrows": 4,
+      "throws": 2
+     },
+     "tagsRemoved": {},
+     "againstPrevious": {
+      "commentLinesNet": 4,
+      "blocksNet": 1,
+      "tagsNet": {
+       "typedef": 0,
+       "property": 0,
+       "bound": 0,
+       "type": 2,
+       "param": 0,
+       "returns": 0,
+       "message": 0,
+       "import": 0,
+       "template": 0,
+       "storedrows": 0,
+       "throws": 0
+      }
+     }
+    },
+    {
+     "change": "ai-catalogue:1097",
+     "side": "before",
+     "sourceLines": 1879,
+     "linesAdded": 1029,
+     "linesRemoved": 41,
+     "commentLinesAdded": 963,
+     "blocksAdded": 140,
+     "tags": {
+      "typedef": 82,
+      "property": 335,
+      "bound": 120,
+      "type": 31,
+      "param": 35,
+      "returns": 34,
+      "message": 2,
+      "import": 5,
+      "template": 3,
+      "storedrows": 4,
+      "throws": 2
+     },
+     "tagsRemoved": {},
+     "againstPrevious": {
+      "commentLinesNet": 0,
+      "blocksNet": 0,
+      "tagsNet": {
+       "typedef": 0,
+       "property": 0,
+       "bound": 0,
+       "type": 0,
+       "param": 0,
+       "returns": 0,
+       "message": 0,
+       "import": 0,
+       "template": 0,
+       "storedrows": 0,
+       "throws": 0
+      }
+     }
+    },
+    {
+     "change": "ai-catalogue:1097",
+     "side": "after",
+     "sourceLines": 1993,
+     "linesAdded": 1160,
+     "linesRemoved": 45,
+     "commentLinesAdded": 1085,
+     "blocksAdded": 154,
+     "tags": {
+      "typedef": 91,
+      "property": 390,
+      "bound": 123,
+      "type": 34,
+      "param": 40,
+      "returns": 38,
+      "message": 2,
+      "import": 5,
+      "template": 3,
+      "optable": 1,
+      "storedrows": 4,
+      "throws": 2
+     },
+     "tagsRemoved": {},
+     "againstPrevious": {
+      "commentLinesNet": 122,
+      "blocksNet": 14,
+      "tagsNet": {
+       "typedef": 9,
+       "property": 55,
+       "bound": 3,
+       "type": 3,
+       "param": 5,
+       "returns": 4,
+       "message": 0,
+       "import": 0,
+       "template": 0,
+       "optable": 1,
+       "storedrows": 0,
+       "throws": 0
+      }
+     }
+    }
+   ],
+   "notes": [
+    {
+     "t": "2026-11-15T15:24:25Z",
+     "event": "note",
+     "text": "Read all five source files (1465 lines) and the call sites in ai-accounts (base.mjs 352-430), ai-runs and ai-use. The listing shows the class's private # members as entries of their own (36 of 81 'anything' lines come from them); they are not interface, so I leave them untyped except where a public method's answer is built by one."
+    },
+    {
+     "t": "2026-11-15T15:30:25Z",
+     "event": "note",
+     "text": "False start: first draft used exact unions for answers that may be refusals ({ok: true, entries} | CatalogueRefusal), for catalogueState's short form, and narrow accepted kinds (kind 'index'|'payload', checksInForce CheckId[]). The check then drew 101 new refusals in the module's own tests (290 total vs 85): the tests read r.code, r.entries, s.seq without narrowing, and pass wrong values on purpose (pullRequest('other'), checksInForce ['P0'], entryOf(undefined)). Redoing: accepted kinds widened to what the code takes and refuses; each answer that may be a refusal becomes one kind with ok: boolean and the members of both outcomes optional."
+    },
+    {
+     "t": "2026-11-15T15:35:45Z",
+     "event": "note",
+     "text": "Carrying 194-after to 204-before."
+    },
+    {
+     "t": "2026-11-15T15:48:09Z",
+     "event": "note",
+     "text": "Final verification: every before state (204, 317, 336, 484, 611, 1097) rebuilt and checked comments-only against its real state: all 'yes'; no commented file equal to its real file. No gap between consecutive changes changed the provider's code (every carry to the next before merged nothing)."
+    }
+   ]
+  },
+  "ai-use": {
+   "steps": [
+    {
+     "step": "first comments",
+     "start": "2026-11-15T15:21:02Z",
+     "end": "2026-11-15T15:34:53Z",
+     "sourceLinesRead": 1310,
+     "testLinesRead": 64,
+     "kindsUndetermined": [
+      {
+       "what": "AiUseDeps.record, .membership, .accounts, .connections and the AiUse fields record, membership",
+       "why": "handles of record-core, membership, ai-accounts and connections, none of which states a kind; I wrote * and named in words the members read"
+      },
+      {
+       "what": "AiUse ctx and sql (and aiUseOf's ctx)",
+       "why": "a Cloudflare Durable Object state and its SqlStorage; the product describes neither"
+      },
+      {
+       "what": "RelayedRefusal (membership's NOT_AN_ADMIN, PROJECT_ACT_NOT_THE_OWNER; ai-accounts' accountUses and aiKeptAway refusals, KEPT_AWAY_UNREADABLE)",
+       "why": "other modules' refusals relayed as given; their modules state no kind; I wrote the fields every refusal has (ok false, reason, optional code/check/translation/detail)"
+      },
+      {
+       "what": "UsageEntry.effort, AskUsageEntry.effort, accountUseOverTime owner, exploreAsk what",
+       "why": "the module's own tests pass numbers and booleans on purpose to show they are refused, never thrown; the code accepts any value, so * with a @bound"
+      }
+     ],
+     "falseStarts": [
+      "Stated each answer as a plain union of its result and refusal kinds: ~100 new refusals in the module's own tests, which read r.code / r.limits / r.estimate before telling which member they hold. Replaced with a OneOf<...> helper (each member carries the others' fields as optional undefined)."
+     ],
+     "corrections": [
+      "let change = null captured by a closure in aiLimitSet: typed * (TypeScript keeps it narrowed to null)",
+      "whoseOf widened to string: gave it a @type",
+      "use and mode not narrowed by USE_KINDS.includes / ASK_USAGE_MODES.includes: two casts in estimate, one in countAskUsage",
+      "#limitReached's start and whose not narrowed in the reached branch: cast period_start; LimitReachedRefusal.whose had to be Whose | null although never null there",
+      "Refusal.check and translation stated string, not string | null (every code has its row)",
+      "AiUseWordKey union first written with the type on its own line: the comment parser refused it; moved onto the @typedef line"
+     ],
+     "timeWentTo": {
+      "reading the module's code": "about 4 min",
+      "reading call sites in users": "about 1 min",
+      "tracing data shapes": "about 2 min",
+      "finding bounds in code": "about 1 min",
+      "running and reading the check": "about 4 min",
+      "resolving merge conflicts": "0",
+      "writing the expected answer": "0",
+      "reading the tool and the proof to learn the rules": "about 2 min"
+     },
+     "checkRefusalsBefore": 179,
+     "checkRefusalsAfter": 149,
+     "commentsOnly": true,
+     "notes": "Real state: 179 refusals (39 src incl. 1 rule of form, 138 tests, 1 rule of form in a test fixture), 305 cannot-tell; listing 99 lines with anything. Commented: 149 refusals = 35 bound lines without a named test (expected, not fixed) + 10 pre-existing in src (#used/#limits options defaulting to null) + 1 rule of form (JSON.parse of the module's own stored 'what' column is taken for a message) + 1 rule of form in test fixture + 102 in tests, of which 82 pre-existing, 2 pre-existing reworded, 18 new that my (true) comments cause: 11 'Object is possibly null' (TS 2531, which the check does not treat as cannot-tell while it does 18047) where tests read useCheck(...).x knowing it is not null; 5 reads of a field of a OneOf union (string|undefined passed to a string-only assert); 1 estimate.unit read on an Estimate that may be the words 'not known yet'; 1 probe passing a usage without output_tokens on purpose. Listing after: 72 lines with anything (was 99): ~40 are private #members of AiUse the tool lists as entries, the rest the * named in kindsUndetermined. Comments: ~650 lines added to index.mjs (55 typedefs incl. 8 @storedrows row kinds and one @optable), ~50 to checks.mjs, 1 to schema.mjs.",
+     "minutes": 13.85
+    },
+    {
+     "step": "update ai-use:105",
+     "start": "2026-11-15T15:34:57Z",
+     "end": "2026-11-15T15:44:48Z",
+     "sourceLinesRead": 1990,
+     "testLinesRead": 70,
+     "kindsUndetermined": [
+      {
+       "what": "AiUseDeps.catalogue",
+       "why": "ai-catalogue's handle; that module states no kind; * with the members read named"
+      },
+      {
+       "what": "Label.effort",
+       "why": "kept * like the old effort: tests pass wrong kinds on purpose"
+      },
+      {
+       "what": "SwitchEstimate.estimate.price_date",
+       "why": "read from a catalogue entry's prices, a kind ai-catalogue does not state"
+      }
+     ],
+     "falseStarts": [],
+     "corrections": [
+      "RelayedRefusal.ok changed from false to boolean: healthShareSet and healthPreview now hand back membership's notAnAdmin directly, and TypeScript reads its ok as boolean",
+      "useCheck's failClosed arrow and the unjudged unit-unavailable refusal widened walkable/unjudged to boolean: one @type on the arrow and one cast",
+      "#moneyOf's {} accumulators, limitsReached's out array, two not_measurable spreads and reconcile's tuple list needed a @type or cast each",
+      "AI_USE_CHECKS: the two new rows carry word; stated as a Record intersected with {word: string} for those two codes",
+      "#limitReached given two @overload signatures so a reached limit is not read as maybe-unjudged (retestAllowed spreads it)",
+      "Re-added ESTIMATE_SAMPLE's bound line which I had dropped while rewriting the constants' comments"
+     ],
+     "timeWentTo": {
+      "reading the module's code": "about 6 min (the 1733-line diff of index.mjs, 250 of schema and checks)",
+      "reading call sites in users": "0",
+      "tracing data shapes": "about 4 min (new answers of 17 methods)",
+      "finding bounds in code": "about 1 min",
+      "running and reading the check": "about 3 min",
+      "resolving merge conflicts": "about 1 min (20 hunks in index.mjs: resolved by re-applying my comments to the real after file rather than hunk by hunk)",
+      "writing the expected answer": "about 2 min"
+     },
+     "checkRefusalsBefore": 333,
+     "checkRefusalsAfter": 337,
+     "commentsOnly": true,
+     "notes": "Real after: 333 refusals (60 src incl. 7 rules of form: JSON.parse of the module's own stored JSON columns read as messages). Commented after: 337 = 65 bound lines without tests + 10 src pre-existing (#where/#used/#usedFor options defaulting to null; #entryOf's union) + 7 rules of form (same JSON.parse) + 255 in tests (of which ~35 new that my true comments cause: 'Object is possibly null' TS 2531 on useCheck(...).x; a OneOf union read for a field (by_model, now gone, read to check it is absent); retestAllowed's true | {...} read for cap_reached; string | undefined from a union passed to a string-only assert). The carry produced 20 conflict hunks in index.mjs; checks.mjs and schema.mjs merged cleanly and I edited them in place. ~650 comment lines added for the change (about 60 new typedefs incl. 12 @storedrows row kinds).",
+     "minutes": 9.85
+    },
+    {
+     "step": "gap before ai-use:378",
+     "start": "2026-11-15T15:44:54Z",
+     "end": "2026-11-15T15:45:47Z",
+     "sourceLinesRead": 0,
+     "testLinesRead": 108,
+     "kindsUndetermined": [],
+     "falseStarts": [],
+     "corrections": [],
+     "timeWentTo": {
+      "reading the module's code": "0 (no source change)",
+      "reading call sites in users": "0",
+      "tracing data shapes": "0",
+      "finding bounds in code": "0",
+      "running and reading the check": "about 1 min",
+      "resolving merge conflicts": "0",
+      "writing the expected answer": "0",
+      "reading the added tests": "about 1 min"
+     },
+     "checkRefusalsBefore": 342,
+     "checkRefusalsAfter": 347,
+     "commentsOnly": true,
+     "notes": "The gap added only tests (explore.test.mjs +21, two notice tests from ai-accounts:124 and :188, 108 lines); no source of ai-use changed, so the carry copied my comments unchanged and no comment needed to change. Real 378-before: 342; commented: 347 (65 bound lines without tests; one more 'Object is possibly null' (TS 2531) in a new test reading useCheck(...).code).",
+     "minutes": 0.88
+    },
+    {
+     "step": "update ai-use:378",
+     "start": "2026-11-15T15:45:47Z",
+     "end": "2026-11-15T15:47:52Z",
+     "sourceLinesRead": 74,
+     "testLinesRead": 71,
+     "kindsUndetermined": [
+      {
+       "what": "the basis and figures agent-model.estimate answers",
+       "why": "agent-model states no kind; I took 'measured' | 'price_only' from ai-use's own comment and its test"
+      }
+     ],
+     "falseStarts": [],
+     "corrections": [],
+     "timeWentTo": {
+      "reading the module's code": "about 1 min",
+      "reading call sites in users": "0",
+      "tracing data shapes": "about 1 min",
+      "finding bounds in code": "under 1 min",
+      "running and reading the check": "about 1 min",
+      "resolving merge conflicts": "about 2 min (2 hunks, by hand: took the real code, put my tags back, added three @overload signatures to useEstimate and estimate)",
+      "writing the expected answer": "about 1 min"
+     },
+     "checkRefusalsBefore": 347,
+     "checkRefusalsAfter": 356,
+     "commentsOnly": true,
+     "notes": "useEstimate now answers a Promise when an entry_id is named and the answer at once otherwise: stated with @overload (three signatures each on useEstimate and estimate) so users that name no entry keep the plain answer. Estimate gained two variants; EstimateRequest's entry_id became read and bounded; OpDeclaration.fields optional; DECLARED_OPS four more keys. Real after 347; commented 356 = 66 bound lines without tests + 10 pre-existing src + 7 rules of form + 273 tests, of which the new one my comments cause is declared-ops.test.mjs:51, which hands aiUseOps a bare {} as its AiUse to list handler names.",
+     "minutes": 2.08
+    },
+    {
+     "step": "update ai-use:613",
+     "start": "2026-11-15T15:48:04Z",
+     "end": "2026-11-15T15:49:18Z",
+     "sourceLinesRead": 72,
+     "testLinesRead": 97,
+     "kindsUndetermined": [],
+     "falseStarts": [],
+     "corrections": [],
+     "timeWentTo": {
+      "reading the module's code": "about 1 min",
+      "reading call sites in users": "0",
+      "tracing data shapes": "under 1 min",
+      "finding bounds in code": "under 1 min",
+      "running and reading the check": "about 1 min",
+      "resolving merge conflicts": "under 1 min (1 hunk: the new budgetOwner const and my aiUseOps comment, both kept)",
+      "writing the expected answer": "about 1 min"
+     },
+     "checkRefusalsBefore": 358,
+     "checkRefusalsAfter": 370,
+     "commentsOnly": true,
+     "notes": "budgetSet (limit or threshold), ops aibudgetset and aiprojectbudget, two declarations. Comments: BudgetRequest, BudgetAnswer, the method's tags, two op-table rows with two bound lines, OpDeclaration's requires widened to (string | string[])[] plus optional stamps and needs, DECLARED_OPS' @type, a @type on the private budgetOwner arrow. Real after 358; commented 370 = 69 bound lines without tests + 10 pre-existing src + 7 rules of form + 284 tests; no new refusal from my comments besides the pre-existing kinds.",
+     "minutes": 1.23
+    }
+   ],
+   "states": [
+    {
+     "change": "ai-use:105",
+     "side": "before",
+     "sourceLines": 1313,
+     "linesAdded": 768,
+     "linesRemoved": 40,
+     "commentLinesAdded": 711,
+     "blocksAdded": 105,
+     "tags": {
+      "typedef": 61,
+      "property": 231,
+      "type": 36,
+      "param": 47,
+      "returns": 30,
+      "template": 4,
+      "bound": 39,
+      "storedrows": 8,
+      "optable": 1,
+      "throws": 9
+     },
+     "tagsRemoved": {}
+    },
+    {
+     "change": "ai-use:105",
+     "side": "after",
+     "sourceLines": 2326,
+     "linesAdded": 1405,
+     "linesRemoved": 55,
+     "commentLinesAdded": 1303,
+     "blocksAdded": 199,
+     "tags": {
+      "typedef": 111,
+      "property": 426,
+      "type": 67,
+      "param": 87,
+      "returns": 56,
+      "template": 5,
+      "bound": 70,
+      "storedrows": 20,
+      "optable": 1,
+      "throws": 11
+     },
+     "tagsRemoved": {},
+     "againstPrevious": {
+      "commentLinesNet": 592,
+      "blocksNet": 94,
+      "tagsNet": {
+       "typedef": 50,
+       "property": 195,
+       "type": 31,
+       "param": 40,
+       "returns": 26,
+       "template": 1,
+       "bound": 31,
+       "storedrows": 12,
+       "optable": 0,
+       "throws": 2
+      }
+     }
+    },
+    {
+     "change": "ai-use:378",
+     "side": "before",
+     "sourceLines": 2326,
+     "linesAdded": 1405,
+     "linesRemoved": 55,
+     "commentLinesAdded": 1303,
+     "blocksAdded": 199,
+     "tags": {
+      "typedef": 111,
+      "property": 426,
+      "type": 67,
+      "param": 87,
+      "returns": 56,
+      "template": 5,
+      "bound": 70,
+      "storedrows": 20,
+      "optable": 1,
+      "throws": 11
+     },
+     "tagsRemoved": {},
+     "againstPrevious": {
+      "commentLinesNet": 0,
+      "blocksNet": 0,
+      "tagsNet": {
+       "typedef": 0,
+       "property": 0,
+       "type": 0,
+       "param": 0,
+       "returns": 0,
+       "template": 0,
+       "bound": 0,
+       "storedrows": 0,
+       "optable": 0,
+       "throws": 0
+      }
+     }
+    },
+    {
+     "change": "ai-use:378",
+     "side": "after",
+     "sourceLines": 2362,
+     "linesAdded": 1448,
+     "linesRemoved": 54,
+     "commentLinesAdded": 1345,
+     "blocksAdded": 207,
+     "tags": {
+      "typedef": 112,
+      "property": 426,
+      "type": 66,
+      "param": 93,
+      "returns": 62,
+      "template": 5,
+      "bound": 72,
+      "storedrows": 20,
+      "optable": 1,
+      "throws": 11
+     },
+     "tagsRemoved": {},
+     "againstPrevious": {
+      "commentLinesNet": 42,
+      "blocksNet": 8,
+      "tagsNet": {
+       "typedef": 1,
+       "property": 0,
+       "type": -1,
+       "param": 6,
+       "returns": 6,
+       "template": 0,
+       "bound": 2,
+       "storedrows": 0,
+       "optable": 0,
+       "throws": 0
+      }
+     }
+    },
+    {
+     "change": "ai-use:613",
+     "side": "before",
+     "sourceLines": 2362,
+     "linesAdded": 1448,
+     "linesRemoved": 54,
+     "commentLinesAdded": 1345,
+     "blocksAdded": 207,
+     "tags": {
+      "typedef": 112,
+      "property": 426,
+      "type": 66,
+      "param": 93,
+      "returns": 62,
+      "template": 5,
+      "bound": 72,
+      "storedrows": 20,
+      "optable": 1,
+      "throws": 11
+     },
+     "tagsRemoved": {},
+     "againstPrevious": {
+      "commentLinesNet": 0,
+      "blocksNet": 0,
+      "tagsNet": {
+       "typedef": 0,
+       "property": 0,
+       "type": 0,
+       "param": 0,
+       "returns": 0,
+       "template": 0,
+       "bound": 0,
+       "storedrows": 0,
+       "optable": 0,
+       "throws": 0
+      }
+     }
+    },
+    {
+     "change": "ai-use:613",
+     "side": "after",
+     "sourceLines": 2400,
+     "linesAdded": 1483,
+     "linesRemoved": 55,
+     "commentLinesAdded": 1378,
+     "blocksAdded": 210,
+     "tags": {
+      "typedef": 114,
+      "property": 439,
+      "type": 67,
+      "param": 95,
+      "returns": 63,
+      "template": 5,
+      "bound": 75,
+      "storedrows": 20,
+      "optable": 1,
+      "throws": 11
+     },
+     "tagsRemoved": {},
+     "againstPrevious": {
+      "commentLinesNet": 33,
+      "blocksNet": 3,
+      "tagsNet": {
+       "typedef": 2,
+       "property": 13,
+       "type": 1,
+       "param": 2,
+       "returns": 1,
+       "template": 0,
+       "bound": 3,
+       "storedrows": 0,
+       "optable": 0,
+       "throws": 0
+      }
+     }
+    }
+   ],
+   "notes": [
+    {
+     "t": "2026-11-15T15:25:21Z",
+     "event": "note",
+     "text": "Read the brief, the proof's rules, bookings/store examples, listing.mjs (308 lines) and parts of check.mjs (~150 lines) to learn what the tool reads; then the module's 3 source files (1310 lines) and call sites in users (grep, ~60 lines). Real state: check refuses 179 (39 in src, 138 in tests, 2 rules of form), 305 cannot-tell; listing 99 anything. Private #members of class AiUse are listed as entries (AiUse##x), contributing many 'anything'."
+    },
+    {
+     "t": "2026-11-15T15:31:18Z",
+     "event": "note",
+     "text": "False start: stated each answer as an exact union (result | refusal kinds). The check then refused ~100 more places in the module's own tests: JS reads fields (r.code, r.limits, r.estimate) of the answer without narrowing, which TypeScript refuses on a union whose members lack the field. Also three of my comments disagreed with code (let change = null captured in a closure; whoseOf widening to string; use not narrowed by USE_KINDS.includes). Trying a OneOf<...> helper kind that gives each member the others' fields as optional undefined."
+    },
+    {
+     "t": "2026-11-15T15:36:57Z",
+     "event": "note",
+     "text": "ai-use:105 is T53, a rewrite: index.mjs +1345/-? lines (diff 1733 lines), schema +12 tables and added columns, checks +2 codes and a new words table, 17 new public methods, 4 new ops, ~20 new constants; answers of countUsage, aiUsage, aiUsageMine, actualOf, estimate, accountUseOverTime, limitsReached, useCheck, exploreAllowed reshaped. carry.mjs: checks and schema merged, index.mjs 20 conflict hunks. I read the whole source diff and only the test names of the 1834-line test diff."
+    },
+    {
+     "t": "2026-11-15T15:48:04Z",
+     "event": "note",
+     "text": "Carry from 378-after to 613-before: the provider's files did not change between them (no merged, no conflicts); mechanical, no gap step."
+    }
+   ]
+  },
+  "wizard-scripts": {
+   "steps": [
+    {
+     "step": "first comments",
+     "start": "2026-11-15T15:21:03Z",
+     "end": "2026-11-15T15:38:10Z",
+     "sourceLinesRead": 2930,
+     "testLinesRead": 140,
+     "kindsUndetermined": [
+      {
+       "what": "SCREEN_REGISTRY, SCREEN_REGISTRY_SOURCE, CIVICSMITH_LIBRARY, CIVICSMITH_LIBRARY_SOURCE, CIVICSMITH_LIBRARY_ADOPTED_SOURCES, FRONT_DOORS, FRONT_DOORS_SOURCE, ELSEWHERE_DOOR",
+       "why": "generated by build-data.mjs into files t50.test holds byte-equal to the generator's output: a comment there is a code change of the generator's template text. Typing deepFreeze generically was tried and dropped: the inferred kinds are the data's own literal shapes (a union of 23 script shapes), so every content change would read as a kind change, and the module's tests then drew about 40 refusals reading them. Their shapes are stated as ScreenEntry, LibraryScript and FrontDoor for readers."
+      },
+      {
+       "what": "withRow",
+       "why": "passes any answer through unchanged (adds a row only to its own refusals): stated as * in, * out"
+      },
+      {
+       "what": "rows of SqlStorage.exec",
+       "why": "a row's columns are its SQL query's; JSDoc cannot tie a row kind to the query text"
+      },
+      {
+       "what": "wizardScriptsOps body fields",
+       "why": "the parsed request body: each field any value, which the methods check themselves"
+      },
+      {
+       "what": "private #members of WizardScripts (95 'anything' in the listing)",
+       "why": "not interface; left untyped on purpose, though the tool lists them as entries"
+      }
+     ],
+     "falseStarts": [
+      "typed deepFreeze as <T>(v: T) => T so the generated constants get inferred kinds; reverted (see kindsUndetermined)",
+      "typed the class's deps as required: the constructor's `= {}` default then disagreed; took Partial with casts on record and membership",
+      "first tried exact parameter kinds that the code reaches only through an untyped isObj; typed isObj (index.mjs and start.mjs) as a type guard instead"
+     ],
+     "corrections": [
+      "GrantAnswer.member.id string | null (the reader cannot see the guard)",
+      "ScriptAt.draft boolean, not true (widened in a map callback)",
+      "AccountsHandle.aiKeptAway optional (the code checks for it; tests pass {} for fail-closed)",
+      "registryActGaps and checkDraft accept null (their code reads it)",
+      "added ForeignRefusal for record-core's mintExhausted and membership's notAnAdmin answers (ok read as boolean)",
+      "WIZARD_SCRIPTS_TABLE_CLASSES' tuples cast so WIZARD_SCRIPTS_TABLES reads as string[] (was (string|boolean)[])"
+     ],
+     "timeWentTo": {
+      "reading the module's code": "about 5 min",
+      "reading call sites in users": "about 1 min",
+      "tracing data shapes": "about 3 min",
+      "finding bounds in code": "about 1 min",
+      "running and reading the check": "about 5 min",
+      "resolving merge conflicts": "0",
+      "writing the expected answer": "0"
+     },
+     "checkRefusalsBefore": 1060,
+     "checkRefusalsAfter": 932,
+     "commentsOnly": true,
+     "notes": "Real state: check 1060 refusals (100 src, 960 tests); listing 192 'anything' (175 entries, 95 of them private #members). Commented: 932 (44 src, 835 tests... plus 53 cannot-tell changes); listing 109 'anything': 95 private #members, 8 generated constants, withRow, SqlStorage.exec, and the class / wizardScriptsOf / wizardScriptsOps through them. None of the 44 src refusals is caused by a comment (6 are pre-existing ones reworded). 31 new test refusals, none a wrong kind: 24 tests read a field of a union answer (success | refusal) without narrowing; 5 robustness tests in start.test pass values outside the stated kind on purpose; 1 test passes a field writingHelp ignores (by); 1 is test-support's declaredOpHolds requiring `outside` once DECLARED_OPS is typed. Stored rows: the 12 SQL tables got @storedrows kinds (the tool cannot see SQL writes, so they are listed but never checked). The op table covers the 17 ops of wizardScriptsOps and writinghelp. Files commented: index.mjs, checks.mjs, data.mjs, start.mjs, writing-help.mjs, admin.mjs, schema.mjs.",
+     "minutes": 17.12
+    },
+    {
+     "step": "update wizard-scripts:98",
+     "start": "2026-11-15T15:38:24Z",
+     "end": "2026-11-15T15:39:28Z",
+     "sourceLinesRead": 75,
+     "testLinesRead": 80,
+     "kindsUndetermined": [],
+     "falseStarts": [],
+     "corrections": [],
+     "timeWentTo": {
+      "reading the module's code": "about 1 min (the diff)",
+      "reading call sites in users": "0",
+      "tracing data shapes": "0",
+      "finding bounds in code": "0",
+      "running and reading the check": "about 1 min",
+      "resolving merge conflicts": "0 (no conflicts)",
+      "writing the expected answer": "under 1 min"
+     },
+     "checkRefusalsBefore": 1066,
+     "checkRefusalsAfter": 940,
+     "commentsOnly": true,
+     "notes": "Real after state: 1066. Commented: 940 (53 of them bounds without named tests). Data-only change (registry re-taken, build-data pin moved); no comment changed. 33 new test refusals against the real, all of the known kinds (tests reading a union answer without narrowing, robustness tests, a field writingHelp ignores).",
+     "minutes": 1.07
+    },
+    {
+     "step": "update wizard-scripts:163",
+     "start": "2026-11-15T15:39:38Z",
+     "end": "2026-11-15T15:40:40Z",
+     "sourceLinesRead": 60,
+     "testLinesRead": 0,
+     "kindsUndetermined": [],
+     "falseStarts": [],
+     "corrections": [],
+     "timeWentTo": {
+      "reading the module's code": "about 1 min (the diff)",
+      "reading call sites in users": "0",
+      "tracing data shapes": "0",
+      "finding bounds in code": "under 1 min (ADMIN_ACTS' bound against the retired ops)",
+      "running and reading the check": "about 1 min",
+      "resolving merge conflicts": "0 (data.mjs merged cleanly)",
+      "writing the expected answer": "under 1 min"
+     },
+     "checkRefusalsBefore": 1070,
+     "checkRefusalsAfter": 944,
+     "commentsOnly": true,
+     "notes": "Real after 1070, commented 944. New private helpers (RETIRED_ACTS, currentAct) in data.mjs, not re-exported: no comment. Data changes only otherwise.",
+     "minutes": 1.03
+    },
+    {
+     "step": "update wizard-scripts:253",
+     "start": "2026-11-15T15:40:48Z",
+     "end": "2026-11-15T15:42:01Z",
+     "sourceLinesRead": 60,
+     "testLinesRead": 45,
+     "kindsUndetermined": [],
+     "falseStarts": [],
+     "corrections": [],
+     "timeWentTo": {
+      "reading the module's code": "under 1 min (the diff)",
+      "reading call sites in users": "0",
+      "tracing data shapes": "0",
+      "finding bounds in code": "under 1 min (whether ADMIN_ACTS' bound words change: they do not; the change makes them true)",
+      "running and reading the check": "about 1 min",
+      "resolving merge conflicts": "about 1 min (one conflict in admin.mjs: the real's prose comment against my JSDoc block, both kept)",
+      "writing the expected answer": "under 1 min"
+     },
+     "checkRefusalsBefore": 1071,
+     "checkRefusalsAfter": 945,
+     "commentsOnly": true,
+     "notes": "Real after 1071, commented 945. A content change to a constant whose kind does not name its members: invisible to the listing by design.",
+     "minutes": 1.22
+    },
+    {
+     "step": "update wizard-scripts:255",
+     "start": "2026-11-15T15:42:08Z",
+     "end": "2026-11-15T15:43:07Z",
+     "sourceLinesRead": 45,
+     "testLinesRead": 40,
+     "kindsUndetermined": [],
+     "falseStarts": [],
+     "corrections": [],
+     "timeWentTo": {
+      "reading the module's code": "under 1 min (the diff)",
+      "reading call sites in users": "0",
+      "tracing data shapes": "0",
+      "finding bounds in code": "about 1 min (whether the bound's words had to follow the prose from 'OPS holds' to 'the assembled registration declares': no, they already said the member op table)",
+      "running and reading the check": "about 1 min",
+      "resolving merge conflicts": "about 1 min (admin.mjs, same place as 253)",
+      "writing the expected answer": "under 1 min"
+     },
+     "checkRefusalsBefore": 1071,
+     "checkRefusalsAfter": 945,
+     "commentsOnly": true,
+     "notes": "Real after 1071, commented 945. 253 and 255 together are a remove then a partial put-back of names in a constant set: content the listing does not carry.",
+     "minutes": 0.98
+    },
+    {
+     "step": "gap before wizard-scripts:546",
+     "start": "2026-11-15T15:43:18Z",
+     "end": "2026-11-15T15:44:17Z",
+     "sourceLinesRead": 0,
+     "testLinesRead": 46,
+     "kindsUndetermined": [],
+     "falseStarts": [],
+     "corrections": [],
+     "timeWentTo": {
+      "reading the module's code": "0 (no source changed)",
+      "reading call sites in users": "0",
+      "tracing data shapes": "under 1 min (ai-runs' partAdmitted now takes an entry; this module calls it with the part alone, as AiRunsHandle states)",
+      "finding bounds in code": "0",
+      "running and reading the check": "about 1 min",
+      "resolving merge conflicts": "0",
+      "writing the expected answer": "0"
+     },
+     "checkRefusalsBefore": 1073,
+     "checkRefusalsAfter": 947,
+     "commentsOnly": true,
+     "notes": "The gap is one new test file (46 lines, notice-ai-runs-391.test.mjs) confirming a provider notice from ai-runs; no source of this module changed, carry merged nothing. No comment changed. Real 546-before 1073, commented 947.",
+     "minutes": 0.98
+    },
+    {
+     "step": "update wizard-scripts:546",
+     "start": "2026-11-15T15:44:17Z",
+     "end": "2026-11-15T15:45:13Z",
+     "sourceLinesRead": 40,
+     "testLinesRead": 60,
+     "kindsUndetermined": [],
+     "falseStarts": [],
+     "corrections": [],
+     "timeWentTo": {
+      "reading the module's code": "about 1 min (the diff)",
+      "reading call sites in users": "0",
+      "tracing data shapes": "0",
+      "finding bounds in code": "0",
+      "running and reading the check": "about 1 min",
+      "resolving merge conflicts": "0 (data.mjs merged cleanly)",
+      "writing the expected answer": "under 1 min"
+     },
+     "checkRefusalsBefore": 1075,
+     "checkRefusalsAfter": 949,
+     "commentsOnly": true,
+     "notes": "Real after 1075, commented 949. Generator-side constant and registry content only; no comment changed.",
+     "minutes": 0.93
+    }
+   ],
+   "states": [
+    {
+     "change": "wizard-scripts:98",
+     "side": "before",
+     "sourceLines": 2914,
+     "linesAdded": 1043,
+     "linesRemoved": 76,
+     "commentLinesAdded": 1037,
+     "blocksAdded": 180,
+     "tags": {
+      "type": 51,
+      "bound": 58,
+      "typedef": 103,
+      "property": 272,
+      "param": 64,
+      "returns": 59,
+      "import": 5,
+      "template": 1,
+      "optable": 1,
+      "storedrows": 12
+     },
+     "tagsRemoved": {}
+    },
+    {
+     "change": "wizard-scripts:98",
+     "side": "after",
+     "sourceLines": 2914,
+     "linesAdded": 1043,
+     "linesRemoved": 76,
+     "commentLinesAdded": 1037,
+     "blocksAdded": 180,
+     "tags": {
+      "type": 51,
+      "bound": 58,
+      "typedef": 103,
+      "property": 272,
+      "param": 64,
+      "returns": 59,
+      "import": 5,
+      "template": 1,
+      "optable": 1,
+      "storedrows": 12
+     },
+     "tagsRemoved": {},
+     "againstPrevious": {
+      "commentLinesNet": 0,
+      "blocksNet": 0,
+      "tagsNet": {
+       "type": 0,
+       "bound": 0,
+       "typedef": 0,
+       "property": 0,
+       "param": 0,
+       "returns": 0,
+       "import": 0,
+       "template": 0,
+       "optable": 0,
+       "storedrows": 0
+      }
+     }
+    },
+    {
+     "change": "wizard-scripts:163",
+     "side": "before",
+     "sourceLines": 2914,
+     "linesAdded": 1043,
+     "linesRemoved": 76,
+     "commentLinesAdded": 1037,
+     "blocksAdded": 180,
+     "tags": {
+      "type": 51,
+      "bound": 58,
+      "typedef": 103,
+      "property": 272,
+      "param": 64,
+      "returns": 59,
+      "import": 5,
+      "template": 1,
+      "optable": 1,
+      "storedrows": 12
+     },
+     "tagsRemoved": {},
+     "againstPrevious": {
+      "commentLinesNet": 0,
+      "blocksNet": 0,
+      "tagsNet": {
+       "type": 0,
+       "bound": 0,
+       "typedef": 0,
+       "property": 0,
+       "param": 0,
+       "returns": 0,
+       "import": 0,
+       "template": 0,
+       "optable": 0,
+       "storedrows": 0
+      }
+     }
+    },
+    {
+     "change": "wizard-scripts:163",
+     "side": "after",
+     "sourceLines": 2927,
+     "linesAdded": 1043,
+     "linesRemoved": 76,
+     "commentLinesAdded": 1037,
+     "blocksAdded": 180,
+     "tags": {
+      "type": 51,
+      "bound": 58,
+      "typedef": 103,
+      "property": 272,
+      "param": 64,
+      "returns": 59,
+      "import": 5,
+      "template": 1,
+      "optable": 1,
+      "storedrows": 12
+     },
+     "tagsRemoved": {},
+     "againstPrevious": {
+      "commentLinesNet": 0,
+      "blocksNet": 0,
+      "tagsNet": {
+       "type": 0,
+       "bound": 0,
+       "typedef": 0,
+       "property": 0,
+       "param": 0,
+       "returns": 0,
+       "import": 0,
+       "template": 0,
+       "optable": 0,
+       "storedrows": 0
+      }
+     }
+    },
+    {
+     "change": "wizard-scripts:253",
+     "side": "before",
+     "sourceLines": 2927,
+     "linesAdded": 1043,
+     "linesRemoved": 76,
+     "commentLinesAdded": 1037,
+     "blocksAdded": 180,
+     "tags": {
+      "type": 51,
+      "bound": 58,
+      "typedef": 103,
+      "property": 272,
+      "param": 64,
+      "returns": 59,
+      "import": 5,
+      "template": 1,
+      "optable": 1,
+      "storedrows": 12
+     },
+     "tagsRemoved": {},
+     "againstPrevious": {
+      "commentLinesNet": 0,
+      "blocksNet": 0,
+      "tagsNet": {
+       "type": 0,
+       "bound": 0,
+       "typedef": 0,
+       "property": 0,
+       "param": 0,
+       "returns": 0,
+       "import": 0,
+       "template": 0,
+       "optable": 0,
+       "storedrows": 0
+      }
+     }
+    },
+    {
+     "change": "wizard-scripts:253",
+     "side": "after",
+     "sourceLines": 2926,
+     "linesAdded": 1043,
+     "linesRemoved": 76,
+     "commentLinesAdded": 1037,
+     "blocksAdded": 180,
+     "tags": {
+      "type": 51,
+      "bound": 58,
+      "typedef": 103,
+      "property": 272,
+      "param": 64,
+      "returns": 59,
+      "import": 5,
+      "template": 1,
+      "optable": 1,
+      "storedrows": 12
+     },
+     "tagsRemoved": {},
+     "againstPrevious": {
+      "commentLinesNet": 0,
+      "blocksNet": 0,
+      "tagsNet": {
+       "type": 0,
+       "bound": 0,
+       "typedef": 0,
+       "property": 0,
+       "param": 0,
+       "returns": 0,
+       "import": 0,
+       "template": 0,
+       "optable": 0,
+       "storedrows": 0
+      }
+     }
+    },
+    {
+     "change": "wizard-scripts:255",
+     "side": "before",
+     "sourceLines": 2926,
+     "linesAdded": 1043,
+     "linesRemoved": 76,
+     "commentLinesAdded": 1037,
+     "blocksAdded": 180,
+     "tags": {
+      "type": 51,
+      "bound": 58,
+      "typedef": 103,
+      "property": 272,
+      "param": 64,
+      "returns": 59,
+      "import": 5,
+      "template": 1,
+      "optable": 1,
+      "storedrows": 12
+     },
+     "tagsRemoved": {},
+     "againstPrevious": {
+      "commentLinesNet": 0,
+      "blocksNet": 0,
+      "tagsNet": {
+       "type": 0,
+       "bound": 0,
+       "typedef": 0,
+       "property": 0,
+       "param": 0,
+       "returns": 0,
+       "import": 0,
+       "template": 0,
+       "optable": 0,
+       "storedrows": 0
+      }
+     }
+    },
+    {
+     "change": "wizard-scripts:255",
+     "side": "after",
+     "sourceLines": 2930,
+     "linesAdded": 1043,
+     "linesRemoved": 76,
+     "commentLinesAdded": 1037,
+     "blocksAdded": 180,
+     "tags": {
+      "type": 51,
+      "bound": 58,
+      "typedef": 103,
+      "property": 272,
+      "param": 64,
+      "returns": 59,
+      "import": 5,
+      "template": 1,
+      "optable": 1,
+      "storedrows": 12
+     },
+     "tagsRemoved": {},
+     "againstPrevious": {
+      "commentLinesNet": 0,
+      "blocksNet": 0,
+      "tagsNet": {
+       "type": 0,
+       "bound": 0,
+       "typedef": 0,
+       "property": 0,
+       "param": 0,
+       "returns": 0,
+       "import": 0,
+       "template": 0,
+       "optable": 0,
+       "storedrows": 0
+      }
+     }
+    },
+    {
+     "change": "wizard-scripts:546",
+     "side": "before",
+     "sourceLines": 2930,
+     "linesAdded": 1043,
+     "linesRemoved": 76,
+     "commentLinesAdded": 1037,
+     "blocksAdded": 180,
+     "tags": {
+      "type": 51,
+      "bound": 58,
+      "typedef": 103,
+      "property": 272,
+      "param": 64,
+      "returns": 59,
+      "import": 5,
+      "template": 1,
+      "optable": 1,
+      "storedrows": 12
+     },
+     "tagsRemoved": {},
+     "againstPrevious": {
+      "commentLinesNet": 0,
+      "blocksNet": 0,
+      "tagsNet": {
+       "type": 0,
+       "bound": 0,
+       "typedef": 0,
+       "property": 0,
+       "param": 0,
+       "returns": 0,
+       "import": 0,
+       "template": 0,
+       "optable": 0,
+       "storedrows": 0
+      }
+     }
+    },
+    {
+     "change": "wizard-scripts:546",
+     "side": "after",
+     "sourceLines": 2941,
+     "linesAdded": 1043,
+     "linesRemoved": 76,
+     "commentLinesAdded": 1037,
+     "blocksAdded": 180,
+     "tags": {
+      "type": 51,
+      "bound": 58,
+      "typedef": 103,
+      "property": 272,
+      "param": 64,
+      "returns": 59,
+      "import": 5,
+      "template": 1,
+      "optable": 1,
+      "storedrows": 12
+     },
+     "tagsRemoved": {},
+     "againstPrevious": {
+      "commentLinesNet": 0,
+      "blocksNet": 0,
+      "tagsNet": {
+       "type": 0,
+       "bound": 0,
+       "typedef": 0,
+       "property": 0,
+       "param": 0,
+       "returns": 0,
+       "import": 0,
+       "template": 0,
+       "optable": 0,
+       "storedrows": 0
+      }
+     }
+    }
+   ],
+   "notes": [
+    {
+     "t": "2026-11-15T15:25:59Z",
+     "event": "note",
+     "text": "Read the whole module (index.mjs 1767, data 218, checks 189, schema 168, start 88, writing-help 135, build-data 138, admin 28, front-doors 19, heads of the generated library and registry) and the users' source imports. Decided: generated files (civicsmith-library, screen-registry, front-doors) cannot carry comments, since t50.test holds them byte-equal to build-data's output; their kinds come from typing deepFreeze as generic in data.mjs. Private #members, which the tool lists as entries, are left untyped (not interface)."
+    },
+    {
+     "t": "2026-11-15T15:38:20Z",
+     "event": "note",
+     "text": "Correction to the end entry of 'first comments': the 932 refusals are 44 in src, 835 in tests and 53 (d) refusals of bounds that have no test named for them (expected: no tests added). Without the bound refusals the count is 879 against 1060."
+    },
+    {
+     "t": "2026-11-15T15:47:35Z",
+     "event": "note",
+     "text": "Checks of the carried before states (real / commented, comments only: yes for each): 163-before 1066/940, 253-before 1070/944, 255-before 1071/945, 546-before 1073/947. Each commented state is 53 (d) refusals of bounds without a named test, plus the real state's refusals less about 180, plus 31 to 33 test refusals from union answers and robustness tests."
+    }
+   ]
+  }
+ }
+}
