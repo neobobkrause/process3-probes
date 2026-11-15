@@ -677,5 +677,29 @@
     "notices": 10,
     "needed": 11,
     "matchesRules": 16
+  },
+  {
+    "design": 7,
+    "series": "round8-independent",
+    "blind": true,
+    "changes": 17,
+    "holes": 8,
+    "realisticHoles": 8,
+    "holeIds": [
+      "T01-rooms-handle-built-as-class",
+      "T02-quote-bound-not-reaching-operation",
+      "T03-unknown-room-refused-in-helper",
+      "T04-tally-full-error",
+      "T05-meter-ready-line-console-log",
+      "T06-weekday-takes-text-after-partial-first-step",
+      "T07-price-function-parameters-swap",
+      "T08-limit-lowered-in-test-helper"
+    ],
+    "stoppedByGuard": 0,
+    "falseRefusalLines": 7,
+    "noticesForNothing": 11,
+    "notices": 12,
+    "needed": 10,
+    "matchesRules": 7
   }
 ]

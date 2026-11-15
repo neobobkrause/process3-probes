@@ -1,0 +1,722 @@
+{
+  "changes": 17,
+  "matchesRules": 7,
+  "notices": 12,
+  "needed": 10,
+  "holes": [
+    {
+      "id": "T01-rooms-handle-built-as-class",
+      "users": [
+        "front",
+        "reports"
+      ]
+    },
+    {
+      "id": "T02-quote-bound-not-reaching-operation",
+      "users": [
+        "billing"
+      ]
+    },
+    {
+      "id": "T03-unknown-room-refused-in-helper",
+      "users": [
+        "billing"
+      ]
+    },
+    {
+      "id": "T04-tally-full-error",
+      "users": [
+        "billing"
+      ]
+    },
+    {
+      "id": "T05-meter-ready-line-console-log",
+      "users": [
+        "billing"
+      ]
+    },
+    {
+      "id": "T06-weekday-takes-text-after-partial-first-step",
+      "users": [
+        "reports"
+      ]
+    },
+    {
+      "id": "T07-price-function-parameters-swap",
+      "users": [
+        "billing"
+      ]
+    },
+    {
+      "id": "T08-limit-lowered-in-test-helper",
+      "users": [
+        "bookings"
+      ]
+    }
+  ],
+  "caughtByGuard": [],
+  "unneeded": [
+    {
+      "id": "T02-quote-bound-not-reaching-operation",
+      "user": "reports"
+    },
+    {
+      "id": "T10-new-operation",
+      "user": "billing"
+    },
+    {
+      "id": "T10-new-operation",
+      "user": "front"
+    },
+    {
+      "id": "T10-new-operation",
+      "user": "reports"
+    },
+    {
+      "id": "T11-bound-test-assertion-messages",
+      "user": "billing"
+    },
+    {
+      "id": "T11-bound-test-assertion-messages",
+      "user": "bookings"
+    },
+    {
+      "id": "T11-bound-test-assertion-messages",
+      "user": "front"
+    },
+    {
+      "id": "T11-bound-test-assertion-messages",
+      "user": "meter"
+    },
+    {
+      "id": "T11-bound-test-assertion-messages",
+      "user": "reports"
+    },
+    {
+      "id": "T12-list-kind-written-as-Array",
+      "user": "billing"
+    },
+    {
+      "id": "T17-test-shows-meter-output",
+      "user": "billing"
+    }
+  ],
+  "falseRefusals": 7,
+  "refusals": 7,
+  "rows": [
+    {
+      "id": "T01-rooms-handle-built-as-class",
+      "title": "The rooms' handle is built as an instance of a class that keeps its store in a private field, so that the state of the rooms is in one place",
+      "provider": "rooms",
+      "exp": [],
+      "told": [],
+      "matches": true,
+      "broken": [
+        "front",
+        "reports"
+      ],
+      "needs": [
+        "front",
+        "reports"
+      ],
+      "through": [],
+      "refusals": [],
+      "verdict": "HOLE: front, reports needed a change and was not told",
+      "providerTests": true,
+      "firstCommentsStep": false,
+      "timing": {
+        "listingMs": {
+          "before": 354,
+          "after": 157
+        },
+        "noticeMs": 894,
+        "checkMs": {
+          "rooms": 146,
+          "bookings": 106,
+          "door": 81,
+          "meter": 90,
+          "billing": 89,
+          "front": 83,
+          "reports": 72
+        }
+      }
+    },
+    {
+      "id": "T02-quote-bound-not-reaching-operation",
+      "title": "A quote is given for a stay of up to three nights (a weekend); a longer stay is priced by the venue's staff. The bound is written on quote, with a test named for it",
+      "provider": "bookings",
+      "exp": [
+        "billing",
+        "reports"
+      ],
+      "told": [
+        "reports"
+      ],
+      "matches": false,
+      "broken": [
+        "billing"
+      ],
+      "needs": [
+        "billing"
+      ],
+      "through": [],
+      "refusals": [],
+      "verdict": "HOLE: billing needed a change and was not told",
+      "providerTests": true,
+      "firstCommentsStep": false,
+      "timing": {
+        "listingMs": {
+          "before": 102,
+          "after": 136
+        },
+        "noticeMs": 704,
+        "checkMs": {
+          "bookings": 86,
+          "door": 61,
+          "meter": 74,
+          "billing": 124,
+          "front": 115,
+          "reports": 62
+        }
+      }
+    },
+    {
+      "id": "T03-unknown-room-refused-in-helper",
+      "title": "The lookup of a booking's room moves into one helper, roomOf, which refuses an unknown room with an Error, not a RangeError: it is not a value out of bounds. The @throws line on the handle is forgotten",
+      "provider": "bookings",
+      "exp": [],
+      "told": [],
+      "matches": true,
+      "broken": [
+        "billing"
+      ],
+      "needs": [
+        "billing"
+      ],
+      "through": [],
+      "refusals": [],
+      "verdict": "HOLE: billing needed a change and was not told",
+      "providerTests": true,
+      "firstCommentsStep": false,
+      "timing": {
+        "listingMs": {
+          "before": 112,
+          "after": 118
+        },
+        "noticeMs": 691,
+        "checkMs": {
+          "bookings": 108,
+          "door": 69,
+          "meter": 124,
+          "billing": 98,
+          "front": 88,
+          "reports": 93
+        }
+      }
+    },
+    {
+      "id": "T04-tally-full-error",
+      "title": "A full tally is refused with an Error in its own words, not a RangeError: the amount added is not out of bounds, the tally is full. add's @throws lines say so",
+      "provider": "money",
+      "exp": [
+        "billing"
+      ],
+      "told": [],
+      "matches": false,
+      "broken": [
+        "billing"
+      ],
+      "needs": [
+        "billing"
+      ],
+      "through": [],
+      "refusals": [],
+      "verdict": "HOLE: billing needed a change and was not told",
+      "providerTests": true,
+      "firstCommentsStep": false,
+      "timing": {
+        "listingMs": {
+          "before": 57,
+          "after": 70
+        },
+        "noticeMs": 808,
+        "checkMs": {
+          "money": 74,
+          "calendar": 79,
+          "store": 71,
+          "rooms": 69,
+          "bookings": 88,
+          "door": 96,
+          "meter": 108,
+          "billing": 114,
+          "front": 98,
+          "reports": 109
+        }
+      }
+    },
+    {
+      "id": "T05-meter-ready-line-console-log",
+      "title": "The meter writes an empty line as soon as it runs, so that whoever started it can tell it is ready; readers skip empty lines. It is written with console.log()",
+      "provider": "meter",
+      "exp": [],
+      "told": [],
+      "matches": true,
+      "broken": [
+        "billing"
+      ],
+      "needs": [
+        "billing"
+      ],
+      "through": [],
+      "refusals": [],
+      "verdict": "HOLE: billing needed a change and was not told",
+      "providerTests": true,
+      "firstCommentsStep": false,
+      "timing": {
+        "listingMs": {
+          "before": 83,
+          "after": 58
+        },
+        "noticeMs": 593,
+        "checkMs": {
+          "meter": 69,
+          "billing": 96,
+          "front": 91,
+          "reports": 94
+        }
+      }
+    },
+    {
+      "id": "T06-weekday-takes-text-after-partial-first-step",
+      "title": "weekday takes the day as written, YYYY-MM-DD, since every caller had to parse it first; weekday was not among the functions the first step described",
+      "provider": "calendar",
+      "exp": [
+        "reports"
+      ],
+      "told": [],
+      "matches": false,
+      "broken": [
+        "reports"
+      ],
+      "needs": [
+        "reports"
+      ],
+      "through": [],
+      "refusals": [],
+      "verdict": "HOLE: reports needed a change and was not told",
+      "providerTests": true,
+      "firstCommentsStep": false,
+      "timing": {
+        "listingMs": {
+          "before": 68,
+          "after": 48
+        },
+        "noticeMs": 521,
+        "checkMs": {
+          "calendar": 80,
+          "store": 77,
+          "rooms": 81,
+          "bookings": 116,
+          "door": 105,
+          "meter": 95,
+          "billing": 110,
+          "front": 70,
+          "reports": 72
+        }
+      }
+    },
+    {
+      "id": "T07-price-function-parameters-swap",
+      "title": "A venue's own price function is asked for the nights first, then the party, the order the venue's price sheet lists them; the comment, the call and bookings' own test say so",
+      "provider": "bookings",
+      "exp": [
+        "billing",
+        "front",
+        "reports"
+      ],
+      "told": [],
+      "matches": false,
+      "broken": [
+        "billing"
+      ],
+      "needs": [
+        "billing"
+      ],
+      "through": [],
+      "refusals": [],
+      "verdict": "HOLE: billing needed a change and was not told",
+      "providerTests": true,
+      "firstCommentsStep": false,
+      "timing": {
+        "listingMs": {
+          "before": 96,
+          "after": 102
+        },
+        "noticeMs": 937,
+        "checkMs": {
+          "bookings": 97,
+          "door": 68,
+          "meter": 60,
+          "billing": 70,
+          "front": 64,
+          "reports": 60
+        }
+      }
+    },
+    {
+      "id": "T08-limit-lowered-in-test-helper",
+      "title": "An amount may now be at most 500,000 cents, the most the venue's payment provider takes in one payment; the code and the edge in money's test helper change, the bound line is forgotten",
+      "provider": "money",
+      "exp": [
+        "billing",
+        "bookings",
+        "front",
+        "meter",
+        "reports"
+      ],
+      "told": [],
+      "matches": false,
+      "broken": [
+        "bookings"
+      ],
+      "needs": [
+        "bookings"
+      ],
+      "through": [],
+      "refusals": [],
+      "verdict": "HOLE: bookings needed a change and was not told",
+      "providerTests": true,
+      "firstCommentsStep": false,
+      "timing": {
+        "listingMs": {
+          "before": 80,
+          "after": 81
+        },
+        "noticeMs": 683,
+        "checkMs": {
+          "money": 49,
+          "calendar": 54,
+          "store": 93,
+          "rooms": 61,
+          "bookings": 144,
+          "door": 91,
+          "meter": 87,
+          "billing": 115,
+          "front": 92,
+          "reports": 84
+        }
+      }
+    },
+    {
+      "id": "T09-messages-pretty-printed",
+      "title": "The meter writes each message indented, so that the venue's operators can read its output; its tests read a message as starting at a line that begins with {",
+      "provider": "meter",
+      "exp": [],
+      "told": [
+        "billing"
+      ],
+      "matches": false,
+      "broken": [
+        "billing"
+      ],
+      "needs": [
+        "billing"
+      ],
+      "through": [],
+      "refusals": [],
+      "verdict": "held",
+      "providerTests": true,
+      "firstCommentsStep": false,
+      "timing": {
+        "listingMs": {
+          "before": 45,
+          "after": 45
+        },
+        "noticeMs": 613,
+        "checkMs": {
+          "meter": 64,
+          "billing": 79,
+          "front": 70,
+          "reports": 93
+        }
+      }
+    },
+    {
+      "id": "T10-new-operation",
+      "title": "bookings answers a new operation, booklist: the bookings of one room, open and cancelled, in the order they were opened",
+      "provider": "bookings",
+      "exp": [
+        "reports"
+      ],
+      "told": [
+        "billing",
+        "front",
+        "reports"
+      ],
+      "matches": false,
+      "broken": [],
+      "needs": [],
+      "through": [],
+      "refusals": [],
+      "verdict": "held; 3 told for nothing",
+      "providerTests": true,
+      "firstCommentsStep": false,
+      "timing": {
+        "listingMs": {
+          "before": 89,
+          "after": 92
+        },
+        "noticeMs": 652,
+        "checkMs": {
+          "bookings": 94,
+          "door": 81,
+          "meter": 62,
+          "billing": 76,
+          "front": 72,
+          "reports": 98
+        }
+      }
+    },
+    {
+      "id": "T11-bound-test-assertion-messages",
+      "title": "money's bound test of cents says in each assertion what it shows, so that a failure reads as a sentence",
+      "provider": "money",
+      "exp": [],
+      "told": [
+        "billing",
+        "bookings",
+        "front",
+        "meter",
+        "reports"
+      ],
+      "matches": false,
+      "broken": [],
+      "needs": [],
+      "through": [],
+      "refusals": [],
+      "verdict": "held; 5 told for nothing",
+      "providerTests": true,
+      "firstCommentsStep": false,
+      "timing": {
+        "listingMs": {
+          "before": 85,
+          "after": 70
+        },
+        "noticeMs": 566,
+        "checkMs": {
+          "money": 62,
+          "calendar": 48,
+          "store": 90,
+          "rooms": 121,
+          "bookings": 93,
+          "door": 69,
+          "meter": 113,
+          "billing": 124,
+          "front": 77,
+          "reports": 66
+        }
+      }
+    },
+    {
+      "id": "T12-list-kind-written-as-Array",
+      "title": "splitEvenly gives leftover cents to the last parts, as the venue's accountant asks; its comment is rewritten and writes the list as Array<Amount>",
+      "provider": "money",
+      "exp": [],
+      "told": [
+        "billing"
+      ],
+      "matches": false,
+      "broken": [],
+      "needs": [],
+      "through": [],
+      "refusals": [],
+      "verdict": "held; 1 told for nothing",
+      "providerTests": true,
+      "firstCommentsStep": false,
+      "timing": {
+        "listingMs": {
+          "before": 104,
+          "after": 53
+        },
+        "noticeMs": 671,
+        "checkMs": {
+          "money": 63,
+          "calendar": 56,
+          "store": 68,
+          "rooms": 76,
+          "bookings": 103,
+          "door": 68,
+          "meter": 56,
+          "billing": 93,
+          "front": 80,
+          "reports": 59
+        }
+      }
+    },
+    {
+      "id": "T13-data-file-url-in-a-constant",
+      "title": "text-rules gains isReservedName: whether a name is one the venue keeps for itself, read from reserved.json, which the venue's staff keep; the file is named once, in a constant, as the meter names its program",
+      "provider": "text-rules",
+      "exp": [],
+      "told": [],
+      "matches": true,
+      "broken": [],
+      "needs": [],
+      "through": [],
+      "refusals": [
+        "text-rules (1)"
+      ],
+      "verdict": "held; FALSE REFUSAL of text-rules (1 lines)",
+      "providerTests": true,
+      "firstCommentsStep": false,
+      "timing": {
+        "listingMs": {
+          "before": 53,
+          "after": 60
+        },
+        "noticeMs": 560,
+        "checkMs": {
+          "text-rules": 69,
+          "money": 66,
+          "calendar": 47,
+          "store": 91,
+          "rooms": 91,
+          "bookings": 91,
+          "door": 57,
+          "meter": 83,
+          "billing": 102,
+          "front": 80,
+          "reports": 67
+        }
+      }
+    },
+    {
+      "id": "T14-write-with-encoding",
+      "title": "The meter writes its lines as UTF-8 whatever the platform's default, so that a room name with accents arrives as written",
+      "provider": "meter",
+      "exp": [],
+      "told": [],
+      "matches": true,
+      "broken": [],
+      "needs": [],
+      "through": [],
+      "refusals": [
+        "meter (1)"
+      ],
+      "verdict": "held; FALSE REFUSAL of meter (1 lines)",
+      "providerTests": true,
+      "firstCommentsStep": false,
+      "timing": {
+        "listingMs": {
+          "before": 85,
+          "after": 66
+        },
+        "noticeMs": 695,
+        "checkMs": {
+          "meter": 109,
+          "billing": 77,
+          "front": 93,
+          "reports": 73
+        }
+      }
+    },
+    {
+      "id": "T15-message-line-as-template",
+      "title": "The meter's code is tidied by the venue's linter (prefer-template): its message line is written as a template literal",
+      "provider": "meter",
+      "exp": [],
+      "told": [],
+      "matches": true,
+      "broken": [],
+      "needs": [],
+      "through": [],
+      "refusals": [
+        "meter (2)"
+      ],
+      "verdict": "held; FALSE REFUSAL of meter (2 lines)",
+      "providerTests": true,
+      "firstCommentsStep": false,
+      "timing": {
+        "listingMs": {
+          "before": 67,
+          "after": 53
+        },
+        "noticeMs": 518,
+        "checkMs": {
+          "meter": 67,
+          "billing": 70,
+          "front": 74,
+          "reports": 77
+        }
+      }
+    },
+    {
+      "id": "T16-errors-made-by-helper",
+      "title": "money's errors for a value outside its bound are made by one helper, outOfBounds, so that every such message names the value the same way",
+      "provider": "money",
+      "exp": [],
+      "told": [],
+      "matches": true,
+      "broken": [],
+      "needs": [],
+      "through": [],
+      "refusals": [
+        "money (2)"
+      ],
+      "verdict": "held; FALSE REFUSAL of money (2 lines)",
+      "providerTests": true,
+      "firstCommentsStep": false,
+      "timing": {
+        "listingMs": {
+          "before": 51,
+          "after": 45
+        },
+        "noticeMs": 518,
+        "checkMs": {
+          "money": 87,
+          "calendar": 59,
+          "store": 76,
+          "rooms": 84,
+          "bookings": 97,
+          "door": 80,
+          "meter": 82,
+          "billing": 82,
+          "front": 91,
+          "reports": 101
+        }
+      }
+    },
+    {
+      "id": "T17-test-shows-meter-output",
+      "title": "meter's tests show what the meter wrote alongside their own output, so that a failing test can be read without running the meter by hand",
+      "provider": "meter",
+      "exp": [],
+      "told": [
+        "billing"
+      ],
+      "matches": false,
+      "broken": [],
+      "needs": [],
+      "through": [],
+      "refusals": [
+        "meter (1)"
+      ],
+      "verdict": "held; 1 told for nothing; FALSE REFUSAL of meter (1 lines)",
+      "providerTests": true,
+      "firstCommentsStep": false,
+      "timing": {
+        "listingMs": {
+          "before": 53,
+          "after": 54
+        },
+        "noticeMs": 739,
+        "checkMs": {
+          "meter": 61,
+          "billing": 95,
+          "front": 78,
+          "reports": 69
+        }
+      }
+    }
+  ]
+}

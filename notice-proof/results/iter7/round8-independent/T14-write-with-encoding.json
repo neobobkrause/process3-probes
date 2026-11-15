@@ -1,0 +1,97 @@
+{
+  "id": "T14-write-with-encoding",
+  "title": "The meter writes its lines as UTF-8 whatever the platform's default, so that a room name with accents arrives as written",
+  "provider": "meter",
+  "covers": [
+    "Node's write(chunk, encoding)",
+    "the tool's description of Node has write(chunk, callback?) only"
+  ],
+  "tool": {
+    "firstCommentsStep": false,
+    "interfaceChanged": false,
+    "summary": "The listing before and after is the same. Nobody is told.",
+    "entries": [],
+    "told": [],
+    "toldDetail": [],
+    "notTold": [],
+    "warnings": [],
+    "commentsOnly": false,
+    "checks": {
+      "meter": {
+        "refusedBefore": 0,
+        "refusedAfter": 1,
+        "refusals": [
+          {
+            "at": "meter/src/worker.mjs:12",
+            "code": 2345,
+            "text": "Argument of type 'string' is not assignable to parameter of type '(error?: Error | null | undefined) => void'.",
+            "kind": "(a) a comment disagrees with this module's code"
+          }
+        ],
+        "refusalsBefore": [],
+        "ms": 109
+      },
+      "billing": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 77
+      },
+      "front": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 93
+      },
+      "reports": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 73
+      }
+    }
+  },
+  "groundTruth": {
+    "providerTests": {
+      "pass": true,
+      "failed": [],
+      "ran": 2
+    },
+    "testsBefore": {
+      "billing": true,
+      "front": true,
+      "reports": true
+    },
+    "testsAfter": {
+      "billing": {
+        "pass": true,
+        "failed": []
+      },
+      "front": {
+        "pass": true,
+        "failed": []
+      },
+      "reports": {
+        "pass": true,
+        "failed": []
+      }
+    },
+    "broken": []
+  },
+  "timing": {
+    "listingMs": {
+      "before": 85,
+      "after": 66
+    },
+    "noticeMs": 695,
+    "checkMs": {
+      "meter": 109,
+      "billing": 77,
+      "front": 93,
+      "reports": 73
+    }
+  }
+}

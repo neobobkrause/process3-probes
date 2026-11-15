@@ -1,0 +1,104 @@
+{
+  "id": "T15-message-line-as-template",
+  "title": "The meter's code is tidied by the venue's linter (prefer-template): its message line is written as a template literal",
+  "provider": "meter",
+  "covers": [
+    "a message line written `${JSON.stringify(msg)}\\n`",
+    "the same bytes written",
+    "the one-line rule recognises only JSON.stringify(x) + newline"
+  ],
+  "tool": {
+    "firstCommentsStep": false,
+    "interfaceChanged": false,
+    "summary": "The listing before and after is the same. Nobody is told.",
+    "entries": [],
+    "told": [],
+    "toldDetail": [],
+    "notTold": [],
+    "warnings": [],
+    "commentsOnly": false,
+    "checks": {
+      "meter": {
+        "refusedBefore": 0,
+        "refusedAfter": 2,
+        "refusals": [
+          {
+            "at": "meter/src/worker.mjs:12",
+            "code": "message",
+            "text": "messages on a channel are written one per line: JSON.stringify(message) + newline",
+            "kind": "(c) a rule of form: one message per line"
+          },
+          {
+            "at": "meter/src/worker.mjs:12",
+            "code": "message",
+            "text": "writes to stdout, which this module's messages are published for, something the tool cannot read as one message line",
+            "kind": "(c) a rule of form: a message channel carries only message lines the tool can read"
+          }
+        ],
+        "refusalsBefore": [],
+        "ms": 67
+      },
+      "billing": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 70
+      },
+      "front": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 74
+      },
+      "reports": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 77
+      }
+    }
+  },
+  "groundTruth": {
+    "providerTests": {
+      "pass": true,
+      "failed": [],
+      "ran": 2
+    },
+    "testsBefore": {
+      "billing": true,
+      "front": true,
+      "reports": true
+    },
+    "testsAfter": {
+      "billing": {
+        "pass": true,
+        "failed": []
+      },
+      "front": {
+        "pass": true,
+        "failed": []
+      },
+      "reports": {
+        "pass": true,
+        "failed": []
+      }
+    },
+    "broken": []
+  },
+  "timing": {
+    "listingMs": {
+      "before": 67,
+      "after": 53
+    },
+    "noticeMs": 518,
+    "checkMs": {
+      "meter": 67,
+      "billing": 70,
+      "front": 74,
+      "reports": 77
+    }
+  }
+}

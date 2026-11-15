@@ -1,0 +1,107 @@
+{
+ "about": "Ground truth by reading for round 8 (fresh independent attacks) run on iteration 7, written by Claude AFTER the results were seen, independently of what the tool said.",
+ "changes": {
+  "T01-rooms-handle-built-as-class": {
+   "needs": [
+    "front",
+    "reports"
+   ],
+   "note": "The rooms' handle is built as a class with a private field; a user that hands rooms.find on as a value now calls it without its receiver. Rule 49 looks only at handles built as plain objects."
+  },
+  "T02-quote-bound-not-reaching-operation": {
+   "needs": [
+    "billing"
+   ],
+   "note": "A new bound on quote does not reach the operation bookquote, whose handler does more than hand the call on (rule 43 as narrowed); billing calls bookquote."
+  },
+  "T03-unknown-room-refused-in-helper": {
+   "needs": [
+    "billing"
+   ],
+   "note": "The unknown room is refused in a private helper the stated function calls; rule 46 reads only throws in the function's own body."
+  },
+  "T04-tally-full-error": {
+   "needs": [
+    "billing"
+   ],
+   "note": "A new kind of error from a class's instance method: the listing keeps stated errors for functions, handle members, operations and constructors, not for other class members."
+  },
+  "T05-meter-ready-line-console-log": {
+   "needs": [
+    "billing"
+   ],
+   "note": "console.log() with no argument writes an empty line on the message channel; the check looks only at writes handed data."
+  },
+  "T06-weekday-takes-text-after-partial-first-step": {
+   "needs": [
+    "reports"
+   ],
+   "note": "A first comments step that described only part of the calendar: once any comment states a kind, the module counts as commented, and an entry still without a stated kind changed unseen."
+  },
+  "T07-price-function-parameters-swap": {
+   "needs": [
+    "billing"
+   ],
+   "note": "The parameters of a function handed in swap places; rule 48 compares only an entry's own parameter names, not those of a callback inside the kind it accepts."
+  },
+  "T08-limit-lowered-in-test-helper": {
+   "needs": [
+    "bookings"
+   ],
+   "note": "The bound test reads its limit through a helper function in another test file of the module; the fingerprint does not follow it."
+  },
+  "T09-messages-pretty-printed": {
+   "needs": [
+    "billing"
+   ],
+   "note": "Held: the tool told billing."
+  },
+  "T10-new-operation": {
+   "needs": [],
+   "note": "A new operation: the door's call and get name every operation in a type parameter, so the whole parameter list counts as 'cannot stand in'."
+  },
+  "T11-bound-test-assertion-messages": {
+   "needs": [],
+   "note": "Messages added to a bound test's assertions are counted as new values."
+  },
+  "T12-list-kind-written-as-Array": {
+   "needs": [],
+   "note": "Amount[] written as Array<Amount>: the printed declaration differs."
+  },
+  "T13-data-file-url-in-a-constant": {
+   "needs": [],
+   "note": "The URL of the module's own data file held in a constant is refused by rule 44, which reads only the spelling written in place.",
+   "falseRefusals": {
+    "text-rules": 1
+   }
+  },
+  "T14-write-with-encoding": {
+   "needs": [],
+   "note": "write(text, 'utf8') is refused: the tool's description of Node gives write a callback only.",
+   "falseRefusals": {
+    "meter": 1
+   }
+  },
+  "T15-message-line-as-template": {
+   "needs": [],
+   "note": "A message line written as a template string is refused by rules 19 and 45, which recognise one spelling.",
+   "falseRefusals": {
+    "meter": 2
+   }
+  },
+  "T16-errors-made-by-helper": {
+   "needs": [],
+   "note": "Errors made by a helper function are refused by rule 46 as 'a kind the tool cannot read'.",
+   "falseRefusals": {
+    "money": 2
+   }
+  },
+  "T17-test-shows-meter-output": {
+   "needs": [],
+   "note": "A console.log in the meter's own test is refused: the streams that carry messages are gathered over the tests too.",
+   "falseRefusals": {
+    "meter": 1
+   }
+  }
+ }
+}
