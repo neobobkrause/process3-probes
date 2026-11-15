@@ -51,7 +51,7 @@ export function extractProvider(c, commit, dir, repo = DEFAULT_REPO) {
   return [...blobs.keys()];
 }
 
-export function buildState(id, side, out, { commented, repo = DEFAULT_REPO } = {}) {
+export function buildState(id, side, out, { commented, users, repo = DEFAULT_REPO } = {}) {
   const c = changeOf(id);
   const list = [c.provider, ...usersOf(c, repo)];
   const replace = [];
@@ -61,7 +61,7 @@ export function buildState(id, side, out, { commented, repo = DEFAULT_REPO } = {
     extractProvider(c, c.after, tmp, repo);
     replace.push(`${c.provider}=${tmp}`);
   } else if (side !== 'before') throw new Error('side is before or after');
-  const r = build({ repo, commit: c.before, list, out, replace, overlay: commented ? [commented] : [] });
+  const r = build({ repo, commit: c.before, list, out, replace, overlay: [...(users ? [users] : []), ...(commented ? [commented] : [])] });
   if (tmp) fs.rmSync(tmp, { recursive: true, force: true });
   return r;
 }
