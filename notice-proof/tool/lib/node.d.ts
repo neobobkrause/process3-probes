@@ -44,8 +44,8 @@ declare function queueMicrotask(callback: () => void): void;
 declare function structuredClone<T>(value: T): T;
 
 interface NodeWritable {
-  write(chunk: string): boolean;
-  end(chunk?: string): void;
+  write(chunk: string, callback?: (error?: Error | null) => void): boolean;
+  end(chunk?: string, callback?: () => void): void;
   [key: string]: any;
 }
 declare var process: {

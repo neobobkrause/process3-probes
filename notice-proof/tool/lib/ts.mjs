@@ -10,6 +10,7 @@ export const OPTIONS = {
   checkJs: true,
   // Iteration 4: declarations are written out (to memory only, never to disk) for the backstop of rule 18.
   noEmit: false,
+  resolveJsonModule: true, // iteration 5: the reader reads JSON modules
   declaration: true,
   emitDeclarationOnly: true,
   strict: true,
@@ -42,19 +43,32 @@ export function makeProgram(files) {
  * removed and a plain constant's single value widened to its kind. "Kind.member" holds each member of a kind written as
  * an object type. Written to memory only.
  */
-export function declarationsOf(program, file) {
+export function declarationsOf(program, file, plainElsewhere = new Map()) {
   const sf = program.getSourceFile(file);
   if (!sf) return {};
   let text = '';
   program.emit(sf, (name, t) => { if (/\.d\.[mc]?ts$/.test(name)) text = t; }, undefined, true);
-  const d = ts.createSourceFile('decl.d.ts', text, ts.ScriptTarget.ES2022, true, ts.ScriptKind.TS);
+  const parsed = ts.createSourceFile('decl.d.ts', text, ts.ScriptTarget.ES2022, true, ts.ScriptKind.TS);
+  // Iteration 5: a parameter's name or written shape ({ store } or deps) is not part of the interface.
+  const unname = (ctx) => (root) => {
+    const visit = (n) => ts.isParameter(n) ? ts.factory.updateParameterDeclaration(n, n.modifiers, n.dotDotDotToken, ts.factory.createIdentifier('_'), n.questionToken, n.type ? ts.visitNode(n.type, visit) : n.type, undefined) : ts.visitEachChild(n, visit, ctx);
+    return ts.visitNode(root, visit);
+  };
+  const d = ts.transform(parsed, [unname]).transformed[0];
   const printer = ts.createPrinter({ removeComments: true });
   const print = (n) => printer.printNode(ts.EmitHint.Unspecified, n, d).replace(/\s+/g, ' ').trim();
+  // Iteration 5: kinds of this module that are unions or plain kinds are written out where they are used.
+  const plainKinds = new Map();
+  for (const st of d.statements) if (ts.isTypeAliasDeclaration(st) && !ts.isTypeLiteralNode(st.type) && !ts.isMappedTypeNode(st.type) && !st.typeParameters) plainKinds.set(st.name.text, printer.printNode(ts.EmitHint.Unspecified, st.type, d).replace(/\s+/g, ' ').trim());
   const out = {};
   const add = (name, t) => { out[name] = out[name] ? `${out[name]} ${t}` : t; };
   for (const st of d.statements) {
     if ((ts.isFunctionDeclaration(st) || ts.isClassDeclaration(st) || ts.isInterfaceDeclaration(st) || ts.isTypeAliasDeclaration(st)) && st.name) {
       add(st.name.text, print(st));
+      if (ts.isClassDeclaration(st)) for (const m of st.members) if (m.name && (ts.isIdentifier(m.name) || ts.isPrivateIdentifier(m.name))) {
+        const isStatic = (ts.getCombinedModifierFlags(m) & ts.ModifierFlags.Static) !== 0;
+        add(`${st.name.text}${isStatic ? '.' : '#'}${m.name.text}`, print(m));
+      }
       const lit = ts.isTypeAliasDeclaration(st) && ts.isTypeLiteralNode(st.type) ? st.type.members : ts.isInterfaceDeclaration(st) ? st.members : null;
       for (const m of lit ?? []) if (m.name && (ts.isIdentifier(m.name) || ts.isStringLiteral(m.name))) add(`${st.name.text}.${m.name.text}`, print(m));
     } else if (ts.isVariableStatement(st)) {
@@ -69,6 +83,14 @@ export function declarationsOf(program, file) {
       for (const e of st.exportClause.elements) add(e.name.text, print(st));
     }
   }
+  const unbracket = (t) => { let prev; do { prev = t; t = t.replace(/\(([^()]*\|[^()]*)\)/g, '$1'); } while (t !== prev); return t; };
+  for (const k of Object.keys(out)) {
+    // a plain kind of another module, named through import("..."), is written out too
+    out[k] = out[k].replace(/import\("[^"]+"\)\.([A-Za-z_$][\w$]*)/g, (m, name) => (plainElsewhere.has(name) ? `(${plainElsewhere.get(name)})` : m));
+    for (const [name, rhs] of plainKinds) if (k !== name) out[k] = out[k].replace(new RegExp(`\\b${name}\\b`, 'g'), `(${rhs})`);
+    out[k] = unbracket(out[k]);
+  }
+  Object.defineProperty(out, '__plain', { value: plainKinds, enumerable: false });
   return out;
 }
 

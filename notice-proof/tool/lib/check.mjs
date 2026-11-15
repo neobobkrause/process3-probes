@@ -222,6 +222,19 @@ export function check(tree, moduleId) {
         for (const u of t.flags & ts.TypeFlags.Union ? t.types : []) { noteDecls(u.aliasSymbol?.declarations); noteDecls(u.symbol?.declarations); }
       });
       for (const r of d.relatedInformation ?? []) { const m = r.file && tree.moduleOfFile(r.file.fileName); if (m && m !== moduleId) others.add(m); }
+      // Iteration 5: "possibly missing" about a value the language's own library hands back (pop, shift, find, at,
+      // Map.get), or one taken from such a call, is "cannot tell".
+      if (POSSIBLY_UNDEFINED.has(d.code)) {
+        const fromLib = (x, depth = 0) => {
+          while (ts.isParenthesizedExpression(x) || ts.isNonNullExpression(x)) x = x.expression;
+          if (ts.isCallExpression(x)) { let sg; try { sg = checker.getResolvedSignature(x); } catch {} return !!sg?.declaration?.getSourceFile().isDeclarationFile; }
+          if (ts.isPropertyAccessExpression(x) && depth < 4) return fromLib(x.expression, depth + 1);
+          if (ts.isIdentifier(x) && depth < 4) { const dcl = checker.getSymbolAtLocation(x)?.declarations?.[0]; if (dcl && ts.isVariableDeclaration(dcl) && dcl.initializer) return fromLib(dcl.initializer, depth + 1); }
+          return false;
+        };
+        const target = ts.isPropertyAccessExpression(node.parent) && node.parent.name === node ? node.parent.expression : node;
+        if (fromLib(target)) { cannotTell.push({ at, code: d.code, why: "a value the language's own library may hand back missing", text }); continue; }
+      }
       // "Possibly undefined" about a value that comes only from the module's own code: the reader cannot tell.
       if (POSSIBLY_UNDEFINED.has(d.code) && !others.size) {
         cannotTell.push({ at, code: d.code, why: "a value of the module's own that may be missing, guarded where the reader cannot see", text });
@@ -233,12 +246,38 @@ export function check(tree, moduleId) {
       });
     }
 
+    // Iteration 5 (rule 28): a module imports only another module's interface files.
+    for (const st of sf.statements) {
+      if (!ts.isImportDeclaration(st) && !ts.isExportDeclaration(st)) continue;
+      const spec = st.moduleSpecifier && ts.isStringLiteral(st.moduleSpecifier) ? st.moduleSpecifier.text : null;
+      if (!spec || !spec.startsWith('.')) continue;
+      const target = path.resolve(path.dirname(f), spec);
+      const other = tree.moduleOfFile(target);
+      if (other && other !== moduleId && !tree.byId.get(other).public.includes(target)) refusals.push({ at: lineAt(sf, st, tree.root), code: 'import', text: `imports ${path.relative(tree.root, target)}, which is not one of ${other}'s interface files`, kind: "(c) a rule of form: only a module's interface files are imported" });
+    }
+    // Iteration 5 (rule 29): where a function or method states its errors, it throws only kinds it states.
+    walk(sf, (n) => {
+      if (!(ts.isFunctionDeclaration(n) || ts.isMethodDeclaration(n) || ts.isArrowFunction(n) || ts.isFunctionExpression(n))) return;
+      let host = n;
+      if ((ts.isArrowFunction(n) || ts.isFunctionExpression(n)) && n.parent && (ts.isVariableDeclaration(n.parent) || ts.isPropertyAssignment(n.parent))) host = n.parent;
+      const stated = [...tagsOf(host, 'throws'), ...(host !== n ? tagsOf(n, 'throws') : [])].map((t) => t.typeExpression?.type?.getText?.()).filter(Boolean);
+      if (!stated.length || !n.body) return;
+      const own = (m) => {
+        if (m !== n.body && ts.isFunctionLike(m)) return; // a nested function states its own
+        if (ts.isThrowStatement(m) && m.expression && ts.isNewExpression(m.expression) && ts.isIdentifier(m.expression.expression) && !stated.includes(m.expression.expression.text)) {
+          refusals.push({ at: lineAt(sf, m, tree.root), code: 'throws', text: `throws ${m.expression.expression.text}, which its comment does not state (it states ${stated.join(', ')})`, kind: "(a) a comment disagrees with this module's code" });
+        }
+        ts.forEachChild(m, own);
+      };
+      own(n.body);
+    });
+
     // Rules of form, iteration 3: a plain-data kind built as a class instance (rule 11); a cast that turns a value of
     // a known kind into a product kind it is not (rule 14).
     walk(sf, (n) => {
       // Iteration 4 (rule 22): wherever a plain-data kind is expected, a value whose kind is a class is refused,
       // however it was built (new, or a factory).
-      if (ts.isExpression(n) && !ts.isParenthesizedExpression(n) && (ts.isNewExpression(n) || ts.isCallExpression(n) || ts.isIdentifier(n)) && n.parent && (ts.isReturnStatement(n.parent) || ts.isVariableDeclaration(n.parent) || ts.isArrowFunction(n.parent) || ts.isPropertyAssignment(n.parent) || (ts.isCallExpression(n.parent) && n.parent.arguments.includes(n)))) {
+      if (ts.isExpression(n) && !ts.isParenthesizedExpression(n) && (ts.isNewExpression(n) || ts.isCallExpression(n) || ts.isIdentifier(n) || ts.isElementAccessExpression(n)) && n.parent && (ts.isReturnStatement(n.parent) || ts.isVariableDeclaration(n.parent) || ts.isArrowFunction(n.parent) || ts.isPropertyAssignment(n.parent) || (ts.isCallExpression(n.parent) && n.parent.arguments.includes(n)) || (ts.isConditionalExpression(n.parent) && n.parent.condition !== n) || (ts.isBinaryExpression(n.parent) && [ts.SyntaxKind.BarBarToken, ts.SyntaxKind.QuestionQuestionToken, ts.SyntaxKind.AmpersandAmpersandToken].includes(n.parent.operatorToken.kind)))) {
         const ct = checker.getContextualType(n);
         if (ct && plainDataKind(ct)) {
           const vt = checker.getTypeAtLocation(n);
@@ -285,6 +324,8 @@ export function check(tree, moduleId) {
       if (isJson('parse')) {
         const a0 = n.arguments[0];
         if (a0 && ts.isCallExpression(a0) && ts.isPropertyAccessExpression(a0.expression) && a0.expression.name.text === 'stringify') return; // a copy, not a message
+        // iteration 5: a copy made in two statements, const text = JSON.stringify(x); JSON.parse(text)
+        if (a0 && ts.isIdentifier(a0)) { const dcl = checker.getSymbolAtLocation(a0)?.declarations?.[0]; if (dcl && ts.isVariableDeclaration(dcl) && dcl.initializer && ts.isCallExpression(dcl.initializer) && ts.isPropertyAccessExpression(dcl.initializer.expression) && dcl.initializer.expression.name.text === 'stringify') return; }
         let p = n.parent;
         while (p && ts.isParenthesizedExpression(p) && !ts.getJSDocType(p)) p = p.parent;
         const typeNode = (p && (ts.isParenthesizedExpression(p) || ts.isVariableDeclaration(p)) && (ts.getJSDocType(p) ?? (ts.isVariableDeclaration(p) ? ts.getJSDocType(p.parent.parent) : undefined))) || undefined;
@@ -293,14 +334,16 @@ export function check(tree, moduleId) {
       }
       // A write to a standard stream: every JSON.stringify in what is written, directly or through a variable set just
       // before (iteration 3), must give a message kind published for that stream.
-      if (ts.isPropertyAccessExpression(callee) && ['write', 'end'].includes(callee.name.text)) {
+      const isConsole = ts.isPropertyAccessExpression(callee) && ts.isIdentifier(callee.expression) && callee.expression.text === 'console' && ['log', 'info', 'error', 'warn'].includes(callee.name.text);
+      if (ts.isPropertyAccessExpression(callee) && (['write', 'end'].includes(callee.name.text) || isConsole)) {
         const w = n;
         // Every stream the target may be (a stream chosen at run time names each of them) must be one of the
         // channels the message's kind is published for.
         // Iteration 4 (rule 20): the stream may be chosen into a variable: follow it to where it is set.
-        let targetText = w.expression.expression.getText(sf);
+        // Iteration 5 (rule 30): console.log and console.info write to stdout, console.error and console.warn to stderr.
+        let targetText = isConsole ? (['log', 'info'].includes(callee.name.text) ? 'stdout' : 'stderr') : w.expression.expression.getText(sf);
         const tid = w.expression.expression;
-        if (ts.isIdentifier(tid)) {
+        if (!isConsole && ts.isIdentifier(tid)) {
           for (const dcl of checker.getSymbolAtLocation(tid)?.declarations ?? []) if (ts.isVariableDeclaration(dcl) && dcl.initializer) targetText += ' ' + dcl.initializer.getText();
         }
         const streams = [...new Set(targetText.match(/\b(stdout|stderr|stdin)\b/g) ?? [])];
@@ -315,7 +358,8 @@ export function check(tree, moduleId) {
             }
           });
         };
-        for (const a of n.arguments) find(a, 0);
+        const data = isConsole ? n.arguments : n.arguments.slice(0, 1); // iteration 5: a write's callback is not data
+        for (const a of data) find(a, 0);
         const messages = stringified.filter((js) => js.arguments[0] && messageChannelsOf(checker.getTypeAtLocation(js.arguments[0])));
         if (!streams.length) {
           if (messages.length) refusals.push({ at: lineAt(sf, n, tree.root), code: 'message', text: 'a message is written where the tool cannot tell which channel', kind: '(c) a rule of form: a message is written where its channel can be read' });
@@ -334,7 +378,9 @@ export function check(tree, moduleId) {
             return ts.isCallExpression(l) && ts.isPropertyAccessExpression(l.expression) && l.expression.name.text === 'join' && l.arguments[0] && nl(l.arguments[0]) &&
               ts.isCallExpression(l.expression.expression) && ts.isPropertyAccessExpression(l.expression.expression.expression) && l.expression.expression.expression.name.text === 'map' &&
               (() => { const f = l.expression.expression.arguments[0]; return f && (ts.isArrowFunction(f) || ts.isFunctionExpression(f)) && isStringify(ts.isBlock(f.body) ? (f.body.statements[0]?.expression ?? f.body) : f.body); })(); };
-          if (!n.arguments.every(oneLine)) refusals.push({ at: lineAt(sf, n, tree.root), code: 'message', text: 'messages on a channel are written one per line: JSON.stringify(message) + newline', kind: '(c) a rule of form: one message per line' });
+          // console.log adds the line end itself
+          const ok = isConsole ? data.every((x) => { x = ts.isIdentifier(x) ? (checker.getSymbolAtLocation(x)?.declarations?.[0]?.initializer ?? x) : x; return ts.isCallExpression(x) && ts.isPropertyAccessExpression(x.expression) && x.expression.name.text === 'stringify'; }) : data.every(oneLine);
+          if (!ok) refusals.push({ at: lineAt(sf, n, tree.root), code: 'message', text: 'messages on a channel are written one per line: JSON.stringify(message) + newline', kind: '(c) a rule of form: one message per line' });
         }
         for (const js of stringified) {
           const a0 = js.arguments[0];
@@ -422,6 +468,7 @@ function fingerprint(node, sf) {
     const v = valueOf(n);
     if (v) { out.add(v); return; }
     if (ts.isIdentifier(n)) {
+      if (/Error$/.test(n.text)) out.add('e:' + n.text); // an error kind named in a check (iteration 5)
       if (loopValues.has(n.text)) for (const x of loopValues.get(n.text)) out.add(x);
       const init = imported.get(n.text) ?? (top.has(n.text) && ts.isVariableDeclaration(top.get(n.text)) ? top.get(n.text).initializer : null);
       if (init && depth < 3) valuesIn(init, out, depth + 1);
@@ -440,10 +487,21 @@ function fingerprint(node, sf) {
       let callee = ts.isPropertyAccessExpression(n.expression) ? n.expression.name.text : n.expression.getText(sf);
       for (const name of top.keys()) callee = callee.replace(new RegExp(`\\b${name}\\b`, 'g'), '_'); // local helpers' names do not count
       const local = ts.isIdentifier(n.expression) && top.has(n.expression.text);
-      if (local) { if (!seen.has(n.expression.text)) { seen.add(n.expression.text); visit(top.get(n.expression.text)); } }
+      if (local) {
+        // iteration 5: a helper's parameters take the values it is called with
+        const helper = top.get(n.expression.text);
+        const fnNode = ts.isFunctionDeclaration(helper) ? helper : helper.initializer && (ts.isArrowFunction(helper.initializer) || ts.isFunctionExpression(helper.initializer)) ? helper.initializer : null;
+        const saved = new Map(loopValues);
+        fnNode?.parameters.forEach((p, i) => { if (ts.isIdentifier(p.name) && n.arguments[i]) { const vals = new Set(); valuesIn(n.arguments[i], vals); loopValues.set(p.name.text, vals); } });
+        const key = n.expression.text + JSON.stringify([...loopValues.entries()].map(([k, v]) => [k, [...v]]));
+        if (!seen.has(key)) { seen.add(key); visit(helper); }
+        loopValues.clear(); for (const [k, v] of saved) loopValues.set(k, v);
+      }
       else {
         const vals = new Set();
         for (const arg of n.arguments) valuesIn(arg, vals);
+        // iteration 5: the list a check is run over ([1, 600].map(...)) counts
+        if (ts.isPropertyAccessExpression(n.expression)) valuesIn(n.expression.expression, vals);
         if (!vals.size) pairs.add(callee);
         for (const v of vals) pairs.add(`${callee}(${v})`);
       }

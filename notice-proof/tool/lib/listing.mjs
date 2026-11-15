@@ -52,6 +52,8 @@ export function makeLister(program, tree) {
     return { file: sf.fileName, start: own.length ? own[0].pos : node.getStart(sf), end: node.end };
   }
 
+  let plainEverywhere = null;
+
   function list(mod) {
     const entries = {};
     const ranges = [];
@@ -150,6 +152,20 @@ export function makeLister(program, tree) {
           entries[name] = { kind: 'class', accepts: { k: 'params', items: c.params }, handsBack: c.ret, bounds: [...ownBounds, ...nestedBounds(a), ...nestedBounds(h)], where };
           const throws = tagsOf(ctors[0].declaration ?? decl, 'throws').map((tg) => tg.typeExpression?.type?.getText?.()).filter(Boolean).sort();
           if (throws.length) entries[name].throws = throws;
+          // Iteration 5 (rule 27): each member of the class, static or not, is an entry of its own.
+          const members = [
+            ...checker.getPropertiesOfType(t).filter((p) => p.name !== 'prototype').map((p) => [`${name}.${p.name}`, p]),
+            ...checker.getPropertiesOfType(checker.getDeclaredTypeOfSymbol(sym)).map((p) => [`${name}#${p.name}`, p]),
+          ];
+          for (const [e, p] of members) {
+            const mt = checker.getTypeOfSymbol(p);
+            const msigs = mt.getCallSignatures();
+            const ma = newCtx(), mh = newCtx();
+            if (msigs.length) { const mc = C.canonSig(msigs[0], ma, mh); entries[e] = { kind: 'class member', accepts: { k: 'params', items: mc.params }, handsBack: mc.ret, bounds: [...nestedBounds(ma), ...nestedBounds(mh)], where }; }
+            else entries[e] = { kind: 'class member', accepts: null, handsBack: C.canon(mt, mh), bounds: nestedBounds(mh), where };
+            const md = p.declarations?.[0];
+            if (md) ranges.push({ entry: e, ...rangeOf(md) });
+          }
         } else if (sigs.length && checker.getPropertiesOfType(t).length === 0) {
           const c = C.canonSig(sigs[0], a, h);
           const items = c.params.map((p, i) => ({ ...p, name: sym.valueDeclaration?.parameters?.[i]?.name?.getText?.() }));
@@ -244,8 +260,13 @@ export function makeLister(program, tree) {
     }
     for (const e of Object.values(entries)) e.bounds = [...new Set(e.bounds)].sort();
     // Iteration 4 (rule 18): each entry's declaration as TypeScript prints it.
+    // plain kinds (unions, plain kinds) of every module the program reads, to write out where another module names them
+    if (!plainEverywhere) {
+      plainEverywhere = new Map();
+      for (const m of tree.modules) for (const f of m.public) if (program.getSourceFile(f)) for (const [k, v] of declarationsOf(program, f).__plain ?? []) plainEverywhere.set(k, v);
+    }
     const decls = {};
-    for (const f of mod.public) Object.assign(decls, declarationsOf(program, f));
+    for (const f of mod.public) Object.assign(decls, declarationsOf(program, f, plainEverywhere));
     for (const [name, e] of Object.entries(entries)) {
       if (name.startsWith('op:')) {
         const table = Object.entries(entries).find(([n, x]) => x.kind === 'operation table' && x.handsBack?.names?.includes(name.slice(3)))?.[0];
