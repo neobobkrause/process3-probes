@@ -22,28 +22,28 @@
         "refusedAfter": 0,
         "refusals": [],
         "refusalsBefore": [],
-        "ms": 134
+        "ms": 70
       },
       "door": {
         "refusedBefore": 0,
         "refusedAfter": 0,
         "refusals": [],
         "refusalsBefore": [],
-        "ms": 72
+        "ms": 57
       },
       "meter": {
         "refusedBefore": 0,
         "refusedAfter": 0,
         "refusals": [],
         "refusalsBefore": [],
-        "ms": 70
+        "ms": 57
       },
       "billing": {
         "refusedBefore": 0,
         "refusedAfter": 0,
         "refusals": [],
         "refusalsBefore": [],
-        "ms": 107
+        "ms": 73
       },
       "front": {
         "refusedBefore": 1,
@@ -64,14 +64,14 @@
             "kind": "(c) a rule of form: the outside world is reached only in recognised forms"
           }
         ],
-        "ms": 83
+        "ms": 76
       },
       "reports": {
         "refusedBefore": 0,
         "refusedAfter": 0,
         "refusals": [],
         "refusalsBefore": [],
-        "ms": 75
+        "ms": 118
       }
     }
   },
@@ -118,17 +118,17 @@
   },
   "timing": {
     "listingMs": {
-      "before": 86,
-      "after": 87
+      "before": 114,
+      "after": 107
     },
-    "noticeMs": 524,
+    "noticeMs": 598,
     "checkMs": {
-      "bookings": 134,
-      "door": 72,
-      "meter": 70,
-      "billing": 107,
-      "front": 83,
-      "reports": 75
+      "bookings": 70,
+      "door": 57,
+      "meter": 57,
+      "billing": 73,
+      "front": 76,
+      "reports": 118
     }
   }
 }

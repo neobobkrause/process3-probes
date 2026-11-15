@@ -104,49 +104,49 @@
         "refusedAfter": 0,
         "refusals": [],
         "refusalsBefore": [],
-        "ms": 96
+        "ms": 87
       },
       "calendar": {
         "refusedBefore": 0,
         "refusedAfter": 0,
         "refusals": [],
         "refusalsBefore": [],
-        "ms": 83
+        "ms": 66
       },
       "store": {
         "refusedBefore": 0,
         "refusedAfter": 0,
         "refusals": [],
         "refusalsBefore": [],
-        "ms": 90
+        "ms": 77
       },
       "rooms": {
         "refusedBefore": 0,
         "refusedAfter": 0,
         "refusals": [],
         "refusalsBefore": [],
-        "ms": 91
+        "ms": 103
       },
       "bookings": {
         "refusedBefore": 0,
         "refusedAfter": 0,
         "refusals": [],
         "refusalsBefore": [],
-        "ms": 148
+        "ms": 185
       },
       "door": {
         "refusedBefore": 0,
         "refusedAfter": 0,
         "refusals": [],
         "refusalsBefore": [],
-        "ms": 84
+        "ms": 96
       },
       "meter": {
         "refusedBefore": 0,
         "refusedAfter": 0,
         "refusals": [],
         "refusalsBefore": [],
-        "ms": 72
+        "ms": 89
       },
       "billing": {
         "refusedBefore": 0,
@@ -160,21 +160,21 @@
           }
         ],
         "refusalsBefore": [],
-        "ms": 97
+        "ms": 129
       },
       "front": {
         "refusedBefore": 0,
         "refusedAfter": 0,
         "refusals": [],
         "refusalsBefore": [],
-        "ms": 94
+        "ms": 125
       },
       "reports": {
         "refusedBefore": 0,
         "refusedAfter": 0,
         "refusals": [],
         "refusalsBefore": [],
-        "ms": 84
+        "ms": 65
       }
     }
   },
@@ -241,21 +241,21 @@
   },
   "timing": {
     "listingMs": {
-      "before": 301,
-      "after": 137
+      "before": 319,
+      "after": 144
     },
-    "noticeMs": 1141,
+    "noticeMs": 1049,
     "checkMs": {
-      "money": 96,
-      "calendar": 83,
-      "store": 90,
-      "rooms": 91,
-      "bookings": 148,
-      "door": 84,
-      "meter": 72,
-      "billing": 97,
-      "front": 94,
-      "reports": 84
+      "money": 87,
+      "calendar": 66,
+      "store": 77,
+      "rooms": 103,
+      "bookings": 185,
+      "door": 96,
+      "meter": 89,
+      "billing": 129,
+      "front": 125,
+      "reports": 65
     }
   }
 }

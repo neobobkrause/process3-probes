@@ -81,21 +81,21 @@
       "firstCommentsStep": false,
       "timing": {
         "listingMs": {
-          "before": 301,
-          "after": 137
+          "before": 319,
+          "after": 144
         },
-        "noticeMs": 1141,
+        "noticeMs": 1049,
         "checkMs": {
-          "money": 96,
-          "calendar": 83,
-          "store": 90,
-          "rooms": 91,
-          "bookings": 148,
-          "door": 84,
-          "meter": 72,
-          "billing": 97,
-          "front": 94,
-          "reports": 84
+          "money": 87,
+          "calendar": 66,
+          "store": 77,
+          "rooms": 103,
+          "bookings": 185,
+          "door": 96,
+          "meter": 89,
+          "billing": 129,
+          "front": 125,
+          "reports": 65
         }
       }
     },
@@ -121,15 +121,15 @@
       "firstCommentsStep": false,
       "timing": {
         "listingMs": {
-          "before": 66,
-          "after": 62
+          "before": 55,
+          "after": 55
         },
-        "noticeMs": 720,
+        "noticeMs": 661,
         "checkMs": {
-          "meter": 86,
-          "billing": 98,
-          "front": 84,
-          "reports": 82
+          "meter": 71,
+          "billing": 88,
+          "front": 86,
+          "reports": 74
         }
       }
     },
@@ -155,15 +155,15 @@
       "firstCommentsStep": false,
       "timing": {
         "listingMs": {
-          "before": 64,
-          "after": 56
+          "before": 87,
+          "after": 71
         },
-        "noticeMs": 649,
+        "noticeMs": 655,
         "checkMs": {
-          "meter": 80,
-          "billing": 88,
-          "front": 93,
-          "reports": 75
+          "meter": 76,
+          "billing": 83,
+          "front": 94,
+          "reports": 79
         }
       }
     },
@@ -190,21 +190,21 @@
       "firstCommentsStep": false,
       "timing": {
         "listingMs": {
-          "before": 56,
-          "after": 67
+          "before": 57,
+          "after": 65
         },
-        "noticeMs": 653,
+        "noticeMs": 758,
         "checkMs": {
-          "money": 66,
-          "calendar": 63,
-          "store": 82,
-          "rooms": 72,
-          "bookings": 116,
-          "door": 77,
-          "meter": 82,
-          "billing": 83,
-          "front": 76,
-          "reports": 77
+          "money": 77,
+          "calendar": 76,
+          "store": 51,
+          "rooms": 60,
+          "bookings": 125,
+          "door": 71,
+          "meter": 59,
+          "billing": 73,
+          "front": 90,
+          "reports": 94
         }
       }
     },
@@ -234,21 +234,21 @@
       "firstCommentsStep": false,
       "timing": {
         "listingMs": {
-          "before": 71,
-          "after": 73
+          "before": 59,
+          "after": 54
         },
-        "noticeMs": 648,
+        "noticeMs": 593,
         "checkMs": {
-          "money": 85,
-          "calendar": 57,
-          "store": 65,
-          "rooms": 73,
-          "bookings": 86,
-          "door": 80,
+          "money": 80,
+          "calendar": 54,
+          "store": 86,
+          "rooms": 67,
+          "bookings": 66,
+          "door": 76,
           "meter": 60,
-          "billing": 80,
-          "front": 88,
-          "reports": 89
+          "billing": 79,
+          "front": 97,
+          "reports": 54
         }
       }
     },
@@ -274,17 +274,17 @@
       "firstCommentsStep": false,
       "timing": {
         "listingMs": {
-          "before": 148,
-          "after": 105
+          "before": 168,
+          "after": 141
         },
-        "noticeMs": 603,
+        "noticeMs": 695,
         "checkMs": {
-          "bookings": 90,
-          "door": 69,
-          "meter": 73,
-          "billing": 86,
-          "front": 78,
-          "reports": 68
+          "bookings": 136,
+          "door": 67,
+          "meter": 71,
+          "billing": 95,
+          "front": 77,
+          "reports": 58
         }
       }
     },
@@ -304,15 +304,15 @@
       "firstCommentsStep": false,
       "timing": {
         "listingMs": {
-          "before": 56,
-          "after": 55
+          "before": 64,
+          "after": 65
         },
-        "noticeMs": 522,
+        "noticeMs": 600,
         "checkMs": {
-          "meter": 61,
-          "billing": 72,
-          "front": 74,
-          "reports": 87
+          "meter": 77,
+          "billing": 78,
+          "front": 83,
+          "reports": 74
         }
       }
     },
@@ -332,21 +332,21 @@
       "firstCommentsStep": false,
       "timing": {
         "listingMs": {
-          "before": 64,
-          "after": 55
+          "before": 59,
+          "after": 59
         },
-        "noticeMs": 720,
+        "noticeMs": 607,
         "checkMs": {
-          "money": 134,
-          "calendar": 70,
-          "store": 91,
-          "rooms": 67,
-          "bookings": 111,
-          "door": 71,
-          "meter": 104,
-          "billing": 84,
-          "front": 88,
-          "reports": 86
+          "money": 51,
+          "calendar": 48,
+          "store": 61,
+          "rooms": 63,
+          "bookings": 93,
+          "door": 59,
+          "meter": 57,
+          "billing": 71,
+          "front": 73,
+          "reports": 60
         }
       }
     },
@@ -370,17 +370,17 @@
       "firstCommentsStep": false,
       "timing": {
         "listingMs": {
-          "before": 124,
-          "after": 131
+          "before": 103,
+          "after": 97
         },
-        "noticeMs": 679,
+        "noticeMs": 646,
         "checkMs": {
-          "bookings": 107,
-          "door": 112,
-          "meter": 98,
-          "billing": 97,
-          "front": 90,
-          "reports": 75
+          "bookings": 90,
+          "door": 96,
+          "meter": 89,
+          "billing": 86,
+          "front": 76,
+          "reports": 66
         }
       }
     },
@@ -404,18 +404,18 @@
       "firstCommentsStep": false,
       "timing": {
         "listingMs": {
-          "before": 74,
-          "after": 92
+          "before": 72,
+          "after": 88
         },
-        "noticeMs": 696,
+        "noticeMs": 544,
         "checkMs": {
-          "rooms": 83,
-          "bookings": 106,
-          "door": 83,
-          "meter": 82,
-          "billing": 86,
-          "front": 80,
-          "reports": 72
+          "rooms": 112,
+          "bookings": 137,
+          "door": 75,
+          "meter": 77,
+          "billing": 96,
+          "front": 72,
+          "reports": 62
         }
       }
     },
@@ -443,16 +443,16 @@
       "firstCommentsStep": false,
       "timing": {
         "listingMs": {
-          "before": 119,
-          "after": 110
+          "before": 100,
+          "after": 98
         },
-        "noticeMs": 663,
+        "noticeMs": 570,
         "checkMs": {
-          "door": 107,
-          "meter": 72,
-          "billing": 87,
-          "front": 79,
-          "reports": 91
+          "door": 67,
+          "meter": 70,
+          "billing": 76,
+          "front": 58,
+          "reports": 80
         }
       }
     },
@@ -472,18 +472,18 @@
       "firstCommentsStep": false,
       "timing": {
         "listingMs": {
-          "before": 68,
-          "after": 74
+          "before": 70,
+          "after": 78
         },
-        "noticeMs": 517,
+        "noticeMs": 458,
         "checkMs": {
-          "rooms": 88,
-          "bookings": 113,
-          "door": 68,
-          "meter": 71,
-          "billing": 97,
-          "front": 96,
-          "reports": 80
+          "rooms": 101,
+          "bookings": 91,
+          "door": 62,
+          "meter": 69,
+          "billing": 87,
+          "front": 73,
+          "reports": 84
         }
       }
     },
@@ -507,17 +507,17 @@
       "firstCommentsStep": false,
       "timing": {
         "listingMs": {
-          "before": 160,
-          "after": 139
+          "before": 99,
+          "after": 78
         },
-        "noticeMs": 621,
+        "noticeMs": 471,
         "checkMs": {
-          "bookings": 91,
-          "door": 68,
-          "meter": 67,
-          "billing": 79,
-          "front": 83,
-          "reports": 82
+          "bookings": 130,
+          "door": 66,
+          "meter": 61,
+          "billing": 74,
+          "front": 59,
+          "reports": 73
         }
       }
     },
@@ -537,21 +537,21 @@
       "firstCommentsStep": false,
       "timing": {
         "listingMs": {
-          "before": 56,
-          "after": 56
+          "before": 73,
+          "after": 62
         },
-        "noticeMs": 630,
+        "noticeMs": 531,
         "checkMs": {
-          "money": 87,
-          "calendar": 60,
-          "store": 72,
-          "rooms": 73,
-          "bookings": 145,
-          "door": 75,
-          "meter": 122,
-          "billing": 100,
-          "front": 89,
-          "reports": 73
+          "money": 80,
+          "calendar": 54,
+          "store": 58,
+          "rooms": 61,
+          "bookings": 71,
+          "door": 70,
+          "meter": 92,
+          "billing": 72,
+          "front": 72,
+          "reports": 104
         }
       }
     },
@@ -571,21 +571,21 @@
       "firstCommentsStep": false,
       "timing": {
         "listingMs": {
-          "before": 50,
-          "after": 65
+          "before": 72,
+          "after": 87
         },
-        "noticeMs": 553,
+        "noticeMs": 704,
         "checkMs": {
-          "money": 72,
-          "calendar": 53,
-          "store": 100,
-          "rooms": 73,
-          "bookings": 76,
-          "door": 76,
-          "meter": 61,
-          "billing": 76,
-          "front": 66,
-          "reports": 65
+          "money": 77,
+          "calendar": 72,
+          "store": 83,
+          "rooms": 64,
+          "bookings": 84,
+          "door": 88,
+          "meter": 58,
+          "billing": 92,
+          "front": 102,
+          "reports": 74
         }
       }
     }
