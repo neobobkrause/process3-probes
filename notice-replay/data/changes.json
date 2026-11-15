@@ -1,0 +1,4570 @@
+{
+ "providers": [
+  "ai-runs",
+  "ai-accounts",
+  "op-declarations",
+  "ai-catalogue",
+  "ai-use",
+  "wizard-scripts"
+ ],
+ "changes": [
+  {
+   "change": "ai-runs:96",
+   "provider": "ai-runs",
+   "pr": 96,
+   "kind": "job",
+   "before": "2d52c515fae9c04c6f8ff5164660be226edb491a",
+   "after": "b7426ef99a6201d16b6e81c713cb5e6305f2a71a",
+   "told": {
+    "action-plans": {
+     "srcImports": true,
+     "testImports": false
+    },
+    "affordances": {
+     "srcImports": false,
+     "testImports": true
+    },
+    "agent-steps": {
+     "srcImports": false,
+     "testImports": true
+    },
+    "agent-worker": {
+     "srcImports": false,
+     "testImports": true
+    },
+    "ai-gate": {
+     "srcImports": false,
+     "testImports": false
+    },
+    "capture-requests": {
+     "srcImports": false,
+     "testImports": false
+    },
+    "case-account": {
+     "srcImports": true,
+     "testImports": false
+    },
+    "control-plane": {
+     "srcImports": true,
+     "testImports": true
+    },
+    "instance-reports": {
+     "srcImports": false,
+     "testImports": false
+    },
+    "instance-setup": {
+     "srcImports": true,
+     "testImports": false
+    },
+    "intent": {
+     "srcImports": true,
+     "testImports": true
+    },
+    "op-declarations": {
+     "srcImports": false,
+     "testImports": true
+    },
+    "op-specs-late": {
+     "srcImports": false,
+     "testImports": false
+    },
+    "plan-work": {
+     "srcImports": true,
+     "testImports": false
+    },
+    "plane": {
+     "srcImports": true,
+     "testImports": true
+    },
+    "question-explorer": {
+     "srcImports": true,
+     "testImports": false
+    },
+    "queue-producers": {
+     "srcImports": true,
+     "testImports": false
+    },
+    "run-productions": {
+     "srcImports": true,
+     "testImports": true
+    },
+    "scheduler": {
+     "srcImports": true,
+     "testImports": false
+    },
+    "screens-document": {
+     "srcImports": false,
+     "testImports": false
+    },
+    "screens-inquiry": {
+     "srcImports": false,
+     "testImports": true
+    },
+    "skills": {
+     "srcImports": false,
+     "testImports": false
+    },
+    "store-ask": {
+     "srcImports": false,
+     "testImports": false
+    },
+    "store-assembly": {
+     "srcImports": true,
+     "testImports": true
+    },
+    "store-door": {
+     "srcImports": false,
+     "testImports": true
+    },
+    "store-jobs": {
+     "srcImports": false,
+     "testImports": false
+    },
+    "store-request": {
+     "srcImports": false,
+     "testImports": true
+    },
+    "surface-declarations": {
+     "srcImports": false,
+     "testImports": false
+    },
+    "wizard-scripts": {
+     "srcImports": true,
+     "testImports": false
+    }
+   },
+   "declaredUsers": [
+    "run-productions",
+    "capture-requests",
+    "skills",
+    "question-explorer",
+    "agent-steps",
+    "agent-worker",
+    "ai-gate",
+    "intent",
+    "case-account",
+    "action-plans",
+    "plan-work",
+    "scheduler",
+    "wizard-scripts",
+    "affordances",
+    "queue-producers",
+    "instance-setup",
+    "instance-reports",
+    "surface-declarations",
+    "op-specs-late",
+    "op-declarations",
+    "store-door",
+    "store-jobs",
+    "store-ask",
+    "store-assembly",
+    "store-request",
+    "screens-inquiry",
+    "screens-document",
+    "control-plane",
+    "plane"
+   ],
+   "verdicts": {
+    "action-plans": {
+     "outcome": "B",
+     "kind": "REM",
+     "brokenIn": "source",
+     "evidence": "bio-plane/src/action-plans/index.mjs:2068 planAsk opens its planning run with ai-runs.open passing principalClaude (and no principalAi); after PR 96 open refuses principalClaude/principalClaudeRef by name (AI_RUN_CAPABILITY_UNAVAILABLE, R9 rename), so the ask never starts"
+    },
+    "agent-steps": {
+     "outcome": "B",
+     "kind": "REM",
+     "brokenIn": "source",
+     "evidence": "agent-steps/src/plane.mjs:116 each conversation's usage entry is built as {mode, model, effort, usage, calls} and sent on op=airuntick (drive.mjs:381-383); PR 96's tick requires {mode, entry_id, label, usage, calls} (#entryFault) and refuses the old shape AI_RUN_CONSUME_INVALID"
+    },
+    "agent-worker": {
+     "outcome": "B",
+     "kind": "REM",
+     "brokenIn": "source",
+     "evidence": "agent-worker/src/index.mjs:364 accountOf requires the dispatch body's account to carry kind (and a sign-in's secret); PR 96's #aiRunDispatch now sends ai-accounts' in-plane account shape ({account_id, level, owner, provider, plan, means, entry_id, ...}, no kind, no secret, suggestions inside), so the run dispatch is refused BAD_ACCOUNT (tests too: test/harness.test.mjs:1696 opens runs with principalClaude, now refused)"
+    },
+    "capture-requests": {
+     "outcome": "B",
+     "kind": "REM",
+     "brokenIn": "source",
+     "evidence": "bio-plane/src/capture-requests/index.mjs:442 a run's request records String(runRow.principal_claude) read from ai-runs.runFor (index.mjs:258); PR 96 renamed runFor's field to principal_ai, so the paying level is written as \"\" and principals.claude (index.mjs:460) loses it"
+    },
+    "intent": {
+     "outcome": "B",
+     "kind": "REM",
+     "brokenIn": "tests",
+     "evidence": "bio-plane/test/m/intent/reasons.test.mjs:145 R18's read-back opens a run through the real ai-runs (workObjective, src/intent/index.mjs:1523 spreads the caller's run into ai-runs.open) with principalClaude and asserts started true; PR 96's open refuses principalClaude (R9 rename, AI_RUN_CAPABILITY_UNAVAILABLE)"
+    },
+    "plan-work": {
+     "outcome": "B",
+     "kind": "REM",
+     "brokenIn": "source",
+     "evidence": "bio-plane/src/plan-work/index.mjs:892 the re-examination run is opened with principalClaude: who (no principalAi); PR 96's open refuses principalClaude by name, so no re-examination run starts"
+    },
+    "plane": {
+     "outcome": "C",
+     "kind": "BEH",
+     "brokenIn": "",
+     "evidence": "bio-plane/src/plane/store.mjs:65 the Store's dispatchMemberRun RPC is ai-runs' dispatchMemberRun, whose behaviour PR 96 changed (any account accountFor answers instead of her own sign-in alone, MEMBER_PRINCIPAL_RUN gone, Gate 1 admission per entry with MEMBER_RUN_MODE_NOT_ADMITTED); its system test test/system/migrate-released.test.mjs:460 also now rests on ai-runs' migrate renaming principal_claude to principal_ai in released stores"
+    },
+    "question-explorer": {
+     "outcome": "B",
+     "kind": "REM",
+     "brokenIn": "source",
+     "evidence": "bio-plane/src/question-explorer/index.mjs:511 the exploring run is opened with principalClaude: owner and principalClaudeRef: null; PR 96's open refuses either old argument whenever sent (not undefined), so no exploration run starts"
+    },
+    "scheduler": {
+     "outcome": "B",
+     "kind": "REM",
+     "brokenIn": "tests",
+     "evidence": "bio-plane/test/m/scheduler/plane.test.mjs:245 opens its run through op=airunopen with principalClaude/principalClaudeRef and asserts started true; PR 96 refuses those arguments (R9 rename), so the expiry walk never gets its run (src uses reapDue/wakeDue/onRunOpened, index.mjs:386-389, 969, unchanged in shape)"
+    },
+    "screens-inquiry": {
+     "outcome": "B",
+     "kind": "REM",
+     "brokenIn": "source",
+     "evidence": "bio-plane/src/screens-inquiry/assistant.mjs:307 the assistant dock sends op=airunopen with principalClaude (also question.mjs:1698); PR 96 renamed the field to principalAi and refuses principalClaude, so the dock's run never opens"
+    },
+    "store-assembly": {
+     "outcome": "B",
+     "kind": "REM",
+     "brokenIn": "tests",
+     "evidence": "bio-plane/test/m/store-assembly/sweep.test.mjs:150 inserts an ai_runs row naming the column principal_claude, which PR 96 renamed to principal_ai (schema and migrate), so the insert fails (likewise t41.test.mjs:164); its source also composes ai-runs' changed ops (assemble.mjs:83 aiRunsOps, now with aicontinue..airunparts) and DECLARED_OPS (declarations.mjs:45, airunopen fields renamed)"
+    },
+    "store-request": {
+     "outcome": "B",
+     "kind": "REM",
+     "brokenIn": "tests",
+     "evidence": "bio-plane/test/m/store-request/recipes.mjs:79 openRun opens every world run through op=airunopen with principalClaude and throws unless started; PR 96 refuses principalClaude (R9 rename)"
+    }
+   },
+   "providerFilesChanged": [
+    "bio-plane/src/ai-runs/index.mjs",
+    "bio-plane/src/ai-runs/schema.mjs",
+    "bio-plane/test/m/ai-runs/converts.test.mjs",
+    "bio-plane/test/m/ai-runs/declared-ops.test.mjs",
+    "bio-plane/test/m/ai-runs/fixtures.mjs",
+    "bio-plane/test/m/ai-runs/fixtures.test.mjs",
+    "bio-plane/test/m/ai-runs/hidden-notices.test.mjs",
+    "bio-plane/test/m/ai-runs/notices.test.mjs",
+    "bio-plane/test/m/ai-runs/open.test.mjs",
+    "bio-plane/test/m/ai-runs/plan.test.mjs",
+    "bio-plane/test/m/ai-runs/producers.test.mjs",
+    "bio-plane/test/m/ai-runs/project-gate.test.mjs",
+    "bio-plane/test/m/ai-runs/r085.test.mjs",
+    "bio-plane/test/m/ai-runs/reads.test.mjs",
+    "bio-plane/test/m/ai-runs/reexam.test.mjs",
+    "bio-plane/test/m/ai-runs/requirements-ids.test.mjs",
+    "bio-plane/test/m/ai-runs/rows.test.mjs",
+    "bio-plane/test/m/ai-runs/scheduler.test.mjs",
+    "bio-plane/test/m/ai-runs/segments.test.mjs",
+    "bio-plane/test/m/ai-runs/t41.test.mjs",
+    "bio-plane/test/m/ai-runs/t46.test.mjs",
+    "bio-plane/test/m/ai-runs/t48.test.mjs",
+    "bio-plane/test/m/ai-runs/t50.test.mjs",
+    "bio-plane/test/m/ai-runs/t53.test.mjs",
+    "bio-plane/test/m/ai-runs/transact.test.mjs",
+    "bio-plane/test/m/ai-runs/usage.test.mjs",
+    "bio-plane/test/m/ai-runs/verify.test.mjs",
+    "bio-plane/test/m/ai-runs/words.test.mjs",
+    "bio-plane/test/m/ai-runs/world.mjs"
+   ],
+   "otherFilesChanged": 4
+  },
+  {
+   "change": "ai-runs:213",
+   "provider": "ai-runs",
+   "pr": 213,
+   "kind": "job",
+   "before": "65f2815b05975f06f6e115e445f81f8b73a5530f",
+   "after": "bf31d37484620e9bf4ac5baae3738015bfc4f856",
+   "told": {
+    "action-plans": {
+     "srcImports": true,
+     "testImports": true
+    },
+    "affordances": {
+     "srcImports": false,
+     "testImports": true
+    },
+    "agent-steps": {
+     "srcImports": false,
+     "testImports": true
+    },
+    "agent-worker": {
+     "srcImports": false,
+     "testImports": true
+    },
+    "ai-gate": {
+     "srcImports": false,
+     "testImports": false
+    },
+    "capture-requests": {
+     "srcImports": false,
+     "testImports": false
+    },
+    "case-account": {
+     "srcImports": true,
+     "testImports": false
+    },
+    "control-plane": {
+     "srcImports": true,
+     "testImports": true
+    },
+    "instance-reports": {
+     "srcImports": false,
+     "testImports": false
+    },
+    "instance-setup": {
+     "srcImports": true,
+     "testImports": false
+    },
+    "intent": {
+     "srcImports": true,
+     "testImports": true
+    },
+    "op-declarations": {
+     "srcImports": false,
+     "testImports": true
+    },
+    "op-specs-late": {
+     "srcImports": false,
+     "testImports": false
+    },
+    "plan-work": {
+     "srcImports": true,
+     "testImports": true
+    },
+    "plane": {
+     "srcImports": true,
+     "testImports": true
+    },
+    "question-explorer": {
+     "srcImports": true,
+     "testImports": true
+    },
+    "queue-producers": {
+     "srcImports": true,
+     "testImports": false
+    },
+    "run-productions": {
+     "srcImports": true,
+     "testImports": true
+    },
+    "scheduler": {
+     "srcImports": true,
+     "testImports": true
+    },
+    "screens-document": {
+     "srcImports": false,
+     "testImports": false
+    },
+    "screens-inquiry": {
+     "srcImports": false,
+     "testImports": true
+    },
+    "skills": {
+     "srcImports": false,
+     "testImports": false
+    },
+    "store-ask": {
+     "srcImports": false,
+     "testImports": false
+    },
+    "store-assembly": {
+     "srcImports": true,
+     "testImports": true
+    },
+    "store-door": {
+     "srcImports": false,
+     "testImports": true
+    },
+    "store-jobs": {
+     "srcImports": false,
+     "testImports": false
+    },
+    "store-request": {
+     "srcImports": false,
+     "testImports": true
+    },
+    "surface-declarations": {
+     "srcImports": false,
+     "testImports": false
+    },
+    "wizard-scripts": {
+     "srcImports": true,
+     "testImports": false
+    }
+   },
+   "declaredUsers": [
+    "run-productions",
+    "capture-requests",
+    "skills",
+    "question-explorer",
+    "agent-steps",
+    "agent-worker",
+    "ai-gate",
+    "intent",
+    "case-account",
+    "action-plans",
+    "plan-work",
+    "scheduler",
+    "wizard-scripts",
+    "affordances",
+    "queue-producers",
+    "instance-setup",
+    "instance-reports",
+    "surface-declarations",
+    "op-specs-late",
+    "op-declarations",
+    "store-door",
+    "store-jobs",
+    "store-ask",
+    "store-assembly",
+    "store-request",
+    "screens-inquiry",
+    "screens-document",
+    "control-plane",
+    "plane"
+   ],
+   "verdicts": {
+    "action-plans": {
+     "outcome": "C",
+     "kind": "BEH",
+     "brokenIn": "",
+     "evidence": "bio-plane/src/action-plans/index.mjs:2067 the plan-ask opens a planning run with ai.open (mode \"plan\"), whose use-limit check ai-runs now scopes to the serving account and entry, and passes its refusal through unchanged (index.mjs:2075)"
+    },
+    "intent": {
+     "outcome": "C",
+     "kind": "BEH",
+     "brokenIn": "",
+     "evidence": "bio-plane/src/intent/index.mjs:1523 calls aiRuns.open for a member's objective run, and PR 213 changed open's use check (ai-runs index.mjs:1349) to pass the serving account_id/entry_id to ai-use.useCheck, so a provider limit on that account can now refuse the open."
+    },
+    "plan-work": {
+     "outcome": "C",
+     "kind": "BEH",
+     "brokenIn": "",
+     "evidence": "bio-plane/src/plan-work/index.mjs:890 calls ai.open({ run, contextType: \"project\", mode: \"plan\", ... }) for a plan's run, and open now passes the serving account and entry to useCheck (ai-runs index.mjs:1349), so its refusal can differ and plan-work keeps the refusal (index.mjs:879)."
+    },
+    "question-explorer": {
+     "outcome": "C",
+     "kind": "BEH",
+     "brokenIn": "",
+     "evidence": "bio-plane/src/question-explorer/index.mjs:507 opens its exploring runs with aiRuns.open (use EXPLORE_USE), whose use-limit check now carries the open's account and entry to ai-use.useCheck, and a refusal from it is read at :515 as a run not opened"
+    },
+    "store-assembly": {
+     "outcome": "C",
+     "kind": "BEH",
+     "brokenIn": "",
+     "evidence": "bio-plane/src/store-assembly/assemble.mjs:867 mounts aiRunsOps(aiRunsOf(ctx, env), url, body), the ops that open and tick runs, whose #useCheck now passes the served account_id/entry_id to ai-use.useCheck (also built at assemble.mjs:316, :514, :522)"
+    }
+   },
+   "providerFilesChanged": [
+    "bio-plane/src/ai-runs/index.mjs",
+    "bio-plane/test/m/ai-runs/notices-t53.test.mjs"
+   ],
+   "otherFilesChanged": 2
+  },
+  {
+   "change": "ai-runs:323",
+   "provider": "ai-runs",
+   "pr": 323,
+   "kind": "job",
+   "before": "fb956d123ca4552334ffc275aef4c5c3bf1db32b",
+   "after": "3f2f4d51731c9ab618642ae4ec0102c9d36c7be4",
+   "told": {
+    "action-plans": {
+     "srcImports": true,
+     "testImports": true
+    },
+    "affordances": {
+     "srcImports": false,
+     "testImports": true
+    },
+    "agent-steps": {
+     "srcImports": false,
+     "testImports": true
+    },
+    "agent-worker": {
+     "srcImports": false,
+     "testImports": true
+    },
+    "ai-gate": {
+     "srcImports": false,
+     "testImports": false
+    },
+    "capture-requests": {
+     "srcImports": false,
+     "testImports": true
+    },
+    "case-account": {
+     "srcImports": true,
+     "testImports": false
+    },
+    "control-plane": {
+     "srcImports": true,
+     "testImports": true
+    },
+    "instance-reports": {
+     "srcImports": false,
+     "testImports": false
+    },
+    "instance-setup": {
+     "srcImports": true,
+     "testImports": false
+    },
+    "intent": {
+     "srcImports": true,
+     "testImports": true
+    },
+    "op-declarations": {
+     "srcImports": false,
+     "testImports": true
+    },
+    "op-specs-late": {
+     "srcImports": false,
+     "testImports": false
+    },
+    "plan-work": {
+     "srcImports": true,
+     "testImports": true
+    },
+    "plane": {
+     "srcImports": true,
+     "testImports": true
+    },
+    "question-explorer": {
+     "srcImports": true,
+     "testImports": true
+    },
+    "queue-producers": {
+     "srcImports": true,
+     "testImports": true
+    },
+    "run-productions": {
+     "srcImports": true,
+     "testImports": true
+    },
+    "scheduler": {
+     "srcImports": true,
+     "testImports": true
+    },
+    "screens-document": {
+     "srcImports": false,
+     "testImports": false
+    },
+    "screens-inquiry": {
+     "srcImports": false,
+     "testImports": true
+    },
+    "skills": {
+     "srcImports": false,
+     "testImports": false
+    },
+    "store-ask": {
+     "srcImports": false,
+     "testImports": false
+    },
+    "store-assembly": {
+     "srcImports": true,
+     "testImports": true
+    },
+    "store-door": {
+     "srcImports": false,
+     "testImports": true
+    },
+    "store-jobs": {
+     "srcImports": false,
+     "testImports": false
+    },
+    "store-request": {
+     "srcImports": false,
+     "testImports": true
+    },
+    "surface-declarations": {
+     "srcImports": false,
+     "testImports": false
+    },
+    "wizard-scripts": {
+     "srcImports": true,
+     "testImports": false
+    }
+   },
+   "declaredUsers": [
+    "run-productions",
+    "capture-requests",
+    "skills",
+    "question-explorer",
+    "agent-steps",
+    "agent-worker",
+    "ai-gate",
+    "intent",
+    "case-account",
+    "action-plans",
+    "plan-work",
+    "scheduler",
+    "wizard-scripts",
+    "affordances",
+    "queue-producers",
+    "instance-setup",
+    "instance-reports",
+    "surface-declarations",
+    "op-specs-late",
+    "op-declarations",
+    "store-door",
+    "store-jobs",
+    "store-ask",
+    "store-assembly",
+    "store-request",
+    "screens-inquiry",
+    "screens-document",
+    "control-plane",
+    "plane"
+   ],
+   "verdicts": {
+    "agent-worker": {
+     "outcome": "C",
+     "kind": "FIX",
+     "brokenIn": "",
+     "evidence": "agent-worker/test/notice-ai-runs-96.test.mjs:33 builds the changed world.mjs fixture and at :40 calls runs.dispatchMemberRun, which reaches the R97 path check (ai-runs/index.mjs:2301); with no source this is now withheld AI_PATH_NOT_READY unregistered, so the test reaches /run only through the fixture's new default ok stand-in; owners.mjs:6 checks only that airun, airunlog, airunspawn, airunclose and airuntick are among aiRunsOps' keys (no totals)"
+    },
+    "plane": {
+     "outcome": "C",
+     "kind": "BEH",
+     "brokenIn": "",
+     "evidence": "bio-plane/src/plane/store.mjs:65 aiRunsOf(this.ctx, this.env).dispatchMemberRun(asked) dispatches through #aiRunDispatch (ai-runs/index.mjs:2481) and #pathReady (:2301); nothing in bio-plane/src outside ai-runs calls registerPathReady, so with no path source every member run's dispatch is now withheld AI_PATH_NOT_READY unregistered, where before PR 323 it was treated as ready"
+    },
+    "queue-producers": {
+     "outcome": "C",
+     "kind": "FIX",
+     "brokenIn": "",
+     "evidence": "bio-plane/test/m/queue-producers/notice-capture-requests-182.test.mjs:10 imports the changed ai-runs world.mjs fixture (aiWorld() at :19 now pre-registers a path stand-in answering ok); its source uses only aiRuns.runFor (bio-plane/src/queue-producers/index.mjs:1177) and the test only calls runs.open (:22), so the change does not show there"
+    },
+    "scheduler": {
+     "outcome": "C",
+     "kind": "BEH",
+     "brokenIn": "",
+     "evidence": "bio-plane/src/scheduler/index.mjs:390 its ai-run-wake consumer ticks aiRuns.wake(now), which dispatches (ai-runs/index.mjs:2152 to #aiRunDispatch to #pathReady :2301); no source module registers a path source, so these dispatches are now withheld AI_PATH_NOT_READY unregistered where before they went ahead; bio-plane/test/m/scheduler/notice-ai-runs-96.test.mjs:13 imports the changed world.mjs and calls registerPathReady at :59"
+    },
+    "store-assembly": {
+     "outcome": "C",
+     "kind": "NEW",
+     "brokenIn": "",
+     "evidence": "bio-plane/src/store-assembly/assemble.mjs:911 spreads aiRunsOps(aiRunsOf(ctx, env), url, body) into the store's op map, so the store now serves the new aipathready op; declarations.mjs:141 carries ai-runs' DECLARED_OPS, which gained the aipathready read, so declared-op totals change"
+    }
+   },
+   "providerFilesChanged": [
+    "bio-plane/src/ai-runs/index.mjs",
+    "bio-plane/test/m/ai-runs/f1-aipathready-door.test.mjs",
+    "bio-plane/test/m/ai-runs/f1-path-closed.test.mjs",
+    "bio-plane/test/m/ai-runs/requirements-ids.test.mjs",
+    "bio-plane/test/m/ai-runs/world.mjs"
+   ],
+   "otherFilesChanged": 4
+  },
+  {
+   "change": "ai-runs:348",
+   "provider": "ai-runs",
+   "pr": 348,
+   "kind": "job",
+   "before": "9ab9317ca8960c07dce61e62c60f218a7ad42fa9",
+   "after": "4b75d7f88787165ba584290419b6f05640a8e9f6",
+   "told": {
+    "action-plans": {
+     "srcImports": true,
+     "testImports": true
+    },
+    "affordances": {
+     "srcImports": false,
+     "testImports": true
+    },
+    "agent-steps": {
+     "srcImports": false,
+     "testImports": true
+    },
+    "agent-worker": {
+     "srcImports": false,
+     "testImports": true
+    },
+    "ai-gate": {
+     "srcImports": false,
+     "testImports": false
+    },
+    "capture-requests": {
+     "srcImports": true,
+     "testImports": true
+    },
+    "case-account": {
+     "srcImports": true,
+     "testImports": false
+    },
+    "control-plane": {
+     "srcImports": true,
+     "testImports": true
+    },
+    "instance-reports": {
+     "srcImports": false,
+     "testImports": false
+    },
+    "instance-setup": {
+     "srcImports": true,
+     "testImports": false
+    },
+    "intent": {
+     "srcImports": true,
+     "testImports": true
+    },
+    "op-declarations": {
+     "srcImports": false,
+     "testImports": true
+    },
+    "op-specs-late": {
+     "srcImports": false,
+     "testImports": false
+    },
+    "plan-work": {
+     "srcImports": true,
+     "testImports": true
+    },
+    "plane": {
+     "srcImports": true,
+     "testImports": true
+    },
+    "question-explorer": {
+     "srcImports": true,
+     "testImports": true
+    },
+    "queue-producers": {
+     "srcImports": true,
+     "testImports": true
+    },
+    "run-productions": {
+     "srcImports": true,
+     "testImports": true
+    },
+    "scheduler": {
+     "srcImports": true,
+     "testImports": true
+    },
+    "screens-document": {
+     "srcImports": false,
+     "testImports": false
+    },
+    "screens-inquiry": {
+     "srcImports": false,
+     "testImports": true
+    },
+    "skills": {
+     "srcImports": false,
+     "testImports": false
+    },
+    "store-ask": {
+     "srcImports": false,
+     "testImports": false
+    },
+    "store-assembly": {
+     "srcImports": true,
+     "testImports": true
+    },
+    "store-door": {
+     "srcImports": false,
+     "testImports": true
+    },
+    "store-jobs": {
+     "srcImports": false,
+     "testImports": false
+    },
+    "store-request": {
+     "srcImports": false,
+     "testImports": true
+    },
+    "surface-declarations": {
+     "srcImports": false,
+     "testImports": false
+    },
+    "wizard-scripts": {
+     "srcImports": true,
+     "testImports": false
+    }
+   },
+   "declaredUsers": [
+    "run-productions",
+    "capture-requests",
+    "skills",
+    "question-explorer",
+    "agent-steps",
+    "agent-worker",
+    "ai-gate",
+    "intent",
+    "case-account",
+    "action-plans",
+    "plan-work",
+    "scheduler",
+    "wizard-scripts",
+    "affordances",
+    "queue-producers",
+    "instance-setup",
+    "instance-reports",
+    "surface-declarations",
+    "op-specs-late",
+    "op-declarations",
+    "store-door",
+    "store-jobs",
+    "store-ask",
+    "store-assembly",
+    "store-request",
+    "screens-inquiry",
+    "screens-document",
+    "control-plane",
+    "plane"
+   ],
+   "verdicts": {
+    "question-explorer": {
+     "outcome": "A",
+     "kind": "BEH",
+     "brokenIn": "",
+     "evidence": "bio-plane/src/question-explorer/index.mjs:507 calls AiRuns.open with origin explore and enabledBy (:512); under PR 348 an exploring run's accountable member now comes from enabledBy, so the explorer's open is the changed path (its job, PR 346, replaces its test.todo with a replay through the real open)"
+    }
+   },
+   "providerFilesChanged": [
+    "bio-plane/src/ai-runs/index.mjs",
+    "bio-plane/test/m/ai-runs/f2-explore-enabler.test.mjs",
+    "bio-plane/test/m/ai-runs/t41.test.mjs",
+    "bio-plane/test/m/ai-runs/t46.test.mjs"
+   ],
+   "otherFilesChanged": 3
+  },
+  {
+   "change": "ai-runs:391",
+   "provider": "ai-runs",
+   "pr": 391,
+   "kind": "job",
+   "before": "12ac04d36453f7104cf9d485577b9f318c1ec302",
+   "after": "fcc0ac2f25c3e0ff7cbb16b3bda5a895c973849d",
+   "told": {
+    "action-plans": {
+     "srcImports": true,
+     "testImports": true
+    },
+    "affordances": {
+     "srcImports": false,
+     "testImports": true
+    },
+    "agent-steps": {
+     "srcImports": false,
+     "testImports": true
+    },
+    "agent-worker": {
+     "srcImports": false,
+     "testImports": true
+    },
+    "ai-gate": {
+     "srcImports": false,
+     "testImports": false
+    },
+    "capture-requests": {
+     "srcImports": true,
+     "testImports": true
+    },
+    "case-account": {
+     "srcImports": true,
+     "testImports": false
+    },
+    "control-plane": {
+     "srcImports": true,
+     "testImports": true
+    },
+    "instance-reports": {
+     "srcImports": false,
+     "testImports": false
+    },
+    "instance-setup": {
+     "srcImports": true,
+     "testImports": false
+    },
+    "intent": {
+     "srcImports": true,
+     "testImports": true
+    },
+    "op-declarations": {
+     "srcImports": false,
+     "testImports": true
+    },
+    "op-grades": {
+     "srcImports": false,
+     "testImports": false
+    },
+    "op-specs-late": {
+     "srcImports": false,
+     "testImports": false
+    },
+    "plan-work": {
+     "srcImports": true,
+     "testImports": true
+    },
+    "plane": {
+     "srcImports": true,
+     "testImports": true
+    },
+    "question-explorer": {
+     "srcImports": true,
+     "testImports": true
+    },
+    "queue-producers": {
+     "srcImports": true,
+     "testImports": true
+    },
+    "run-productions": {
+     "srcImports": true,
+     "testImports": true
+    },
+    "scheduler": {
+     "srcImports": true,
+     "testImports": true
+    },
+    "screens-document": {
+     "srcImports": false,
+     "testImports": false
+    },
+    "screens-inquiry": {
+     "srcImports": false,
+     "testImports": true
+    },
+    "skills": {
+     "srcImports": false,
+     "testImports": false
+    },
+    "store-ask": {
+     "srcImports": false,
+     "testImports": false
+    },
+    "store-assembly": {
+     "srcImports": true,
+     "testImports": true
+    },
+    "store-door": {
+     "srcImports": false,
+     "testImports": true
+    },
+    "store-jobs": {
+     "srcImports": false,
+     "testImports": false
+    },
+    "store-request": {
+     "srcImports": false,
+     "testImports": true
+    },
+    "surface-declarations": {
+     "srcImports": false,
+     "testImports": false
+    },
+    "wizard-scripts": {
+     "srcImports": true,
+     "testImports": false
+    }
+   },
+   "declaredUsers": [
+    "run-productions",
+    "capture-requests",
+    "skills",
+    "question-explorer",
+    "agent-steps",
+    "agent-worker",
+    "ai-gate",
+    "intent",
+    "case-account",
+    "action-plans",
+    "plan-work",
+    "scheduler",
+    "wizard-scripts",
+    "op-grades",
+    "affordances",
+    "queue-producers",
+    "instance-setup",
+    "instance-reports",
+    "surface-declarations",
+    "op-specs-late",
+    "op-declarations",
+    "store-door",
+    "store-jobs",
+    "store-ask",
+    "store-assembly",
+    "store-request",
+    "screens-inquiry",
+    "screens-document",
+    "control-plane",
+    "plane"
+   ],
+   "verdicts": {
+    "question-explorer": {
+     "outcome": "A",
+     "kind": "BEH",
+     "brokenIn": "",
+     "evidence": "bio-plane/src/question-explorer/index.mjs:283 the gate calls ai-runs.partAdmitted(part), whose R75 meaning changed (it now reads the latest gateVerdictRecords per (entry, part)); line 120 also reads testBarRecords() for the held deploy-gate set, which ai-runs now writes from ai-gate's record"
+    },
+    "store-assembly": {
+     "outcome": "C",
+     "kind": "BEH",
+     "brokenIn": "",
+     "evidence": "bio-plane/src/store-assembly/ask.mjs:190 the ask and draft doors gate on runs.partAdmitted(part, entry), whose answer now comes from the latest gateVerdictRecords per (entry, part); ask.mjs:195 also reads testBarRecords for the refusal, and assemble.mjs:341 builds the aiRuns instance that holds these records"
+    },
+    "wizard-scripts": {
+     "outcome": "C",
+     "kind": "BEH",
+     "brokenIn": "",
+     "evidence": "bio-plane/src/wizard-scripts/index.mjs:429 #untested() calls ai.partAdmitted(WRITING_HELP_PART) (imported at :37), whose answer R75 now derives from the latest written gateVerdictRecord per (entry, part), so the admitted/untested label it reads changes"
+    }
+   },
+   "providerFilesChanged": [
+    "bio-plane/src/ai-runs/index.mjs",
+    "bio-plane/src/ai-runs/schema.mjs",
+    "bio-plane/test/m/ai-runs/r75-gate-write.test.mjs",
+    "bio-plane/test/m/ai-runs/requirements-ids.test.mjs",
+    "bio-plane/test/m/ai-runs/usage.test.mjs"
+   ],
+   "otherFilesChanged": 4
+  },
+  {
+   "change": "ai-runs:485",
+   "provider": "ai-runs",
+   "pr": 485,
+   "kind": "job",
+   "before": "6a485f7a64aeaa8bc16a1878b3b34b790ccaec77",
+   "after": "d0e9f38396fb90ac258cbf88d858056a4934c1aa",
+   "told": {
+    "action-plans": {
+     "srcImports": true,
+     "testImports": true
+    },
+    "affordances": {
+     "srcImports": false,
+     "testImports": true
+    },
+    "agent-steps": {
+     "srcImports": false,
+     "testImports": true
+    },
+    "agent-worker": {
+     "srcImports": false,
+     "testImports": true
+    },
+    "ai-gate": {
+     "srcImports": false,
+     "testImports": false
+    },
+    "capture-requests": {
+     "srcImports": true,
+     "testImports": true
+    },
+    "case-account": {
+     "srcImports": true,
+     "testImports": false
+    },
+    "control-plane": {
+     "srcImports": true,
+     "testImports": true
+    },
+    "instance-reports": {
+     "srcImports": false,
+     "testImports": false
+    },
+    "instance-setup": {
+     "srcImports": true,
+     "testImports": false
+    },
+    "intent": {
+     "srcImports": true,
+     "testImports": true
+    },
+    "op-declarations": {
+     "srcImports": false,
+     "testImports": true
+    },
+    "op-grades": {
+     "srcImports": false,
+     "testImports": false
+    },
+    "op-specs-late": {
+     "srcImports": false,
+     "testImports": false
+    },
+    "plan-work": {
+     "srcImports": true,
+     "testImports": true
+    },
+    "plane": {
+     "srcImports": true,
+     "testImports": true
+    },
+    "question-explorer": {
+     "srcImports": true,
+     "testImports": true
+    },
+    "queue-producers": {
+     "srcImports": true,
+     "testImports": true
+    },
+    "run-productions": {
+     "srcImports": true,
+     "testImports": true
+    },
+    "scheduler": {
+     "srcImports": true,
+     "testImports": true
+    },
+    "screens-document": {
+     "srcImports": false,
+     "testImports": false
+    },
+    "screens-inquiry": {
+     "srcImports": false,
+     "testImports": true
+    },
+    "skills": {
+     "srcImports": false,
+     "testImports": false
+    },
+    "store-ask": {
+     "srcImports": false,
+     "testImports": false
+    },
+    "store-assembly": {
+     "srcImports": true,
+     "testImports": true
+    },
+    "store-door": {
+     "srcImports": false,
+     "testImports": true
+    },
+    "store-jobs": {
+     "srcImports": false,
+     "testImports": false
+    },
+    "store-request": {
+     "srcImports": false,
+     "testImports": true
+    },
+    "surface-declarations": {
+     "srcImports": false,
+     "testImports": false
+    },
+    "wizard-scripts": {
+     "srcImports": true,
+     "testImports": true
+    }
+   },
+   "declaredUsers": [
+    "run-productions",
+    "capture-requests",
+    "skills",
+    "question-explorer",
+    "agent-steps",
+    "agent-worker",
+    "ai-gate",
+    "intent",
+    "case-account",
+    "action-plans",
+    "plan-work",
+    "scheduler",
+    "wizard-scripts",
+    "op-grades",
+    "affordances",
+    "queue-producers",
+    "instance-setup",
+    "instance-reports",
+    "surface-declarations",
+    "op-specs-late",
+    "op-declarations",
+    "store-door",
+    "store-jobs",
+    "store-ask",
+    "store-assembly",
+    "store-request",
+    "screens-inquiry",
+    "screens-document",
+    "control-plane",
+    "plane"
+   ],
+   "verdicts": {
+    "store-assembly": {
+     "outcome": "C",
+     "kind": "BEH",
+     "brokenIn": "",
+     "evidence": "bio-plane/src/store-assembly/owner-ops.mjs:66 the `stepsrunai` arm calls `of.aiRuns().openMany(...)` (getter `aiRuns: () => aiRunsOf(ctx, env)` at bio-plane/src/store-assembly/owners.mjs:22, spread into the route map at assemble.mjs:954), the batch whose estimate PR 485 changed (now awaited and naming the serving account's entry_id, bio-plane/src/ai-runs/index.mjs:1545-1555)"
+    }
+   },
+   "providerFilesChanged": [
+    "bio-plane/src/ai-runs/index.mjs",
+    "bio-plane/test/m/ai-runs/notice-ai-use-378.test.mjs",
+    "bio-plane/test/m/ai-runs/t41.test.mjs"
+   ],
+   "otherFilesChanged": 3
+  },
+  {
+   "change": "ai-runs:1004",
+   "provider": "ai-runs",
+   "pr": 1004,
+   "kind": "layer",
+   "before": "9dbb197b127cf62719aaf087cc092e36bc844f15",
+   "after": "ac6304508dbf718c07f89f87faef76a7c5872acf",
+   "told": {
+    "action-plans": {
+     "srcImports": true,
+     "testImports": true
+    },
+    "affordances": {
+     "srcImports": false,
+     "testImports": true
+    },
+    "case-account": {
+     "srcImports": true,
+     "testImports": false
+    },
+    "control-plane": {
+     "srcImports": true,
+     "testImports": true
+    },
+    "instance-reports": {
+     "srcImports": false,
+     "testImports": false
+    },
+    "instance-setup": {
+     "srcImports": true,
+     "testImports": false
+    },
+    "intent": {
+     "srcImports": true,
+     "testImports": true
+    },
+    "op-declarations": {
+     "srcImports": false,
+     "testImports": true
+    },
+    "op-grades": {
+     "srcImports": false,
+     "testImports": false
+    },
+    "op-specs-late": {
+     "srcImports": false,
+     "testImports": false
+    },
+    "plan-work": {
+     "srcImports": true,
+     "testImports": true
+    },
+    "plane": {
+     "srcImports": true,
+     "testImports": true
+    },
+    "queue-producers": {
+     "srcImports": true,
+     "testImports": true
+    },
+    "scheduler": {
+     "srcImports": true,
+     "testImports": true
+    },
+    "screens-document": {
+     "srcImports": false,
+     "testImports": false
+    },
+    "screens-inquiry": {
+     "srcImports": false,
+     "testImports": true
+    },
+    "store-ask": {
+     "srcImports": false,
+     "testImports": false
+    },
+    "store-assembly": {
+     "srcImports": true,
+     "testImports": true
+    },
+    "store-door": {
+     "srcImports": false,
+     "testImports": true
+    },
+    "store-jobs": {
+     "srcImports": false,
+     "testImports": false
+    },
+    "store-request": {
+     "srcImports": false,
+     "testImports": true
+    },
+    "surface-declarations": {
+     "srcImports": false,
+     "testImports": false
+    },
+    "wizard-scripts": {
+     "srcImports": true,
+     "testImports": true
+    }
+   },
+   "declaredUsers": [
+    "run-productions",
+    "capture-requests",
+    "skills",
+    "question-explorer",
+    "agent-steps",
+    "agent-worker",
+    "ai-gate",
+    "intent",
+    "case-account",
+    "action-plans",
+    "plan-work",
+    "scheduler",
+    "wizard-scripts",
+    "op-grades",
+    "affordances",
+    "queue-producers",
+    "instance-setup",
+    "instance-reports",
+    "surface-declarations",
+    "op-specs-late",
+    "op-declarations",
+    "store-door",
+    "store-jobs",
+    "store-ask",
+    "store-assembly",
+    "store-request",
+    "screens-inquiry",
+    "screens-document",
+    "control-plane",
+    "plane"
+   ],
+   "verdicts": {},
+   "providerFilesChanged": [
+    "bio-plane/src/ai-runs/index.mjs",
+    "bio-plane/test/m/ai-runs/f1-aipathready-door.test.mjs",
+    "bio-plane/test/m/ai-runs/f1-path-closed.test.mjs",
+    "bio-plane/test/m/ai-runs/f4-pairless-path.test.mjs",
+    "bio-plane/test/m/ai-runs/f5-answer-marks.test.mjs"
+   ],
+   "otherFilesChanged": 4
+  },
+  {
+   "change": "ai-runs:1073",
+   "provider": "ai-runs",
+   "pr": 1073,
+   "kind": "layer",
+   "before": "86bdfbd98fdf97d71bde5bd6b4a7e39dac3c1461",
+   "after": "27370c6ec9e13fc8d4f2c02f0c9b2464b22c5e82",
+   "told": {
+    "action-plans": {
+     "srcImports": true,
+     "testImports": true
+    },
+    "case-account": {
+     "srcImports": true,
+     "testImports": false
+    },
+    "control-plane": {
+     "srcImports": true,
+     "testImports": true
+    },
+    "instance-reports": {
+     "srcImports": false,
+     "testImports": false
+    },
+    "instance-setup": {
+     "srcImports": true,
+     "testImports": false
+    },
+    "intent": {
+     "srcImports": true,
+     "testImports": true
+    },
+    "op-grades": {
+     "srcImports": false,
+     "testImports": false
+    },
+    "op-specs-late": {
+     "srcImports": false,
+     "testImports": false
+    },
+    "plan-work": {
+     "srcImports": true,
+     "testImports": true
+    },
+    "queue-producers": {
+     "srcImports": true,
+     "testImports": true
+    },
+    "scheduler": {
+     "srcImports": true,
+     "testImports": true
+    },
+    "screens-document": {
+     "srcImports": false,
+     "testImports": false
+    },
+    "store-ask": {
+     "srcImports": false,
+     "testImports": false
+    },
+    "store-door": {
+     "srcImports": false,
+     "testImports": true
+    },
+    "store-jobs": {
+     "srcImports": false,
+     "testImports": false
+    },
+    "store-request": {
+     "srcImports": false,
+     "testImports": true
+    },
+    "surface-declarations": {
+     "srcImports": false,
+     "testImports": false
+    },
+    "wizard-scripts": {
+     "srcImports": true,
+     "testImports": true
+    }
+   },
+   "declaredUsers": [
+    "run-productions",
+    "capture-requests",
+    "skills",
+    "question-explorer",
+    "agent-steps",
+    "agent-worker",
+    "ai-gate",
+    "intent",
+    "case-account",
+    "action-plans",
+    "plan-work",
+    "scheduler",
+    "wizard-scripts",
+    "op-grades",
+    "affordances",
+    "queue-producers",
+    "instance-setup",
+    "instance-reports",
+    "surface-declarations",
+    "op-specs-late",
+    "op-declarations",
+    "store-door",
+    "store-jobs",
+    "store-ask",
+    "store-assembly",
+    "store-request",
+    "screens-inquiry",
+    "screens-document",
+    "control-plane",
+    "plane"
+   ],
+   "verdicts": {},
+   "providerFilesChanged": [
+    "bio-plane/test/m/ai-runs/notice-membership-1030.test.mjs"
+   ],
+   "otherFilesChanged": 2
+  },
+  {
+   "change": "ai-accounts:124",
+   "provider": "ai-accounts",
+   "pr": 124,
+   "kind": "job",
+   "before": "e255f11da4d3ab1de730360feac07344ad230e27",
+   "after": "575bf14884fa85918168e569247d6bac29999669",
+   "told": {
+    "affordances": {
+     "srcImports": false,
+     "testImports": true
+    },
+    "agent-model": {
+     "srcImports": false,
+     "testImports": false
+    },
+    "ai-runs": {
+     "srcImports": true,
+     "testImports": true
+    },
+    "ai-use": {
+     "srcImports": true,
+     "testImports": true
+    },
+    "answer-envelope": {
+     "srcImports": true,
+     "testImports": true
+    },
+    "answers": {
+     "srcImports": true,
+     "testImports": true
+    },
+    "control-plane": {
+     "srcImports": false,
+     "testImports": true
+    },
+    "credentials": {
+     "srcImports": true,
+     "testImports": true
+    },
+    "extraction": {
+     "srcImports": false,
+     "testImports": true
+    },
+    "instance-setup": {
+     "srcImports": true,
+     "testImports": true
+    },
+    "notice-producers": {
+     "srcImports": true,
+     "testImports": false
+    },
+    "op-declarations": {
+     "srcImports": false,
+     "testImports": true
+    },
+    "op-specs-late": {
+     "srcImports": false,
+     "testImports": false
+    },
+    "plane": {
+     "srcImports": false,
+     "testImports": true
+    },
+    "question-explorer": {
+     "srcImports": true,
+     "testImports": true
+    },
+    "queue-producers": {
+     "srcImports": false,
+     "testImports": false
+    },
+    "reading-pipeline": {
+     "srcImports": false,
+     "testImports": true
+    },
+    "run-productions": {
+     "srcImports": true,
+     "testImports": true
+    },
+    "screens-document": {
+     "srcImports": false,
+     "testImports": false
+    },
+    "screens-inquiry": {
+     "srcImports": false,
+     "testImports": true
+    },
+    "signin-door": {
+     "srcImports": false,
+     "testImports": true
+    },
+    "store-ask": {
+     "srcImports": false,
+     "testImports": false
+    },
+    "store-assembly": {
+     "srcImports": true,
+     "testImports": true
+    },
+    "store-door": {
+     "srcImports": true,
+     "testImports": true
+    },
+    "translations": {
+     "srcImports": true,
+     "testImports": true
+    },
+    "wizard-scripts": {
+     "srcImports": true,
+     "testImports": true
+    }
+   },
+   "declaredUsers": [
+    "credentials",
+    "reading-pipeline",
+    "extraction",
+    "agent-model",
+    "ai-use",
+    "ai-runs",
+    "run-productions",
+    "question-explorer",
+    "answers",
+    "wizard-scripts",
+    "affordances",
+    "queue-producers",
+    "notice-producers",
+    "translations",
+    "instance-setup",
+    "op-specs-late",
+    "op-declarations",
+    "answer-envelope",
+    "store-door",
+    "signin-door",
+    "store-ask",
+    "store-assembly",
+    "screens-inquiry",
+    "screens-document",
+    "control-plane",
+    "plane"
+   ],
+   "verdicts": {
+    "ai-runs": {
+     "outcome": "C",
+     "kind": "SIG",
+     "brokenIn": "",
+     "evidence": "bio-plane/src/ai-runs/index.mjs:3320 this.#aiAccounts().accountFor({ member, act }) (changed export accountFor)"
+    },
+    "ai-use": {
+     "outcome": "C",
+     "kind": "SIG",
+     "brokenIn": "",
+     "evidence": "bio-plane/src/ai-use/index.mjs:514 this.#accounts().accountUses({ owner, viewer }) (also accountUsesOf({ owner }) at :540)"
+    },
+    "answers": {
+     "outcome": "C",
+     "kind": "SIG",
+     "brokenIn": "",
+     "evidence": "bio-plane/src/answers/index.mjs:285 accounts.accountFor({ member, act }) (also standing.mjs:360)"
+    },
+    "credentials": {
+     "outcome": "C",
+     "kind": "SIG",
+     "brokenIn": "",
+     "evidence": "bio-plane/src/credentials/index.mjs:2128 MOVED_TO_AI_ACCOUNTS delegates accountFor, accountUsesSet, accountUses, accountUsesOf to ai-accounts (changed exports)"
+    },
+    "question-explorer": {
+     "outcome": "C",
+     "kind": "SIG",
+     "brokenIn": "",
+     "evidence": "bio-plane/src/question-explorer/index.mjs:361 this.aiAccounts.accountUsesOf({ owner })"
+    },
+    "reading-pipeline": {
+     "outcome": "C",
+     "kind": "SIG",
+     "brokenIn": "",
+     "evidence": "bio-plane/src/reading-pipeline/index.mjs:935 payer.accountFor({ member, act }) (changed export accountFor)"
+    },
+    "signin-door": {
+     "outcome": "B",
+     "kind": "REM",
+     "brokenIn": "source",
+     "evidence": "bio-plane/src/signin-door/ops.mjs:48 c.subscriptionTokenHold({ member, token, validFor }) (restored name)"
+    },
+    "store-assembly": {
+     "outcome": "C",
+     "kind": "SIG",
+     "brokenIn": "",
+     "evidence": "bio-plane/src/store-assembly/ask.mjs:211 c.accountReferenceState({ member, viewer }) (restored name; also groupKeySwitches at :218)"
+    },
+    "store-door": {
+     "outcome": "C",
+     "kind": "SIG",
+     "brokenIn": "",
+     "evidence": "bio-plane/src/store-door/dispatch.mjs:360 aiAccountsOf(ctx).accountFor({ member, act }) (also subscriptionConnected at :470)"
+    }
+   },
+   "providerFilesChanged": [
+    "bio-plane/src/ai-accounts/index.mjs",
+    "bio-plane/src/ai-accounts/legacy.mjs",
+    "bio-plane/test/m/ai-accounts/legacy.test.mjs",
+    "bio-plane/test/m/ai-accounts/notice-membership-77.test.mjs"
+   ],
+   "otherFilesChanged": 3
+  },
+  {
+   "change": "ai-accounts:188",
+   "provider": "ai-accounts",
+   "pr": 188,
+   "kind": "job",
+   "before": "efaf53b3007fea1449fc68bf6d49ef988126edf2",
+   "after": "cfbd5d359d378a7336b8857f3a6281e131688a77",
+   "told": {
+    "affordances": {
+     "srcImports": false,
+     "testImports": true
+    },
+    "agent-model": {
+     "srcImports": false,
+     "testImports": false
+    },
+    "ai-runs": {
+     "srcImports": true,
+     "testImports": true
+    },
+    "ai-use": {
+     "srcImports": true,
+     "testImports": true
+    },
+    "answer-envelope": {
+     "srcImports": true,
+     "testImports": true
+    },
+    "answers": {
+     "srcImports": true,
+     "testImports": true
+    },
+    "control-plane": {
+     "srcImports": false,
+     "testImports": true
+    },
+    "credentials": {
+     "srcImports": true,
+     "testImports": true
+    },
+    "extraction": {
+     "srcImports": false,
+     "testImports": true
+    },
+    "instance-setup": {
+     "srcImports": true,
+     "testImports": true
+    },
+    "notice-producers": {
+     "srcImports": true,
+     "testImports": false
+    },
+    "op-declarations": {
+     "srcImports": false,
+     "testImports": true
+    },
+    "op-specs-late": {
+     "srcImports": false,
+     "testImports": false
+    },
+    "plane": {
+     "srcImports": false,
+     "testImports": true
+    },
+    "question-explorer": {
+     "srcImports": true,
+     "testImports": true
+    },
+    "queue-producers": {
+     "srcImports": false,
+     "testImports": false
+    },
+    "reading-pipeline": {
+     "srcImports": false,
+     "testImports": true
+    },
+    "run-productions": {
+     "srcImports": true,
+     "testImports": true
+    },
+    "screens-document": {
+     "srcImports": false,
+     "testImports": false
+    },
+    "screens-inquiry": {
+     "srcImports": false,
+     "testImports": true
+    },
+    "signin-door": {
+     "srcImports": false,
+     "testImports": true
+    },
+    "store-ask": {
+     "srcImports": false,
+     "testImports": false
+    },
+    "store-assembly": {
+     "srcImports": true,
+     "testImports": true
+    },
+    "store-door": {
+     "srcImports": true,
+     "testImports": true
+    },
+    "translations": {
+     "srcImports": true,
+     "testImports": true
+    },
+    "wizard-scripts": {
+     "srcImports": true,
+     "testImports": true
+    }
+   },
+   "declaredUsers": [
+    "credentials",
+    "reading-pipeline",
+    "extraction",
+    "agent-model",
+    "ai-use",
+    "ai-runs",
+    "run-productions",
+    "question-explorer",
+    "answers",
+    "wizard-scripts",
+    "affordances",
+    "queue-producers",
+    "notice-producers",
+    "translations",
+    "instance-setup",
+    "op-specs-late",
+    "op-declarations",
+    "answer-envelope",
+    "store-door",
+    "signin-door",
+    "store-ask",
+    "store-assembly",
+    "screens-inquiry",
+    "screens-document",
+    "control-plane",
+    "plane"
+   ],
+   "verdicts": {},
+   "providerFilesChanged": [
+    "bio-plane/src/ai-accounts/index.mjs",
+    "bio-plane/test/m/ai-accounts/f2-door-stamp.test.mjs"
+   ],
+   "otherFilesChanged": 3
+  },
+  {
+   "change": "ai-accounts:316",
+   "provider": "ai-accounts",
+   "pr": 316,
+   "kind": "job",
+   "before": "202498e237437d7040321a986655a9bee046f028",
+   "after": "637f73a5cf9b3a03fa2a7ec1c9bc9de9b490e1a9",
+   "told": {
+    "affordances": {
+     "srcImports": false,
+     "testImports": true
+    },
+    "agent-model": {
+     "srcImports": false,
+     "testImports": false
+    },
+    "agent-worker": {
+     "srcImports": false,
+     "testImports": true
+    },
+    "ai-runs": {
+     "srcImports": true,
+     "testImports": true
+    },
+    "ai-use": {
+     "srcImports": true,
+     "testImports": true
+    },
+    "answer-envelope": {
+     "srcImports": true,
+     "testImports": true
+    },
+    "answers": {
+     "srcImports": true,
+     "testImports": true
+    },
+    "control-plane": {
+     "srcImports": false,
+     "testImports": true
+    },
+    "credentials": {
+     "srcImports": true,
+     "testImports": true
+    },
+    "extraction": {
+     "srcImports": false,
+     "testImports": true
+    },
+    "instance-setup": {
+     "srcImports": true,
+     "testImports": true
+    },
+    "notice-producers": {
+     "srcImports": false,
+     "testImports": true
+    },
+    "op-declarations": {
+     "srcImports": false,
+     "testImports": true
+    },
+    "op-specs-late": {
+     "srcImports": false,
+     "testImports": false
+    },
+    "plane": {
+     "srcImports": false,
+     "testImports": true
+    },
+    "question-explorer": {
+     "srcImports": true,
+     "testImports": true
+    },
+    "queue-producers": {
+     "srcImports": false,
+     "testImports": false
+    },
+    "reader-contract": {
+     "srcImports": false,
+     "testImports": false
+    },
+    "reading-pipeline": {
+     "srcImports": false,
+     "testImports": true
+    },
+    "run-productions": {
+     "srcImports": true,
+     "testImports": true
+    },
+    "screens-document": {
+     "srcImports": false,
+     "testImports": false
+    },
+    "screens-inquiry": {
+     "srcImports": false,
+     "testImports": true
+    },
+    "signin-door": {
+     "srcImports": false,
+     "testImports": true
+    },
+    "store-ask": {
+     "srcImports": false,
+     "testImports": false
+    },
+    "store-assembly": {
+     "srcImports": true,
+     "testImports": true
+    },
+    "store-door": {
+     "srcImports": true,
+     "testImports": true
+    },
+    "translations": {
+     "srcImports": true,
+     "testImports": true
+    },
+    "wizard-scripts": {
+     "srcImports": true,
+     "testImports": true
+    }
+   },
+   "declaredUsers": [
+    "credentials",
+    "reader-contract",
+    "reading-pipeline",
+    "extraction",
+    "agent-model",
+    "ai-use",
+    "ai-runs",
+    "run-productions",
+    "question-explorer",
+    "answers",
+    "agent-worker",
+    "wizard-scripts",
+    "affordances",
+    "queue-producers",
+    "notice-producers",
+    "translations",
+    "instance-setup",
+    "op-specs-late",
+    "op-declarations",
+    "answer-envelope",
+    "store-door",
+    "signin-door",
+    "store-ask",
+    "store-assembly",
+    "screens-inquiry",
+    "screens-document",
+    "control-plane",
+    "plane"
+   ],
+   "verdicts": {
+    "store-assembly": {
+     "outcome": "B",
+     "kind": "BEH",
+     "brokenIn": "tests",
+     "evidence": "bio-plane/src/store-assembly/assemble.mjs:815 spreads signinDoorOps(aiAccountsOf(ctx), ...) into the store's routes; its signintokenhold route (signin-door/ops.mjs:69) calls subscriptionTokenHold, which now creates and switches the issued account with by: \"member:<id>\" (legacy.mjs:181, :187), the spelling the disclosure read registered at assemble.mjs:666 records under; three store-assembly tests (t46 R49/R52, R52; t47 R37) record the disclosure under the bare id"
+    }
+   },
+   "providerFilesChanged": [
+    "bio-plane/src/ai-accounts/legacy.mjs",
+    "bio-plane/test/m/ai-accounts/f4-signin-disclosure.test.mjs"
+   ],
+   "otherFilesChanged": 3
+  },
+  {
+   "change": "ai-accounts:483",
+   "provider": "ai-accounts",
+   "pr": 483,
+   "kind": "job",
+   "before": "0f115477709b21133adb7bd435c4b32981172bea",
+   "after": "297d25b8a5e61ec8b67f56d88c4e83e09398cf1f",
+   "told": {
+    "affordances": {
+     "srcImports": false,
+     "testImports": true
+    },
+    "agent-model": {
+     "srcImports": false,
+     "testImports": false
+    },
+    "agent-worker": {
+     "srcImports": false,
+     "testImports": true
+    },
+    "ai-accounts-lists": {
+     "srcImports": false,
+     "testImports": false
+    },
+    "ai-runs": {
+     "srcImports": true,
+     "testImports": true
+    },
+    "ai-use": {
+     "srcImports": true,
+     "testImports": true
+    },
+    "answer-envelope": {
+     "srcImports": true,
+     "testImports": true
+    },
+    "answers": {
+     "srcImports": true,
+     "testImports": true
+    },
+    "control-plane": {
+     "srcImports": false,
+     "testImports": true
+    },
+    "credentials": {
+     "srcImports": true,
+     "testImports": true
+    },
+    "extraction": {
+     "srcImports": false,
+     "testImports": true
+    },
+    "instance-setup": {
+     "srcImports": true,
+     "testImports": true
+    },
+    "notice-producers": {
+     "srcImports": false,
+     "testImports": true
+    },
+    "op-declarations": {
+     "srcImports": false,
+     "testImports": true
+    },
+    "op-grades": {
+     "srcImports": false,
+     "testImports": false
+    },
+    "op-specs-late": {
+     "srcImports": false,
+     "testImports": false
+    },
+    "plane": {
+     "srcImports": false,
+     "testImports": true
+    },
+    "question-explorer": {
+     "srcImports": true,
+     "testImports": true
+    },
+    "queue-producers": {
+     "srcImports": true,
+     "testImports": true
+    },
+    "reader-contract": {
+     "srcImports": false,
+     "testImports": false
+    },
+    "reading-pipeline": {
+     "srcImports": false,
+     "testImports": true
+    },
+    "run-productions": {
+     "srcImports": true,
+     "testImports": true
+    },
+    "screens-document": {
+     "srcImports": false,
+     "testImports": false
+    },
+    "screens-inquiry": {
+     "srcImports": false,
+     "testImports": true
+    },
+    "signin-door": {
+     "srcImports": false,
+     "testImports": true
+    },
+    "store-ask": {
+     "srcImports": false,
+     "testImports": false
+    },
+    "store-assembly": {
+     "srcImports": true,
+     "testImports": true
+    },
+    "store-door": {
+     "srcImports": true,
+     "testImports": true
+    },
+    "translations": {
+     "srcImports": true,
+     "testImports": true
+    },
+    "wizard-scripts": {
+     "srcImports": true,
+     "testImports": true
+    }
+   },
+   "declaredUsers": [
+    "credentials",
+    "ai-accounts-lists",
+    "reader-contract",
+    "reading-pipeline",
+    "extraction",
+    "agent-model",
+    "ai-use",
+    "ai-runs",
+    "run-productions",
+    "question-explorer",
+    "answers",
+    "agent-worker",
+    "wizard-scripts",
+    "op-grades",
+    "affordances",
+    "queue-producers",
+    "notice-producers",
+    "translations",
+    "instance-setup",
+    "op-specs-late",
+    "op-declarations",
+    "answer-envelope",
+    "store-door",
+    "signin-door",
+    "store-ask",
+    "store-assembly",
+    "screens-inquiry",
+    "screens-document",
+    "control-plane",
+    "plane"
+   ],
+   "verdicts": {
+    "store-assembly": {
+     "outcome": "C",
+     "kind": "DATA",
+     "brokenIn": "",
+     "evidence": "bio-plane/src/store-assembly/declarations.mjs:16 imports ai-accounts' DECLARED_OPS (whose weights PR 483 changed, bio-plane/src/ai-accounts/index.mjs:151-175), files it under \"ai-accounts\" in OWNERS (:103) and hands it to op-grades' registerDeclaredOps at :197, so the new reversible/terminal/reasoned grades are what the assembly registers"
+    }
+   },
+   "providerFilesChanged": [
+    "bio-plane/src/ai-accounts/index.mjs",
+    "bio-plane/test/m/ai-accounts/f5-grades.test.mjs",
+    "bio-plane/test/m/ai-accounts/ops.test.mjs",
+    "bio-plane/test/m/ai-accounts/requirements-ids.test.mjs"
+   ],
+   "otherFilesChanged": 4
+  },
+  {
+   "change": "ai-accounts:1098",
+   "provider": "ai-accounts",
+   "pr": 1098,
+   "kind": "layer",
+   "before": "a787d0110add52515b9850e97cc4dfa2242935e2",
+   "after": "5f99f5ac7bc6fa8c49d6926d5615ee35156b6019",
+   "told": {
+    "affordances": {
+     "srcImports": false,
+     "testImports": true
+    },
+    "agent-model": {
+     "srcImports": false,
+     "testImports": false
+    },
+    "agent-worker": {
+     "srcImports": false,
+     "testImports": true
+    },
+    "ai-accounts-lists": {
+     "srcImports": false,
+     "testImports": false
+    },
+    "ai-runs": {
+     "srcImports": true,
+     "testImports": true
+    },
+    "ai-use": {
+     "srcImports": true,
+     "testImports": true
+    },
+    "answer-envelope": {
+     "srcImports": true,
+     "testImports": true
+    },
+    "answers": {
+     "srcImports": true,
+     "testImports": true
+    },
+    "control-plane": {
+     "srcImports": false,
+     "testImports": true
+    },
+    "extraction": {
+     "srcImports": false,
+     "testImports": true
+    },
+    "instance-setup": {
+     "srcImports": true,
+     "testImports": true
+    },
+    "notice-producers": {
+     "srcImports": true,
+     "testImports": true
+    },
+    "op-grades": {
+     "srcImports": false,
+     "testImports": false
+    },
+    "op-specs-late": {
+     "srcImports": false,
+     "testImports": false
+    },
+    "plane": {
+     "srcImports": false,
+     "testImports": true
+    },
+    "question-explorer": {
+     "srcImports": true,
+     "testImports": true
+    },
+    "queue-producers": {
+     "srcImports": true,
+     "testImports": true
+    },
+    "reader-contract": {
+     "srcImports": false,
+     "testImports": false
+    },
+    "reading-pipeline": {
+     "srcImports": false,
+     "testImports": true
+    },
+    "run-productions": {
+     "srcImports": true,
+     "testImports": true
+    },
+    "screens-document": {
+     "srcImports": false,
+     "testImports": false
+    },
+    "screens-inquiry": {
+     "srcImports": false,
+     "testImports": true
+    },
+    "signin-door": {
+     "srcImports": false,
+     "testImports": true
+    },
+    "store-ask": {
+     "srcImports": false,
+     "testImports": false
+    },
+    "store-assembly": {
+     "srcImports": true,
+     "testImports": true
+    },
+    "store-door": {
+     "srcImports": true,
+     "testImports": true
+    },
+    "translations": {
+     "srcImports": true,
+     "testImports": true
+    },
+    "wizard-scripts": {
+     "srcImports": true,
+     "testImports": true
+    }
+   },
+   "declaredUsers": [
+    "credentials",
+    "ai-accounts-lists",
+    "reader-contract",
+    "reading-pipeline",
+    "extraction",
+    "agent-model",
+    "ai-use",
+    "ai-runs",
+    "run-productions",
+    "question-explorer",
+    "answers",
+    "agent-worker",
+    "wizard-scripts",
+    "op-grades",
+    "affordances",
+    "queue-producers",
+    "notice-producers",
+    "translations",
+    "instance-setup",
+    "op-specs-late",
+    "op-declarations",
+    "answer-envelope",
+    "store-door",
+    "signin-door",
+    "store-ask",
+    "store-assembly",
+    "screens-inquiry",
+    "screens-document",
+    "control-plane",
+    "plane"
+   ],
+   "verdicts": {},
+   "providerFilesChanged": [
+    "bio-plane/src/ai-accounts/accounts.mjs",
+    "bio-plane/src/ai-accounts/index.mjs",
+    "bio-plane/test/m/ai-accounts/account.test.mjs",
+    "bio-plane/test/m/ai-accounts/f6-screens-ai.test.mjs"
+   ],
+   "otherFilesChanged": 3
+  },
+  {
+   "change": "op-declarations:95",
+   "provider": "op-declarations",
+   "pr": 95,
+   "kind": "job",
+   "before": "398015cc5cf6edf4b2874c6242a6387edf8861fb",
+   "after": "ee13f80efd7fcd012c22d0adf6559ff10707b697",
+   "told": {
+    "admission": {
+     "srcImports": true,
+     "testImports": true
+    },
+    "control-plane": {
+     "srcImports": true,
+     "testImports": true
+    },
+    "interface-shell": {
+     "srcImports": true,
+     "testImports": true
+    },
+    "load-check": {
+     "srcImports": false,
+     "testImports": false
+    },
+    "plane": {
+     "srcImports": true,
+     "testImports": true
+    },
+    "screens-action": {
+     "srcImports": true,
+     "testImports": true
+    },
+    "screens-ai": {
+     "srcImports": false,
+     "testImports": false
+    },
+    "screens-daily": {
+     "srcImports": true,
+     "testImports": true
+    },
+    "screens-document": {
+     "srcImports": false,
+     "testImports": false
+    },
+    "screens-entry": {
+     "srcImports": false,
+     "testImports": true
+    },
+    "screens-inquiry": {
+     "srcImports": false,
+     "testImports": true
+    },
+    "screens-intake": {
+     "srcImports": false,
+     "testImports": true
+    },
+    "screens-investigate": {
+     "srcImports": false,
+     "testImports": true
+    },
+    "screens-matter": {
+     "srcImports": false,
+     "testImports": false
+    },
+    "screens-plan": {
+     "srcImports": false,
+     "testImports": false
+    },
+    "screens-publish": {
+     "srcImports": false,
+     "testImports": true
+    },
+    "screens-settings": {
+     "srcImports": false,
+     "testImports": true
+    },
+    "screens-wizards": {
+     "srcImports": false,
+     "testImports": true
+    },
+    "signin-door": {
+     "srcImports": false,
+     "testImports": true
+    },
+    "store-assembly": {
+     "srcImports": true,
+     "testImports": true
+    },
+    "store-request": {
+     "srcImports": true,
+     "testImports": true
+    }
+   },
+   "declaredUsers": [
+    "admission",
+    "signin-door",
+    "store-assembly",
+    "store-request",
+    "interface-shell",
+    "screens-entry",
+    "screens-wizards",
+    "screens-settings",
+    "screens-ai",
+    "screens-intake",
+    "screens-daily",
+    "screens-inquiry",
+    "screens-document",
+    "screens-investigate",
+    "screens-publish",
+    "screens-action",
+    "screens-plan",
+    "screens-matter",
+    "control-plane",
+    "plane",
+    "load-check"
+   ],
+   "verdicts": {
+    "admission": {
+     "outcome": "A",
+     "kind": "REM",
+     "brokenIn": "",
+     "evidence": "bio-plane/src/admission/index.mjs:152 BODY_ONLY_FIELDS still names groupkeyset, an op whose OPS spec R24 retires for T53; the module reads OPS, SESSION_OPS, NEEDS (import :61) and the declarations namespace (:63), whose rows R20, R24, R30, R41 restate"
+    },
+    "control-plane": {
+     "outcome": "A",
+     "kind": "REM",
+     "brokenIn": "",
+     "evidence": "bio-plane/src/control-plane/index.mjs:1406 serves op subscriptiondisconnect, which R30 retires with no spec and no table; it reads OPS, OP_STAMPS, OP_ALIASES (imports :87, :90)"
+    },
+    "interface-shell": {
+     "outcome": "B",
+     "kind": "REM",
+     "brokenIn": "source",
+     "evidence": "bio-plane/src/interface-shell/index.mjs:179 lists the reads accountreference and groupkeystate (also browser.mjs:2758-2762), both retired by R20/R24 (ai-accounts R35); it draws from OPS, NEEDS, SESSION_OPS (imports :9-10)"
+    },
+    "plane": {
+     "outcome": "C",
+     "kind": "DATA",
+     "brokenIn": "",
+     "evidence": "bio-plane/src/plane/door.mjs:93 hands ACT_GATE (import :23) to the affordances op; ACT_GATE.mode/needs derive from SESSION_OPS and NEEDS (op-declarations/index.mjs:2508-2511), whose members changed (retired account/group-key ops, new ai-accounts acts)"
+    },
+    "screens-daily": {
+     "outcome": "B",
+     "kind": "REM",
+     "brokenIn": "source",
+     "evidence": "bio-plane/src/screens-daily/queue.mjs:66 names projectkeyset (also :82, :86 and index.mjs:109), an op whose OPS spec R24 retires with the project key and sign-in ops; it reads OPS (home.mjs:19, queue.mjs:19); finder.mjs:295 calculationcreate now stamps owner"
+    },
+    "screens-entry": {
+     "outcome": "B",
+     "kind": "REM",
+     "brokenIn": "source",
+     "evidence": "bio-plane/src/screens-entry/setup.mjs:45 reads the retired op groupkeystate (R24 retired the group key ops with no alias); no import of op-declarations"
+    },
+    "screens-inquiry": {
+     "outcome": "B",
+     "kind": "REM",
+     "brokenIn": "source",
+     "evidence": "bio-plane/src/screens-inquiry/assistant.mjs:65 reads the retired op accountreference (and :67 groupkeystate, :118 projectaccountstate); no import of op-declarations"
+    },
+    "screens-settings": {
+     "outcome": "B",
+     "kind": "REM",
+     "brokenIn": "source",
+     "evidence": "bio-plane/src/screens-settings/teamai.mjs:18 reads the retired op groupkeystate (and :2 documents groupkeyset, groupkeyswitch, groupkeyremove, all retired by R24); no import of op-declarations"
+    },
+    "signin-door": {
+     "outcome": "B",
+     "kind": "REM",
+     "brokenIn": "source",
+     "evidence": "bio-plane/src/signin-door/index.mjs:67 and :243-265 serve and map op subscriptiondisconnect, the seventh credentials T35 route that R30 retires with no spec and no table; no import of op-declarations"
+    },
+    "store-assembly": {
+     "outcome": "C",
+     "kind": "DATA",
+     "brokenIn": "",
+     "evidence": "bio-plane/src/store-assembly/declarations.mjs:185 assembleDeclaredOps registers owners' DECLARED_OPS through registerDeclaredOps (import :10) into the restated families (ai-accounts, ai-use, events, money, entities, calculations); wizards.mjs:32 passes OPS to the screen registry (import :6)"
+    },
+    "store-request": {
+     "outcome": "A",
+     "kind": "REM",
+     "brokenIn": "",
+     "evidence": "bio-plane/src/store-request/index.mjs:35 BODY_ONLY still names projectkeyset, an op whose spec R24 retires; it imports the action tables from op-declarations (:16)"
+    }
+   },
+   "providerFilesChanged": [
+    "bio-plane/src/op-declarations/index.mjs",
+    "bio-plane/src/op-declarations/t47.mjs",
+    "bio-plane/src/op-declarations/t48.mjs",
+    "bio-plane/test/m/op-declarations/help.mjs",
+    "bio-plane/test/m/op-declarations/notice-calculations-70.test.mjs",
+    "bio-plane/test/m/op-declarations/notice-connections-71.test.mjs",
+    "bio-plane/test/m/op-declarations/notice-membership-77.test.mjs",
+    "bio-plane/test/m/op-declarations/requirements-ids.test.mjs",
+    "bio-plane/test/m/op-declarations/t33.test.mjs",
+    "bio-plane/test/m/op-declarations/t34.test.mjs",
+    "bio-plane/test/m/op-declarations/t35.test.mjs",
+    "bio-plane/test/m/op-declarations/t36.test.mjs",
+    "bio-plane/test/m/op-declarations/t37.test.mjs",
+    "bio-plane/test/m/op-declarations/t41.test.mjs",
+    "bio-plane/test/m/op-declarations/t46.test.mjs",
+    "bio-plane/test/m/op-declarations/t47.test.mjs",
+    "bio-plane/test/m/op-declarations/t48.test.mjs",
+    "bio-plane/test/m/op-declarations/t49.test.mjs",
+    "bio-plane/test/m/op-declarations/t50.test.mjs",
+    "bio-plane/test/m/op-declarations/t53-rows.test.mjs"
+   ],
+   "otherFilesChanged": 4
+  },
+  {
+   "change": "op-declarations:167",
+   "provider": "op-declarations",
+   "pr": 167,
+   "kind": "job",
+   "before": "370b7c4d2735816177804d979cfeb9fbd248737a",
+   "after": "ef8db6f6ed50d2c384c40a0e5487a2e73cd74bee",
+   "told": {
+    "admission": {
+     "srcImports": true,
+     "testImports": true
+    },
+    "control-plane": {
+     "srcImports": true,
+     "testImports": true
+    },
+    "interface-shell": {
+     "srcImports": true,
+     "testImports": true
+    },
+    "load-check": {
+     "srcImports": false,
+     "testImports": false
+    },
+    "plane": {
+     "srcImports": true,
+     "testImports": true
+    },
+    "screens-action": {
+     "srcImports": true,
+     "testImports": true
+    },
+    "screens-ai": {
+     "srcImports": false,
+     "testImports": false
+    },
+    "screens-daily": {
+     "srcImports": true,
+     "testImports": true
+    },
+    "screens-document": {
+     "srcImports": false,
+     "testImports": false
+    },
+    "screens-entry": {
+     "srcImports": false,
+     "testImports": true
+    },
+    "screens-inquiry": {
+     "srcImports": false,
+     "testImports": true
+    },
+    "screens-intake": {
+     "srcImports": false,
+     "testImports": true
+    },
+    "screens-investigate": {
+     "srcImports": false,
+     "testImports": true
+    },
+    "screens-matter": {
+     "srcImports": false,
+     "testImports": false
+    },
+    "screens-plan": {
+     "srcImports": false,
+     "testImports": false
+    },
+    "screens-publish": {
+     "srcImports": false,
+     "testImports": true
+    },
+    "screens-settings": {
+     "srcImports": false,
+     "testImports": true
+    },
+    "screens-wizards": {
+     "srcImports": false,
+     "testImports": true
+    },
+    "signin-door": {
+     "srcImports": false,
+     "testImports": true
+    },
+    "store-assembly": {
+     "srcImports": true,
+     "testImports": true
+    },
+    "store-request": {
+     "srcImports": true,
+     "testImports": true
+    }
+   },
+   "declaredUsers": [
+    "admission",
+    "signin-door",
+    "store-assembly",
+    "store-request",
+    "interface-shell",
+    "screens-entry",
+    "screens-wizards",
+    "screens-settings",
+    "screens-ai",
+    "screens-intake",
+    "screens-daily",
+    "screens-inquiry",
+    "screens-document",
+    "screens-investigate",
+    "screens-publish",
+    "screens-action",
+    "screens-plan",
+    "screens-matter",
+    "control-plane",
+    "plane",
+    "load-check"
+   ],
+   "verdicts": {},
+   "providerFilesChanged": [
+    "bio-plane/src/op-declarations/index.mjs",
+    "bio-plane/test/m/op-declarations/notice-ai-runs-96.test.mjs",
+    "bio-plane/test/m/op-declarations/notice-ai-use-105.test.mjs",
+    "bio-plane/test/m/op-declarations/notice-money-154.test.mjs",
+    "bio-plane/test/m/op-declarations/notice-wizard-scripts.test.mjs",
+    "bio-plane/test/m/op-declarations/t33.test.mjs"
+   ],
+   "otherFilesChanged": 2
+  },
+  {
+   "change": "op-declarations:289",
+   "provider": "op-declarations",
+   "pr": 289,
+   "kind": "job",
+   "before": "b52da7eed60487949721e9841757c63917a8b4fd",
+   "after": "a319afec583dd16fd24dc930d97d42e227120650",
+   "told": {
+    "admission": {
+     "srcImports": true,
+     "testImports": true
+    },
+    "control-plane": {
+     "srcImports": true,
+     "testImports": true
+    },
+    "interface-shell": {
+     "srcImports": true,
+     "testImports": true
+    },
+    "load-check": {
+     "srcImports": false,
+     "testImports": false
+    },
+    "plane": {
+     "srcImports": true,
+     "testImports": true
+    },
+    "screens-action": {
+     "srcImports": true,
+     "testImports": true
+    },
+    "screens-ai": {
+     "srcImports": false,
+     "testImports": false
+    },
+    "screens-daily": {
+     "srcImports": true,
+     "testImports": true
+    },
+    "screens-document": {
+     "srcImports": false,
+     "testImports": false
+    },
+    "screens-entry": {
+     "srcImports": false,
+     "testImports": true
+    },
+    "screens-inquiry": {
+     "srcImports": false,
+     "testImports": true
+    },
+    "screens-intake": {
+     "srcImports": false,
+     "testImports": true
+    },
+    "screens-investigate": {
+     "srcImports": false,
+     "testImports": true
+    },
+    "screens-matter": {
+     "srcImports": false,
+     "testImports": false
+    },
+    "screens-plan": {
+     "srcImports": false,
+     "testImports": false
+    },
+    "screens-publish": {
+     "srcImports": false,
+     "testImports": true
+    },
+    "screens-settings": {
+     "srcImports": false,
+     "testImports": true
+    },
+    "screens-wizards": {
+     "srcImports": false,
+     "testImports": true
+    },
+    "signin-door": {
+     "srcImports": false,
+     "testImports": true
+    },
+    "store-assembly": {
+     "srcImports": true,
+     "testImports": true
+    },
+    "store-request": {
+     "srcImports": true,
+     "testImports": true
+    }
+   },
+   "declaredUsers": [
+    "admission",
+    "signin-door",
+    "store-assembly",
+    "store-request",
+    "interface-shell",
+    "screens-entry",
+    "screens-wizards",
+    "screens-settings",
+    "screens-ai",
+    "screens-intake",
+    "screens-daily",
+    "screens-inquiry",
+    "screens-document",
+    "screens-investigate",
+    "screens-publish",
+    "screens-action",
+    "screens-plan",
+    "screens-matter",
+    "control-plane",
+    "plane",
+    "load-check"
+   ],
+   "verdicts": {
+    "admission": {
+     "outcome": "C",
+     "kind": "DATA",
+     "brokenIn": "",
+     "evidence": "bio-plane/src/admission/index.mjs:778 declaredReauthActs() reads OP_DECLARATIONS.REAUTH_ACTS (namespace import at :63), which PR 289 extended (t47.mjs) with aiaccountadd, aiownadd, aiaccountremove, aiaccountswitch, aikeyenter, aikeyseal, aikeycloudflare at null; it is admit()'s default reauthActs (:669) and reauthAsked (:791-801) is true for null, so those seven ops now take the re-ask lookup (:696) and REAUTH_DUE (:750-757) on every session call."
+    }
+   },
+   "providerFilesChanged": [
+    "bio-plane/src/op-declarations/t47.mjs",
+    "bio-plane/test/m/op-declarations/reauth-ai-accounts.test.mjs",
+    "bio-plane/test/m/op-declarations/t47.test.mjs"
+   ],
+   "otherFilesChanged": 2
+  },
+  {
+   "change": "op-declarations:321",
+   "provider": "op-declarations",
+   "pr": 321,
+   "kind": "job",
+   "before": "25ffbd20f28ba96576c5fdb25fb258e3c4187472",
+   "after": "a632275c6f729ca3dbf4c3f801f83247511e11bc",
+   "told": {
+    "admission": {
+     "srcImports": true,
+     "testImports": true
+    },
+    "control-plane": {
+     "srcImports": true,
+     "testImports": true
+    },
+    "interface-shell": {
+     "srcImports": true,
+     "testImports": true
+    },
+    "load-check": {
+     "srcImports": false,
+     "testImports": false
+    },
+    "plane": {
+     "srcImports": true,
+     "testImports": true
+    },
+    "screens-action": {
+     "srcImports": true,
+     "testImports": true
+    },
+    "screens-ai": {
+     "srcImports": false,
+     "testImports": false
+    },
+    "screens-daily": {
+     "srcImports": true,
+     "testImports": true
+    },
+    "screens-document": {
+     "srcImports": false,
+     "testImports": false
+    },
+    "screens-entry": {
+     "srcImports": false,
+     "testImports": true
+    },
+    "screens-inquiry": {
+     "srcImports": false,
+     "testImports": true
+    },
+    "screens-intake": {
+     "srcImports": false,
+     "testImports": true
+    },
+    "screens-investigate": {
+     "srcImports": false,
+     "testImports": true
+    },
+    "screens-matter": {
+     "srcImports": false,
+     "testImports": false
+    },
+    "screens-plan": {
+     "srcImports": false,
+     "testImports": false
+    },
+    "screens-publish": {
+     "srcImports": false,
+     "testImports": true
+    },
+    "screens-settings": {
+     "srcImports": false,
+     "testImports": true
+    },
+    "screens-wizards": {
+     "srcImports": false,
+     "testImports": true
+    },
+    "signin-door": {
+     "srcImports": false,
+     "testImports": true
+    },
+    "store-assembly": {
+     "srcImports": true,
+     "testImports": true
+    },
+    "store-request": {
+     "srcImports": true,
+     "testImports": true
+    }
+   },
+   "declaredUsers": [
+    "admission",
+    "signin-door",
+    "store-assembly",
+    "store-request",
+    "interface-shell",
+    "screens-entry",
+    "screens-wizards",
+    "screens-settings",
+    "screens-ai",
+    "screens-intake",
+    "screens-daily",
+    "screens-inquiry",
+    "screens-document",
+    "screens-investigate",
+    "screens-publish",
+    "screens-action",
+    "screens-plan",
+    "screens-matter",
+    "control-plane",
+    "plane",
+    "load-check"
+   ],
+   "verdicts": {},
+   "providerFilesChanged": [
+    "bio-plane/src/op-declarations/index.mjs",
+    "bio-plane/test/m/op-declarations/f1-aipathready.test.mjs",
+    "bio-plane/test/m/op-declarations/requirements-ids.test.mjs"
+   ],
+   "otherFilesChanged": 3
+  },
+  {
+   "change": "ai-catalogue:194",
+   "provider": "ai-catalogue",
+   "pr": 194,
+   "kind": "job",
+   "before": "d39797b18d392dad0df42ee428a5a076d250090e",
+   "after": "66c283828a6d99f88f71e2a071626b7569d7cc0c",
+   "told": {
+    "agent-model": {
+     "srcImports": false,
+     "testImports": false
+    },
+    "ai-accounts": {
+     "srcImports": true,
+     "testImports": true
+    },
+    "ai-gate": {
+     "srcImports": false,
+     "testImports": false
+    },
+    "ai-issuer": {
+     "srcImports": false,
+     "testImports": false
+    },
+    "ai-runs": {
+     "srcImports": true,
+     "testImports": false
+    },
+    "ai-use": {
+     "srcImports": true,
+     "testImports": true
+    },
+    "op-declarations": {
+     "srcImports": false,
+     "testImports": false
+    },
+    "store-assembly": {
+     "srcImports": false,
+     "testImports": false
+    },
+    "surface-declarations": {
+     "srcImports": false,
+     "testImports": false
+    }
+   },
+   "declaredUsers": [
+    "ai-accounts",
+    "agent-model",
+    "ai-use",
+    "ai-runs",
+    "ai-gate",
+    "surface-declarations",
+    "op-declarations",
+    "store-assembly",
+    "ai-issuer"
+   ],
+   "verdicts": {},
+   "providerFilesChanged": [
+    "bio-plane/src/ai-catalogue/index.mjs",
+    "bio-plane/src/ai-catalogue/seed.mjs",
+    "bio-plane/test/m/ai-catalogue/fixture.mjs",
+    "bio-plane/test/m/ai-catalogue/invariants.test.mjs",
+    "bio-plane/test/m/ai-catalogue/seed.test.mjs"
+   ],
+   "otherFilesChanged": 3
+  },
+  {
+   "change": "ai-catalogue:204",
+   "provider": "ai-catalogue",
+   "pr": 204,
+   "kind": "job",
+   "before": "c85d9e38e653d7c46d6606408b7912297a6ea0a5",
+   "after": "23ffcbea359df7146b39f0b47880ff07408a7733",
+   "told": {
+    "agent-model": {
+     "srcImports": false,
+     "testImports": false
+    },
+    "ai-accounts": {
+     "srcImports": true,
+     "testImports": true
+    },
+    "ai-gate": {
+     "srcImports": false,
+     "testImports": false
+    },
+    "ai-issuer": {
+     "srcImports": false,
+     "testImports": false
+    },
+    "ai-runs": {
+     "srcImports": true,
+     "testImports": false
+    },
+    "ai-use": {
+     "srcImports": true,
+     "testImports": true
+    },
+    "op-declarations": {
+     "srcImports": false,
+     "testImports": false
+    },
+    "store-assembly": {
+     "srcImports": false,
+     "testImports": false
+    },
+    "surface-declarations": {
+     "srcImports": false,
+     "testImports": false
+    }
+   },
+   "declaredUsers": [
+    "ai-accounts",
+    "agent-model",
+    "ai-use",
+    "ai-runs",
+    "ai-gate",
+    "surface-declarations",
+    "op-declarations",
+    "store-assembly",
+    "ai-issuer"
+   ],
+   "verdicts": {},
+   "providerFilesChanged": [
+    "bio-plane/src/ai-catalogue/seed.mjs",
+    "bio-plane/test/m/ai-catalogue/notice-signatures-101.test.mjs"
+   ],
+   "otherFilesChanged": 2
+  },
+  {
+   "change": "ai-catalogue:317",
+   "provider": "ai-catalogue",
+   "pr": 317,
+   "kind": "job",
+   "before": "23eeca8099777ae76977a4da65ac307c0e8b9c43",
+   "after": "0e140ef762194ecf86cfa86f9fb8d53b84bd0488",
+   "told": {
+    "agent-model": {
+     "srcImports": false,
+     "testImports": false
+    },
+    "agent-worker": {
+     "srcImports": false,
+     "testImports": true
+    },
+    "ai-accounts": {
+     "srcImports": true,
+     "testImports": true
+    },
+    "ai-gate": {
+     "srcImports": false,
+     "testImports": false
+    },
+    "ai-issuer": {
+     "srcImports": false,
+     "testImports": false
+    },
+    "ai-runs": {
+     "srcImports": true,
+     "testImports": true
+    },
+    "ai-use": {
+     "srcImports": true,
+     "testImports": true
+    },
+    "answer-envelope": {
+     "srcImports": true,
+     "testImports": true
+    },
+    "op-declarations": {
+     "srcImports": false,
+     "testImports": false
+    },
+    "store-assembly": {
+     "srcImports": true,
+     "testImports": true
+    },
+    "surface-declarations": {
+     "srcImports": false,
+     "testImports": false
+    }
+   },
+   "declaredUsers": [
+    "ai-accounts",
+    "agent-model",
+    "ai-use",
+    "ai-runs",
+    "agent-worker",
+    "ai-gate",
+    "surface-declarations",
+    "op-declarations",
+    "answer-envelope",
+    "store-assembly",
+    "ai-issuer"
+   ],
+   "verdicts": {
+    "store-assembly": {
+     "outcome": "C",
+     "kind": "NEW",
+     "brokenIn": "",
+     "evidence": "bio-plane/src/store-assembly/assemble.mjs:229 aiCatalogueOf(ctx, { record, env, clock, keys? }) passes the deployment's env, and the constructor (ai-catalogue/index.mjs:118) runs catalogueKeysFor(keys, env), so on a development deployment (AI_CATALOGUE_DEVELOPMENT=\"1\") the assembled catalogue now trusts the AI_CATALOGUE_DEVELOPMENT_KEY line; it builds the storage's one instance first (after recordOf, :216), before ai-use or ai-runs reach it"
+    }
+   },
+   "providerFilesChanged": [
+    "bio-plane/src/ai-catalogue/dev-key.mjs",
+    "bio-plane/src/ai-catalogue/index.mjs",
+    "bio-plane/src/ai-catalogue/seed.mjs",
+    "bio-plane/test/m/ai-catalogue/dev-key.test.mjs",
+    "bio-plane/test/m/ai-catalogue/fake-wrangler.mjs",
+    "bio-plane/test/m/ai-catalogue/notice-signatures-101.test.mjs"
+   ],
+   "otherFilesChanged": 2
+  },
+  {
+   "change": "ai-catalogue:336",
+   "provider": "ai-catalogue",
+   "pr": 336,
+   "kind": "job",
+   "before": "6b7ccce437067a40163643bc5d5010391e98debf",
+   "after": "fb956d123ca4552334ffc275aef4c5c3bf1db32b",
+   "told": {
+    "agent-model": {
+     "srcImports": false,
+     "testImports": false
+    },
+    "agent-worker": {
+     "srcImports": false,
+     "testImports": true
+    },
+    "ai-accounts": {
+     "srcImports": true,
+     "testImports": true
+    },
+    "ai-gate": {
+     "srcImports": false,
+     "testImports": false
+    },
+    "ai-issuer": {
+     "srcImports": false,
+     "testImports": false
+    },
+    "ai-runs": {
+     "srcImports": true,
+     "testImports": true
+    },
+    "ai-use": {
+     "srcImports": true,
+     "testImports": true
+    },
+    "answer-envelope": {
+     "srcImports": true,
+     "testImports": true
+    },
+    "op-declarations": {
+     "srcImports": false,
+     "testImports": false
+    },
+    "store-assembly": {
+     "srcImports": true,
+     "testImports": true
+    },
+    "surface-declarations": {
+     "srcImports": false,
+     "testImports": false
+    }
+   },
+   "declaredUsers": [
+    "ai-accounts",
+    "agent-model",
+    "ai-use",
+    "ai-runs",
+    "agent-worker",
+    "ai-gate",
+    "surface-declarations",
+    "op-declarations",
+    "answer-envelope",
+    "store-assembly",
+    "ai-issuer"
+   ],
+   "verdicts": {},
+   "providerFilesChanged": [
+    "bio-plane/src/ai-catalogue/dev-key.mjs",
+    "bio-plane/test/m/ai-catalogue/dev-key.test.mjs"
+   ],
+   "otherFilesChanged": 3
+  },
+  {
+   "change": "ai-catalogue:484",
+   "provider": "ai-catalogue",
+   "pr": 484,
+   "kind": "job",
+   "before": "297d25b8a5e61ec8b67f56d88c4e83e09398cf1f",
+   "after": "a936799e95031538448a12dbb1dba2326d6f93d9",
+   "told": {
+    "agent-model": {
+     "srcImports": false,
+     "testImports": true
+    },
+    "agent-runner": {
+     "srcImports": false,
+     "testImports": false
+    },
+    "agent-worker": {
+     "srcImports": false,
+     "testImports": true
+    },
+    "ai-accounts": {
+     "srcImports": true,
+     "testImports": true
+    },
+    "ai-gate": {
+     "srcImports": true,
+     "testImports": true
+    },
+    "ai-issuer": {
+     "srcImports": false,
+     "testImports": false
+    },
+    "ai-runs": {
+     "srcImports": true,
+     "testImports": true
+    },
+    "ai-use": {
+     "srcImports": true,
+     "testImports": true
+    },
+    "answer-envelope": {
+     "srcImports": true,
+     "testImports": true
+    },
+    "op-declarations": {
+     "srcImports": false,
+     "testImports": false
+    },
+    "store-assembly": {
+     "srcImports": true,
+     "testImports": true
+    },
+    "surface-declarations": {
+     "srcImports": false,
+     "testImports": false
+    }
+   },
+   "declaredUsers": [
+    "ai-accounts",
+    "agent-model",
+    "ai-use",
+    "ai-runs",
+    "agent-runner",
+    "agent-worker",
+    "ai-gate",
+    "surface-declarations",
+    "op-declarations",
+    "answer-envelope",
+    "store-assembly",
+    "ai-issuer"
+   ],
+   "verdicts": {
+    "store-assembly": {
+     "outcome": "B",
+     "kind": "NEW",
+     "brokenIn": "tests",
+     "evidence": "bio-plane/src/store-assembly/assemble.mjs:229 builds the store's catalogue with aiCatalogueOf(ctx, { record, env, clock, keys? }) and no seed, so the constructor now takes seedFor(env): on a deployment with AI_CATALOGUE_DEVELOPMENT=1 the store starts from DEVELOPMENT_SEED (seq 2, plan api, p3dev-provider) instead of RELEASE_SEED; release deployments unchanged"
+    }
+   },
+   "providerFilesChanged": [
+    "bio-plane/src/ai-catalogue/dev-key.mjs",
+    "bio-plane/src/ai-catalogue/index.mjs",
+    "bio-plane/src/ai-catalogue/seed.mjs",
+    "bio-plane/test/m/ai-catalogue/development-seed.test.mjs",
+    "bio-plane/test/m/ai-catalogue/invariants.test.mjs",
+    "bio-plane/test/m/ai-catalogue/notice-signatures-101.test.mjs",
+    "bio-plane/test/m/ai-catalogue/seed.test.mjs"
+   ],
+   "otherFilesChanged": 3
+  },
+  {
+   "change": "ai-catalogue:611",
+   "provider": "ai-catalogue",
+   "pr": 611,
+   "kind": "job",
+   "before": "0210eba56a26687a37b4736bfbd5e4c945edadf6",
+   "after": "6bb3dc8fbeb71673382a2eedebaefb51b2fddcbb",
+   "told": {
+    "agent-model": {
+     "srcImports": false,
+     "testImports": true
+    },
+    "agent-runner": {
+     "srcImports": false,
+     "testImports": false
+    },
+    "agent-worker": {
+     "srcImports": false,
+     "testImports": true
+    },
+    "ai-accounts": {
+     "srcImports": true,
+     "testImports": true
+    },
+    "ai-gate": {
+     "srcImports": true,
+     "testImports": true
+    },
+    "ai-issuer": {
+     "srcImports": false,
+     "testImports": false
+    },
+    "ai-runs": {
+     "srcImports": true,
+     "testImports": true
+    },
+    "ai-use": {
+     "srcImports": true,
+     "testImports": true
+    },
+    "answer-envelope": {
+     "srcImports": true,
+     "testImports": true
+    },
+    "op-declarations": {
+     "srcImports": false,
+     "testImports": false
+    },
+    "store-assembly": {
+     "srcImports": true,
+     "testImports": true
+    },
+    "surface-declarations": {
+     "srcImports": false,
+     "testImports": false
+    }
+   },
+   "declaredUsers": [
+    "ai-accounts",
+    "agent-model",
+    "ai-use",
+    "ai-runs",
+    "agent-runner",
+    "agent-worker",
+    "ai-gate",
+    "surface-declarations",
+    "op-declarations",
+    "answer-envelope",
+    "store-assembly",
+    "ai-issuer"
+   ],
+   "verdicts": {
+    "store-assembly": {
+     "outcome": "C",
+     "kind": "NEW",
+     "brokenIn": "",
+     "evidence": "bio-plane/src/store-assembly/assemble.mjs:229 builds the store's one catalogue with aiCatalogueOf(ctx, { record, env, clock }) and no seed, so seedFor(env) takes DEVELOPMENT_SEED where the development variable is \"1\", and the start aiCatalogueOf runs now registers DEVELOPMENT_ADAPTERS in memory (ai-catalogue/index.mjs:424-430), which changes needs_newer_release on that development plane's entries"
+    }
+   },
+   "providerFilesChanged": [
+    "bio-plane/src/ai-catalogue/index.mjs",
+    "bio-plane/src/ai-catalogue/seed.mjs",
+    "bio-plane/test/m/ai-catalogue/development-plane.test.mjs"
+   ],
+   "otherFilesChanged": 3
+  },
+  {
+   "change": "ai-catalogue:1097",
+   "provider": "ai-catalogue",
+   "pr": 1097,
+   "kind": "layer",
+   "before": "5fd73f9b50a05919e6a71e8598680c87d1b27031",
+   "after": "8ed25f1db7c0780de65eeacd1e8cb7a1a91ae3d0",
+   "told": {
+    "agent-model": {
+     "srcImports": false,
+     "testImports": true
+    },
+    "agent-runner": {
+     "srcImports": true,
+     "testImports": true
+    },
+    "agent-worker": {
+     "srcImports": false,
+     "testImports": true
+    },
+    "ai-gate": {
+     "srcImports": true,
+     "testImports": true
+    },
+    "ai-issuer": {
+     "srcImports": false,
+     "testImports": false
+    },
+    "ai-runs": {
+     "srcImports": true,
+     "testImports": true
+    },
+    "ai-use": {
+     "srcImports": true,
+     "testImports": true
+    },
+    "answer-envelope": {
+     "srcImports": true,
+     "testImports": true
+    },
+    "op-declarations": {
+     "srcImports": false,
+     "testImports": false
+    },
+    "store-assembly": {
+     "srcImports": true,
+     "testImports": true
+    },
+    "surface-declarations": {
+     "srcImports": false,
+     "testImports": false
+    }
+   },
+   "declaredUsers": [
+    "ai-accounts",
+    "agent-model",
+    "ai-use",
+    "ai-runs",
+    "agent-runner",
+    "agent-worker",
+    "ai-gate",
+    "surface-declarations",
+    "op-declarations",
+    "answer-envelope",
+    "store-assembly",
+    "ai-issuer"
+   ],
+   "verdicts": {},
+   "providerFilesChanged": [
+    "bio-plane/src/ai-catalogue/index.mjs",
+    "bio-plane/test/m/ai-catalogue/channel.test.mjs",
+    "bio-plane/test/m/ai-catalogue/invariants.test.mjs",
+    "bio-plane/test/m/ai-catalogue/ops.test.mjs"
+   ],
+   "otherFilesChanged": 3
+  },
+  {
+   "change": "ai-use:105",
+   "provider": "ai-use",
+   "pr": 105,
+   "kind": "job",
+   "before": "107027e98212ae77de7ade71f70f3f753c048383",
+   "after": "fff736698a2a35a17a1ff0b9af9e93edc42c070f",
+   "told": {
+    "agent-worker": {
+     "srcImports": false,
+     "testImports": true
+    },
+    "ai-gate": {
+     "srcImports": false,
+     "testImports": false
+    },
+    "ai-runs": {
+     "srcImports": true,
+     "testImports": true
+    },
+    "answer-envelope": {
+     "srcImports": true,
+     "testImports": false
+    },
+    "answers": {
+     "srcImports": true,
+     "testImports": true
+    },
+    "control-plane": {
+     "srcImports": false,
+     "testImports": true
+    },
+    "instance-setup": {
+     "srcImports": false,
+     "testImports": false
+    },
+    "instance-updates": {
+     "srcImports": false,
+     "testImports": false
+    },
+    "notice-producers": {
+     "srcImports": true,
+     "testImports": true
+    },
+    "op-declarations": {
+     "srcImports": false,
+     "testImports": true
+    },
+    "op-specs-late": {
+     "srcImports": false,
+     "testImports": false
+    },
+    "plane": {
+     "srcImports": false,
+     "testImports": true
+    },
+    "question-explorer": {
+     "srcImports": true,
+     "testImports": true
+    },
+    "queue-producers": {
+     "srcImports": false,
+     "testImports": false
+    },
+    "store-ask": {
+     "srcImports": false,
+     "testImports": false
+    },
+    "store-assembly": {
+     "srcImports": true,
+     "testImports": true
+    },
+    "store-door": {
+     "srcImports": true,
+     "testImports": true
+    },
+    "surface-declarations": {
+     "srcImports": false,
+     "testImports": false
+    }
+   },
+   "declaredUsers": [
+    "ai-runs",
+    "question-explorer",
+    "answers",
+    "agent-worker",
+    "ai-gate",
+    "queue-producers",
+    "notice-producers",
+    "instance-setup",
+    "instance-updates",
+    "surface-declarations",
+    "op-specs-late",
+    "op-declarations",
+    "answer-envelope",
+    "store-door",
+    "store-ask",
+    "store-assembly",
+    "control-plane",
+    "plane"
+   ],
+   "verdicts": {
+    "agent-worker": {
+     "outcome": "C",
+     "kind": "FIX",
+     "brokenIn": "",
+     "evidence": "agent-worker/test/ask.test.mjs:40 CEILING = await ceilingRefusal() (import :16) takes the live ai-use useCheck refusal (bio-plane/test/m/ai-use/fixtures.mjs:11-16), whose signature/answer changed (R3: account_id, entry_id, source, resets_at, walkable); production agent-worker/src/ask.mjs:23 only names countAskUsage in a comment (the plane counts it)"
+    },
+    "ai-runs": {
+     "outcome": "B",
+     "kind": "SIG",
+     "brokenIn": "source",
+     "evidence": "bio-plane/src/ai-runs/index.mjs:3253 countUsage({owner, member, use, mode, model, ...}) (import :37), whose arguments changed (entry_id, label); also useCheck at :3239 (R3 account_id/entry_id) and estimate({owner,use,mode,count,viewer}) at :1443 (R10 range answer)"
+    },
+    "answer-envelope": {
+     "outcome": "C",
+     "kind": "DATA",
+     "brokenIn": "",
+     "evidence": "bio-plane/src/answer-envelope/families.mjs:228 registers ai-use/checks.mjs (import :89) whose check rows changed (R8: AI_LIMIT_REACHED carries source/resets_at/walkable, new AI_THRESHOLD_INVALID)"
+    },
+    "answers": {
+     "outcome": "A",
+     "kind": "SIG",
+     "brokenIn": "",
+     "evidence": "bio-plane/src/answers/index.mjs:404 calls aiUseOf(...).useCheck(x) (import :39) and standing.mjs:366 judges its AI_LIMIT_REACHED refusal; useCheck's signature and refusal fields changed (R3)"
+    },
+    "notice-producers": {
+     "outcome": "A",
+     "kind": "BEH",
+     "brokenIn": "",
+     "evidence": "bio-plane/src/notice-producers/index.mjs:1077 reads ai-use limitsReached (R5 amended: provider limits, source/resets_at keys) and :1044 exploreAsksPending (R9 restated by account id); import :81"
+    },
+    "op-declarations": {
+     "outcome": "A",
+     "kind": "NEW",
+     "brokenIn": "",
+     "evidence": "bio-plane/src/op-declarations/t48.mjs:41 declares ai-use's ops (aiusebymember, airetestset, aihealthset, aihealthpreview at :42) which ai-use R27, R28, R32, R33 now implement; no import of ai-use"
+    },
+    "question-explorer": {
+     "outcome": "A",
+     "kind": "SIG",
+     "brokenIn": "",
+     "evidence": "bio-plane/src/question-explorer/index.mjs:445 calls aiUse.exploreAllowed({owner, account_id, question, at}), :470 exploreAsk({owner, account_id, ...}), :489 estimate(...) with its R10 range answer (import :38)"
+    },
+    "store-assembly": {
+     "outcome": "C",
+     "kind": "SIG",
+     "brokenIn": "",
+     "evidence": "bio-plane/src/store-assembly/transcribe.mjs:154 calls aiUseOf(ctx).countUsage(entry) (import :11) and :206 useCheck; assemble.mjs:866 serves aiUseOps and :522 hands aiUse to the explorer (imports assemble.mjs:84, declarations.mjs:44, owners.mjs:5)"
+    },
+    "store-door": {
+     "outcome": "A",
+     "kind": "SIG",
+     "brokenIn": "",
+     "evidence": "bio-plane/src/store-door/dispatch.mjs:494 calls aiUseOf(ctx).countAskUsage({member, mode, usage, calls, owner}) (import :24); countAskUsage's argument list changed (entry_id, label)"
+    }
+   },
+   "providerFilesChanged": [
+    "bio-plane/src/ai-use/checks.mjs",
+    "bio-plane/src/ai-use/index.mjs",
+    "bio-plane/src/ai-use/schema.mjs",
+    "bio-plane/test/m/ai-use/counting.test.mjs",
+    "bio-plane/test/m/ai-use/explore.test.mjs",
+    "bio-plane/test/m/ai-use/fixture.mjs",
+    "bio-plane/test/m/ai-use/limits.test.mjs",
+    "bio-plane/test/m/ai-use/reads.test.mjs",
+    "bio-plane/test/m/ai-use/t42.test.mjs",
+    "bio-plane/test/m/ai-use/t43.test.mjs",
+    "bio-plane/test/m/ai-use/t44.test.mjs",
+    "bio-plane/test/m/ai-use/t48.test.mjs",
+    "bio-plane/test/m/ai-use/t50.test.mjs",
+    "bio-plane/test/m/ai-use/t53.test.mjs"
+   ],
+   "otherFilesChanged": 3
+  },
+  {
+   "change": "ai-use:378",
+   "provider": "ai-use",
+   "pr": 378,
+   "kind": "job",
+   "before": "74cea43c971a0011fb31fe9ee976f577db72b665",
+   "after": "fdc6cc5538d31327ccd206a6bd98273ef55a4121",
+   "told": {
+    "agent-worker": {
+     "srcImports": false,
+     "testImports": true
+    },
+    "ai-gate": {
+     "srcImports": false,
+     "testImports": false
+    },
+    "ai-runs": {
+     "srcImports": true,
+     "testImports": true
+    },
+    "answer-envelope": {
+     "srcImports": true,
+     "testImports": true
+    },
+    "answers": {
+     "srcImports": true,
+     "testImports": true
+    },
+    "control-plane": {
+     "srcImports": false,
+     "testImports": true
+    },
+    "instance-setup": {
+     "srcImports": false,
+     "testImports": false
+    },
+    "instance-updates": {
+     "srcImports": false,
+     "testImports": false
+    },
+    "notice-producers": {
+     "srcImports": true,
+     "testImports": true
+    },
+    "op-declarations": {
+     "srcImports": false,
+     "testImports": true
+    },
+    "op-grades": {
+     "srcImports": false,
+     "testImports": false
+    },
+    "op-specs-late": {
+     "srcImports": false,
+     "testImports": false
+    },
+    "plane": {
+     "srcImports": false,
+     "testImports": true
+    },
+    "question-explorer": {
+     "srcImports": true,
+     "testImports": true
+    },
+    "queue-producers": {
+     "srcImports": true,
+     "testImports": true
+    },
+    "store-ask": {
+     "srcImports": false,
+     "testImports": false
+    },
+    "store-assembly": {
+     "srcImports": true,
+     "testImports": true
+    },
+    "store-door": {
+     "srcImports": true,
+     "testImports": true
+    },
+    "surface-declarations": {
+     "srcImports": false,
+     "testImports": false
+    }
+   },
+   "declaredUsers": [
+    "ai-runs",
+    "question-explorer",
+    "answers",
+    "agent-worker",
+    "ai-gate",
+    "op-grades",
+    "queue-producers",
+    "notice-producers",
+    "instance-setup",
+    "instance-updates",
+    "surface-declarations",
+    "op-specs-late",
+    "op-declarations",
+    "answer-envelope",
+    "store-door",
+    "store-ask",
+    "store-assembly",
+    "control-plane",
+    "plane"
+   ],
+   "verdicts": {
+    "ai-runs": {
+     "outcome": "A",
+     "kind": "SIG",
+     "brokenIn": "",
+     "evidence": "bio-plane/src/ai-runs/index.mjs:1552 calls `this.#aiUse().estimate({owner, use:\"run\", mode, count, viewer})` for a batch estimate (R74); `estimate` is the alias of the changed `useEstimate` (bio-plane/src/ai-use/index.mjs:1299), so it takes the changed R10 behaviour and signature (entry_id added, no entry_id passed, so a thin account falls to not_known)"
+    },
+    "question-explorer": {
+     "outcome": "C",
+     "kind": "SIG",
+     "brokenIn": "",
+     "evidence": "bio-plane/src/question-explorer/index.mjs:489 calls this.aiUse.estimate({owner, use, mode, count, viewer, at}), the older name of the changed useEstimate (ai-use/index.mjs:1299), and handles the R10 range and not_known basis at :493"
+    },
+    "store-assembly": {
+     "outcome": "C",
+     "kind": "SIG",
+     "brokenIn": "",
+     "evidence": "bio-plane/src/store-assembly/owner-ops.mjs:60 the aiestimate route calls of.aiUse().estimate({owner, use, mode, count, viewer}) (aiUse from owners.mjs:5/22), the older name of useEstimate, whose R10 and signature changed; it passes no entry_id (owner-ops.mjs:60-62)."
+    }
+   },
+   "providerFilesChanged": [
+    "bio-plane/src/ai-use/index.mjs",
+    "bio-plane/test/m/ai-use/declared-ops.test.mjs",
+    "bio-plane/test/m/ai-use/explore.test.mjs",
+    "bio-plane/test/m/ai-use/fixture.mjs"
+   ],
+   "otherFilesChanged": 3
+  },
+  {
+   "change": "ai-use:613",
+   "provider": "ai-use",
+   "pr": 613,
+   "kind": "job",
+   "before": "29197a420d5882c990365d6407d2241f71a2ce20",
+   "after": "6a485f7a64aeaa8bc16a1878b3b34b790ccaec77",
+   "told": {
+    "agent-worker": {
+     "srcImports": false,
+     "testImports": true
+    },
+    "ai-gate": {
+     "srcImports": false,
+     "testImports": false
+    },
+    "ai-runs": {
+     "srcImports": true,
+     "testImports": true
+    },
+    "answer-envelope": {
+     "srcImports": true,
+     "testImports": true
+    },
+    "answers": {
+     "srcImports": true,
+     "testImports": true
+    },
+    "control-plane": {
+     "srcImports": false,
+     "testImports": true
+    },
+    "instance-setup": {
+     "srcImports": false,
+     "testImports": false
+    },
+    "instance-updates": {
+     "srcImports": false,
+     "testImports": false
+    },
+    "notice-producers": {
+     "srcImports": true,
+     "testImports": true
+    },
+    "op-declarations": {
+     "srcImports": false,
+     "testImports": true
+    },
+    "op-grades": {
+     "srcImports": false,
+     "testImports": false
+    },
+    "op-specs-late": {
+     "srcImports": false,
+     "testImports": false
+    },
+    "plane": {
+     "srcImports": false,
+     "testImports": true
+    },
+    "question-explorer": {
+     "srcImports": true,
+     "testImports": true
+    },
+    "queue-producers": {
+     "srcImports": true,
+     "testImports": true
+    },
+    "store-ask": {
+     "srcImports": false,
+     "testImports": false
+    },
+    "store-assembly": {
+     "srcImports": true,
+     "testImports": true
+    },
+    "store-door": {
+     "srcImports": true,
+     "testImports": true
+    },
+    "surface-declarations": {
+     "srcImports": false,
+     "testImports": false
+    }
+   },
+   "declaredUsers": [
+    "ai-runs",
+    "question-explorer",
+    "answers",
+    "agent-worker",
+    "ai-gate",
+    "op-grades",
+    "queue-producers",
+    "notice-producers",
+    "instance-setup",
+    "instance-updates",
+    "surface-declarations",
+    "op-specs-late",
+    "op-declarations",
+    "answer-envelope",
+    "store-door",
+    "store-ask",
+    "store-assembly",
+    "control-plane",
+    "plane"
+   ],
+   "verdicts": {
+    "store-assembly": {
+     "outcome": "C",
+     "kind": "NEW",
+     "brokenIn": "",
+     "evidence": "bio-plane/src/store-assembly/assemble.mjs:910 spreads `...aiUseOps(aiUseOf(ctx), url, body, env)` into the store's ops map, which now carries the new arms aibudgetset/aiprojectbudget calling AiUse.budgetSet; and bio-plane/src/store-assembly/declarations.mjs:140 `\"ai-use\": aiUse` puts ai-use's DECLARED_OPS (now with aibudgetset/aiprojectbudget) into OWNERS, so both ops reach OPS with ai-use as owner"
+    }
+   },
+   "providerFilesChanged": [
+    "bio-plane/src/ai-use/index.mjs",
+    "bio-plane/test/m/ai-use/declared-ops.test.mjs",
+    "bio-plane/test/m/ai-use/f3-budget-door.test.mjs"
+   ],
+   "otherFilesChanged": 3
+  },
+  {
+   "change": "wizard-scripts:98",
+   "provider": "wizard-scripts",
+   "pr": 98,
+   "kind": "job",
+   "before": "7a5a8ebaebd04dd93ee996e96dfbbb19209fcd1b",
+   "after": "de5dce6d601a367599ab238a6fa470b5d65ea1f1",
+   "told": {
+    "affordances": {
+     "srcImports": true,
+     "testImports": true
+    },
+    "answer-envelope": {
+     "srcImports": true,
+     "testImports": false
+    },
+    "control-plane": {
+     "srcImports": true,
+     "testImports": true
+    },
+    "instance-setup": {
+     "srcImports": true,
+     "testImports": true
+    },
+    "interface-shell": {
+     "srcImports": true,
+     "testImports": true
+    },
+    "op-declarations": {
+     "srcImports": false,
+     "testImports": true
+    },
+    "plane": {
+     "srcImports": false,
+     "testImports": true
+    },
+    "queue-producers": {
+     "srcImports": true,
+     "testImports": true
+    },
+    "screens-action": {
+     "srcImports": false,
+     "testImports": true
+    },
+    "screens-document": {
+     "srcImports": false,
+     "testImports": false
+    },
+    "screens-inquiry": {
+     "srcImports": true,
+     "testImports": true
+    },
+    "screens-intake": {
+     "srcImports": false,
+     "testImports": true
+    },
+    "screens-matter": {
+     "srcImports": false,
+     "testImports": false
+    },
+    "screens-plan": {
+     "srcImports": false,
+     "testImports": false
+    },
+    "screens-publish": {
+     "srcImports": false,
+     "testImports": true
+    },
+    "screens-wizards": {
+     "srcImports": false,
+     "testImports": true
+    },
+    "store-assembly": {
+     "srcImports": true,
+     "testImports": true
+    },
+    "store-door": {
+     "srcImports": true,
+     "testImports": true
+    },
+    "translations": {
+     "srcImports": true,
+     "testImports": true
+    }
+   },
+   "declaredUsers": [
+    "affordances",
+    "queue-producers",
+    "translations",
+    "instance-setup",
+    "op-declarations",
+    "answer-envelope",
+    "store-door",
+    "store-assembly",
+    "interface-shell",
+    "screens-wizards",
+    "screens-intake",
+    "screens-inquiry",
+    "screens-document",
+    "screens-publish",
+    "screens-action",
+    "screens-plan",
+    "screens-matter",
+    "control-plane",
+    "plane"
+   ],
+   "verdicts": {
+    "affordances": {
+     "outcome": "C",
+     "kind": "DATA",
+     "brokenIn": "",
+     "evidence": "bio-plane/src/affordances/facts.mjs:526 screens() returns w.registeredScreens() (line 531), i.e. the SCREEN_REGISTRY screens and acts as wizard-scripts registered them, passed through unchanged, so the re-taken registry (91 screens, new acts) changes its answer"
+    },
+    "interface-shell": {
+     "outcome": "A",
+     "kind": "DATA",
+     "brokenIn": "",
+     "evidence": "bio-plane/src/interface-shell/index.mjs:188 checkScreens (called at :434) looks every screen up in SCREEN_REGISTRY (imported at :12 with ADMIN_ACTS, ADMIN_SCREENS) and admits acts only if registered, so the new registry content governs it"
+    },
+    "op-declarations": {
+     "outcome": "C",
+     "kind": "DATA",
+     "brokenIn": "",
+     "evidence": "bio-plane/src/op-declarations/index.mjs:94 OP_ALIASES maps the registry's function acts to ops (comment :69-92 reads registry.json) and :1298 declares factconfirm, now registered on setup; its op table is the OPS the registry's acts are checked against (store-assembly/wizards.mjs:43)"
+    },
+    "screens-inquiry": {
+     "outcome": "A",
+     "kind": "NEW",
+     "brokenIn": "",
+     "evidence": "bio-plane/src/screens-inquiry/admit.mjs:12 admitted() looks the screen up in SCREEN_REGISTRY (imported :7); question.mjs:1738 draws leggrade and document.mjs:1309 draws resolve only where the registry admits them, the acts the re-taken registry now registers"
+    },
+    "store-assembly": {
+     "outcome": "C",
+     "kind": "DATA",
+     "brokenIn": "",
+     "evidence": "bio-plane/src/store-assembly/wizards.mjs:32 wizardRegistration hands SCREEN_REGISTRY (imported :4) to wizard-scripts and screenFailures (:43) checks it against OPS; assemble.mjs:333 gives it to answers' explain read"
+    }
+   },
+   "providerFilesChanged": [
+    "bio-plane/src/wizard-scripts/build-data.mjs",
+    "bio-plane/src/wizard-scripts/screen-registry.mjs",
+    "bio-plane/test/m/wizard-scripts/library.test.mjs",
+    "bio-plane/test/m/wizard-scripts/source/registry-b1adf4236d.json",
+    "bio-plane/test/m/wizard-scripts/source/registry.json",
+    "bio-plane/test/m/wizard-scripts/t47.test.mjs",
+    "bio-plane/test/m/wizard-scripts/t48.test.mjs",
+    "bio-plane/test/m/wizard-scripts/t50.test.mjs",
+    "bio-plane/test/m/wizard-scripts/t51.test.mjs",
+    "bio-plane/test/m/wizard-scripts/t51fr3.test.mjs",
+    "bio-plane/test/m/wizard-scripts/t52g53.test.mjs",
+    "bio-plane/test/m/wizard-scripts/t53.test.mjs",
+    "bio-plane/test/m/wizard-scripts/t54.test.mjs"
+   ],
+   "otherFilesChanged": 4
+  },
+  {
+   "change": "wizard-scripts:163",
+   "provider": "wizard-scripts",
+   "pr": 163,
+   "kind": "job",
+   "before": "b7426ef99a6201d16b6e81c713cb5e6305f2a71a",
+   "after": "60b53634d30e3ef18d4156d762321190ad67b929",
+   "told": {
+    "affordances": {
+     "srcImports": true,
+     "testImports": true
+    },
+    "answer-envelope": {
+     "srcImports": true,
+     "testImports": false
+    },
+    "control-plane": {
+     "srcImports": true,
+     "testImports": true
+    },
+    "instance-setup": {
+     "srcImports": true,
+     "testImports": true
+    },
+    "interface-shell": {
+     "srcImports": true,
+     "testImports": true
+    },
+    "op-declarations": {
+     "srcImports": false,
+     "testImports": true
+    },
+    "plane": {
+     "srcImports": false,
+     "testImports": true
+    },
+    "queue-producers": {
+     "srcImports": true,
+     "testImports": true
+    },
+    "screens-action": {
+     "srcImports": false,
+     "testImports": true
+    },
+    "screens-document": {
+     "srcImports": false,
+     "testImports": false
+    },
+    "screens-inquiry": {
+     "srcImports": true,
+     "testImports": true
+    },
+    "screens-intake": {
+     "srcImports": false,
+     "testImports": true
+    },
+    "screens-matter": {
+     "srcImports": false,
+     "testImports": false
+    },
+    "screens-plan": {
+     "srcImports": false,
+     "testImports": false
+    },
+    "screens-publish": {
+     "srcImports": false,
+     "testImports": true
+    },
+    "screens-wizards": {
+     "srcImports": false,
+     "testImports": true
+    },
+    "store-assembly": {
+     "srcImports": true,
+     "testImports": true
+    },
+    "store-door": {
+     "srcImports": true,
+     "testImports": true
+    },
+    "translations": {
+     "srcImports": true,
+     "testImports": true
+    }
+   },
+   "declaredUsers": [
+    "affordances",
+    "queue-producers",
+    "translations",
+    "instance-setup",
+    "op-declarations",
+    "answer-envelope",
+    "store-door",
+    "store-assembly",
+    "interface-shell",
+    "screens-wizards",
+    "screens-intake",
+    "screens-inquiry",
+    "screens-document",
+    "screens-publish",
+    "screens-action",
+    "screens-plan",
+    "screens-matter",
+    "control-plane",
+    "plane"
+   ],
+   "verdicts": {
+    "affordances": {
+     "outcome": "B",
+     "kind": "DATA",
+     "brokenIn": "tests",
+     "evidence": "bio-plane/test/m/affordances/notice-wizard-scripts-98.test.mjs:35 asserts the registered connect screen carries accountreferenceset and accountreferenceremove (R37's screens, facts.mjs:531, pass wizard-scripts' registered registry through); PR 163 re-points connect's acts to aiownadd and aiaccountremove, so those acts are no longer carried"
+    },
+    "interface-shell": {
+     "outcome": "C",
+     "kind": "DATA",
+     "brokenIn": "",
+     "evidence": "bio-plane/src/interface-shell/index.mjs:195 checkScreens admits a screen's acts only from SCREEN_REGISTRY's acts for that screen (plus owed, RE_POINTS, ANY_SCREEN_OPS); PR 163 replaced the retired ai-accounts ops on setup, connect, teamai, queue and projectai with aiaccountadd, aiaccountswitch, aiaccountremove and aiownadd (and dropped the two *noticeseen), so which acts it admits on those screens changed"
+    },
+    "screens-inquiry": {
+     "outcome": "B",
+     "kind": "REM",
+     "brokenIn": "source",
+     "evidence": "bio-plane/src/screens-inquiry/projectai.mjs:162 the projectai screen declares acts projectkeyset, projectsigninset, projectaccountswitch, projectaccountremove and projectkeynoticeseen, which PR 163 removed from projectai's SCREEN_REGISTRY row (now aiaccountadd, aiaccountswitch, aiaccountremove), the row interface-shell's checkScreens and this module's admit.mjs:12 read"
+    },
+    "screens-wizards": {
+     "outcome": "C",
+     "kind": "DATA",
+     "brokenIn": "",
+     "evidence": "bio-plane/test/m/screens-wizards/walk.test.mjs:103 walks every CIVICSMITH_LIBRARY script (imported from wizard-scripts in test/m/screens-wizards/world.mjs:6) in the real page, the guide ringing each step's act (src/screens-wizards/guide.mjs:166); PR 163 re-pointed steps of \"Set up and claim\" (groupkeyset to aiaccountadd) and \"Connect your Claude account\" (accountreferenceset to aiownadd, subscriptiondisconnect to aiaccountremove)"
+    },
+    "store-assembly": {
+     "outcome": "C",
+     "kind": "DATA",
+     "brokenIn": "",
+     "evidence": "bio-plane/src/store-assembly/wizards.mjs:32 wizardRegistration registers SCREEN_REGISTRY and CIVICSMITH_LIBRARY with wizard-scripts at start (and assemble.mjs:333 hands SCREEN_REGISTRY to answers' explain read); PR 163 changed the acts of five registry screens and three library steps it registers"
+    }
+   },
+   "providerFilesChanged": [
+    "bio-plane/src/wizard-scripts/civicsmith-library.mjs",
+    "bio-plane/src/wizard-scripts/data.mjs",
+    "bio-plane/src/wizard-scripts/screen-registry.mjs",
+    "bio-plane/test/m/wizard-scripts/fixture.mjs",
+    "bio-plane/test/m/wizard-scripts/library.test.mjs",
+    "bio-plane/test/m/wizard-scripts/retired-acts.test.mjs",
+    "bio-plane/test/m/wizard-scripts/t47.test.mjs",
+    "bio-plane/test/m/wizard-scripts/t48.test.mjs",
+    "bio-plane/test/m/wizard-scripts/t50.test.mjs",
+    "bio-plane/test/m/wizard-scripts/t51.test.mjs",
+    "bio-plane/test/m/wizard-scripts/t52g53.test.mjs",
+    "bio-plane/test/m/wizard-scripts/t54.test.mjs"
+   ],
+   "otherFilesChanged": 3
+  },
+  {
+   "change": "wizard-scripts:253",
+   "provider": "wizard-scripts",
+   "pr": 253,
+   "kind": "job",
+   "before": "cfd27968d321dc6121126ae804a025639ea7d60b",
+   "after": "e43068e54818ac16a9f4ef7f91cf8dcc88da8419",
+   "told": {
+    "affordances": {
+     "srcImports": true,
+     "testImports": true
+    },
+    "answer-envelope": {
+     "srcImports": true,
+     "testImports": false
+    },
+    "control-plane": {
+     "srcImports": true,
+     "testImports": true
+    },
+    "instance-setup": {
+     "srcImports": true,
+     "testImports": true
+    },
+    "interface-shell": {
+     "srcImports": true,
+     "testImports": true
+    },
+    "op-declarations": {
+     "srcImports": false,
+     "testImports": true
+    },
+    "plane": {
+     "srcImports": false,
+     "testImports": true
+    },
+    "queue-producers": {
+     "srcImports": true,
+     "testImports": true
+    },
+    "screens-action": {
+     "srcImports": false,
+     "testImports": true
+    },
+    "screens-document": {
+     "srcImports": false,
+     "testImports": false
+    },
+    "screens-inquiry": {
+     "srcImports": true,
+     "testImports": true
+    },
+    "screens-intake": {
+     "srcImports": false,
+     "testImports": true
+    },
+    "screens-matter": {
+     "srcImports": false,
+     "testImports": false
+    },
+    "screens-plan": {
+     "srcImports": false,
+     "testImports": false
+    },
+    "screens-publish": {
+     "srcImports": false,
+     "testImports": true
+    },
+    "screens-wizards": {
+     "srcImports": false,
+     "testImports": true
+    },
+    "store-assembly": {
+     "srcImports": true,
+     "testImports": true
+    },
+    "store-door": {
+     "srcImports": true,
+     "testImports": true
+    },
+    "translations": {
+     "srcImports": true,
+     "testImports": true
+    }
+   },
+   "declaredUsers": [
+    "affordances",
+    "queue-producers",
+    "translations",
+    "instance-setup",
+    "op-declarations",
+    "answer-envelope",
+    "store-door",
+    "store-assembly",
+    "interface-shell",
+    "screens-wizards",
+    "screens-intake",
+    "screens-inquiry",
+    "screens-document",
+    "screens-publish",
+    "screens-action",
+    "screens-plan",
+    "screens-matter",
+    "control-plane",
+    "plane"
+   ],
+   "verdicts": {
+    "interface-shell": {
+     "outcome": "C",
+     "kind": "DATA",
+     "brokenIn": "",
+     "evidence": "bio-plane/src/interface-shell/index.mjs:305 adminActs is [...ops].filter((op) => ADMIN_ACTS.has(op)), the page's admin-only gate; the registered security and places screens (wizard-scripts/screen-registry.mjs:21, :26) supply scanmirror and officeconfirm, both owner-declared ops (file-safety/index.mjs:2588, entities/index.mjs:2516, each described as an administrator's act), so they now drop out of adminActs and can() at interface-shell/browser.mjs:233 no longer refuses them to a member who does not administer"
+    }
+   },
+   "providerFilesChanged": [
+    "bio-plane/src/wizard-scripts/admin.mjs",
+    "bio-plane/test/m/wizard-scripts/f1-admin-ops.test.mjs",
+    "bio-plane/test/m/wizard-scripts/notice-ai-accounts-188.test.mjs",
+    "bio-plane/test/m/wizard-scripts/r51.test.mjs",
+    "bio-plane/test/m/wizard-scripts/t53.test.mjs"
+   ],
+   "otherFilesChanged": 3
+  },
+  {
+   "change": "wizard-scripts:255",
+   "provider": "wizard-scripts",
+   "pr": 255,
+   "kind": "job",
+   "before": "a9c387c689f47c6abd8d321672bd973d294cdb72",
+   "after": "015b3981819d86e9b17000365b12749ff2e66c05",
+   "told": {
+    "affordances": {
+     "srcImports": true,
+     "testImports": true
+    },
+    "answer-envelope": {
+     "srcImports": true,
+     "testImports": false
+    },
+    "control-plane": {
+     "srcImports": true,
+     "testImports": true
+    },
+    "instance-setup": {
+     "srcImports": true,
+     "testImports": true
+    },
+    "interface-shell": {
+     "srcImports": true,
+     "testImports": true
+    },
+    "op-declarations": {
+     "srcImports": false,
+     "testImports": true
+    },
+    "plane": {
+     "srcImports": false,
+     "testImports": true
+    },
+    "queue-producers": {
+     "srcImports": true,
+     "testImports": true
+    },
+    "screens-action": {
+     "srcImports": false,
+     "testImports": true
+    },
+    "screens-document": {
+     "srcImports": false,
+     "testImports": false
+    },
+    "screens-inquiry": {
+     "srcImports": true,
+     "testImports": true
+    },
+    "screens-intake": {
+     "srcImports": false,
+     "testImports": true
+    },
+    "screens-matter": {
+     "srcImports": false,
+     "testImports": false
+    },
+    "screens-plan": {
+     "srcImports": false,
+     "testImports": false
+    },
+    "screens-publish": {
+     "srcImports": false,
+     "testImports": true
+    },
+    "screens-wizards": {
+     "srcImports": false,
+     "testImports": true
+    },
+    "store-assembly": {
+     "srcImports": true,
+     "testImports": true
+    },
+    "store-door": {
+     "srcImports": true,
+     "testImports": true
+    },
+    "translations": {
+     "srcImports": true,
+     "testImports": true
+    }
+   },
+   "declaredUsers": [
+    "affordances",
+    "queue-producers",
+    "translations",
+    "instance-setup",
+    "op-declarations",
+    "answer-envelope",
+    "store-door",
+    "store-assembly",
+    "interface-shell",
+    "screens-wizards",
+    "screens-intake",
+    "screens-inquiry",
+    "screens-document",
+    "screens-publish",
+    "screens-action",
+    "screens-plan",
+    "screens-matter",
+    "control-plane",
+    "plane"
+   ],
+   "verdicts": {
+    "interface-shell": {
+     "outcome": "C",
+     "kind": "DATA",
+     "brokenIn": "",
+     "evidence": "bio-plane/src/interface-shell/index.mjs:305 adminActs is [...ops].filter((op) => ADMIN_ACTS.has(op)) and now holds scanmirror and officeconfirm again, so browser.mjs:233 refuses both to a member who does not administer; ADMIN_ACTS also feeds asksReason (index.mjs:175), used by markAsks (:306) and the Reasoned mark (:314)"
+    }
+   },
+   "providerFilesChanged": [
+    "bio-plane/src/wizard-scripts/admin.mjs",
+    "bio-plane/test/m/wizard-scripts/f1-admin-ops.test.mjs",
+    "bio-plane/test/m/wizard-scripts/r51.test.mjs"
+   ],
+   "otherFilesChanged": 4
+  },
+  {
+   "change": "wizard-scripts:546",
+   "provider": "wizard-scripts",
+   "pr": 546,
+   "kind": "job",
+   "before": "c9f76034b0698267e77284442abd59a4fab8e7ce",
+   "after": "05f50fcc84328affd0cafba6d6a9d7e2b0461375",
+   "told": {
+    "affordances": {
+     "srcImports": true,
+     "testImports": true
+    },
+    "answer-envelope": {
+     "srcImports": true,
+     "testImports": false
+    },
+    "control-plane": {
+     "srcImports": true,
+     "testImports": true
+    },
+    "instance-setup": {
+     "srcImports": true,
+     "testImports": true
+    },
+    "interface-shell": {
+     "srcImports": true,
+     "testImports": true
+    },
+    "op-declarations": {
+     "srcImports": false,
+     "testImports": true
+    },
+    "plane": {
+     "srcImports": false,
+     "testImports": true
+    },
+    "queue-producers": {
+     "srcImports": true,
+     "testImports": true
+    },
+    "screens-action": {
+     "srcImports": false,
+     "testImports": true
+    },
+    "screens-document": {
+     "srcImports": false,
+     "testImports": false
+    },
+    "screens-inquiry": {
+     "srcImports": true,
+     "testImports": true
+    },
+    "screens-intake": {
+     "srcImports": false,
+     "testImports": true
+    },
+    "screens-matter": {
+     "srcImports": false,
+     "testImports": false
+    },
+    "screens-plan": {
+     "srcImports": false,
+     "testImports": false
+    },
+    "screens-publish": {
+     "srcImports": false,
+     "testImports": true
+    },
+    "screens-wizards": {
+     "srcImports": false,
+     "testImports": true
+    },
+    "store-assembly": {
+     "srcImports": true,
+     "testImports": true
+    },
+    "store-door": {
+     "srcImports": true,
+     "testImports": true
+    },
+    "translations": {
+     "srcImports": true,
+     "testImports": true
+    }
+   },
+   "declaredUsers": [
+    "affordances",
+    "queue-producers",
+    "translations",
+    "instance-setup",
+    "op-declarations",
+    "answer-envelope",
+    "store-door",
+    "store-assembly",
+    "interface-shell",
+    "screens-wizards",
+    "screens-intake",
+    "screens-inquiry",
+    "screens-document",
+    "screens-publish",
+    "screens-action",
+    "screens-plan",
+    "screens-matter",
+    "control-plane",
+    "plane"
+   ],
+   "verdicts": {
+    "affordances": {
+     "outcome": "C",
+     "kind": "DATA",
+     "brokenIn": "",
+     "evidence": "bio-plane/src/affordances/facts.mjs:531 screens() publishes wizardScripts().registeredScreens() (op=affordancescreens, facts.mjs:560), each screen's acts from SCREEN_REGISTRY, which PR 546 changed so aiproviders and aimine now carry aioptinset and aiproject carries projectrequest and projectjoin (SCREEN_ACTS_ADDED, data.mjs screensFromFile)"
+    },
+    "interface-shell": {
+     "outcome": "C",
+     "kind": "DATA",
+     "brokenIn": "",
+     "evidence": "bio-plane/src/interface-shell/index.mjs:190 checkScreens builds each screen's allowed ops from SCREEN_REGISTRY's reg.acts (imported at :12, looked up at :183); PR 546 changed that registry's acts (aiproviders and aimine now list aioptinset, aiproject lists projectrequest and projectjoin; wizard-scripts/screen-registry.mjs), so the shell's screen contract now admits those acts on those screens"
+    },
+    "store-assembly": {
+     "outcome": "C",
+     "kind": "DATA",
+     "brokenIn": "",
+     "evidence": "bio-plane/src/store-assembly/wizards.mjs:32 wizardRegistration hands SCREEN_REGISTRY, which now carries aioptinset on aiproviders and aimine and projectrequest/projectjoin on aiproject, to wizardRegister (assemble.mjs:581), and screenFailures (wizards.mjs:43) checks each of those new acts has an op spec in OPS; assemble.mjs:358 also hands the changed registry to answers' explain read"
+    }
+   },
+   "providerFilesChanged": [
+    "bio-plane/src/wizard-scripts/data.mjs",
+    "bio-plane/src/wizard-scripts/screen-registry.mjs",
+    "bio-plane/test/m/wizard-scripts/f2-registry-added.test.mjs",
+    "bio-plane/test/m/wizard-scripts/fixture.mjs",
+    "bio-plane/test/m/wizard-scripts/t51.test.mjs",
+    "bio-plane/test/m/wizard-scripts/t53.test.mjs"
+   ],
+   "otherFilesChanged": 3
+  }
+ ]
+}
