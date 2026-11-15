@@ -3,34 +3,44 @@
  * field (R24), and the check every draft it words passes before a member sees it (R25). Nothing here writes, calls a
  * model or throws. The draft itself is the assistant's model turn, layer 6's (N686, T35); until then `op=writinghelp`
  * answers `ASSISTANT_DRAFT_UNAVAILABLE` past every refusal (R27, in `index.mjs`). */
+/** @import { NameList, HelpAsk, HelpAt, DraftFact, DraftCheck } from './index.mjs' */
 
-/** R24 item 2: the acts DEC-153 (4) names, the assistant never helping word them. */
+/** R24 item 2: the acts DEC-153 (4) names, the assistant never helping word them.
+ *  @type {readonly string[]} */
 export const HELP_NAMED_REFUSED = Object.freeze(["release", "conclude", "withdrawconclusion", "reopen", "caseratify", "publish",
                                                  "personexpunge", "bootstrap"]);
 /** R24 item 2: the acts of publishing at a set time, which their owners refuse a machine by name (`ratification` C-32.13,
  *  `publication` R68, `affordances` R42), and `groupdescriptionset`, which keeps its own guided draft (`instance-setup`
- *  R65; DEC-153 (4)). */
+ *  R65; DEC-153 (4)).
+ *  @type {readonly string[]} */
 export const HELP_SET_TIME_REFUSED = Object.freeze(["publishat", "publishatmove", "publishatcancel", "groupdescriptionset"]);
 /** R24 item 2: this module's named list, frozen: DEC-153 (4)'s acts, then the set-time publishing acts and
- *  `groupdescriptionset` (B3, K1861 (1): affordances R44 reads it through `writingHelpRefused`). */
+ *  `groupdescriptionset` (B3, K1861 (1): affordances R44 reads it through `writingHelpRefused`).
+ *  @type {readonly string[]} */
 export const WRITING_HELP_NAMED = Object.freeze([...HELP_NAMED_REFUSED, ...HELP_SET_TIME_REFUSED]);
 /** R25: the acts whose field records what the member saw, where the draft words only what the member told it (DEC-153
- *  (2): "testimony stays the witness's"). The registry's capture and calculation screens hold one such act today. */
+ *  (2): "testimony stays the witness's"). The registry's capture and calculation screens hold one such act today.
+ *  @type {readonly string[]} */
 export const FIRSTHAND_ACTS = Object.freeze(["testify"]);
 /** R27: the most a member tells the assistant in one request. */
 export const TOLD_MAX = 4000;
 
+/** @param {NameList | undefined} v */
 const nameSet = (v) => new Set(v instanceof Set ? [...v] : Array.isArray(v) ? v.filter((x) => typeof x === "string")
   : v && typeof v === "object" ? Object.keys(v) : []);
 
 /** R24 item 2: every act the assistant never helps word, from a registration's `machineRefused` and `irreversible` (read
- *  as registered) and this module's named lists. */
+ *  as registered) and this module's named lists.
+ *  @param {{machineRefused?: NameList, irreversible?: NameList}} [registration]
+ *  @returns {Set<string>} */
 export function helpRefusedActs({ machineRefused = [], irreversible = [] } = {}) {
   return new Set([...nameSet(machineRefused), ...nameSet(irreversible), ...WRITING_HELP_NAMED]);
 }
 
 /** R24 item 3: whether `field` is where an act sends the member's reason (the `reason` a reasoned act requires, or any
- *  field named for a reason). The machine never words a member's reason (the Roles canon's rule 1; K1841 (1)). */
+ *  field named for a reason). The machine never words a member's reason (the Roles canon's rule 1; K1841 (1)).
+ *  @param {unknown} field
+ *  @returns {boolean} */
 export function isReasonField(field) {
   return typeof field === "string" && /reason$/i.test(field.trim());
 }
@@ -38,7 +48,8 @@ export function isReasonField(field) {
 /** R24 item 1 (T37; N765, K231, K2175): the code of a keep-away as `ai-accounts.aiKeptAway()` answers it (its R7, the
  *  one site that mints it): `away` null while the group does not keep its material away; its refusal otherwise, also
  *  when the setting cannot be read; anything else (ai-accounts not reached) is read as kept away, failing closed as
- *  that service does. */
+ *  that service does.
+ *  @type {'AI_KEPT_AWAY'} */
 export const KEPT_AWAY = "AI_KEPT_AWAY";
 const keptAwayCode = (away) => (away === null ? null : KEPT_AWAY);
 
@@ -46,7 +57,11 @@ const keptAwayCode = (away) => (away === null ? null : KEPT_AWAY);
  *  material away from AI (`away`, `ai-accounts.aiKeptAway()`'s answer read at the call; never `assistant.on`, a copy
  *  of the condition) or no account serving the viewer; an act the assistant is refused or that cannot be undone; a
  *  field stating the member's reason; a labelled draft already in the field. `refused` is `helpRefusedActs` of the
- *  registration; an `away` not given is not a reading, and fails closed. */
+ *  registration; an `away` not given is not a reading, and fails closed.
+ *  @param {HelpAsk} [args]
+ *  @param {ReadonlySet<string>} [refused]
+ *  @param {unknown} [away] `ai-accounts.aiKeptAway()`'s answer: null, or its refusal
+ *  @returns {HelpAt} */
 export function writingHelpAt(args = {}, refused = helpRefusedActs(), away = undefined) {
   try {
     const { op = null, field = null, draftHeld = false, assistant = null } = args && typeof args === "object" ? args : {};
@@ -75,17 +90,21 @@ const WORD_RE = /[A-Za-zÀ-ɏ][A-Za-zÀ-ɏ'’-]*/g;
 const flat = (s) => s.toLowerCase().replace(/\s+/g, " ").trim();
 const figure = (s) => s.replace(/,/g, "").replace(/\.$/, "");
 
-/** R25: the sentences of a text, each whole. */
+/** R25: the sentences of a text, each whole.
+ *  @param {unknown} text
+ *  @returns {string[]} */
 export function sentencesOf(text) {
   return String(text).split(/(?<=[.!?])\s+|\n+/).map((s) => s.trim()).filter(Boolean);
 }
 
 /** R25: what a sentence states that must come from what the member told or what the group holds: each figure, each date
  *  word (a month or a weekday), each quotation, and each name (a capitalised word that is not the sentence's first, or
- *  a first word that a second capitalised word follows; "I" is no name). */
+ *  a first word that a second capitalised word follows; "I" is no name).
+ *  @param {unknown} sentence
+ *  @returns {DraftFact[]} */
 export function factsOf(sentence) {
   const s = String(sentence);
-  const facts = [];
+  const facts = /** @type {DraftFact[]} */ ([]);
   for (const m of s.matchAll(QUOTE_RE)) facts.push({ kind: "quotation", value: m[1] ?? m[2] });
   const bare = s.replace(QUOTE_RE, " ");
   for (const m of bare.matchAll(FIGURE_RE)) facts.push({ kind: "figure", value: figure(m[0]) });
@@ -115,13 +134,16 @@ const asTexts = (v) => (typeof v === "string" ? [v] : Array.isArray(v) ? v.map((
  *  the serving account's suggestions switch is off (`WRITING_HELP_SUGGESTIONS_OFF`) and on a firsthand field
  *  (`WRITING_HELP_FIRSTHAND_READ`); otherwise each sentence stating a figure, a date, a name or a quotation that is in
  *  neither `told` nor `readLog` is withheld whole (`WRITING_HELP_FACT_ADDED`), never rewritten. The text is answered
- *  with its label `{kind: "machine", asked_by}` and is never stored. Writes nothing; never throws. */
+ *  with its label `{kind: "machine", asked_by}` and is never stored. Writes nothing; never throws.
+ *  @param {unknown} text the draft's words
+ *  @param {{told?: string | readonly (string | {text: string})[], readLog?: string | readonly (string | {text: string})[], firsthand?: boolean, suggestions?: boolean, askedBy?: string | null} | null} [opts]
+ *  @returns {DraftCheck} */
 export function checkDraft(text, opts = {}) {
   try {
     const { told = [], readLog = [], firsthand = false, suggestions = false, askedBy = null } = opts && typeof opts === "object" ? opts : {};
     const read = asTexts(readLog);
     const sources = [...asTexts(told), ...read];
-    const kept = [], withheld = [];
+    const kept = [], withheld = /** @type {{sentence: string, code: 'WRITING_HELP_FACT_ADDED'}[]} */ ([]);
     /* DEC-49 REGION is-writing-help-check */
     if (read.length && suggestions !== true) return { ok: false, code: "WRITING_HELP_SUGGESTIONS_OFF" };
     if (read.length && firsthand === true) return { ok: false, code: "WRITING_HELP_FIRSTHAND_READ" };

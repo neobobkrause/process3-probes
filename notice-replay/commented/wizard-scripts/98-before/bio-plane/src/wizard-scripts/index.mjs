@@ -48,6 +48,752 @@ import { START_ROUTES, matchesOf, proposeStart } from "./start.mjs";
 import { helpRefusedActs, writingHelpAt, FIRSTHAND_ACTS, TOLD_MAX, WRITING_HELP_NAMED, KEPT_AWAY } from "./writing-help.mjs";
 import { word } from "../setup-words/index.mjs";
 
+/* ---------------------------------------------------------------- the kinds of the interface (structured comments) */
+
+/** @import { CheckRow } from './checks.mjs' */
+
+/**
+ * A version's state (the Terms).
+ * @typedef {'draft' | 'submitted' | 'approved' | 'updated' | 'withdrawn'} WizardState
+ */
+/**
+ * A list of names as a registration may give it: a Set, a list of names (or of `{op}` / `{name}` objects), or an
+ * object keyed by name.
+ * @typedef {ReadonlySet<string> | readonly (string | {op?: string, name?: string})[] | Readonly<Record<string, unknown>>} NameList
+ */
+/**
+ * A step's labelled draft: exactly one of R2's three sources (`DRAFT_SOURCES`).
+ * @typedef {{text: string} | {template: string} | {machine: string}} StepDraft
+ * @bound text: 1 to 4000 characters (DRAFT_TEXT_MAX)
+ * @bound template: a template filing-templates offers the viewer (its R25), by id, `<id>@<n>` or `@<handle>`
+ * @bound machine: a machine draft the registration labels, its op declared
+ */
+/**
+ * A step as a caller gives it (R2): only these keys (`STEP_KEYS`).
+ * @typedef {Object} StepInput
+ * @property {string} screen the screen's id
+ * @property {string | null} [act] the op of the act on it; none when missing, null or empty
+ * @property {string | null} [what] what the member does
+ * @property {string | null} [why] why
+ * @property {StepDraft | null} [draft]
+ * @property {string | null} [via] the id of a script this step takes a side trip to (DEC-139 (4))
+ * @bound screen: one line, 1 to 200 characters, a screen the registration holds
+ * @bound act: one line, 1 to 200 characters, an act the registration holds on that screen
+ * @bound what: at most 300 characters; not empty when the script is checked (R12)
+ * @bound why: at most 300 characters; not empty when the script is checked (R12)
+ * @bound via: one line, 1 to 200 characters, an offered script other than the script itself whose side trips never lead back to it
+ */
+/**
+ * A step in canonical form (R1), as stored and hashed: R2's keys in R2's order; `draft` and `via` only when present.
+ * @typedef {Object} Step
+ * @property {string | null} screen
+ * @property {string | null} act
+ * @property {string} what
+ * @property {string} why
+ * @property {StepDraft} [draft]
+ * @property {string} [via]
+ */
+/**
+ * A step a recording holds (R3): its screen and act, never a typed value.
+ * @typedef {Object} RecordedStep
+ * @property {string} screen
+ * @property {string | null} [act]
+ * @bound screen: one line, 1 to 200 characters
+ * @bound act: one line, 1 to 200 characters
+ */
+/**
+ * An act the registry owes (R13): its op, the decision or ruling that owes it, and the number of acts before it.
+ * @typedef {{op: string, dec: string | null, at: number}} OwedAct
+ */
+/**
+ * A screen of the registry as `SCREEN_REGISTRY` carries it (R13).
+ * @typedef {Object} ScreenEntry
+ * @property {string} id
+ * @property {string} name
+ * @property {string} purpose
+ * @property {string[]} acts the op of each declared or function act, in the file's order
+ * @property {OwedAct[]} owed
+ */
+/**
+ * A screen as a registration may give it: `SCREEN_REGISTRY`'s form, or `{id, acts}`.
+ * @typedef {Object} ScreenInput
+ * @property {string} id
+ * @property {string} [name]
+ * @property {string} [purpose]
+ * @property {NameList} [acts]
+ * @property {readonly OwedAct[]} [owed]
+ */
+/**
+ * Who approved a library version, when, and under which ruling (R22).
+ * @typedef {{by: string | null, at: string | null, ruling?: string}} LibraryApproval
+ * @bound at: a day written YYYY-MM-DD
+ */
+/**
+ * A script of the Civicsmith library as a registration gives it (`CIVICSMITH_LIBRARY`'s form): its latest version, and
+ * each earlier one in `earlier`.
+ * @typedef {Object} LibraryScript
+ * @property {string} id
+ * @property {string} [name]
+ * @property {string | null} [start]
+ * @property {string} [origin]
+ * @property {string} [scope]
+ * @property {boolean} [required]
+ * @property {number} [version]
+ * @property {readonly StepInput[]} [steps]
+ * @property {string} [author]
+ * @property {LibraryApproval} [approved]
+ * @property {string} [source]
+ * @property {readonly {version?: number, steps?: readonly StepInput[], author?: string, approved?: LibraryApproval, source?: string}[]} [earlier]
+ */
+/**
+ * One version of a library script as registered (R1, R22).
+ * @typedef {Object} LibraryVersion
+ * @property {number} version
+ * @property {Step[]} steps
+ * @property {string} author
+ * @property {LibraryApproval} approved
+ * @bound version: whole number, 1 or more
+ */
+/**
+ * A library script as registered: its latest version, and every version, oldest first (`versions`).
+ * @typedef {Object} LibraryHeld
+ * @property {string} id
+ * @property {string} name
+ * @property {boolean} required
+ * @property {number} version
+ * @property {Step[]} steps
+ * @property {string} author
+ * @property {LibraryApproval} approved
+ * @property {readonly LibraryVersion[]} versions
+ */
+/**
+ * A registration's parts, normalised (R13): the screens by id with their registered acts, the ops (null when none was
+ * given), the acts a machine is refused, the labelled machine drafts (those whose op is declared), the irreversible acts,
+ * the library, the administrator's acts and screens (R40), and, once made, the acts writing help is refused (R24) and
+ * the library scripts R11 withholds, by id.
+ * @typedef {Object} Registration
+ * @property {Map<string, Set<string>>} screens
+ * @property {Set<string> | null} ops
+ * @property {Set<string>} machineRefused
+ * @property {Set<string>} machineDrafts
+ * @property {Set<string>} irreversible
+ * @property {LibraryHeld[]} library
+ * @property {Set<string>} adminActs
+ * @property {Set<string>} adminScreens
+ * @property {Set<string>} [helpRefused]
+ * @property {Set<string>} [withheld]
+ */
+/**
+ * What a registration is made of (R13; `wizardRegister`, `normaliseRegistration`, `requiredFailures`).
+ * @typedef {Object} RegistrationInput
+ * @property {readonly ScreenInput[]} [screens]
+ * @property {NameList | null} [ops] the member op table, aliases included
+ * @property {NameList} [machineRefused]
+ * @property {NameList} [machineDrafts]
+ * @property {NameList} [irreversible]
+ * @property {readonly LibraryScript[]} [library]
+ * @property {NameList} [adminActs]
+ * @property {NameList} [adminScreens]
+ */
+/**
+ * The front door's hooks (R23), handed in at registration, each optional.
+ * @typedef {Object} DoorHooks
+ * @property {((message: string, viewer: string | null) => unknown) | null} [findExisting] the existing work matching a message
+ * @property {((viewer: string | null) => unknown) | null} [pointer] the "not Civicsmith's" pointer, `{places, pointers}`
+ */
+/**
+ * One finding of R12 (a refusal or a warning), naming its step from 1, or null for the list.
+ * @typedef {Object} Finding
+ * @property {string} code
+ * @property {number | null} step
+ * @property {string} check
+ * @property {string} translation
+ * @property {string} detail
+ * @property {string | null} [script] for `WIZARD_DUPLICATE`, the offered script the steps duplicate
+ */
+/**
+ * What a script is checked against (R12): a registration, given or as registered (its screens a Map of their acts), the
+ * offered scripts, whether a template is offered, and the id of the script checked.
+ * @typedef {Object} CheckOptions
+ * @property {Map<string, Set<string>> | readonly ScreenInput[]} [screens]
+ * @property {NameList | null} [ops]
+ * @property {NameList} [machineRefused]
+ * @property {NameList} [machineDrafts]
+ * @property {NameList} [irreversible]
+ * @property {readonly {id?: string, steps?: readonly (StepInput | Step)[]}[]} [offered]
+ * @property {((ref: string) => boolean) | null} [templateOffered]
+ * @property {string | null} [self]
+ */
+/**
+ * R12's answer: its refusals and its warnings.
+ * @typedef {{refusals: Finding[], warnings: Finding[]}} CheckResult
+ */
+/**
+ * A member, by id and by name (held by value beside the id).
+ * @typedef {{id: string, name: string}} Actor
+ */
+/**
+ * Who, by name, and by id when a member: a library version names its author and approver by name only.
+ * @typedef {{id?: string, name: string | null}} Named
+ */
+/**
+ * A dated act by a member.
+ * @typedef {{by: Actor, at: string}} Attribution
+ */
+/**
+ * A script's retirement (R9).
+ * @typedef {{by: Actor, at: string, reason: string}} Retirement
+ */
+/**
+ * How a version ended: withdrawn (R9), or its script retired.
+ * @typedef {{ending: 'withdrawn', by: Actor, at: string, reason: string | null} | {ending: 'retired', by: Actor, at: string, reason?: string}} Ended
+ */
+/**
+ * A proposal's label (record-grammar's `proposalLabel(proposer, "wizard")`, its R42), passed through as it answers.
+ * @typedef {{by: string | null, state: string, machine_work: boolean, says: string}} ProposalLabel
+ */
+/**
+ * One contributor to a version (R5): a member who revised it or whose proposal was adopted, or a machine's run.
+ * @typedef {{kind: 'member', member: string, name: string, at: string, proposal?: string, label?: ProposalLabel | null} | {kind: 'run', proposal: string, run: string | null, model: string | null, label: ProposalLabel | null, at: string}} Contributor
+ */
+/**
+ * A copy's base as shown (R1, R10, R21; DEC-158 (4)): both null when the viewer may not see the base.
+ * @typedef {{version: string | null, name: string | null}} BasedOn
+ */
+/**
+ * A script's head (R10): what every read says of the script.
+ * @typedef {Object} ScriptHead
+ * @property {string} id
+ * @property {'civicsmith' | 'group'} origin
+ * @property {string} name
+ * @property {'group' | {project: string}} scope
+ * @property {boolean} required
+ * @property {BasedOn | null} based_on
+ * @property {Attribution} [widened]
+ * @property {Retirement} [retired]
+ */
+/**
+ * One revision of a version's steps (R4).
+ * @typedef {{sha: string, by: Actor, adopted?: string, adopted_base?: string, at: string}} RevisionView
+ */
+/**
+ * One version whole, with its attribution (R1, R10).
+ * @typedef {Object} VersionView
+ * @property {string} id the version's id, `<script>@<n>`
+ * @property {string} script
+ * @property {number} version
+ * @property {Step[]} steps
+ * @property {string} sha the SHA-256 of the steps in canonical form, lowercase hex
+ * @property {WizardState | null} state
+ * @property {Named} author
+ * @property {Contributor[]} contributors
+ * @property {{version: string} | {proposal: string} | null} derived_from
+ * @property {{by: Named, at: string | null, ruling?: string} | null} approved
+ * @property {string | null} updated_by the version that updated it
+ * @property {Ended | null} ended
+ * @property {Attribution | null} submitted
+ * @property {RevisionView[]} revisions
+ * @property {RecordedStep[] | null} recorded
+ * @property {string | null} created_at
+ * @property {boolean} broken
+ */
+/**
+ * One version as `wizards` lists it (R10, R39).
+ * @typedef {Object} VersionListing
+ * @property {string} id
+ * @property {number} version
+ * @property {WizardState | null} state
+ * @property {string | null} start the screen its first step is on
+ * @property {Named} author
+ * @property {Contributor[]} contributors
+ * @property {{by: Named, at: string | null, ruling?: string} | null} approved
+ * @property {string | null} created_at
+ * @property {string} [updated_by]
+ * @property {Ended} [ended]
+ * @property {boolean} broken
+ * @property {{start: number, finish: number}} use its counted starts and finishes, over every day (R15)
+ * @property {Retirement} [retired]
+ */
+/**
+ * A proposal as `wizards` lists it (`state: "proposed"`) and as `wizardRead` names an adopted one.
+ * @typedef {Object} ProposalView
+ * @property {string} id
+ * @property {string} [project]
+ * @property {string | null} [script]
+ * @property {Step[]} [steps]
+ * @property {string} sha
+ * @property {string} why
+ * @property {string} at
+ * @property {ProposalLabel | null} label
+ */
+/**
+ * A refusal this module answers (DEC-49): its code (as `reason` and `code`), its row's check and translation when the
+ * code is one of `WIZARD_SCRIPTS_CHECKS`, its detail, and what it names. A refusal another module answered
+ * (membership's `NOT_AN_ADMIN`, record-core's `MINT_EXHAUSTED`, `ai-accounts`' keep-away, the door's) passes through as
+ * it came.
+ * @typedef {Object} WizardRefusal
+ * @property {false} ok
+ * @property {string} reason
+ * @property {string} code
+ * @property {string} [check]
+ * @property {string} [translation]
+ * @property {string | null} [detail]
+ * @property {string | null} [script]
+ * @property {string} [version]
+ * @property {string} [state]
+ * @property {number | null} [step]
+ * @property {number} [max]
+ * @property {readonly string[]} [states]
+ * @property {readonly string[]} [events]
+ * @property {string | null} [member]
+ * @property {string | null} [grant]
+ * @property {'civicsmith'} [origin]
+ * @property {Ended} [ended]
+ * @property {Finding[]} [refusals]
+ * @property {Finding[]} [warnings]
+ * @property {boolean} [firsthand]
+ * @property {UntestedLabel} [untested]
+ * @property {string | null} [op]
+ */
+/**
+ * A refusal another module answers and this one passes through as it came: record-core's `MINT_EXHAUSTED`
+ * (`mintExhausted`), membership's `NOT_AN_ADMIN` (`notAnAdmin`). Those modules state no kind: `ok` is read as a boolean,
+ * though it is always false.
+ * @typedef {{ok: boolean, reason: string, code: string, check?: string, translation?: string, detail?: string}} ForeignRefusal
+ */
+/**
+ * A refusal answered elsewhere and passed through (the door's account or limit refusal, `ai-accounts`' keep-away).
+ * @typedef {{ok: false, code?: string, reason?: string, check?: string, translation?: string, detail?: string}} PassedRefusal
+ */
+/**
+ * The test-instance label of a writing-help draft, as `ai-runs` answers it for the part `draft:own_words` (`run-rules`
+ * R29), passed through.
+ * @typedef {{kind: string, part?: string, set?: string, set_version?: string | number, words?: unknown}} UntestedLabel
+ */
+/**
+ * `wizardRegister`'s answer: how many screens and library scripts were registered, and the group versions found broken
+ * or returned.
+ * @typedef {{ok: true, screens: number, library: number, broken: string[], returned: string[]}} RegisterAnswer
+ */
+/**
+ * A break or a return of a script (R13; `queue-producers` R32).
+ * @typedef {Object} BrokenEntry
+ * @property {string} script
+ * @property {number} version the number
+ * @property {'withdrawn' | 'restored'} kind
+ * @property {string} at
+ * @property {string} name
+ * @property {string | null} project null for a group-wide script
+ * @property {string} author the version's author
+ * @property {{code: string, check: string | null, translation: string | null} | null} refusal the first refusal, null for a return
+ */
+/**
+ * A page of entries in a fixed order, after a previous page's `cursor`.
+ * @template E
+ * @typedef {{ok: true, entries: E[], limit: number, truncated: boolean, cursor: string | null}} Page
+ */
+/**
+ * `wizardDraft`'s answer (R3).
+ * @typedef {Object} DraftAnswer
+ * @property {true} ok
+ * @property {string} script
+ * @property {string} version
+ * @property {string} sha
+ * @property {'draft'} state
+ * @property {{version: string} | {proposal: string}} [derived_from]
+ * @property {string} [based_on] the approved version a copy was taken from
+ * @property {string} says
+ */
+/**
+ * `wizardRevise`'s answer (R4).
+ * @typedef {Object} ReviseAnswer
+ * @property {true} ok
+ * @property {string} version
+ * @property {string} sha
+ * @property {'draft'} state
+ * @property {string} [adopted] the proposal adopted
+ * @property {string} [adopted_base] the base's newer version adopted
+ * @property {number} revisions how many revisions the version now has
+ */
+/**
+ * `wizardPropose`'s answer (R5).
+ * @typedef {Object} ProposeAnswer
+ * @property {true} ok
+ * @property {{id: string, project: string, script: string | null, sha: string, why: string, at: string, label: ProposalLabel | null}} proposal
+ * @property {false} evidence
+ * @property {string} says
+ */
+/**
+ * `wizardSubmit`'s answer (R6).
+ * @typedef {{ok: true, version: string, state: 'submitted', sha: string, warnings: Finding[]}} SubmitAnswer
+ */
+/**
+ * `wizardApprove`'s answers (R7): a widening, or an approval.
+ * @typedef {{ok: true, script: string, existed: boolean, widened: Attribution, scope: 'group'}} WidenAnswer
+ * @typedef {{ok: true, version: string, state: 'approved', approved: Attribution, updated: string | null, warnings: Finding[], says: string}} ApproveAnswer
+ */
+/**
+ * `wizardEditorGrant`'s answer (R8).
+ * @typedef {{ok: true, grant: string, existed: boolean, member: {id: string | null, name: string}, by: Actor, at: string}} GrantAnswer
+ */
+/**
+ * `wizardEditorRevoke`'s answer (R8).
+ * @typedef {{ok: true, grant: string, existed: boolean, revoked: Attribution}} RevokeAnswer
+ */
+/**
+ * `wizardRetire`'s answers (R9): a script retired, or a version withdrawn.
+ * @typedef {{ok: true, script: string, retired: Retirement, says: string}} RetireAnswer
+ * @typedef {{ok: true, version: string, state: 'withdrawn', withdrawn: Retirement}} WithdrawAnswer
+ */
+/**
+ * `wizards`' answers (R10): the open proposals, or the scripts with the versions listed.
+ * @typedef {{ok: true, state: 'proposed', truncated: boolean, proposals: ProposalView[], says: string}} ProposalsAnswer
+ * @typedef {{ok: true, state: string, scripts: (ScriptHead & {versions: VersionListing[]})[], truncated: boolean}} WizardsAnswer
+ * @bound scripts: at most 200 (WIZARDS_MAX), newest first
+ */
+/**
+ * `wizardRead`'s answer (R10).
+ * @typedef {{ok: true, script: ScriptHead & {start: string | null}, version: VersionView & {proposals_adopted: ProposalView[]}, offered: boolean}} ReadAnswer
+ */
+/**
+ * A script as `wizardsAt` answers it (R11).
+ * @typedef {Object} ScriptAt
+ * @property {string} id
+ * @property {string} version
+ * @property {string} name
+ * @property {Step[]} steps
+ * @property {Named | null} approver
+ * @property {number} finished how many times it was finished
+ * @property {boolean} required
+ * @property {boolean} [draft] true: the viewer's own draft
+ */
+/**
+ * A step as the registry form names it (R21): its draft by its kind alone.
+ * @typedef {Object} BareStep
+ * @property {string | null} screen
+ * @property {string | null} act
+ * @property {string} what
+ * @property {string} why
+ * @property {string | null} via
+ * @property {'text' | 'template' | 'machine'} [draft]
+ */
+/**
+ * A screen of the registry form (R21), with the scripts that start on it for the viewer.
+ * @typedef {Object} RegistryScreen
+ * @property {string} id
+ * @property {string[]} acts
+ * @property {{id: string, version: string, name: string, start: string | null, steps: BareStep[], origin: 'civicsmith' | 'group', based_on: BasedOn | null, draft?: true}[]} scripts
+ */
+/**
+ * `wizardRegistry`'s answer (R21).
+ * @typedef {{ok: true, registered: boolean, screens: RegistryScreen[]}} RegistryAnswer
+ */
+/**
+ * A front door (R33, R37): the door's name, the scripts it names, and, for the sixth, the route it opens.
+ * @typedef {{door: string, scripts: string[], opens?: string}} FrontDoor
+ */
+/**
+ * The "not Civicsmith's" pointer, as the registered provider answers it (R37).
+ * @typedef {{places: string[], pointers: Object[]}} Pointer
+ */
+/**
+ * One of the six places a first message leads to (R23; `START_ROUTES`), `elsewhere` carrying the pointer in `startFrom`.
+ * @typedef {Object} StartRoute
+ * @property {'project' | 'existing' | 'lead' | 'step' | 'action' | 'elsewhere'} route
+ * @property {{visibility: 'hidden'}} [own_matter]
+ * @property {readonly string[]} [finds]
+ * @property {'optional'} [watch]
+ * @property {readonly string[]} [becomes]
+ * @property {readonly string[]} [placed]
+ * @property {Pointer | null} [pointer]
+ */
+/**
+ * A kind of existing work the door shows as matching a message (`MATCH_KINDS`).
+ * @typedef {'question' | 'project' | 'step'} MatchKind
+ */
+/**
+ * Existing work matching a message (R23).
+ * @typedef {{kind: MatchKind, id: string, name: string | null}} Match
+ * @bound id: 1 to 200 characters
+ * @bound name: 1 to 200 characters
+ */
+/**
+ * A part of a message as the assistant reads it (R28).
+ * @typedef {{text?: string, subject?: string | null, rumour?: boolean}} StartPart
+ */
+/**
+ * The assistant's proposal for a tangled message (R28): parts named by their place in `parts`, from 0.
+ * @typedef {{ok: true, proposals: ({route: 'project', subject: string | null, questions: number[]} | {route: 'lead', part: number, watch: false})[], label: {kind: 'machine'}, decides: 'member'}} StartProposal
+ */
+/**
+ * R28's check of a proposal: passes, or `START_RUMOUR_AS_QUESTION` naming the rumour part (null when the proposal could
+ * not be read through).
+ * @typedef {{ok: true} | {ok: false, reason: 'START_RUMOUR_AS_QUESTION', code: 'START_RUMOUR_AS_QUESTION', check: string, translation: string, part: number | null, detail: string}} StartCheck
+ */
+/**
+ * `startFrom`'s answer (R23).
+ * @typedef {Object} StartAnswer
+ * @property {true} ok
+ * @property {{id: string, version: string, name: string, start: string | null}[]} scripts the guided starts
+ * @property {FrontDoor[]} doors
+ * @property {StartRoute[]} routes
+ * @property {true} blank
+ * @property {Match[]} matches
+ * @property {StartProposal} [proposal]
+ */
+/**
+ * A (copy, newer base version) pair (R26; `queue-producers` R39).
+ * @typedef {Object} BaseUpdate
+ * @property {string} copy
+ * @property {string} copy_version
+ * @property {string} name
+ * @property {string | null} project
+ * @property {string} base
+ * @property {string} base_name
+ * @property {string} based_on
+ * @property {string} base_version
+ * @property {string} found_at the instant the pair was first found
+ * @property {string[]} recipients member ids
+ * @property {{copy: Step[], base: Step[]}} steps
+ */
+/**
+ * `baseUpdates`' answer (R26).
+ * @typedef {{ok: true, entries: BaseUpdate[], cursor: string | null, truncated: boolean}} BaseUpdatesAnswer
+ * @bound entries: at most 500 a page (PAGE_MAX)
+ */
+/**
+ * What writing help is asked about (R24): the op and field, whether a labelled draft is already in the field, and the
+ * door's resolution of the assistant.
+ * @typedef {Object} HelpAsk
+ * @property {string | null} [op]
+ * @property {string | null} [field]
+ * @property {boolean | Object} [draftHeld]
+ * @property {AssistantResolution | null} [assistant]
+ */
+/**
+ * The door's resolution of the assistant (`store-door` R10; `answers.askAccount`), never the key.
+ * @typedef {Object} AssistantResolution
+ * @property {boolean} [on]
+ * @property {Object | null} [account] the serving account (`{kind, level}`); none when missing
+ * @property {PassedRefusal} [refusal] the account's or its limit's refusal, when the door has one
+ */
+/**
+ * R24's answer for one field.
+ * @typedef {{offered: true} | {offered: false, code: string}} HelpAt
+ */
+/**
+ * A request for writing help (R27): `HelpAsk` and what the member told.
+ * @typedef {HelpAsk & {told?: string | readonly string[] | null}} HelpRequest
+ * @bound told: 1 to 4000 characters (TOLD_MAX), a list's strings joined by new lines
+ */
+/**
+ * A fact a sentence states (R25).
+ * @typedef {{kind: 'quotation' | 'figure' | 'date' | 'name', value: string}} DraftFact
+ */
+/**
+ * R25's answer: the draft's kept sentences with its label and each withheld sentence, or a refusal.
+ * @typedef {{ok: true, text: string, withheld: {sentence: string, code: 'WRITING_HELP_FACT_ADDED'}[], label: {kind: 'machine', asked_by: string | null}} | {ok: false, code: 'WRITING_HELP_SUGGESTIONS_OFF' | 'WRITING_HELP_FIRSTHAND_READ' | 'WRITING_HELP_FACT_ADDED'}} DraftCheck
+ */
+/**
+ * One day's use of a version (R15).
+ * @typedef {{version: string, day: string, start: number, finish: number, steps: Record<string, number>}} UseDay
+ * @bound day: YYYY-MM-DD
+ */
+/**
+ * A step where the count drops (R16).
+ * @typedef {{script: string, version: string, step: number, screen: string | null, act: string | null, reached: number, next: number, drop: number}} Drop
+ */
+/**
+ * `wizardCandidates`' answer (R16).
+ * @typedef {{ok: true, drops: Drop[], refused: {op: string, code: string, count: number}[]}} CandidatesAnswer
+ * @bound drops: at most 20 (CANDIDATES_MAX)
+ * @bound refused: at most 20 (CANDIDATES_MAX)
+ */
+/**
+ * A (submitted version, owner who may approve it) pair (R17; `queue-producers` R33).
+ * @typedef {Object} SubmittedEntry
+ * @property {string} script
+ * @property {number} version the number
+ * @property {string} owner
+ * @property {string} name
+ * @property {string} author
+ * @property {string} submitted_at
+ * @property {string | null} project null for a group-wide script
+ */
+/**
+ * The acts writing help is never offered on (R24).
+ * @typedef {{named: readonly string[], machine_refused: string[], irreversible: string[]}} HelpRefused
+ */
+/**
+ * The SQL storage of the host (a Durable Object's `storage.sql`); a row's columns are its query's.
+ * @typedef {{exec: (query: string, ...bindings: unknown[]) => Iterable<*>}} SqlStorage
+ */
+/**
+ * The parts of record-core this module uses (layer 2).
+ * @typedef {Object} RecordHandle
+ * @property {<T>(fn: () => T) => T} transact
+ * @property {(prefix: string, year: string, tail: string, taken: (id: string) => boolean) => string | null} mintOpaqueId
+ * @property {(module: string, entries: Object[]) => unknown} declareTable
+ * @property {(module: string, sources: string[][]) => unknown} registerMintSeed
+ */
+/**
+ * The parts of membership this module uses, each read through a call that answers null when it throws.
+ * @typedef {Object} MembershipHandle
+ * @property {(project: string | null, identity: string) => string | null} positionalMember
+ * @property {(memberId: string) => {handle?: string} | null} memberFacts
+ * @property {(memberId: string) => boolean} isAdministrator
+ * @property {(project: string, memberId: string) => boolean} isProjectOwner
+ * @property {(project: string, memberId: string) => boolean} isJoinedParticipant
+ * @property {(bundle: string, viewer: string | null) => boolean} inSight
+ * @property {() => string[]} activeAdmins
+ * @property {(project: string) => string[]} projectOwners
+ * @property {(viewer: string | null) => {administer?: boolean} | null} sessionRights
+ */
+/**
+ * The part of filing-templates this module uses (its R25, R26).
+ * @typedef {{offeredVersion: (asked: Object) => {ok: boolean} | null}} TemplatesHandle
+ */
+/**
+ * The part of ai-accounts this module uses (its R7): null, or its keep-away refusal.
+ * @typedef {{aiKeptAway?: (asked: {use: string}) => PassedRefusal | null}} AccountsHandle
+ */
+/**
+ * The parts of ai-runs this module uses (its R78).
+ * @typedef {Object} AiRunsHandle
+ * @property {(part: string) => {admitted?: boolean, untested?: UntestedLabel | null} | null} partAdmitted
+ * @property {() => boolean} testInstance
+ */
+/**
+ * What the module is built over (K61); `wizardScriptsOf` reaches each through its factory on the same host unless given.
+ * @typedef {Object} WizardScriptsDeps
+ * @property {{sql: SqlStorage}} storage
+ * @property {RecordHandle} record
+ * @property {MembershipHandle} membership
+ * @property {TemplatesHandle | null} [filingTemplates]
+ * @property {AccountsHandle | (() => AccountsHandle) | null} [accounts] or a function reaching it on first need
+ * @property {AiRunsHandle | (() => AiRunsHandle) | null} [aiRuns] or a function reaching it on first need
+ * @property {(() => number) | null} [now] the instance clock, milliseconds
+ * @property {Record<string, string | undefined> | null} [env]
+ */
+/**
+ * A row of the op declarations beside the ops (R46; op-declarations R80, op-grades R49).
+ * @typedef {Object} OpDeclaration
+ * @property {string[]} classes
+ * @property {string[]} [machineClasses]
+ * @property {boolean} mutating
+ * @property {string} weight
+ * @property {string} description the op's `act.<op>.does` word
+ * @property {{accepts: string[], requires: (string | string[])[]}} fields
+ * @bound classes: each a credential class op-declarations names
+ * @bound weight: a grade op-grades names
+ */
+/**
+ * The operations this module answers by name through the door: those of `wizardScriptsOps`, and `writinghelp`, which
+ * the door routes itself to `writingHelp`. `req` is what the op reads from the request (the body's field, else the
+ * query's); the control plane's stamps (`author`, `viewer`) are never the caller's.
+ * @typedef {{
+ *   wizarddraft: {req: {project?: string, name?: string, recorded?: RecordedStep[], from?: string, copy?: string}, res: DraftAnswer | WizardRefusal | ForeignRefusal},
+ *   wizardrevise: {req: {version: string, steps?: StepInput[], adopt?: string | {base: string}}, res: ReviseAnswer | WizardRefusal},
+ *   startfrom: {req: {message?: string, parts?: StartPart[]}, res: StartAnswer},
+ *   baseupdates: {req: {after?: string, limit?: string}, res: BaseUpdatesAnswer},
+ *   wizardpropose: {req: {project?: string, script?: string, steps: StepInput[], why: string, run?: string, model?: string}, res: ProposeAnswer | WizardRefusal | ForeignRefusal},
+ *   wizardsubmit: {req: {version: string}, res: SubmitAnswer | WizardRefusal},
+ *   wizardapprove: {req: {version: string, widen?: boolean | string}, res: WidenAnswer | ApproveAnswer | WizardRefusal},
+ *   wizardeditorgrant: {req: {member: string}, res: GrantAnswer | WizardRefusal | ForeignRefusal},
+ *   wizardeditorrevoke: {req: {grant: string}, res: RevokeAnswer | WizardRefusal | ForeignRefusal},
+ *   wizardretire: {req: {script?: string, version?: string, reason: string}, res: RetireAnswer | WithdrawAnswer | WizardRefusal},
+ *   wizards: {req: {state?: string}, res: ProposalsAnswer | WizardsAnswer | WizardRefusal},
+ *   wizardread: {req: {script?: string, version?: string}, res: ReadAnswer | WizardRefusal},
+ *   wizardsat: {req: {screen: string}, res: {ok: true, screen: string | null, scripts: ScriptAt[]}},
+ *   wizardcheck: {req: {steps: StepInput[]}, res: {ok: true} & CheckResult},
+ *   wizardprogress: {req: {script?: string, version: string, event: 'start' | 'step' | 'finish', step?: number | string}, res: {ok: true} | WizardRefusal},
+ *   wizarduse: {req: {script: string}, res: {ok: true, script: string, use: UseDay[]} | WizardRefusal},
+ *   wizardcandidates: {req: {}, res: CandidatesAnswer | WizardRefusal},
+ *   writinghelp: {req: {op: string, field?: string, told: string | string[], draftHeld?: boolean}, res: WizardRefusal | (PassedRefusal & {op: string | null})}
+ * }} WizardScriptsOpTable
+ * @optable
+ * @bound wizarddraft.name: one line, 1 to 200 characters (WIZARD_NAME_MAX)
+ * @bound wizarddraft.recorded: at most 200 steps (STEPS_MAX)
+ * @bound wizardrevise.steps: at most 200 steps (STEPS_MAX)
+ * @bound wizardpropose.steps: 1 to 200 steps (STEPS_MAX)
+ * @bound wizardpropose.why: 1 to 1000 characters (PROPOSAL_WHY_MAX)
+ * @bound wizardretire.reason: 1 to 500 characters (ENDING_REASON_MAX)
+ * @bound baseupdates.limit: whole number, 1 to 500 (PAGE_MAX), 500 when not given
+ * @bound wizardprogress.step: whole number, 1 to the version's steps, given only with the event step
+ * @bound writinghelp.told: 1 to 4000 characters (TOLD_MAX)
+ * @bound wizards.state: offered, or one of WIZARDS_STATES_LISTED
+ */
+/**
+ * The handlers `wizardScriptsOps` answers, one per op it routes.
+ * @typedef {{[K in Exclude<keyof WizardScriptsOpTable, 'writinghelp'>]: () => WizardScriptsOpTable[K]['res']}} WizardScriptsHandlers
+ */
+/**
+ * A table's classes as declared to record-core's purge (R18; record-core R21).
+ * @typedef {Object} TableClass
+ * @property {string} name
+ * @property {'clear'} purge
+ * @property {'none'} expunge
+ * @property {'admin-only'} export
+ * @property {'bundle' | 'group'} sight
+ * @property {'stored'} derive
+ * @property {boolean} version_chain
+ */
+/**
+ * The rows of this module's tables (R18; `WIZARD_SCRIPTS_SCHEMA`), appended, never updated. JSON columns hold text.
+ * @typedef {{script_id: string, bundle_id: string | null, project: string, name: string, created_by: string, created_name: string, created_at: string}} ScriptRow
+ * @storedrows wiz_scripts
+ */
+/**
+ * @typedef {{script_id: string, version: number, bundle_id: string | null, author: string, author_name: string, recorded: string | null, derived_from: string | null, created_at: string}} VersionRow
+ * @storedrows wiz_versions
+ * @bound version: whole number, 1 or more, counting within its script
+ */
+/**
+ * @typedef {{rid: number, script_id: string, version: number, bundle_id: string | null, steps: string, sha: string, author: string, author_name: string, adopted: string | null, at: string}} RevisionRow
+ * @storedrows wiz_revisions
+ */
+/**
+ * @typedef {{eid: number, script_id: string, version: number | null, bundle_id: string | null, event: 'submitted' | 'approved' | 'updated' | 'withdrawn' | 'widened' | 'retired', actor: string, actor_name: string, detail: string | null, at: string}} EventRow
+ * @storedrows wiz_events
+ */
+/**
+ * @typedef {{proposal_id: string, bundle_id: string | null, project: string, script_id: string | null, steps: string, sha: string, why: string, proposer: string, run: string | null, model: string | null, at: string}} ProposalRow
+ * @storedrows wiz_proposals
+ */
+/**
+ * @typedef {{grant_id: string, member: string, member_name: string, actor: string, actor_name: string, at: string}} EditorGrantRow
+ * @storedrows wiz_editor_grants
+ */
+/**
+ * @typedef {{grant_id: string, actor: string, actor_name: string, at: string}} EditorRevocationRow
+ * @storedrows wiz_editor_revocations
+ */
+/**
+ * @typedef {{bid: number, script_id: string, version: number, bundle_id: string | null, event: 'broken' | 'returned', refusal: string | null, at: string}} BreakRow
+ * @storedrows wiz_breaks
+ */
+/**
+ * @typedef {{script_id: string, bundle_id: string | null, based_on: string, at: string}} CopyRow
+ * @storedrows wiz_copies
+ */
+/**
+ * @typedef {{script_id: string, newer: string, bundle_id: string | null, at: string}} BaseSeenRow
+ * @storedrows wiz_base_seen
+ */
+/**
+ * @typedef {{tid: number, version_id: string, event: 'start' | 'step' | 'finish', step: number | null, day: string}} TallyRow
+ * @storedrows wiz_tallies
+ * @bound day: YYYY-MM-DD
+ */
+/**
+ * @typedef {{tid: number, op: string, code: string, day: string}} RefusalTallyRow
+ * @storedrows wiz_refusal_tallies
+ * @bound op: 1 to 200 characters of A-Z, a-z, 0-9, _, ., : and -
+ * @bound code: 1 to 200 characters of A-Z, a-z, 0-9, _, ., : and -
+ * @bound day: YYYY-MM-DD
+ */
+
+
 export { WIZARD_SCRIPTS_CHECKS } from "./checks.mjs";
 export { WIZARD_SCRIPTS_SCHEMA, WIZARD_SCRIPTS_TABLES, WIZARD_SCRIPTS_TABLE_CLASSES } from "./schema.mjs";
 export { CIVICSMITH_LIBRARY, CIVICSMITH_LIBRARY_SOURCE, CIVICSMITH_LIBRARY_ADOPTED_SOURCES } from "./civicsmith-library.mjs";
@@ -61,19 +807,26 @@ export { checkDraft, writingHelpAt, helpRefusedActs, isReasonField, factsOf, sen
 
 /* ---------------------------------------------------------------- the vocabularies */
 
-/** The Terms: a version's states. */
+/** The Terms: a version's states.
+ *  @type {readonly WizardState[]} */
 export const WIZARD_STATES = Object.freeze(["draft", "submitted", "approved", "updated", "withdrawn"]);
-/** R1: where a script comes from (`imported` reserved, never written in this version; DEC-121 (8)). */
+/** R1: where a script comes from (`imported` reserved, never written in this version; DEC-121 (8)).
+ *  @type {readonly ('civicsmith' | 'group' | 'imported')[]} */
 export const WIZARD_ORIGINS = Object.freeze(["civicsmith", "group", "imported"]);
-/** R15: the events counted. There is no abandon event: stopping is a non-event (K1364 B4). */
+/** R15: the events counted. There is no abandon event: stopping is a non-event (K1364 B4).
+ *  @type {readonly ('start' | 'step' | 'finish')[]} */
 export const WIZARD_EVENTS = Object.freeze(["start", "step", "finish"]);
-/** R10: what `state` may ask for instead of the offered versions. */
+/** R10: what `state` may ask for instead of the offered versions.
+ *  @type {readonly ('draft' | 'submitted' | 'withdrawn' | 'retired' | 'broken' | 'proposed')[]} */
 export const WIZARDS_STATES_LISTED = Object.freeze(["draft", "submitted", "withdrawn", "retired", "broken", "proposed"]);
-/** R2: a draft's three sources. */
+/** R2: a draft's three sources.
+ *  @type {readonly ('text' | 'template' | 'machine')[]} */
 export const DRAFT_SOURCES = Object.freeze(["text", "template", "machine"]);
-/** R2: a step's keys (`via`, a side trip, since T34; DEC-139 (4)). */
+/** R2: a step's keys (`via`, a side trip, since T34; DEC-139 (4)).
+ *  @type {readonly ('screen' | 'act' | 'what' | 'why' | 'draft' | 'via')[]} */
 export const STEP_KEYS = Object.freeze(["screen", "act", "what", "why", "draft", "via"]);
-/** R13, R24: the two machine drafts whose exception for a refused act R12 does not grant (DEC-153 (4); K1818). */
+/** R13, R24: the two machine drafts whose exception for a refused act R12 does not grant (DEC-153 (4); K1818).
+ *  @type {readonly ('writinghelp' | 'groupdescriptiondraft')[]} */
 export const HELP_DRAFTS = Object.freeze(["writinghelp", "groupdescriptiondraft"]);
 
 /* ---------------------------------------------------------------- bounds */
@@ -95,16 +848,19 @@ const TOKEN_RE = /^[A-Za-z0-9_.:-]{1,200}$/;
 const str = (v) => (typeof v === "string" && v.trim() ? v.trim() : null);
 const json = (v) => JSON.stringify(v ?? null);
 const parse = (s) => { try { return JSON.parse(s); } catch { return null; } };
+/** @param {unknown} v @returns {v is Record<string, any>} */
 const isObj = (v) => !!v && typeof v === "object" && !Array.isArray(v);
 const oneLine = (v, max) => typeof v === "string" && !!v.trim() && v.trim().length <= max && !/[\n\r]/.test(v) && !WELL_FORMED.test(v);
 const textUpTo = (v, max, min = 1) => typeof v === "string" && v.trim().length >= min && v.length <= max && !WELL_FORMED.test(v);
 const clamp = (v, dflt, max) => { const n = Math.floor(Number(v)); return v !== null && v !== undefined && v !== "" && Number.isFinite(n) ? Math.min(Math.max(n, 1), max) : dflt; };
 const truthy = (v) => v === true || v === "true" || v === "1" || v === 1;
 const OFFERED = Object.freeze(["approved"]);
-/** R24, R27 (K2592; `ai-accounts` R7): the use a writing-help draft is, as the keep-away is asked of it. */
+/** R24, R27 (K2592; `ai-accounts` R7): the use a writing-help draft is, as the keep-away is asked of it.
+ *  @type {'draft'} */
 export const KEEP_AWAY_USE = "draft";
 /** R34 (T47; N984; `run-rules` R29, `plane` R40's `DRAFT_KIND_OF`): the AI part a writing-help draft is, whose admission
- *  carries the test-instance label. */
+ *  carries the test-instance label.
+ *  @type {'draft:own_words'} */
 export const WRITING_HELP_PART = "draft:own_words";
 /* R4: how a revision that took a copy's base's newer version records it in `wiz_revisions.adopted` (a proposal id never
    starts so). */
@@ -112,16 +868,26 @@ const BASE_ADOPTION = "base:";
 
 /* DEC-49: a refusal of this module's own carries its code, its row and the member's translation; one another module
    answered (membership's `NOT_AN_ADMIN`) passes through as it came. */
+/**
+ * Any answer, with its row's check and translation added when it is a refusal of this module's own that lacks them.
+ * @param {*} r an answer of any kind
+ * @returns {*} the same answer
+ */
 export function withRow(r) {
   if (!r || typeof r !== "object" || r.ok !== false || typeof r.reason !== "string" || r.check) return r;
   const row = rowOf(r.reason);
   return row ? { ...r, code: r.code ?? r.reason, check: row.check, translation: row.translation } : r;
 }
+/** @type {(code: string, detail?: string | null, extra?: Object) => WizardRefusal} */
 const refuse = (code, detail, extra) => withRow({ ok: false, reason: code, code, detail, ...(extra || {}) });
 
-/** A version's id, `<script>@<version>` (the Terms). */
+/** A version's id, `<script>@<version>` (the Terms).
+ *  @type {(script: string, version: number | string) => string} */
 export const versionId = (script, version) => `${script}@${version}`;
-/** The parts of a version id, or null. */
+/** The parts of a version id, or null.
+ *  @param {unknown} v
+ *  @returns {{script: string, version: number} | null}
+ *  @bound version: whole number, 1 or more */
 export function parseVersionId(v) {
   const m = typeof v === "string" ? VERSION_RE.exec(v.trim()) : null;
   return m ? { script: m[1], version: Number(m[2]) } : null;
@@ -140,8 +906,13 @@ function canonicalDraft(d) {
 }
 /* A step in canonical form: R2's keys in R2's order, `act` null when none, `draft` and `via` only when present (so a
    step without them hashes as it did before `via`, T34). */
+/**
+ * @param {unknown} s
+ * @returns {Step}
+ */
 function canonicalStep(s) {
   const o = isObj(s) ? s : {};
+  /** @type {Step} */
   const out = { screen: typeof o.screen === "string" ? o.screen : null,
                 act: typeof o.act === "string" && o.act !== "" ? o.act : null,
                 what: typeof o.what === "string" ? o.what : "", why: typeof o.why === "string" ? o.why : "" };
@@ -149,9 +920,14 @@ function canonicalStep(s) {
   if (o.via !== undefined && o.via !== null && o.via !== "") out.via = typeof o.via === "string" ? o.via.trim() : o.via;
   return out;
 }
-/** R1: the steps in canonical form, as stored and hashed. */
+/** R1: the steps in canonical form, as stored and hashed.
+ *  @param {unknown} steps a list of steps; anything else is none
+ *  @returns {Step[]} */
 export function canonicalSteps(steps) { return (Array.isArray(steps) ? steps : []).map(canonicalStep); }
-/** R1: the SHA-256 (lowercase hex) of the steps in canonical form. */
+/** R1: the SHA-256 (lowercase hex) of the steps in canonical form.
+ *  @param {unknown} steps
+ *  @returns {string}
+ *  @bound 64 lowercase hex characters */
 export function stepsSha(steps) { return sha256HexSync(JSON.stringify(canonicalSteps(steps))); }
 /* A step's `(screen, act)` pair, as a key. */
 const pairKey = (s) => `${isObj(s) && typeof s.screen === "string" ? s.screen : ""}\u0000${isObj(s) && typeof s.act === "string" ? s.act : ""}`;
@@ -191,6 +967,7 @@ const nameSet = (v) => {
   return new Set();
 };
 /* One version of a library entry: its number, steps, author and approval (R1, R22). */
+/** @returns {LibraryVersion} */
 function libraryVersion(v) {
   const n = Math.floor(Number(v.version));
   return Object.freeze({ version: Number.isFinite(n) && n >= 1 ? n : 1, steps: canonicalSteps(v.steps), author: str(v.author) ?? "civicsmith",
@@ -200,12 +977,13 @@ function libraryVersion(v) {
 /* A library entry as R1 holds it, or null for one that is not an entry: its latest version (`version`, `steps`,
    `author`, `approved`) and every version, `versions`, oldest first, each earlier one `updated` by the next (R22's
    adopted versions, K2241; R7's rule). */
+/** @returns {LibraryHeld | null} */
 function libraryEntry(e) {
   if (!isObj(e) || !str(e.id)) return null;
   const latest = libraryVersion(e);
   const earlier = (Array.isArray(e.earlier) ? e.earlier : []).filter(isObj).map(libraryVersion).filter((v) => v.version < latest.version);
   const versions = [...new Map([...earlier, latest].map((v) => [v.version, v])).values()].sort((a, b) => a.version - b.version);
-  return Object.freeze({ id: str(e.id), name: typeof e.name === "string" ? e.name : "", required: e.required === true, ...latest,
+  return Object.freeze({ id: /** @type {string} */ (str(e.id)), name: typeof e.name === "string" ? e.name : "", required: e.required === true, ...latest,
                          versions: Object.freeze(versions) });
 }
 /* R13: a screen's registered acts: its `acts`, and each `owed` act whose op the member op table declares, at its place
@@ -221,7 +999,9 @@ function screenActs(s, ops) {
   return nameSet(ops ? acts.filter((a) => ops.has(a)) : acts);
 }
 /** R13: a registration's parts, normalised: the screens by id, the ops (null when none was given), the acts a machine is
- *  refused, the labelled machine drafts and the library. */
+ *  refused, the labelled machine drafts and the library.
+ *  @param {RegistrationInput} [given]
+ *  @returns {Registration} */
 export function normaliseRegistration({ screens = [], ops = null, machineRefused = [], machineDrafts = [], irreversible = [],
                                         library = [], adminActs = [], adminScreens = [] } = {}) {
   const opSet = ops === null || ops === undefined ? null : nameSet(ops);
@@ -234,6 +1014,7 @@ export function normaliseRegistration({ screens = [], ops = null, machineRefused
      whose op the table does not hold is not registered (as an act is not, T37), so `{machine: <op>}` for it is refused
      until `op-declarations` declares it, and accepted with no change here once it does. */
   const drafts = nameSet(machineDrafts);
+  /** @type {Registration} */
   const reg = { screens: sc, ops: opSet, machineRefused: nameSet(machineRefused),
                 machineDrafts: opSet ? new Set([...drafts].filter((o) => opSet.has(o))) : drafts,
                 irreversible: nameSet(irreversible), library: lib, adminActs: nameSet(adminActs), adminScreens: nameSet(adminScreens) };
@@ -284,7 +1065,10 @@ function viaRefusal(via, self, steps, offered) {
 /** R12 (pure; `op=wizardcheck`): the refusals and warnings of a step list against a registration, each naming its step
  *  (from 1; null for the list). `templateOffered(ref)`, when given, says whether a `{template}` draft names a version
  *  filing-templates offers (its R25); `offered` is the offered scripts, `[{id, steps}]`, for `WIZARD_DUPLICATE` and a
- *  step's side trip (`via`); `self` the id of the script checked, if it has one. Never throws on a list; never writes. */
+ *  step's side trip (`via`); `self` the id of the script checked, if it has one. Never throws on a list; never writes.
+ *  @param {unknown} steps the steps checked: a list of `StepInput`; anything else is refused as no steps
+ *  @param {CheckOptions} [registration]
+ *  @returns {CheckResult} */
 export function checkScript(steps, { screens = [], ops = null, machineRefused = [], machineDrafts = [], irreversible = [], offered = [],
                                      templateOffered = null, self = null } = {}) {
   const reg = screens instanceof Map ? { screens, ops: ops instanceof Set || ops === null ? ops : nameSet(ops),
@@ -348,7 +1132,9 @@ function safe(fn) { try { return fn(); } catch { return null; } }
 
 /** R14 (pure; the plane's release suite): each required script of the library that R12 refuses, with its first
  *  refusal; `[]` when every one passes. A `{template}` draft is judged by shape only: no filing template is held at
- *  release. */
+ *  release.
+ *  @param {RegistrationInput} [given]
+ *  @returns {{id: string, version: string, name: string, refusal: Finding}[]} */
 export function requiredFailures({ screens = [], ops = null, machineRefused = [], machineDrafts = [], irreversible = [], library = [] } = {}) {
   const reg = normaliseRegistration({ screens, ops, machineRefused, machineDrafts, irreversible, library });
   const offered = reg.library.map((e) => ({ id: e.id, steps: e.steps }));
@@ -372,20 +1158,36 @@ function pointerOf(v) {
 
 /* ================================================================ the module */
 
+/** The module's one instance per host (K61): reached as `wizardScriptsOf(host, deps)`. */
 export class WizardScripts {
+  /**
+   * @param {Partial<WizardScriptsDeps>} [deps] `storage`, `record` and `membership` are needed: they are read unguarded
+   */
   constructor({ storage, record, membership, filingTemplates = null, accounts = null, aiRuns = null, now = null, env = null } = {}) {
+    /** @type {SqlStorage} */
     this.sql = storage.sql;
-    this.record = record;
-    this.membership = membership;
+    /** @type {RecordHandle} */
+    this.record = /** @type {RecordHandle} */ (record);
+    /** @type {MembershipHandle} */
+    this.membership = /** @type {MembershipHandle} */ (membership);
+    /** @type {TemplatesHandle | null} */
     this.templates = filingTemplates;
+    /** @type {AccountsHandle | (() => AccountsHandle) | null} */
     this.accounts = accounts;         /* ai-accounts, or a function reaching it on first need */
+    /** @type {AiRunsHandle | (() => AiRunsHandle) | null} */
     this.aiRuns = aiRuns;             /* R34: likewise */
+    /** @type {(() => number) | null} */
     this.now = typeof now === "function" ? now : null;
+    /** @type {Record<string, string | undefined>} */
     this.env = env && typeof env === "object" ? env : {};
+    /** @type {Registration | null} the registration, once made (R13) */
     this.reg = null;
+    /** @type {{findExisting: ((message: string, viewer: string | null) => unknown) | null, pointer: ((viewer: string | null) => unknown) | null} | null} */
     this.door = null;   /* R23: the front door's finder and pointer, handed in at registration */
   }
 
+  /** Creates the tables; idempotent.
+   *  @returns {void} */
   migrate() { migrateWizardScripts(this.sql); }
 
   #rows(q, ...a) { return [...this.sql.exec(q, ...a)]; }
@@ -404,6 +1206,7 @@ export class WizardScripts {
      its AI_KEPT_AWAY refusal; a keep-away covering only other uses (`ask`) does not refuse a draft (R27; K2592). An
      ai-accounts that cannot be reached or answers by throwing is no reading of null: it answers `KEPT_AWAY_UNREADABLE`,
      that one site's own unreadable form, which R24 reads as kept away (fail closed, K2093). */
+  /** @returns {PassedRefusal | null} */
   #keptAway() {
     try {
       if (typeof this.accounts === "function") this.accounts = this.accounts();
@@ -625,8 +1428,9 @@ export class WizardScripts {
   /* R5: every member who revised the version and every adopted proposal's run, in time order, each dated. Only a
      version's author revises it (R4), so another member contributes by a proposal the author adopts (or drafts from):
      a member's proposal is that member's contribution, a machine's a run's (R7's APPROVER_IS_AUTHOR reads them). */
+  /** @returns {Contributor[]} */
   #contributors(sid, n) {
-    const out = [], members = new Set();
+    const out = /** @type {Contributor[]} */ ([]), members = new Set();
     for (const r of this.#rows(`SELECT author, author_name, adopted, at FROM wiz_revisions WHERE script_id=? AND version=?
                                  ORDER BY rid`, sid, n)) {
       if (!members.has(r.author)) { members.add(r.author); out.push({ kind: "member", member: r.author, name: r.author_name, at: r.at }); }
@@ -648,6 +1452,7 @@ export class WizardScripts {
   }
 
   /* R1: one version whole, with its attribution. */
+  /** @returns {VersionView} */
   #versionView(s, n, events) {
     if (s.origin === "civicsmith") {
       const e = WizardScripts.#libVersion(s, n);
@@ -676,6 +1481,7 @@ export class WizardScripts {
       recorded: parse(v.recorded), created_at: v.created_at, broken: this.#isBroken(s.id, n),
     };
   }
+  /** @param {*} [extra] what else the read says of the script */
   #head(s, viewer, extra = {}) {
     return { id: s.id, origin: s.origin, name: s.name, scope: s.scope, required: s.required, based_on: this.#basedOn(s, viewer),
              ...(s.widened ? { widened: s.widened } : {}), ...(s.retired ? { retired: s.retired } : {}), ...extra };
@@ -762,7 +1568,7 @@ export class WizardScripts {
     if (!this.templates || typeof ref !== "string") return false;
     const asked = ref.startsWith("@") ? { name: ref, ...(project ? { project } : {}) }
       : ref.includes("@") ? { template: ref.split("@")[0], version: ref.split("@")[1] } : { template: ref, version: null };
-    const r = this.#call(() => this.templates.offeredVersion({ ...asked, viewer }));
+    const r = this.#call(() => /** @type {TemplatesHandle} */ (this.templates).offeredVersion({ ...asked, viewer }));
     return !!r && r.ok === true;
   }
   /* The offered scripts `viewer` may see, each `{s, n, steps}`. */
@@ -786,7 +1592,9 @@ export class WizardScripts {
   /** R13 (in-process; `plane` R19): the screen registry, the member op table, the acts a machine is refused, the labelled
    *  machine drafts and the Civicsmith library, once per construction, before the first request. Every offered group
    *  script is checked again: one that fails is recorded `broken` with its first refusal, one that passes again is
-   *  recorded as returned. */
+   *  recorded as returned.
+   *  @param {RegistrationInput & {door?: DoorHooks | null}} [given] the screens default to `SCREEN_REGISTRY`, the library to `CIVICSMITH_LIBRARY`
+   *  @returns {RegisterAnswer | WizardRefusal} */
   wizardRegister({ screens = SCREEN_REGISTRY, ops = null, machineRefused = [], machineDrafts = [], irreversible = [],
                    library = CIVICSMITH_LIBRARY, door = null, adminActs = [], adminScreens = [] } = {}) {
     /* DEC-49 REGION is-wizard-register */
@@ -823,7 +1631,8 @@ export class WizardScripts {
   }
 
   /** R13 (for `affordances` R37): the screen registry as registered, `[{id, acts}]` (an owed act among them once its op is
-   *  declared); `[]` before registration. */
+   *  declared); `[]` before registration.
+   *  @returns {{id: string, acts: string[]}[]} */
   registeredScreens() {
     return [...this.#registration().screens].map(([id, acts]) => ({ id, acts: [...acts] }));
   }
@@ -832,7 +1641,10 @@ export class WizardScripts {
    *  the viewer may see, `{script, version, kind, at, name, project, author, refusal}` (`version` the number, `project`
    *  null for a group-wide script, `author` the version's author, `refusal` the first refusal's `{code, check,
    *  translation}` or null for a return), at most 500 per page in (instant, version) order after `after` (a previous
-   *  page's `cursor`). Writes nothing. */
+   *  page's `cursor`). Writes nothing.
+   *  @param {{after?: string | null, limit?: number | string | null, viewer?: string | null}} [given]
+   *  @returns {Page<BrokenEntry>}
+   *  @bound limit: whole number, 1 to 500 (PAGE_MAX), 500 when not given */
   brokenScripts({ after = null, limit = null, viewer = null } = {}) {
     const max = clamp(limit, PAGE_MAX, PAGE_MAX);
     const from = str(after);
@@ -841,7 +1653,7 @@ export class WizardScripts {
     const seek = cut ? { sql: `WHERE (b.at > ? OR (b.at = ? AND ${vid} > ?))`, args: [cut[1], cut[1], cut[2]] } : { sql: "", args: [] };
     const rows = this.#rows(`SELECT b.*, ${vid} AS vid, v.author FROM wiz_breaks b JOIN wiz_versions v ON v.script_id=b.script_id AND v.version=b.version
                                ${seek.sql} ORDER BY b.at, vid, b.bid`, ...seek.args);
-    const seen = new Map(), entries = [];
+    const seen = new Map(), entries = /** @type {BrokenEntry[]} */ ([]);
     let truncated = false, last = null;
     for (const r of rows) {
       if (!seen.has(r.script_id)) seen.set(r.script_id, this.#script(r.script_id, viewer));
@@ -881,7 +1693,11 @@ export class WizardScripts {
   /** R3 (`op=wizarddraft`): a new script and its first draft, from a recording, a proposal or (with a live editor grant)
    *  nothing; or a new draft version of the script `from` names (an approved version, or a proposal for the script); or,
    *  with `copy`, a new script of the project copied from any approved version the author may see, recording its base
-   *  (`based_on`; DEC-158), its pairs the draft's recorded pairs, its base unchanged and still offered. */
+   *  (`based_on`; DEC-158), its pairs the draft's recorded pairs, its base unchanged and still offered.
+   *  @param {{project?: string | null, name?: string | null, recorded?: readonly RecordedStep[] | null, from?: string | null, copy?: string | null, author?: string | null, viewer?: string | null}} [given]
+   *  @returns {DraftAnswer | WizardRefusal | ForeignRefusal}
+   *  @bound name: one line, 1 to 200 characters (WIZARD_NAME_MAX), needed for a new script that is not a copy
+   *  @bound recorded: at most 200 steps (STEPS_MAX) */
   wizardDraft({ project = null, name = null, recorded = undefined, from = null, copy = null, author = null, viewer = null } = {}) {
     const machine = this.#machine("draft", author);
     if (machine) return machine;
@@ -956,7 +1772,10 @@ export class WizardScripts {
   /* ================================================================ R4: wizardRevise */
 
   /** R4 (`op=wizardrevise`): a new revision of a draft's steps (or a proposal's, `adopt`), every earlier one kept. Without
-   *  a live editor grant the steps may reword, delete or reorder the version's own pairs, never add one. */
+   *  a live editor grant the steps may reword, delete or reorder the version's own pairs, never add one.
+   *  @param {{version?: string | null, steps?: readonly StepInput[] | null, adopt?: string | {base: string} | null, author?: string | null, viewer?: string | null}} [given]
+   *  @returns {ReviseAnswer | WizardRefusal}
+   *  @bound steps: at most 200 (STEPS_MAX) */
   wizardRevise({ version = null, steps = undefined, adopt = null, author = null, viewer = null } = {}) {
     const machine = this.#machine("draft", author);
     if (machine) return machine;
@@ -1007,7 +1826,13 @@ export class WizardScripts {
   /* ================================================================ R5: wizardPropose */
 
   /** R5 (`op=wizardpropose`): any credential proposes steps, for a project or for a named script, stored apart and
-   *  labelled; they are a script's only when a member names the proposal as `from` or adopts it. */
+   *  labelled; they are a script's only when a member names the proposal as `from` or adopts it.
+   *  @param {{project?: string | null, script?: string | null, steps?: readonly StepInput[], why?: string | null, proposer?: string | null, viewer?: string | null, run?: string | null, model?: string | null}} [given]
+   *  @returns {ProposeAnswer | WizardRefusal | ForeignRefusal}
+   *  @bound steps: 1 to 200 (STEPS_MAX)
+   *  @bound why: 1 to 1000 characters (PROPOSAL_WHY_MAX)
+   *  @bound run: kept to its first 200 characters
+   *  @bound model: kept to its first 200 characters */
   wizardPropose({ project = null, script = null, steps = undefined, why = null, proposer = null, viewer = null,
                   run = null, model = null } = {}) {
     const who = str(proposer);
@@ -1046,7 +1871,9 @@ export class WizardScripts {
 
   /* ================================================================ R6: wizardSubmit */
 
-  /** R6 (`op=wizardsubmit`): a draft is submitted, its steps and sha fixed, once R12 passes against the registration. */
+  /** R6 (`op=wizardsubmit`): a draft is submitted, its steps and sha fixed, once R12 passes against the registration.
+   *  @param {{version?: string | null, author?: string | null, viewer?: string | null}} [given]
+   *  @returns {SubmitAnswer | WizardRefusal} */
   wizardSubmit({ version = null, author = null, viewer = null } = {}) {
     const machine = this.#machine("draft", author);
     if (machine) return machine;
@@ -1073,7 +1900,9 @@ export class WizardScripts {
 
   /** R7 (`op=wizardapprove`): an owner of the script's project (an administrator, for a group-wide script) approves a
    *  submitted version, the earlier approved one then `updated`; with `widen`, an administrator makes an approved
-   *  project script group-wide. No review step precedes approval. */
+   *  project script group-wide. No review step precedes approval.
+   *  @param {{version?: string | null, widen?: boolean | string | number, by?: string | null, viewer?: string | null}} [given]
+   *  @returns {WidenAnswer | ApproveAnswer | WizardRefusal} */
   wizardApprove({ version = null, widen = false, by = null, viewer = null } = {}) {
     const machine = this.#machine("approve", by);
     if (machine) return machine;
@@ -1126,7 +1955,9 @@ export class WizardScripts {
   /* ================================================================ R8: editor grants */
 
   /** R8 (`op=wizardeditorgrant`): an administrator grants a member the advanced editor; a member already holding a live
-   *  grant answers it, `existed: true`. */
+   *  grant answers it, `existed: true`.
+   *  @param {{member?: string | null, by?: string | null}} [given]
+   *  @returns {GrantAnswer | WizardRefusal | ForeignRefusal} */
   wizardEditorGrant({ member = null, by = null } = {}) {
     const admin = this.#member(by);
     if (!this.#isAdmin(admin)) return notAnAdmin(str(by), word("wizard-scripts.refusal.grant_admin_action"));
@@ -1149,7 +1980,9 @@ export class WizardScripts {
     });
   }
 
-  /** R8 (`op=wizardeditorrevoke`): an administrator revokes a grant, appended; a second revocation answers the first. */
+  /** R8 (`op=wizardeditorrevoke`): an administrator revokes a grant, appended; a second revocation answers the first.
+   *  @param {{grant?: string | null, by?: string | null}} [given]
+   *  @returns {RevokeAnswer | WizardRefusal | ForeignRefusal} */
   wizardEditorRevoke({ grant = null, by = null } = {}) {
     const admin = this.#member(by);
     if (!this.#isAdmin(admin)) return notAnAdmin(str(by), word("wizard-scripts.refusal.revoke_admin_action"));
@@ -1168,7 +2001,10 @@ export class WizardScripts {
   /* ================================================================ R9: wizardRetire */
 
   /** R9 (`op=wizardretire`): without `version`, an approver of its scope retires the whole script; with it, its author
-   *  withdraws a draft or submitted version. Nothing is deleted. */
+   *  withdraws a draft or submitted version. Nothing is deleted.
+   *  @param {{script?: string | null, version?: string | null, reason?: string | null, by?: string | null, viewer?: string | null}} [given]
+   *  @returns {RetireAnswer | WithdrawAnswer | WizardRefusal}
+   *  @bound reason: 1 to 500 characters (ENDING_REASON_MAX) */
   wizardRetire({ script = null, version = null, reason = null, by = null, viewer = null } = {}) {
     const machine = this.#machine("approve", by);
     if (machine) return machine;
@@ -1237,6 +2073,10 @@ export class WizardScripts {
   #hasDraftBy(s, memberId) {
     return !!memberId && s.origin === "group" && !!this.#one(`SELECT 1 AS x FROM wiz_versions WHERE script_id=? AND author=?`, s.id, memberId);
   }
+  /**
+   * @param {VersionView} view
+   * @returns {VersionListing}
+   */
   #listed(view, s) {
     return { id: view.id, version: view.version, state: view.state, start: startOf(view.steps), author: view.author,
              contributors: view.contributors, approved: view.approved, created_at: view.created_at,
@@ -1248,7 +2088,10 @@ export class WizardScripts {
    *  the viewer may see, to every member (R39: the Civicsmith library and each approved group script she may run, with
    *  its name, whose, `based_on` and finished count); `state` lists instead drafts, submitted, withdrawn, retired or
    *  broken versions, or open proposals (`proposed`), to the scripts' project owners and the administrators (a member's
-   *  own drafts also to her). Writes nothing. */
+   *  own drafts also to her). Writes nothing.
+   *  @param {{state?: string | null, viewer?: string | null}} [given]
+   *  @returns {ProposalsAnswer | WizardsAnswer | WizardRefusal}
+   *  @bound state: offered, or one of WIZARDS_STATES_LISTED */
   wizards({ state = null, viewer = null } = {}) {
     const st = str(state);
     /* DEC-49 REGION is-wizards-state */
@@ -1289,7 +2132,9 @@ export class WizardScripts {
   }
 
   /** R10 (`op=wizardread`): one version (the latest approved by default, else the latest) with its steps and its whole
-   *  attribution. Writes nothing. */
+   *  attribution. Writes nothing.
+   *  @param {{script?: string | null, version?: string | null, viewer?: string | null}} [given]
+   *  @returns {ReadAnswer | WizardRefusal} */
   wizardRead({ script = null, version = null, viewer = null } = {}) {
     const named = str(script) ?? parseVersionId(version)?.script ?? null;
     const s = this.#script(named, viewer);
@@ -1309,7 +2154,9 @@ export class WizardScripts {
   /* ================================================================ R11: wizardsAt */
 
   /** R11 (`op=wizardsat`): the offered scripts the viewer may see whose first step is on `screen`, and the viewer's own
-   *  drafts that start there (`draft: true`). An unknown screen answers none. Needs no AI credential and no key. */
+   *  drafts that start there (`draft: true`). An unknown screen answers none. Needs no AI credential and no key.
+   *  @param {{screen?: string | null, viewer?: string | null}} [given]
+   *  @returns {{ok: true, screen: string | null, scripts: ScriptAt[]}} */
   wizardsAt({ screen = null, viewer = null } = {}) {
     const sc = str(screen);
     if (!sc || !this.#registration().screens.has(sc)) return { ok: true, screen: sc, scripts: [] };
@@ -1348,7 +2195,9 @@ export class WizardScripts {
    *  true` for the viewer's own draft), a step's `via` its side trip's script id or null (DEC-139 (4)), its `draft` its
    *  kind alone (`text`, `template` or `machine`), never its words, template or op, and `based_on` R1's with its base's
    *  name or null (DEC-158 (4)). Before registration `{registered: false, screens: []}`. Needs no AI credential and no
-   *  key; runs nothing, records no use and writes nothing. */
+   *  key; runs nothing, records no use and writes nothing.
+   *  @param {{viewer?: string | null}} [given]
+   *  @returns {RegistryAnswer} */
   wizardRegistry({ viewer = null } = {}) {
     if (!this.reg) return { ok: true, registered: false, screens: [] };
     const byStart = new Map();
@@ -1363,9 +2212,10 @@ export class WizardScripts {
     return { ok: true, registered: true, screens };
   }
   /* R21: a step with its draft named by its kind only. */
+  /** @returns {BareStep} */
   static #bareStep(s) {
     const o = isObj(s) ? s : {};
-    const kind = o.draft !== undefined && o.draft !== null ? Object.keys(canonicalDraft(o.draft) || {})[0] ?? null : null;
+    const kind = /** @type {'text' | 'template' | 'machine' | null} */ (o.draft !== undefined && o.draft !== null ? Object.keys(canonicalDraft(o.draft) || {})[0] ?? null : null);
     return { screen: o.screen ?? null, act: o.act ?? null, what: o.what ?? "", why: o.why ?? "", via: typeof o.via === "string" ? o.via : null,
              ...(kind ? { draft: kind } : {}) };
   }
@@ -1380,7 +2230,10 @@ export class WizardScripts {
    *  (`START_ROUTES`, "not Civicsmith's" carrying the registered pointer for this viewer, `{places, pointers}`, or null); `blank: true` (a blank start is always allowed); `matches`, the
    *  existing work the registered finder answers for `message` as this viewer may see it (`[]` with no message or no
    *  finder); and, when the assistant's reading `parts` of the message is given, `proposal`, R28's. Needs no AI
-   *  credential and no key; starts nothing, records no use, writes nothing. */
+   *  credential and no key; starts nothing, records no use, writes nothing.
+   *  @param {{viewer?: string | null, message?: string | null, parts?: readonly StartPart[] | null}} [given]
+   *  @returns {StartAnswer}
+   *  @bound message: its first 4000 characters are read */
   startFrom({ viewer = null, message = null, parts = undefined } = {}) {
     /* R40: a library script whose first step is an administrator's (its act among the registration's `adminActs`, or with
        no act on an `adminScreens` screen) is offered only to a viewer who administers (membership R92) */
@@ -1451,7 +2304,10 @@ export class WizardScripts {
    *  [member ids], steps: {copy, base}}` (`found_at` the instant the pair was first found, the one thing this writes),
    *  each pair once, at most 500 per page in (instant, copy, base version) order after `after` (a previous page's
    *  `cursor`), with `cursor` and `truncated`. Nothing is applied to a copy: the change is brought across only by a
-   *  member's own revision (R4's `adopt: {base}`). */
+   *  member's own revision (R4's `adopt: {base}`).
+   *  @param {{after?: string | null, limit?: number | string | null, viewer?: string | null}} [given]
+   *  @returns {BaseUpdatesAnswer}
+   *  @bound limit: whole number, 1 to 500 (PAGE_MAX), 500 when not given */
   baseUpdates({ after = null, limit = null, viewer = null } = {}) {
     const max = clamp(limit, PAGE_MAX, PAGE_MAX);
     const at = this.#when();
@@ -1486,7 +2342,9 @@ export class WizardScripts {
   /** R24 (in-process): whether the assistant may help word `field` of `op` for this viewer, `{offered: true}` or
    *  `{offered: false, code}`: first `AI_KEPT_AWAY` while `ai-accounts.aiKeptAway()` answers its refusal (read here, at
    *  the call; T37, N765), then `AI_NO_ACCOUNT` where `assistant.account` names none, then the registration's refused
-   *  and irreversible acts. Writes nothing; never throws. */
+   *  and irreversible acts. Writes nothing; never throws.
+   *  @param {HelpAsk} [args]
+   *  @returns {HelpAt} */
   writingHelpAt(args = {}) {
     return this.#helpAt(args, this.#keptAway());
   }
@@ -1497,7 +2355,8 @@ export class WizardScripts {
 
   /** R24 (in-process; B3, K1861 (1): `affordances` R44 reads it through `op=affordancescreens`): the acts the assistant
    *  never helps word, `{named, machine_refused, irreversible}`: `named` this module's frozen list, the other two as
-   *  handed to `wizardRegister`, in registration order (`[]` before registration). */
+   *  handed to `wizardRegister`, in registration order (`[]` before registration).
+   *  @returns {HelpRefused} */
   writingHelpRefused() {
     const reg = this.reg;
     return { named: WRITING_HELP_NAMED, machine_refused: reg ? [...reg.machineRefused] : [], irreversible: reg ? [...reg.irreversible] : [] };
@@ -1514,7 +2373,9 @@ export class WizardScripts {
    *  K1837), `ASSISTANT_DRAFT_UNAVAILABLE`, the field unchanged, the answer the door turns into the draft (control-plane
    *  R57). (T47; R34) That answer carries `untested`, the test-instance label as `ai-runs` answers it for the part
    *  `draft:own_words` (`#untested`), when the part is admitted on the exception, and nothing otherwise; no refusal
-   *  carries it. Writes nothing. */
+   *  carries it. Writes nothing.
+   *  @param {HelpRequest} [args]
+   *  @returns {WizardRefusal | (PassedRefusal & {op: string | null})} */
   writingHelp(args = {}) {
     const { op = null, field = null, told = null, draftHeld = false, assistant = null } = isObj(args) ? args : {};
     const away = this.#keptAway();
@@ -1541,7 +2402,9 @@ export class WizardScripts {
     /* END DEC-49 REGION is-writing-help-request */
   }
 
-  /** R12 (`op=wizardcheck`): `checkScript` against the registration, for any credential, `ai` included. Writes nothing. */
+  /** R12 (`op=wizardcheck`): `checkScript` against the registration, for any credential, `ai` included. Writes nothing.
+   *  @param {{steps?: readonly StepInput[], viewer?: string | null}} [given]
+   *  @returns {{ok: true} & CheckResult} */
   wizardCheck({ steps = undefined, viewer = null } = {}) {
     return { ok: true, ...this.#check(steps, viewer) };
   }
@@ -1558,7 +2421,10 @@ export class WizardScripts {
   }
 
   /** R15 (`op=wizardprogress`): one count for (version, event, step) on this day, and nothing else of the call. A viewer,
-   *  when stamped, is asked only whether it may see the script, and never kept. */
+   *  when stamped, is asked only whether it may see the script, and never kept.
+   *  @param {{script?: string | null, version?: string | null, event?: 'start' | 'step' | 'finish' | null, step?: number | string | null, viewer?: string | null}} [given]
+   *  @returns {{ok: true} | WizardRefusal}
+   *  @bound step: whole number, 1 to the version's number of steps, given only with the event step */
   wizardProgress({ script = null, version = null, event = null, step = null, viewer = null } = {}) {
     const h = this.#held(script, version);
     if (!h || (str(viewer) && !this.#canSee(h.s, viewer))) return this.#noWizard(str(script) ?? version);
@@ -1576,7 +2442,9 @@ export class WizardScripts {
   }
 
   /** R15 (`op=wizarduse`): a script's tallies, by version and day, to the owners of its project and its versions'
-   *  authors (each author their own versions'; an administrator's, for a script with no project). */
+   *  authors (each author their own versions'; an administrator's, for a script with no project).
+   *  @param {{script?: string | null, viewer?: string | null}} [given]
+   *  @returns {{ok: true, script: string, use: UseDay[]} | WizardRefusal} */
   wizardUse({ script = null, viewer = null } = {}) {
     const s = this.#script(script, viewer);
     if (!s) return this.#noWizard(script);
@@ -1599,7 +2467,11 @@ export class WizardScripts {
     return { ok: true, script: s.id, use };
   }
 
-  /** R16 (in-process): one count for (op, code) on this day, and nothing else. */
+  /** R16 (in-process): one count for (op, code) on this day, and nothing else.
+   *  @param {string} op
+   *  @param {string} code
+   *  @returns {{ok: boolean}}
+   *  @bound op and code each 1 to 200 characters of A-Z, a-z, 0-9, _, ., : and -; anything else is not counted */
   tallyRefusal(op, code) {
     if (typeof op !== "string" || !TOKEN_RE.test(op) || typeof code !== "string" || !TOKEN_RE.test(code))
       return { ok: false };
@@ -1608,7 +2480,9 @@ export class WizardScripts {
   }
 
   /** R16 (`op=wizardcandidates`): to project owners and administrators, the steps of offered scripts where the count drops
-   *  most, and the (op, code) pairs most refused; never a member, case, target or project. */
+   *  most, and the (op, code) pairs most refused; never a member, case, target or project.
+   *  @param {{viewer?: string | null}} [given]
+   *  @returns {CandidatesAnswer | WizardRefusal} */
   wizardCandidates({ viewer = null } = {}) {
     const me = this.#member(viewer);
     const owner = !!me && this.#rows(`SELECT DISTINCT project FROM wiz_scripts`).some((r) => this.#isOwner(r.project, me));
@@ -1639,7 +2513,10 @@ export class WizardScripts {
    *  approve it (an owner of its project; a group-wide script's administrators), the sole author left out, each
    *  `{script, version, owner, name, author, submitted_at, project}` (`version` the number, `author` the version's,
    *  `project` null for a group-wide script), at most 500 per page in (version, owner) order after `after` (a previous
-   *  page's `cursor`). Writes nothing. */
+   *  page's `cursor`). Writes nothing.
+   *  @param {{after?: string | null, limit?: number | string | null, viewer?: string | null}} [given]
+   *  @returns {Page<SubmittedEntry>}
+   *  @bound limit: whole number, 1 to 500 (PAGE_MAX), 500 when not given */
   submittedFor({ after = null, limit = null, viewer = null } = {}) {
     const max = clamp(limit, PAGE_MAX, PAGE_MAX);
     const from = str(after);
@@ -1681,7 +2558,10 @@ for (const m of ["wizardRegister", "brokenScripts", "wizardDraft", "wizardRevise
 const instances = new WeakMap();
 
 /** K61: the one instance per host; at creation it creates and declares its tables with their classes (R18; record-core
- *  R21, plan T33 Rules (6)) and registers its opaque ids' seed (record-core R70). */
+ *  R21, plan T33 Rules (6)) and registers its opaque ids' seed (record-core R70).
+ *  @param {{storage?: {sql: SqlStorage}, env?: Record<string, string | undefined> | null}} host the Durable Object's host (`ctx`)
+ *  @param {Partial<WizardScriptsDeps>} [deps] read on the first call only
+ *  @returns {WizardScripts} */
 export function wizardScriptsOf(host, deps) {
   let w = instances.get(host);
   if (!w) {
@@ -1692,7 +2572,7 @@ export function wizardScriptsOf(host, deps) {
     const filingTemplates = d.filingTemplates || filingTemplatesOf(host, { record, membership });
     const accounts = d.accounts || (() => aiAccountsOf(host, { record, membership }));   /* R24: on first need */
     const env = d.env ?? host.env ?? null;
-    const aiRuns = d.aiRuns || (() => aiRunsOf(host, env));   /* R34: on first need */
+    const aiRuns = d.aiRuns || (() => aiRunsOf(host, /** @type {*} */ (env)));   /* R34: on first need */
     w = new WizardScripts({ ...d, storage, record, membership, filingTemplates, accounts, aiRuns, env });
     instances.set(host, w);
     w.migrate();
@@ -1702,7 +2582,9 @@ export function wizardScriptsOf(host, deps) {
   return w;
 }
 
-/** Which purge declaration names one of this module's tables (record-core R21). */
+/** Which purge declaration names one of this module's tables (record-core R21).
+ *  @param {string | {name?: string} | null | undefined} t
+ *  @returns {boolean} */
 export function wizardScriptsOwns(t) {
   const name = typeof t === "string" ? t : t && t.name;
   return WIZARD_SCRIPTS_TABLES.includes(name);
@@ -1712,7 +2594,11 @@ export function wizardScriptsOwns(t) {
  *  stands for R3, R4, R6's author, R5's proposer and R7–R9's `by`), read from the query and never from the body, so a
  *  caller's own copy never wins. `op-declarations` declares them (its R15, R28), `control-plane` routes and stamps them
  *  (its R50, R57) and `plane` composes them (its R19). `writinghelp` is not here: the door routes it itself and calls
- *  `writingHelp` with its own `assistant` (R27; B4, K1863 (7)). */
+ *  `writingHelp` with its own `assistant` (R27; B4, K1863 (7)).
+ *  @param {WizardScripts} m
+ *  @param {URL} url the request's, carrying the stamps `author` and `viewer`
+ *  @param {{[field: string]: *} | null} [body] the request's parsed body
+ *  @returns {WizardScriptsHandlers} */
 export function wizardScriptsOps(m, url, body) {
   const q = (k) => url.searchParams.get(k);
   const has = (k) => url.searchParams.has(k);
@@ -1747,6 +2633,7 @@ export function wizardScriptsOps(m, url, body) {
    row's (op-declarations); its weight is the op's grade (op-grades); its description is the op's `act.<op>.does` word,
    never a sentence of this module's own; its fields are what the arm reads. `writinghelp` is routed by the door, not
    by `wizardScriptsOps`, and is declared all the same. */
+/** @type {Readonly<Record<'wizards' | 'startfrom' | 'writinghelp' | 'wizarddraft' | 'wizardrevise' | 'wizardsubmit' | 'wizardapprove' | 'wizardretire', OpDeclaration>>} */
 export const DECLARED_OPS = Object.freeze({
   wizards: { classes: ["admin", "member"], machineClasses: [], mutating: false, weight: "read",
     description: word("act.wizards.does"), fields: { accepts: ["state"], requires: [] } },

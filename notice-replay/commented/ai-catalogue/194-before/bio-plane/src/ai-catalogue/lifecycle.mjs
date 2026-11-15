@@ -1,6 +1,7 @@
 /* ai-catalogue: the lifecycle of an entry or a plan (R24–R27). Pure: the moves, the advisories' closed lists, and the
  * effective state of a target, that of the highest-`seq` record naming it, payload or applied advisory. */
 import { refusal } from "./checks.mjs";
+/** @import { AdvisoryReason } from './index.mjs' */
 
 /** R24: the only moves. A state is changed only by a verified payload or advisory. */
 export const MOVES = Object.freeze({
@@ -13,7 +14,10 @@ export const legalMove = (from, to) => from === to || (MOVES[from] || []).includ
 
 /** R26: the advisory kinds, each the state it moves its target to. */
 export const ADVISORY_KINDS = Object.freeze({ watch: "watch", lapse: "lapsed", retire: "retired", clear: "listed" });
-/** R26: THE one closed list of advisory reasons (`ai-issuer` R7 reads it from here and keeps no copy). */
+/**
+ * R26: THE one closed list of advisory reasons (`ai-issuer` R7 reads it from here and keeps no copy).
+ * @type {readonly AdvisoryReason[]}
+ */
 export const ADVISORY_REASONS = Object.freeze(["deprecation", "canary_drift", "served_mismatch", "team_divergence", "health",
   "terms_change", "other"]);
 

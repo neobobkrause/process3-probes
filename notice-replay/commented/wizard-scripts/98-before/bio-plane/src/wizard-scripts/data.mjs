@@ -1,4 +1,5 @@
 import { word } from "../setup-words/index.mjs";
+/** @import { ScreenEntry, NameList } from './index.mjs' */
 /* wizard-scripts' frozen data from the design stream's files (requirements: `build/requirements/wizard-scripts.md`, R13,
  * R22; DEC-139 (5), DEC-148; K1565, K1785, K1790). Pure: the two readings below turn the design files
  * (`docs/development/ux-substrate/screens/registry.json` and `library.json`, at the commit the job's START names) into the
@@ -73,6 +74,10 @@ export const INSTALLER_ROUTES = Object.freeze(["installupdate", "installalongsid
  *  gap is `{screen, act, owed}`, in the registry's order: an act the file marks `declared` or `function` that `declared` lacks
  *  (`owed: false`), and an owed act whose op `declared` lacks (`owed: true`: R13 registers it once its op is declared), but
  *  never one of `INSTALLER_ROUTES`. `[]` when every registry act has its declaration. Writes nothing; never throws. */
+/**
+ * @param {{screens?: readonly ScreenEntry[] | null, declared?: NameList | null}} [given]
+ * @returns {{screen: string, act: string, owed: boolean}[]}
+ */
 export function registryActGaps({ screens = [], declared = [] } = {}) {
   const have = declared instanceof Set ? declared : new Set(Array.isArray(declared) ? declared : declared && typeof declared === "object" ? Object.keys(declared) : []);
   const gaps = [];

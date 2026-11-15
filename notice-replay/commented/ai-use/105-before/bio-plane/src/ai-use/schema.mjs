@@ -3,6 +3,7 @@
  * `declareTable` (its R21) as `AI_USE_TABLES` states: `export: "admin-only"`, `sight: "group"`, cleared by the
  * whole-store purge only, except that a project's limits, their history and its exploring asks are also deleted with
  * the project (keyed by `project_id`, record-core R46). */
+/** @type {string} */
 export const AI_USE_SCHEMA = `
 -- R1 (was ai-runs R48, R49; B8): THE USE COUNTER, one row per paying account ('owner': 'group', 'project:<id>',
 -- 'member:<id>', or 'not recorded' for a row counted before T40), member, local day (civil-time's localDay in the

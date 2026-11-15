@@ -3,10 +3,18 @@
    these (K624). The plane's registration hands both at start (`store-assembly` R18); this module imports nothing of `interface-shell`. */
 
 /* R12 on `ADMIN_SCREENS`: `updates`, after Security, is drawn only to a session that administers */
+/**
+ * @type {readonly string[]}
+ * @bound each the id of a screen of the registry
+ */
 export const ADMIN_SCREENS = Object.freeze(["updates"]);
 
 /* R12: the acts their owners refuse to a member who does not administer: `membership`'s administrator acts (its R84's
    one answer), `credentials`' group-key acts (its R33) and `aikeepaway` (its R51). */
+/**
+ * @type {ReadonlySet<string>}
+ * @bound each the name of an op the member op table declares
+ */
 export const ADMIN_ACTS = Object.freeze(new Set([
   "memberadd", "membercaps", "memberset", "adminendorse", "adminremove", "expertiseconfirm", "hostingaccessset", "invitewithdraw",
   "websitekeycreate", "websitekeyset", "websitekeyrevoke", "joinlinkenable", "joinlinkset", "joinlinkreplace", "joinlinkoff",

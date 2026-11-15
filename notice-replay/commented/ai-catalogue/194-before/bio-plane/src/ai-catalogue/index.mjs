@@ -25,9 +25,706 @@ export { validatePayload, CATALOGUE_CHECKS, CATALOGUE_STATES, STATE_WORDS, AI_CA
   ADVISORY_KINDS, ADVISORY_REASONS, MOVES, CHECK_IDS, SHOWN_IDS, ENTRY_ID_MAX, DISPLAY_NAME_MAX, EFFORT_WORD_MAX, GRADES,
   LIFECYCLE, VERDICTS, LIMIT_KINDS };
 
+/* ------------------------------------------------------------------ kinds (the interface's structured comments) */
+
+/** @import { CatalogueCode, CatalogueState } from './checks.mjs' */
+
+/** @typedef {'REPRODUCED' | 'REPORTED' | 'STATED'} Grade */
+/** @typedef {'listed' | 'watch' | 'lapsed' | 'retired'} Lifecycle */
+/** @typedef {'P1' | 'P2' | 'P3' | 'P4' | 'P5' | 'P6' | 'P7'} CheckId */
+/** @typedef {'terms_permit_use' | 'breach_notification'} ShownId */
+/** @typedef {'passes' | 'passes_with_limits' | 'not_suitable' | 'not_yet_rated'} Verdict */
+/** @typedef {'context_depth' | 'no_image_input' | 'no_streaming' | 'no_parallel_tools' | 'output_cap'} LimitKind */
+/** @typedef {'watch' | 'lapse' | 'retire' | 'clear'} AdvisoryKind */
+/** @typedef {'deprecation' | 'canary_drift' | 'served_mismatch' | 'team_divergence' | 'health' | 'terms_change' | 'other'} AdvisoryReason */
+/** @typedef {'schedule' | 'manual'} CheckTrigger */
+/** @typedef {'member' | 'project' | 'team' | 'unconfirmed'} PlanScope */
+/** @typedef {'api' | 'subscription' | 'aggregator' | 'gateway' | 'builtin' | 'custom'} PlanKind */
+/** @typedef {'direct' | 'aggregator' | 'gateway' | 'builtin' | 'custom'} HostKind */
+/** @typedef {'api_key' | 'signin_token' | 'none'} CredentialKind */
+/** @typedef {'pasted_key' | 'provider_signin' | 'built_in'} ConnectionWay */
+/** @typedef {'gateway' | 'sealed' | 'reference' | 'issued' | 'none'} Means */
+/** @typedef {'reported' | 'priced' | 'none'} Money */
+/** @typedef {'shared_worker' | 'member_runtime' | 'member_device'} Runtime */
+/** @typedef {'sealed' | 'reference_only' | 'member_device'} TokenStorage */
+/** @typedef {'link' | 'choose' | 'copy' | 'approve' | 'confirm'} StepKind */
+/** @typedef {'political_use' | 'high_risk_review' | 'indemnity' | 'no_sla' | 'deprecation_notice' | 'other'} TermKind */
+
+/**
+ * OPEN: a fact not known, never defaulted (R2).
+ * @typedef {{open: true}} Open
+ */
+
+/**
+ * The evidence beside a claim (R1, R3).
+ * @typedef {Object} Evidence
+ * @property {Grade} grade
+ * @property {string} source
+ * @property {string} date
+ * @property {string} [page]
+ * @property {string} [quote]
+ * @bound source: text, not blank, at most 2000 characters
+ * @bound date: a real calendar day written YYYY-MM-DD
+ * @bound page: text, not blank, at most 2000 characters; with quote, required on a check answer
+ * @bound quote: text, not blank, at most 8000 characters; with page, required on a check answer
+ */
+
+/**
+ * A claim: a value with its evidence, or OPEN.
+ * @template T
+ * @typedef {{value: T, ev: Evidence} | Open} Claim
+ */
+
+/**
+ * A text people read, by language tag; `en` always.
+ * @typedef {{en: string, [lang: string]: string}} Words
+ * @bound each tag a language tag (`en`, `pt-BR`); each text not blank, at most 8000 characters
+ */
+
+/**
+ * A check's answer (R11-R13): met or not met with quoted evidence, or OPEN.
+ * @typedef {{answer: 'met' | 'not_met', ev: Evidence} | {answer: 'OPEN', ev?: Evidence} | Open} CheckAnswer
+ */
+
+/**
+ * One limit of a part's verdict.
+ * @typedef {Object} GateLimit
+ * @property {LimitKind} kind
+ * @property {unknown} value
+ */
+
+/**
+ * The Gate 1 record of an entry for one part (R14).
+ * @typedef {Object} GateRecord
+ * @property {Verdict} verdict
+ * @property {GateLimit[]} limits
+ * @property {boolean} partial_coverage
+ * @property {{bank: SuiteVersion, scorer: SuiteVersion, thresholds: SuiteVersion, image: SuiteVersion}} suiteVersions
+ * @property {string | null} tier
+ * @property {string} at
+ * @property {string | null} run_ref
+ * @property {Evidence} ev
+ * @bound limits: none unless the verdict is passes_with_limits, then at least one
+ * @bound at: a real instant YYYY-MM-DDTHH:MM:SSZ or a real day YYYY-MM-DD
+ * @bound ev: graded REPRODUCED or REPORTED; REPRODUCED names its run_ref
+ * @bound tier: at most 64 characters, not blank
+ * @bound run_ref: at most 200 characters, not blank
+ */
+
+/**
+ * A suite's version: text of at most 200 characters, a whole number, or null.
+ * @typedef {string | number | null} SuiteVersion
+ */
+
+/**
+ * One measured characterization property, CH1 to CH9 (R9).
+ * @typedef {Object} Characteristic
+ * @property {unknown} value
+ * @property {string} method
+ * @property {number | null} samples
+ * @property {unknown} conditions
+ * @property {string} [reviewer] CH4 only
+ * @property {Evidence} ev
+ * @bound method: text, not blank, at most 400 characters
+ * @bound samples: whole number, 0 or more
+ * @bound ev: graded REPRODUCED or REPORTED; CH4's REPORTED, with its reviewer
+ */
+
+/**
+ * An entry's characterization (R9): CH1 to CH9 measured or OPEN, CH10 a reference to the checks.
+ * @typedef {Object} Characterization
+ * @property {Characteristic | Open} CH1
+ * @property {Characteristic | Open} CH2
+ * @property {Characteristic | Open} CH3
+ * @property {Characteristic | Open} CH4
+ * @property {Characteristic | Open} CH5
+ * @property {Characteristic | Open} CH6
+ * @property {Characteristic | Open} CH7
+ * @property {Characteristic | Open} CH8
+ * @property {Characteristic | Open} CH9
+ * @property {{ref: 'checks'}} CH10
+ */
+
+/**
+ * An entry's capabilities (R7), `agent-model` R30's names and value sets.
+ * @typedef {Object} Capabilities
+ * @property {Claim<boolean>} tools
+ * @property {Claim<boolean>} parallel_tools
+ * @property {Claim<boolean>} schema_output
+ * @property {Claim<boolean>} schema_with_tools
+ * @property {Claim<boolean>} image_input
+ * @property {Claim<'none' | 'text' | 'tool_calls'>} streaming
+ * @property {Claim<'none' | 'provider_state' | 'resend_only'>} session
+ * @property {Claim<'none' | 'automatic' | 'explicit'>} caching
+ * @property {Claim<boolean>} batch
+ */
+
+/**
+ * An entry's prices (R8): an unstated figure is null, never 0.
+ * @typedef {Object} EntryPrices
+ * @property {'usd_per_million_tokens'} unit
+ * @property {number | null} input
+ * @property {number | null} output
+ * @property {number | null} cache_read
+ * @property {number | null} cache_write
+ * @property {Object[]} [tiers]
+ * @property {string} date
+ * @property {Evidence} ev
+ * @bound input: a finite number, 0 or more
+ * @bound output: a finite number, 0 or more
+ * @bound cache_read: a finite number, 0 or more
+ * @bound cache_write: a finite number, 0 or more
+ * @bound date: a real calendar day written YYYY-MM-DD
+ */
+
+/**
+ * An entry's standard task costs, by part.
+ * @typedef {Object} StandardTaskCosts
+ * @property {string} unit
+ * @property {{[part: string]: {low: number, high: number}}} by_part
+ * @property {string} price_date
+ * @property {Evidence} ev
+ * @bound unit: text, not blank, at most 64 characters
+ * @bound by_part: each key a part of the payload; low and high finite, 0 or more, low no more than high
+ * @bound price_date: a real calendar day written YYYY-MM-DD
+ */
+
+/**
+ * How a host that routes to others is pinned (R6); never a fallback.
+ * @typedef {Object} EntryPin
+ * @property {string[]} only
+ * @property {false} allow_fallbacks
+ * @property {true} deny_collection
+ * @property {boolean} require_parameters
+ * @property {boolean} [zero_retention]
+ * @bound only: at least one, each a provider of the payload
+ * @bound zero_retention: true when the entry's zero_retention is true
+ */
+
+/**
+ * An entry: a model at a host (R4-R15).
+ * @typedef {Object} CatalogueEntry
+ * @property {string} entry_id
+ * @property {string} display_name
+ * @property {string} provider
+ * @property {string} host
+ * @property {string} model
+ * @property {string} version
+ * @property {'dated' | 'fixed'} version_kind
+ * @property {string[]} plan_ids
+ * @property {string} adapter_type
+ * @property {{id: string, min_version: number}} profile
+ * @property {{name: string, jurisdiction: string | Open}} developer
+ * @property {Capabilities} capabilities
+ * @property {{values: string[], default?: string | null, ev: Evidence}} effort_set
+ * @property {{low: string, medium: string, ev: Evidence}} [effort_classes]
+ * @property {{context_stated: Claim<number>, context_effective: Claim<number>, max_output: Claim<number>, image_max_bytes: Claim<number>}} limits
+ * @property {EntryPrices | Open} prices
+ * @property {Claim<boolean>} zero_retention
+ * @property {StandardTaskCosts | Open} standard_task_costs
+ * @property {EntryPin | null} [pin]
+ * @property {string[]} served_ids
+ * @property {Record<CheckId, CheckAnswer>} checks
+ * @property {Record<ShownId, CheckAnswer>} shown
+ * @property {{[part: string]: GateRecord}} gate
+ * @property {Characterization | null} [characterization]
+ * @property {Lifecycle} lifecycle
+ * @property {string} confirmed_at
+ * @property {string} [shutdown_date]
+ * @bound entry_id: 1 to 96 characters, each a-z, 0-9, `.`, `_`, `:` or `-`
+ * @bound display_name: text, not blank, at most 60 characters
+ * @bound provider: the id of one of the payload's providers
+ * @bound host: the id of one of the payload's providers; a pin when its kind is aggregator or gateway, else none
+ * @bound model: text, not blank, at most 200 characters
+ * @bound version: text, not blank, at most 200 characters
+ * @bound plan_ids: at least one, distinct, each a plan of the payload whose provider is the host
+ * @bound adapter_type: 1 to 64 characters, each a-z, 0-9, `.`, `_`, `:` or `-`
+ * @bound profile: id a profile of the payload of the same adapter_type; min_version whole, 1 to that profile's version
+ * @bound developer: name text of at most 200 characters; jurisdiction 1 to 16 letters, digits or hyphens, or OPEN
+ * @bound effort_set: values distinct lowercase words of at most 16 letters; default one of them, none when there are none
+ * @bound effort_classes: low and medium each one of effort_set's values; only when there are values
+ * @bound limits: each value a finite number, 0 or more
+ * @bound served_ids: at least one, each text of at most 200 characters
+ * @bound checks: P7 never met when the developer's jurisdiction is barred by the payload's policy
+ * @bound gate: each key a part of the payload
+ * @bound characterization: present when the lifecycle is listed or watch
+ * @bound confirmed_at: a real calendar day written YYYY-MM-DD
+ * @bound shutdown_date: a real calendar day written YYYY-MM-DD
+ */
+
+/**
+ * A restriction of a plan (R16), quoted.
+ * @typedef {Object} Restriction
+ * @property {string} kind
+ * @property {string} quote
+ * @property {string} page
+ * @property {string} date
+ * @bound kind: text, not blank, at most 64 characters
+ * @bound quote: text, not blank, at most 8000 characters
+ * @bound date: a real calendar day written YYYY-MM-DD
+ */
+
+/**
+ * A binding term of a plan (R22): it carries its quote and restricts nothing.
+ * @typedef {Object} BindingTerm
+ * @property {string} doc
+ * @property {string | number} version
+ * @property {string} section
+ * @property {string} quote
+ * @property {string} effective_from
+ * @property {string} [effective_to]
+ * @property {TermKind} kind
+ * @property {Evidence} ev
+ * @bound doc: text, not blank, at most 400 characters
+ * @bound version: as text, not blank, at most 64 characters
+ * @bound section: text, not blank, at most 200 characters
+ * @bound quote: text, not blank, at most 8000 characters
+ * @bound effective_from: a real calendar day written YYYY-MM-DD
+ * @bound effective_to: a real calendar day written YYYY-MM-DD
+ */
+
+/**
+ * A plan's price basis.
+ * @typedef {Object} PriceBasis
+ * @property {string} basis
+ * @property {number | null} [amount]
+ * @property {unknown} [currency]
+ * @property {unknown} [period]
+ * @property {unknown} includes
+ * @property {unknown} limits
+ * @property {string} date
+ * @property {Evidence} ev
+ * @bound basis: text, not blank, at most 64 characters
+ * @bound amount: a finite number, 0 or more
+ * @bound date: a real calendar day written YYYY-MM-DD
+ */
+
+/**
+ * A plan (R16-R23).
+ * @typedef {Object} CataloguePlan
+ * @property {string} plan_id
+ * @property {string} provider
+ * @property {PlanKind} kind
+ * @property {Claim<PlanScope>} scope
+ * @property {CredentialKind} credential_kind
+ * @property {Claim<Means[]>} means_allowed
+ * @property {ConnectionWay[]} connection_ways
+ * @property {Claim<Runtime[]>} runtimes
+ * @property {Claim<TokenStorage>} token_storage
+ * @property {{min_length: number, max_length: number}} [token_bounds]
+ * @property {PriceBasis | Open} price_basis
+ * @property {Claim<Money>} money
+ * @property {(Restriction | Open)[]} restrictions
+ * @property {BindingTerm[]} binding_terms
+ * @property {string} guidance_id
+ * @property {Claim<boolean>} free_tier_trains
+ * @property {string} [warning_id]
+ * @property {Lifecycle} lifecycle
+ * @property {string} confirmed_at
+ * @bound plan_id: 1 to 96 characters, each a-z, 0-9, `.`, `_`, `:` or `-`
+ * @bound provider: the id of one of the payload's providers
+ * @bound means_allowed: at least one, distinct; `none` alone and only for credential kind none; gateway only for api_key; issued only for signin_token
+ * @bound connection_ways: at least one, distinct
+ * @bound runtimes: at least one, distinct
+ * @bound token_bounds: only for credential kind signin_token; whole numbers, 1 or more, min_length no more than max_length
+ * @bound guidance_id: 1 to 96 characters, each a-z, 0-9, `.`, `_`, `:` or `-`
+ * @bound warning_id: a warning of the payload, required when free_tier_trains is true
+ * @bound confirmed_at: a real calendar day written YYYY-MM-DD
+ */
+
+/**
+ * The guidance that walks a member through connecting a plan (R20).
+ * @typedef {Object} Guidance
+ * @property {string} guidance_id
+ * @property {string} plan_id
+ * @property {{kind: StepKind, text: Words, url?: string}[]} steps
+ * @property {Evidence} ev
+ * @bound steps: at least one; a url is https
+ */
+
+/**
+ * A warning shown before a plan whose free tier trains (R21).
+ * @typedef {Object} Warning
+ * @property {string} warning_id
+ * @property {Words} text
+ * @property {Evidence} ev
+ */
+
+/**
+ * A host profile (R53).
+ * @typedef {Object} HostProfile
+ * @property {string} id
+ * @property {string} adapter_type
+ * @property {number} version
+ * @property {string} base_url
+ * @property {string[]} allowed_hosts
+ * @property {string} auth_style
+ * @property {Object} mappings
+ * @property {Object | null} pin_map
+ * @property {string | Object | null} idempotency
+ * @property {'in_output' | 'apart' | Open} reasoning_billing
+ * @property {unknown[] | Object} features
+ * @property {string[]} quirks
+ * @property {string | Object | null} served_report
+ * @property {string[]} key_shapes
+ * @bound version: whole number, 1 or more
+ * @bound base_url: https, no white space
+ * @bound allowed_hosts: each a-z, 0-9, `.` or `-`
+ * @bound auth_style: `bearer`, `header:<1 to 64 letters, digits or hyphens>`, `binding` or `none`
+ * @bound quirks: each a-z or `_`
+ * @bound key_shapes: each a regular expression of 1 to 400 characters
+ */
+
+/**
+ * A provider or host the payload names.
+ * @typedef {Object} CatalogueProvider
+ * @property {string} id
+ * @property {string} name
+ * @property {HostKind} kind
+ * @bound name: text, not blank, at most 200 characters
+ */
+
+/**
+ * A tested AI that is not an entry (R54).
+ * @typedef {Object} TestedAi
+ * @property {string} subject_id
+ * @property {string} display_name
+ * @property {string} provider_name
+ * @property {string} host_name
+ * @property {string} model
+ * @property {string} version
+ * @property {{name: unknown, jurisdiction: unknown}} developer
+ * @bound subject_id: an entry's form of id, never an entry's id
+ * @bound display_name: text, not blank, at most 60 characters
+ */
+
+/**
+ * A figure of the library: a finite number, 0 or more, null or OPEN.
+ * @typedef {number | null | Open} Figure
+ */
+
+/**
+ * A task's cost range.
+ * @typedef {Object} TaskCost
+ * @property {Figure} low
+ * @property {Figure} high
+ * @property {string} unit
+ * @property {string} price_date
+ * @bound unit: text, not blank, at most 64 characters
+ * @bound price_date: a real calendar day written YYYY-MM-DD
+ */
+
+/**
+ * A row of the published results library (R43, R44).
+ * @typedef {Object} LibraryRow
+ * @property {string} row_id
+ * @property {string} subject_id
+ * @property {Object} suiteVersions
+ * @property {{[part: string]: {verdict: Verdict, limits: unknown[]}}} parts
+ * @property {{median_ms: Figure, p90_ms: Figure, window: unknown} | Open} speed
+ * @property {TaskCost | Open} task_cost
+ * @property {'civicsmith' | 'team'} tested_by
+ * @property {string} tested_at
+ * @property {'REPRODUCED' | 'REPORTED'} grade
+ * @property {boolean} repeated_by_civicsmith
+ * @property {string} [team_name]
+ * @property {string} [consent_ref]
+ * @bound subject_id: an entry's or a tested AI's id
+ * @bound parts: each key a part of the payload
+ * @bound tested_at: a real calendar day written YYYY-MM-DD
+ * @bound grade: REPRODUCED when tested_by civicsmith, else REPORTED
+ * @bound team_name: only a team's row, with its consent_ref; text of at most 120 characters
+ */
+
+/**
+ * The combined record of a subject for one part (R55), Civicsmith's.
+ * @typedef {Object} CombinedResult
+ * @property {string} subject_id
+ * @property {string} part
+ * @property {string} as_of
+ * @property {{from: unknown, to: unknown}} window
+ * @property {{total: number, reproduced: number, reported: number}} results
+ * @property {number} left_out
+ * @property {{[group: string]: {k: number, n: number, wilson_low: unknown, wilson_high: unknown}}} groups
+ * @property {Verdict} verdict
+ * @property {unknown[]} limits
+ * @property {{median_ms: Figure, p90_ms: Figure} | Open} speed
+ * @property {TaskCost | Open} task_cost
+ * @property {Object} suiteVersions
+ * @property {boolean} confirmed
+ * @bound subject_id: an entry's or a tested AI's id
+ * @bound as_of: a real calendar day written YYYY-MM-DD
+ * @bound results: whole numbers; total is reproduced plus reported
+ * @bound confirmed: true exactly when total is above 0 and reported is 0
+ * @bound left_out: whole number, 0 or more
+ * @bound groups: k and n whole, k no more than n
+ */
+
+/**
+ * A catalogue payload (R36), as signed and published.
+ * @typedef {Object} CataloguePayload
+ * @property {number} schema_version
+ * @property {number} seq
+ * @property {string} issued_at
+ * @property {CatalogueProvider[]} providers
+ * @property {string[]} parts
+ * @property {{origin: {check: 'P7', barred: string[]}, review_period_days: number, stale_after_days: number}} policy
+ * @property {HostProfile[]} profiles
+ * @property {CataloguePlan[]} plans
+ * @property {Guidance[]} guidance
+ * @property {Warning[]} warnings
+ * @property {CatalogueEntry[]} entries
+ * @property {TestedAi[]} tested
+ * @property {LibraryRow[]} library
+ * @property {CombinedResult[]} combined
+ * @bound schema_version: whole number, 1 or more, one the reader reads
+ * @bound seq: whole number, 1 or more
+ * @bound issued_at: a real instant written YYYY-MM-DDTHH:MM:SSZ
+ * @bound parts: at least one, distinct, each 1 to 32 characters a-z, 0-9, `.`, `_`, `:` or `-`
+ * @bound policy: barred each 1 to 16 letters, digits or hyphens; review_period_days and stale_after_days whole, 1 or more
+ * @bound providers: ids distinct; so too profiles, plans, guidance, warnings, entries, tested, library rows, and combined subject and part pairs
+ */
+
+/* ---- what the catalogue hands back */
+
+/**
+ * An entry as `entryOf` answers it (R28).
+ * @typedef {CatalogueEntry & {state: Lifecycle, watch: boolean, recipient: {provider: string, host: string},
+ *   needs_newer_release: boolean, omitted_since: number | null, review_overdue: boolean}} EntryView
+ */
+
+/**
+ * An entry on the closed list for a part (R30).
+ * @typedef {Object} OfferedEntry
+ * @property {string} entry_id
+ * @property {string} display_name
+ * @property {string} provider
+ * @property {string} host
+ * @property {{provider: string, host: string}} recipient
+ * @property {Lifecycle} state
+ * @property {boolean} watch
+ * @property {{verdict: Verdict, limits: GateLimit[], grade: Grade}} part
+ * @property {string[]} plans the ids of its plans offered
+ * @property {{[check: string]: 'met' | 'not_met' | 'OPEN'}} checks the checks in force
+ */
+
+/** @typedef {'PLAN_NO_GUIDANCE' | 'PLAN_LAPSED' | 'PLAN_RETIRED' | 'PLAN_NO_MEANS'} PlanReason */
+
+/**
+ * One reason an entry is not offered (R31), in a fixed order.
+ * @typedef {{code: 'ENTRY_UNKNOWN' | 'CATALOGUE_UNAVAILABLE' | 'ENTRY_LAPSED' | 'ENTRY_RETIRED' | 'NEEDS_NEWER_RELEASE' | 'PART_NOT_RATED'}
+ *   | {code: 'PART_NOT_PASSED', verdict: Verdict}
+ *   | {code: 'CHECK_NOT_MET' | 'CHECK_OPEN', check: CheckId}
+ *   | {code: 'NO_PLAN_OFFERED', plans: {plan_id: string, reasons: PlanReason[]}[]}} OfferReason
+ */
+
+/**
+ * A plan as `plansOf` answers it (R29).
+ * @typedef {Object} PlanRow
+ * @property {string} plan_id
+ * @property {string} provider
+ * @property {PlanKind} kind
+ * @property {PlanScope} scope
+ * @property {('member' | 'project' | 'group')[]} levels
+ * @property {boolean} unconfirmed
+ * @property {CredentialKind} credential_kind
+ * @property {ConnectionWay[]} connection_ways
+ * @property {{runtimes: Runtime[] | Open, token_storage: TokenStorage | Open, enforce: 'level_rule_only' | 'deployment'}} constraints
+ * @property {{doc: string, version: string | number, effective_from: string, days_until: number}[]} terms_pending
+ * @property {boolean} needs_reconfirmation
+ * @property {string} terms_version
+ * @property {string | null} warning_version
+ * @property {boolean} free_tier_unconfirmed
+ * @property {Means[] | Open} means_allowed
+ * @property {Money | Open} money
+ * @property {{min_length: number, max_length: number} | null} token_bounds
+ * @property {boolean | Open} free_tier_trains
+ * @property {string} guidance_id
+ * @property {string | null} warning_id
+ * @property {BindingTerm[]} binding_terms
+ * @property {(Restriction | Open)[]} restrictions
+ * @property {PriceBasis | Open} price_basis
+ * @property {Lifecycle} state
+ * @property {number | null} omitted_since
+ * @property {boolean} offered
+ * @property {PlanReason[]} reasons
+ * @bound terms_version: 64 lowercase hex digits, the SHA-256 of the restrictions and binding terms
+ * @bound warning_version: 64 lowercase hex digits, the SHA-256 of the warning's text
+ * @bound terms_pending: ordered by effective_from, each after the day asked about
+ */
+
+/**
+ * The plans under one provider.
+ * @typedef {{provider: string, plans: PlanRow[]}} PlanGroup
+ */
+
+/**
+ * A library row as `libraryRows` answers it (R45).
+ * @typedef {LibraryRow & {age_days: number, on_list: Lifecycle | 'not_listed', confirmed: boolean}} LibraryRowView
+ * @bound age_days: whole days from tested_at to the day asked about, less than RESULT_ACTIVE_MONTHS months
+ */
+
+/**
+ * An advisory not yet in effect.
+ * @typedef {Object} UpcomingAdvisory
+ * @property {number} seq
+ * @property {{entry_id: string} | {plan_id: string}} target
+ * @property {AdvisoryKind} kind
+ * @property {AdvisoryReason} reason
+ * @property {string} effective_at
+ */
+
+/**
+ * The catalogue's state and what it is serving (R32); only `state` and `word` when it cannot be read.
+ * @typedef {Object} CatalogueStateView
+ * @property {CatalogueState} state
+ * @property {string} word the state's word key
+ * @property {number | null} [seq]
+ * @property {number | null} [schema_version]
+ * @property {string | null} [issued_at]
+ * @property {'seed' | 'pulled' | null} [source]
+ * @property {{at: string, trigger: CheckTrigger, outcome: string} | null} [last_check]
+ * @property {number | null} [last_good_seq]
+ * @property {number | null} [age_days]
+ * @property {boolean} [rolled_back]
+ * @property {number | null} [held_back_seq]
+ * @property {number | null} [advisories_seq]
+ * @property {UpcomingAdvisory[]} [upcoming]
+ * @property {{total: number, needing_release: number}} [entries]
+ */
+
+/**
+ * A check this copy recorded (R35).
+ * @typedef {{at: string, trigger: CheckTrigger, outcome: string}} CheckRecord
+ */
+
+/**
+ * The members a refusal adds to an answer that may be one: present exactly when `ok` is false.
+ * @typedef {Object} RefusedMembers
+ * @property {string} [code] one of CatalogueCode, or the signature check's own reason (MALFORMED and others)
+ * @property {string} [reason]
+ * @property {string} [check] the row's check, for a CatalogueCode
+ * @property {string} [word] the row's word key, for a CatalogueCode
+ */
+
+/**
+ * The GET a caller makes (R34), or CATALOGUE_PATH_INVALID with the kind and path asked for.
+ * @typedef {Object} PullRequestAnswer
+ * @property {boolean} ok
+ * @property {'GET'} [method]
+ * @property {string} [url]
+ * @property {'manual'} [redirect]
+ * @property {{accept: 'application/json', 'user-agent': string}} [headers]
+ * @property {number} [max_bytes]
+ * @property {CatalogueCode} [code] when refused
+ * @property {CatalogueCode} [reason] when refused
+ * @property {string} [check] when refused
+ * @property {string} [word] when refused
+ * @property {string | null} [kind] when refused
+ * @property {string | null} [path] when refused
+ * @bound url: CATALOGUE_ADDRESS, or a path beneath it
+ * @bound max_bytes: INDEX_MAX_BYTES for the index, CATALOGUE_MAX_BYTES for a payload
+ */
+
+/**
+ * What a payload's acceptance answers: outcome none when it is already held, found when held now (applied when it is the
+ * current one, held_unread when its schema is not read); or refused: DIGEST_MISMATCH, NOT_NEWER (with heldSeq),
+ * CATALOGUE_PAYLOAD_INVALID (with path), ADVISORY_BAD_MOVE, or the signature check's own reason (with field).
+ * @typedef {RefusedMembers & {ok: boolean, outcome?: string, seq?: number | null, applied?: boolean, held_unread?: boolean,
+ *   heldSeq?: number, path?: string | null, field?: string}} PayloadAnswer
+ */
+
+/**
+ * One advisory of an index, as `receive` answers it: its outcome, or its refusal's code with its row.
+ * @typedef {{seq: number | null, outcome: string, check?: string, word?: string}} AdvisoryOutcome
+ */
+
+/**
+ * What `receive` answers: for an index, its advisories and the payload to fetch when it is newer; for a payload, its
+ * acceptance; outcome `unreachable` for a status other than 200; when refused, the code is also the outcome. `outcome`
+ * is always there.
+ * @typedef {PayloadAnswer & {advisories?: AdvisoryOutcome[], fetch?: PullRequestAnswer | null}} ReceiveAnswer
+ */
+
+/**
+ * The SQL of a Durable Object's storage, as far as this module uses it.
+ * @typedef {{exec: (query: string, ...bindings: unknown[]) => Iterable<any>}} SqlStorage
+ */
+
+/**
+ * record-core, as far as this module uses it: its transaction and its table declaration (R46).
+ * @typedef {{transact?: (fn: () => void) => unknown, declareTable?: (module: string, tables: typeof AI_CATALOGUE_DECLARATIONS) => any}} RecordCoreUse
+ */
+
+/**
+ * The environment this module reads: a pinned clock for tests and walks (R50).
+ * @typedef {{BIO_NOW_MS?: string | number}} CatalogueEnv
+ */
+
+/**
+ * A row of ai_catalogue_payloads: one chunk of a held, verified payload's text.
+ * @typedef {Object} PayloadRow
+ * @property {number} seq
+ * @property {number} part
+ * @property {number} parts
+ * @property {number} schema_version
+ * @property {string} issued_at
+ * @property {string} sha256
+ * @property {number} bytes
+ * @property {string} armored
+ * @property {'seed' | 'pulled'} source
+ * @property {string} received_at
+ * @property {string} body
+ * @bound body: at most 480000 UTF-16 units
+ * @storedrows ai_catalogue_payloads
+ */
+
+/**
+ * A row of ai_catalogue_advisories: a verified advisory with its signature.
+ * @typedef {Object} AdvisoryRow
+ * @property {number} seq
+ * @property {'entry_id' | 'plan_id'} target_kind
+ * @property {string} target_id
+ * @property {string} kind
+ * @property {string} reason
+ * @property {string} effective_at
+ * @property {string} issued_at
+ * @property {string} armored
+ * @property {string} received_at
+ * @storedrows ai_catalogue_advisories
+ */
+
+/**
+ * A row of ai_catalogue_checks: one per receive.
+ * @typedef {Object} CheckRow
+ * @property {number} n
+ * @property {string} at
+ * @property {CheckTrigger} trigger
+ * @property {'index' | 'payload'} kind
+ * @property {string} outcome
+ * @property {number | null} seq
+ * @storedrows ai_catalogue_checks
+ */
+
+/**
+ * A row of ai_catalogue_rollbacks: each rollback and unrollback.
+ * @typedef {Object} RollbackRow
+ * @property {number} n
+ * @property {'rollback' | 'unrollback'} act
+ * @property {number | null} from_seq
+ * @property {number | null} to_seq
+ * @property {string} by
+ * @property {string | null} reason
+ * @property {string} at
+ * @storedrows ai_catalogue_rollbacks
+ */
+
 /* ------------------------------------------------------------------ parameters (Suggestions; K5457, K5482, K5483) */
 
-/** R37: the schema versions this release reads. */
+/**
+ * R37: the schema versions this release reads.
+ * @type {readonly number[]}
+ */
 export const SCHEMA_VERSIONS_READ = Object.freeze([1]);
 export const INDEX_MAX_BYTES = 64 * 1024;
 export const CATALOGUE_MAX_BYTES = 4 * 1024 * 1024;
@@ -36,6 +733,7 @@ export const RESULT_ACTIVE_MONTHS = 6;
 export const CATALOGUE_USER_AGENT = "Civicsmith-catalogue/1";
 /** R34: the fixed address of the index `ai-issuer` serves, the publisher's own; payloads are relative paths beneath it. */
 export const CATALOGUE_ADDRESS = "https://ai-issuer.believeinoakland.workers.dev/catalogue/index.json";
+/** @type {readonly CheckTrigger[]} */
 export const CHECK_TRIGGERS = Object.freeze(["schedule", "manual"]);
 
 /* The store's single value is about 2.1 MB; a payload's text is held in chunks of at most this many UTF-16 units, so no
@@ -59,10 +757,20 @@ function monthsBefore(d, months) {
   const last = new Date(Date.UTC(y, m, 0)).getUTCDate();
   return `${String(y).padStart(4, "0")}-${String(m).padStart(2, "0")}-${String(Math.min(+d.slice(8, 10), last)).padStart(2, "0")}`;
 }
+/**
+ * @template T
+ * @param {T} x
+ * @returns {T}
+ */
 function deepFreeze(x) {
   if (x && typeof x === "object" && !Object.isFrozen(x)) { Object.freeze(x); for (const v of Object.values(x)) deepFreeze(v); }
   return x;
 }
+/**
+ * @template T
+ * @param {T} x
+ * @returns {T}
+ */
 const out = (x) => deepFreeze(structuredClone(x));
 const toBytes = (body) => (typeof body === "string" ? te.encode(body) : body instanceof Uint8Array ? body
   : body instanceof ArrayBuffer ? new Uint8Array(body) : null);
@@ -77,7 +785,12 @@ const PATH_RE = /^[a-z0-9._/-]+$/;
 
 /** R34: the GET a caller makes for the `index`, or for a payload at a relative `path` beneath the address. Headers are
  *  only `accept` and the fixed user agent; nothing of the team, its members, settings or version travels. The caller
- *  follows no redirect and reads at most `max_bytes`. */
+ *  follows no redirect and reads at most `max_bytes`.
+ * @param {string} kind `index` or `payload`; any other refused
+ * @param {string} [path] a payload's path, for kind `payload` only
+ * @returns {PullRequestAnswer}
+ * @bound path: a relative path of segments of a-z, 0-9, `.`, `_`, `/` or `-`; no segment empty, `.` or `..`
+ */
 export function pullRequest(kind, path) {
   /* DEC-49 REGION is-path-relative */
   let url;
@@ -103,6 +816,10 @@ export class AiCatalogue {
   #pending = null;          /* R35: the index's catalogue line, until its payload is received */
   #view = null;             /* the applied fold, rebuilt after every write */
 
+  /**
+   * @param {{sql?: SqlStorage, core?: RecordCoreUse | null, env?: CatalogueEnv, clock?: (() => number) | null,
+   *   keys?: readonly string[], supported?: readonly number[]}} [options] `keys` the signing keys' lines accepted
+   */
   constructor({ sql, core = null, env = {}, clock = null, keys = CATALOGUE_KEYS, supported = SCHEMA_VERSIONS_READ } = {}) {
     this.#sql = sql;
     this.#core = core;
@@ -110,6 +827,7 @@ export class AiCatalogue {
     this.#clock = typeof clock === "function" ? clock : () => Date.now();
     this.#keys = keys;
     this.#supported = Object.freeze([...supported]);
+    /** @type {Promise<boolean> | null} resolves once every held payload and advisory is re-verified */
     this.ready = null;
   }
 
@@ -125,7 +843,11 @@ export class AiCatalogue {
     return iso(this.#clock());
   }
 
-  /* R46: the tables, at every boot, idempotent; then their declaration. */
+  /**
+   * R46: the tables, at every boot, idempotent; then their declaration.
+   * @returns {void}
+   * @throws {Error} when record-core refuses the tables' declaration
+   */
   migrate() {
     const bare = AI_CATALOGUE_SCHEMA.split("\n").filter((l) => !l.trim().startsWith("--")).join("\n");
     for (const st of bare.split(";")) { const t = st.trim(); if (t) this.#sql.exec(t); }
@@ -138,7 +860,9 @@ export class AiCatalogue {
   #declared = false;
 
   /** R47: everything held, re-read from the tables and re-verified: a payload whose text does not hash to its statement,
-   *  or whose statement does not verify, or an advisory that does not, is not read. */
+   *  or whose statement does not verify, or an advisory that does not, is not read.
+   * @returns {Promise<boolean>}
+   */
   async start() {
     this.#held.clear();
     const bySeq = new Map();
@@ -266,7 +990,12 @@ export class AiCatalogue {
   /* ---------------------------------------------------------------- writers */
 
   /** R38: what the copy's adapters can serve, `[{type, profiles: {id: version}}]`, held in memory, called at start by the
-   *  module that owns the adapters. */
+   *  module that owns the adapters.
+   * @param {{type: string, profiles: {[profile: string]: number}}[]} list
+   * @returns {{ok: true, types: string[]}} every type held, sorted
+   * @throws {TypeError} when `list` is not a list of adapter types
+   * @bound list: each type 1 or more of a-z, 0-9, `.`, `_`, `:` or `-`; each version a whole number, 1 or more
+   */
   registerAdapterTypes(list) {
     if (!Array.isArray(list)) throw new TypeError("ai-catalogue: registerAdapterTypes takes a list");
     for (const t of list) {
@@ -281,6 +1010,7 @@ export class AiCatalogue {
   /* R35, R36, R37, R39: a payload accepted only when, in this order, its bytes are the statement's, the statement
      verifies, its seq is newer than every held one, its schema is read and its document is valid; a payload of a schema
      this release cannot read is held verified and unapplied. Acceptance is atomic. */
+  /** @returns {Promise<PayloadAnswer>} */
   async #acceptPayload(statement, armored, body, source, at) {
     const bytes = toBytes(body);
     /* DEC-49 REGION is-digest-indexed */
@@ -393,7 +1123,11 @@ export class AiCatalogue {
   }
 
   /** R39: the release's seed payload, verified as a pulled one is (`statement` the fields R51 binds, `armored` its
-   *  signature, `body` its bytes) and held as `source: "seed"`; one older than a held payload is `NOT_NEWER`. */
+   *  signature, `body` its bytes) and held as `source: "seed"`; one older than a held payload is `NOT_NEWER`.
+   * @param {{statement?: {seq: number, schema_version: number, issued_at: string, sha256: string, bytes: number},
+   *   armored?: string, body?: string | Uint8Array | ArrayBuffer, at?: string | number}} [seed]
+   * @returns {Promise<PayloadAnswer>}
+   */
   async loadSeed({ statement, armored, body, at } = {}) {
     const r = await this.#acceptPayload(statement, armored, body, "seed", this.#now(at));
     return out(r);
@@ -402,7 +1136,12 @@ export class AiCatalogue {
   /** R35: the only way a pulled byte becomes state. `kind` is `index` or `payload`; `status` the HTTP status; `body` the
    *  bytes read; `trigger` `schedule` or `manual`. The index's advisories are each verified and applied; its payload is
    *  asked for (`fetch`) only when its seq is above every held one; a payload is judged against the index's line for it.
-   *  Each call appends one check, `{at, trigger, outcome}`. */
+   *  Each call appends one check, `{at, trigger, outcome}`.
+   * @param {{kind?: 'index' | 'payload', status?: number, body?: string | Uint8Array | ArrayBuffer, at?: string | number,
+   *   trigger?: CheckTrigger}} [pulled]
+   * @returns {Promise<ReceiveAnswer>}
+   * @bound body: the index at most INDEX_MAX_BYTES
+   */
   async receive({ kind, status, body, at, trigger } = {}) {
     const when = this.#now(at);
     const how = CHECK_TRIGGERS.includes(trigger) ? trigger : "manual";
@@ -452,7 +1191,12 @@ export class AiCatalogue {
   }
 
   /** R41: a held, verified earlier payload made current; those at or below the seq rolled back from stay held, unapplied,
-   *  until `unrollback` or a higher payload. Who may is the caller's. */
+   *  until `unrollback` or a higher payload. Who may is the caller's.
+   * @param {{to_seq?: number, by?: string, reason?: string, at?: string | number}} [asked]
+   * @returns {{ok: boolean, from_seq?: number, to_seq?: number | null, held_back_seq?: number, by?: string, reason?: string,
+   *   at?: string, code?: CatalogueCode, check?: string, word?: string}} refused CATALOGUE_ROLLBACK_UNKNOWN, `reason` then the code
+   * @bound to_seq: a held, readable payload's seq below the current one; by and reason not empty
+   */
   rollback({ to_seq, by, reason, at } = {}) {
     const view = this.#fold();
     const target = this.#held.get(to_seq);
@@ -470,7 +1214,13 @@ export class AiCatalogue {
     return out({ ok: true, from_seq: row.from_seq, to_seq, held_back_seq: this.#hold().held_back_seq, by, reason, at: when });
   }
 
-  /** R41: the hold cleared; the highest held payload applies. */
+  /**
+   * R41: the hold cleared; the highest held payload applies.
+   * @param {{by?: string, at?: string | number}} [asked]
+   * @returns {{ok: boolean, cleared?: boolean, current?: number | null, code?: CatalogueCode, reason?: CatalogueCode,
+   *   check?: string, word?: string, to_seq?: number | null}} `current` when cleared; refused CATALOGUE_ROLLBACK_UNKNOWN
+   * @bound by: not empty, when there is a hold to clear
+   */
   unrollback({ by, at } = {}) {
     const when = this.#now(at);
     const had = this.#hold();
@@ -507,12 +1257,14 @@ export class AiCatalogue {
   }
 
   /* R29: a plan's row. */
+  /** @returns {PlanRow} */
   #planRow(held, view, at) {
     const p = held.rec;
     const state = this.#stateOf("plan", p.plan_id, held, at);
     const day = dayOf(at);
     const scope = isOpen(p.scope) ? "unconfirmed" : p.scope.value;
     const unconfirmed = scope === "unconfirmed";
+    /** @type {PlanReason[]} */
     const reasons = [];
     const g = view.guidance.get(p.guidance_id);
     if (!g || g.plan_id !== p.plan_id) reasons.push("PLAN_NO_GUIDANCE");
@@ -542,8 +1294,10 @@ export class AiCatalogue {
   }
 
   /* R30, R31: every condition an entry fails for a part under the checks in force, in R31's fixed order. */
+  /** @returns {{reasons: OfferReason[], state: Lifecycle, verdict: Verdict, g: GateRecord, offered: string[]}} */
   #judge(held, view, part, checks, at) {
     const e = held.rec;
+    /** @type {OfferReason[]} */
     const reasons = [];
     const state = this.#stateOf("entry", e.entry_id, held, at);
     if (state === "lapsed") reasons.push({ code: "ENTRY_LAPSED" });
@@ -564,6 +1318,7 @@ export class AiCatalogue {
     return { reasons, state, verdict, g, offered };
   }
 
+  /** @returns {EntryView} */
   #entryRow(held, view, at) {
     const e = held.rec;
     const state = this.#stateOf("entry", e.entry_id, held, at);
@@ -573,7 +1328,11 @@ export class AiCatalogue {
   }
 
   /** R28: the entry whole, with its effective state, recipient, release need, omission and review flags; null for an
-   *  id not held (a tested AI's id included, R54). */
+   *  id not held (a tested AI's id included, R54). Never throws.
+   * @param {string | undefined} entry_id
+   * @param {{at?: string | number}} [opts]
+   * @returns {EntryView | null}
+   */
   entryOf(entry_id, opts) {
     try {
       const { at } = isObj(opts) ? opts : {};
@@ -583,7 +1342,15 @@ export class AiCatalogue {
     } catch { return null; }
   }
 
-  /** R30: THE CLOSED LIST: the entries offered for a part under the checks in force. */
+  /**
+   * R30: THE CLOSED LIST: the entries offered for a part under the checks in force, ordered by provider then entry id.
+   * Never throws.
+   * @param {{part?: string, checksInForce?: string[], at?: string | number}} [opts]
+   * @returns {{ok: boolean, entries?: OfferedEntry[], code?: CatalogueCode, reason?: CatalogueCode, check?: string, word?: string,
+   *   part?: string | null, check_id?: string | null}} `entries` when ok; refused CATALOGUE_UNAVAILABLE, PART_UNKNOWN or CHECK_UNKNOWN
+   * @bound part: one of the current payload's parts
+   * @bound checksInForce: each one of CHECK_IDS
+   */
   entriesFor(opts) {
     try {
       const { part, checksInForce = [], at } = isObj(opts) ? opts : {};
@@ -605,7 +1372,14 @@ export class AiCatalogue {
     } catch { return this.#unavailable(); }
   }
 
-  /** R31: `{offered, reasons}` by R30's predicate, every failing condition named in a fixed order. */
+  /**
+   * R31: `{offered, reasons}` by R30's predicate, every failing condition named in a fixed order. Never throws.
+   * @param {{entry_id?: string, part?: string, checksInForce?: string[], at?: string | number}} [opts]
+   * @returns {{ok: boolean, offered?: boolean, reasons?: OfferReason[], code?: CatalogueCode, reason?: CatalogueCode, check?: string,
+   *   word?: string, part?: string | null, check_id?: string | null}} `offered` and `reasons` when ok; refused CATALOGUE_UNAVAILABLE, PART_UNKNOWN or CHECK_UNKNOWN
+   * @bound part: one of the current payload's parts
+   * @bound checksInForce: each one of CHECK_IDS
+   */
   whyNotOffered(opts) {
     try {
       const { entry_id, part, checksInForce = [], at } = isObj(opts) ? opts : {};
@@ -620,7 +1394,12 @@ export class AiCatalogue {
     } catch { return this.#unavailable(); }
   }
 
-  /** R29: the plans under each provider, each with its row; filtered by provider, by an entry's plans, or one plan. */
+  /**
+   * R29: the plans under each provider, each with its row; filtered by provider, by an entry's plans, or one plan.
+   * Ordered by provider, then plan id; none when nothing is held. Never throws.
+   * @param {{provider?: string, entry_id?: string, plan_id?: string, at?: string | number}} [opts]
+   * @returns {PlanGroup[]}
+   */
   plansOf(opts) {
     try {
       const { provider, entry_id, plan_id, at } = isObj(opts) ? opts : {};
@@ -644,12 +1423,20 @@ export class AiCatalogue {
     } catch { return out([]); }
   }
 
-  /** R53: a host profile, or null. */
+  /**
+   * R53: a host profile, or null. Never throws.
+   * @param {string} id
+   * @returns {HostProfile | null}
+   */
   profileOf(id) {
     try { const p = this.#fold().profiles.get(id); return p ? out(p) : null; } catch { return null; }
   }
 
-  /** R54: a tested AI that is not an entry, or null. */
+  /**
+   * R54: a tested AI that is not an entry, or null. Never throws.
+   * @param {string} subject_id
+   * @returns {TestedAi | null}
+   */
   testedOf(subject_id) {
     try {
       const p = this.#fold().payload;
@@ -664,7 +1451,10 @@ export class AiCatalogue {
   }
 
   /** R45: the active library rows (tested less than RESULT_ACTIVE_MONTHS before `at`), each with its age, its subject's
-   *  place on the list, and whether it is confirmed. */
+   *  place on the list, and whether it is confirmed. Ordered by subject, then row id. Never throws.
+   * @param {{subject_id?: string, part?: string, at?: string | number}} [opts]
+   * @returns {LibraryRowView[]}
+   */
   libraryRows(opts) {
     try {
       const { subject_id, part, at } = isObj(opts) ? opts : {};
@@ -682,7 +1472,12 @@ export class AiCatalogue {
     } catch { return out([]); }
   }
 
-  /** R55: the combined record per subject and part, Civicsmith's, with its age; this module computes nothing. */
+  /**
+   * R55: the combined record per subject and part, Civicsmith's, with its age; this module computes nothing. Ordered by
+   * subject, then part. Never throws.
+   * @param {{subject_id?: string, part?: string, at?: string | number}} [opts]
+   * @returns {(CombinedResult & {age_days: number})[]}
+   */
   combinedResults(opts) {
     try {
       const { subject_id, part, at } = isObj(opts) ? opts : {};
@@ -696,7 +1491,11 @@ export class AiCatalogue {
     } catch { return out([]); }
   }
 
-  /** R32: the catalogue's state and what it is serving. */
+  /**
+   * R32: the catalogue's state and what it is serving. Never throws.
+   * @param {{at?: string | number}} [opts]
+   * @returns {CatalogueStateView}
+   */
   catalogueState(opts) {
     try {
       const { at } = isObj(opts) ? opts : {};
@@ -727,13 +1526,23 @@ export class AiCatalogue {
     } catch { return out({ state: "unavailable", word: STATE_WORDS.unavailable }); }
   }
 
-  /** The checks this copy has recorded (R35), oldest first. */
+  /**
+   * The checks this copy has recorded (R35), oldest first.
+   * @returns {CheckRecord[]}
+   */
   checks() { return out(this.#checks.map((c) => ({ at: c.at, trigger: c.trigger, outcome: c.outcome }))); }
 }
 
 /* K61: the one AiCatalogue of a Durable Object's storage, made on first use over its `sql`, reaching record-core by
    `recordOf(ctx)`, migrated and started once (`ready`). The options are read on the first call only. */
 const OF = new WeakMap();
+/**
+ * The one AiCatalogue of a Durable Object's storage.
+ * @param {{storage: {sql: SqlStorage}, sql?: undefined} | {sql: SqlStorage, storage?: undefined}} ctx the Durable Object's state, or its storage
+ * @param {{record?: RecordCoreUse | null, env?: CatalogueEnv, clock?: (() => number) | null, keys?: readonly string[],
+ *   supported?: readonly number[]}} [options] read on the first call only
+ * @returns {AiCatalogue}
+ */
 export function aiCatalogueOf(ctx, { record = null, env = {}, clock = null, keys, supported } = {}) {
   const storage = ctx && ctx.storage ? ctx.storage : ctx;
   let c = OF.get(storage);

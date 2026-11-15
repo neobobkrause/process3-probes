@@ -32,22 +32,592 @@ export { AI_USE_SCHEMA, AI_USE_TABLES } from "./schema.mjs";
 export { AI_USE_CHECKS, AI_USE_WORDS, LIMIT_WORD_BY_SCOPE, UNJUDGED_WORD, WHOSE_WORD, PERIOD_WORD, WHEN_WORD, MONTH_WORD,
   LIMIT_FIELD_WORD, useInlineWord, useNameWord, fillWords } from "./checks.mjs";
 
+/* ===== The kinds this module hands out and accepts (structured comments) ===== */
+
+/**
+ * The keys of any member of a union.
+ * @template T
+ * @typedef {T extends T ? keyof T : never} KeysOfAny
+ */
+
+/**
+ * One member of an answer, with every field of the answer's other members present as missing, so a reader may read
+ * any field (`r.code`, `r.limits`) before it tells which member it holds, as this product's code does.
+ * @template T, All
+ * @typedef {T extends unknown ? T & Partial<Record<Exclude<KeysOfAny<All>, keyof T>, undefined>> : never} OneOfMember
+ */
+
+/**
+ * An answer that is exactly one of the kinds `T` joins: a result, or one of its refusals.
+ * @template T
+ * @typedef {OneOfMember<T, T>} OneOf
+ */
+
+/**
+ * An instant: milliseconds, or an ISO date-time; read as now (on the instance clock, R17) when absent or unreadable.
+ * @typedef {number | string} Instant
+ */
+
+/**
+ * The kind of account a refusal names in its sentence (`ai.whose.*`).
+ * @typedef {'group' | 'project' | 'own'} Whose
+ */
+
+/**
+ * An owner's spelling parsed (R1, R2; `ai-accounts` R10, R11, R14).
+ * @typedef {Object} ParsedOwner
+ * @property {'group' | 'project' | 'member'} kind
+ * @property {string} [id] the project's or the member's id; absent for the group
+ * @property {string} owner the spelling as kept: `group`, `project:<id>` or `member:<id>`
+ * @bound id: 1 to 128 characters, each A-Z, a-z, 0-9, '.', '_' or '-'
+ */
+
+/**
+ * The deps the first construction may be handed (K61): a test's own modules, the group's zone, the store's clock and
+ * environment. Read on the first call only.
+ * @typedef {Object} AiUseDeps
+ * @property {*} [record] record-core's handle (`recordOf(ctx)` otherwise); `declareTable`, `transact`, `bundleInfo` are read
+ * @property {*} [membership] membership's handle; `isAdministrator`, `isProjectOwner` are read
+ * @property {*} [accounts] ai-accounts' handle; `accountUses`, `accountUsesOf`, `aiKeptAway`, `projectsKeptAway` are read
+ * @property {*} [connections] connections' handle; `citesInto` is read
+ * @property {string | (() => string)} [zone] the group's zone, or a function answering it
+ * @property {() => number} [now] the instance clock, milliseconds (R17)
+ * @property {{[name: string]: *}} [env] the store's environment; `BIO_NOW_MS` is read (R17)
+ */
+
+/**
+ * A refusal this module answers: one of its own codes (R8, `AI_USE_CHECKS`) or `run-rules`' by key
+ * (`AI_RUN_CONSUME_INVALID`, `NOT_YOUR_CEILING`). Never thrown.
+ * @typedef {Object} Refusal
+ * @property {false} ok
+ * @property {string} reason the code
+ * @property {string} code
+ * @property {string} check the row's number (C-143.n; run-rules' C-22.13, C-109.11)
+ * @property {string} translation the row's sentence, filled where the refusal says
+ * @property {string} detail
+ */
+
+/**
+ * A refusal of another module relayed as given: membership's `NOT_AN_ADMIN`, `PROJECT_ACT_NOT_THE_OWNER`; ai-accounts'
+ * refusals of `accountUses` and `aiKeptAway`, `KEPT_AWAY_UNREADABLE`. Their shapes are those modules'.
+ * @typedef {{ok: false, reason: string, code?: string, check?: string | null, translation?: string | null,
+ *   detail?: string}} RelayedRefusal
+ */
+
+/**
+ * R3: `AI_LIMIT_REACHED` for a limit reached, naming no cost.
+ * @typedef {Refusal & {word: string, whose: Whose | null, scope: string, unit: string, period: string, period_start: string,
+ *   use: string | null}} LimitReachedRefusal
+ * @bound word: `ai.refused.limit.overall`, `ai.refused.limit.member` or `ai.refused.limit`, by the limit's scope
+ * @bound period_start: the period's first local day, YYYY-MM-DD
+ */
+
+/**
+ * R3: `AI_LIMIT_REACHED` when the limit cannot be judged (T43, DEC-189 (5)): fail closed, `unjudged`, and no scope,
+ * unit or period. `whose` is null when no paying account is named.
+ * @typedef {Refusal & {word: string, unjudged: true, whose: Whose | null, use: string | null}} LimitUnjudgedRefusal
+ * @bound word: `ai.refused.limit.unjudged`
+ */
+
+/**
+ * R2: `AI_LIMIT_INVALID`, naming the field refused.
+ * @typedef {Refusal & {field: string, word: string}} LimitInvalidRefusal
+ * @bound field: owner, scope, unit, period, amount, inclusive, use or count
+ */
+
+/**
+ * R2: `LIMIT_UNIT_UNAVAILABLE`, a dollar limit on a sign-in's account.
+ * @typedef {Refusal & {word: string}} UnitUnavailableRefusal
+ */
+
+/**
+ * R3, R6, R9: `EXPLORE_NOT_ENABLED`.
+ * @typedef {Refusal & {word: string, whose: Whose, owner: string}} ExploreOffRefusal
+ */
+
+/**
+ * R6: `EXPLORE_OUT_OF_SCOPE`.
+ * @typedef {Refusal & {owner: string, whose: Whose, word: string}} OutOfScopeRefusal
+ */
+
+/**
+ * R9: `EXPLORE_ASK_INVALID`, naming the field refused.
+ * @typedef {Refusal & {field: string, word: string}} AskFaultRefusal
+ * @bound field: what or day
+ */
+
+/**
+ * The figures of one conversation's `usage` (R1; agent-model R5, R6, R13), each null where not stated.
+ * @typedef {Object} Usage
+ * @property {number | null} input_tokens
+ * @property {number | null} output_tokens
+ * @property {number | null} cache_read_input_tokens
+ * @property {number | null} cache_creation_input_tokens
+ * @property {number | null} total_cost_usd
+ * @property {number | null} [estimated_cost_usd] missing reads as not stated
+ * @bound input_tokens, output_tokens, cache_read_input_tokens, cache_creation_input_tokens: whole numbers, 0 or more, or null
+ * @bound total_cost_usd, estimated_cost_usd: dollar amounts, 0 or more, or null
+ */
+
+/**
+ * R1: one use to count (`countUsage`). A missing or malformed field is refused `AI_RUN_CONSUME_INVALID`.
+ * @typedef {Object} UsageEntry
+ * @property {string | null} [owner] the paying account, as the caller's `accountFor` answered it
+ * @property {string | null} [member] the member whose act it was, as a stamp spells it
+ * @property {string | null} [use] the kind of use
+ * @property {string | null} [mode]
+ * @property {string | null} [model]
+ * @property {*} [effort] any value; one not a lowercase word is refused
+ * @property {Usage | null} [usage]
+ * @property {number | null} [calls] the model calls its usage covers, null when the runner stated none
+ * @property {Instant | null} [at]
+ * @property {string | null} [act] a run's id or an act's own
+ * @bound owner, member, use, mode, usage and calls are required (calls may be null)
+ * @bound owner: `group`, `project:<id>`, `member:<id>` or `not recorded`
+ * @bound member: `member:<id>`, `member:<id>/<token>` or `<id>`, the id 1 to 128 characters, each A-Z, a-z, 0-9, '.', '_' or '-'; never a machine identity, `class:` or `token:`
+ * @bound use: one of ai-accounts' USE_KINDS
+ * @bound mode: 1 to 40 characters, not blank
+ * @bound model: at most 120 characters
+ * @bound effort: a lowercase word of 1 to 16 letters
+ * @bound calls: whole number, 1 or more, or null
+ * @bound act: 1 to 128 characters, each A-Z, a-z, 0-9, '.', '_', ':' or '-'
+ */
+
+/**
+ * R1: an ask's or a draft's use to count (`countAskUsage`); its use is its mode.
+ * @typedef {Object} AskUsageEntry
+ * @property {string | null} [member]
+ * @property {string | null} [mode]
+ * @property {string | null} [model]
+ * @property {*} [effort] any value; one not a lowercase word is refused
+ * @property {Usage | null} [usage]
+ * @property {number | null} [calls]
+ * @property {Instant | null} [at]
+ * @property {string | null} [owner] without one the use is kept as `not recorded`
+ * @property {string | null} [act]
+ * @bound mode: `ask` or `draft`
+ * @bound member, usage and calls as `countUsage` bounds them
+ */
+
+/**
+ * R1: what `countUsage` counted.
+ * @typedef {Object} CountedUse
+ * @property {true} ok
+ * @property {number} counted always 1
+ * @property {string} owner
+ * @property {string} member the member's bare id
+ * @property {string | null} use
+ * @property {string} day the local day counted to, YYYY-MM-DD
+ * @property {number} calls
+ * @property {string | null} act
+ */
+
+/**
+ * R2: one limit to set, change or (`amount` null) remove.
+ * @typedef {Object} LimitRequest
+ * @property {string | null} [owner]
+ * @property {string | null} [scope]
+ * @property {string | null} [unit]
+ * @property {string | null} [period]
+ * @property {number | null} [amount] null removes the limit; missing is refused
+ * @property {boolean | null} [inclusive]
+ * @property {string | null} [by] the control plane's stamp of who sets it
+ * @property {Instant | null} [at]
+ * @bound owner: `group`, `project:<id>` or `member:<id>`
+ * @bound scope: `overall`, one of ai-accounts' USE_KINDS, or `per_member` (not on a member's account)
+ * @bound unit: usd, tokens or calls
+ * @bound period: day or month
+ * @bound amount: in usd a positive amount to the cent; in tokens or calls a whole number, 1 or more; usd refused on a sign-in's account
+ * @bound inclusive: only on a limit of one kind of use
+ */
+
+/**
+ * R2: a limit as set.
+ * @typedef {Object} LimitSet
+ * @property {true} ok
+ * @property {string} owner
+ * @property {string | null} scope
+ * @property {string | null} unit
+ * @property {string | null} period
+ * @property {number | null} amount in dollars for usd
+ * @property {boolean | null} inclusive
+ * @property {'set' | 'changed' | 'removed' | 'none'} change
+ * @property {string | null} set_at
+ */
+
+/**
+ * R1, R4: one use's sums, as a read answers them; the cost only to the paying account's owners (D12).
+ * @typedef {Object} Sums
+ * @property {number} calls
+ * @property {number} input_tokens
+ * @property {number} output_tokens
+ * @property {number} cache_read_input_tokens
+ * @property {number} cache_creation_input_tokens
+ * @property {number} tokens the four token figures summed
+ * @property {number} tokens_unstated
+ * @property {number} [total_cost_usd]
+ * @property {number} [cost_unstated]
+ */
+
+/**
+ * @typedef {{use: string} & Sums} UseSums
+ */
+
+/**
+ * R4: an account's month of use (`aiUsage`).
+ * @typedef {Object} AccountUsage
+ * @property {true} ok
+ * @property {string} owner
+ * @property {string} month YYYY-MM
+ * @property {string} zone
+ * @property {UseSums[]} uses
+ */
+
+/**
+ * R4: one limit bearing on a member's own use (`aiUsageMine`).
+ * @typedef {Object} PayerLimit
+ * @property {string} scope
+ * @property {string} unit
+ * @property {string} period
+ * @property {number} amount in dollars for usd
+ * @property {boolean | null} inclusive
+ * @property {boolean} reached
+ */
+
+/**
+ * R4: a member's own use (`aiUsageMine`), per paying account; a day's, or with `month` a month's.
+ * @typedef {Object} MyUsage
+ * @property {true} ok
+ * @property {string} member
+ * @property {string} [month] YYYY-MM
+ * @property {string} [day] YYYY-MM-DD
+ * @property {string} zone
+ * @property {{owner: string, whose: Whose | null, uses: UseSums[], limits: PayerLimit[]}[]} payers
+ */
+
+/**
+ * R5: a limit first reached in its current period (`limitsReached`).
+ * @typedef {Object} ReachedLimit
+ * @property {string} key
+ * @property {string} owner
+ * @property {string} scope
+ * @property {string} unit
+ * @property {string} period
+ * @property {string} period_start
+ * @property {string} reached_at
+ * @bound key: `ai-limit:<owner>:<scope>:<unit>:<period>:<period_start>`, stable per owner, limit and period
+ */
+
+/**
+ * R10: a rough cost: the words for "not known yet" under `ESTIMATE_SAMPLE.min` measured acts; money when every act
+ * of the sample stated a cost; else tokens with calls.
+ * @typedef {string | {low: number, high: number, unit: 'usd', measured: number}
+ *   | {low: number, high: number, unit: 'tokens', calls: {low: number, high: number, unit: 'calls'}, measured: number}} Estimate
+ */
+
+/**
+ * R9: an Ask pending today (`exploreAsksPending`).
+ * @typedef {Object} PendingAsk
+ * @property {string} key
+ * @property {string} owner
+ * @property {string} day
+ * @property {string | string[]} what a statement, or the list of questions
+ * @property {string} asked_at
+ * @property {string} word `ai.queue.exploreask`
+ * @property {string} text its sentence, `{what}` filled, `{scope}` and `{account}` left for the screen
+ * @property {Estimate} estimate of one exploring run
+ * @bound key: `explore-ask:<owner>:<day>`
+ */
+
+/**
+ * R6: exploring may run now, or needs the day's approval.
+ * @typedef {{ok: true, ask: true, owner: string}
+ *   | {ok: true, ask: false, owner: string, label: {kind: 'machine', enabled_by: string}}} ExploreAllowed
+ */
+
+/**
+ * R9: an Ask recorded, or the day's earlier one.
+ * @typedef {Object} ExploreAskRecorded
+ * @property {true} ok
+ * @property {string} key
+ * @property {string} owner
+ * @property {string} day
+ * @property {boolean} minted false when the day already held an Ask
+ * @bound key: `explore-ask:<owner>:<day>`
+ */
+
+/**
+ * R9: an approval of one day's exploring.
+ * @typedef {Object} ApproveRequest
+ * @property {string | null} [owner]
+ * @property {string | null} [day]
+ * @property {string | null} [by]
+ * @property {Instant | null} [at]
+ * @bound owner: `group`, `project:<id>` or `member:<id>`
+ * @bound day: YYYY-MM-DD
+ */
+
+/**
+ * @typedef {{ok: true, owner: string, day: string, approved_by: string, approved_at: string}} ExploreApproved
+ */
+
+/**
+ * R10: what `estimate` is asked.
+ * @typedef {Object} EstimateRequest
+ * @property {string | null} [owner]
+ * @property {string | null} [use]
+ * @property {string | null} [mode] the use when absent
+ * @property {number | null} [count]
+ * @property {string | null} [viewer]
+ * @property {Instant | null} [at]
+ * @bound owner: `group`, `project:<id>` or `member:<id>`
+ * @bound use: one of ai-accounts' USE_KINDS
+ * @bound count: whole number, 1 or more
+ */
+
+/**
+ * @typedef {{ok: true, owner: string, use: string | null, mode: string, count: number, estimate: Estimate}} Estimated
+ */
+
+/**
+ * R11: one act's actual cost (`actualOf`), with its models and efforts (R15).
+ * @typedef {Object} ActualCost
+ * @property {true} ok
+ * @property {true} found
+ * @property {string} act
+ * @property {string} owner
+ * @property {string} use
+ * @property {string} mode
+ * @property {number} calls
+ * @property {number} tokens
+ * @property {boolean} tokens_unstated
+ * @property {{usd: number} | null} cost null when any call stated no cost
+ * @property {'usd' | 'tokens'} unit
+ * @property {string} first_at
+ * @property {string} last_at
+ * @property {{model: string | null, effort: string | null, calls: number}[]} by_model first seen first
+ */
+
+/**
+ * R12: one limit held, with its use in the current period (`aiLimits`).
+ * @typedef {Object} LimitHeld
+ * @property {string} scope
+ * @property {string | null} use the scope when it is a kind of use
+ * @property {string} unit
+ * @property {string} period
+ * @property {number | null} amount in dollars for usd
+ * @property {boolean | null} inclusive
+ * @property {boolean | null} on_top
+ * @property {string} period_start
+ * @property {number | null} used
+ * @property {boolean} reached
+ * @property {string} set_by
+ * @property {string} set_at
+ */
+
+/**
+ * R12: one change in an account's history of limits.
+ * @typedef {Object} LimitChange
+ * @property {'set' | 'changed' | 'removed'} change
+ * @property {string} scope
+ * @property {string} unit
+ * @property {string} period
+ * @property {number | null} amount
+ * @property {boolean | null} inclusive
+ * @property {string} by
+ * @property {string} at
+ */
+
+/**
+ * R12: an account's limits panel; `unreadable` with nulls when it cannot be read.
+ * @typedef {{ok: true, owner: string, zone: string, limits: LimitHeld[], history: LimitChange[]}
+ *   | {ok: true, owner: string, limits: null, history: null, unreadable: true}} AccountLimits
+ */
+
+/**
+ * R14: an account's use over thirty days; `unreadable` with nulls when it cannot be read.
+ * @typedef {{ok: true, owner: string, zone: string, days: {day: string, calls: number, dollars: number}[],
+ *   periods: {scope: string, unit: string, period: string, period_start: string, used: number, limit: number | null}[]}
+ *   | {ok: true, owner: string, days: null, periods: null, unreadable: true}} UseOverTime
+ * @bound days: the thirty local days ending with the day of `at`, oldest first
+ */
+
+/**
+ * R1: a row of `ai_usage`, the use counter.
+ * @typedef {Object} UsageRow
+ * @property {string} owner
+ * @property {string} member
+ * @property {string} day
+ * @property {string} use
+ * @property {string} mode
+ * @property {number} calls
+ * @property {number} input_tokens
+ * @property {number} output_tokens
+ * @property {number} cache_read_input_tokens
+ * @property {number} cache_creation_input_tokens
+ * @property {number} cost_micro_usd
+ * @property {number} tokens_unstated
+ * @property {number} cost_unstated
+ * @storedrows ai_usage
+ */
+
+/**
+ * R10, R11: a row of `ai_use_acts`, one measured act.
+ * @typedef {Object} ActRow
+ * @property {string} owner
+ * @property {string} act
+ * @property {string} use
+ * @property {string} mode
+ * @property {number} calls
+ * @property {number} tokens
+ * @property {number} cost_micro_usd
+ * @property {number} tokens_unstated
+ * @property {number} cost_unstated
+ * @property {string} first_at
+ * @property {string} last_at
+ * @storedrows ai_use_acts
+ */
+
+/**
+ * R15: a row of `ai_use_act_models`; '' where no model or effort was stated.
+ * @typedef {Object} ActModelRow
+ * @property {number} seq
+ * @property {string} owner
+ * @property {string} act
+ * @property {string} model
+ * @property {string} effort
+ * @property {number} calls
+ * @storedrows ai_use_act_models
+ */
+
+/**
+ * R2: a row of `ai_limits`.
+ * @typedef {Object} LimitRow
+ * @property {string} owner
+ * @property {string} scope
+ * @property {string} unit
+ * @property {string} period
+ * @property {number} amount whole cents for usd
+ * @property {number | null} inclusive 1 or 0 on a use scope, null otherwise
+ * @property {string | null} project_id
+ * @property {string} set_by
+ * @property {string} set_at
+ * @storedrows ai_limits
+ */
+
+/**
+ * R2, R12: a row of `ai_limit_history`.
+ * @typedef {Object} LimitHistoryRow
+ * @property {number} seq
+ * @property {string} owner
+ * @property {string} scope
+ * @property {string} unit
+ * @property {string} period
+ * @property {'set' | 'changed' | 'removed'} change
+ * @property {number | null} amount
+ * @property {number | null} inclusive
+ * @property {string | null} project_id
+ * @property {string} by
+ * @property {string} at
+ * @storedrows ai_limit_history
+ */
+
+/**
+ * R5: a row of `ai_limit_reached`.
+ * @typedef {Object} LimitReachedRow
+ * @property {string} owner
+ * @property {string} scope
+ * @property {string} unit
+ * @property {string} period
+ * @property {string} period_start
+ * @property {string} reached_at
+ * @property {string | null} project_id
+ * @storedrows ai_limit_reached
+ */
+
+/**
+ * R9: a row of `ai_explore_asks`.
+ * @typedef {Object} ExploreAskRow
+ * @property {string} owner
+ * @property {string} day
+ * @property {string | null} what a statement, or a JSON list of questions
+ * @property {string | null} asked_at
+ * @property {string | null} approved_by
+ * @property {string | null} approved_at
+ * @property {string | null} project_id
+ * @storedrows ai_explore_asks
+ */
+
+/**
+ * R1, R2: a row of `ai_use_migrations`.
+ * @typedef {Object} MigrationRow
+ * @property {string} name
+ * @property {string} at
+ * @storedrows ai_use_migrations
+ */
+
+/** @typedef {OneOf<LimitSet | LimitInvalidRefusal | UnitUnavailableRefusal | Refusal | RelayedRefusal>} LimitSetAnswer */
+/** @typedef {OneOf<AccountUsage | LimitInvalidRefusal | Refusal | RelayedRefusal>} AccountUsageAnswer */
+/** @typedef {OneOf<MyUsage | Refusal>} MyUsageAnswer */
+/** @typedef {OneOf<ExploreApproved | LimitInvalidRefusal | AskFaultRefusal | Refusal | RelayedRefusal>} ApproveAnswer */
+/** @typedef {OneOf<AccountLimits | LimitInvalidRefusal | Refusal | RelayedRefusal>} AccountLimitsAnswer */
+/** @typedef {OneOf<UseOverTime | LimitInvalidRefusal | Refusal | RelayedRefusal>} UseOverTimeAnswer */
+
+/**
+ * The operations this module answers by name (`op-declarations` R41). Every identity (`by`, `viewer`) is the control
+ * plane's stamp, read from the query; the rest from the body (or the query where noted).
+ * @typedef {{
+ *   ailimitset: {req: LimitRequest, res: LimitSetAnswer},
+ *   ailimits: {req: {owner: string | null, viewer: string | null}, res: AccountLimitsAnswer},
+ *   aiusage: {req: {owner?: string | null, viewer: string | null, month?: string | null, day?: string | null}, res: OneOf<AccountUsage | MyUsage | LimitInvalidRefusal | Refusal | RelayedRefusal>},
+ *   exploreapprove: {req: ApproveRequest, res: ApproveAnswer},
+ *   aiuseovertime: {req: {owner: string | null, viewer: string | null}, res: UseOverTimeAnswer}
+ * }} AiUseOpTable
+ * @optable
+ */
+
+/**
+ * The handlers of this module's operations, one per entry of AiUseOpTable; each reads its request from the URL and body
+ * `aiUseOps` was handed.
+ * @typedef {{[K in keyof AiUseOpTable]: () => AiUseOpTable[K]['res']}} AiUseHandlers
+ */
+
+/**
+ * One op declared beside the ops map (R16; op-declarations R80, op-grades R49).
+ * @typedef {Object} OpDeclaration
+ * @property {string[]} classes
+ * @property {string[]} machineClasses
+ * @property {boolean} mutating
+ * @property {string} weight
+ * @property {string} description
+ * @property {{accepts: string[], requires: string[]}} fields what the arm reads, and what it requires
+ */
+
 /** R1 (was ai-runs R48): the figures of one conversation's `usage`, as `agent-model` returns them (its R5, R6: the sum
  *  over its model calls), plus `estimated_cost_usd` (its R13): token figures whole numbers, the costs dollar amounts,
  *  any of them `null` where not stated. */
+/** @type {readonly string[]} */
 export const USAGE_TOKEN_FIGURES = Object.freeze(["input_tokens", "output_tokens", "cache_read_input_tokens",
   "cache_creation_input_tokens"]);
+/** @type {readonly string[]} */
 export const USAGE_COST_FIGURES = Object.freeze(["total_cost_usd", "estimated_cost_usd"]);
-/** R1: the modes an ask's use is counted under (`countAskUsage`): an ask, or a draft (run-rules R21); neither is a run. */
+/** R1: the modes an ask's use is counted under (`countAskUsage`): an ask, or a draft (run-rules R21); neither is a run.
+ *  @type {readonly string[]} */
 export const ASK_USAGE_MODES = Object.freeze(["ask", "draft"]);
-/** R2 (B4): a limit's scopes besides the kinds of use, its units and its periods. */
+/** R2 (B4): a limit's scopes besides the kinds of use, its units and its periods.
+ *  @type {readonly string[]} */
 export const LIMIT_UNITS = Object.freeze(["usd", "tokens", "calls"]);
+/** @type {readonly string[]} */
 export const LIMIT_PERIODS = Object.freeze(["day", "month"]);
-/** R1, R4 (B8): the owner a row counted before T40 is kept under; it counts toward no limit. */
+/** R1, R4 (B8): the owner a row counted before T40 is kept under; it counts toward no limit.
+ *  @type {string} */
 export const NOT_RECORDED = "not recorded";
-/** R10 (D12): an estimate needs at least `min` measured acts of that account, use and mode, and reads the latest `of`. */
+/** R10 (D12): an estimate needs at least `min` measured acts of that account, use and mode, and reads the latest `of`.
+ *  @type {Readonly<{min: number, of: number}>}
+ *  @bound min, of: whole numbers, 1 or more, min no more than of */
 export const ESTIMATE_SAMPLE = Object.freeze({ min: 5, of: 20 });
-/** R9: the longest statement of what is worth exploring kept with an ask. */
+/** R9: the longest statement of what is worth exploring kept with an ask, in characters.
+ *  @type {number} */
 export const EXPLORE_WHAT_MAX = 2000;
 /** R15 (T50; N1168): an effort a conversation ran at, a lowercase word of at most 16 letters. */
 const EFFORT_WORD = /^[a-z]{1,16}$/;
@@ -64,30 +634,45 @@ function memberIdOf(x) {
 }
 
 /** R1, R2 (`ai-accounts` R10, R11, R14): an owner's spelling, `group`, `project:<id>` or `member:<id>`, parsed; null for any
- *  other. */
+ *  other.
+ *  @param {*} owner
+ *  @returns {ParsedOwner | null} */
 export function parseOwner(owner) {
   if (owner === "group") return { kind: "group", owner: "group" };
   if (typeof owner !== "string") return null;
   const m = /^(project|member):([A-Za-z0-9._-]{1,128})$/.exec(owner.trim());
-  return m ? { kind: m[1], id: m[2], owner: `${m[1]}:${m[2]}` } : null;
+  return m ? { kind: /** @type {'project' | 'member'} */ (m[1]), id: m[2], owner: `${m[1]}:${m[2]}` } : null;
 }
+/** @type {(p: ParsedOwner) => Whose} */
 const whoseOf = (p) => (p.kind === "group" ? "group" : p.kind === "project" ? "project" : "own");
 const tokensOf = (r) => Number(r.input_tokens) + Number(r.output_tokens) + Number(r.cache_read_input_tokens)
   + Number(r.cache_creation_input_tokens);
 
+/** The one instance over a Durable Object's storage (K61); `aiUseOf` makes it. */
 export class AiUse {
+  /**
+   * @param {*} ctx a Durable Object's state (its `storage.sql` is read), or its storage
+   * @param {AiUseDeps} [deps]
+   */
   constructor(ctx, deps = {}) {
+    /** @type {*} */
     this.ctx = ctx;
     const storage = ctx && ctx.storage ? ctx.storage : ctx;
+    /** @type {*} the storage's SQL (Cloudflare's `SqlStorage`) */
     this.sql = storage.sql;
     this.#deps = deps || {};
     /* R17 (K5132, K5148): the clock this instance was handed (`now`, a function of milliseconds), and the store's
        environment (`env.BIO_NOW_MS`), set here or by `aiUseOps`; both are read by `#nowMs` */
+    /** @type {(() => number) | null} */
     this.clock = typeof this.#deps.now === "function" ? this.#deps.now : null;
+    /** @type {{[name: string]: *} | null} */
     this.env = this.#deps.env && typeof this.#deps.env === "object" ? this.#deps.env : null;
+    /** @type {*} record-core's handle */
     this.record = this.#deps.record || recordOf(ctx);
+    /** @type {*} membership's handle */
     this.membership = this.#deps.membership || membershipOf(ctx, { record: this.record });
   }
+  /** @type {AiUseDeps} */
   #deps;
 
   #rows(q, ...a) { return [...this.sql.exec(q, ...a)]; }
@@ -101,7 +686,9 @@ export class AiUse {
 
   /** R1, R2, R7: this module's tables, created if absent, the pre-T40 counter and ceilings carried over once and their
    *  old tables dropped (T42; N848), then declared to record-core. Idempotent; run at the first construction
-   *  (`aiUseOf`). */
+   *  (`aiUseOf`).
+   *  @returns {void}
+   *  @throws {Error} record-core refuses the declaration, or the storage cannot be written */
   migrate() {
     const cols = (t) => this.#rows(`PRAGMA table_info(${t})`).map((r) => r.name);
     const before = cols("ai_usage");
@@ -155,7 +742,9 @@ export class AiUse {
   }
 
   /** R7: the tables declared once through record-core (its R21): `admin-only`, `sight: "group"`, purged only with the
-   *  whole store, a project's limits, their history, its reached rows and its asks also with the project. */
+   *  whole store, a project's limits, their history, its reached rows and its asks also with the project.
+   *  @returns {boolean} false when already declared
+   *  @throws {Error} record-core refuses the declaration */
   declareTables() {
     if (this.#declared) return false;
     const answer = this.record.declareTable("ai-use", AI_USE_TABLES.map((t) => ({ ...t, keys: [...t.keys] })));
@@ -169,8 +758,13 @@ export class AiUse {
   /* ===== The refusals (R8, R13) ===== */
 
   /** One refusal with its row: this module's (R8), or `run-rules`' by key (`AI_RUN_CONSUME_INVALID`,
-   *  `NOT_YOUR_CEILING`; its R11, R20). */
-  #refuse(code, detail, extra = {}) {
+   *  `NOT_YOUR_CEILING`; its R11, R20).
+   *  @template {Object} E
+   *  @param {string} code
+   *  @param {string} detail
+   *  @param {E} [extra]
+   *  @returns {Refusal & E} */
+  #refuse(code, detail, extra = /** @type {E} */ ({})) {
     const row = AI_USE_CHECKS[code] || AI_RUNS_CHECKS[code] || { check: null, translation: null };
     return { ok: false, reason: code, code, check: row.check, translation: row.translation, detail, ...extra };
   }
@@ -194,7 +788,13 @@ export class AiUse {
    *  (`#limitSentence`). With no `lim` the limit cannot be judged (T43; N856; DEC-189 (5): no paying account named, the
    *  use not a `USE_KINDS` entry, or the counter unreadable): still the refusal, failing closed, but `unjudged: true` and
    *  no `scope`, `unit` or `period`, since nothing was reached; its sentence `ai.refused.limit.unjudged` with `{whose}`
-   *  only (the group's words when no account is named, `whose` then null; K2720). */
+   *  only (the group's words when no account is named, `whose` then null; K2720).
+   *  @param {ParsedOwner | null} p
+   *  @param {*} lim
+   *  @param {string | null} use
+   *  @param {string | null} start
+   *  @param {string | null} [why]
+   *  @returns {LimitReachedRefusal | LimitUnjudgedRefusal} */
   #limitReached(p, lim, use, start, why = null) {
     const whose = p ? whoseOf(p) : null;
     if (!lim) {
@@ -206,11 +806,14 @@ export class AiUse {
     const scope = lim.scope;
     const word = LIMIT_WORD_BY_SCOPE[scope] || "ai.refused.limit";
     return { ...this.#refuse("AI_LIMIT_REACHED", localize("ai-use.index.owner_s_period_limit_scope", "{owner}'s {period} limit ({scope}, in {unit}) is reached for the period from {start}. Nothing was started.", { owner: String(p.owner), period: String(lim.period), scope: String(scope), unit: String(lim.unit), start: String(start) })), translation: AiUse.#limitSentence(word, whose, lim, start),
-      word, whose, scope, unit: lim.unit, period: lim.period, period_start: start, use: use ?? null };
+      word, whose, scope, unit: lim.unit, period: lim.period, period_start: /** @type {string} */ (start), use: use ?? null };
     /* END DEC-49 REGION is-ai-limit-reached */
   }
 
-  /** R2: an invalid limit, naming the field, its sentence's `{field}` filled from `ai.limitfield.<field>` (R13). */
+  /** R2: an invalid limit, naming the field, its sentence's `{field}` filled from `ai.limitfield.<field>` (R13).
+   *  @param {string} field
+   *  @param {string} detail
+   *  @returns {LimitInvalidRefusal} */
   #invalid(field, detail) {
     const translation = fillWords(AI_USE_WORDS["ai.refused.limitinvalid"], { field: AI_USE_WORDS[LIMIT_FIELD_WORD[field]] });
     /* DEC-49 REGION is-ai-limit-invalid */
@@ -218,7 +821,9 @@ export class AiUse {
     /* END DEC-49 REGION is-ai-limit-invalid */
   }
 
-  /** R3, R6, R9: exploring is `no` on the account. */
+  /** R3, R6, R9: exploring is `no` on the account.
+   *  @param {ParsedOwner} p
+   *  @returns {ExploreOffRefusal} */
   #exploreOff(p) {
     const whose = whoseOf(p);
     /* DEC-49 REGION is-explore-not-enabled */
@@ -228,7 +833,9 @@ export class AiUse {
   }
 
   /** R6, R8, R13 (T44; N859, N869; DEC-191 (1)): the question lies outside what `p`'s account explores. Carries `whose`
-   *  as `AI_LIMIT_REACHED` does; its sentence `ai.refused.exploreoutofscope`, `{whose}` filled from `ai.whose.*`. */
+   *  as `AI_LIMIT_REACHED` does; its sentence `ai.refused.exploreoutofscope`, `{whose}` filled from `ai.whose.*`.
+   *  @param {ParsedOwner} p
+   *  @returns {OutOfScopeRefusal} */
   #outOfScope(p) {
     const whose = whoseOf(p);
     /* DEC-49 REGION is-explore-out-of-scope */
@@ -239,7 +846,10 @@ export class AiUse {
   }
 
   /** R9: an ask or approval naming no day or no thing worth exploring; its sentence `ai.refused.exploreaskinvalid`
-   *  (R13; T44, DEC-191 (1)). */
+   *  (R13; T44, DEC-191 (1)).
+   *  @param {string} field
+   *  @param {string} detail
+   *  @returns {AskFaultRefusal} */
   #askFault(field, detail) {
     /* DEC-49 REGION is-explore-ask-invalid */
     return this.#refuse("EXPLORE_ASK_INVALID", localize("ai-use.index.detail_nothing_was_recorded", "{detail} Nothing was recorded.", { detail: String(detail) }),
@@ -280,13 +890,15 @@ export class AiUse {
   static #iso(ms) { return stampInstant("second", ms); }
 
   /** R1: the local day, in the group's zone, on which an instant falls (`civil-time.localDay`); UTC's when the zone
-   *  cannot be read. */
+   *  cannot be read.
+   *  @param {Instant | null | undefined} at
+   *  @returns {{day: string, zone: string}} */
   #dayOf(at) {
     const iso = AiUse.#iso(this.#ms(at));
     const zone = this.#zone();
     const d = localDay(iso, zone);
     if (typeof d === "string") return { day: d, zone };
-    return { day: localDay(iso, "UTC"), zone: "UTC" };
+    return { day: /** @type {string} */ (localDay(iso, "UTC")), zone: "UTC" };
   }
 
   /** R2: a period's start for the day `day` (`YYYY-MM-DD`): the day itself, or the 1st of its month. */
@@ -340,7 +952,9 @@ export class AiUse {
    *  adds to the counter for that owner, member, local day, use and mode; with `act` (a run's id, or an act's own) also
    *  to that act's measure (R10, R11; K2480) and to the model and effort its conversation ran at (R15); then notes any
    *  limit of the owner this reached (R5). A malformed entry is refused `AI_RUN_CONSUME_INVALID`, counting nothing.
-   *  Never throws. */
+   *  Never throws.
+   *  @param {UsageEntry} [entry]
+   *  @returns {OneOf<CountedUse | Refusal>} */
   countUsage({ owner = null, member = null, use = null, mode = null, model = null, effort = null, usage = null,
                calls = undefined, at = null, act = null } = {}) {
     try {
@@ -403,12 +1017,15 @@ export class AiUse {
   /** R1 `countAskUsage({member, mode, usage, calls, at, owner?, act?})` (was ai-runs R48's; K2400): an ask or a draft
    *  (no run), counted as `countUsage` counts, its use its mode, in its own transaction. `owner` is the account the
    *  caller's `accountFor` answered; without one the use is kept as "not recorded" and counts toward no limit (K2480).
-   *  Any mode but `ask` or `draft` is refused `AI_RUN_CONSUME_INVALID`. */
+   *  Any mode but `ask` or `draft` is refused `AI_RUN_CONSUME_INVALID`.
+   *  @param {AskUsageEntry} [entry]
+   *  @returns {OneOf<CountedUse | Refusal>} */
   countAskUsage({ member = null, mode = null, model = null, effort = null, usage = null, calls = null, at = null, owner = null,
                   act = null } = {}) {
-    if (!ASK_USAGE_MODES.includes(typeof mode === "string" ? mode.trim() : mode))
+    if (!ASK_USAGE_MODES.includes(/** @type {string} */ (typeof mode === "string" ? mode.trim() : mode)))
       return this.#refuse("AI_RUN_CONSUME_INVALID", localize("ai-use.index.the_mode_string_is_not", "the mode '{String}' is not one an ask's use is counted under: an ask counts as 'ask' and a draft as 'draft'; a run's use arrives on its own ticks. Nothing was counted.", { String: String(String(mode).slice(0, 40)) }));
     const m = mode.trim();
+    /** @type {OneOf<CountedUse | Refusal> | null} */
     let out = null;
     try {
       this.#transact(() => { out = this.countUsage({ owner: owner ?? NOT_RECORDED, member, use: m, mode: m, model, effort, usage,
@@ -576,7 +1193,9 @@ export class AiUse {
 
   /** R2 `aiLimitSet({owner, scope, unit, period, amount, inclusive?, by, at?})` (`op=ailimitset`): sets, changes or
    *  (`amount` null) removes one limit of one account, by that account's owner, appended to its history with who and
-   *  when. Answers `{ok, owner, scope, unit, period, amount, inclusive, change, set_at}`. Never throws. */
+   *  when. Answers `{ok, owner, scope, unit, period, amount, inclusive, change, set_at}`. Never throws.
+   *  @param {LimitRequest} [request]
+   *  @returns {LimitSetAnswer} */
   aiLimitSet({ owner = null, scope = null, unit = null, period = null, amount = undefined, inclusive = undefined,
                by = null, at = null } = {}) {
     try {
@@ -617,6 +1236,7 @@ export class AiUse {
       if (stored === null && !this.#limit(p.owner, scope, unit, period))
         return { ok: true, owner: p.owner, scope, unit, period, amount: null, inclusive: null, change: "none", set_at: null };
       const by0 = memberIdOf(by) === "admin" ? "admin" : `member:${memberIdOf(by)}`;
+      /** @type {*} assigned inside the transaction */
       let change = null;
       this.#transact(() => { change = this.#write(p.owner, scope, unit, period, stored, incl, by0, now); this.#noteReached(p, ms); return { ok: true }; });
       return { ok: true, owner: p.owner, scope, unit, period, amount: stored === null ? null : unit === "usd" ? stored / 100 : stored,
@@ -632,7 +1252,10 @@ export class AiUse {
    *  under its amount for its current period; else `AI_LIMIT_REACHED` (R13's sentence, naming no cost). For `explore`,
    *  `EXPLORE_NOT_ENABLED` when the owner's `explore` is `no`; with `yes` and no `explore` limit held, the overall limit
    *  alone judges it. Judges only the paying account's limits (D38). Writes nothing; never throws; a limit that cannot
-   *  be judged answers the refusal, unjudged (fail closed; T43, DEC-189 (5)). */
+   *  be judged answers the refusal, unjudged (fail closed; T43, DEC-189 (5)).
+   *  @param {{owner?: string | null, member?: string | null, use?: string | null, at?: Instant | null}} [query]
+   *  @bound owner: `group`, `project:<id>` or `member:<id>`; use: one of ai-accounts' USE_KINDS; else refused unjudged
+   *  @returns {OneOf<LimitReachedRefusal | LimitUnjudgedRefusal | ExploreOffRefusal> | null} */
   useCheck({ owner = null, member = null, use = null, at = null } = {}) {
     const p = parseOwner(owner);
     const failClosed = (why) => this.#limitReached(p, null, use, null, why);
@@ -647,7 +1270,10 @@ export class AiUse {
 
   /* ===== READS (R4, R5) ===== */
 
-  /** One use's sums, as a read answers them; `cost` only to the paying account's owners (D12). */
+  /** One use's sums, as a read answers them; `cost` only to the paying account's owners (D12).
+   *  @param {*} r
+   *  @param {boolean} cost
+   *  @returns {Sums} */
   static #sums(r, cost) {
     return { calls: Number(r.calls), input_tokens: Number(r.input_tokens), output_tokens: Number(r.output_tokens),
              cache_read_input_tokens: Number(r.cache_read_input_tokens),
@@ -661,7 +1287,11 @@ export class AiUse {
 
   /** R4 `aiUsage({owner, viewer, month})` (`op=aiusage` with `owner`): the account's month of use per kind of use,
    *  summed over members and naming none, to that account's owners (R2's refusals otherwise). `month` is `YYYY-MM`, this
-   *  month in the group's zone by default. Writes nothing. */
+   *  month in the group's zone by default. Writes nothing.
+   *  @param {{owner?: string | null, viewer?: string | null, month?: string | null, at?: Instant | null}} [query]
+   *  @bound month: YYYY-MM; any other is read as this month
+   *  @returns {AccountUsageAnswer}
+   *  @throws {Error} the storage cannot be read */
   aiUsage({ owner = null, viewer = null, month = null, at = null } = {}) {
     const p = parseOwner(owner);
     if (!p) return this.#invalid("owner", localize("ai-use.index.use_is_read_for", "use is read for 'group', 'project:<id>' or 'member:<id>'."));
@@ -677,7 +1307,11 @@ export class AiUse {
   /** R4 `aiUsageMine({viewer, day?, month?})` (`op=aiusage` without `owner`): a member's own use, per paying account and
    *  per kind of use, for a local day (today by default) or, with `month`, a month; against each limit of those
    *  accounts that bound them, each with whether it is reached; a cost only for the accounts the member owns (D12).
-   *  Nobody sees another member's spending. Writes nothing. */
+   *  Nobody sees another member's spending. Writes nothing.
+   *  @param {{viewer?: string | null, day?: string | null, month?: string | null, at?: Instant | null}} [query]
+   *  @bound month: YYYY-MM; day: YYYY-MM-DD; any other is read as absent
+   *  @returns {MyUsageAnswer}
+   *  @throws {Error} the storage cannot be read */
   aiUsageMine({ viewer = null, day = null, month = null, at = null } = {}) {
     const id = memberIdOf(viewer);
     if (!id) return this.#refuse("NOT_YOUR_CEILING", localize("ai-use.index.a_members_use_of_the", "a member's use of the assistant is read only by that member. Nothing was read."));
@@ -700,12 +1334,14 @@ export class AiUse {
       return { owner: o, whose: p ? whoseOf(p) : null, uses: rows.filter((r) => r.owner === o).map((r) => ({ use: r.use, ...AiUse.#sums(r, mine) })),
                limits };
     });
-    return { ok: true, member: id, ...(m ? { month: m } : { day: d }), zone: today.zone, payers };
+    return { ok: true, member: id, ...(m ? { month: m } : { day: /** @type {string} */ (d) }), zone: today.zone, payers };
   }
 
   /** R5 `limitsReached({viewer, at})`: for each account the viewer owns, each limit first reached in its current period,
    *  `{key, owner, scope, unit, period, period_start, reached_at}`, the key stable per owner, limit and period. For
-   *  `notice-producers` R16. Writes nothing; never throws. */
+   *  `notice-producers` R16. Writes nothing; never throws.
+   *  @param {{viewer?: string | null, at?: Instant | null}} [query]
+   *  @returns {{ok: true, reached: ReachedLimit[], unreadable?: true}} */
   limitsReached({ viewer = null, at = null } = {}) {
     try {
       if (!memberIdOf(viewer)) return { ok: true, reached: [] };
@@ -739,7 +1375,10 @@ export class AiUse {
    *  attaches to what it offers); `{ok: true, ask: true}` when the owner's `explore` is `ask` and that local day is not
    *  approved (R9); else a refusal: `EXPLORE_NOT_ENABLED`, `ai-accounts.aiKeptAway`'s, `EXPLORE_OUT_OF_SCOPE`, R3's
    *  `AI_LIMIT_REACHED`. A keep-away read that throws answers `ai-accounts`' `KEPT_AWAY_UNREADABLE` as given (its R34:
-   *  fail closed, never a copy of the refusal). Writes nothing; never throws. */
+   *  fail closed, never a copy of the refusal). Writes nothing; never throws.
+   *  @param {{owner?: string | null, question?: string | null, at?: Instant | null}} [query]
+   *  @returns {OneOf<ExploreAllowed | ExploreOffRefusal | OutOfScopeRefusal | LimitReachedRefusal | LimitUnjudgedRefusal
+   *    | RelayedRefusal>} */
   exploreAllowed({ owner = null, question = null, at = null } = {}) {
     const p = parseOwner(owner);
     try {
@@ -771,7 +1410,11 @@ export class AiUse {
 
   /** R9 `exploreAsk({owner, at, what})`: for an owner whose `explore` is `ask`, records at most one pending ask a local
    *  day stating what is worth exploring (`what`, a statement or a list of the questions); a second ask that day answers
-   *  the first's key and mints nothing. Answers `{ok, key, owner, day, minted}`. */
+   *  the first's key and mints nothing. Answers `{ok, key, owner, day, minted}`.
+   *  @param {{owner?: string | null, at?: Instant | null, what?: *}} [ask] `what` any value, refused unless a statement or a list of questions
+   *  @bound what: a statement, or a list of questions none blank, at most EXPLORE_WHAT_MAX (2000) characters as kept
+   *  @returns {OneOf<ExploreAskRecorded | ExploreOffRefusal | AskFaultRefusal>}
+   *  @throws {Error} the storage cannot be read or written */
   exploreAsk({ owner = null, at = null, what = null } = {}) {
     const p = parseOwner(owner);
     if (!p) return this.#exploreOff({ kind: "group", owner: String(owner) });
@@ -798,7 +1441,9 @@ export class AiUse {
   /** R9 `exploreAsksPending({viewer, at})`: today's asks not yet approved, of the accounts the viewer owns, each
    *  `{key, owner, day, what, asked_at, word, text, estimate}`: `text` `words.json`'s `ai.queue.exploreask` with `{what}`
    *  filled and `{scope}`, `{account}` left for the screen; `estimate` R10's rough cost of one exploring run. For
-   *  `notice-producers` R16. Writes nothing; never throws. */
+   *  `notice-producers` R16. Writes nothing; never throws.
+   *  @param {{viewer?: string | null, at?: Instant | null}} [query]
+   *  @returns {{ok: true, asks: PendingAsk[], unreadable?: true}} */
   exploreAsksPending({ viewer = null, at = null } = {}) {
     try {
       if (!memberIdOf(viewer)) return { ok: true, asks: [] };
@@ -820,7 +1465,10 @@ export class AiUse {
   }
 
   /** R9 `exploreApprove({owner, day, by})` (`op=exploreapprove`): one of the account's owners approves exploring on it
-   *  for that local day (R2's refusals for anyone else). */
+   *  for that local day (R2's refusals for anyone else).
+   *  @param {ApproveRequest} [request]
+   *  @returns {ApproveAnswer}
+   *  @throws {Error} the storage cannot be read or written */
   exploreApprove({ owner = null, day = null, by = null, at = null } = {}) {
     const p = parseOwner(owner);
     if (!p) return this.#invalid("owner", localize("ai-use.index.exploring_is_approved_for", "exploring is approved for 'group', 'project:<id>' or 'member:<id>'."));
@@ -846,7 +1494,12 @@ export class AiUse {
   /* ===== COST BEFORE AND AFTER (R10, R11; D12) ===== */
 
   /** R10: the range for `count` acts of `use` and `mode` on `p`'s account, from its latest measured acts: `"not known
-   *  yet"` under `ESTIMATE_SAMPLE.min`; money when every act in the sample stated a cost, else tokens with calls. */
+   *  yet"` under `ESTIMATE_SAMPLE.min`; money when every act in the sample stated a cost, else tokens with calls.
+   *  @param {ParsedOwner} p
+   *  @param {string} use
+   *  @param {string} mode
+   *  @param {number} count
+   *  @returns {Estimate} */
   #estimate(p, use, mode, count) {
     const acts = this.#rows(`SELECT calls, tokens, cost_micro_usd, cost_unstated FROM ai_use_acts WHERE owner=? AND use=? AND mode=?
                              ORDER BY last_at DESC, act DESC LIMIT ?`, p.owner, use, mode, ESTIMATE_SAMPLE.of);
@@ -862,22 +1515,28 @@ export class AiUse {
 
   /** R10 `estimate({owner, use, mode, count?, viewer, at?})`: before an AI act or exploring run (or a batch of `count`),
    *  a range `{low, high, unit}` from that account's measured acts of that use and mode, or `"not known yet"`; answered
-   *  only to the account's owners (R2's refusals otherwise). Writes nothing. */
+   *  only to the account's owners (R2's refusals otherwise). Writes nothing.
+   *  @param {EstimateRequest} [request]
+   *  @returns {OneOf<Estimated | LimitInvalidRefusal | Refusal | RelayedRefusal>}
+   *  @throws {Error} the storage cannot be read */
   estimate({ owner = null, use = null, mode = null, count = 1, viewer = null } = {}) {
     const p = parseOwner(owner);
     if (!p) return this.#invalid("owner", localize("ai-use.index.an_estimate_is_for", "an estimate is for 'group', 'project:<id>' or 'member:<id>'."));
     const bar = this.#ownerBar(p, viewer, "read");
     if (bar) return bar;
     if (!USE_KINDS.includes(use)) return this.#invalid("use", localize("ai-use.index.an_estimate_names_a_kind", "an estimate names a kind of use ({USE_KINDS}).", { USE_KINDS: String(USE_KINDS.join(", ")) }));
-    const m = typeof mode === "string" && mode.trim() ? mode.trim() : use;
+    const m = typeof mode === "string" && mode.trim() ? mode.trim() : /** @type {string} */ (use);
     const n = count === undefined || count === null ? 1 : count;
     if (!Number.isSafeInteger(n) || n < 1) return this.#invalid("count", localize("ai-use.index.an_estimates_count_is_a", "an estimate's count is a whole number of one or more."));
-    return { ok: true, owner: p.owner, use, mode: m, count: n, estimate: this.#estimate(p, use, m, n) };
+    return { ok: true, owner: p.owner, use, mode: m, count: n, estimate: this.#estimate(p, /** @type {string} */ (use), m, n) };
   }
 
   /** R11 `actualOf({run | act, viewer})`: the actual cost of one run or act after, in R10's units, only to the paying
    *  account's owners, with its `by_model` (R15). An act not measured, or not on an account the viewer owns, answers
-   *  `found: false`. Writes nothing. */
+   *  `found: false`. Writes nothing.
+   *  @param {{run?: string | null, act?: string | null, viewer?: string | null}} [query]
+   *  @returns {OneOf<ActualCost | {ok: true, found: false}>}
+   *  @throws {Error} the storage cannot be read */
   actualOf({ run = null, act = null, viewer = null } = {}) {
     const id = typeof run === "string" && run ? run : typeof act === "string" && act ? act : null;
     if (!id || !memberIdOf(viewer)) return { ok: true, found: false };
@@ -899,7 +1558,9 @@ export class AiUse {
   /** R12 `aiLimits({owner, viewer})` (`op=ailimits`): each limit held on one account, with its use in the current period
    *  (R5's sums, naming no member: a per-member limit answers the most any one member used) and the account's history
    *  of limits (set, changed, removed; who and when), to that account's owners only, as `ai-accounts` R15 states them;
-   *  anyone else is refused as R15 refuses them. Writes nothing. */
+   *  anyone else is refused as R15 refuses them. Writes nothing.
+   *  @param {{owner?: string | null, viewer?: string | null, at?: Instant | null}} [query]
+   *  @returns {AccountLimitsAnswer} */
   aiLimits({ owner = null, viewer = null, at = null } = {}) {
     const p = parseOwner(owner);
     if (!p) return this.#invalid("owner", localize("ai-use.index.limits_are_read_for", "limits are read for 'group', 'project:<id>' or 'member:<id>'."));
@@ -944,7 +1605,9 @@ export class AiUse {
    *  exclusive; a per-member limit the most any one member used, as R12 answers it), `limit` in its unit (`usd` in
    *  dollars); with none held, one month entry `{scope: "overall", unit: "usd", …, limit: null}`. Every figure is summed
    *  over everyone the account serves and names no member (K1450). When the use cannot be read it answers
-   *  `unreadable: true`, never zeros. Writes nothing; never throws. */
+   *  `unreadable: true`, never zeros. Writes nothing; never throws.
+   *  @param {{owner?: *, viewer?: string | null, at?: Instant | null}} [query] `owner` any value, refused unless an owner's spelling
+   *  @returns {UseOverTimeAnswer} */
   accountUseOverTime({ owner = null, viewer = null, at = null } = {}) {
     const p = parseOwner(owner);
     if (!p) return this.#invalid("owner", localize("ai-use.index.use_over_time_is_read_for", "use over time is read for 'group', 'project:<id>' or 'member:<id>'."));
@@ -981,7 +1644,14 @@ export class AiUse {
 
 /* K61: the one AiUse of a Durable Object's storage, made, migrated and declared on first use. `deps` (a test's own
    modules, or the group's `zone`) are read on the first call only. */
+/** @type {WeakMap<object, AiUse>} */
 const OF = new WeakMap();
+/**
+ * @param {*} ctx a Durable Object's state, or its storage
+ * @param {AiUseDeps} [deps] read on the first call only
+ * @returns {AiUse}
+ * @throws {Error} the first construction's migration fails (`migrate`)
+ */
 export function aiUseOf(ctx, deps = {}) {
   const storage = ctx && ctx.storage ? ctx.storage : ctx;
   let u = OF.get(storage);
@@ -996,6 +1666,13 @@ export function aiUseOf(ctx, deps = {}) {
 /** The ops this module answers (`op-declarations` R41): `ailimitset`, `ailimits`, `aiusage` (with `owner` an account's
  *  month, R4; without, the viewer's own), `exploreapprove` and `aiuseovertime` (R14). Every identity (`by`, `viewer`) is the control plane's
  *  stamp, read from the QUERY after the body is spread, so a caller's own copy never wins (D-136). */
+/**
+ * @param {AiUse} use
+ * @param {URL} url the request's URL; `by`, `viewer`, `owner`, `month`, `day` are read from its query
+ * @param {*} body the request's body; read only when a plain object
+ * @param {{[name: string]: *} | null} [env] the store's environment, handed to `use` (R17)
+ * @returns {AiUseHandlers}
+ */
 export function aiUseOps(use, url, body, env = null) {
   /* R17 (K5132): the store's environment is the instance clock's source (`BIO_NOW_MS`), as credentialsOps hands it */
   if (env && typeof env === "object") use.env = env;
@@ -1014,6 +1691,7 @@ export function aiUseOps(use, url, body, env = null) {
 
 /* R16 (T51; K4168; op-declarations R80, op-grades R49): the ops this module serves that the screens send, declared by their owner beside
    the ops map: each row's class, weight and description are the op's existing rows', its fields are what the arm reads. */
+/** @type {Readonly<{ailimitset: OpDeclaration, exploreapprove: OpDeclaration}>} */
 export const DECLARED_OPS = Object.freeze({
   ailimitset: { classes: ["admin","member"], machineClasses: [], mutating: true, weight: "substrate", description: localize("ai-use.declared.ailimitset", "the account's configuration: a limit on one account's assistant use, set by its owner; moves no document, claim or grade"),
     fields: { accepts: ["owner","scope","unit","period","amount","inclusive"], requires: ["owner","scope","unit","period","amount"] } },

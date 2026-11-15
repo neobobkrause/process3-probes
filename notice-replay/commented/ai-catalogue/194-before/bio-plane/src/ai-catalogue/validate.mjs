@@ -11,17 +11,25 @@
  * characterization property, a binding term, guidance and warnings) carry their `ev` beside their fields. A check is
  * `{answer, ev}`, `{answer: "OPEN"}` or `{open: true}`. A restriction is R16's `{kind, quote, page, date}`. */
 import { CATALOGUE_CHECKS } from "./checks.mjs";
+/** @import { PayloadVerdict } from './checks.mjs' */
+/** @import { Grade, Lifecycle, CheckId, ShownId, Verdict, LimitKind } from './index.mjs' */
 
 export const ENTRY_ID_MAX = 96;
 export const DISPLAY_NAME_MAX = 60;
 export const EFFORT_WORD_MAX = 16;
 
+/** @type {readonly Grade[]} */
 export const GRADES = Object.freeze(["REPRODUCED", "REPORTED", "STATED"]);
 export const MEASURED_GRADES = Object.freeze(["REPRODUCED", "REPORTED"]);
+/** @type {readonly Lifecycle[]} */
 export const LIFECYCLE = Object.freeze(["listed", "watch", "lapsed", "retired"]);
+/** @type {readonly CheckId[]} */
 export const CHECK_IDS = Object.freeze(["P1", "P2", "P3", "P4", "P5", "P6", "P7"]);
+/** @type {readonly ShownId[]} */
 export const SHOWN_IDS = Object.freeze(["terms_permit_use", "breach_notification"]);
+/** @type {readonly Verdict[]} */
 export const VERDICTS = Object.freeze(["passes", "passes_with_limits", "not_suitable", "not_yet_rated"]);
+/** @type {readonly LimitKind[]} */
 export const LIMIT_KINDS = Object.freeze(["context_depth", "no_image_input", "no_streaming", "no_parallel_tools", "output_cap"]);
 export const CH_IDS = Object.freeze(["CH1", "CH2", "CH3", "CH4", "CH5", "CH6", "CH7", "CH8", "CH9", "CH10"]);
 export const HOST_KINDS = Object.freeze(["direct", "aggregator", "gateway", "builtin", "custom"]);
@@ -53,6 +61,10 @@ const E = "CATALOGUE_ENTRY_INVALID", P = "CATALOGUE_PLAN_INVALID", EV = "CATALOG
 class Bad { constructor(reason, path) { this.reason = reason; this.path = path; } }
 const fail = (reason, path) => { throw new Bad(reason, path); };
 
+/**
+ * @param {unknown} x
+ * @returns {x is {[key: string]: any}}
+ */
 export const isObj = (x) => x !== null && typeof x === "object" && !Array.isArray(x)
   && (Object.getPrototypeOf(x) === Object.prototype || Object.getPrototypeOf(x) === null);
 export const isOpen = (x) => isObj(x) && Object.keys(x).length === 1 && x.open === true;
@@ -62,7 +74,11 @@ const isText = (s, max = 2000) => typeof s === "string" && s.trim().length >= 1 
 const isNum = (n) => typeof n === "number" && Number.isFinite(n) && n >= 0;
 const isWhole = (n, least = 0) => Number.isSafeInteger(n) && n >= least;
 const DATE_RE = /^(\d{4})-(\d{2})-(\d{2})$/;
-/** A `YYYY-MM-DD` that exists. */
+/**
+ * A `YYYY-MM-DD` that exists.
+ * @param {unknown} s
+ * @returns {boolean}
+ */
 export function isDate(s) {
   const m = typeof s === "string" ? DATE_RE.exec(s) : null;
   if (!m) return false;
@@ -70,6 +86,11 @@ export function isDate(s) {
   return d.getUTCFullYear() === +m[1] && d.getUTCMonth() === +m[2] - 1 && d.getUTCDate() === +m[3];
 }
 const INSTANT_RE = /^(\d{4}-\d{2}-\d{2})T(\d{2}):(\d{2}):(\d{2})Z$/;
+/**
+ * A `YYYY-MM-DDTHH:MM:SSZ` that exists.
+ * @param {unknown} s
+ * @returns {boolean}
+ */
 export function isInstant(s) {
   const m = typeof s === "string" ? INSTANT_RE.exec(s) : null;
   return !!m && isDate(m[1]) && +m[2] < 24 && +m[3] < 60 && +m[4] < 60;
@@ -565,7 +586,11 @@ function payloadOf(x, supported) {
 /** R36: `{ok: true}` or `{ok: false, code: "CATALOGUE_PAYLOAD_INVALID", reason, path, check, word}`, `reason` the code of
  *  the rule the first offending path breaks (R1's `CATALOGUE_EVIDENCE_MISSING`, R4's `CATALOGUE_ENTRY_INVALID`, R16's
  *  `CATALOGUE_PLAN_INVALID`, or `CATALOGUE_PAYLOAD_INVALID`). Pure; never throws. `supported`, when given, is the list
- *  of schema versions the reader reads (R37). */
+ *  of schema versions the reader reads (R37).
+ * @param {unknown} payload
+ * @param {{supported?: readonly number[]}} [opts]
+ * @returns {PayloadVerdict}
+ */
 export function validatePayload(payload, { supported } = {}) {
   try {
     payloadOf(payload, supported);

@@ -7,8 +7,27 @@ import { word } from "../setup-words/index.mjs";
  * filing-templates' codes (its C-125.9, .24, .25): this module answers its own rows, worded for a wizard script, and the
  * composed catalogue keeps the first source's (control-plane R22). */
 
+/**
+ * A code this module answers (C-131), one per row of `WIZARD_SCRIPTS_CHECKS`.
+ * @typedef {'MACHINE_CANNOT_DRAFT_WIZARD' | 'NO_SUCH_WIZARD' | 'WIZARD_SCOPE_REFUSED' | 'WIZARD_EDITOR_NOT_GRANTED' | 'WIZARD_RECORDING_CARRIES_VALUES' | 'WIZARD_NAME_REFUSED' | 'WIZARD_STEP_REFUSED' | 'NOT_A_DRAFT' | 'WIZARD_NO_PROPOSER' | 'WIZARD_WHY_REFUSED' | 'MACHINE_CANNOT_APPROVE_WIZARD' | 'NOT_SUBMITTED' | 'WIZARD_NOT_APPROVED' | 'NOT_AN_APPROVER' | 'APPROVER_IS_AUTHOR' | 'WIZARD_REASON_REFUSED' | 'WIZARD_NOT_THE_GROUPS' | 'WIZARD_ALREADY_ENDED' | 'WIZARDS_STATE_REFUSED' | 'WIZARD_NO_STEPS' | 'WIZARD_SCREEN_UNKNOWN' | 'WIZARD_ACT_UNKNOWN' | 'WIZARD_STEP_NO_WHY' | 'WIZARD_DRAFT_REFUSED' | 'WIZARD_STEP_CONCLUDES' | 'WIZARD_TRIVIAL' | 'WIZARD_DUPLICATE' | 'WIZARD_ALREADY_REGISTERED' | 'WIZARD_PROGRESS_REFUSED' | 'WIZARD_USE_REFUSED' | 'WIZARD_EDITOR_MEMBER_UNKNOWN' | 'WIZARD_NO_SUCH_GRANT' | 'WIZARD_VIA_REFUSED' | 'WRITING_HELP_REFUSED' | 'WRITING_HELP_REASON_FIELD' | 'WRITING_HELP_DRAFT_HELD' | 'WRITING_HELP_NOTHING_TOLD' | 'WRITING_HELP_FACT_ADDED' | 'WRITING_HELP_SUGGESTIONS_OFF' | 'WRITING_HELP_FIRSTHAND_READ' | 'ASSISTANT_DRAFT_UNAVAILABLE' | 'START_RUMOUR_AS_QUESTION'} WizardCheckCode
+ */
+
+/**
+ * One refusal row (DEC-49): its check, where in the code it is answered, and the member's translation.
+ * @typedef {Object} CheckRow
+ * @property {string} check the check's number, `C-131.<n>`
+ * @property {string} where `src/wizard-scripts/<file> <function> > <region>`
+ * @property {string} translation the member's words for the refusal
+ */
+
+/**
+ * @param {string} fn
+ * @param {string} region
+ * @param {string} [file]
+ */
 const at = (fn, region, file = "index.mjs") => `src/wizard-scripts/${file} ${fn} > ${region}`;
 
+/** @type {Readonly<Record<WizardCheckCode, CheckRow>>} */
 export const WIZARD_SCRIPTS_CHECKS = Object.freeze({
   MACHINE_CANNOT_DRAFT_WIZARD: {
     check: "C-131.1", where: at("#machine", "is-wizard-member"),
@@ -183,7 +202,11 @@ export const WIZARD_SCRIPTS_CHECKS = Object.freeze({
   },
 });
 
-/** The row a code names, or null for a code this module does not answer. */
+/**
+ * The row a code names, or null for a code this module does not answer.
+ * @param {string} code
+ * @returns {CheckRow | null}
+ */
 export function rowOf(code) {
   return Object.prototype.hasOwnProperty.call(WIZARD_SCRIPTS_CHECKS, code) ? WIZARD_SCRIPTS_CHECKS[code] : null;
 }

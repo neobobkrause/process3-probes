@@ -1,0 +1,6 @@
+{
+ "about": "Each helper's total use as the Agent tool reported it when the helper finished (tokens: input and output the helper's model processed, as counted by the harness; duration: wall-clock from start to its report). Copied by the replay session from the completion notice, as each arrived.",
+ "helpers": {
+  "op-declarations": {"tokens": 306001, "toolUses": 84, "durationMs": 968750, "finished": "2026-11-15T15:37Z"}
+ }
+}

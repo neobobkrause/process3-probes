@@ -25,9 +25,39 @@
  */
 
 /**
+ * The fields that name what was refused; which of them a refusal carries depends on its code and site.
+ * @typedef {Object} RefusalFields
+ * @property {string | null} [kind] CATALOGUE_PATH_INVALID's kind asked for; ADVISORY_BAD_MOVE's advisory kind
+ * @property {string | null} [path] CATALOGUE_PATH_INVALID's path; CATALOGUE_PAYLOAD_INVALID's offending path
+ * @property {number | null} [seq]
+ * @property {number} [heldSeq] NOT_NEWER's highest held seq
+ * @property {string} [outcome]
+ * @property {number | null} [to_seq] CATALOGUE_ROLLBACK_UNKNOWN's
+ * @property {string | null} [part] PART_UNKNOWN's
+ * @property {string | null} [check_id] CHECK_UNKNOWN's
+ * @property {string} [reason_given] ADVISORY_REASON_UNKNOWN's
+ * @property {string} [from] ADVISORY_BAD_MOVE's
+ * @property {string} [to] ADVISORY_BAD_MOVE's
+ * @property {{entry_id: string} | {plan_id: string}} [target] ADVISORY_BAD_MOVE's
+ */
+
+/**
  * The one refusal shape: the code (also as `reason`), its row's check and word key, and the fields that name what was
- * refused (which fields depends on the code).
- * @typedef {{ok: false, code: CatalogueCode, reason: CatalogueCode, check: string, word: string, [field: string]: unknown}} CatalogueRefusal
+ * refused.
+ * @typedef {{ok: false, code: CatalogueCode, reason: CatalogueCode, check: string, word: string} & RefusalFields} CatalogueRefusal
+ */
+
+/**
+ * What `validatePayload` answers (R36): `{ok: true}`, or refused with the code CATALOGUE_PAYLOAD_INVALID, `reason` the
+ * code of the rule the first offending `path` breaks, and that reason's row.
+ * @typedef {Object} PayloadVerdict
+ * @property {boolean} ok
+ * @property {'CATALOGUE_PAYLOAD_INVALID'} [code] when refused
+ * @property {'CATALOGUE_PAYLOAD_INVALID' | 'CATALOGUE_ENTRY_INVALID' | 'CATALOGUE_PLAN_INVALID' | 'CATALOGUE_EVIDENCE_MISSING'} [reason] when refused
+ * @property {string} [path] when refused
+ * @property {string} [check] when refused
+ * @property {string} [word] when refused
+ * @bound path: the first offending path, written as `entries[0].checks.P1`
  */
 
 const at = (file, fn, region) => `src/ai-catalogue/${file} ${fn} > ${region}`;
@@ -54,7 +84,7 @@ export const CATALOGUE_CHECKS = Object.freeze({
 /**
  * The one refusal shape: the code, its row's check and word key, and the fields that name what was refused.
  * @param {CatalogueCode} code
- * @param {{[field: string]: unknown}} [fields]
+ * @param {RefusalFields} [fields]
  * @returns {CatalogueRefusal}
  */
 export function refusal(code, fields = {}) {

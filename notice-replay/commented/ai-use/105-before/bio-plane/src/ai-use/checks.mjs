@@ -21,6 +21,44 @@ const at = (fn, region) => `src/ai-use/index.mjs ${fn} > ${region}`;
    `date.month.*` (`ai.until.*` is the queue item's, notice-producers'), `{field}` from `ai.limitfield.*`; R3's unjudged
    refusal reads `ai.refused.limit.unjudged`. Only the Ask item, a queue item `notice-producers` renders, leaves `{scope}`
    and `{account}` for the screen. `ai.use.suggestions` names a switch, not a use, and is not read here. */
+/**
+ * A key of `words.json` this module reads (R13), each answered as its `en` sentence.
+ * @typedef {'ai.use.ask.name' | 'ai.use.draft.name' | 'ai.use.run.name'
+ *   | 'ai.use.standing.name' | 'ai.use.explore.name' | 'ai.use.enquire.name'
+ *   | 'ai.use.read.name' | 'ai.use.transcribe.name' | 'ai.use.account.name'
+ *   | 'ai.use.ask.inline' | 'ai.use.draft.inline' | 'ai.use.run.inline'
+ *   | 'ai.use.standing.inline' | 'ai.use.explore.inline' | 'ai.use.enquire.inline'
+ *   | 'ai.use.read.inline' | 'ai.use.transcribe.inline' | 'ai.use.account.inline'
+ *   | 'ai.whose.group' | 'ai.whose.project' | 'ai.whose.own'
+ *   | 'ai.period.day' | 'ai.period.month' | 'ai.when.day'
+ *   | 'ai.when.month' | 'date.month.january' | 'date.month.february'
+ *   | 'date.month.march' | 'date.month.april' | 'date.month.may'
+ *   | 'date.month.june' | 'date.month.july' | 'date.month.august'
+ *   | 'date.month.september' | 'date.month.october' | 'date.month.november'
+ *   | 'date.month.december' | 'ai.refused.limit' | 'ai.refused.limit.overall'
+ *   | 'ai.refused.limit.member' | 'ai.refused.limit.unjudged' | 'ai.refused.limitinvalid'
+ *   | 'ai.limitfield.owner' | 'ai.limitfield.scope' | 'ai.limitfield.unit'
+ *   | 'ai.limitfield.period' | 'ai.limitfield.amount' | 'ai.limitfield.inclusive'
+ *   | 'ai.limitfield.use' | 'ai.limitfield.count' | 'ai.refused.unitunavailable'
+ *   | 'ai.refused.explorenotenabled' | 'ai.refused.exploreoutofscope' | 'ai.refused.exploreaskinvalid'
+ *   | 'ai.queue.exploreask'} AiUseWordKey
+ */
+
+/**
+ * One refusal row of this module (R8; DEC-49).
+ * @typedef {Object} AiUseCheckRow
+ * @property {string} check its number in family C-143, `C-143.<n>`
+ * @property {string} where the one site in `index.mjs` that mints it
+ * @property {string} translation its member-facing sentence, read by key from `words.json`, placeholders unfilled
+ */
+
+/**
+ * A refusal code this module mints (R8).
+ * @typedef {'AI_LIMIT_REACHED' | 'AI_LIMIT_INVALID' | 'LIMIT_UNIT_UNAVAILABLE' | 'EXPLORE_NOT_ENABLED' | 'EXPLORE_OUT_OF_SCOPE'
+ *   | 'EXPLORE_ASK_INVALID'} AiUseCode
+ */
+
+/** @type {Readonly<Record<AiUseWordKey, string>>} */
 export const AI_USE_WORDS = Object.freeze({
   'ai.use.ask.name': word('ai.use.ask.name'),
   'ai.use.draft.name': word('ai.use.draft.name'),
@@ -83,24 +121,35 @@ export const AI_USE_WORDS = Object.freeze({
    `ai.refused.limit.unjudged` when R3 cannot judge it; `{whose}` by the account's kind; `{period}`, `{when}` by the
    limit's period; `{month}` by the next period's month (0 for January); `{field}` by the field R2 refuses. */
 export const LIMIT_WORD_BY_SCOPE = Object.freeze({ overall: 'ai.refused.limit.overall', per_member: 'ai.refused.limit.member' });
+/** @type {AiUseWordKey} */
 export const UNJUDGED_WORD = 'ai.refused.limit.unjudged';
 export const WHOSE_WORD = Object.freeze({ group: 'ai.whose.group', project: 'ai.whose.project', own: 'ai.whose.own' });
 export const PERIOD_WORD = Object.freeze({ day: 'ai.period.day', month: 'ai.period.month' });
 export const WHEN_WORD = Object.freeze({ day: 'ai.when.day', month: 'ai.when.month' });
+/** @type {readonly string[]} `date.month.<month>`, January first */
 export const MONTH_WORD = Object.freeze(['january', 'february', 'march', 'april', 'may', 'june', 'july', 'august',
   'september', 'october', 'november', 'december'].map((m) => `date.month.${m}`));
+/** @type {Readonly<{[field: string]: string}>} `ai.limitfield.<field>` for each field R2 may refuse */
 export const LIMIT_FIELD_WORD = Object.freeze(Object.fromEntries(['owner', 'scope', 'unit', 'period', 'amount', 'inclusive',
   'use', 'count'].map((f) => [f, `ai.limitfield.${f}`])));
+/** @type {(use: string) => string} the key of a use's word inside a sentence, `ai.use.<use>.inline` */
 export const useInlineWord = (use) => `ai.use.${use}.inline`;
+/** @type {(use: string) => string} the key of a use's word at a sentence's start, `ai.use.<use>.name` */
 export const useNameWord = (use) => `ai.use.${use}.name`;
 
 /* R13: one sentence filled by key: each `{name}` of `fills` replaced by its value, as given, never read as a replacement
    pattern (a `$` in a member's own words, the Ask item's `{what}`, stays as written). A placeholder not in `fills` is
    left for the screen. */
+/**
+ * @param {string} sentence
+ * @param {{[name: string]: *}} fills each value written as `String(value)`
+ * @returns {string}
+ */
 export function fillWords(sentence, fills) {
   return Object.entries(fills).reduce((s, [k, v]) => s.split(`{${k}}`).join(String(v)), sentence);
 }
 
+/** @type {Readonly<Record<AiUseCode, AiUseCheckRow>>} */
 export const AI_USE_CHECKS = Object.freeze({
   /* R3 (D38 C, D39; B3, B5, B7): a limit of the paying account is reached for the current period: its own use's, its
      overall one (over the uses that are not exclusive), or its per-member one. Carries `whose` (`group`, `project` or

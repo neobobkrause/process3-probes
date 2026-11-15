@@ -89,6 +89,17 @@ export { AI_RUNS_SCHEMA, AI_RUNS_TABLES } from "./schema.mjs";
  */
 
 /**
+ * A refusal built by run-rules (its `refusal`), relayed unchanged; `ok` is always false.
+ * @typedef {Object} RuleRefusal
+ * @property {boolean} ok
+ * @property {string} code
+ * @property {string | null} check
+ * @property {string | null} translation
+ * @property {string} detail
+ * @property {string} [field]
+ */
+
+/**
  * The label a run admitted on the test-instance exception carries (run-rules' `untestedLabel`).
  * @typedef {Object} UntestedLabel
  * @property {'untested'} kind
@@ -166,53 +177,47 @@ export { AI_RUNS_SCHEMA, AI_RUNS_TABLES } from "./schema.mjs";
  */
 
 /**
- * What `open` answers for a run it started.
- * @typedef {Object} OpenStarted
- * @property {string} run
- * @property {true} started
- * @property {'running'} status
- * @property {number} ticks always 1
- * @property {string} created
- * @property {string} expires
+ * What `open` answers: a run it started (`started: true`, with the run's figures and the project gate's outcome), or a
+ * refusal (`started: false`, nothing written: the code with its check and translation, then what that refusal adds).
+ * @typedef {Object} OpenAnswer
+ * @property {string | null | undefined} run the run as asked; null when it was blank
+ * @property {boolean} started
+ * @property {'running'} [status]
+ * @property {number} [ticks] always 1
+ * @property {string} [created]
+ * @property {string} [expires]
  * @property {string} [rerun_of]
  * @property {string} [step]
  * @property {string} [origin]
  * @property {string} [response]
- * @property {UntestedLabel | null} untested
- * @property {string | null} project
- * @property {GateStated['projectGate']} projectGate
- */
-
-/**
- * What `open` answers when it refuses: nothing was written. The code's own fields, then what that refusal adds.
- * @typedef {Object} OpenRefused
- * @property {string | null} run
- * @property {false} started
- * @property {string} code
- * @property {string | null} check
- * @property {string | null} translation
+ * @property {UntestedLabel | null} [untested]
+ * @property {string | null} [project]
+ * @property {GateStated['projectGate']} [projectGate]
+ * @property {string} [code]
+ * @property {string | null} [check]
+ * @property {string | null} [translation]
  * @property {string | null} [detail]
  * @property {string} [note]
  * @property {string} [mode]
  * @property {string[]} [deployed]
  * @property {string} [bound]
  * @property {string} [plan]
- * @property {string} [response]
- * @property {string} [step]
  * @property {number} [bytes]
  * @property {number} [limit]
- * @property {string} [project]
  * @property {string} [name]
+ * @property {*} [period] what ai-use's limit refusal adds
+ * @property {*} [whose] what ai-use's limit refusal adds
+ * @property {*} [scope] what ai-use's limit refusal adds
+ * @property {*} [unit] what ai-use's limit refusal adds
+ * @property {*} [use] what ai-use's limit refusal adds
  */
-
-/** @typedef {OpenStarted | OpenRefused} OpenAnswer */
 
 /**
  * What `openMany` takes.
  * @typedef {Object} OpenManyRequest
  * @property {string[] | null} [steps]
  * @property {string | null} [mode]
- * @property {string | null} [owner]
+ * @property {*} [owner] the paying owner as ai-use spells it (member:<id>, project:<id>, group)
  * @property {BoundDeclared[] | null} [bounds]
  * @property {string | null} [skillVersion]
  * @property {string | null} [label]
@@ -233,10 +238,17 @@ export { AI_RUNS_SCHEMA, AI_RUNS_TABLES } from "./schema.mjs";
  */
 
 /**
- * What `openMany` answers: refused whole, or the batch's estimate and each step's outcome.
- * @typedef {{ok: true, estimate: *, runs: OpenManyRun[]}
- *   | {ok: false, code: string, check: string | null, translation: string | null, detail: string, reason?: string,
- *      started?: false}} OpenManyAnswer
+ * What `openMany` answers: refused whole (`ok: false`), or the batch's estimate and each step's outcome.
+ * @typedef {Object} OpenManyAnswer
+ * @property {boolean} ok
+ * @property {*} [estimate] ai-use's estimate for the batch, a refusal included
+ * @property {OpenManyRun[]} [runs]
+ * @property {string} [code]
+ * @property {string | null} [check]
+ * @property {string | null} [translation]
+ * @property {string} [detail]
+ * @property {string} [reason]
+ * @property {false} [started]
  */
 
 /**
@@ -246,7 +258,7 @@ export { AI_RUNS_SCHEMA, AI_RUNS_TABLES } from "./schema.mjs";
  * @property {string | null} [model]
  * @property {string | null} [effort]
  * @property {*} usage
- * @property {number} calls
+ * @property {number | null} calls
  */
 
 /**
@@ -258,7 +270,7 @@ export { AI_RUNS_SCHEMA, AI_RUNS_TABLES } from "./schema.mjs";
  * @property {*[] | null} [log] the observations to append (observation-log's entries)
  * @property {number | null} [leaseMs]
  * @property {string | null} [at]
- * @property {{by?: string, done?: boolean, refusals?: string[], error?: string} | null} [segment_end]
+ * @property {{by?: string | null, done?: boolean, refusals?: string[], error?: string | null} | null} [segment_end]
  * @property {UsageEntry[] | null} [usage]
  * @property {string | null} [actor]
  * @property {string | null} [viewer]
@@ -269,39 +281,27 @@ export { AI_RUNS_SCHEMA, AI_RUNS_TABLES } from "./schema.mjs";
  */
 
 /**
- * A run ended by the one exit.
- * @typedef {Object} RunEnded
- * @property {string} run
- * @property {true} found
- * @property {true} terminated
- * @property {string} status run-rules' runStatusFor: stopped, finished or never-started
- * @property {string} bound the bound or ending that stopped it
- * @property {string | null} condition
- * @property {string} state what its search established
- * @property {string} at
+ * What the one exit answers: a run it ended (`terminated: true`), or one it did not end (unknown or unseen, already
+ * ended, or refused).
+ * @typedef {Object} CloseAnswer
+ * @property {string | null | undefined} run the run as asked
+ * @property {boolean} found
+ * @property {boolean} [terminated]
+ * @property {boolean} [ok] false on a refusal
+ * @property {string} [status] run-rules' runStatusFor: stopped, finished or never-started
+ * @property {string | null} [bound] the bound or ending that stopped it
+ * @property {string | null} [condition]
+ * @property {string} [state] what its search established
+ * @property {string} [at]
  * @property {StepEnd} [step_end]
  * @property {RunCost} [cost] at close, to the paying account's owners only
  * @property {*} [bias_debt] at close, bias's discharge of a re-run's debt
- */
-
-/**
- * The one exit's answer for a run it did not end: unknown or unseen, already ended, or refused.
- * @typedef {Object} RunNotEnded
- * @property {string | null} run
- * @property {boolean} found
- * @property {false} [terminated]
- * @property {false} [ok]
- * @property {string} [status]
- * @property {string | null} [bound]
- * @property {string | null} [condition]
  * @property {string} [code]
  * @property {string | null} [check]
  * @property {string | null} [translation]
  * @property {string} [detail]
  * @property {string} [note]
  */
-
-/** @typedef {RunEnded | RunNotEnded} CloseAnswer */
 
 /**
  * What a step-run's ending told steps.
@@ -323,30 +323,21 @@ export { AI_RUNS_SCHEMA, AI_RUNS_TABLES } from "./schema.mjs";
  */
 
 /**
- * A tick that happened.
- * @typedef {Object} TickDone
- * @property {string} run
- * @property {true} found
- * @property {true} ticked
- * @property {number} ticks
- * @property {string} status
- * @property {string} expires
- * @property {number} appended
- * @property {*[]} refused observation-log's refusals of entries not appended
- * @property {number} [counted]
- * @property {GateStated['projectGate']} projectGate
- * @property {{logged: boolean, next: 'continue' | 'done' | 'error' | 'ended', dispatch?: SegmentDispatch}} [segment_end]
- * @property {CloseAnswer} [ended]
- */
-
-/**
- * A tick that did not happen: nothing appended, nothing spent, the lease not extended (unless `counted` says the
- * conversations were counted).
- * @typedef {Object} TickRefused
- * @property {string | null} run
+ * What a tick answers: one that happened (`ticked: true`), or one that did not (nothing appended, nothing spent, the
+ * lease not extended, unless `counted` says the conversations were counted), or an unknown or unseen run.
+ * @typedef {Object} TickAnswer
+ * @property {string | null | undefined} run the run as asked
  * @property {boolean} found
- * @property {false} [ticked]
+ * @property {boolean} [ticked]
+ * @property {number} [ticks]
  * @property {string} [status]
+ * @property {string} [expires]
+ * @property {number} [appended]
+ * @property {*[]} [refused] observation-log's refusals of entries not appended
+ * @property {number} [counted]
+ * @property {GateStated['projectGate']} [projectGate]
+ * @property {{logged: boolean, next: string, dispatch?: SegmentDispatch}} [segment_end]
+ * @property {CloseAnswer} [ended]
  * @property {string} [code]
  * @property {string | null} [check]
  * @property {string | null} [translation]
@@ -355,11 +346,14 @@ export { AI_RUNS_SCHEMA, AI_RUNS_TABLES } from "./schema.mjs";
  * @property {string | null} [bound]
  * @property {number} [bytes]
  * @property {number} [limit]
- * @property {number} [counted]
  * @property {string} [note]
+ * @property {*} [period] what ai-use's limit refusal adds
+ * @property {*} [whose] what ai-use's limit refusal adds
+ * @property {*} [scope] what ai-use's limit refusal adds
+ * @property {*} [unit] what ai-use's limit refusal adds
+ * @property {*} [use] what ai-use's limit refusal adds
+ * @bound segment_end.next: continue, done, error or ended
  */
-
-/** @typedef {TickDone | TickRefused} TickAnswer */
 
 /**
  * What `close` takes.
@@ -402,7 +396,7 @@ export { AI_RUNS_SCHEMA, AI_RUNS_TABLES } from "./schema.mjs";
  * @property {string | null} [scope_id]
  * @property {{bundle_id: string, revision: *}[]} [bundles]
  * @property {string | null} [at]
- * @property {true} [unreadable]
+ * @property {boolean} [unreadable] true where present
  * @property {string} [stated]
  */
 
@@ -461,12 +455,28 @@ export { AI_RUNS_SCHEMA, AI_RUNS_TABLES } from "./schema.mjs";
  * @property {string | null} [response]
  */
 
-/** @typedef {{run: string | null, found: false, session: null} | {run: string, found: true, session: RunSession}} ReadAnswer */
+/**
+ * What `read` answers: the session, or null for a run that is absent or unseen alike.
+ * @typedef {Object} ReadAnswer
+ * @property {string | null | undefined} run
+ * @property {boolean} found
+ * @property {RunSession | null} session
+ */
 
 /**
- * What `listInContext` answers.
- * @typedef {Refusal | {ok: true, context: {type: string, id: string}, runs: RunSession[], count: number, limit: number,
- *   truncated: boolean}} ListAnswer
+ * What `listInContext` answers: a refusal of a malformed question (`ok: false`), or the runs in the context.
+ * @typedef {Object} ListAnswer
+ * @property {boolean} ok
+ * @property {{type: string, id: string}} [context]
+ * @property {(RunSession | null)[]} [runs] never null in fact
+ * @property {number} [count]
+ * @property {number} [limit]
+ * @property {boolean} [truncated]
+ * @property {string} [reason]
+ * @property {string} [code]
+ * @property {string | null} [check]
+ * @property {string | null} [translation]
+ * @property {string} [detail]
  * @bound limit: whole number, 1 to 1000 (AI_RUNS_LIMIT_MAX), default 200 (AI_RUNS_LIMIT_DEFAULT)
  */
 
@@ -492,10 +502,16 @@ export { AI_RUNS_SCHEMA, AI_RUNS_TABLES } from "./schema.mjs";
  */
 
 /**
- * What `spawnPayload` answers.
- * @typedef {{run: string | null, found: false, half: null, payload: null}
- *   | {run: string, found: true, half: 'search' | 'compose', payload: SpawnPayload, limit: number, truncated: boolean,
- *      bias?: RunBias, fence: string}} SpawnAnswer
+ * What `spawnPayload` answers: the payload of one half, or nulls for a run absent or unseen alike.
+ * @typedef {Object} SpawnAnswer
+ * @property {string | null | undefined} run
+ * @property {boolean} found
+ * @property {'search' | 'compose' | null} half
+ * @property {SpawnPayload | null} payload
+ * @property {number} [limit]
+ * @property {boolean} [truncated]
+ * @property {RunBias} [bias] the composing half only
+ * @property {string} [fence]
  */
 
 /**
@@ -517,12 +533,17 @@ export { AI_RUNS_SCHEMA, AI_RUNS_TABLES } from "./schema.mjs";
  */
 
 /**
- * What `log` answers.
- * @typedef {{run: string | null, found: false, entries: LogEntry[], stopped: null, limit: number, truncated: false}
- *   | {run: string, found: true, status: string, entries: LogEntry[], limit: number, truncated: boolean,
- *      stopped: {bound: string, condition: string | null, at: string | null} | null,
- *      vocabulary: {states: Object<string, string>, levels: Object<string, string>, bounds: Object<string, string>,
- *        endings: Object<string, string>, coverage: Object<string, string>, coverage_undetermined: string}}} LogAnswer
+ * What `log` answers; the bound is published on the absent answer too.
+ * @typedef {Object} LogAnswer
+ * @property {string | null | undefined} run
+ * @property {boolean} found
+ * @property {string} [status]
+ * @property {LogEntry[]} entries
+ * @property {number} limit
+ * @property {boolean} truncated
+ * @property {{bound: string, condition: string | null, at: string | null} | null} stopped
+ * @property {{states: Object<string, string>, levels: Object<string, string>, bounds: Object<string, string>,
+ *   endings: Object<string, string>, coverage: Object<string, string>, coverage_undetermined: string}} [vocabulary]
  * @bound limit: whole number, 1 to 5000 (AI_RUN_LOG_LIMIT_MAX), default 200 (AI_RUN_LOG_LIMIT_DEFAULT)
  */
 
@@ -543,20 +564,24 @@ export { AI_RUNS_SCHEMA, AI_RUNS_TABLES } from "./schema.mjs";
  */
 
 /**
- * The run gate contradiction offers.
- * @typedef {{found: false, running: false, refusal: null, run: null} | {found: true, running: boolean, run: RunFacts,
- *   refusal: * | null}} RunGateAnswer
+ * The run gate contradiction offers: `found` false for blank, absent and unseen alike.
+ * @typedef {Object} RunGateAnswer
+ * @property {boolean} found
+ * @property {boolean} running
+ * @property {RunFacts | null} run
+ * @property {* | null} refusal run-rules' AI_RUN_NOT_PRINCIPAL, or null
  */
 
 /**
  * The outcome of one call to agent-worker; never carries a secret.
  * @typedef {Object} DispatchOutcome
- * @property {'RUNNING' | 'DISPATCHED' | 'LIMIT' | 'REFUSED' | 'SILENT'} state
+ * @property {string} state
  * @property {number | null} status
  * @property {string} [reason]
- * @property {true} [provider_limit]
+ * @property {boolean} [provider_limit] true where present
  * @property {string} [detail]
  * @property {*} [unwritable]
+ * @bound state: RUNNING, DISPATCHED, LIMIT, REFUSED or SILENT
  */
 
 /**
@@ -676,10 +701,11 @@ export { AI_RUNS_SCHEMA, AI_RUNS_TABLES } from "./schema.mjs";
  * @typedef {Object} WorkProduct
  * @property {{type: string, id: string} | null} context
  * @property {string | null} principal
- * @property {{basis: 'at_open' | 'handed', statements_sha: string | null} | null} lens
+ * @property {{basis: string, statements_sha: string | null} | null} lens
  * @property {string | null} ranUnder
  * @property {string | null} rerunOf
  * @property {string | null} registered
+ * @bound lens.basis: at_open or handed
  */
 
 /**
@@ -712,10 +738,20 @@ export { AI_RUNS_SCHEMA, AI_RUNS_TABLES } from "./schema.mjs";
  */
 
 /**
- * What `verificationRecord` answers.
- * @typedef {{ok: true, mode: string, run: string, verified_by: string, at: string, existed: boolean,
- *   next: {mode: string, deployable: boolean} | null}
- *   | {ok: false, code: string, check: string | null, translation: string | null, field?: string, detail?: string}} VerificationAnswer
+ * What `verificationRecord` answers: the act as recorded (`ok: true`), or run-rules' refusal.
+ * @typedef {Object} VerificationAnswer
+ * @property {boolean} ok
+ * @property {string | null} [mode]
+ * @property {string | null} [run]
+ * @property {string | null} [verified_by]
+ * @property {string} [at]
+ * @property {boolean} [existed]
+ * @property {{mode: string, deployable: boolean} | null} [next]
+ * @property {string} [code]
+ * @property {string | null} [check]
+ * @property {string | null} [translation]
+ * @property {string} [field]
+ * @property {string} [detail]
  */
 
 /**
@@ -917,7 +953,9 @@ function memberIdOf(x) {
 
 /** R18 (T47; N955; credentials R63, K3033): THE WRITES A SEGMENT'S CREDENTIAL HOLDS, by the run's mode: each mode's own,
  *  every one of them an entry of `credentials.AI_RUN_WRITES` (a mode deployed later adds its own here): `check`'s are
- *  agent-worker R37's, `plan`'s agent-worker R53's. Frozen. */
+ *  agent-worker R37's, `plan`'s agent-worker R53's. Frozen.
+ *  @type {Readonly<{check: readonly string[], plan: readonly string[]}>}
+ *  @bound each write: an op name of credentials' AI_RUN_WRITES */
 export const AI_RUN_MODE_WRITES = Object.freeze({   /* passed whole: credentials R63 refuses one its list does not name */
   check: Object.freeze(["airuntick", "suggest", "capturerequest", "airunclose"]),
   plan: Object.freeze(["airuntick", "optionpropose", "airunclose"]),
@@ -952,7 +990,11 @@ function runSight(col, viewer) {
  *  load-bearing), and `COALESCE` keeps a NULL authority from deciding the answer by accident. With `column` (K333, for
  *  legacy-store's `ai_run_bounds` count) it is the same predicate and args over that column naming a run id; the
  *  column must be a plain identifier, and anything else is refused by the tail that keeps nothing, never
- *  interpolated. Pure over its arguments; never throws (a failure is the fail-closed tail). */
+ *  interpolated. Pure over its arguments; never throws (a failure is the fail-closed tail).
+ *  @param {string | null | undefined} viewer
+ *  @param {string} [column]
+ *  @returns {{sql: string, args: *[]}}
+ *  @bound column: a plain identifier, else the tail that keeps nothing */
 export function hiddenRuns(viewer, column = undefined) {
   const byColumn = column !== undefined;
   const closed = byColumn ? { sql: " AND 0=1", args: [] } : { sql: " AND COALESCE(authority_kind, '') <> 'run'", args: [] };
@@ -976,7 +1018,10 @@ export class AiRuns {
   #deps;
   /** `deps` is for in-process wiring only (never the wire or `env`): `inquiry` (R27's `migratedSurfacing`), `steps`,
    *  `aiUse` and `aiAccounts` (each module's own instance, else its factory on this `ctx`), and, for a module test alone,
-   *  `deployedModes` in place of `run-rules`' `DEPLOYED_MODES` and `testSet` in place of `CIVICSMITH_TEST_SET`. */
+   *  `deployedModes` in place of `run-rules`' `DEPLOYED_MODES` and `testSet` in place of `CIVICSMITH_TEST_SET`.
+   *  @param {RunsCtx} ctx
+   *  @param {RunsEnv | null} [env]
+   *  @param {RunsDeps | null} [deps] */
   constructor(ctx, env = {}, deps = {}) {
     this.ctx = ctx;
     this.env = env || {};
@@ -1033,7 +1078,9 @@ export class AiRuns {
 
   /** R73, R74 (J5 (8)): THE RUN'S OWN SYSTEM IDENTITY, the machine that creates and ends the run's system step. steps
    *  reads a member credential as that member, so a member's run (R74) needs a machine to make a step the system's; it is
-   *  minted here per run, never presented by a caller, and `runHolder` answers it only while its run is running. */
+   *  minted here per run, never presented by a caller, and `runHolder` answers it only while its run is running.
+   *  @param {string} run
+   *  @returns {string} */
   static systemOf(run) { return `${MACHINE_CLASS_PREFIX}daemon/${String(run)}`; }
 
   /** The sight a run's principal acts in, as a viewer: `member:<id>` for a member credential, the class for a machine
@@ -1048,7 +1095,10 @@ export class AiRuns {
    *  principal `by` is (run-rules R5), or whose own system identity it is (`systemOf`); `enabled_by` the paying owner the
    *  run records (`principal_claude`, R52; ai-use R6's label) and `principal` the viewer the run's opener acts as (steps
    *  judges the step's place in that sight); null for a blank, unknown or ended run, or one another principal holds.
-   *  Writes nothing and never throws. */
+   *  Writes nothing and never throws.
+   *  @param {string} by
+   *  @param {string | null} run
+   *  @returns {{enabled_by: string | null, principal: string} | null} */
   runHolder(by, run) {
     try {
       const id = run == null ? "" : String(run).trim();
@@ -1067,7 +1117,10 @@ export class AiRuns {
    *  only the rows of a run R19 would answer `found: true` for, as R42's `hiddenRuns` does: with `hid` given, a run is in
    *  sight exactly when its context is a bundle not in `hid`, which is `runSight`'s gate, since `hid` is every bundle the
    *  gate does not pass (every one, for a viewer it refuses). Synchronous; writes nothing. */
+  /** @type {readonly ('aiRuns' | 'aiRunBounds' | 'inquiryRunSurfacings' | 'aiRunLog')[]} */
   static COUNT_KEYS = Object.freeze(["aiRuns", "aiRunBounds", "inquiryRunSurfacings", "aiRunLog"]);
+  /** @param {{sql: string, args: *[]} | null} [hid]
+   *  @returns {RunCounts} */
   counts(hid = null) {
     const c = (q, ...a) => this.#one(q, ...a).c;
     if (!hid) return { aiRuns: c(`SELECT count(*) c FROM ai_runs`), aiRunBounds: c(`SELECT count(*) c FROM ai_run_bounds`),
@@ -1091,7 +1144,8 @@ export class AiRuns {
    *  the manifest it ran under when that was the lens in force, its `rerun_of`, and `registered` (N284): the run's
    *  `created`, the open's instant, which bias offers the scheduler's rank as the product's `waitingSince` (null
    *  when the stored instant cannot be read, never filled in); `visible(run, viewer)` R19's sight. Read as the
-   *  administrator viewer, as bias reads every work product. */
+   *  administrator viewer, as bias reads every work product.
+   *  @returns {WorkProducts} */
   workProducts() {
     const MEMBER = /^member:([A-Za-z0-9._:-]{1,128}?)(?:\/.*)?$/;
     return {
@@ -1147,6 +1201,9 @@ export class AiRuns {
    * `{ tickMs(), holds(iso, limit), woken(limit), completions(run, limit), markWoken(requests, iso) }`, all
    * synchronous; `configured()` may be added, and answers whether anything drains at all (the hold is inert where
    * nothing will ever complete). With none registered the wake holds and wakes nothing (R17). */
+  /** @param {string} module
+   *  @param {WaitSource} source
+   *  @returns {Registration} */
   registerWaitSource(module, source) {
     const fns = ["tickMs", "holds", "woken", "completions", "markWoken"];
     if (typeof module !== "string" || !module || !source || fns.some((f) => typeof source[f] !== "function"))
@@ -1160,7 +1217,10 @@ export class AiRuns {
   /** R43 (N223, K259): a later module's post-write notice (`scheduler`'s R9), called after each successful `open`
    *  commits with `{run, contextType, contextId, expires}`, once per listener, in the modules' total order
    *  (membership's `MODULE_ORDER`, R83). A malformed registration, or a second by the same module, is refused by
-   *  membership's `listenerRefusal` (its R81), the one site of LISTENER_MALFORMED and LISTENER_DECLARED. */
+   *  membership's `listenerRefusal` (its R81), the one site of LISTENER_MALFORMED and LISTENER_DECLARED.
+   *  @param {string} module
+   *  @param {(notice: RunOpened) => *} fn
+   *  @returns {Registration} */
   onRunOpened(module, fn) {
     const refused = listenerRefusal(this.#runListeners, module, fn);
     if (refused) return refused;
@@ -1172,7 +1232,11 @@ export class AiRuns {
   /** R47 (K660): a later module's check for one mode (`action-plans` for `plan`, its R30), registered once at start: a
    *  synchronous `fn({contextType, contextId, plan, actor, viewer}) → null | refusal` that `open` applies last and passes
    *  on unchanged. A malformed registration, or a second (by the same module, or for a mode already held), is refused by
-   *  membership's `listenerRefusal` (LISTENER_MALFORMED, LISTENER_DECLARED). */
+   *  membership's `listenerRefusal` (LISTENER_MALFORMED, LISTENER_DECLARED).
+   *  @param {string} module
+   *  @param {string} mode
+   *  @param {(asked: OpenCheckAsked) => * | null} fn
+   *  @returns {Registration} */
   registerOpenCheck(module, mode, fn) {
     const m = typeof mode === "string" ? mode.trim() : "";
     const refused = listenerRefusal(this.#openChecks, module, m ? fn : null)
@@ -1184,7 +1248,8 @@ export class AiRuns {
   #deployedModes() { return Array.isArray(this.#deps.deployedModes) ? this.#deps.deployedModes : DEPLOYED_MODES; }
   /** R78 (T46; K2816 (2)): WHETHER THIS IS A TEST INSTANCE, a fact of the deployment and of nothing else: true exactly
    *  when the Worker environment's `CIVICSMITH_TEST_INSTANCE` is a string equal to its `INSTANCE_NAME`, both non-empty;
-   *  false otherwise, and when either cannot be read. Only `env` is read: no op, body, query or table reaches it. */
+   *  false otherwise, and when either cannot be read. Only `env` is read: no op, body, query or table reaches it.
+   *  @returns {boolean} */
   testInstance() {
     try {
       const env = this.env || {};
@@ -1196,7 +1261,9 @@ export class AiRuns {
    *  verification chain (`verifications`) and its test bar (`testBarRecords`, R75) on Civicsmith's set (a module test's
    *  own set through `deps.testSet`), with the test-instance exception (`testInstance`). `run-rules`' `partAdmittedOn`
    *  is the one computation: `{admitted, untested}`, the label set only for a part admitted on the exception. The one
-   *  gate of this module (R40, R23's input), and what later modules ask (question-explorer, instance-setup, plane). */
+   *  gate of this module (R40, R23's input), and what later modules ask (question-explorer, instance-setup, plane).
+   *  @param {string} part
+   *  @returns {PartAdmission} */
   partAdmitted(part) {
     try {
       const set = this.#deps.testSet || CIVICSMITH_TEST_SET;
@@ -1216,6 +1283,7 @@ export class AiRuns {
      segment accepts, pushes it out. A run that heartbeats lives; a run whose segment died is dead within the lease and is
      reaped (bound `lease`), so it reads ended within minutes, never "working" for an hour. `AI_RUN_LEASE_MS` in the
      environment overrides it. */
+  /** @type {number} */
   static AI_RUN_LEASE_MS = 600000;
   #leaseMs() {
     const v = Number(this.env && this.env.AI_RUN_LEASE_MS);
@@ -1247,7 +1315,9 @@ export class AiRuns {
      cannot replay its log whole through this op. No cursor is minted here —
      REC-55's declined-second-copy rule — and the honest bound is published
      instead of the complete answer being promised. */
+  /** @type {number} */
   static AI_RUN_LOG_LIMIT_DEFAULT = 200;
+  /** @type {number} */
   static AI_RUN_LOG_LIMIT_MAX = 5000;
 
   /* REC-69 — THE CONTEXT-KEYED RUN LIST'S PAIR, AND NEITHER FIGURE IS NEW.
@@ -1267,7 +1337,9 @@ export class AiRuns {
    * caller cut at the CEILING has no way past it. No cursor is minted (REC-55's
    * declined-second-copy rule); the honest bound is published instead of the
    * complete answer being promised. */
+  /** @type {number} */
   static AI_RUNS_LIMIT_DEFAULT = 200;
+  /** @type {number} */
   static AI_RUNS_LIMIT_MAX = 1000;
 
   static #aiIso(ms) { return stampInstant("second", ms); }
@@ -1420,6 +1492,8 @@ export class AiRuns {
    *      ask: the budget rows and the clock are the only evidence there is, and
    *      `finishedBound` is the one function that reads them.
    */
+  /** @param {{run: *, offered?: *, condition?: string | null, at: string, expired?: boolean, derive?: boolean}} ending
+   *  @returns {CloseAnswer} */
   #aiRunTerminate({ run, offered = null, condition = null, at, expired = false, derive = true }) {
     const row = this.#one(`SELECT * FROM ai_runs WHERE run = ?`, run);
     if (!row) return { run, found: false,
@@ -1515,7 +1589,8 @@ export class AiRuns {
   /** R73, R74 (steps R5, R9): each record the run's looks name (a capture, content or lead referent, steps R9's product
    *  kinds) tied to its step; then its own system step `ended` with every outcome undetermined for a completed run, or
    *  `set_aside` with the stopping bound's or ending's sentence for any other, by the run's system identity. Answers what
-   *  steps said, never throws. */
+   *  steps said, never throws.
+   *  @returns {StepEnd} */
   #endStep(row, bound) {
     const st = this.#steps();
     if (!st || typeof st.stepEnd !== "function") return { told: false, reason: word("ai-runs.reason.steps_reachable") };
@@ -1652,7 +1727,8 @@ export class AiRuns {
    *  form, null for a leg that names none or the whole document) and each record it cites (`kind: "cited"`); for a run
    *  over a project, the same for each question R19's `questions` lists. Only what the viewer sees (`inSight`, the one
    *  predicate), deduplicated by id and extent, at most `SUBJECTS_MAX`, `truncated` past that. The reads are SQL over
-   *  `inquiry_basis`, `content` and `refs`, as this module reads `bundles` and `refs` elsewhere. No lens is read. */
+   *  `inquiry_basis`, `content` and `refs`, as this module reads `bundles` and `refs` elsewhere. No lens is read.
+   *  @returns {RunSubjects} */
   #runSubjects(row, viewer) {
     const questions = row.context_type === "project" ? this.#runContextQuestions(row.context_id, viewer)
       : row.context_type === "inquiry" ? [String(row.context_id)] : [];
@@ -1720,7 +1796,8 @@ export class AiRuns {
    *  `#participation` is the record's existing membership predicate and is
    *  CALLED rather than reimplemented, for the reason its own header gives: the
    *  admin bypass came to sit on invite and remove with different shapes
-   *  because the test had two copies. */
+   *  because the test had two copies.
+   *  @param {{actor: *, contextType: *, contextId: *, viewer?: string | null}} asked */
   #aiRunProjectGate({ actor, contextType, contextId, viewer = null }) {
     const projects = this.#runContextProjects(contextType, contextId);
     const who = actor == null ? "" : String(actor).trim();
@@ -1761,7 +1838,8 @@ export class AiRuns {
    *  dropped (there is none) and the ground is kept, because DEC-17's
    *  projectless permission is a fact about how the run was allowed to start
    *  and a consumer that cannot see it cannot tell a permitted run from an
-   *  ungated one. Shaped in one place so all three verbs publish it alike. */
+   *  ungated one. Shaped in one place so all three verbs publish it alike.
+   *  @returns {GateStated} */
   static #aiRunGateStated(g) {
     return { projectGate: { applied: g.applied, ground: g.ground, why: g.why, projects: g.projects } };
   }
@@ -1790,7 +1868,9 @@ export class AiRuns {
    *  merely stored, because "every run records the skill version it ran under"
    *  is a requirement and a condition that may be omitted is not recorded. It
    *  is still never derived: the plane refuses, it does not fill in. The
-   *  refusal is C-22.7, built in `run-rules checkSkillVersion`. */
+   *  refusal is C-22.7, built in `run-rules checkSkillVersion`.
+   *  @param {OpenRequest} [req]
+   *  @returns {Promise<OpenAnswer>} */
   async open({ run, contextType, contextId, label = null, mode = null,
               principalPlane = null, principalClaude = null, principalClaudeRef = null,
               skillVersion = null, biasManifest = null, standardPair = null,
@@ -1845,6 +1925,7 @@ export class AiRuns {
     /* R35: every refusal this act mints, built in one place from its row read by key, so each code is written once, at
        its refusal (the DEC-49 guard's arm G), and each answer keeps its shape: the run, `started: false`, the code, its
        check and translation, then what that refusal adds. `run || null` because the first refusal is of a blank id. */
+    /** @type {(code: string, more?: Object) => OpenAnswer} */
     const refusal = (code, more = {}) => {
       const row = this.#checkRow(code) || { check: null, translation: null };
       return { run: run || null, started: false, code, check: row.check, translation: row.translation, ...more };
@@ -2266,7 +2347,10 @@ export class AiRuns {
    *  step's place (its first question she sees, or its project), with a system step of its own whose work names hers
    *  (J5 (9)). A refusal of one is answered for it and the others open; each run's limits end it alone (R14), setting
    *  only its own step aside (R73). Answers `{ok, estimate, runs: [{step, run?, system_step?, refusal?}]}`. */
+  /** @type {number} */
   static OPEN_MANY_MAX = 50;
+  /** @param {OpenManyRequest} [req]
+   *  @returns {Promise<OpenManyAnswer>} */
   async openMany({ steps = null, mode = null, owner = null, bounds = null, skillVersion = null, label = null,
                    principalPlane = null, actor = null, viewer = null, at = null } = {}) {
     const member = memberIdOf(actor);
@@ -2364,7 +2448,9 @@ export class AiRuns {
    *  A tick for a run that has already ended is a STATED no-op rather than a
    *  refusal, following `saveCaptureSession`'s `{ saved: false }` precedent: it
    *  is a fact about the run's state, and a late tick from a straggling
-   *  sub-session must not resurrect a run whose log is already closed. */
+   *  sub-session must not resurrect a run whose log is already closed.
+   *  @param {TickRequest} [req]
+   *  @returns {TickAnswer} */
   tick({ run, state = null, consume = null, log = null, leaseMs = null, at = null,
               /* R84 (R085-7; agent-worker R91): how a segment ended, `{by, done, refusals, error?}`. */
               segment_end = null,
@@ -2563,7 +2649,9 @@ export class AiRuns {
    *  its own bound with the run not done is dispatched again by the plane, with no member's act, on R18's principal rules:
    *  a member's run on her own sign-in as `dispatchMemberRun` does it (a fresh segment credential), a run of the group's
    *  organisation credential as the wake does it. A continuation that is not dispatched appends one entry saying so, and
-   *  the run waits for its principal. */
+   *  the run waits for its principal.
+   *  @param {TickRequest} [args]
+   *  @returns {Promise<TickAnswer>} */
   async tickAndContinue(args = {}) {
     const out = this.tick(args);
     if (!out || out.ticked !== true || !out.segment_end || out.segment_end.next !== "continue") return out;
@@ -2571,6 +2659,7 @@ export class AiRuns {
                                   principal_claude_ref, step FROM ai_runs WHERE run = ?`, out.run);
     if (!row || row.status !== "running") return out;
     const iso = AiRuns.#aiIso(args.at ? Date.parse(args.at) : Date.now());
+    /** @type {SegmentDispatch} */
     let dispatch;
     try {
       const principal = String(row.principal_plane ?? "");
@@ -2609,6 +2698,8 @@ export class AiRuns {
      ADDITIVE ON THE WIRE: the DO's dispatch already `await`s every op, `#aiRunTerminate` is untouched and
      still synchronous, and the REAPER still calls it directly — so a lapsed run is closed by the clock on
      exactly the path it was before, with no member and no discharge. */
+  /** @param {CloseRequest} [req]
+   *  @returns {Promise<CloseAnswer>} */
   async close({ run, bound = null, condition = null, at = null, actor = null, viewer = null,
                /* REC-152: the caller's PRINCIPAL, stamped server-side — see `aiRunTick`. */
                caller = null } = {}) {
@@ -2681,11 +2772,17 @@ export class AiRuns {
      close uses. That is the structural half of "the real path and the mutated
      path go through ONE function". */
 
+  /** How many running runs have lapsed at `now`.
+   *  @param {number} now milliseconds since the epoch
+   *  @returns {number} */
   reapDue(now) {
     return this.#one(`SELECT count(*) c FROM ai_runs WHERE status = 'running' AND expires < ?`,
       AiRuns.#aiIso(now)).c;
   }
 
+  /** When the reaper should next wake: the earliest lease, not before `now`; null with no run in flight.
+   *  @param {number} now
+   *  @returns {number | null} */
   reapWake(now) {
     const r = this.#one(`SELECT MIN(expires) e FROM ai_runs WHERE status = 'running'`);
     if (!r || !r.e) return null;                       // no run in flight: no alarm at all
@@ -2699,7 +2796,9 @@ export class AiRuns {
    *  contributes, and `finishedBound` turns that into `lease` — or into whatever
    *  budget was ALREADY exhausted, because a run that overspent and then died
    *  was stopped by the budget, and reporting the lease there would name the
-   *  symptom and hide the cause. */
+   *  symptom and hide the cause.
+   *  @param {number} now
+   *  @returns {ReapAnswer} */
   reap(now) {
     const iso = AiRuns.#aiIso(now);
     const lapsed = this.#rows(
@@ -2769,6 +2868,7 @@ export class AiRuns {
      so the wake re-arms and the next tick takes the next batch — the
      connection-derive sweep's progressive drain, and the reason that consumer
      can be bounded without dropping anything. */
+  /** @type {number} */
   static AI_RUN_WAKE_TICK_BATCH = 25;
 
   /** THE SUSPENDED RUNS TO HOLD: still running, and the daemon still owes them
@@ -2810,11 +2910,17 @@ export class AiRuns {
       .filter(Boolean);
   }
 
+  /** How many runs the wake would hold or wake at `now`.
+   *  @param {number} now
+   *  @returns {number} */
   wakeDue(now) {
     const iso = AiRuns.#aiIso(now);
     return this.#aiRunWakeHolds(iso).length + this.#aiRunWakeRuns().length;
   }
 
+  /** When the wake should next run; null when nothing is suspended.
+   *  @param {number} now
+   *  @returns {number | null} */
   wakeWake(now) {
     /* NULL WHEN NOTHING IS SUSPENDED — the self-termination property REC-1
        prized, stated here rather than inherited: an instance with no run
@@ -2839,7 +2945,9 @@ export class AiRuns {
    *  store holds, so a run opened on a shorter lease is held on the standard
    *  one while the daemon owes it an answer. That is a widening and it is
    *  bounded twice over — by the request's own expiry, and by the fact that
-   *  nothing renews it once the request is answered. */
+   *  nothing renews it once the request is answered.
+   *  @param {number} now
+   *  @returns {Promise<WakeAnswer>} */
   async wake(now) {
     const iso = AiRuns.#aiIso(now);
     const until = AiRuns.#aiIso(now + this.#leaseMs());
@@ -2956,6 +3064,7 @@ export class AiRuns {
 
   /* R82 (R085-7; WALK-085 F2): the dispatch waits only for `agent-worker` to ACCEPT the segment (its R91 answers 202 at
      once), so ten seconds; the segment then runs on whether or not this call is still connected. */
+  /** @type {number} */
   static AI_RUN_DISPATCH_WAIT_MS = 10_000;
   #aiRunDispatchWaitMs() {
     const v = Number(this.env && this.env.AI_RUN_DISPATCH_WAIT_MS);
@@ -3148,7 +3257,9 @@ export class AiRuns {
    *  acceptance (R82: accepted is `RUNNING`), and one log entry for a refused or unaccepted call. The token is used for that one call and is
    *  never answered, logged or written; a later mint for the run revokes it, and the run's end (R14) ends them all.
    *  (T50; R87, R89) `trace` and `memberRef`, the door's strings, ride the call as `x-civicsmith-trace` and
-   *  `x-civicsmith-member-ref` and nowhere else; the mint carries the run's `project` when it has one. */
+   *  `x-civicsmith-member-ref` and nowhere else; the mint carries the run's `project` when it has one.
+   *  @param {MemberDispatchRequest} [req]
+   *  @returns {Promise<MemberDispatchAnswer>} */
   async dispatchMemberRun({ run = null, by = null, viewer = null, at = null, trace = null, memberRef = null } = {}) {
     const iso = AiRuns.#aiIso(at ? Date.parse(at) : Date.now());
     const id = run == null ? "" : String(run).trim();
@@ -3282,6 +3393,8 @@ export class AiRuns {
    *
    *  ASYNC now, because the effective set is HASHED and `crypto.subtle` is. The
    *  dispatch already awaits every handler. */
+  /** @param {{run?: string | null, viewer?: string | null}} [req]
+   *  @returns {Promise<ReadAnswer>} */
   async read({ run, viewer = null } = {}) {
     const seen = this.#bundleGate("r.context_id", viewer);
     let cost = null;
@@ -3399,7 +3512,10 @@ export class AiRuns {
    *  never filled in from its sibling.
    *
    *  Synchronous, deliberately: unlike the manifest there is no hash and no
-   *  second read, so making this async would buy a promise nobody awaits for. */
+   *  second read, so making this async would buy a promise nobody awaits for.
+   *  @param {*} row
+   *  @param {string | null | undefined} [viewer]
+   *  @returns {RunStandard} */
   #standardForRun(row, viewer = null) {
     const raw = row.standard_pair;
     let parsed = null, unreadable = false;
@@ -3514,7 +3630,11 @@ export class AiRuns {
    *  that ENDED — which is the overclaim UI-49 removed one layer up when it
    *  made the indicator carry the record's own status word instead of pulsing
    *  unconditionally. The record answers what is there; the surface decides
-   *  what to draw. */
+   *  what to draw.
+   *  @param {{contextType?: string | null, contextId?: string | null, viewer?: string | null, limit?: number | string | null}} [req]
+   *  @returns {Promise<ListAnswer>}
+   *  @bound contextType: required, a name of run-rules' RUN_CONTEXTS, any case
+   *  @bound contextId: required, non-empty */
   async listInContext({ contextType = null, contextId = null,
                           viewer = null, limit = null } = {}) {
     /* The helper sits ABOVE the marker, on `#refusePairComposed`'s precedent
@@ -3522,6 +3642,7 @@ export class AiRuns {
        that enclosed it would report a refusal the DEC-49 guard cannot compare
        against a row. Every refusal INSIDE the region names its code as a STRING
        LITERAL, which is what makes arm C's verdict on this site evidence. */
+    /** @type {(code: string, detail: string) => Refusal} */
     const refusal = (code, detail) => {
       const row = this.#checkRow(code);
       return { ok: false, reason: code, code, check: row.check,
@@ -3603,7 +3724,8 @@ export class AiRuns {
   }
 
   /** PL-12: the run's bias block, computed ONCE. Read `aiRunRead`'s header for
-   *  what the three answers mean. */
+   *  what the three answers mean.
+   *  @returns {Promise<RunBias>} */
   async #biasForRun(row, viewer) {
     const recordedRaw = row.bias_manifest;
     let recorded = null, unreadable = false;
@@ -3738,7 +3860,10 @@ export class AiRuns {
    *  field is a field, and a field acquires a value the first time somebody
    *  thinks they are being helpful.
    *
-   *  GATED on the run's context, exactly as `aiRunRead` and `aiRunLog` are. */
+   *  GATED on the run's context, exactly as `aiRunRead` and `aiRunLog` are.
+   *  @param {{run?: string | null, half?: string | null, viewer?: string | null}} [req]
+   *  @returns {Promise<SpawnAnswer>}
+   *  @bound half: compose for the composing half; anything else is the search half */
   async spawnPayload({ run, half = "search", viewer = null } = {}) {
     const seen = this.#bundleGate("r.context_id", viewer);
     const row = this.#one(
@@ -3861,7 +3986,9 @@ export class AiRuns {
    *  bounded, and the suite pinned this op's SQL bound off its source. The pin
    *  went with the suite. R24's test holds the published bound (the page,
    *  `limit` and `truncated` over 205 entries); the SQL `LIMIT` below is what
-   *  keeps the read itself bounded, and no test reads it from the source. */
+   *  keeps the read itself bounded, and no test reads it from the source.
+   *  @param {{run?: string | null, viewer?: string | null, limit?: number | string | null}} [req]
+   *  @returns {LogAnswer} */
   log({ run, viewer = null, limit = null } = {}) {
     /* REC-70, IN THE BODY AND NOT ONLY IN THE HEADER ABOVE, because the
        instrument that read this file SEGMENTED FROM THE SIGNATURE DOWN — a
@@ -3990,7 +4117,10 @@ export class AiRuns {
   /** R28: the run's facts a producer gates on, for a held run the viewer can see; null for a blank id, an absent
    *  run and an invisible one alike. Never throws, writes nothing. Whether the caller holds it is R5 over
    *  `principal_plane`; `principal_claude` is the level that pays, which a production under the run records
-   *  (capture-requests' request row). */
+   *  (capture-requests' request row).
+   *  @param {string | null | undefined} run
+   *  @param {string | null | undefined} viewer
+   *  @returns {RunFacts | null} */
   runFor(run, viewer) {
     try {
       const id = run == null ? "" : String(run).trim();
@@ -4011,13 +4141,17 @@ export class AiRuns {
   }
 
   /** R78: a run's recorded `untested` label, read back as stored at the open; null when none was recorded or it cannot be
-   *  read (never derived from the bar or the instance now, R32). */
+   *  read (never derived from the bar or the instance now, R32).
+   *  @returns {UntestedLabel | null} */
   static #untestedOf(row) {
     const v = row && row.untested != null ? safeJson(String(row.untested)) : null;
     return v && typeof v === "object" && !Array.isArray(v) ? v : null;
   }
 
-  /** R29: one bound's `{allowed, consumed}`, or null when the run declared none. */
+  /** R29: one bound's `{allowed, consumed}`, or null when the run declared none.
+   *  @param {string} run
+   *  @param {string} bound
+   *  @returns {{allowed: number, consumed: number} | null} */
   boundOf(run, bound) {
     const r = this.#one(`SELECT allowed, consumed FROM ai_run_bounds WHERE run = ? AND bound = ?`,
       String(run ?? ""), String(bound ?? ""));
@@ -4026,7 +4160,13 @@ export class AiRuns {
 
   /** R29: add `n` to a bound's consumption, inside the caller's transaction (the row made at allowed 0 when none
    *  was declared). `n` 0 writes nothing; a figure that is not a non-negative safe integer is C-22.13 and nothing
-   *  is written. It never ends a run: an exhausted bound ends it at the next tick (R12). */
+   *  is written. It never ends a run: an exhausted bound ends it at the next tick (R12).
+   *  @param {string} run
+   *  @param {string} bound
+   *  @param {number} n
+   *  @returns {* | null} null, or run-rules' refusal (C-22.13, C-22.14, C-22.15)
+   *  @bound bound: a name of run-rules' RUN_BOUNDS other than lease
+   *  @bound n: whole number, 0 or more */
   consumeBound(run, bound, n) {
     const b = String(bound ?? "");
     /* The figure's rule is R3's, asked of this one pair (an unknown bound C-22.15; `lease`, which nothing spends,
@@ -4045,7 +4185,12 @@ export class AiRuns {
   }
 
   /** R37: the run gate `contradiction` offers (its R21), from R28 and R5: `found` false for blank, absent and
-   *  invisible alike; `refusal` null or R5's `AI_RUN_NOT_PRINCIPAL` naming `act`. */
+   *  invisible alike; `refusal` null or R5's `AI_RUN_NOT_PRINCIPAL` naming `act`.
+   *  @param {string | null | undefined} run
+   *  @param {string | null | undefined} viewer
+   *  @param {string | null | undefined} caller
+   *  @param {string | null} [act]
+   *  @returns {RunGateAnswer} */
   runGate(run, viewer, caller, act = null) {
     const r = this.runFor(run, viewer);
     if (!r) return { found: false, running: false, refusal: null, run: null };
@@ -4060,10 +4205,12 @@ export class AiRuns {
    * conversations through its `countUsage` under the run's id, and answers its cost from its `actualOf` (one store of the
    * figures, K2482). Which account pays is `ai-accounts.accountFor`'s (T48; N996 §5). */
 
-  /** A refusal relayed inside the tick's own shape (`ticked: false` leads, so no `ok` rides beside it). */
+  /** A refusal relayed inside the tick's own shape (`ticked: false` leads, so no `ok` rides beside it).
+   *  @param {*} refusal */
   static #shed({ ok: _ok, ...rest }) { return rest; }
 
-  /** One refusal of this module's acts, its row read by key from `run-rules`' table (R35). */
+  /** One refusal of this module's acts, its row read by key from `run-rules`' table (R35).
+   *  @returns {Refusal} */
   #refuse(code, detail, extra = {}) {
     const row = this.#checkRow(code) || { check: null, translation: null };
     return { ok: false, reason: code, code, check: row.check, translation: row.translation, detail, ...extra };
@@ -4120,7 +4267,8 @@ export class AiRuns {
 
   /** R76 (D12, K2482; J5 (10)): the run's cost as `ai-use.actualOf({act: <run>, viewer})` answers it, to the paying
    *  account's owners only (ai-use decides who they are); `final` once the run has ended. Null for anyone else and where
-   *  nothing is measured: no key at all is answered then. Never throws. */
+   *  nothing is measured: no key at all is answered then. Never throws.
+   *  @returns {RunCost | null} */
   #costFor(row, viewer) {
     try {
       const a = this.#aiUse().actualOf({ act: String(row.run), viewer });
@@ -4213,7 +4361,8 @@ export class AiRuns {
   /* ---- K1606 (run-rules R19; VF-4): THE ACT THAT RECORDS A MODE'S FIRST LIVE RUN VERIFIED, written here, where runs
      are, and read back by the open's deployability (R40). ------------------------------------------------------------ */
 
-  /** Every well-formed `verification_recorded` this record holds, oldest first, in run-rules' shape. */
+  /** Every well-formed `verification_recorded` this record holds, oldest first, in run-rules' shape.
+   *  @returns {Verification[]} */
   verifications() {
     try {
       return this.#rows(`SELECT mode, run, verified_by, at, evidence FROM ai_mode_verifications ORDER BY at, mode, run`)
@@ -4224,7 +4373,9 @@ export class AiRuns {
   /** run-rules R19: record that `mode`'s first live run, `run`, was verified, by the member `by` (the control plane's
    *  stamp), with `evidence`. Refused by `checkVerification` (C-22.20, a RELAY) as it judges it; a run this record
    *  does not hold in that mode, for this member's sight, is refused the same way, naming `run`. Append-only: a mode and
-   *  run already recorded answer `existed: true`. The answer carries whether the next mode is now deployable. */
+   *  run already recorded answer `existed: true`. The answer carries whether the next mode is now deployable.
+   *  @param {VerificationRequest} [req]
+   *  @returns {VerificationAnswer} */
   verificationRecord({ mode = null, run = null, evidence = null, by = null, at = null } = {}) {
     const now = AiRuns.#aiIso(at ? Date.parse(at) : Date.now());
     const who = memberIdOf(by);
@@ -4253,7 +4404,10 @@ export class AiRuns {
   /** R75: record an AI part's result on a test set, written by the harness (an in-plane call, reached by no route): Civicsmith's
    *  frozen set, or a group's own (`set: "group"`). Its shape is judged by `run-rules`' `checkTestBarRecord` (AI_TEST_BAR_UNFIT,
    *  C-22.22; B3, K2485), a RELAY; refused whole where that judge is not reachable (fail closed). Figures only: no transcript is
-   *  taken or kept (D15). Append-only. */
+   *  taken or kept (D15). Append-only.
+   *  @param {TestBarRequest} [req]
+   *  @returns {{ok: true, part: string, set: string, set_version: number, false_alarm_rate: number, passed: boolean, at: string} | *}
+   *    the record as written, or run-rules' refusal (AI_TEST_BAR_UNFIT) */
   testBarRecord({ part = null, set = null, set_version = null, false_alarm_rate = null, passed = null, graded_by = null,
                   at = null } = {}) {
     const now = AiRuns.#aiIso(at ? Date.parse(at) : Date.now());
@@ -4268,7 +4422,8 @@ export class AiRuns {
   }
 
   /** R75: every result recorded on Civicsmith's own test investigations (never a group's set, which opens or closes no
-   *  gate), oldest first, in run-rules R19's shape, for its `deployable`. Writes nothing; never throws. */
+   *  gate), oldest first, in run-rules R19's shape, for its `deployable`. Writes nothing; never throws.
+   *  @returns {TestBarResult[]} */
   testBarRecords() {
     try {
       return this.#rows(`SELECT part, set_name, set_version, false_alarm_rate, passed, graded_by, at FROM ai_test_bar
@@ -4282,7 +4437,12 @@ export class AiRuns {
   /** R75: a member adds one of the group's own test investigations for a part: a matter and the answers the group's people
    *  wrote. `by` is the control plane's stamp, an active member. A blank part, matter or answers, or a caller who is not an
    *  active member, is AI_GROUP_TEST_INVALID (a row of run-rules' table, B4), nothing written. A matter already held for the
-   *  part is replaced by its newer answers. */
+   *  part is replaced by its newer answers.
+   *  @param {{part?: string | null, matter?: string | null, answers?: string | Object | null, by?: string | null, at?: string | null}} [req]
+   *  @returns {{ok: boolean, part?: string, matter?: string, at?: string, reason?: string, code?: string,
+   *    check?: string | null, translation?: string | null, detail?: string}} the matter as held, or AI_GROUP_TEST_INVALID
+   *  @bound part: 1 to 60 characters; matter: 1 to 200; answers: 1 to 20000 (as JSON, for an object)
+   *  @bound by: an active member */
   groupTestSet({ part = null, matter = null, answers = null, by = null, at = null } = {}) {
     const who = memberIdOf(by);
     const text = (v, max) => (typeof v === "string" && v.trim() !== "" && v.length <= max ? v.trim() : null);
@@ -4304,7 +4464,10 @@ export class AiRuns {
   }
 
   /** R75: a part's results on the group's own test investigations, with each false-alarm rate, to the group's active
-   *  members; anyone else is answered none (withheld, never counted). Never a deploy gate's input. Writes nothing. */
+   *  members; anyone else is answered none (withheld, never counted). Never a deploy gate's input. Writes nothing.
+   *  @param {{part?: string | null, viewer?: string | null}} [req]
+   *  @returns {{ok: true, part: string | null, matters: number,
+   *    results: {set_version: *, false_alarm_rate: number, passed: boolean, at: string}[]}} */
   groupTestResults({ part = null, viewer = null } = {}) {
     const who = memberIdOf(viewer);
     const p = typeof part === "string" ? part.trim() : "";
@@ -4415,7 +4578,10 @@ export class AiRuns {
 
   /** R27: which run a question was opened inside, and under what lens. The run's facts are `read`'s answer, taken
    *  whole under the same viewer. The migration-replay arm is inquiry's (map §5.8): a question with no surfacing
-   *  row answers `not recorded` here. */
+   *  row answers `not recorded` here.
+   *  @param {string} bundleId
+   *  @param {string | null | undefined} viewer
+   *  @returns {Promise<Surfacing | *>} a surfacing, or inquiry's migratedSurfacing record */
   async surfacedIn(bundleId, viewer) {
     const link = this.#one(`SELECT run, principal, at FROM inquiry_run_surfacings WHERE bundle_id=?`, bundleId);
     if (!link) return this.#migratedSurfacing(bundleId) ?? { recorded: false, stated: "not recorded", run: null, lens: null };
@@ -4429,7 +4595,8 @@ export class AiRuns {
 
   /** The tables and their two additive columns (R38), and D-85's `ai_run_log` fold: the pre-fold run log's rows are
    *  copied into the observation log under `authority_kind = run` and the old table dropped, once. Idempotent;
-   *  called by the store's migration after observation-log's. */
+   *  called by the store's migration after observation-log's.
+   *  @returns {void} */
   migrate() {
     const bare = AI_RUNS_SCHEMA.split("\n").filter((l) => !l.trim().startsWith("--")).join("\n");
     for (const st of bare.split(";")) if (st.trim()) this.sql.exec(st);
@@ -4452,7 +4619,11 @@ export class AiRuns {
 
 const INSTANCES = new WeakMap();
 /** The one instance per Durable Object storage (K61). A later caller's `env` fills one created without it; `deps` are
- *  read on the first call only. */
+ *  read on the first call only.
+ *  @param {RunsCtx} ctx
+ *  @param {RunsEnv | null} [env]
+ *  @param {RunsDeps | null} [deps]
+ *  @returns {AiRuns} */
 export function aiRunsOf(ctx, env = null, deps = null) {
   const key = ctx.storage;
   let m = INSTANCES.get(key);
@@ -4468,7 +4639,11 @@ export function aiRunsOf(ctx, env = null, deps = null) {
  *  overwritten rather than believed: the two principals on the open (§14a — a principal a caller can name is not one),
  *  `actor` (PL-18, DEC-63: which member is asking; empty for a machine), `viewer` (D-15's fail-closed sight; on the
  *  open only the stated project count reads it, REC-139), `caller` (the caller's principal on the tick and the close,
- *  REC-152) and `by` (who records a verification). */
+ *  REC-152) and `by` (who records a verification).
+ *  @param {AiRuns} runs
+ *  @param {URL} url
+ *  @param {Object<string, *> | null | undefined} body
+ *  @returns {AiRunHandlers} */
 export function aiRunsOps(runs, url, body) {
   const q = (k) => url.searchParams.get(k);
   return {
@@ -4489,6 +4664,7 @@ export function aiRunsOps(runs, url, body) {
 
 /* R90 (T51; K4168; op-declarations R80, op-grades R49): the ops this module serves that the screens send, declared by their owner beside
    the ops map: each row's class, weight and description are the op's existing rows', its fields are what the arm reads. */
+/** @type {Readonly<{airunopen: DeclaredOp, airunclose: DeclaredOp}>} */
 export const DECLARED_OPS = Object.freeze({
   airunopen: { classes: ["admin","member","probe"], mutating: true, weight: "reversible", description: localize("ai-runs.declared.airunopen", "investigative run lifecycle, keyed by run id: starts a background session in the context of an inquiry or a project and changes NOTHING about that object (§14a)"),
     fields: { accepts: ["run","contextType","contextId","label","mode","principalClaude","principalClaudeRef","skillVersion","biasManifest","standardPair","bounds","state","leaseMs","at","rerunOf","plan","step","origin","place","work","response","project"], requires: ["run","contextType","contextId","principalClaude","skillVersion"] } },
