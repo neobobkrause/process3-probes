@@ -256,7 +256,14 @@ export function makeLister(program, tree) {
                 const owner = Object.keys(entries).find((n) => n.endsWith(`.${sym.name}`) && entries[n].kind === 'method');
                 if (owner) from = owner;
               }
-              if (from && from !== target) delegations.push([target, from]);
+              // iteration 6 (rule 43): does the method only hand its call straight on, (req) => bookings.open(req)?
+              let body = fn?.body;
+              if (body && ts.isBlock(body) && body.statements.length === 1 && ts.isReturnStatement(body.statements[0])) body = body.statements[0].expression;
+              while (body && (ts.isParenthesizedExpression(body) || ts.isAwaitExpression(body))) body = body.expression;
+              const params = new Set((fn?.parameters ?? []).map((p) => (ts.isIdentifier(p.name) ? p.name.text : '')));
+              const fromParam = (a) => { while (ts.isPropertyAccessExpression(a)) a = a.expression; return ts.isIdentifier(a) && params.has(a.text); };
+              const straight = body === call && call.arguments.every(fromParam);
+              if (from && from !== target) delegations.push([target, from, straight]);
             }
           }
         }
@@ -264,11 +271,11 @@ export function makeLister(program, tree) {
       };
       visit(sf);
     }
-    for (let round = 0; round < 3; round++) for (const [to, from] of delegations) {
+    for (let round = 0; round < 3; round++) for (const [to, from, straight] of delegations) {
       const inherited = entries[from]?.throws ?? [];
       if (inherited.length) entries[to].throws = [...new Set([...(entries[to].throws ?? []), ...inherited])].sort();
       // Iteration 6 (rule 43): and its bounds, which limit what the caller can accept just as much.
-      const inb = entries[from]?.bounds ?? [];
+      const inb = straight ? (entries[from]?.bounds ?? []) : [];
       if (inb.length) entries[to].bounds = [...new Set([...(entries[to].bounds ?? []), ...inb])];
     }
     for (const e of Object.values(entries)) e.bounds = [...new Set(e.bounds)].sort();

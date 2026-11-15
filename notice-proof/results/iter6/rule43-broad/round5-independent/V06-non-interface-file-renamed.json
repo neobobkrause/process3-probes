@@ -1,0 +1,138 @@
+{
+  "id": "V06-non-interface-file-renamed",
+  "title": "bookings' price list holds amounts, made with money's amount, so that each price carries its currency; it is renamed SEAT_NIGHT to say so",
+  "provider": "bookings",
+  "covers": [
+    "a provider changes a file outside its interface",
+    "a user imports that file; no entry holds what it uses"
+  ],
+  "tool": {
+    "firstCommentsStep": false,
+    "interfaceChanged": false,
+    "summary": "The listing before and after is the same. Nobody is told.",
+    "entries": [],
+    "told": [],
+    "toldDetail": [],
+    "notTold": [],
+    "warnings": [],
+    "commentsOnly": false,
+    "checks": {
+      "bookings": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 101
+      },
+      "door": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 82
+      },
+      "meter": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 69
+      },
+      "billing": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 72
+      },
+      "front": {
+        "refusedBefore": 1,
+        "refusedAfter": 2,
+        "refusals": [
+          {
+            "at": "front/src/index.mjs:6",
+            "code": 2305,
+            "text": "Module '\"../../bookings/src/prices.mjs\"' has no exported member 'SEAT_NIGHT_CENTS'.",
+            "kind": "(a) a comment disagrees with this module's code"
+          },
+          {
+            "at": "front/src/index.mjs:6",
+            "code": "import",
+            "text": "imports bookings/src/prices.mjs, which is not one of bookings's interface files",
+            "kind": "(c) a rule of form: only a module's interface files are imported"
+          }
+        ],
+        "refusalsBefore": [
+          {
+            "at": "front/src/index.mjs:6",
+            "code": "import",
+            "text": "imports bookings/src/prices.mjs, which is not one of bookings's interface files",
+            "kind": "(c) a rule of form: only a module's interface files are imported"
+          }
+        ],
+        "ms": 102
+      },
+      "reports": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 70
+      }
+    }
+  },
+  "groundTruth": {
+    "providerTests": {
+      "pass": true,
+      "failed": [],
+      "ran": 8
+    },
+    "testsBefore": {
+      "door": true,
+      "meter": true,
+      "billing": true,
+      "front": true,
+      "reports": true
+    },
+    "testsAfter": {
+      "door": {
+        "pass": true,
+        "failed": []
+      },
+      "meter": {
+        "pass": true,
+        "failed": []
+      },
+      "billing": {
+        "pass": true,
+        "failed": []
+      },
+      "front": {
+        "pass": false,
+        "failed": []
+      },
+      "reports": {
+        "pass": true,
+        "failed": []
+      }
+    },
+    "broken": [
+      "front"
+    ]
+  },
+  "timing": {
+    "listingMs": {
+      "before": 129,
+      "after": 112
+    },
+    "noticeMs": 662,
+    "checkMs": {
+      "bookings": 101,
+      "door": 82,
+      "meter": 69,
+      "billing": 72,
+      "front": 102,
+      "reports": 70
+    }
+  }
+}

@@ -31,9 +31,11 @@ Written by Claude (the proof session), 15 Nov 2026, after round 6: a fresh indep
 
 | # | Rule | Answers |
 | --- | --- | --- |
-| 43 | **A method or operation handler inherits the bounds of every listed entry it calls**, as it inherits their stated errors (rule 23). A bound newly written on `open` limits what `bookopen` accepts just as much. | W04 |
+| 43 | **A method or operation handler that only hands its call straight on to a listed entry** (`(req) => bookings.open(req)`: its whole body is that one call, made with its own parameters) **inherits that entry's bounds**, as it inherits its stated errors (rule 23). A bound newly written on `open` limits what `bookopen` accepts just as much. | W04 |
 
 Added 15 Nov 2026 after the first run of iteration 6, in which W04 was still a hole: rule 37 put the new bound on `Bookings.open`, but front reaches `open` only through the operation `bookopen`, whose handler calls it.
+
+A first form of rule 43 had every method inherit the bounds of every listed entry it calls. Run on all 117 changes it told three users for nothing (billing and bookings in A03: `Rooms.add` inherited slugify's bound on its result; billing in X03: `Bookings.open` inherited the clock's bound). It was narrowed to a call handed straight on the same day; the results of the first form are kept in `results/iter6/rule43-broad/`.
 
 ## Defects met while running iteration 6
 

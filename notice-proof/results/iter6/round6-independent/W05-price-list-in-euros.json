@@ -22,28 +22,28 @@
         "refusedAfter": 0,
         "refusals": [],
         "refusalsBefore": [],
-        "ms": 90
+        "ms": 89
       },
       "door": {
         "refusedBefore": 0,
         "refusedAfter": 0,
         "refusals": [],
         "refusalsBefore": [],
-        "ms": 64
+        "ms": 60
       },
       "meter": {
         "refusedBefore": 0,
         "refusedAfter": 0,
         "refusals": [],
         "refusalsBefore": [],
-        "ms": 86
+        "ms": 63
       },
       "billing": {
         "refusedBefore": 0,
         "refusedAfter": 0,
         "refusals": [],
         "refusalsBefore": [],
-        "ms": 88
+        "ms": 80
       },
       "front": {
         "refusedBefore": 1,
@@ -70,14 +70,14 @@
             "kind": "(c) a rule of form: only a module's interface files are imported"
           }
         ],
-        "ms": 122
+        "ms": 109
       },
       "reports": {
         "refusedBefore": 0,
         "refusedAfter": 0,
         "refusals": [],
         "refusalsBefore": [],
-        "ms": 75
+        "ms": 73
       }
     }
   },
@@ -124,17 +124,17 @@
   },
   "timing": {
     "listingMs": {
-      "before": 155,
-      "after": 125
+      "before": 162,
+      "after": 117
     },
-    "noticeMs": 714,
+    "noticeMs": 637,
     "checkMs": {
-      "bookings": 90,
-      "door": 64,
-      "meter": 86,
-      "billing": 88,
-      "front": 122,
-      "reports": 75
+      "bookings": 89,
+      "door": 60,
+      "meter": 63,
+      "billing": 80,
+      "front": 109,
+      "reports": 73
     }
   }
 }

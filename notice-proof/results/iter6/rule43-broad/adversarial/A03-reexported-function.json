@@ -1,0 +1,395 @@
+{
+  "id": "A03-reexported-function",
+  "title": "slugify joins words with underscores; front reaches slugify only through rooms' re-export",
+  "provider": "text-rules",
+  "covers": [
+    "attack: a function reached through another module's re-export"
+  ],
+  "tool": {
+    "firstCommentsStep": false,
+    "interfaceChanged": true,
+    "summary": "2 module(s) changed their listing; 3 entries changed in a way that tells; 5 user(s) told.",
+    "entries": [
+      {
+        "module": "text-rules",
+        "entry": "slugify",
+        "changes": [
+          "bound changed"
+        ],
+        "tells": "users",
+        "before": {
+          "kind": "function",
+          "accepts": "(arg0: string)",
+          "handsBack": "string",
+          "bounds": [
+            "result: only a-z, 0-9 and single hyphens between them",
+            "text: 1 to 80 characters, with at least one letter or digit"
+          ],
+          "throws": [
+            "RangeError"
+          ]
+        },
+        "after": {
+          "kind": "function",
+          "accepts": "(arg0: string)",
+          "handsBack": "string",
+          "bounds": [
+            "result: only a-z, 0-9 and single underscores between them",
+            "text: 1 to 80 characters, with at least one letter or digit"
+          ],
+          "throws": [
+            "RangeError"
+          ]
+        }
+      },
+      {
+        "module": "rooms",
+        "entry": "Rooms.add",
+        "changes": [
+          "bound changed"
+        ],
+        "tells": "users",
+        "before": {
+          "kind": "method",
+          "accepts": "(arg0: { kind: \"hall\" | \"kitchen\" | \"studio\"; name: string; seats: number })",
+          "handsBack": "{ id: string; kind: \"hall\" | \"kitchen\" | \"studio\"; name: string; seats: number }",
+          "bounds": [
+            "result: only a-z, 0-9 and single hyphens between them",
+            "seats: whole number, 1 to 500",
+            "text: 1 to 80 characters, with at least one letter or digit"
+          ],
+          "throws": [
+            "RangeError"
+          ]
+        },
+        "after": {
+          "kind": "method",
+          "accepts": "(arg0: { kind: \"hall\" | \"kitchen\" | \"studio\"; name: string; seats: number })",
+          "handsBack": "{ id: string; kind: \"hall\" | \"kitchen\" | \"studio\"; name: string; seats: number }",
+          "bounds": [
+            "result: only a-z, 0-9 and single underscores between them",
+            "seats: whole number, 1 to 500",
+            "text: 1 to 80 characters, with at least one letter or digit"
+          ],
+          "throws": [
+            "RangeError"
+          ]
+        }
+      },
+      {
+        "module": "rooms",
+        "entry": "slugify",
+        "changes": [
+          "bound changed"
+        ],
+        "tells": "users",
+        "before": {
+          "kind": "function",
+          "accepts": "(arg0: string)",
+          "handsBack": "string",
+          "bounds": [
+            "result: only a-z, 0-9 and single hyphens between them",
+            "text: 1 to 80 characters, with at least one letter or digit"
+          ],
+          "throws": [
+            "RangeError"
+          ]
+        },
+        "after": {
+          "kind": "function",
+          "accepts": "(arg0: string)",
+          "handsBack": "string",
+          "bounds": [
+            "result: only a-z, 0-9 and single underscores between them",
+            "text: 1 to 80 characters, with at least one letter or digit"
+          ],
+          "throws": [
+            "RangeError"
+          ]
+        }
+      }
+    ],
+    "told": [
+      "rooms",
+      "bookings",
+      "billing",
+      "front",
+      "reports"
+    ],
+    "toldDetail": [
+      {
+        "user": "rooms",
+        "reasons": [
+          {
+            "module": "text-rules",
+            "entry": "slugify",
+            "changes": [
+              "bound changed"
+            ],
+            "lines": [
+              "rooms/src/index.mjs:4",
+              "rooms/src/index.mjs:5",
+              "rooms/src/index.mjs:66"
+            ],
+            "through": null
+          }
+        ],
+        "undeclared": []
+      },
+      {
+        "user": "bookings",
+        "reasons": [
+          {
+            "module": "rooms",
+            "entry": "Rooms.add",
+            "changes": [
+              "bound changed"
+            ],
+            "lines": [
+              "bookings/test/index.test.mjs:10",
+              "bookings/test/index.test.mjs:11"
+            ],
+            "through": "text-rules"
+          }
+        ],
+        "undeclared": []
+      },
+      {
+        "user": "billing",
+        "reasons": [
+          {
+            "module": "rooms",
+            "entry": "Rooms.add",
+            "changes": [
+              "bound changed"
+            ],
+            "lines": [
+              "billing/test/index.test.mjs:12"
+            ],
+            "through": "text-rules"
+          }
+        ],
+        "undeclared": []
+      },
+      {
+        "user": "front",
+        "reasons": [
+          {
+            "module": "text-rules",
+            "entry": "slugify",
+            "changes": [
+              "bound changed"
+            ],
+            "lines": [
+              "front/src/index.mjs:5",
+              "front/src/index.mjs:13"
+            ],
+            "through": null
+          }
+        ],
+        "undeclared": []
+      },
+      {
+        "user": "reports",
+        "reasons": [
+          {
+            "module": "rooms",
+            "entry": "Rooms.add",
+            "changes": [
+              "bound changed"
+            ],
+            "lines": [
+              "reports/test/index.test.mjs:11",
+              "reports/test/index.test.mjs:12"
+            ],
+            "through": "text-rules"
+          },
+          {
+            "module": "rooms",
+            "notFollowed": [
+              "reads or calls values of unknown kind: reports/src/index.mjs:13 source.list('rooms').map; reports/src/index.mjs:13 source.list('rooms'); reports/src/index.mjs:13 source.list (+9)"
+            ],
+            "through": "text-rules"
+          }
+        ],
+        "undeclared": []
+      }
+    ],
+    "notTold": [
+      {
+        "user": "door",
+        "why": "uses none of the entries that changed in a way that tells"
+      }
+    ],
+    "warnings": [],
+    "commentsOnly": false,
+    "checks": {
+      "text-rules": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 59
+      },
+      "money": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 77
+      },
+      "calendar": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 67
+      },
+      "store": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 96
+      },
+      "rooms": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 107
+      },
+      "bookings": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 136
+      },
+      "door": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 77
+      },
+      "meter": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 88
+      },
+      "billing": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 78
+      },
+      "front": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 106
+      },
+      "reports": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 71
+      }
+    }
+  },
+  "groundTruth": {
+    "providerTests": {
+      "pass": true,
+      "failed": [],
+      "ran": 5
+    },
+    "testsBefore": {
+      "money": true,
+      "calendar": true,
+      "store": true,
+      "rooms": true,
+      "bookings": true,
+      "door": true,
+      "meter": true,
+      "billing": true,
+      "front": true,
+      "reports": true
+    },
+    "testsAfter": {
+      "money": {
+        "pass": true,
+        "failed": []
+      },
+      "calendar": {
+        "pass": true,
+        "failed": []
+      },
+      "store": {
+        "pass": true,
+        "failed": []
+      },
+      "rooms": {
+        "pass": false,
+        "failed": [
+          "add then find hands back the room under its slug"
+        ]
+      },
+      "bookings": {
+        "pass": true,
+        "failed": []
+      },
+      "door": {
+        "pass": true,
+        "failed": []
+      },
+      "meter": {
+        "pass": true,
+        "failed": []
+      },
+      "billing": {
+        "pass": true,
+        "failed": []
+      },
+      "front": {
+        "pass": false,
+        "failed": [
+          "a room id is the slug of its name"
+        ]
+      },
+      "reports": {
+        "pass": true,
+        "failed": []
+      }
+    },
+    "broken": [
+      "rooms",
+      "front"
+    ]
+  },
+  "timing": {
+    "listingMs": {
+      "before": 48,
+      "after": 52
+    },
+    "noticeMs": 632,
+    "checkMs": {
+      "text-rules": 59,
+      "money": 77,
+      "calendar": 67,
+      "store": 96,
+      "rooms": 107,
+      "bookings": 136,
+      "door": 77,
+      "meter": 88,
+      "billing": 78,
+      "front": 106,
+      "reports": 71
+    }
+  }
+}

@@ -1,0 +1,286 @@
+{
+  "id": "P05-answer-field-removed",
+  "title": "bookstatus no longer hands back the room",
+  "provider": "bookings",
+  "covers": [
+    "field of an answer removed",
+    "operation called by name in a request line"
+  ],
+  "tool": {
+    "firstCommentsStep": false,
+    "interfaceChanged": true,
+    "summary": "2 module(s) changed their listing; 4 entries changed in a way that tells; 2 user(s) told.",
+    "entries": [
+      {
+        "module": "bookings",
+        "entry": "BookingHandlers.bookstatus",
+        "changes": [
+          "hands back differently"
+        ],
+        "tells": "users",
+        "before": {
+          "kind": "method",
+          "accepts": "(arg0: { id: string })",
+          "handsBack": "{ room: string; state: \"cancelled\" | \"open\"; total: { cents: number; currency: \"EUR\" | \"GBP\" | \"USD\" } }",
+          "bounds": [
+            "cents: whole number, 0 to 10,000,000 inclusive"
+          ]
+        },
+        "after": {
+          "kind": "method",
+          "accepts": "(arg0: { id: string })",
+          "handsBack": "{ state: \"cancelled\" | \"open\"; total: { cents: number; currency: \"EUR\" | \"GBP\" | \"USD\" } }",
+          "bounds": [
+            "cents: whole number, 0 to 10,000,000 inclusive"
+          ]
+        }
+      },
+      {
+        "module": "bookings",
+        "entry": "op:bookstatus",
+        "changes": [
+          "hands back differently"
+        ],
+        "tells": "users",
+        "before": {
+          "kind": "operation",
+          "accepts": "{ id: string }",
+          "handsBack": "{ room: string; state: \"cancelled\" | \"open\"; total: { cents: number; currency: \"EUR\" | \"GBP\" | \"USD\" } }",
+          "bounds": [
+            "cents: whole number, 0 to 10,000,000 inclusive",
+            "day: a real calendar day written YYYY-MM-DD",
+            "nights: whole number, 1 to 14",
+            "party: whole number, 1 to 200, and no more than the room's seats"
+          ]
+        },
+        "after": {
+          "kind": "operation",
+          "accepts": "{ id: string }",
+          "handsBack": "{ state: \"cancelled\" | \"open\"; total: { cents: number; currency: \"EUR\" | \"GBP\" | \"USD\" } }",
+          "bounds": [
+            "cents: whole number, 0 to 10,000,000 inclusive",
+            "day: a real calendar day written YYYY-MM-DD",
+            "nights: whole number, 1 to 14",
+            "party: whole number, 1 to 200, and no more than the room's seats"
+          ]
+        }
+      },
+      {
+        "module": "door",
+        "entry": "AllOps",
+        "changes": [
+          "cannot stand in",
+          "hands back differently"
+        ],
+        "tells": "users",
+        "before": {
+          "kind": "kind",
+          "accepts": "{ bookcancel: { req: { id: string }; res: { day: string; id: string; nights: number; note?: string; party: number; room: string; state: \"cancelled\" | \"open\"; total: { cents: number; currency: \"EUR\" | \"GBP\" | \"USD\" }; until: string } }; bookopen: { req: { day: string; nights: number; note?: string; party: number; room: string }; res: { day: string; id: string; nights: number; note?: string; party: number; room: string; state: \"cancelled\" | \"open\"; total: { cents: number; currency: \"EUR\" | \"GBP\" | \"USD\" }; until: string } }; bookquote: { req: { nights: number; party: number; room: string }; res: { total: { cents: number; currency: \"EUR\" | \"GBP\" | \"USD\" } } }; bookstatus: { req: { id: string }; res: { room: string; state: \"cancelled\" | \"open\"; total: { cents: number; currency: \"EUR\" | \"GBP\" | \"USD\" } } }; roomlist: { req: { kind?: \"hall\" | \"kitchen\" | \"studio\" }; res: { rooms: { id: string; kind: \"hall\" | \"kitchen\" | \"studio\"; name: string; seats: number }[] } } }",
+          "handsBack": "{ bookcancel: { req: { id: string }; res: { day: string; id: string; nights: number; note?: string; party: number; room: string; state: \"cancelled\" | \"open\"; total: { cents: number; currency: \"EUR\" | \"GBP\" | \"USD\" }; until: string } }; bookopen: { req: { day: string; nights: number; note?: string; party: number; room: string }; res: { day: string; id: string; nights: number; note?: string; party: number; room: string; state: \"cancelled\" | \"open\"; total: { cents: number; currency: \"EUR\" | \"GBP\" | \"USD\" }; until: string } }; bookquote: { req: { nights: number; party: number; room: string }; res: { total: { cents: number; currency: \"EUR\" | \"GBP\" | \"USD\" } } }; bookstatus: { req: { id: string }; res: { room: string; state: \"cancelled\" | \"open\"; total: { cents: number; currency: \"EUR\" | \"GBP\" | \"USD\" } } }; roomlist: { req: { kind?: \"hall\" | \"kitchen\" | \"studio\" }; res: { rooms: { id: string; kind: \"hall\" | \"kitchen\" | \"studio\"; name: string; seats: number }[] } } }",
+          "bounds": [
+            "bookquote.total: what the whole stay costs, for the whole party and every night",
+            "cents: whole number, 0 to 10,000,000 inclusive",
+            "day: a real calendar day written YYYY-MM-DD",
+            "nights: whole number, 1 to 14",
+            "party: whole number, 1 to 200, and no more than the room's seats",
+            "seats: whole number, 1 to 500"
+          ],
+          "side": "both"
+        },
+        "after": {
+          "kind": "kind",
+          "accepts": "{ bookcancel: { req: { id: string }; res: { day: string; id: string; nights: number; note?: string; party: number; room: string; state: \"cancelled\" | \"open\"; total: { cents: number; currency: \"EUR\" | \"GBP\" | \"USD\" }; until: string } }; bookopen: { req: { day: string; nights: number; note?: string; party: number; room: string }; res: { day: string; id: string; nights: number; note?: string; party: number; room: string; state: \"cancelled\" | \"open\"; total: { cents: number; currency: \"EUR\" | \"GBP\" | \"USD\" }; until: string } }; bookquote: { req: { nights: number; party: number; room: string }; res: { total: { cents: number; currency: \"EUR\" | \"GBP\" | \"USD\" } } }; bookstatus: { req: { id: string }; res: { state: \"cancelled\" | \"open\"; total: { cents: number; currency: \"EUR\" | \"GBP\" | \"USD\" } } }; roomlist: { req: { kind?: \"hall\" | \"kitchen\" | \"studio\" }; res: { rooms: { id: string; kind: \"hall\" | \"kitchen\" | \"studio\"; name: string; seats: number }[] } } }",
+          "handsBack": "{ bookcancel: { req: { id: string }; res: { day: string; id: string; nights: number; note?: string; party: number; room: string; state: \"cancelled\" | \"open\"; total: { cents: number; currency: \"EUR\" | \"GBP\" | \"USD\" }; until: string } }; bookopen: { req: { day: string; nights: number; note?: string; party: number; room: string }; res: { day: string; id: string; nights: number; note?: string; party: number; room: string; state: \"cancelled\" | \"open\"; total: { cents: number; currency: \"EUR\" | \"GBP\" | \"USD\" }; until: string } }; bookquote: { req: { nights: number; party: number; room: string }; res: { total: { cents: number; currency: \"EUR\" | \"GBP\" | \"USD\" } } }; bookstatus: { req: { id: string }; res: { state: \"cancelled\" | \"open\"; total: { cents: number; currency: \"EUR\" | \"GBP\" | \"USD\" } } }; roomlist: { req: { kind?: \"hall\" | \"kitchen\" | \"studio\" }; res: { rooms: { id: string; kind: \"hall\" | \"kitchen\" | \"studio\"; name: string; seats: number }[] } } }",
+          "bounds": [
+            "bookquote.total: what the whole stay costs, for the whole party and every night",
+            "cents: whole number, 0 to 10,000,000 inclusive",
+            "day: a real calendar day written YYYY-MM-DD",
+            "nights: whole number, 1 to 14",
+            "party: whole number, 1 to 200, and no more than the room's seats",
+            "seats: whole number, 1 to 500"
+          ],
+          "side": "both"
+        }
+      },
+      {
+        "module": "door",
+        "entry": "Handlers.bookstatus",
+        "changes": [
+          "hands back differently"
+        ],
+        "tells": "users",
+        "before": {
+          "kind": "method",
+          "accepts": "(arg0: { id: string })",
+          "handsBack": "{ room: string; state: \"cancelled\" | \"open\"; total: { cents: number; currency: \"EUR\" | \"GBP\" | \"USD\" } }",
+          "bounds": [
+            "cents: whole number, 0 to 10,000,000 inclusive"
+          ]
+        },
+        "after": {
+          "kind": "method",
+          "accepts": "(arg0: { id: string })",
+          "handsBack": "{ state: \"cancelled\" | \"open\"; total: { cents: number; currency: \"EUR\" | \"GBP\" | \"USD\" } }",
+          "bounds": [
+            "cents: whole number, 0 to 10,000,000 inclusive"
+          ]
+        }
+      }
+    ],
+    "told": [
+      "billing",
+      "reports"
+    ],
+    "toldDetail": [
+      {
+        "user": "billing",
+        "reasons": [
+          {
+            "module": "bookings",
+            "entry": "op:bookstatus",
+            "changes": [
+              "hands back differently"
+            ],
+            "lines": [
+              "billing/src/index.mjs:43",
+              "billing/src/index.mjs:44",
+              "billing/src/index.mjs:45",
+              "billing/src/index.mjs:48",
+              "billing/src/index.mjs:50"
+            ],
+            "through": null
+          }
+        ],
+        "undeclared": []
+      },
+      {
+        "user": "reports",
+        "reasons": [
+          {
+            "module": "bookings",
+            "notFollowed": [
+              "reads or calls values of unknown kind: reports/src/index.mjs:13 source.list('rooms').map; reports/src/index.mjs:13 source.list('rooms'); reports/src/index.mjs:13 source.list (+9)"
+            ],
+            "through": null
+          }
+        ],
+        "undeclared": []
+      }
+    ],
+    "notTold": [
+      {
+        "user": "door",
+        "why": "uses none of the entries that changed in a way that tells"
+      },
+      {
+        "user": "front",
+        "why": "uses none of the entries that changed in a way that tells"
+      }
+    ],
+    "warnings": [],
+    "commentsOnly": false,
+    "checks": {
+      "bookings": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 88
+      },
+      "door": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 81
+      },
+      "meter": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 65
+      },
+      "billing": {
+        "refusedBefore": 0,
+        "refusedAfter": 1,
+        "refusals": [
+          {
+            "at": "billing/src/index.mjs:50",
+            "code": 2339,
+            "text": "Property 'room' does not exist on type '{ state: \"open\" | \"cancelled\"; total: Amount; }'.",
+            "kind": "(b) code disagrees with the stated interface of money, bookings"
+          }
+        ],
+        "refusalsBefore": [],
+        "ms": 83
+      },
+      "front": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 70
+      },
+      "reports": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 65
+      }
+    }
+  },
+  "groundTruth": {
+    "providerTests": {
+      "pass": true,
+      "failed": [],
+      "ran": 8
+    },
+    "testsBefore": {
+      "door": true,
+      "meter": true,
+      "billing": true,
+      "front": true,
+      "reports": true
+    },
+    "testsAfter": {
+      "door": {
+        "pass": true,
+        "failed": []
+      },
+      "meter": {
+        "pass": true,
+        "failed": []
+      },
+      "billing": {
+        "pass": true,
+        "failed": []
+      },
+      "front": {
+        "pass": true,
+        "failed": []
+      },
+      "reports": {
+        "pass": true,
+        "failed": []
+      }
+    },
+    "broken": []
+  },
+  "timing": {
+    "listingMs": {
+      "before": 153,
+      "after": 117
+    },
+    "noticeMs": 744,
+    "checkMs": {
+      "bookings": 88,
+      "door": 81,
+      "meter": 65,
+      "billing": 83,
+      "front": 70,
+      "reports": 65
+    }
+  }
+}

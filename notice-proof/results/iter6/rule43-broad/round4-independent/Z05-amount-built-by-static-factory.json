@@ -1,0 +1,191 @@
+{
+  "id": "Z05-amount-built-by-static-factory",
+  "title": "An amount cannot be changed once made: money builds it with FixedAmount.of, whose cents and currency are read through getters",
+  "provider": "money",
+  "covers": [
+    "what is handed back changes from plain data to an instance; its kind as TypeScript reads it does not",
+    "the instance is built by a static factory of the class, not by `new` where an Amount is expected"
+  ],
+  "tool": {
+    "firstCommentsStep": false,
+    "interfaceChanged": false,
+    "summary": "The listing before and after is the same. Nobody is told.",
+    "entries": [],
+    "told": [],
+    "toldDetail": [],
+    "notTold": [],
+    "warnings": [],
+    "commentsOnly": false,
+    "checks": {
+      "money": {
+        "refusedBefore": 0,
+        "refusedAfter": 1,
+        "refusals": [
+          {
+            "at": "money/src/index.mjs:66",
+            "code": "plain-data",
+            "text": "a value of the plain-data kind Amount is an instance of a class: copies keep only its own fields",
+            "kind": "(c) a rule of form: plain data is built as plain data"
+          }
+        ],
+        "refusalsBefore": [],
+        "ms": 73
+      },
+      "calendar": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 65
+      },
+      "store": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 68
+      },
+      "rooms": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 74
+      },
+      "bookings": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 107
+      },
+      "door": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 63
+      },
+      "meter": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 64
+      },
+      "billing": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 84
+      },
+      "front": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 73
+      },
+      "reports": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 67
+      }
+    }
+  },
+  "groundTruth": {
+    "providerTests": {
+      "pass": true,
+      "failed": [],
+      "ran": 7
+    },
+    "testsBefore": {
+      "calendar": true,
+      "store": true,
+      "rooms": true,
+      "bookings": true,
+      "door": true,
+      "meter": true,
+      "billing": true,
+      "front": true,
+      "reports": true
+    },
+    "testsAfter": {
+      "calendar": {
+        "pass": true,
+        "failed": []
+      },
+      "store": {
+        "pass": true,
+        "failed": []
+      },
+      "rooms": {
+        "pass": true,
+        "failed": []
+      },
+      "bookings": {
+        "pass": false,
+        "failed": [
+          "open hands back an open booking that find returns",
+          "operations answer as the table says"
+        ]
+      },
+      "door": {
+        "pass": true,
+        "failed": []
+      },
+      "meter": {
+        "pass": false,
+        "failed": [
+          "one reading per use, in order, then done"
+        ]
+      },
+      "billing": {
+        "pass": false,
+        "failed": [
+          "an invoice splits the booking total into instalments that add up to it",
+          "an estimate is what the booking then costs, with a deposit of a fifth",
+          "metered use is priced by the meter and added up"
+        ]
+      },
+      "front": {
+        "pass": false,
+        "failed": [
+          "booking with a valid form says what was booked"
+        ]
+      },
+      "reports": {
+        "pass": true,
+        "failed": []
+      }
+    },
+    "broken": [
+      "bookings",
+      "meter",
+      "billing",
+      "front"
+    ]
+  },
+  "timing": {
+    "listingMs": {
+      "before": 61,
+      "after": 69
+    },
+    "noticeMs": 676,
+    "checkMs": {
+      "money": 73,
+      "calendar": 65,
+      "store": 68,
+      "rooms": 74,
+      "bookings": 107,
+      "door": 63,
+      "meter": 64,
+      "billing": 84,
+      "front": 73,
+      "reports": 67
+    }
+  }
+}

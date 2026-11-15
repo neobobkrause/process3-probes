@@ -1,0 +1,182 @@
+{
+  "id": "V09-pop-after-length-check",
+  "title": "bookings suggests the smallest room that seats a party",
+  "provider": "bookings",
+  "covers": [
+    "new handle method (new entry)",
+    "honest pop() after a length check, on a list of a provider's kind"
+  ],
+  "tool": {
+    "firstCommentsStep": false,
+    "interfaceChanged": true,
+    "summary": "1 module(s) changed their listing; 0 entries changed in a way that tells; 1 user(s) told.",
+    "entries": [
+      {
+        "module": "bookings",
+        "entry": "Bookings",
+        "changes": [
+          "new entry"
+        ],
+        "lost": [],
+        "gained": [
+          "suggest"
+        ],
+        "tells": "nobody",
+        "before": {
+          "kind": "handle kind",
+          "handsBack": "names: cancel, find, open, quote"
+        },
+        "after": {
+          "kind": "handle kind",
+          "handsBack": "names: cancel, find, open, quote, suggest"
+        }
+      },
+      {
+        "module": "bookings",
+        "entry": "Bookings.suggest",
+        "changes": [
+          "new entry"
+        ],
+        "after": {
+          "kind": "method",
+          "accepts": "(arg0: number)",
+          "handsBack": "string",
+          "throws": [
+            "RangeError"
+          ]
+        },
+        "tells": "nobody"
+      }
+    ],
+    "told": [
+      "reports"
+    ],
+    "toldDetail": [
+      {
+        "user": "reports",
+        "reasons": [
+          {
+            "module": "bookings",
+            "notFollowed": [
+              "reads or calls values of unknown kind: reports/src/index.mjs:13 source.list('rooms').map; reports/src/index.mjs:13 source.list('rooms'); reports/src/index.mjs:13 source.list (+9)"
+            ],
+            "through": null
+          }
+        ],
+        "undeclared": []
+      }
+    ],
+    "notTold": [
+      {
+        "user": "door",
+        "why": "uses none of the entries that changed in a way that tells"
+      },
+      {
+        "user": "billing",
+        "why": "uses none of the entries that changed in a way that tells"
+      },
+      {
+        "user": "front",
+        "why": "uses none of the entries that changed in a way that tells"
+      }
+    ],
+    "warnings": [],
+    "commentsOnly": false,
+    "checks": {
+      "bookings": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 128
+      },
+      "door": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 67
+      },
+      "meter": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 103
+      },
+      "billing": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 96
+      },
+      "front": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 85
+      },
+      "reports": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 83
+      }
+    }
+  },
+  "groundTruth": {
+    "providerTests": {
+      "pass": true,
+      "failed": [],
+      "ran": 9
+    },
+    "testsBefore": {
+      "door": true,
+      "meter": true,
+      "billing": true,
+      "front": true,
+      "reports": true
+    },
+    "testsAfter": {
+      "door": {
+        "pass": true,
+        "failed": []
+      },
+      "meter": {
+        "pass": true,
+        "failed": []
+      },
+      "billing": {
+        "pass": true,
+        "failed": []
+      },
+      "front": {
+        "pass": true,
+        "failed": []
+      },
+      "reports": {
+        "pass": true,
+        "failed": []
+      }
+    },
+    "broken": []
+  },
+  "timing": {
+    "listingMs": {
+      "before": 90,
+      "after": 133
+    },
+    "noticeMs": 611,
+    "checkMs": {
+      "bookings": 128,
+      "door": 67,
+      "meter": 103,
+      "billing": 96,
+      "front": 85,
+      "reports": 83
+    }
+  }
+}

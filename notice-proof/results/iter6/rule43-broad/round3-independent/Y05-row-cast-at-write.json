@@ -1,0 +1,127 @@
+{
+  "id": "Y05-row-cast-at-write",
+  "title": "The bookings table keeps no first day (worked out from until and nights when read); the row is written as a Booking",
+  "provider": "bookings",
+  "covers": [
+    "rows written to a shared table no longer of the row kind",
+    "a comment cast at the write, which rule 2's check takes at its word"
+  ],
+  "tool": {
+    "firstCommentsStep": false,
+    "interfaceChanged": false,
+    "summary": "The listing before and after is the same. Nobody is told.",
+    "entries": [],
+    "told": [],
+    "toldDetail": [],
+    "notTold": [],
+    "warnings": [],
+    "commentsOnly": false,
+    "checks": {
+      "bookings": {
+        "refusedBefore": 0,
+        "refusedAfter": 1,
+        "refusals": [
+          {
+            "at": "bookings/src/index.mjs:88",
+            "code": "cast",
+            "text": "a cast makes a value of another kind pass as Booking",
+            "kind": "(a) a comment (a cast) disagrees with the code"
+          }
+        ],
+        "refusalsBefore": [],
+        "ms": 89
+      },
+      "door": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 62
+      },
+      "meter": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 74
+      },
+      "billing": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 89
+      },
+      "front": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 77
+      },
+      "reports": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 64
+      }
+    }
+  },
+  "groundTruth": {
+    "providerTests": {
+      "pass": true,
+      "failed": [],
+      "ran": 9
+    },
+    "testsBefore": {
+      "door": true,
+      "meter": true,
+      "billing": true,
+      "front": true,
+      "reports": true
+    },
+    "testsAfter": {
+      "door": {
+        "pass": true,
+        "failed": []
+      },
+      "meter": {
+        "pass": true,
+        "failed": []
+      },
+      "billing": {
+        "pass": true,
+        "failed": []
+      },
+      "front": {
+        "pass": true,
+        "failed": []
+      },
+      "reports": {
+        "pass": false,
+        "failed": [
+          "summary counts real bookings by state, kind and weekday"
+        ]
+      }
+    },
+    "broken": [
+      "reports"
+    ]
+  },
+  "timing": {
+    "listingMs": {
+      "before": 101,
+      "after": 98
+    },
+    "noticeMs": 548,
+    "checkMs": {
+      "bookings": 89,
+      "door": 62,
+      "meter": 74,
+      "billing": 89,
+      "front": 77,
+      "reports": 64
+    }
+  }
+}

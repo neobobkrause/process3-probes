@@ -3,33 +3,37 @@
   "matchesRules": 17,
   "notices": 12,
   "needed": 7,
-  "holes": [
+  "holes": [],
+  "caughtByGuard": [
     {
       "id": "W01-meter-start-argument",
       "users": [
         "billing"
-      ]
+      ],
+      "guard": "meter's own check refuses process.argv read without a kind published with @message argv (rule 34)"
     },
     {
       "id": "W02-meter-ready-line",
       "users": [
         "billing"
-      ]
+      ],
+      "guard": "meter's own check refuses a write of something other than a message on standard output, which carries messages (rule 35)"
     },
     {
       "id": "W03-error-stated-on-kind-not-checked",
       "users": [
         "billing"
-      ]
+      ],
+      "guard": "bookings' own check refuses throwing Error where the kind states RangeError for quote (rule 36)"
     },
     {
       "id": "W05-price-list-in-euros",
       "users": [
         "front"
-      ]
+      ],
+      "guard": "front's own check refuses its import() of a file of bookings that is not an interface file (rule 38), in the set-up state already, so the set-up could not have been merged"
     }
   ],
-  "caughtByGuard": [],
   "unneeded": [
     {
       "id": "W04-bound-on-built-method",
@@ -68,7 +72,7 @@
       "user": "reports"
     }
   ],
-  "falseRefusals": 7,
+  "falseRefusals": 0,
   "refusals": 5,
   "rows": [
     {
@@ -88,20 +92,20 @@
       "refusals": [
         "meter (1)"
       ],
-      "verdict": "HOLE: billing needed a change and was not told",
+      "verdict": "not told, stopped by another guard: meter's own check refuses process.argv read without a kind published with @message argv (rule 34)",
       "providerTests": true,
       "firstCommentsStep": false,
       "timing": {
         "listingMs": {
-          "before": 288,
-          "after": 167
+          "before": 287,
+          "after": 141
         },
-        "noticeMs": 1041,
+        "noticeMs": 1083,
         "checkMs": {
           "meter": 109,
-          "billing": 140,
-          "front": 99,
-          "reports": 106
+          "billing": 106,
+          "front": 98,
+          "reports": 108
         }
       }
     },
@@ -122,20 +126,20 @@
       "refusals": [
         "meter (1)"
       ],
-      "verdict": "HOLE: billing needed a change and was not told",
+      "verdict": "not told, stopped by another guard: meter's own check refuses a write of something other than a message on standard output, which carries messages (rule 35)",
       "providerTests": true,
       "firstCommentsStep": false,
       "timing": {
         "listingMs": {
           "before": 78,
-          "after": 70
+          "after": 67
         },
-        "noticeMs": 756,
+        "noticeMs": 688,
         "checkMs": {
-          "meter": 70,
-          "billing": 104,
-          "front": 96,
-          "reports": 144
+          "meter": 78,
+          "billing": 80,
+          "front": 108,
+          "reports": 87
         }
       }
     },
@@ -156,22 +160,22 @@
       "refusals": [
         "bookings (1)"
       ],
-      "verdict": "HOLE: billing needed a change and was not told",
+      "verdict": "not told, stopped by another guard: bookings' own check refuses throwing Error where the kind states RangeError for quote (rule 36)",
       "providerTests": true,
       "firstCommentsStep": false,
       "timing": {
         "listingMs": {
-          "before": 141,
-          "after": 142
+          "before": 136,
+          "after": 121
         },
-        "noticeMs": 714,
+        "noticeMs": 689,
         "checkMs": {
-          "bookings": 106,
-          "door": 101,
-          "meter": 110,
-          "billing": 110,
-          "front": 118,
-          "reports": 122
+          "bookings": 95,
+          "door": 74,
+          "meter": 76,
+          "billing": 84,
+          "front": 109,
+          "reports": 68
         }
       }
     },
@@ -201,17 +205,17 @@
       "firstCommentsStep": false,
       "timing": {
         "listingMs": {
-          "before": 438,
-          "after": 200
+          "before": 96,
+          "after": 92
         },
-        "noticeMs": 918,
+        "noticeMs": 539,
         "checkMs": {
-          "bookings": 118,
-          "door": 84,
-          "meter": 99,
-          "billing": 127,
-          "front": 113,
-          "reports": 94
+          "bookings": 96,
+          "door": 87,
+          "meter": 76,
+          "billing": 105,
+          "front": 68,
+          "reports": 85
         }
       }
     },
@@ -232,22 +236,22 @@
       "refusals": [
         "front (2)"
       ],
-      "verdict": "HOLE: front needed a change and was not told",
+      "verdict": "not told, stopped by another guard: front's own check refuses its import() of a file of bookings that is not an interface file (rule 38), in the set-up state already, so the set-up could not have been merged",
       "providerTests": true,
       "firstCommentsStep": false,
       "timing": {
         "listingMs": {
-          "before": 155,
-          "after": 125
+          "before": 162,
+          "after": 117
         },
-        "noticeMs": 714,
+        "noticeMs": 637,
         "checkMs": {
-          "bookings": 90,
-          "door": 64,
-          "meter": 86,
-          "billing": 88,
-          "front": 122,
-          "reports": 75
+          "bookings": 89,
+          "door": 60,
+          "meter": 63,
+          "billing": 80,
+          "front": 109,
+          "reports": 73
         }
       }
     },
@@ -275,21 +279,21 @@
       "firstCommentsStep": false,
       "timing": {
         "listingMs": {
-          "before": 66,
-          "after": 66
+          "before": 79,
+          "after": 85
         },
-        "noticeMs": 651,
+        "noticeMs": 673,
         "checkMs": {
-          "money": 66,
-          "calendar": 58,
-          "store": 92,
-          "rooms": 86,
-          "bookings": 110,
-          "door": 65,
-          "meter": 71,
-          "billing": 92,
-          "front": 85,
-          "reports": 71
+          "money": 72,
+          "calendar": 63,
+          "store": 76,
+          "rooms": 82,
+          "bookings": 117,
+          "door": 69,
+          "meter": 65,
+          "billing": 88,
+          "front": 71,
+          "reports": 73
         }
       }
     },
@@ -308,27 +312,27 @@
       "needs": [],
       "through": [],
       "refusals": [],
-      "verdict": "held; 1 told for nothing; FALSE REFUSAL of text-rules (2 lines)",
+      "verdict": "held; 1 told for nothing",
       "providerTests": true,
       "firstCommentsStep": false,
       "timing": {
         "listingMs": {
-          "before": 49,
-          "after": 57
+          "before": 46,
+          "after": 62
         },
-        "noticeMs": 836,
+        "noticeMs": 550,
         "checkMs": {
-          "text-rules": 55,
-          "money": 67,
-          "calendar": 87,
-          "store": 68,
-          "rooms": 74,
-          "bookings": 156,
-          "door": 115,
-          "meter": 81,
-          "billing": 97,
-          "front": 89,
-          "reports": 91
+          "text-rules": 56,
+          "money": 79,
+          "calendar": 61,
+          "store": 109,
+          "rooms": 79,
+          "bookings": 114,
+          "door": 84,
+          "meter": 75,
+          "billing": 111,
+          "front": 90,
+          "reports": 116
         }
       }
     },
@@ -347,23 +351,23 @@
       "needs": [],
       "through": [],
       "refusals": [],
-      "verdict": "held; 1 told for nothing; FALSE REFUSAL of rooms (1 lines)",
+      "verdict": "held; 1 told for nothing",
       "providerTests": true,
       "firstCommentsStep": false,
       "timing": {
         "listingMs": {
-          "before": 100,
-          "after": 100
+          "before": 124,
+          "after": 103
         },
-        "noticeMs": 652,
+        "noticeMs": 623,
         "checkMs": {
-          "rooms": 76,
-          "bookings": 93,
-          "door": 68,
-          "meter": 86,
-          "billing": 74,
-          "front": 82,
-          "reports": 99
+          "rooms": 68,
+          "bookings": 90,
+          "door": 74,
+          "meter": 75,
+          "billing": 87,
+          "front": 83,
+          "reports": 80
         }
       }
     },
@@ -378,22 +382,22 @@
       "needs": [],
       "through": [],
       "refusals": [],
-      "verdict": "held; FALSE REFUSAL of bookings (1 lines)",
+      "verdict": "held",
       "providerTests": true,
       "firstCommentsStep": false,
       "timing": {
         "listingMs": {
-          "before": 114,
-          "after": 94
+          "before": 108,
+          "after": 96
         },
-        "noticeMs": 623,
+        "noticeMs": 574,
         "checkMs": {
-          "bookings": 153,
-          "door": 74,
-          "meter": 119,
-          "billing": 122,
-          "front": 84,
-          "reports": 70
+          "bookings": 85,
+          "door": 63,
+          "meter": 76,
+          "billing": 96,
+          "front": 96,
+          "reports": 79
         }
       }
     },
@@ -408,27 +412,27 @@
       "needs": [],
       "through": [],
       "refusals": [],
-      "verdict": "held; FALSE REFUSAL of text-rules (1 lines)",
+      "verdict": "held",
       "providerTests": true,
       "firstCommentsStep": false,
       "timing": {
         "listingMs": {
-          "before": 50,
-          "after": 65
+          "before": 54,
+          "after": 66
         },
-        "noticeMs": 790,
+        "noticeMs": 744,
         "checkMs": {
-          "text-rules": 68,
-          "money": 66,
-          "calendar": 73,
-          "store": 94,
-          "rooms": 109,
-          "bookings": 129,
-          "door": 84,
-          "meter": 84,
-          "billing": 101,
-          "front": 114,
-          "reports": 96
+          "text-rules": 58,
+          "money": 64,
+          "calendar": 64,
+          "store": 83,
+          "rooms": 91,
+          "bookings": 112,
+          "door": 92,
+          "meter": 90,
+          "billing": 100,
+          "front": 78,
+          "reports": 80
         }
       }
     },
@@ -443,21 +447,21 @@
       "needs": [],
       "through": [],
       "refusals": [],
-      "verdict": "held; FALSE REFUSAL of door (1 lines)",
+      "verdict": "held",
       "providerTests": true,
       "firstCommentsStep": false,
       "timing": {
         "listingMs": {
-          "before": 157,
-          "after": 160
+          "before": 141,
+          "after": 119
         },
-        "noticeMs": 596,
+        "noticeMs": 628,
         "checkMs": {
-          "door": 65,
-          "meter": 113,
-          "billing": 121,
-          "front": 73,
-          "reports": 62
+          "door": 69,
+          "meter": 75,
+          "billing": 88,
+          "front": 79,
+          "reports": 103
         }
       }
     },
@@ -472,26 +476,26 @@
       "needs": [],
       "through": [],
       "refusals": [],
-      "verdict": "held; FALSE REFUSAL of money (1 lines)",
+      "verdict": "held",
       "providerTests": true,
       "firstCommentsStep": false,
       "timing": {
         "listingMs": {
-          "before": 57,
-          "after": 60
+          "before": 78,
+          "after": 76
         },
-        "noticeMs": 560,
+        "noticeMs": 840,
         "checkMs": {
-          "money": 90,
-          "calendar": 84,
-          "store": 71,
-          "rooms": 84,
-          "bookings": 172,
-          "door": 87,
-          "meter": 64,
-          "billing": 77,
-          "front": 70,
-          "reports": 70
+          "money": 65,
+          "calendar": 59,
+          "store": 89,
+          "rooms": 65,
+          "bookings": 153,
+          "door": 79,
+          "meter": 85,
+          "billing": 108,
+          "front": 87,
+          "reports": 66
         }
       }
     },
@@ -511,17 +515,17 @@
       "firstCommentsStep": false,
       "timing": {
         "listingMs": {
-          "before": 95,
-          "after": 107
+          "before": 107,
+          "after": 112
         },
-        "noticeMs": 636,
+        "noticeMs": 592,
         "checkMs": {
-          "bookings": 92,
-          "door": 69,
-          "meter": 71,
-          "billing": 81,
-          "front": 88,
-          "reports": 94
+          "bookings": 84,
+          "door": 65,
+          "meter": 73,
+          "billing": 85,
+          "front": 64,
+          "reports": 64
         }
       }
     },
@@ -542,20 +546,20 @@
       "timing": {
         "listingMs": {
           "before": 53,
-          "after": 61
+          "after": 56
         },
-        "noticeMs": 573,
+        "noticeMs": 530,
         "checkMs": {
-          "money": 60,
-          "calendar": 49,
-          "store": 87,
-          "rooms": 88,
-          "bookings": 129,
-          "door": 97,
-          "meter": 156,
-          "billing": 84,
-          "front": 118,
-          "reports": 68
+          "money": 59,
+          "calendar": 56,
+          "store": 73,
+          "rooms": 69,
+          "bookings": 95,
+          "door": 72,
+          "meter": 70,
+          "billing": 86,
+          "front": 81,
+          "reports": 92
         }
       }
     },
@@ -575,22 +579,22 @@
       "firstCommentsStep": false,
       "timing": {
         "listingMs": {
-          "before": 70,
-          "after": 55
+          "before": 52,
+          "after": 65
         },
-        "noticeMs": 621,
+        "noticeMs": 706,
         "checkMs": {
-          "text-rules": 62,
-          "money": 77,
-          "calendar": 56,
-          "store": 89,
-          "rooms": 107,
-          "bookings": 119,
-          "door": 79,
-          "meter": 69,
-          "billing": 99,
-          "front": 130,
-          "reports": 74
+          "text-rules": 60,
+          "money": 73,
+          "calendar": 60,
+          "store": 72,
+          "rooms": 76,
+          "bookings": 111,
+          "door": 71,
+          "meter": 74,
+          "billing": 90,
+          "front": 90,
+          "reports": 72
         }
       }
     },
@@ -614,19 +618,19 @@
       "firstCommentsStep": false,
       "timing": {
         "listingMs": {
-          "before": 74,
-          "after": 87
+          "before": 80,
+          "after": 81
         },
-        "noticeMs": 710,
+        "noticeMs": 563,
         "checkMs": {
-          "store": 77,
-          "rooms": 68,
-          "bookings": 83,
-          "door": 59,
-          "meter": 79,
-          "billing": 77,
-          "front": 65,
-          "reports": 83
+          "store": 75,
+          "rooms": 79,
+          "bookings": 89,
+          "door": 62,
+          "meter": 65,
+          "billing": 72,
+          "front": 77,
+          "reports": 66
         }
       }
     },
@@ -662,21 +666,21 @@
       "firstCommentsStep": false,
       "timing": {
         "listingMs": {
-          "before": 51,
+          "before": 60,
           "after": 54
         },
-        "noticeMs": 734,
+        "noticeMs": 873,
         "checkMs": {
-          "money": 74,
-          "calendar": 49,
-          "store": 109,
-          "rooms": 64,
-          "bookings": 101,
-          "door": 62,
-          "meter": 64,
-          "billing": 119,
-          "front": 92,
-          "reports": 74
+          "money": 90,
+          "calendar": 75,
+          "store": 63,
+          "rooms": 63,
+          "bookings": 80,
+          "door": 65,
+          "meter": 73,
+          "billing": 91,
+          "front": 78,
+          "reports": 94
         }
       }
     }

@@ -1,0 +1,199 @@
+{
+  "id": "Z18-object-groupby",
+  "title": "rooms gains byKind: the rooms of each kind there is a room of, with Object.groupBy",
+  "provider": "rooms",
+  "covers": [
+    "new handle method (new entry)",
+    "honest code using a method of the runtime's language newer than the reader's library (ES2024)"
+  ],
+  "tool": {
+    "firstCommentsStep": false,
+    "interfaceChanged": true,
+    "summary": "1 module(s) changed their listing; 0 entries changed in a way that tells; 1 user(s) told.",
+    "entries": [
+      {
+        "module": "rooms",
+        "entry": "Rooms",
+        "changes": [
+          "new entry"
+        ],
+        "lost": [],
+        "gained": [
+          "byKind"
+        ],
+        "tells": "nobody",
+        "before": {
+          "kind": "handle kind",
+          "handsBack": "names: add, find, list"
+        },
+        "after": {
+          "kind": "handle kind",
+          "handsBack": "names: add, byKind, find, list"
+        }
+      },
+      {
+        "module": "rooms",
+        "entry": "Rooms.byKind",
+        "changes": [
+          "new entry"
+        ],
+        "after": {
+          "kind": "method",
+          "accepts": "()",
+          "handsBack": "{ hall?: { id: string; kind: \"hall\" | \"kitchen\" | \"studio\"; name: string; seats: number }[]; kitchen?: { id: string; kind: \"hall\" | \"kitchen\" | \"studio\"; name: string; seats: number }[]; studio?: { id: string; kind: \"hall\" | \"kitchen\" | \"studio\"; name: string; seats: number }[] }",
+          "bounds": [
+            "seats: whole number, 1 to 500"
+          ]
+        },
+        "tells": "nobody"
+      }
+    ],
+    "told": [
+      "reports"
+    ],
+    "toldDetail": [
+      {
+        "user": "reports",
+        "reasons": [
+          {
+            "module": "rooms",
+            "notFollowed": [
+              "reads or calls values of unknown kind: reports/src/index.mjs:13 source.list('rooms').map; reports/src/index.mjs:13 source.list('rooms'); reports/src/index.mjs:13 source.list (+9)"
+            ],
+            "through": null
+          }
+        ],
+        "undeclared": []
+      }
+    ],
+    "notTold": [
+      {
+        "user": "bookings",
+        "why": "uses none of the entries that changed in a way that tells"
+      },
+      {
+        "user": "door",
+        "why": "uses none of the entries that changed in a way that tells"
+      },
+      {
+        "user": "billing",
+        "why": "uses none of the entries that changed in a way that tells"
+      },
+      {
+        "user": "front",
+        "why": "uses none of the entries that changed in a way that tells"
+      }
+    ],
+    "warnings": [],
+    "commentsOnly": false,
+    "checks": {
+      "rooms": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 70
+      },
+      "bookings": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 84
+      },
+      "door": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 76
+      },
+      "meter": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 78
+      },
+      "billing": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 83
+      },
+      "front": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 71
+      },
+      "reports": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 73
+      }
+    }
+  },
+  "groundTruth": {
+    "providerTests": {
+      "pass": true,
+      "failed": [],
+      "ran": 6
+    },
+    "testsBefore": {
+      "bookings": true,
+      "door": true,
+      "meter": true,
+      "billing": true,
+      "front": true,
+      "reports": true
+    },
+    "testsAfter": {
+      "bookings": {
+        "pass": true,
+        "failed": []
+      },
+      "door": {
+        "pass": true,
+        "failed": []
+      },
+      "meter": {
+        "pass": true,
+        "failed": []
+      },
+      "billing": {
+        "pass": true,
+        "failed": []
+      },
+      "front": {
+        "pass": true,
+        "failed": []
+      },
+      "reports": {
+        "pass": true,
+        "failed": []
+      }
+    },
+    "broken": []
+  },
+  "timing": {
+    "listingMs": {
+      "before": 76,
+      "after": 94
+    },
+    "noticeMs": 565,
+    "checkMs": {
+      "rooms": 70,
+      "bookings": 84,
+      "door": 76,
+      "meter": 78,
+      "billing": 83,
+      "front": 71,
+      "reports": 73
+    }
+  }
+}

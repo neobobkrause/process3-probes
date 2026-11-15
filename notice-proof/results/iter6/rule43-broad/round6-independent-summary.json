@@ -1,0 +1,688 @@
+{
+  "changes": 17,
+  "matchesRules": 17,
+  "notices": 12,
+  "needed": 7,
+  "holes": [],
+  "caughtByGuard": [
+    {
+      "id": "W01-meter-start-argument",
+      "users": [
+        "billing"
+      ],
+      "guard": "meter's own check refuses process.argv read without a kind published with @message argv (rule 34)"
+    },
+    {
+      "id": "W02-meter-ready-line",
+      "users": [
+        "billing"
+      ],
+      "guard": "meter's own check refuses a write of something other than a message on standard output, which carries messages (rule 35)"
+    },
+    {
+      "id": "W03-error-stated-on-kind-not-checked",
+      "users": [
+        "billing"
+      ],
+      "guard": "bookings' own check refuses throwing Error where the kind states RangeError for quote (rule 36)"
+    },
+    {
+      "id": "W05-price-list-in-euros",
+      "users": [
+        "front"
+      ],
+      "guard": "front's own check refuses its import() of a file of bookings that is not an interface file (rule 38), in the set-up state already, so the set-up could not have been merged"
+    }
+  ],
+  "unneeded": [
+    {
+      "id": "W04-bound-on-built-method",
+      "user": "billing"
+    },
+    {
+      "id": "W04-bound-on-built-method",
+      "user": "reports"
+    },
+    {
+      "id": "W07-throws-union",
+      "user": "rooms"
+    },
+    {
+      "id": "W08-cast-after-has",
+      "user": "reports"
+    },
+    {
+      "id": "W16-store-gains-id",
+      "user": "reports"
+    },
+    {
+      "id": "W17-limit-read-through-namespace",
+      "user": "billing"
+    },
+    {
+      "id": "W17-limit-read-through-namespace",
+      "user": "front"
+    },
+    {
+      "id": "W17-limit-read-through-namespace",
+      "user": "meter"
+    },
+    {
+      "id": "W17-limit-read-through-namespace",
+      "user": "reports"
+    }
+  ],
+  "falseRefusals": 0,
+  "refusals": 5,
+  "rows": [
+    {
+      "id": "W01-meter-start-argument",
+      "title": "The meter prices in the currency it is started with, its one argument (node worker.mjs EUR), and will not start without one",
+      "provider": "meter",
+      "exp": [],
+      "told": [],
+      "matches": true,
+      "broken": [
+        "billing"
+      ],
+      "needs": [
+        "billing"
+      ],
+      "through": [],
+      "refusals": [
+        "meter (1)"
+      ],
+      "verdict": "not told, stopped by another guard: meter's own check refuses process.argv read without a kind published with @message argv (rule 34)",
+      "providerTests": true,
+      "firstCommentsStep": false,
+      "timing": {
+        "listingMs": {
+          "before": 287,
+          "after": 141
+        },
+        "noticeMs": 1083,
+        "checkMs": {
+          "meter": 109,
+          "billing": 106,
+          "front": 98,
+          "reports": 108
+        }
+      }
+    },
+    {
+      "id": "W02-meter-ready-line",
+      "title": "The meter writes an empty line as soon as it is ready, so that whoever started it can tell it has started; readers skip empty lines",
+      "provider": "meter",
+      "exp": [],
+      "told": [],
+      "matches": true,
+      "broken": [
+        "billing"
+      ],
+      "needs": [
+        "billing"
+      ],
+      "through": [],
+      "refusals": [
+        "meter (1)"
+      ],
+      "verdict": "not told, stopped by another guard: meter's own check refuses a write of something other than a message on standard output, which carries messages (rule 35)",
+      "providerTests": true,
+      "firstCommentsStep": false,
+      "timing": {
+        "listingMs": {
+          "before": 78,
+          "after": 67
+        },
+        "noticeMs": 688,
+        "checkMs": {
+          "meter": 78,
+          "billing": 80,
+          "front": 108,
+          "reports": 87
+        }
+      }
+    },
+    {
+      "id": "W03-error-stated-on-kind-not-checked",
+      "title": "An unknown room is refused with an Error, not a RangeError (it is not a value out of bounds); the @throws line on the handle is forgotten",
+      "provider": "bookings",
+      "exp": [],
+      "told": [],
+      "matches": true,
+      "broken": [
+        "billing"
+      ],
+      "needs": [
+        "billing"
+      ],
+      "through": [],
+      "refusals": [
+        "bookings (1)"
+      ],
+      "verdict": "not told, stopped by another guard: bookings' own check refuses throwing Error where the kind states RangeError for quote (rule 36)",
+      "providerTests": true,
+      "firstCommentsStep": false,
+      "timing": {
+        "listingMs": {
+          "before": 136,
+          "after": 121
+        },
+        "noticeMs": 689,
+        "checkMs": {
+          "bookings": 95,
+          "door": 74,
+          "meter": 76,
+          "billing": 84,
+          "front": 109,
+          "reports": 68
+        }
+      }
+    },
+    {
+      "id": "W04-bound-on-built-method",
+      "title": "A booking's note is at most 140 characters, since it is sent to the caretaker in a text message; the bound is stated with open's errors, where the object is built",
+      "provider": "bookings",
+      "exp": [
+        "billing",
+        "front",
+        "reports"
+      ],
+      "told": [
+        "billing",
+        "front",
+        "reports"
+      ],
+      "matches": true,
+      "broken": [],
+      "needs": [
+        "front"
+      ],
+      "through": [],
+      "refusals": [],
+      "verdict": "held; 2 told for nothing",
+      "providerTests": true,
+      "firstCommentsStep": false,
+      "timing": {
+        "listingMs": {
+          "before": 96,
+          "after": 92
+        },
+        "noticeMs": 539,
+        "checkMs": {
+          "bookings": 96,
+          "door": 87,
+          "meter": 76,
+          "billing": 105,
+          "front": 68,
+          "reports": 85
+        }
+      }
+    },
+    {
+      "id": "W05-price-list-in-euros",
+      "title": "bookings' price list is kept in euros, as the venue's price sheet writes it, and renamed SEAT_NIGHT_EUROS to say so",
+      "provider": "bookings",
+      "exp": [],
+      "told": [],
+      "matches": true,
+      "broken": [
+        "front"
+      ],
+      "needs": [
+        "front"
+      ],
+      "through": [],
+      "refusals": [
+        "front (2)"
+      ],
+      "verdict": "not told, stopped by another guard: front's own check refuses its import() of a file of bookings that is not an interface file (rule 38), in the set-up state already, so the set-up could not have been merged",
+      "providerTests": true,
+      "firstCommentsStep": false,
+      "timing": {
+        "listingMs": {
+          "before": 162,
+          "after": 117
+        },
+        "noticeMs": 637,
+        "checkMs": {
+          "bookings": 89,
+          "door": 60,
+          "meter": 63,
+          "billing": 80,
+          "front": 109,
+          "reports": 73
+        }
+      }
+    },
+    {
+      "id": "W06-old-overload-kept-behind",
+      "title": "formatAmount's list form hands back one line per amount; the old joined form is kept as a later overload, so that calls written for it are still accepted",
+      "provider": "money",
+      "exp": [
+        "billing"
+      ],
+      "told": [
+        "billing"
+      ],
+      "matches": true,
+      "broken": [
+        "billing"
+      ],
+      "needs": [
+        "billing"
+      ],
+      "through": [],
+      "refusals": [],
+      "verdict": "held",
+      "providerTests": true,
+      "firstCommentsStep": false,
+      "timing": {
+        "listingMs": {
+          "before": 79,
+          "after": 85
+        },
+        "noticeMs": 673,
+        "checkMs": {
+          "money": 72,
+          "calendar": 63,
+          "store": 76,
+          "rooms": 82,
+          "bookings": 117,
+          "door": 69,
+          "meter": 65,
+          "billing": 88,
+          "front": 71,
+          "reports": 73
+        }
+      }
+    },
+    {
+      "id": "W07-throws-union",
+      "title": "slugify refuses a value that is not text with a TypeError, as the language's own functions do; its @throws line names both kinds",
+      "provider": "text-rules",
+      "exp": [
+        "rooms"
+      ],
+      "told": [
+        "rooms"
+      ],
+      "matches": true,
+      "broken": [],
+      "needs": [],
+      "through": [],
+      "refusals": [],
+      "verdict": "held; 1 told for nothing",
+      "providerTests": true,
+      "firstCommentsStep": false,
+      "timing": {
+        "listingMs": {
+          "before": 46,
+          "after": 62
+        },
+        "noticeMs": 550,
+        "checkMs": {
+          "text-rules": 56,
+          "money": 79,
+          "calendar": 61,
+          "store": 109,
+          "rooms": 79,
+          "bookings": 114,
+          "door": 84,
+          "meter": 75,
+          "billing": 111,
+          "front": 90,
+          "reports": 116
+        }
+      }
+    },
+    {
+      "id": "W08-cast-after-has",
+      "title": "rooms gains pick: the rooms with the given ids, in the order given; an id with no room is refused",
+      "provider": "rooms",
+      "exp": [
+        "reports"
+      ],
+      "told": [
+        "reports"
+      ],
+      "matches": true,
+      "broken": [],
+      "needs": [],
+      "through": [],
+      "refusals": [],
+      "verdict": "held; 1 told for nothing",
+      "providerTests": true,
+      "firstCommentsStep": false,
+      "timing": {
+        "listingMs": {
+          "before": 124,
+          "after": 103
+        },
+        "noticeMs": 623,
+        "checkMs": {
+          "rooms": 68,
+          "bookings": 90,
+          "door": 74,
+          "meter": 75,
+          "billing": 87,
+          "front": 83,
+          "reports": 80
+        }
+      }
+    },
+    {
+      "id": "W09-row-written-in-place",
+      "title": "cancel writes the cancelled booking in one step and hands back what the store now holds",
+      "provider": "bookings",
+      "exp": [],
+      "told": [],
+      "matches": true,
+      "broken": [],
+      "needs": [],
+      "through": [],
+      "refusals": [],
+      "verdict": "held",
+      "providerTests": true,
+      "firstCommentsStep": false,
+      "timing": {
+        "listingMs": {
+          "before": 108,
+          "after": 96
+        },
+        "noticeMs": 574,
+        "checkMs": {
+          "bookings": 85,
+          "door": 63,
+          "meter": 76,
+          "billing": 96,
+          "front": 96,
+          "reports": 79
+        }
+      }
+    },
+    {
+      "id": "W10-json-settings-file",
+      "title": "text-rules gains isReservedName: whether a name is one the venue keeps for itself, read from reserved.json, which the venue's staff keep",
+      "provider": "text-rules",
+      "exp": [],
+      "told": [],
+      "matches": true,
+      "broken": [],
+      "needs": [],
+      "through": [],
+      "refusals": [],
+      "verdict": "held",
+      "providerTests": true,
+      "firstCommentsStep": false,
+      "timing": {
+        "listingMs": {
+          "before": 54,
+          "after": 66
+        },
+        "noticeMs": 744,
+        "checkMs": {
+          "text-rules": 58,
+          "money": 64,
+          "calendar": 64,
+          "store": 83,
+          "rooms": 91,
+          "bookings": 112,
+          "door": 92,
+          "meter": 90,
+          "billing": 100,
+          "front": 78,
+          "reports": 80
+        }
+      }
+    },
+    {
+      "id": "W11-structured-log-line",
+      "title": "The door writes one line of JSON to the error stream for each call it cannot carry, for the venue's operators",
+      "provider": "door",
+      "exp": [],
+      "told": [],
+      "matches": true,
+      "broken": [],
+      "needs": [],
+      "through": [],
+      "refusals": [],
+      "verdict": "held",
+      "providerTests": true,
+      "firstCommentsStep": false,
+      "timing": {
+        "listingMs": {
+          "before": 141,
+          "after": 119
+        },
+        "noticeMs": 628,
+        "checkMs": {
+          "door": 69,
+          "meter": 75,
+          "billing": 88,
+          "front": 79,
+          "reports": 103
+        }
+      }
+    },
+    {
+      "id": "W12-error-code",
+      "title": "add's error for currencies that differ carries a code, so that a caller can tell it from an amount out of bounds without reading the message",
+      "provider": "money",
+      "exp": [],
+      "told": [],
+      "matches": true,
+      "broken": [],
+      "needs": [],
+      "through": [],
+      "refusals": [],
+      "verdict": "held",
+      "providerTests": true,
+      "firstCommentsStep": false,
+      "timing": {
+        "listingMs": {
+          "before": 78,
+          "after": 76
+        },
+        "noticeMs": 840,
+        "checkMs": {
+          "money": 65,
+          "calendar": 59,
+          "store": 89,
+          "rooms": 65,
+          "bookings": 153,
+          "door": 79,
+          "meter": 85,
+          "billing": 108,
+          "front": 87,
+          "reports": 66
+        }
+      }
+    },
+    {
+      "id": "W13-fields-reordered",
+      "title": "Booking's comment lists its fields in the order the front desk reads a booking out; nothing else changes",
+      "provider": "bookings",
+      "exp": [],
+      "told": [],
+      "matches": true,
+      "broken": [],
+      "needs": [],
+      "through": [],
+      "refusals": [],
+      "verdict": "held",
+      "providerTests": true,
+      "firstCommentsStep": false,
+      "timing": {
+        "listingMs": {
+          "before": 107,
+          "after": 112
+        },
+        "noticeMs": 592,
+        "checkMs": {
+          "bookings": 84,
+          "door": 65,
+          "meter": 73,
+          "billing": 85,
+          "front": 64,
+          "reports": 64
+        }
+      }
+    },
+    {
+      "id": "W14-list-kind-named",
+      "title": "The parts splitEvenly hands back get a name of their own, Parts; every kind the same",
+      "provider": "money",
+      "exp": [],
+      "told": [],
+      "matches": true,
+      "broken": [],
+      "needs": [],
+      "through": [],
+      "refusals": [],
+      "verdict": "held",
+      "providerTests": true,
+      "firstCommentsStep": false,
+      "timing": {
+        "listingMs": {
+          "before": 53,
+          "after": 56
+        },
+        "noticeMs": 530,
+        "checkMs": {
+          "money": 59,
+          "calendar": 56,
+          "store": 73,
+          "rooms": 69,
+          "bookings": 95,
+          "door": 72,
+          "meter": 70,
+          "billing": 86,
+          "front": 81,
+          "reports": 92
+        }
+      }
+    },
+    {
+      "id": "W15-export-list",
+      "title": "text-rules lists what it exports at the end of the file, so that a reader sees its interface in one place",
+      "provider": "text-rules",
+      "exp": [],
+      "told": [],
+      "matches": true,
+      "broken": [],
+      "needs": [],
+      "through": [],
+      "refusals": [],
+      "verdict": "held",
+      "providerTests": true,
+      "firstCommentsStep": false,
+      "timing": {
+        "listingMs": {
+          "before": 52,
+          "after": 65
+        },
+        "noticeMs": 706,
+        "checkMs": {
+          "text-rules": 60,
+          "money": 73,
+          "calendar": 60,
+          "store": 72,
+          "rooms": 76,
+          "bookings": 111,
+          "door": 71,
+          "meter": 74,
+          "billing": 90,
+          "front": 90,
+          "reports": 72
+        }
+      }
+    },
+    {
+      "id": "W16-store-gains-id",
+      "title": "The store hands out a fresh id for a new record of a table: the first whole number, written as text, that no record of it has",
+      "provider": "store",
+      "exp": [
+        "reports"
+      ],
+      "told": [
+        "reports"
+      ],
+      "matches": true,
+      "broken": [],
+      "needs": [],
+      "through": [],
+      "refusals": [],
+      "verdict": "held; 1 told for nothing",
+      "providerTests": true,
+      "firstCommentsStep": false,
+      "timing": {
+        "listingMs": {
+          "before": 80,
+          "after": 81
+        },
+        "noticeMs": 563,
+        "checkMs": {
+          "store": 75,
+          "rooms": 79,
+          "bookings": 89,
+          "door": 62,
+          "meter": 65,
+          "billing": 72,
+          "front": 77,
+          "reports": 66
+        }
+      }
+    },
+    {
+      "id": "W17-limit-read-through-namespace",
+      "title": "An amount may now be at most 500,000 cents, the most the venue's payment provider takes in one payment; MAX_CENTS changed, the bound line forgotten",
+      "provider": "money",
+      "exp": [
+        "billing",
+        "bookings",
+        "front",
+        "meter",
+        "reports"
+      ],
+      "told": [
+        "billing",
+        "bookings",
+        "front",
+        "meter",
+        "reports"
+      ],
+      "matches": true,
+      "broken": [
+        "bookings"
+      ],
+      "needs": [
+        "bookings"
+      ],
+      "through": [],
+      "refusals": [],
+      "verdict": "held; 4 told for nothing",
+      "providerTests": true,
+      "firstCommentsStep": false,
+      "timing": {
+        "listingMs": {
+          "before": 60,
+          "after": 54
+        },
+        "noticeMs": 873,
+        "checkMs": {
+          "money": 90,
+          "calendar": 75,
+          "store": 63,
+          "rooms": 63,
+          "bookings": 80,
+          "door": 65,
+          "meter": 73,
+          "billing": 91,
+          "front": 78,
+          "reports": 94
+        }
+      }
+    }
+  ]
+}
