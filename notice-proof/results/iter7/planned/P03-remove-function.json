@@ -1,0 +1,230 @@
+{
+  "id": "P03-remove-function",
+  "title": "titleCase is removed",
+  "provider": "text-rules",
+  "covers": [
+    "function removed",
+    "function imported by name"
+  ],
+  "tool": {
+    "firstCommentsStep": false,
+    "interfaceChanged": true,
+    "summary": "1 module(s) changed their listing; 1 entry changed in a way that tells; 1 user(s) told.",
+    "entries": [
+      {
+        "module": "text-rules",
+        "entry": "titleCase",
+        "changes": [
+          "removed"
+        ],
+        "before": {
+          "kind": "function",
+          "accepts": "(arg0: string)",
+          "handsBack": "string"
+        },
+        "tells": "users"
+      }
+    ],
+    "told": [
+      "front"
+    ],
+    "toldDetail": [
+      {
+        "user": "front",
+        "reasons": [
+          {
+            "module": "text-rules",
+            "entry": "titleCase",
+            "changes": [
+              "removed"
+            ],
+            "lines": [
+              "front/src/index.mjs:4",
+              "front/src/index.mjs:54"
+            ],
+            "through": null
+          }
+        ],
+        "undeclared": []
+      }
+    ],
+    "notTold": [
+      {
+        "user": "rooms",
+        "why": "uses none of the entries that changed in a way that tells"
+      }
+    ],
+    "warnings": [],
+    "commentsOnly": false,
+    "checks": {
+      "text-rules": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 57
+      },
+      "money": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 83
+      },
+      "calendar": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 66
+      },
+      "store": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 85
+      },
+      "rooms": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 70
+      },
+      "bookings": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 111
+      },
+      "door": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 71
+      },
+      "meter": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 69
+      },
+      "billing": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 107
+      },
+      "front": {
+        "refusedBefore": 0,
+        "refusedAfter": 1,
+        "refusals": [
+          {
+            "at": "front/src/index.mjs:4",
+            "code": 2305,
+            "text": "Module '\"../../text-rules/src/index.mjs\"' has no exported member 'titleCase'.",
+            "kind": "(b) code disagrees with the stated interface of text-rules"
+          }
+        ],
+        "refusalsBefore": [],
+        "ms": 92
+      },
+      "reports": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 81
+      }
+    }
+  },
+  "groundTruth": {
+    "providerTests": {
+      "pass": true,
+      "failed": [],
+      "ran": 4
+    },
+    "testsBefore": {
+      "money": true,
+      "calendar": true,
+      "store": true,
+      "rooms": true,
+      "bookings": true,
+      "door": true,
+      "meter": true,
+      "billing": true,
+      "front": true,
+      "reports": true
+    },
+    "testsAfter": {
+      "money": {
+        "pass": true,
+        "failed": []
+      },
+      "calendar": {
+        "pass": true,
+        "failed": []
+      },
+      "store": {
+        "pass": true,
+        "failed": []
+      },
+      "rooms": {
+        "pass": true,
+        "failed": []
+      },
+      "bookings": {
+        "pass": true,
+        "failed": []
+      },
+      "door": {
+        "pass": true,
+        "failed": []
+      },
+      "meter": {
+        "pass": true,
+        "failed": []
+      },
+      "billing": {
+        "pass": true,
+        "failed": []
+      },
+      "front": {
+        "pass": false,
+        "failed": []
+      },
+      "reports": {
+        "pass": true,
+        "failed": []
+      }
+    },
+    "broken": [
+      "front"
+    ]
+  },
+  "timing": {
+    "listingMs": {
+      "before": 79,
+      "after": 77
+    },
+    "noticeMs": 664,
+    "checkMs": {
+      "text-rules": 57,
+      "money": 83,
+      "calendar": 66,
+      "store": 85,
+      "rooms": 70,
+      "bookings": 111,
+      "door": 71,
+      "meter": 69,
+      "billing": 107,
+      "front": 92,
+      "reports": 81
+    }
+  }
+}

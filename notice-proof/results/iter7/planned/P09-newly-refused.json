@@ -1,0 +1,293 @@
+{
+  "id": "P09-newly-refused",
+  "title": "The store refuses a value that is not an object",
+  "provider": "store",
+  "covers": [
+    "value newly refused",
+    "test helper published by a provider"
+  ],
+  "tool": {
+    "firstCommentsStep": false,
+    "interfaceChanged": true,
+    "summary": "1 module(s) changed their listing; 2 entries changed in a way that tells; 4 user(s) told.",
+    "entries": [
+      {
+        "module": "store",
+        "entry": "Store.put",
+        "changes": [
+          "cannot stand in"
+        ],
+        "tells": "users",
+        "before": {
+          "kind": "method",
+          "accepts": "(arg0: string, arg1: string, arg2: unknown)",
+          "handsBack": "{ id: string; value: unknown; version: number }",
+          "bounds": [
+            "id: 1 to 120 characters",
+            "table: 1 to 40 characters, each a-z, 0-9 or a hyphen",
+            "version: whole number, 1 or more"
+          ]
+        },
+        "after": {
+          "kind": "method",
+          "accepts": "(arg0: string, arg1: string, arg2: object)",
+          "handsBack": "{ id: string; value: unknown; version: number }",
+          "bounds": [
+            "id: 1 to 120 characters",
+            "table: 1 to 40 characters, each a-z, 0-9 or a hyphen",
+            "version: whole number, 1 or more"
+          ]
+        }
+      },
+      {
+        "module": "store",
+        "entry": "seededStore",
+        "changes": [
+          "cannot stand in"
+        ],
+        "tells": "users",
+        "before": {
+          "kind": "function",
+          "accepts": "(arg0: { [key: string]: { id: string; value: unknown }[] })",
+          "handsBack": "handle store.Store"
+        },
+        "after": {
+          "kind": "function",
+          "accepts": "(arg0: { [key: string]: { id: string; value: object }[] })",
+          "handsBack": "handle store.Store"
+        }
+      }
+    ],
+    "told": [
+      "rooms",
+      "bookings",
+      "front",
+      "reports"
+    ],
+    "toldDetail": [
+      {
+        "user": "rooms",
+        "reasons": [
+          {
+            "module": "store",
+            "entry": "Store.put",
+            "changes": [
+              "cannot stand in"
+            ],
+            "lines": [
+              "rooms/src/index.mjs:69"
+            ],
+            "through": null
+          }
+        ],
+        "undeclared": []
+      },
+      {
+        "user": "bookings",
+        "reasons": [
+          {
+            "module": "store",
+            "entry": "Store.put",
+            "changes": [
+              "cannot stand in"
+            ],
+            "lines": [
+              "bookings/src/index.mjs:122",
+              "bookings/src/index.mjs:131"
+            ],
+            "through": null
+          }
+        ],
+        "undeclared": []
+      },
+      {
+        "user": "front",
+        "reasons": [
+          {
+            "module": "store",
+            "entry": "seededStore",
+            "changes": [
+              "cannot stand in"
+            ],
+            "lines": [
+              "front/test/index.test.mjs:3",
+              "front/test/index.test.mjs:10",
+              "front/test/index.test.mjs:12",
+              "front/test/index.test.mjs:13"
+            ],
+            "through": null
+          }
+        ],
+        "undeclared": []
+      },
+      {
+        "user": "reports",
+        "reasons": [
+          {
+            "module": "store",
+            "notFollowed": [
+              "reads or calls values of unknown kind: reports/src/index.mjs:13 source.list('rooms').map; reports/src/index.mjs:13 source.list('rooms'); reports/src/index.mjs:13 source.list (+9)"
+            ],
+            "through": null
+          }
+        ],
+        "undeclared": []
+      }
+    ],
+    "notTold": [
+      {
+        "user": "billing",
+        "why": "uses none of the entries that changed in a way that tells"
+      }
+    ],
+    "warnings": [],
+    "commentsOnly": false,
+    "checks": {
+      "store": {
+        "refusedBefore": 0,
+        "refusedAfter": 4,
+        "refusals": [
+          {
+            "at": "store/test/index.test.mjs:29",
+            "code": 2345,
+            "text": "Argument of type 'number' is not assignable to parameter of type 'object'.",
+            "kind": "(a) a comment disagrees with this module's tests"
+          },
+          {
+            "at": "store/test/index.test.mjs:30",
+            "code": 2345,
+            "text": "Argument of type 'number' is not assignable to parameter of type 'object'.",
+            "kind": "(a) a comment disagrees with this module's tests"
+          },
+          {
+            "at": "store/test/index.test.mjs:31",
+            "code": 2345,
+            "text": "Argument of type 'number' is not assignable to parameter of type 'object'.",
+            "kind": "(a) a comment disagrees with this module's tests"
+          },
+          {
+            "at": "store/test/index.test.mjs:39",
+            "code": 2345,
+            "text": "Argument of type 'number' is not assignable to parameter of type 'object'.",
+            "kind": "(a) a comment disagrees with this module's tests"
+          }
+        ],
+        "refusalsBefore": [],
+        "ms": 73
+      },
+      "rooms": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 85
+      },
+      "bookings": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 87
+      },
+      "door": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 69
+      },
+      "meter": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 73
+      },
+      "billing": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 75
+      },
+      "front": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 70
+      },
+      "reports": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 97
+      }
+    }
+  },
+  "groundTruth": {
+    "providerTests": {
+      "pass": true,
+      "failed": [],
+      "ran": 7
+    },
+    "testsBefore": {
+      "rooms": true,
+      "bookings": true,
+      "door": true,
+      "meter": true,
+      "billing": true,
+      "front": true,
+      "reports": true
+    },
+    "testsAfter": {
+      "rooms": {
+        "pass": true,
+        "failed": []
+      },
+      "bookings": {
+        "pass": true,
+        "failed": []
+      },
+      "door": {
+        "pass": true,
+        "failed": []
+      },
+      "meter": {
+        "pass": true,
+        "failed": []
+      },
+      "billing": {
+        "pass": true,
+        "failed": []
+      },
+      "front": {
+        "pass": true,
+        "failed": []
+      },
+      "reports": {
+        "pass": true,
+        "failed": []
+      }
+    },
+    "broken": []
+  },
+  "timing": {
+    "listingMs": {
+      "before": 61,
+      "after": 61
+    },
+    "noticeMs": 714,
+    "checkMs": {
+      "store": 73,
+      "rooms": 85,
+      "bookings": 87,
+      "door": 69,
+      "meter": 73,
+      "billing": 75,
+      "front": 70,
+      "reports": 97
+    }
+  }
+}

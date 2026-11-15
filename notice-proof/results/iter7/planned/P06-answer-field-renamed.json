@@ -1,0 +1,530 @@
+{
+  "id": "P06-answer-field-renamed",
+  "title": "A room's seats are now called capacity in what rooms hands back",
+  "provider": "rooms",
+  "covers": [
+    "field of an answer renamed",
+    "factory handle reaching users in a bag of dependencies"
+  ],
+  "tool": {
+    "firstCommentsStep": false,
+    "interfaceChanged": true,
+    "summary": "2 module(s) changed their listing; 9 entries changed in a way that tells; 4 user(s) told.",
+    "entries": [
+      {
+        "module": "rooms",
+        "entry": "Room",
+        "changes": [
+          "hands back differently",
+          "bound changed"
+        ],
+        "tells": "users",
+        "before": {
+          "kind": "kind",
+          "handsBack": "{ id: string; kind: \"hall\" | \"kitchen\" | \"studio\"; name: string; seats: number }",
+          "bounds": [
+            "seats: whole number, 1 to 500"
+          ],
+          "side": "handsBack"
+        },
+        "after": {
+          "kind": "kind",
+          "handsBack": "{ capacity: number; id: string; kind: \"hall\" | \"kitchen\" | \"studio\"; name: string }",
+          "bounds": [
+            "capacity: whole number, 1 to 500"
+          ],
+          "side": "handsBack"
+        }
+      },
+      {
+        "module": "rooms",
+        "entry": "RoomHandlers.roomlist",
+        "changes": [
+          "hands back differently",
+          "bound changed"
+        ],
+        "tells": "users",
+        "before": {
+          "kind": "method",
+          "accepts": "(arg0: { kind?: \"hall\" | \"kitchen\" | \"studio\" })",
+          "handsBack": "{ rooms: { id: string; kind: \"hall\" | \"kitchen\" | \"studio\"; name: string; seats: number }[] }",
+          "bounds": [
+            "seats: whole number, 1 to 500"
+          ]
+        },
+        "after": {
+          "kind": "method",
+          "accepts": "(arg0: { kind?: \"hall\" | \"kitchen\" | \"studio\" })",
+          "handsBack": "{ rooms: { capacity: number; id: string; kind: \"hall\" | \"kitchen\" | \"studio\"; name: string }[] }",
+          "bounds": [
+            "capacity: whole number, 1 to 500"
+          ]
+        }
+      },
+      {
+        "module": "rooms",
+        "entry": "Rooms.add",
+        "changes": [
+          "hands back differently",
+          "bound changed"
+        ],
+        "tells": "users",
+        "before": {
+          "kind": "method",
+          "accepts": "(arg0: { kind: \"hall\" | \"kitchen\" | \"studio\"; name: string; seats: number })",
+          "handsBack": "{ id: string; kind: \"hall\" | \"kitchen\" | \"studio\"; name: string; seats: number }",
+          "bounds": [
+            "seats: whole number, 1 to 500"
+          ]
+        },
+        "after": {
+          "kind": "method",
+          "accepts": "(arg0: { kind: \"hall\" | \"kitchen\" | \"studio\"; name: string; seats: number })",
+          "handsBack": "{ capacity: number; id: string; kind: \"hall\" | \"kitchen\" | \"studio\"; name: string }",
+          "bounds": [
+            "capacity: whole number, 1 to 500"
+          ]
+        }
+      },
+      {
+        "module": "rooms",
+        "entry": "Rooms.find",
+        "changes": [
+          "hands back differently",
+          "bound changed"
+        ],
+        "tells": "users",
+        "before": {
+          "kind": "method",
+          "accepts": "(arg0: string)",
+          "handsBack": "{ id: string; kind: \"hall\" | \"kitchen\" | \"studio\"; name: string; seats: number } | undefined",
+          "bounds": [
+            "seats: whole number, 1 to 500"
+          ]
+        },
+        "after": {
+          "kind": "method",
+          "accepts": "(arg0: string)",
+          "handsBack": "{ capacity: number; id: string; kind: \"hall\" | \"kitchen\" | \"studio\"; name: string } | undefined",
+          "bounds": [
+            "capacity: whole number, 1 to 500"
+          ]
+        }
+      },
+      {
+        "module": "rooms",
+        "entry": "Rooms.list",
+        "changes": [
+          "hands back differently",
+          "bound changed"
+        ],
+        "tells": "users",
+        "before": {
+          "kind": "method",
+          "accepts": "(arg0?: \"hall\" | \"kitchen\" | \"studio\")",
+          "handsBack": "{ id: string; kind: \"hall\" | \"kitchen\" | \"studio\"; name: string; seats: number }[]",
+          "bounds": [
+            "seats: whole number, 1 to 500"
+          ]
+        },
+        "after": {
+          "kind": "method",
+          "accepts": "(arg0?: \"hall\" | \"kitchen\" | \"studio\")",
+          "handsBack": "{ capacity: number; id: string; kind: \"hall\" | \"kitchen\" | \"studio\"; name: string }[]",
+          "bounds": [
+            "capacity: whole number, 1 to 500"
+          ]
+        }
+      },
+      {
+        "module": "rooms",
+        "entry": "op:roomlist",
+        "changes": [
+          "hands back differently",
+          "bound changed"
+        ],
+        "tells": "users",
+        "before": {
+          "kind": "operation",
+          "accepts": "{ kind?: \"hall\" | \"kitchen\" | \"studio\" }",
+          "handsBack": "{ rooms: { id: string; kind: \"hall\" | \"kitchen\" | \"studio\"; name: string; seats: number }[] }",
+          "bounds": [
+            "seats: whole number, 1 to 500"
+          ]
+        },
+        "after": {
+          "kind": "operation",
+          "accepts": "{ kind?: \"hall\" | \"kitchen\" | \"studio\" }",
+          "handsBack": "{ rooms: { capacity: number; id: string; kind: \"hall\" | \"kitchen\" | \"studio\"; name: string }[] }",
+          "bounds": [
+            "capacity: whole number, 1 to 500"
+          ]
+        }
+      },
+      {
+        "module": "rooms",
+        "entry": "table:rooms",
+        "changes": [
+          "cannot stand in",
+          "hands back differently",
+          "bound changed"
+        ],
+        "tells": "users",
+        "before": {
+          "kind": "stored rows",
+          "accepts": "{ id: string; kind: \"hall\" | \"kitchen\" | \"studio\"; name: string; seats: number }",
+          "handsBack": "{ id: string; kind: \"hall\" | \"kitchen\" | \"studio\"; name: string; seats: number }",
+          "bounds": [
+            "seats: whole number, 1 to 500"
+          ],
+          "side": "both"
+        },
+        "after": {
+          "kind": "stored rows",
+          "accepts": "{ capacity: number; id: string; kind: \"hall\" | \"kitchen\" | \"studio\"; name: string }",
+          "handsBack": "{ capacity: number; id: string; kind: \"hall\" | \"kitchen\" | \"studio\"; name: string }",
+          "bounds": [
+            "capacity: whole number, 1 to 500"
+          ],
+          "side": "both"
+        }
+      },
+      {
+        "module": "door",
+        "entry": "AllOps",
+        "changes": [
+          "cannot stand in",
+          "hands back differently",
+          "bound changed"
+        ],
+        "tells": "users",
+        "before": {
+          "kind": "kind",
+          "accepts": "{ bookcancel: { req: { id: string }; res: { day: string; id: string; nights: number; note?: string; party: number; room: string; state: \"cancelled\" | \"open\"; total: { cents: number; currency: \"EUR\" | \"GBP\" | \"USD\" }; until: string } }; bookopen: { req: { day: string; nights: number; note?: string; party: number; room: string }; res: { day: string; id: string; nights: number; note?: string; party: number; room: string; state: \"cancelled\" | \"open\"; total: { cents: number; currency: \"EUR\" | \"GBP\" | \"USD\" }; until: string } }; bookquote: { req: { nights: number; party: number; room: string }; res: { total: { cents: number; currency: \"EUR\" | \"GBP\" | \"USD\" } } }; bookstatus: { req: { id: string }; res: { room: string; state: \"cancelled\" | \"open\"; total: { cents: number; currency: \"EUR\" | \"GBP\" | \"USD\" } } }; roomlist: { req: { kind?: \"hall\" | \"kitchen\" | \"studio\" }; res: { rooms: { id: string; kind: \"hall\" | \"kitchen\" | \"studio\"; name: string; seats: number }[] } } }",
+          "handsBack": "{ bookcancel: { req: { id: string }; res: { day: string; id: string; nights: number; note?: string; party: number; room: string; state: \"cancelled\" | \"open\"; total: { cents: number; currency: \"EUR\" | \"GBP\" | \"USD\" }; until: string } }; bookopen: { req: { day: string; nights: number; note?: string; party: number; room: string }; res: { day: string; id: string; nights: number; note?: string; party: number; room: string; state: \"cancelled\" | \"open\"; total: { cents: number; currency: \"EUR\" | \"GBP\" | \"USD\" }; until: string } }; bookquote: { req: { nights: number; party: number; room: string }; res: { total: { cents: number; currency: \"EUR\" | \"GBP\" | \"USD\" } } }; bookstatus: { req: { id: string }; res: { room: string; state: \"cancelled\" | \"open\"; total: { cents: number; currency: \"EUR\" | \"GBP\" | \"USD\" } } }; roomlist: { req: { kind?: \"hall\" | \"kitchen\" | \"studio\" }; res: { rooms: { id: string; kind: \"hall\" | \"kitchen\" | \"studio\"; name: string; seats: number }[] } } }",
+          "bounds": [
+            "bookquote.total: what the whole stay costs, for the whole party and every night",
+            "cents: whole number, 0 to 10,000,000 inclusive",
+            "day: a real calendar day written YYYY-MM-DD",
+            "nights: whole number, 1 to 14",
+            "party: whole number, 1 to 200, and no more than the room's seats",
+            "seats: whole number, 1 to 500"
+          ],
+          "side": "both"
+        },
+        "after": {
+          "kind": "kind",
+          "accepts": "{ bookcancel: { req: { id: string }; res: { day: string; id: string; nights: number; note?: string; party: number; room: string; state: \"cancelled\" | \"open\"; total: { cents: number; currency: \"EUR\" | \"GBP\" | \"USD\" }; until: string } }; bookopen: { req: { day: string; nights: number; note?: string; party: number; room: string }; res: { day: string; id: string; nights: number; note?: string; party: number; room: string; state: \"cancelled\" | \"open\"; total: { cents: number; currency: \"EUR\" | \"GBP\" | \"USD\" }; until: string } }; bookquote: { req: { nights: number; party: number; room: string }; res: { total: { cents: number; currency: \"EUR\" | \"GBP\" | \"USD\" } } }; bookstatus: { req: { id: string }; res: { room: string; state: \"cancelled\" | \"open\"; total: { cents: number; currency: \"EUR\" | \"GBP\" | \"USD\" } } }; roomlist: { req: { kind?: \"hall\" | \"kitchen\" | \"studio\" }; res: { rooms: { capacity: number; id: string; kind: \"hall\" | \"kitchen\" | \"studio\"; name: string }[] } } }",
+          "handsBack": "{ bookcancel: { req: { id: string }; res: { day: string; id: string; nights: number; note?: string; party: number; room: string; state: \"cancelled\" | \"open\"; total: { cents: number; currency: \"EUR\" | \"GBP\" | \"USD\" }; until: string } }; bookopen: { req: { day: string; nights: number; note?: string; party: number; room: string }; res: { day: string; id: string; nights: number; note?: string; party: number; room: string; state: \"cancelled\" | \"open\"; total: { cents: number; currency: \"EUR\" | \"GBP\" | \"USD\" }; until: string } }; bookquote: { req: { nights: number; party: number; room: string }; res: { total: { cents: number; currency: \"EUR\" | \"GBP\" | \"USD\" } } }; bookstatus: { req: { id: string }; res: { room: string; state: \"cancelled\" | \"open\"; total: { cents: number; currency: \"EUR\" | \"GBP\" | \"USD\" } } }; roomlist: { req: { kind?: \"hall\" | \"kitchen\" | \"studio\" }; res: { rooms: { capacity: number; id: string; kind: \"hall\" | \"kitchen\" | \"studio\"; name: string }[] } } }",
+          "bounds": [
+            "bookquote.total: what the whole stay costs, for the whole party and every night",
+            "capacity: whole number, 1 to 500",
+            "cents: whole number, 0 to 10,000,000 inclusive",
+            "day: a real calendar day written YYYY-MM-DD",
+            "nights: whole number, 1 to 14",
+            "party: whole number, 1 to 200, and no more than the room's seats"
+          ],
+          "side": "both"
+        }
+      },
+      {
+        "module": "door",
+        "entry": "Handlers.roomlist",
+        "changes": [
+          "hands back differently",
+          "bound changed"
+        ],
+        "tells": "users",
+        "before": {
+          "kind": "method",
+          "accepts": "(arg0: { kind?: \"hall\" | \"kitchen\" | \"studio\" })",
+          "handsBack": "{ rooms: { id: string; kind: \"hall\" | \"kitchen\" | \"studio\"; name: string; seats: number }[] }",
+          "bounds": [
+            "seats: whole number, 1 to 500"
+          ]
+        },
+        "after": {
+          "kind": "method",
+          "accepts": "(arg0: { kind?: \"hall\" | \"kitchen\" | \"studio\" })",
+          "handsBack": "{ rooms: { capacity: number; id: string; kind: \"hall\" | \"kitchen\" | \"studio\"; name: string }[] }",
+          "bounds": [
+            "capacity: whole number, 1 to 500"
+          ]
+        }
+      }
+    ],
+    "told": [
+      "bookings",
+      "billing",
+      "front",
+      "reports"
+    ],
+    "toldDetail": [
+      {
+        "user": "bookings",
+        "reasons": [
+          {
+            "module": "rooms",
+            "entry": "Room",
+            "changes": [
+              "hands back differently",
+              "bound changed"
+            ],
+            "lines": [
+              "bookings/src/index.mjs:96"
+            ],
+            "through": null
+          },
+          {
+            "module": "rooms",
+            "entry": "Rooms.add",
+            "changes": [
+              "hands back differently",
+              "bound changed"
+            ],
+            "lines": [
+              "bookings/test/index.test.mjs:10",
+              "bookings/test/index.test.mjs:11"
+            ],
+            "through": null
+          },
+          {
+            "module": "rooms",
+            "entry": "Rooms.find",
+            "changes": [
+              "hands back differently",
+              "bound changed"
+            ],
+            "lines": [
+              "bookings/src/index.mjs:94"
+            ],
+            "through": null
+          }
+        ],
+        "undeclared": []
+      },
+      {
+        "user": "billing",
+        "reasons": [
+          {
+            "module": "rooms",
+            "entry": "Rooms.add",
+            "changes": [
+              "hands back differently",
+              "bound changed"
+            ],
+            "lines": [
+              "billing/test/index.test.mjs:12"
+            ],
+            "through": null
+          }
+        ],
+        "undeclared": []
+      },
+      {
+        "user": "front",
+        "reasons": [
+          {
+            "module": "rooms",
+            "entry": "Room",
+            "changes": [
+              "hands back differently",
+              "bound changed"
+            ],
+            "lines": [
+              "front/src/index.mjs:58"
+            ],
+            "through": null
+          },
+          {
+            "module": "rooms",
+            "entry": "op:roomlist",
+            "changes": [
+              "hands back differently",
+              "bound changed"
+            ],
+            "lines": [
+              "front/src/index.mjs:57"
+            ],
+            "through": null
+          },
+          {
+            "module": "rooms",
+            "entry": "table:rooms",
+            "changes": [
+              "cannot stand in",
+              "hands back differently",
+              "bound changed"
+            ],
+            "lines": [
+              "front/test/index.test.mjs:10"
+            ],
+            "through": null
+          }
+        ],
+        "undeclared": []
+      },
+      {
+        "user": "reports",
+        "reasons": [
+          {
+            "module": "rooms",
+            "entry": "Rooms.add",
+            "changes": [
+              "hands back differently",
+              "bound changed"
+            ],
+            "lines": [
+              "reports/test/index.test.mjs:11",
+              "reports/test/index.test.mjs:12"
+            ],
+            "through": null
+          },
+          {
+            "module": "rooms",
+            "notFollowed": [
+              "reads or calls values of unknown kind: reports/src/index.mjs:13 source.list('rooms').map; reports/src/index.mjs:13 source.list('rooms'); reports/src/index.mjs:13 source.list (+9)"
+            ],
+            "through": null
+          }
+        ],
+        "undeclared": []
+      }
+    ],
+    "notTold": [
+      {
+        "user": "door",
+        "why": "uses none of the entries that changed in a way that tells"
+      }
+    ],
+    "warnings": [],
+    "commentsOnly": false,
+    "checks": {
+      "rooms": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 70
+      },
+      "bookings": {
+        "refusedBefore": 0,
+        "refusedAfter": 1,
+        "refusals": [
+          {
+            "at": "bookings/src/index.mjs:96",
+            "code": 2339,
+            "text": "Property 'seats' does not exist on type 'Room'.",
+            "kind": "(b) code disagrees with the stated interface of rooms"
+          }
+        ],
+        "refusalsBefore": [],
+        "ms": 119
+      },
+      "door": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 71
+      },
+      "meter": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 75
+      },
+      "billing": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 115
+      },
+      "front": {
+        "refusedBefore": 0,
+        "refusedAfter": 1,
+        "refusals": [
+          {
+            "at": "front/src/index.mjs:58",
+            "code": 2339,
+            "text": "Property 'seats' does not exist on type 'Room'.",
+            "kind": "(b) code disagrees with the stated interface of rooms"
+          }
+        ],
+        "refusalsBefore": [],
+        "ms": 122
+      },
+      "reports": {
+        "refusedBefore": 0,
+        "refusedAfter": 0,
+        "refusals": [],
+        "refusalsBefore": [],
+        "ms": 113
+      }
+    }
+  },
+  "groundTruth": {
+    "providerTests": {
+      "pass": true,
+      "failed": [],
+      "ran": 5
+    },
+    "testsBefore": {
+      "bookings": true,
+      "door": true,
+      "meter": true,
+      "billing": true,
+      "front": true,
+      "reports": true
+    },
+    "testsAfter": {
+      "bookings": {
+        "pass": false,
+        "failed": [
+          "bound party: whole number, 1 to 200, and no more than the room's seats"
+        ]
+      },
+      "door": {
+        "pass": true,
+        "failed": []
+      },
+      "meter": {
+        "pass": true,
+        "failed": []
+      },
+      "billing": {
+        "pass": true,
+        "failed": []
+      },
+      "front": {
+        "pass": true,
+        "failed": []
+      },
+      "reports": {
+        "pass": true,
+        "failed": []
+      }
+    },
+    "broken": [
+      "bookings"
+    ]
+  },
+  "timing": {
+    "listingMs": {
+      "before": 82,
+      "after": 88
+    },
+    "noticeMs": 553,
+    "checkMs": {
+      "rooms": 70,
+      "bookings": 119,
+      "door": 71,
+      "meter": 75,
+      "billing": 115,
+      "front": 122,
+      "reports": 113
+    }
+  }
+}
