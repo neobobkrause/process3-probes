@@ -1,0 +1,177 @@
+{
+ "about": "Expected answers for round 3 (series round3-independent), written by an independent adversary from the rules (notes/iteration-2-design.md and round 1's rules) and the tool's code, BEFORE anything was run on these changes; no results, readings or development-log outcomes were read. Fields as in iter2/planned-expected.json: 'told' is who the RULES say must be told (not what the tool is predicted to do); 'refuses' is whose check the rules say should refuse; 'guard' names what other than a notice should stop the change; 'attack' says how the change tries to defeat the method and what outcome counts as a defeat. Set-ups (changes/setups/Y..) are shared by before and after.",
+ "changes": {
+  "Y01-method-error-kind": {
+   "told": [
+    "billing",
+    "front",
+    "reports"
+   ],
+   "why": "Second design, rule 1: the kinds of error an entry raises are part of what it hands back; a change to them tells that entry's users. Bookings.cancel, op:bookcancel and op:bookstatus (and the door's Handlers members through them) now raise Error where they raised RangeError: front uses op:bookcancel, billing uses op:bookstatus and Bookings.cancel (tests), reports uses Bookings.cancel (tests) and is not followed fully.",
+   "brokenPredicted": [
+    "front"
+   ],
+   "wrongWithoutFailingTest": [],
+   "refuses": [],
+   "attack": "The tool reads @throws only on exported functions, never on a handle's method or an operation, so the bookings listing does not change and nobody is told. front (set-up Y01) turns bookings' RangeError into 'No booking ...'; its new test fails. Defeat: front's test fails and front is not told (the notice tells nobody)."
+  },
+  "Y02-amount-cannot-be-changed": {
+   "told": [
+    "billing",
+    "bookings",
+    "meter"
+   ],
+   "why": "Rule 3: any change to what an entry hands back tells its users. amount, add and splitEvenly now hand back instances whose cents and currency are getters over private fields, not plain data: users of those entries are bookings (amount), meter (amount) and billing (amount, add, splitEvenly). front breaks only through bookings passing the total on; no rule tells it unless bookings' listing changes.",
+   "brokenPredicted": [
+    "billing",
+    "bookings",
+    "front",
+    "meter"
+   ],
+   "wrongWithoutFailingTest": [],
+   "refuses": [],
+   "attack": "Every comment stays true as TypeScript reads it (an instance with getters is assignable to Amount), so the listing, read from the comments, is unchanged and the check finds no disagreement; but JSON (door, meter) and structuredClone (store) copy the instances as {}. Defeat: any of bookings, meter, billing, front fails its tests while nobody is told and money's check does not refuse."
+  },
+  "Y03-handle-member-optional": {
+   "told": [
+    "billing",
+    "front"
+   ],
+   "why": "Door.get may now be missing on the door createDoor hands back (it is there only with {lines: true}): what createDoor hands back and the Door handle's member get changed. Users: billing (Door.get, createDoor in tests), front (Door, createDoor in tests).",
+   "brokenPredicted": [
+    "billing"
+   ],
+   "wrongWithoutFailingTest": [],
+   "refuses": [],
+   "attack": "The listing writes a handle's member with its optionality stripped (getNonNullableType) and keeps the list of names; createDoor only gains an optional parameter (accepts more, tells nobody). Defeat: billing's invoice tests fail (deps.door.get is not a function) and billing is not told."
+  },
+  "Y04-row-kind-written-through-helper": {
+   "told": [
+    "front",
+    "reports"
+   ],
+   "why": "Second design, rule 2, followed honestly: the rows of table rooms now have the kind RoomRow (capacity in place of seats), so table:rooms accepts and hands back differently and its bound line went. Users of the table: front, whose tests write rooms rows (through seededStore), and reports, which reads them (not followed fully). Rule 2 also says only the owner writes a table: front's check should refuse its seeding (it already should before this change).",
+   "brokenPredicted": [
+    "front"
+   ],
+   "wrongWithoutFailingTest": [],
+   "refuses": [
+    "front"
+   ],
+   "attack": "The tool sees a use of a table only in a call of a @carriestable member with the table's name written in place; front names the table as an object key handed to seededStore, so front is not a user of table:rooms and none of the rooms entries it uses changed. Expected tool answer: reports told (not followed), front not. Defeat: front's tests fail (a kitchen of 8 seats takes a party of 9; the menu says 'undefined seats') and front is not told."
+  },
+  "Y05-row-cast-at-write": {
+   "told": [],
+   "why": "Second design, rule 2: every write to a table must give a value of its row kind; toRow hands back a Booking without its first day, written as a Booking by a comment cast. Bookings' own check should refuse the write (and rule 5a: the cast's comment disagrees with the code). The listing does not change, so no notice is due if the check stops it.",
+   "brokenPredicted": [
+    "reports"
+   ],
+   "wrongWithoutFailingTest": [],
+   "refuses": [
+    "bookings"
+   ],
+   "guard": "bookings' own check (rule 2: rows of a table are of its stated kind)",
+   "attack": "Rule 2's check asks whether the argument, as the reader types it, is assignable to the row kind; a comment cast makes it so (a type assertion is allowed whenever the two kinds overlap). Defeat: bookings' check does not refuse, nobody is told, and reports (which reads b.day straight from the table) fails its test."
+  },
+  "Y06-channel-line-built-first": {
+   "told": [
+    "billing"
+   ],
+   "why": "Refusals now travel on standard error: MeterMsg's channel changed in fact, so it hands back differently (second design, rule 5) and billing, which names MeterMsg, is told. The @message tag still says stdout, so the check should refuse the write of a MeterMsg to standard error (rule 5: a write of JSON.stringify(x) to a standard stream needs a @message kind for that stream).",
+   "brokenPredicted": [
+    "billing"
+   ],
+   "wrongWithoutFailingTest": [],
+   "refuses": [
+    "meter"
+   ],
+   "guard": "meter's own check (rule 5 of the second design)",
+   "attack": "The check finds JSON.stringify only inside the call that writes it, within one statement; here the line is built in one statement and written in the next, so nothing is refused, and the forgotten tag leaves the listing unchanged. Defeat: meter's check does not refuse, billing is not told, and billing's test 'metered use outside the meter's bound is refused' fails (it resolves instead)."
+  },
+  "Y07-limit-outside-bound-test": {
+   "told": [
+    "billing",
+    "bookings",
+    "front",
+    "meter",
+    "reports"
+   ],
+   "why": "The bound of cents changed (code and the limit its test uses) while its line did not. Rule 4: a bound and its test move together; a bound whose test changed counts as changed and tells the users of every entry that carries it: money's (bookings, meter, billing, front) and bookings' entries (billing, front, reports not followed). Rule 5a: the bound line now disagrees with the code, so money's check should refuse.",
+   "brokenPredicted": [
+    "bookings"
+   ],
+   "wrongWithoutFailingTest": [],
+   "refuses": [
+    "money"
+   ],
+   "guard": "rule 4 (a bound and its test move together) and rule 5a in money's own check",
+   "attack": "Rule 4's mechanism compares only the body of the test named for the bound; this test reads its limit from a constant at the top of the file (set-up Y07), so its body is unchanged, and the check cannot read a bound line's words against the code. Defeat: nobody is told, money's check does not refuse, and bookings' 'bound party' test fails (200 people for 2 nights is 600,000 cents)."
+  },
+  "Y08-bound-on-number-kind": {
+   "told": [
+    "billing",
+    "bookings",
+    "front",
+    "meter",
+    "reports"
+   ],
+   "why": "Rule 3: a changed bound line is a change. The bound is on Cents, the kind of Amount's cents: every entry that hands back an Amount carries it (money's entries; bookings', the door's and the meter's through them), so their users are told: bookings, meter, billing, front, and reports (not followed, through bookings).",
+   "brokenPredicted": [
+    "bookings"
+   ],
+   "wrongWithoutFailingTest": [],
+   "refuses": [],
+   "attack": "The listing carries the bound lines of a kind into the entries that write it out only for object kinds; Cents names a number, so its bound line stays on Cents' own entry, which no user names. Defeat: nobody is told (or only users naming Cents: none) and bookings' 'bound party' test fails."
+  },
+  "Y09-newer-library-method": {
+   "told": [],
+   "why": "The listing does not change (list's comment is the same); running code is honest and Node 22 has Array.prototype.toSorted.",
+   "brokenPredicted": [],
+   "wrongWithoutFailingTest": [],
+   "refuses": [],
+   "attack": "The reader reads the language's library as of ES2022, so toSorted 'does not exist' (code 2550), which is not among the 'cannot tell' exceptions. Defeat: rooms' own check refuses honest code and stops the change."
+  },
+  "Y10-map-has-get-provider-kind": {
+   "told": [],
+   "why": "A new method of the Bookings handle: a new entry has no users. The code is honest: every Map.get is guarded by Map.has.",
+   "brokenPredicted": [],
+   "wrongWithoutFailingTest": [],
+   "refuses": [],
+   "attack": "The reader cannot follow has-then-get and says 'Amount | undefined is not assignable to Amount' (2345); tool change 13 makes only 'possibly undefined' about the module's own values 'cannot tell', and the value here is of money's kind. Defeat: bookings' own check refuses (labelled a disagreement with money) and stops an honest change."
+  },
+  "Y11-tests-grouped-with-it": {
+   "told": [],
+   "why": "Running code and comments unchanged; the tests named for the two bounds are still there, under node:test's it (another name of test). Nothing is told and nothing should be refused.",
+   "brokenPredicted": [],
+   "wrongWithoutFailingTest": [],
+   "refuses": [],
+   "attack": "The check finds tests named for a bound only in calls of an identifier named test. Defeat: money's own check refuses ('no test named bound cents...', 'no test named bound parts...') and stops an honest change."
+  },
+  "Y12-bound-test-rewritten-same-meaning": {
+   "told": [
+    "billing",
+    "bookings",
+    "front",
+    "meter",
+    "reports"
+   ],
+   "why": "By rule 4's letter: the body of the test named for the bound of cents changed while its line did not, so the bound counts as changed in every entry of every module that carries the line (money's, bookings', the door's, the meter's, billing's), and their users are told: bookings, meter, billing, front, reports (not followed). By the method's purpose nobody needs telling: same values, same assertions.",
+   "brokenPredicted": [],
+   "wrongWithoutFailingTest": [],
+   "refuses": [],
+   "attack": "A change of nothing. Defeat ('told for nothing'): every one of the five modules the notice tells is told for nothing; the rule's own cost, with no way for the job to show the meaning is unchanged."
+  },
+  "Y13-constructor-accepts-differently": {
+   "told": [
+    "billing"
+   ],
+   "why": "Rule 3: Tally's constructor now accepts an Amount where it accepted a Currency: the old cannot stand in. billing (set-up Y13b) constructs a Tally and is told.",
+   "brokenPredicted": [
+    "billing"
+   ],
+   "wrongWithoutFailingTest": [],
+   "refuses": [],
+   "attack": "An exported class is listed as a value: the members of its prototype are written out, its constructor's parameters are not (only call signatures are read, and a class has none). Defeat: nobody is told and billing's 'metered use is priced' test fails (new Tally('EUR') now throws)."
+  }
+ }
+}
