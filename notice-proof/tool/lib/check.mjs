@@ -214,12 +214,15 @@ export function check(tree, moduleId) {
         let w = n.parent;
         while (w && !(ts.isCallExpression(w) && ts.isPropertyAccessExpression(w.expression) && ['write', 'end'].includes(w.expression.name.text))) { if (ts.isStatement(w)) { w = null; break; } w = w.parent; }
         if (!w) return;
-        const stream = /(stdout|stderr|stdin)$/.exec(w.expression.expression.getText(sf))?.[1];
-        if (!stream) return;
+        // Every stream the target may be (a stream chosen at run time names each of them) must be one of the
+        // channels the message's kind is published for.
+        const streams = [...new Set(w.expression.expression.getText(sf).match(/\b(stdout|stderr|stdin)\b/g) ?? [])];
+        if (!streams.length) return;
         const a0 = n.arguments[0];
         const channels = a0 ? messageChannelsOf(checker.getTypeAtLocation(a0)) : null;
-        if (!channels || !channels.includes(stream)) {
-          refusals.push({ at: lineAt(sf, n, tree.root), code: 'message', text: `a message written to ${stream} ${channels ? `has a kind published for ${channels.join(', ')}` : 'has no kind its sender publishes'}`, kind: '(c) a rule of form: a message is written with its kind, on its channel' });
+        const wrong = streams.filter((x) => !channels || !channels.includes(x));
+        if (wrong.length) {
+          refusals.push({ at: lineAt(sf, n, tree.root), code: 'message', text: `a message written to ${wrong.join(' and ')} ${channels ? `has a kind published for ${channels.join(', ')}` : 'has no kind its sender publishes'}`, kind: '(c) a rule of form: a message is written with its kind, on its channel' });
         }
       }
     });

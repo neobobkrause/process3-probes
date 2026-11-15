@@ -150,7 +150,12 @@ export function makeUsage(program, tree, listings) {
         const ct = checker.getContextualType(node);
         if (ct) {
           for (const p of node.properties) {
-            if (ts.isSpreadAssignment(p)) { matchMembers(p.expression, ct, true); continue; }
+            if (ts.isSpreadAssignment(p)) {
+              // Objects merged with ... to fill a kind (handlers wired into the door): what matters is which names
+              // the kind holds, so this is a use of the kind's list of names, not of each member.
+              for (const k of ct.flags & ts.TypeFlags.Union ? ct.types : [ct]) for (const sym of [k.aliasSymbol, k.symbol]) if (sym && !sym.name.startsWith('__')) fromSymbol(sym, p);
+              continue;
+            }
             if (!p.name || !(ts.isIdentifier(p.name) || ts.isStringLiteral(p.name))) continue;
             for (const member of ct.flags & ts.TypeFlags.Union ? ct.types : [ct]) {
               const ps = checker.getPropertyOfType(member, p.name.text);

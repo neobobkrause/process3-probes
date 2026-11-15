@@ -1,0 +1,391 @@
+{
+  "about": "Expected answers under iteration 2 of the design (notes/iteration-2-design.md), written by Claude (the proof session) BEFORE any change was run on iteration 2. Unlike round 1, the writer had seen round 1's results, and iteration 2 was built to answer them, so these are a check of the new rules as written, not a blind test; the fresh adversarial round against iteration 2 is the blind test. Fields as in round 1; 'guard' names what stops a change before merging when no notice is due.",
+  "changes": {
+    "P01-price-content": {
+      "told": [],
+      "why": "Listing the same; no test named for a bound changed.",
+      "brokenPredicted": [],
+      "wrongWithoutFailingTest": [],
+      "refuses": []
+    },
+    "P02-reword-explanation": {
+      "told": [],
+      "why": "Only an explanation changed.",
+      "brokenPredicted": [],
+      "wrongWithoutFailingTest": [],
+      "refuses": []
+    },
+    "P03-remove-function": {
+      "told": [
+        "front"
+      ],
+      "why": "titleCase removed; front imports it.",
+      "brokenPredicted": [
+        "front"
+      ],
+      "wrongWithoutFailingTest": [],
+      "refuses": [
+        "front"
+      ]
+    },
+    "P04-rename-function": {
+      "told": [
+        "billing"
+      ],
+      "why": "splitEvenly removed; billing imports it. (Its bound test now calls splitAmount, a new entry: no one else.)",
+      "brokenPredicted": [
+        "billing"
+      ],
+      "wrongWithoutFailingTest": [],
+      "refuses": [
+        "billing"
+      ]
+    },
+    "P05-answer-field-removed": {
+      "told": [
+        "billing",
+        "reports"
+      ],
+      "why": "op:bookstatus hands back differently; billing calls it by name; reports not followed. The door's list of names is unchanged.",
+      "brokenPredicted": [],
+      "wrongWithoutFailingTest": [
+        "billing"
+      ],
+      "refuses": [
+        "billing"
+      ]
+    },
+    "P06-answer-field-renamed": {
+      "told": [
+        "billing",
+        "bookings",
+        "front",
+        "reports"
+      ],
+      "why": "Room, Rooms.*, op:roomlist and table:rooms hand back differently; bookings (Rooms.find, Room), billing (Rooms.add in tests), front (roomlist, Room), reports (not followed).",
+      "brokenPredicted": [
+        "bookings"
+      ],
+      "wrongWithoutFailingTest": [
+        "front"
+      ],
+      "refuses": [
+        "bookings",
+        "front"
+      ]
+    },
+    "P07-accept-optional": {
+      "told": [
+        "reports"
+      ],
+      "why": "Accepts more only; reports not followed.",
+      "brokenPredicted": [],
+      "wrongWithoutFailingTest": [],
+      "refuses": []
+    },
+    "P08-newly-required": {
+      "told": [
+        "billing",
+        "front",
+        "reports"
+      ],
+      "why": "BookingRequest, Bookings.open, op:bookopen cannot stand in.",
+      "brokenPredicted": [
+        "billing",
+        "front",
+        "reports"
+      ],
+      "wrongWithoutFailingTest": [],
+      "refuses": [
+        "billing",
+        "front",
+        "reports"
+      ]
+    },
+    "P09-newly-refused": {
+      "told": [
+        "bookings",
+        "front",
+        "reports",
+        "rooms"
+      ],
+      "why": "Store.put and seededStore cannot stand in; store's tests named for the table, id and version bounds changed too (same users).",
+      "brokenPredicted": [],
+      "wrongWithoutFailingTest": [],
+      "refuses": [
+        "store"
+      ]
+    },
+    "P10-answer-gains-field": {
+      "told": [
+        "billing",
+        "front",
+        "reports"
+      ],
+      "why": "Booking and table:bookings hand back differently.",
+      "brokenPredicted": [],
+      "wrongWithoutFailingTest": [],
+      "refuses": []
+    },
+    "P11-list-gains-name": {
+      "told": [
+        "billing",
+        "bookings",
+        "front",
+        "reports"
+      ],
+      "why": "As in round 1.",
+      "brokenPredicted": [],
+      "wrongWithoutFailingTest": [],
+      "refuses": []
+    },
+    "P12-bound-line-changed": {
+      "told": [
+        "billing",
+        "bookings",
+        "front",
+        "meter",
+        "reports"
+      ],
+      "why": "As in round 1.",
+      "brokenPredicted": [
+        "bookings"
+      ],
+      "wrongWithoutFailingTest": [],
+      "refuses": []
+    },
+    "P13-kind-renamed": {
+      "told": [
+        "billing",
+        "bookings",
+        "front",
+        "meter",
+        "reports"
+      ],
+      "why": "As in round 1: namers, then through bookings and meter.",
+      "brokenPredicted": [],
+      "wrongWithoutFailingTest": [
+        "billing",
+        "bookings",
+        "meter"
+      ],
+      "refuses": [
+        "billing",
+        "bookings",
+        "meter"
+      ]
+    },
+    "P14-meaning-changed-comment-updated": {
+      "told": [
+        "billing",
+        "reports"
+      ],
+      "why": "op:bookquote's bound line changed; billing calls bookquote; front only wires the door (names), which are unchanged.",
+      "brokenPredicted": [
+        "billing"
+      ],
+      "wrongWithoutFailingTest": [],
+      "refuses": []
+    },
+    "P15-meaning-changed-comment-not-updated": {
+      "told": [
+        "billing",
+        "reports"
+      ],
+      "why": "New rule 4: bookings' test named 'bound bookquote.total: ...' changed while its line did not, so that bound counts as changed: billing (bookquote) and reports are told. This closes round 1's hole.",
+      "brokenPredicted": [
+        "billing"
+      ],
+      "wrongWithoutFailingTest": [],
+      "refuses": []
+    },
+    "P16-code-changed-comment-forgotten-visible": {
+      "told": [],
+      "why": "Listing the same; text-rules' own check refuses its comment.",
+      "brokenPredicted": [
+        "front"
+      ],
+      "wrongWithoutFailingTest": [],
+      "refuses": [
+        "text-rules"
+      ],
+      "guard": "text-rules' own check"
+    },
+    "P17-code-changed-comment-forgotten-running-only": {
+      "told": [],
+      "why": "Listing the same; bookings' own bound test fails.",
+      "brokenPredicted": [
+        "front"
+      ],
+      "wrongWithoutFailingTest": [],
+      "refuses": [],
+      "guard": "bookings' own test named for the bound"
+    },
+    "P18-operation-retired": {
+      "told": [
+        "billing",
+        "door",
+        "front",
+        "reports"
+      ],
+      "why": "op:bookcancel removed (front); BookingOps loses a name (door); through the door, Handlers loses a name, and billing and front wire Handlers in their tests; reports not followed.",
+      "brokenPredicted": [
+        "front"
+      ],
+      "wrongWithoutFailingTest": [],
+      "refuses": [
+        "front"
+      ]
+    },
+    "P19-operation-body-field-renamed": {
+      "told": [
+        "billing",
+        "reports"
+      ],
+      "why": "op:bookquote cannot stand in (and its bound test changed).",
+      "brokenPredicted": [
+        "billing"
+      ],
+      "wrongWithoutFailingTest": [],
+      "refuses": [
+        "billing"
+      ]
+    },
+    "P20-message-kind-changed": {
+      "told": [
+        "billing"
+      ],
+      "why": "MeterMsg hands back differently.",
+      "brokenPredicted": [
+        "billing"
+      ],
+      "wrongWithoutFailingTest": [],
+      "refuses": [
+        "billing"
+      ]
+    },
+    "P21-unfollowable-users-provider": {
+      "told": [
+        "reports"
+      ],
+      "why": "A new method only; reports not followed.",
+      "brokenPredicted": [],
+      "wrongWithoutFailingTest": [],
+      "refuses": []
+    },
+    "P22a-first-job-comments-step": {
+      "told": [],
+      "why": "Comments-only first step: no notice. But iteration 2's rule 4 needs a test named for the new bound line 'text: ...', which a comments-only step may not add: calendar's check should refuse (rule 4 and rule 6 conflict).",
+      "brokenPredicted": [],
+      "wrongWithoutFailingTest": [],
+      "refuses": [
+        "calendar"
+      ]
+    },
+    "P22b-first-job-real-change": {
+      "told": [
+        "bookings",
+        "reports"
+      ],
+      "why": "addDays gains a bound line; bookings calls it; reports not followed. The step adds the bound tests, so calendar's check passes.",
+      "brokenPredicted": [],
+      "wrongWithoutFailingTest": [],
+      "refuses": []
+    },
+    "P23-user-already-disagrees": {
+      "told": [
+        "billing"
+      ],
+      "why": "splitEvenly hands back differently.",
+      "brokenPredicted": [
+        "billing"
+      ],
+      "wrongWithoutFailingTest": [],
+      "refuses": [
+        "billing"
+      ],
+      "refusesBefore": [
+        "billing"
+      ]
+    },
+    "P24-new-entry": {
+      "told": [],
+      "why": "A new entry only.",
+      "brokenPredicted": [],
+      "wrongWithoutFailingTest": [],
+      "refuses": []
+    },
+    "P25-two-changes-one-commit": {
+      "told": [
+        "front",
+        "reports"
+      ],
+      "why": "op:roomlist hands back differently; NewRoom accepts more.",
+      "brokenPredicted": [
+        "front"
+      ],
+      "wrongWithoutFailingTest": [],
+      "refuses": [
+        "front"
+      ]
+    },
+    "P26-reaches-through-third-module": {
+      "told": [
+        "billing",
+        "bookings",
+        "front",
+        "meter",
+        "reports"
+      ],
+      "why": "As in round 1.",
+      "brokenPredicted": [
+        "billing",
+        "bookings",
+        "front",
+        "meter"
+      ],
+      "wrongWithoutFailingTest": [],
+      "refuses": [
+        "billing",
+        "bookings",
+        "front",
+        "meter"
+      ]
+    },
+    "P27-test-helper-changed": {
+      "told": [
+        "front",
+        "reports"
+      ],
+      "why": "seededStore cannot stand in.",
+      "brokenPredicted": [
+        "front"
+      ],
+      "wrongWithoutFailingTest": [],
+      "refuses": [
+        "front"
+      ]
+    },
+    "P28-handle-method-renamed": {
+      "told": [
+        "bookings",
+        "reports",
+        "rooms"
+      ],
+      "why": "Store.get removed (and store's 'bound id' test changed).",
+      "brokenPredicted": [
+        "billing",
+        "bookings",
+        "front",
+        "reports",
+        "rooms"
+      ],
+      "wrongWithoutFailingTest": [],
+      "refuses": [
+        "bookings",
+        "rooms"
+      ]
+    }
+  },
+  "notes": []
+}
