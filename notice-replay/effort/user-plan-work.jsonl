@@ -1,1 +1,2 @@
 {"t": "2026-11-15T15:25:52Z", "event": "start", "step": "make plan-work followable"}
+{"t": "2026-11-15T15:26:42Z", "event": "note", "text": "Built S-real (ai-runs, plan-work only; all other modules land in _other as plain uncommented JS). follow.mjs: 1840 unknown-kind reads (639 src/index.mjs, 2 schema, 1 checks, 1198 in tests); entries of ai-runs used: aiRunsOf, AiRuns##accountFor, AiRuns#openMany. Each read counts once per distinct file:line+text, so a chain w.a.b counts twice."}

@@ -47,6 +47,852 @@ import { AI_RUNS_SCHEMA, AI_RUNS_TABLES, AI_RUNS_ADDED_COLUMNS } from "./schema.
 
 export { AI_RUNS_SCHEMA, AI_RUNS_TABLES } from "./schema.mjs";
 
+/* ---- The kinds of ai-runs' interface ------------------------------------------------------------------------------- */
+
+/**
+ * The Durable Object state an instance is made on, as this module reads it: its storage's SQL handle, and its id (for
+ * the namespace a dispatch names). Other modules are reached through their factories on the same object.
+ * @typedef {Object} RunsCtx
+ * @property {{sql: *}} storage
+ * @property {*} [id]
+ */
+
+/**
+ * The Worker environment, as this module reads it; any other binding rides along for the modules it hands `env` to.
+ * @typedef {{CIVICSMITH_TEST_INSTANCE?: string, INSTANCE_NAME?: string, AI_RUN_LEASE_MS?: string | number,
+ *   AI_RUN_DISPATCH_WAIT_MS?: string | number, AGENT_WORKER?: {fetch: Function}, STORE?: *, [binding: string]: *}} RunsEnv
+ * @bound AI_RUN_LEASE_MS: a positive number of milliseconds, else the default 600000
+ * @bound AI_RUN_DISPATCH_WAIT_MS: a positive number of milliseconds, else the default 10000
+ */
+
+/**
+ * In-process wiring only (never the wire or `env`): each module's own instance, else its factory on the same `ctx`;
+ * `deployedModes` and `testSet` for a module test alone.
+ * @typedef {Object} RunsDeps
+ * @property {*} [inquiry]
+ * @property {*} [steps]
+ * @property {*} [aiUse]
+ * @property {*} [aiAccounts]
+ * @property {string[]} [deployedModes]
+ * @property {*} [testSet]
+ */
+
+/**
+ * A refusal of one of this module's acts, its check and translation read by key from run-rules' table.
+ * @typedef {Object} Refusal
+ * @property {false} ok
+ * @property {string} reason the code again
+ * @property {string} code
+ * @property {string | null} check
+ * @property {string | null} translation
+ * @property {string} detail
+ */
+
+/**
+ * The label a run admitted on the test-instance exception carries (run-rules' `untestedLabel`).
+ * @typedef {Object} UntestedLabel
+ * @property {'untested'} kind
+ * @property {string} part
+ * @property {string} set
+ * @property {number} set_version
+ * @property {string} words
+ * @bound part: one of run-rules' TEST_BAR_PARTS
+ */
+
+/**
+ * Whether an AI part may run here.
+ * @typedef {Object} PartAdmission
+ * @property {boolean} admitted
+ * @property {UntestedLabel | null} untested set only for a part admitted on the test-instance exception
+ */
+
+/**
+ * The project gate's outcome as it travels on a success answer.
+ * @typedef {Object} GateStated
+ * @property {{applied: boolean, ground: 'NO_MEMBER_BEHIND_CALLER' | 'INQUIRY' | 'PARTICIPANT', why: string,
+ *   projects: number}} projectGate projects: how many citing projects the viewer can see
+ */
+
+/**
+ * One bound a run declares at its open.
+ * @typedef {Object} BoundDeclared
+ * @property {string} bound
+ * @property {number} allowed
+ * @property {number} [consumed]
+ * @property {string | null} [unit]
+ * @bound bound: a name of run-rules' RUN_BOUNDS other than lease
+ * @bound allowed: whole number, 1 or more
+ * @bound consumed: whole number, 0 or more
+ */
+
+/**
+ * What `open` takes. The principals, `actor` and `viewer` are the control plane's stamps, never a caller's word.
+ * @typedef {Object} OpenRequest
+ * @property {string} [run]
+ * @property {string} [contextType]
+ * @property {string} [contextId]
+ * @property {string | null} [label]
+ * @property {string | null} [mode]
+ * @property {string | null} [principalPlane]
+ * @property {string | null} [principalClaude]
+ * @property {string | null} [principalClaudeRef]
+ * @property {string | null} [skillVersion]
+ * @property {string | null} [biasManifest] stored verbatim
+ * @property {string | null} [standardPair] stored verbatim
+ * @property {BoundDeclared[] | null} [bounds]
+ * @property {*} [state] the run's resumable scratch
+ * @property {number | null} [leaseMs]
+ * @property {string | null} [at]
+ * @property {string | null} [rerunOf]
+ * @property {string | null} [plan]
+ * @property {string | null} [step]
+ * @property {string | null} [origin]
+ * @property {*} [place] a system step's place (steps')
+ * @property {string | null} [work]
+ * @property {string | null} [response]
+ * @property {string | null} [project]
+ * @property {string | null} [actor]
+ * @property {string | null} [viewer]
+ * @bound run, contextType, contextId: each required, non-empty
+ * @bound contextType: a name of run-rules' RUN_CONTEXTS (inquiry, project), and the kind of the bundle contextId names
+ * @bound principalPlane, principalClaude: both required
+ * @bound skillVersion: required, as run-rules' checkSkillVersion judges it
+ * @bound mode: one of run-rules' RUN_MODES deployed here and admitted (partAdmitted); absent is DEFAULT_MODE
+ * @bound plan: named exactly when mode is plan; a planning run is over a project, by a member, with no fetches or subsessions allowance
+ * @bound origin: member (the default), explore or reexamination, as run-rules' originAllowed judges it
+ * @bound response: required for a reexamination run
+ * @bound state: at most 262144 bytes as JSON (run-rules' AI_RUN_STATE_MAX_BYTES)
+ * @bound at: an instant Date.parse reads
+ */
+
+/**
+ * What `open` answers for a run it started.
+ * @typedef {Object} OpenStarted
+ * @property {string} run
+ * @property {true} started
+ * @property {'running'} status
+ * @property {number} ticks always 1
+ * @property {string} created
+ * @property {string} expires
+ * @property {string} [rerun_of]
+ * @property {string} [step]
+ * @property {string} [origin]
+ * @property {string} [response]
+ * @property {UntestedLabel | null} untested
+ * @property {string | null} project
+ * @property {GateStated['projectGate']} projectGate
+ */
+
+/**
+ * What `open` answers when it refuses: nothing was written. The code's own fields, then what that refusal adds.
+ * @typedef {Object} OpenRefused
+ * @property {string | null} run
+ * @property {false} started
+ * @property {string} code
+ * @property {string | null} check
+ * @property {string | null} translation
+ * @property {string | null} [detail]
+ * @property {string} [note]
+ * @property {string} [mode]
+ * @property {string[]} [deployed]
+ * @property {string} [bound]
+ * @property {string} [plan]
+ * @property {string} [response]
+ * @property {string} [step]
+ * @property {number} [bytes]
+ * @property {number} [limit]
+ * @property {string} [project]
+ * @property {string} [name]
+ */
+
+/** @typedef {OpenStarted | OpenRefused} OpenAnswer */
+
+/**
+ * What `openMany` takes.
+ * @typedef {Object} OpenManyRequest
+ * @property {string[] | null} [steps]
+ * @property {string | null} [mode]
+ * @property {string | null} [owner]
+ * @property {BoundDeclared[] | null} [bounds]
+ * @property {string | null} [skillVersion]
+ * @property {string | null} [label]
+ * @property {string | null} [principalPlane]
+ * @property {string | null} [actor]
+ * @property {string | null} [viewer]
+ * @property {string | null} [at]
+ * @bound steps: 1 to 50 (OPEN_MANY_MAX) step ids, each non-empty and named once
+ */
+
+/**
+ * One step of a batch: the run opened on it, or the refusal answered for it alone.
+ * @typedef {Object} OpenManyRun
+ * @property {string} step
+ * @property {string} [run]
+ * @property {string | null} [system_step]
+ * @property {*} [refusal]
+ */
+
+/**
+ * What `openMany` answers: refused whole, or the batch's estimate and each step's outcome.
+ * @typedef {{ok: true, estimate: *, runs: OpenManyRun[]}
+ *   | {ok: false, code: string, check: string | null, translation: string | null, detail: string, reason?: string,
+ *      started?: false}} OpenManyAnswer
+ */
+
+/**
+ * One conversation that reached the provider since the last tick (judged by ai-use's countUsage).
+ * @typedef {Object} UsageEntry
+ * @property {string} mode
+ * @property {string | null} [model]
+ * @property {string | null} [effort]
+ * @property {*} usage
+ * @property {number} calls
+ */
+
+/**
+ * What `tick` and `tickAndContinue` take.
+ * @typedef {Object} TickRequest
+ * @property {string} [run]
+ * @property {*} [state]
+ * @property {Object<string, number> | null} [consume] what each bound consumed in this tick
+ * @property {*[] | null} [log] the observations to append (observation-log's entries)
+ * @property {number | null} [leaseMs]
+ * @property {string | null} [at]
+ * @property {{by?: string, done?: boolean, refusals?: string[], error?: string} | null} [segment_end]
+ * @property {UsageEntry[] | null} [usage]
+ * @property {string | null} [actor]
+ * @property {string | null} [viewer]
+ * @property {string | null} [caller]
+ * @bound consume: each key a name of run-rules' RUN_BOUNDS other than lease, each figure a whole number, 0 or more
+ * @bound state: at most 262144 bytes as JSON
+ * @bound segment_end: by and error at most 80 characters, at most 20 refusals of at most 80 characters
+ */
+
+/**
+ * A run ended by the one exit.
+ * @typedef {Object} RunEnded
+ * @property {string} run
+ * @property {true} found
+ * @property {true} terminated
+ * @property {string} status run-rules' runStatusFor: stopped, finished or never-started
+ * @property {string} bound the bound or ending that stopped it
+ * @property {string | null} condition
+ * @property {string} state what its search established
+ * @property {string} at
+ * @property {StepEnd} [step_end]
+ * @property {RunCost} [cost] at close, to the paying account's owners only
+ * @property {*} [bias_debt] at close, bias's discharge of a re-run's debt
+ */
+
+/**
+ * The one exit's answer for a run it did not end: unknown or unseen, already ended, or refused.
+ * @typedef {Object} RunNotEnded
+ * @property {string | null} run
+ * @property {boolean} found
+ * @property {false} [terminated]
+ * @property {false} [ok]
+ * @property {string} [status]
+ * @property {string | null} [bound]
+ * @property {string | null} [condition]
+ * @property {string} [code]
+ * @property {string | null} [check]
+ * @property {string | null} [translation]
+ * @property {string} [detail]
+ * @property {string} [note]
+ */
+
+/** @typedef {RunEnded | RunNotEnded} CloseAnswer */
+
+/**
+ * What a step-run's ending told steps.
+ * @typedef {Object} StepEnd
+ * @property {boolean} told
+ * @property {'ended' | 'set_aside' | null} [end]
+ * @property {{kind: string, record: string, ok: boolean}[]} [products]
+ * @property {string | null} [refusal]
+ * @property {string} [reason]
+ */
+
+/**
+ * The next segment's dispatch after a tick, as `tickAndContinue` adds it.
+ * @typedef {Object} SegmentDispatch
+ * @property {boolean} dispatched
+ * @property {string} state
+ * @property {string} [reason]
+ * @property {string} [says]
+ */
+
+/**
+ * A tick that happened.
+ * @typedef {Object} TickDone
+ * @property {string} run
+ * @property {true} found
+ * @property {true} ticked
+ * @property {number} ticks
+ * @property {string} status
+ * @property {string} expires
+ * @property {number} appended
+ * @property {*[]} refused observation-log's refusals of entries not appended
+ * @property {number} [counted]
+ * @property {GateStated['projectGate']} projectGate
+ * @property {{logged: boolean, next: 'continue' | 'done' | 'error' | 'ended', dispatch?: SegmentDispatch}} [segment_end]
+ * @property {CloseAnswer} [ended]
+ */
+
+/**
+ * A tick that did not happen: nothing appended, nothing spent, the lease not extended (unless `counted` says the
+ * conversations were counted).
+ * @typedef {Object} TickRefused
+ * @property {string | null} run
+ * @property {boolean} found
+ * @property {false} [ticked]
+ * @property {string} [status]
+ * @property {string} [code]
+ * @property {string | null} [check]
+ * @property {string | null} [translation]
+ * @property {string} [detail]
+ * @property {string} [reason]
+ * @property {string | null} [bound]
+ * @property {number} [bytes]
+ * @property {number} [limit]
+ * @property {number} [counted]
+ * @property {string} [note]
+ */
+
+/** @typedef {TickDone | TickRefused} TickAnswer */
+
+/**
+ * What `close` takes.
+ * @typedef {Object} CloseRequest
+ * @property {string} [run]
+ * @property {string | null} [bound]
+ * @property {string | null} [condition]
+ * @property {string | null} [at]
+ * @property {string | null} [actor]
+ * @property {string | null} [viewer]
+ * @property {string | null} [caller]
+ * @bound bound: required, a name of run-rules' RUN_BOUNDS or RUN_ENDINGS
+ * @bound condition: absent or one of observation-log's CONDITION_KINDS
+ */
+
+/**
+ * One bound of a run with its consumption.
+ * @typedef {Object} BudgetRow
+ * @property {string} bound
+ * @property {number} allowed
+ * @property {number} consumed
+ * @property {string | null} unit
+ */
+
+/**
+ * A run's context.
+ * @typedef {Object} RunContext
+ * @property {string} type
+ * @property {string} id
+ * @property {string[]} [questions] a run over a project: the questions it confirmed-cites that the viewer sees
+ */
+
+/**
+ * A lens as recorded at the open, or why none can be read.
+ * @typedef {Object} LensAtOpen
+ * @property {boolean} recorded
+ * @property {boolean} [in_force]
+ * @property {string | null} [statements_sha]
+ * @property {string | null} [scope]
+ * @property {string | null} [scope_id]
+ * @property {{bundle_id: string, revision: *}[]} [bundles]
+ * @property {string | null} [at]
+ * @property {true} [unreadable]
+ * @property {string} [stated]
+ */
+
+/**
+ * A run's bias block: the manifest it was handed, the lens in force now and at its open, and whether it moved.
+ * @typedef {Object} RunBias
+ * @property {boolean} in_force
+ * @property {string | null} stated
+ * @property {{scope: string | null, scope_id: string | null, statements_sha: string | null, bundles: *[]} | null} manifest
+ * @property {{in_force: boolean, statements_sha: string | null, bundles: *[]} | null} now
+ * @property {boolean | null} moved
+ * @property {'at_open' | 'handed' | null} moved_basis
+ * @property {LensAtOpen} at_open
+ * @property {'in_force' | 'stale' | null} hand
+ */
+
+/**
+ * A run's bar, judged from what its open recorded.
+ * @typedef {Object} RunStandard
+ * @property {boolean} in_force
+ * @property {'recorded' | 'none-recorded' | 'context-has-no-project' | 'names-no-axis' | 'unreadable'} basis
+ * @property {string} stated
+ * @property {{capture: string | null, connection: string | null} | null} pair
+ */
+
+/**
+ * A run's cost as ai-use's actualOf answers it, `final` once the run has ended.
+ * @typedef {{final: boolean, [figure: string]: *}} RunCost
+ */
+
+/**
+ * A run as the running-session surface reads it.
+ * @typedef {Object} RunSession
+ * @property {string} id
+ * @property {string | null} label
+ * @property {string | null} mode
+ * @property {string} status
+ * @property {number} ticks
+ * @property {string} created
+ * @property {string} updated
+ * @property {string} expires
+ * @property {RunContext} context
+ * @property {{plane: string, claude: string, ref: string | null, skill: string | null}} principal
+ * @property {BudgetRow[]} budget
+ * @property {{kind: string, detail: string, bound: string, at: string | null} | null} condition
+ * @property {RunBias} bias
+ * @property {RunStandard} standard
+ * @property {*} state the run's scratch as its last tick wrote it; null when unreadable
+ * @property {string | null} rerun_of
+ * @property {UntestedLabel | null} untested
+ * @property {string | null} project
+ * @property {string} [step]
+ * @property {string} [origin]
+ * @property {RunCost} [cost]
+ * @property {string | null} [plan]
+ * @property {string | null} [response]
+ */
+
+/** @typedef {{run: string | null, found: false, session: null} | {run: string, found: true, session: RunSession}} ReadAnswer */
+
+/**
+ * What `listInContext` answers.
+ * @typedef {Refusal | {ok: true, context: {type: string, id: string}, runs: RunSession[], count: number, limit: number,
+ *   truncated: boolean}} ListAnswer
+ * @bound limit: whole number, 1 to 1000 (AI_RUNS_LIMIT_MAX), default 200 (AI_RUNS_LIMIT_DEFAULT)
+ */
+
+/**
+ * What the search should look at.
+ * @typedef {Object} RunSubjects
+ * @property {{id: string, extent: string | null, kind: 'leg' | 'cited'}[]} items
+ * @property {boolean} truncated
+ * @bound items: at most 50
+ */
+
+/**
+ * The payload a run's half is spawned with; the search half's never carries the lens.
+ * @typedef {Object} SpawnPayload
+ * @property {string} run
+ * @property {{type: string, id: string}} context
+ * @property {string | null} mode
+ * @property {string | null} skill
+ * @property {string | null} standard_pair
+ * @property {RunStandard} standard
+ * @property {BudgetRow[]} budget
+ * @property {RunSubjects} subjects
+ */
+
+/**
+ * What `spawnPayload` answers.
+ * @typedef {{run: string | null, found: false, half: null, payload: null}
+ *   | {run: string, found: true, half: 'search' | 'compose', payload: SpawnPayload, limit: number, truncated: boolean,
+ *      bias?: RunBias, fence: string}} SpawnAnswer
+ */
+
+/**
+ * One entry of a run's log, numbered from 1 within the run.
+ * @typedef {Object} LogEntry
+ * @property {number} seq
+ * @property {string} at
+ * @property {string} level
+ * @property {string | null} subject
+ * @property {string} state
+ * @property {boolean} governed
+ * @property {string | null} condition
+ * @property {string | null} bound
+ * @property {boolean} terminal
+ * @property {string | null} detail
+ * @property {string | null} result_kind
+ * @property {string | null} result_ref
+ * @property {string} coverage
+ */
+
+/**
+ * What `log` answers.
+ * @typedef {{run: string | null, found: false, entries: LogEntry[], stopped: null, limit: number, truncated: false}
+ *   | {run: string, found: true, status: string, entries: LogEntry[], limit: number, truncated: boolean,
+ *      stopped: {bound: string, condition: string | null, at: string | null} | null,
+ *      vocabulary: {states: Object<string, string>, levels: Object<string, string>, bounds: Object<string, string>,
+ *        endings: Object<string, string>, coverage: Object<string, string>, coverage_undetermined: string}}} LogAnswer
+ * @bound limit: whole number, 1 to 5000 (AI_RUN_LOG_LIMIT_MAX), default 200 (AI_RUN_LOG_LIMIT_DEFAULT)
+ */
+
+/**
+ * The run's facts a producer gates on.
+ * @typedef {Object} RunFacts
+ * @property {string} run
+ * @property {string} status
+ * @property {string | null} mode
+ * @property {string} context_type
+ * @property {string} context_id
+ * @property {string} principal_plane
+ * @property {string} principal_claude
+ * @property {UntestedLabel | null} untested
+ * @property {string | null} project
+ * @property {string | null} [plan]
+ * @property {string | null} [response]
+ */
+
+/**
+ * The run gate contradiction offers.
+ * @typedef {{found: false, running: false, refusal: null, run: null} | {found: true, running: boolean, run: RunFacts,
+ *   refusal: * | null}} RunGateAnswer
+ */
+
+/**
+ * The outcome of one call to agent-worker; never carries a secret.
+ * @typedef {Object} DispatchOutcome
+ * @property {'RUNNING' | 'DISPATCHED' | 'LIMIT' | 'REFUSED' | 'SILENT'} state
+ * @property {number | null} status
+ * @property {string} [reason]
+ * @property {true} [provider_limit]
+ * @property {string} [detail]
+ * @property {*} [unwritable]
+ */
+
+/**
+ * What `dispatchMemberRun` takes.
+ * @typedef {Object} MemberDispatchRequest
+ * @property {string | null} [run]
+ * @property {string | null} [by]
+ * @property {string | null} [viewer]
+ * @property {string | null} [at]
+ * @property {string | null} [trace]
+ * @property {string | null} [memberRef]
+ * @bound trace, memberRef: sent only when a printable string of 1 to 200 characters
+ */
+
+/**
+ * What `dispatchMemberRun` answers.
+ * @typedef {Object} MemberDispatchAnswer
+ * @property {string | null} run
+ * @property {boolean} found
+ * @property {boolean} [dispatched]
+ * @property {string} [status]
+ * @property {DispatchOutcome} [dispatch]
+ * @property {string} [withheld]
+ * @property {string} [mode]
+ * @property {string} [code]
+ * @property {string | null} [check]
+ * @property {string | null} [translation]
+ * @property {string} [detail]
+ * @property {string} [reason]
+ * @property {string} [note]
+ */
+
+/**
+ * One run the wake woke.
+ * @typedef {Object} WakeEntry
+ * @property {string} run
+ * @property {number} completions
+ * @property {number} captured
+ * @property {number} refused
+ * @property {number} expired
+ * @property {boolean} woken
+ * @property {*} [unwritable]
+ * @property {string} [expires]
+ * @property {string | null} resume `DISPATCH`, or why it was withheld
+ * @property {DispatchOutcome} [dispatch]
+ */
+
+/**
+ * What the wake answers.
+ * @typedef {Object} WakeAnswer
+ * @property {string} at
+ * @property {number} held
+ * @property {{run: string, outstanding: number, expires: string}[]} holds
+ * @property {number} woken
+ * @property {WakeEntry[]} wakes
+ * @property {number} dispatched
+ * @bound holds, wakes: at most 25 each (AI_RUN_WAKE_TICK_BATCH)
+ */
+
+/**
+ * What the reaper answers.
+ * @typedef {Object} ReapAnswer
+ * @property {string} at
+ * @property {number} lapsed
+ * @property {{run: string, terminated: boolean, bound: string | null}[]} reaped
+ */
+
+/**
+ * The wait source `capture-requests` registers: all synchronous.
+ * @typedef {Object} WaitSource
+ * @property {() => number} tickMs
+ * @property {(iso: string, limit: number) => {run: string, outstanding: number}[]} holds
+ * @property {(limit: number) => string[]} woken
+ * @property {(run: string, limit: number) => {request: string, state: string}[]} completions
+ * @property {(requests: string[], iso: string) => *} markWoken
+ * @property {() => boolean} [configured]
+ */
+
+/**
+ * A registration's answer: accepted, or refused (membership's listenerRefusal, or the wait source's own).
+ * @typedef {{ok: true, module: string, mode?: string} | {ok: false, reason: string, module?: string, declaredBy?: string,
+ *   detail?: string} | *} Registration
+ */
+
+/**
+ * The notice a listener receives after each open commits.
+ * @typedef {Object} RunOpened
+ * @property {string} run
+ * @property {string} contextType
+ * @property {string} contextId
+ * @property {string} expires
+ */
+
+/**
+ * What a mode's open check is asked; it answers null, or a refusal carrying a `code`.
+ * @typedef {Object} OpenCheckAsked
+ * @property {string} contextType
+ * @property {string} contextId
+ * @property {string | null} plan
+ * @property {string | null} actor
+ * @property {string | null} viewer
+ * @property {string} origin
+ * @property {string | null} response
+ */
+
+/**
+ * The figures of this module's tables.
+ * @typedef {Object} RunCounts
+ * @property {number} aiRuns
+ * @property {number} aiRunBounds
+ * @property {number} inquiryRunSurfacings
+ * @property {number} aiRunLog
+ */
+
+/**
+ * One run as the bias debt's work product.
+ * @typedef {Object} WorkProduct
+ * @property {{type: string, id: string} | null} context
+ * @property {string | null} principal
+ * @property {{basis: 'at_open' | 'handed', statements_sha: string | null} | null} lens
+ * @property {string | null} ranUnder
+ * @property {string | null} rerunOf
+ * @property {string | null} registered
+ */
+
+/**
+ * The runs as bias's work products.
+ * @typedef {Object} WorkProducts
+ * @property {(after: string | null | undefined, limit: number | null | undefined) => string[]} list
+ * @property {(run: string) => Promise<WorkProduct | null>} read
+ * @property {(run: string, viewer: string | null) => Promise<boolean>} visible
+ */
+
+/**
+ * A recorded verification of a mode's first live run, in run-rules' shape.
+ * @typedef {Object} Verification
+ * @property {string} mode
+ * @property {string} run
+ * @property {string} verified_by
+ * @property {string} at
+ * @property {*} evidence
+ */
+
+/**
+ * What `verificationRecord` takes.
+ * @typedef {Object} VerificationRequest
+ * @property {string | null} [mode]
+ * @property {string | null} [run]
+ * @property {*} [evidence]
+ * @property {string | null} [by]
+ * @property {string | null} [at]
+ * @bound mode, run, evidence: as run-rules' checkVerification judges them; run a run held here in that mode, seen by by
+ */
+
+/**
+ * What `verificationRecord` answers.
+ * @typedef {{ok: true, mode: string, run: string, verified_by: string, at: string, existed: boolean,
+ *   next: {mode: string, deployable: boolean} | null}
+ *   | {ok: false, code: string, check: string | null, translation: string | null, field?: string, detail?: string}} VerificationAnswer
+ */
+
+/**
+ * An AI part's result on a test set, as recorded.
+ * @typedef {Object} TestBarResult
+ * @property {string} part
+ * @property {string} set
+ * @property {number} set_version
+ * @property {number} false_alarm_rate
+ * @property {boolean} passed
+ * @property {string} graded_by
+ * @property {string} at
+ */
+
+/**
+ * What `testBarRecord` takes.
+ * @typedef {Object} TestBarRequest
+ * @property {string | null} [part]
+ * @property {string | null} [set]
+ * @property {number | null} [set_version]
+ * @property {number | null} [false_alarm_rate]
+ * @property {boolean | null} [passed]
+ * @property {string | null} [graded_by]
+ * @property {string | null} [at]
+ * @bound part, set, set_version, false_alarm_rate, passed, graded_by: as run-rules' checkTestBarRecord judges them
+ */
+
+/**
+ * Where a question an assistant opened was surfaced, or that it was not recorded.
+ * @typedef {Object} Surfacing
+ * @property {boolean} recorded
+ * @property {string | null} run
+ * @property {string | null} [by]
+ * @property {string} [at]
+ * @property {RunContext} [context]
+ * @property {string} [status]
+ * @property {RunBias | null} lens
+ * @property {string} [stated]
+ */
+
+/**
+ * One operation of op-declarations' list, as this module declares it.
+ * @typedef {Object} DeclaredOp
+ * @property {string[]} classes
+ * @property {boolean} mutating
+ * @property {string} weight
+ * @property {string} description
+ * @property {{accepts: string[], requires: string[]}} fields
+ */
+
+/**
+ * The operations ai-runs answers by name through the control plane's dispatch (`aiRunsOps`): what each reads (the
+ * body, with the query's stamps set after it) and what it answers.
+ * @typedef {{
+ *   airunopen: {req: OpenRequest, res: OpenAnswer},
+ *   airuntick: {req: TickRequest, res: TickAnswer},
+ *   airunclose: {req: CloseRequest, res: CloseAnswer},
+ *   airun: {req: {run: string | null, viewer: string | null}, res: ReadAnswer},
+ *   airunlog: {req: {run: string | null, viewer: string | null, limit: string | null}, res: LogAnswer},
+ *   airuns: {req: {contextType: string | null, contextId: string | null, viewer: string | null, limit: string | null}, res: ListAnswer},
+ *   airunspawn: {req: {run: string | null, half: string | null, viewer: string | null}, res: SpawnAnswer},
+ *   airunverify: {req: VerificationRequest, res: VerificationAnswer}
+ * }} AiRunOps
+ * @optable
+ */
+
+/**
+ * The handlers of ai-runs' operations, one per entry of AiRunOps.
+ * @typedef {{[K in keyof AiRunOps]: () => AiRunOps[K]['res'] | Promise<AiRunOps[K]['res']>}} AiRunHandlers
+ */
+
+/* ---- The rows of ai-runs' tables (schema.mjs), written by this module alone --------------------------------------- */
+
+/**
+ * A run.
+ * @typedef {Object} AiRunRow
+ * @property {string} run
+ * @property {string} status running, stopped, finished or never-started
+ * @property {string | null} label
+ * @property {string | null} mode
+ * @property {string} context_type
+ * @property {string} context_id
+ * @property {string} principal_plane
+ * @property {string} principal_claude the paying owner: member:<id>, project:<id> or group
+ * @property {string | null} principal_claude_ref the member whose act the run is, member:<id>
+ * @property {string | null} skill_version
+ * @property {string | null} bias_manifest
+ * @property {string | null} standard_pair
+ * @property {string} created
+ * @property {string} updated
+ * @property {string} expires
+ * @property {number} ticks
+ * @property {string} state JSON
+ * @property {string | null} stopped_bound
+ * @property {string | null} stopped_condition
+ * @property {string | null} stopped_at
+ * @property {string | null} lens_at_open JSON
+ * @property {string | null} rerun_of
+ * @property {string | null} plan
+ * @property {string | null} step
+ * @property {string | null} origin
+ * @property {'1' | null} own_step
+ * @property {string | null} response
+ * @property {string | null} untested JSON of an UntestedLabel
+ * @property {string | null} project
+ * @bound created, updated, expires, stopped_at: instants to the second, as record-core's stampInstant writes them
+ * @bound state: at most 262144 bytes
+ * @storedrows ai_runs
+ */
+
+/**
+ * One bound of a run.
+ * @typedef {Object} AiRunBoundRow
+ * @property {string} run
+ * @property {string} bound
+ * @property {number} allowed
+ * @property {number} consumed
+ * @property {string | null} unit
+ * @bound allowed, consumed: whole numbers, 0 or more
+ * @storedrows ai_run_bounds
+ */
+
+/**
+ * The run a question an assistant opened was surfaced in.
+ * @typedef {Object} InquiryRunSurfacingRow
+ * @property {string} bundle_id
+ * @property {string} run
+ * @property {string} principal
+ * @property {string} at
+ * @storedrows inquiry_run_surfacings
+ */
+
+/**
+ * A mode's first live run, recorded verified.
+ * @typedef {Object} ModeVerificationRow
+ * @property {string} mode
+ * @property {string} run
+ * @property {string} verified_by
+ * @property {string} at
+ * @property {string} evidence JSON
+ * @storedrows ai_mode_verifications
+ */
+
+/**
+ * A step-run's look, tied to its run.
+ * @typedef {Object} RunLookRow
+ * @property {number} seq the observation log's seq
+ * @property {string} run
+ * @storedrows ai_run_looks
+ */
+
+/**
+ * An AI part's result on a test set.
+ * @typedef {Object} TestBarRow
+ * @property {number} seq
+ * @property {string} part
+ * @property {string} set_name
+ * @property {string} set_version
+ * @property {number} false_alarm_rate
+ * @property {0 | 1} passed
+ * @property {string} graded_by
+ * @property {string} at
+ * @storedrows ai_test_bar
+ */
+
+/**
+ * One of a group's own test investigations.
+ * @typedef {Object} GroupTestRow
+ * @property {string} part
+ * @property {string} matter
+ * @property {string} answers
+ * @property {string} by
+ * @property {string} at
+ * @bound part: 1 to 60 characters; matter: 1 to 200; answers: 1 to 20000
+ * @storedrows ai_group_tests
+ */
+
 /** R72: a provider's refusal for a spent limit (Anthropic's 429 `enforced_spend_limit_reached`), recognised in the reason
  *  or type the agent-worker relays to the wake's dispatch. */
 const PROVIDER_LIMIT = /enforced_spend_limit_reached/;
