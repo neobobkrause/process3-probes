@@ -1,0 +1,118 @@
+{
+  "measuredOn": "the made-up product as committed (baseline), Node v22.23.4, TypeScript 5.6.3",
+  "modules": {
+    "text-rules": {
+      "listingMsMedian": 218,
+      "checkMsMedian": 229,
+      "srcCodeLines": 20,
+      "srcCommentLines": 22,
+      "srcInterfaceTagLines": 9,
+      "testCodeLines": 29,
+      "testCommentLines": 0
+    },
+    "money": {
+      "listingMsMedian": 217,
+      "checkMsMedian": 239,
+      "srcCodeLines": 51,
+      "srcCommentLines": 19,
+      "srcInterfaceTagLines": 9,
+      "testCodeLines": 37,
+      "testCommentLines": 0
+    },
+    "calendar": {
+      "listingMsMedian": 158,
+      "checkMsMedian": 177,
+      "srcCodeLines": 23,
+      "srcCommentLines": 0,
+      "srcInterfaceTagLines": 0,
+      "testCodeLines": 19,
+      "testCommentLines": 0
+    },
+    "store": {
+      "listingMsMedian": 196,
+      "checkMsMedian": 217,
+      "srcCodeLines": 58,
+      "srcCommentLines": 35,
+      "srcInterfaceTagLines": 16,
+      "testCodeLines": 51,
+      "testCommentLines": 0
+    },
+    "rooms": {
+      "listingMsMedian": 203,
+      "checkMsMedian": 228,
+      "srcCodeLines": 42,
+      "srcCommentLines": 45,
+      "srcInterfaceTagLines": 21,
+      "testCodeLines": 43,
+      "testCommentLines": 0
+    },
+    "bookings": {
+      "listingMsMedian": 202,
+      "checkMsMedian": 217,
+      "srcCodeLines": 74,
+      "srcCommentLines": 71,
+      "srcInterfaceTagLines": 39,
+      "testCodeLines": 76,
+      "testCommentLines": 0
+    },
+    "door": {
+      "listingMsMedian": 183,
+      "checkMsMedian": 215,
+      "srcCodeLines": 21,
+      "srcCommentLines": 30,
+      "srcInterfaceTagLines": 12,
+      "testCodeLines": 24,
+      "testCommentLines": 8
+    },
+    "meter": {
+      "listingMsMedian": 160,
+      "checkMsMedian": 199,
+      "srcCodeLines": 19,
+      "srcCommentLines": 26,
+      "srcInterfaceTagLines": 7,
+      "testCodeLines": 31,
+      "testCommentLines": 6
+    },
+    "billing": {
+      "listingMsMedian": 208,
+      "checkMsMedian": 227,
+      "srcCodeLines": 45,
+      "srcCommentLines": 32,
+      "srcInterfaceTagLines": 17,
+      "testCodeLines": 53,
+      "testCommentLines": 0
+    },
+    "front": {
+      "listingMsMedian": 185,
+      "checkMsMedian": 201,
+      "srcCodeLines": 31,
+      "srcCommentLines": 28,
+      "srcInterfaceTagLines": 16,
+      "testCodeLines": 52,
+      "testCommentLines": 0
+    },
+    "reports": {
+      "listingMsMedian": 163,
+      "checkMsMedian": 202,
+      "srcCodeLines": 17,
+      "srcCommentLines": 11,
+      "srcInterfaceTagLines": 5,
+      "testCodeLines": 29,
+      "testCommentLines": 0
+    }
+  },
+  "totals": {
+    "srcCode": 401,
+    "srcComment": 319,
+    "srcTagLines": 151,
+    "testCode": 444,
+    "testComment": 14,
+    "srcCommentPerCodeLine": 0.8
+  },
+  "noticeMs": {
+    "changes": 41,
+    "median": 731,
+    "max": 1413,
+    "min": 551
+  }
+}
