@@ -49,7 +49,7 @@ for (const m of tree.modules) {
 }
 out.totals = { ...tot, srcCommentPerCodeLine: +(tot.srcComment / tot.srcCode).toFixed(2) };
 const notices = [];
-for (const s of fs.readdirSync(path.join(ROOT, 'results', ROUND), { withFileTypes: true }).filter((e) => e.isDirectory() && !e.name.endsWith('-run1'))) {
+for (const s of fs.readdirSync(path.join(ROOT, 'results', ROUND), { withFileTypes: true }).filter((e) => e.isDirectory() && !e.name.endsWith('-run1') && e.name !== 'before-fix')) {
   for (const f of fs.readdirSync(path.join(ROOT, 'results', ROUND, s.name)).filter((x) => x.endsWith('.json'))) {
     const r = JSON.parse(fs.readFileSync(path.join(ROOT, 'results', ROUND, s.name, f), 'utf8'));
     notices.push(r.timing.noticeMs);
