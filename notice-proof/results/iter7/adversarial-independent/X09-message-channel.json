@@ -115,28 +115,28 @@
           }
         ],
         "refusalsBefore": [],
-        "ms": 69
+        "ms": 74
       },
       "billing": {
         "refusedBefore": 0,
         "refusedAfter": 0,
         "refusals": [],
         "refusalsBefore": [],
-        "ms": 83
+        "ms": 76
       },
       "front": {
         "refusedBefore": 0,
         "refusedAfter": 0,
         "refusals": [],
         "refusalsBefore": [],
-        "ms": 71
+        "ms": 99
       },
       "reports": {
         "refusedBefore": 0,
         "refusedAfter": 0,
         "refusals": [],
         "refusalsBefore": [],
-        "ms": 70
+        "ms": 96
       }
     }
   },
@@ -173,15 +173,15 @@
   },
   "timing": {
     "listingMs": {
-      "before": 57,
-      "after": 69
+      "before": 68,
+      "after": 53
     },
-    "noticeMs": 642,
+    "noticeMs": 680,
     "checkMs": {
-      "meter": 69,
-      "billing": 83,
-      "front": 71,
-      "reports": 70
+      "meter": 74,
+      "billing": 76,
+      "front": 99,
+      "reports": 96
     }
   }
 }

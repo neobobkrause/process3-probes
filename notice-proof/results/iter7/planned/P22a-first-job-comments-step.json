@@ -22,63 +22,63 @@
         "refusedAfter": 0,
         "refusals": [],
         "refusalsBefore": [],
-        "ms": 55
+        "ms": 48
       },
       "store": {
         "refusedBefore": 0,
         "refusedAfter": 0,
         "refusals": [],
         "refusalsBefore": [],
-        "ms": 68
+        "ms": 65
       },
       "rooms": {
         "refusedBefore": 0,
         "refusedAfter": 0,
         "refusals": [],
         "refusalsBefore": [],
-        "ms": 72
+        "ms": 76
       },
       "bookings": {
         "refusedBefore": 0,
         "refusedAfter": 0,
         "refusals": [],
         "refusalsBefore": [],
-        "ms": 84
+        "ms": 75
       },
       "door": {
         "refusedBefore": 0,
         "refusedAfter": 0,
         "refusals": [],
         "refusalsBefore": [],
-        "ms": 68
+        "ms": 85
       },
       "meter": {
         "refusedBefore": 0,
         "refusedAfter": 0,
         "refusals": [],
         "refusalsBefore": [],
-        "ms": 77
+        "ms": 75
       },
       "billing": {
         "refusedBefore": 0,
         "refusedAfter": 0,
         "refusals": [],
         "refusalsBefore": [],
-        "ms": 75
+        "ms": 87
       },
       "front": {
         "refusedBefore": 0,
         "refusedAfter": 0,
         "refusals": [],
         "refusalsBefore": [],
-        "ms": 76
+        "ms": 74
       },
       "reports": {
         "refusedBefore": 0,
         "refusedAfter": 0,
         "refusals": [],
         "refusalsBefore": [],
-        "ms": 76
+        "ms": 59
       }
     }
   },
@@ -137,19 +137,19 @@
   "timing": {
     "listingMs": {
       "before": 46,
-      "after": 47
+      "after": 44
     },
-    "noticeMs": 540,
+    "noticeMs": 414,
     "checkMs": {
-      "calendar": 55,
-      "store": 68,
-      "rooms": 72,
-      "bookings": 84,
-      "door": 68,
-      "meter": 77,
-      "billing": 75,
-      "front": 76,
-      "reports": 76
+      "calendar": 48,
+      "store": 65,
+      "rooms": 76,
+      "bookings": 75,
+      "door": 85,
+      "meter": 75,
+      "billing": 87,
+      "front": 74,
+      "reports": 59
     }
   }
 }
