@@ -25,6 +25,8 @@ def plan_owner_message(state, *, actor,text,kind,message_id,marked=False,
     if kind=='question' and marked:raise ValueError('question is not a marked instruction')
     current=layout.current(state,'COORDINATOR')
     if current is None:raise layout.InvalidLayout('current coordinator binding required')
+    if expected_generation is not None and (type(expected_generation) is not int or not 1<=expected_generation<2**63):
+        raise layout.InvalidLayout('positive integer expected coordinator generation required')
     if expected_generation is not None and expected_generation!=current['generation']:
         raise layout.InvalidLayout('stale coordinator generation')
     envelope={'kind':kind,'verbatim':text,'explicit_owner_mark':marked,

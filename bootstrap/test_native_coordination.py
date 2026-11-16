@@ -43,3 +43,12 @@ class CoordinationTests(unittest.TestCase):
         s=self.state()
         for values in ({'kind':'approve_grants','text':'x'},{'kind':'question','text':'x'*17000},{'kind':'question','text':''}):
             with self.assertRaises(ValueError):coordination.plan_owner_message(s,actor='/root',message_id='x',**values)
+
+    def test_forwarding_generation_is_integer_not_boolean_or_numeric_lookalike(self):
+        s=self.state();s['native_roles']['COORDINATOR']['generation']=1
+        old=copy.deepcopy(s)
+        for generation in (True,False,1.0,'1',0,-1,2**63):
+            with self.subTest(generation=generation):
+                with self.assertRaises(layout.InvalidLayout):self.packet(s,expected_generation=generation)
+                self.assertEqual(s,old)
+        self.assertEqual(self.packet(s,expected_generation=1)['coordinator']['generation'],1)

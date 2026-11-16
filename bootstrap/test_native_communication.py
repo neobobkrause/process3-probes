@@ -1,5 +1,6 @@
 """Mailbox fixtures; actual native timing receipts are separate evidence."""
 import unittest
+import copy
 import tempfile
 import json
 from pathlib import Path
@@ -45,6 +46,19 @@ class MailboxTests(unittest.TestCase):
         state=self.state(); key=m.enqueue(state,'ROOT','ARCH','work')
         with self.assertRaises(ValueError): m.delivery_intent(state,key,'unknown')
         with self.assertRaises(m.StaleRecipient): m.register(state,'ARCH','other',1)
+
+    def test_delivery_and_ack_generation_reject_boolean_and_numeric_lookalikes(self):
+        state=self.state();key=m.enqueue(state,'ROOT','ARCH','work','typed-generation')
+        intent=m.delivery_intent(state,key,'idle');before=copy.deepcopy(state)
+        for generation in (True,False,1.0,'1',0,-1,2**63):
+            with self.subTest(generation=generation):
+                with self.assertRaises(ValueError):m.record_delivery(state,{**intent,'generation':generation})
+                self.assertEqual(state,before)
+                with self.assertRaises(ValueError):m.acknowledge(state,key,'/root/arch',generation,1)
+                self.assertEqual(state,before)
+        m.record_delivery(state,intent)
+        self.assertTrue(m.acknowledge(state,key,'/root/arch',1,1))
+
 
 class LocalMailboxTests(unittest.TestCase):
     def setUp(self):

@@ -116,3 +116,12 @@ attempt0/None before an intent. Malformed native activity data holds rather than
 raising an unhashable-value error. The final full bootstrap run passed164tests
 in6.982s (sixteen added regressions above baseline148); diff check passed. All
 changes remain within Stream A paths and independent component interfaces.
+
+Narrow post-integration correction: coordinator expected_generation, mailbox delivery
+and acknowledgement generations reject booleans/numeric lookalikes before producing
+an intent or mutating a record. Direct JOB binding also rejects a boolean stored
+attempt even when Python would compare it equal to integer1. Existing layout.plan,
+register and supervision primitive guards were checked; no architecture/CLI change.
+Regressions verify generation1 accepts the actual integer, True/1.0 do not, and
+rejected mailbox/forwarding input leaves state unchanged. Full stream verification
+now covers166bootstrap tests (standalone branch, not combined four-stream count).

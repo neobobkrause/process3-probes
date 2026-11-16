@@ -125,6 +125,8 @@ def delivery_intent(state, message_id, activity):
             'message_id':message_id,'message':f"Process4 operational message {message_id} generation {recipient['generation']}: {message['text']}"}
 
 def record_delivery(state, intent):
+    if type(intent.get('generation')) is not int or not 1<=intent['generation']<2**63:
+        raise ValueError('positive integer delivery generation required')
     if intent.get('tool')!='followup_task': raise ValueError('production delivery must wake-or-steer atomically')
     message=state['messages'][intent['message_id']]
     current=state['recipients'][message['recipient']]
@@ -138,6 +140,8 @@ def record_delivery(state, intent):
     message['status']='delivered_unacknowledged'
 
 def acknowledge(state, message_id, target, generation, processing_started_at):
+    if type(generation) is not int or not 1<=generation<2**63:
+        raise ValueError('positive integer acknowledgement generation required')
     message=state['messages'][message_id]
     current=state['recipients'][message['recipient']]
     if current != {'target':target,'generation':generation}:

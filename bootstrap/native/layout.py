@@ -82,7 +82,7 @@ def validate_binding(state,role,target,generation,actor):
         raise InvalidLayout('role must be an immediate child of its current creator, depth at most3')
     if role.startswith('JOB:'):
         jid=role.removeprefix('JOB:');job=state.get('jobs',{}).get(jid)
-        if job is None or generation!=job.get('attempt'):raise InvalidLayout('JOB generation must match its durable assignment attempt')
+        if job is None or type(job.get('attempt')) is not int or generation!=job.get('attempt'):raise InvalidLayout('JOB generation must match its durable integer assignment attempt')
     if role.startswith('LANE:'):
         lane=state.get('design_lanes',{}).get(role.removeprefix('LANE:'))
         if not isinstance(lane,dict) or lane.get('status') not in ('requested','active') or lane.get('arch')!=current(state,'ARCH'):
