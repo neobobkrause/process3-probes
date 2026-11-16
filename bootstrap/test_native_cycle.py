@@ -471,6 +471,14 @@ class NativeCycleTests(unittest.TestCase):
             with self.assertRaises(n.Rejected):method({},actor='/root')
         self.assertEqual(self.store.state,before)
 
+    def test_combined_pilot_hold_prevents_reservation_or_provider_mutation(self):
+        self.store.state['jobs']['provider']['status']='ready'
+        self.store.state['bootstrap_integrator']={'pilot_hold':True}
+        before=copy.deepcopy(self.store.state)
+        self.assertEqual(self.cycle.schedule_plan({},actor='/root/arch')['dispatch'],[])
+        with self.assertRaisesRegex(n.Rejected,'verification pending'):self.cycle.prepare('provider')
+        self.assertEqual(self.store.state,before);self.assertEqual(self.provider.calls,[])
+
     def test_owner_question_forwarding_is_local_and_cannot_create_owner_record(self):
         self.cycle.adopt_layout('fixture observed owner approval')
         self.cycle.register_role('ROOT','/root/supervisor',1,actor='/root')

@@ -551,6 +551,8 @@ class Cycle:
     def schedule_plan(self,observations,actor,active_account_jobs=0,native_capacity=None):
         from native.scheduling import plan_dispatch
         state,_=self.store.read();self._arch_actor(state,actor)
+        if self._pilot_held(state):
+            return {'status':'hold','dispatch':[],'holds':[{'reason':'integrator_combined_verification_pending'}]}
         fresh,holds=self._fresh_job_observations(state,observations)
         result=plan_dispatch(state,observations=fresh,active_account_jobs=active_account_jobs,native_capacity=native_capacity)
         return {**result,'observation_holds':holds,'execution_required':'ARCH must execute actual prepare/spawn/session operations; plans are not receipts'}
@@ -584,8 +586,16 @@ class Cycle:
         self.store.mutate(record)
         return {'message_id':envelope['message_id'],**result,'grants_changed':False}
 
+    @staticmethod
+    def _pilot_held(state):
+        metadata=state.get('bootstrap_integrator',{})
+        if not isinstance(metadata,dict) or type(metadata.get('pilot_hold',False)) is not bool:
+            raise Rejected('invalid bootstrap pilot hold')
+        return metadata.get('pilot_hold',False)
+
     def prepare(self, jid):
         state,_=self.store.read(); job=state['jobs'][jid]
+        if self._pilot_held(state):raise Rejected('combined bootstrap verification pending; new product jobs held')
         if state['stopped'] or job['status'] not in ('ready','paused','blocked'): raise Rejected('job not dispatchable or run stopped')
         integration_base=self.provider.head(state['integration_branch'])
         base=job.get('base') or integration_base
