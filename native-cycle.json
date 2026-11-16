@@ -98,19 +98,26 @@
         "-v"
       ],
       "timeout": 180,
-      "status": "running",
+      "status": "review",
       "attempt": 1,
       "branch": "codex/p4-job-native-workshop-20261116-web",
       "instructions": [],
-      "checkpoint": null,
+      "checkpoint": "ac7fe1345580967943ede76a56123ce7d2994021",
       "base": "3d4f7dbf624dba0c04af3d67a0b5fcea0b4c2e52",
       "original_base": "3d4f7dbf624dba0c04af3d67a0b5fcea0b4c2e52",
-      "accepted": false,
+      "accepted": true,
       "notice_ids": [
         "provider:26796e064fb586ca893124bd8ec2414699bedd6c:web"
       ],
       "workspace": "/workspace/work/p4-native-cycle/web-1",
-      "session": "/root/p4_arch_native_cycle/web_job"
+      "session": "/root/p4_arch_native_cycle/web_job",
+      "last_outcome": "completed",
+      "verification": {
+        "returncode": 0,
+        "test_count": 6,
+        "stdout": "",
+        "stderr": "test_form (test_app.WebTests.test_form) ... ok\ntest_injected_revised_provider_and_escaping (test_app.WebTests.test_injected_revised_provider_and_escaping) ... ok\ntest_loopback_only (test_app.WebTests.test_loopback_only) ... ok\ntest_not_found (test_app.WebTests.test_not_found) ... ok\ntest_result_and_refresh (test_app.WebTests.test_result_and_refresh) ... ok\ntest_validation (test_app.WebTests.test_validation) ... ok\n\n----------------------------------------------------------------------\nRan 6 tests in 3.524s\n\nOK\n"
+      }
     }
   },
   "notices": {
@@ -170,6 +177,13 @@
       "kind": "native-reserve",
       "job": "web",
       "attempt": 1
+    },
+    {
+      "at": 1794862683.5663593,
+      "kind": "native-checkpoint",
+      "job": "web",
+      "checkpoint": "ac7fe1345580967943ede76a56123ce7d2994021",
+      "status": "review"
     }
   ],
   "native": true,
