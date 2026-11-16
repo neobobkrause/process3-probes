@@ -102,7 +102,7 @@
         "-v"
       ],
       "timeout": 180,
-      "status": "running",
+      "status": "blocked",
       "attempt": 3,
       "branch": "codex/p4-job-native-workshop-20261116-web",
       "instructions": [],
@@ -121,7 +121,8 @@
       "pr_number": 274,
       "integrated": "a6f613b5461afc4a0996c4bb5016a5668fc4c9f7",
       "trusted_baseline_merges": [],
-      "session_generation": 3
+      "session_generation": 3,
+      "ownership_violation": "outside assigned module: toy/native-cycle/provider/__pycache__/quote_provider.cpython-312.pyc"
     }
   },
   "notices": {
@@ -267,6 +268,12 @@
       "kind": "native-reserve",
       "job": "web",
       "attempt": 3
+    },
+    {
+      "at": 1794862995.8404975,
+      "kind": "native-rejected",
+      "job": "web",
+      "reason": "outside assigned module: toy/native-cycle/provider/__pycache__/quote_provider.cpython-312.pyc"
     }
   ],
   "native": true,
