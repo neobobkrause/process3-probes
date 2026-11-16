@@ -3,8 +3,8 @@
   "stopped": true,
   "slots": 1,
   "lease": {
-    "owner": "ba912fe4-7396-4444-ad34-477e4dd92904",
-    "until": 1794851853.7175903
+    "owner": "5bfdef66-e335-4b83-afc8-c8562ba709dc",
+    "until": 1794851946.8742185
   },
   "modules": {
     "storage-provider": {
@@ -55,7 +55,7 @@
         "-c",
         "pass"
       ],
-      "status": "running",
+      "status": "ready",
       "attempt": 1,
       "branch": "codex/p4-job-storage-final-20261116-storage-provider",
       "instructions": [
@@ -116,6 +116,12 @@
       "command": "stop",
       "job": null,
       "value": null
+    },
+    {
+      "at": 1794851856.8742135,
+      "kind": "recover-unfinished",
+      "job": "storage-provider",
+      "checkpoint": "8873bd7d01ec169cf32b349aadc4a08f8a57a64c"
     }
   ]
 }
