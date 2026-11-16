@@ -1,0 +1,51 @@
+{
+  "classification": "Actual child-surface inventory and safe CLI help inspection; documentation research, not an idle-ROOT wake demonstration",
+  "actor": "/root/parent_notify_assessment",
+  "notify_parent_tool_matches": [],
+  "native_contracts": {
+    "send_message": "Targets existing agent; does not trigger idle turn.",
+    "followup_task": "Existing non-root target; wakes idle recipient or steers running recipient.",
+    "final": "Delivered to parent; no exposed contract promising a new turn for idle top-level parent.",
+    "wait_agent": "Active agent waits for mailbox update; not an ended-turn wake."
+  },
+  "actual_safe_commands": [
+    {
+      "command": "codex --version",
+      "output": "codex-cli 0.167.0-alpha.4"
+    },
+    {
+      "command": "codex queue --help",
+      "observed": "queue --thread accepts UUID or exact session name; --resume tries local daemon or selected --remote server; failed resume warns while command still succeeds."
+    },
+    {
+      "command": "codex agents --help",
+      "observed": "Local/embedded app-server or explicit --remote endpoint selector; no native hosted-chat selector exposed."
+    },
+    {
+      "command": "codex cloud --help",
+      "observed": "exec,status,list,apply,diff,help only; no existing Cloud-chat message/wake subcommand."
+    },
+    {
+      "command": "codex app-server --help",
+      "observed": "Local/server transport configuration exposed; no documented current managed chat/root binding."
+    }
+  ],
+  "queue_candidate": {
+    "supported_in_documented_context": true,
+    "current_native_ROOT_binding": "not established; no provided app-server endpoint or CLI thread ID verified as this chat",
+    "queue_or_resume_executed": false,
+    "inference_launched": false,
+    "reason_not_tested": "Would otherwise guess a selector/endpoint or use an unestablished execution/authentication route."
+  },
+  "sources": [
+    "https://learn.chatgpt.com/docs/agent-configuration/subagents.md",
+    "https://learn.chatgpt.com/docs/developer-commands.md",
+    "https://learn.chatgpt.com/docs/app-server.md",
+    "https://learn.chatgpt.com/docs/automations.md"
+  ],
+  "research_scope": "Official subagents markdown queried for notify_parent and idle: no matching text. Search results/community posts were not treated as supported contracts.",
+  "repository_transport_writes": 0,
+  "credential_reads_or_login": 0,
+  "idle_ROOT_wake_latency": null,
+  "conclusion": "No callable notify_parent or equivalent idle-top-ROOT notification found on this actual child surface. Codex queue is a distinct documented local/app-server candidate whose binding to standing native ROOT is missing; not proof of wake."
+}

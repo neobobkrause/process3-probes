@@ -4,6 +4,9 @@ Trusted supervisor records live evidence under state['native_continuation']:
   findings: native capability -> {state, evidence, limitation?}
   dependencies: work key -> {confirmed: true, prerequisite: ..., evidence: ...}
   work: explicit assignment id -> {status: pending|running|blocked|done, evidence?}
+Cycle.assess overlays the bounded workspace-local operational mailbox; routine
+messages are not written back to GitHub recovery state. A legacy native_mailbox
+field is a migration snapshot, not the current production message store.
 Missing/unknown evidence remains investigation work. This module never manufactures
 live proofs from fixture tests, job prose, a commit or a completed assistant turn.
 """

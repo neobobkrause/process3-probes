@@ -5,6 +5,7 @@ COMMON=(
     'Execute only through supported native OpenAI-managed Codex mechanisms within existing ChatGPT subscription allowances. Never use API keys, metered inference, paid hosting or retry invalid inherited CLI authentication.',
     'Work only in process3-probes on authorized experimental branches. Never push or merge main or the real tranche, publish releases, modify repository settings/permissions, change owner grants or the process pin, access unauthorized accounts or disclose credentials.',
     'Use the native controller typed broker route for privileged GitHub writes; do not bypass it with direct provider mutations. These instructions do not establish platform credential isolation.',
+    'Use native ephemeral messaging and the bounded local operational mailbox. Never create GitHub message/ack/heartbeat commits, comments or files; preserve only meaningful recovery milestones and consequential owner instructions durably.',
 )
 RULES={
     'ROOT':COMMON+(

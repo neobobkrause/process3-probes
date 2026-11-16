@@ -1,3 +1,20 @@
+# Additional owner guidance: efficient native operation
+
+OWNER-GUIDANCE-COMMUNICATION-20261116.txt is current verbatim authority. GitHub is
+for source/PRs/requirements/meaningful artifacts and minimum recovery state, not
+routine messages, acknowledgements, heartbeats or polling records. Native ephemeral
+event transport is preferred; any local operational storage must be bounded with
+explicit lifecycle/loss semantics. No GitHub webhook message bus is approved.
+
+Investigate actual child notify_parent availability first, then native lifecycle
+arrangements preserving authority/depth, other documented events, bounded fallback.
+Test available candidates; no invented API or periodic-as-reactive claim. Distinguish
+instructed limits, controller enforcement, actual provider restrictions and alternative
+routes. Physical module isolation stays optional. Consequential owner restrictions,
+all-user provider notices and the three product stages remain unchanged.
+
+---
+
 # Owner clarification superseding earlier acceptance assumptions
 
 Read OWNER-CLARIFICATION-20261116.txt verbatim. The effective Claude Remote Process4

@@ -1,3 +1,33 @@
+# Current owner-guided bootstrap work
+
+Read OWNER-GUIDANCE-COMMUNICATION-20261116.txt. Earlier blanket no-runnable/pause
+conclusions are superseded by this functional/operational assessment. Routine
+communication now uses native transport plus a bounded local operational snapshot;
+GitHub stores only meaningful recovery milestones, not a message/ack/heartbeat bus.
+Actual local ARCH exchange had zero remote state calls and unchanged remote blob.
+Meaningful migration preserved jobs/owner controls and compact provider obligations.
+
+Authority is assessed in four layers in native/AUTHORITY-MATRIX.md: instructions,
+controller checks, actual independent provider rules, and exposed alternative routes.
+Existing provider rules materially protect force-push/deletion and main/tranche
+PR/gate paths. They do not make every unauthorized consequence impossible. Direct
+mutation tools remain exposed; no exclusive enforcement is claimed. Effective push
+URL validation closes a concrete controller routing gap, tested without wrong-repo writes.
+
+Parent notification follows ordered investigation in native/PARENT-NOTIFICATION.md:
+actual notify_parent unavailable here; native hierarchy/depth implications analyzed;
+CLIqueue documented but current ROOT binding absent; scheduled fallback distinct.
+One bounded automatic-child-final after-ROOT-final candidate remains pending actual
+execution. Preserve role responsibilities and do not silently relabel a child ROOT.
+
+135 bootstrap tests passed in the native implementation worker; unchanged grants44
+passed in ROOT's run. See current storage evidence and handoff for experiment phase.
+No paidinfra/API-key inference, new grants, CivicSmith2/main/tranche/settings/pin changes.
+
+Historical sections below are superseded where the current guidance differs.
+
+---
+
 # Native Process4: current requirements and development cycle
 
 The owner's 16 November clarification is preserved verbatim in

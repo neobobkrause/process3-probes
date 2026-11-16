@@ -1,0 +1,49 @@
+{
+  "classification": "Actual native idle ARCH exchange using bounded local mailbox plus native followup, not GitHub message transport",
+  "native_actor": "/root/arch_recovered",
+  "baseline": {
+    "remote_blob_before": "7f3adf529af177f98b7bd4e5da8ef1777702ed24",
+    "local_path": "/workspace/work/p4-native-cycle/operational/dbab1babf6a94a84.json",
+    "seed_bytes": 1846,
+    "recipient": {
+      "target": "/root/arch_recovered",
+      "generation": 2
+    }
+  },
+  "receipt": {
+    "message_id": "local-transport-owner-guidance-trial",
+    "native_actor": "/root/arch_recovered",
+    "generation": 2,
+    "time": 1794867233.721241,
+    "monotonic_ns": 10539340071631
+  },
+  "send": {
+    "time": 1794867221.8837948,
+    "monotonic_ns": 10527502623085
+  },
+  "phases": [
+    {
+      "phase": "send",
+      "remote_state_calls": 0,
+      "local_bytes": 2132
+    },
+    {
+      "phase": "delivered",
+      "remote_state_calls": 0,
+      "local_bytes": 2272
+    },
+    {
+      "phase": "ack",
+      "remote_state_calls": 0,
+      "local_bytes": 2575
+    }
+  ],
+  "remote_state_calls_during_routine_flow": 0,
+  "actual_remote_blob_after": "7f3adf529af177f98b7bd4e5da8ef1777702ed24",
+  "actual_remote_blob_unchanged": true,
+  "latency_seconds_first_observable_action": 11.837448546,
+  "latency_limit": "Includes model/tool scheduling; timestamp before tool submission to first actor shell action; not RPC latency/SLA",
+  "source": "ROOT observed actual followup submission and actor RECEIVED event before local ack",
+  "routine_files_committed_to_git": false,
+  "local_restart_guarantee": "Atomic file survives ordinary processes only while workspace persists; whole-workspace loss loses routine messages; durable provider obligations recover separately"
+}

@@ -18,7 +18,7 @@ class Memory:
     def __init__(self,state,provider):self.state=copy.deepcopy(state);self.provider=provider;self.version=0
     def read(self):return copy.deepcopy(self.state),str(self.version)
     def mutate(self,action):
-        state=copy.deepcopy(self.state);action(state);self.state=state;self.version+=1;return copy.deepcopy(state)
+        state=copy.deepcopy(self.state);action(state);n.compact_recovery(state);self.state=state;self.version+=1;return copy.deepcopy(state)
 
 
 class ProviderFixture:
@@ -256,17 +256,17 @@ class NativeCycleTests(unittest.TestCase):
         self.assertEqual(intent['target'],'/root/consumer-one');self.assertEqual(intent['generation'],1)
         self.assertEqual(len(self.store.state['notices']),2)
         self.assertTrue(any(notice['user']=='report' for notice in self.store.state['notices'].values()))
-        self.assertFalse(any(message['recipient']=='JOB:report' for message in self.store.state['native_mailbox']['messages'].values()))
-        self.assertEqual(self.store.state['native_mailbox']['messages'][ident]['status'],'pending')
+        self.assertFalse(any(message['recipient']=='JOB:report' for message in self.cycle.mailbox.read()['messages'].values()))
+        self.assertEqual(self.cycle.mailbox.read()['messages'][ident]['status'],'pending')
 
     def test_session_registration_catches_up_notices_created_before_job_session(self):
         self.native_consumer(register=False)
         self.change();result=self.cycle.checkpoint('provider','completed')
-        self.assertEqual(result['message_ids_to_deliver'],[])
+        self.assertFalse(result['message_ids_to_deliver'])
         registration=self.cycle.session('consumer','/root/consumer-late')
         self.assertEqual(len(registration['message_ids_to_deliver']),1)
         ident=registration['message_ids_to_deliver'][0]
-        self.assertIn(ident,self.store.state['native_mailbox']['messages'])
+        self.assertIn(ident,self.cycle.mailbox.read()['messages'])
         self.assertEqual(self.cycle.intent(ident,'running')['target'],'/root/consumer-late')
 
     def test_replacement_redelivers_unacknowledged_message_to_current_attempt(self):
@@ -274,6 +274,7 @@ class NativeCycleTests(unittest.TestCase):
         ident=result['message_ids_to_deliver'][0];old=self.cycle.intent(ident,'running')
         self.cycle.delivered(old,{'task_name':old['target']})
         self.store.state['jobs']['consumer']['attempt']=2
+        self.cycle.sync_mailbox()  # prepare() performs this lifecycle update in production.
         with self.assertRaises(n.communication.StaleRecipient):self.cycle.intent(ident,'idle')
         registration=self.cycle.session('consumer','/root/consumer-two')
         self.assertIn(ident,registration['message_ids_to_deliver'])
@@ -284,9 +285,9 @@ class NativeCycleTests(unittest.TestCase):
         self.cycle.delivered(current,{'task_name':current['target']})
         self.assertTrue(self.cycle.acknowledge(ident,current['target'],2,time.time(),'Observed '+ident)['new_ack'])
         self.assertFalse(self.cycle.acknowledge(ident,current['target'],2,time.time(),'Observed '+ident)['new_ack'])
-        count=len(self.store.state['native_mailbox']['messages'][ident]['deliveries'])
+        count=len(self.cycle.mailbox.read()['messages'][ident]['deliveries'])
         self.assertEqual(self.cycle.delivered(current,{'fixture':'late-duplicate'})['status'],'acknowledged')
-        self.assertEqual(len(self.store.state['native_mailbox']['messages'][ident]['deliveries']),count)
+        self.assertEqual(len(self.cycle.mailbox.read()['messages'][ident]['deliveries']),count)
 
     def test_first_processing_ack_is_separate_from_notice_completion(self):
         self.native_consumer();self.change();result=self.cycle.checkpoint('provider','completed')
@@ -297,14 +298,14 @@ class NativeCycleTests(unittest.TestCase):
         self.cycle.acknowledge(ident,intent['target'],1,time.time(),'Observed native actor '+ident)
         notice_id=ident.removeprefix('provider-notice:')
         self.assertEqual(self.store.state['notices'][notice_id]['status'],'pending')
-        self.assertEqual(self.store.state['native_mailbox']['messages'][ident]['status'],'acknowledged')
+        self.assertEqual(self.cycle.mailbox.read()['messages'][ident]['status'],'acknowledged')
         # Completion of the launched notice is a later independent product event.
         consumer=self.store.state['jobs']['consumer'];consumer.update(accepted=True,checkpoint=result['checkpoint'],notice_ids=[notice_id])
         self.provider.heads['codex/p4-integration-fixture']=result['checkpoint']
         self.cycle.record_integration('consumer',result['checkpoint'],result['checkpoint'])
         self.assertEqual(self.store.state['notices'][notice_id]['status'],'delivered-and-completed')
 
-    def test_generic_arch_coordinator_messages_are_durable_and_idempotent(self):
+    def test_generic_arch_coordinator_messages_are_local_and_idempotent(self):
         self.cycle.register_role('ARCH','/root/native-arch',1)
         first=self.cycle.message('COORDINATOR','ARCH','Exact fixture instruction','fixture-control-message')
         second=self.cycle.message('COORDINATOR','ARCH','Exact fixture instruction','fixture-control-message')
@@ -315,6 +316,104 @@ class NativeCycleTests(unittest.TestCase):
         self.assertEqual(intent['target'],'/root/native-arch')
         with self.assertRaises(ValueError):self.cycle.message('COORDINATOR','ARCH','Changed fixture text','fixture-control-message')
         with self.assertRaises(n.Rejected):self.cycle.register_role('ROOT','/root',1)
+
+    def test_routine_communication_has_zero_remote_state_writes_or_reads_after_seed(self):
+        self.cycle.register_role('ARCH','/root/native-arch',1)
+        with patch.object(self.store,'mutate',side_effect=AssertionError('remote write')),patch.object(self.store,'read',side_effect=AssertionError('remote read')):
+            for number in range(20):
+                key=self.cycle.message('ROOT','ARCH','work',str(number))['message_id']
+                intent=self.cycle.intent(key,'idle');self.cycle.delivered(intent)
+                self.cycle.acknowledge(key,intent['target'],1,time.time(),'fixture actual receipt '+key)
+                self.cycle.messages()
+        self.assertNotIn('native_mailbox',self.store.state)
+
+    def test_compact_provider_obligations_cover_every_change_and_every_user(self):
+        state=c.empty()
+        for mid in ('consumer','report'):c.declare(state,{'id':mid,'uses':['provider'],'order':1,'paths':[]})
+        for number in range(1000):
+            c.notify(state,'provider',str(number));n.compact_notices(state)
+            self.assertEqual(len(state['notices']),2)
+        for notice in state['notices'].values():
+            self.assertEqual(notice['commit'],'999');self.assertEqual(notice['first_unconsumed_commit'],'0')
+            self.assertEqual(notice['change_count'],1000)
+
+    def test_compaction_preserves_active_old_notice_and_new_change_obligation(self):
+        state=c.empty();c.declare(state,{'id':'consumer','uses':['provider'],'order':1,'paths':[]})
+        c.notify(state,'provider','first')
+        first=next(iter(state['notices']))
+        state['jobs']['consumer']={'status':'running','notice_ids':[first]}
+        for number in range(100):c.notify(state,'provider',str(number));n.compact_notices(state)
+        self.assertEqual(len(state['notices']),2)
+        self.assertEqual(state['notices'][first]['commit'],'first')
+        latest=next(v for k,v in state['notices'].items() if k!=first)
+        self.assertEqual(latest['commit'],'99');self.assertEqual(latest['change_count'],100)
+        self.assertEqual(latest['status'],'pending')
+
+    def test_every_provider_checkpoint_still_creates_immediate_local_consumer_fanout(self):
+        self.native_consumer()
+        for number in range(3):
+            self.change();(self.repo/'toy/provider/extra.txt').write_text(str(number))
+            result=self.cycle.checkpoint('provider','completed')
+            ident='provider-notice:provider:'+result['checkpoint']+':consumer'
+            self.assertIn(ident,result['message_ids_to_deliver'])
+        self.assertEqual(len(self.cycle.messages('JOB:consumer')),3)
+
+    def test_recovery_writes_do_not_repersist_legacy_messages_or_unbounded_native_events(self):
+        state=c.empty();state['native_mailbox']={'recipients':{'ARCH':{'target':'/root/arch','generation':1}},'messages':{'legacy':{'text':'temporary'}}}
+        for number in range(1000):c.event(state,'native-checkpoint',job='provider',checkpoint=str(number))
+        n.compact_recovery(state)
+        self.assertNotIn('native_mailbox',state)
+        self.assertEqual(state['native_roles']['ARCH']['generation'],1)
+        self.assertEqual(len(state['events']),1)
+        self.assertEqual(state['events'][0]['checkpoint'],'999')
+
+    def test_workspace_mailbox_loss_rehydrates_pending_provider_obligations_without_remote_write(self):
+        self.native_consumer();c.declare(self.store.state,{'id':'report','uses':['provider'],'order':2,'paths':[]})
+        self.change();result=self.cycle.checkpoint('provider','completed')
+        key=result['message_ids_to_deliver'][0];intent=self.cycle.intent(key,'idle')
+        self.cycle.delivered(intent);self.cycle.acknowledge(key,intent['target'],1,time.time(),'fixture receipt '+key)
+        self.cycle.mailbox.path.unlink()
+        recovered=n.Cycle(self.store,self.repo,self.cycle.runtime)
+        with patch.object(self.store,'mutate',side_effect=AssertionError('recovery seed wrote remote state')):
+            message=recovered.messages('JOB:consumer')[key]
+        self.assertEqual(message['status'],'pending') # Business obligation not consumed by prior receipt.
+        self.assertEqual(recovered.intent(key,'idle')['target'],'/root/consumer-one')
+        self.assertEqual({notice['user'] for notice in self.store.state['notices'].values()},{'consumer','report'})
+        self.assertFalse(recovered.messages('JOB:report')) # No actual report session to awaken.
+
+    def test_push_destination_checks_effective_pushurl_and_rewrites_before_adapter(self):
+        provider=n.Provider();branch='codex/p4-job-native-fixture-provider'
+        cases=[('remote.origin.pushurl','https://example.invalid/unauthorized.git'),
+               ('url.https://example.invalid/.pushInsteadOf','https://github.com/')]
+        for setting,value in cases:
+            with self.subTest(setting=setting):
+                n.git(self.repo,'config',setting,value)
+                try:
+                    with patch.object(provider,'_perform') as adapter:
+                        with self.assertRaisesRegex(n.Rejected,'effective push destination'):provider.push(self.repo,branch,self.base)
+                        adapter.assert_not_called()
+                finally:n.git(self.repo,'config','--unset-all',setting)
+        n.git(self.repo,'config','--add','remote.origin.pushurl','https://github.com/'+n.REPO+'.git')
+        n.git(self.repo,'config','--add','remote.origin.pushurl','https://example.invalid/extra.git')
+        with patch.object(provider,'_perform') as adapter:
+            with self.assertRaises(n.Rejected):provider.push(self.repo,branch,self.base)
+            adapter.assert_not_called()
+
+    def test_store_returns_exact_normalized_snapshot_and_ranges_do_not_double_count(self):
+        state=c.empty();c.declare(state,{'id':'report','uses':['provider'],'order':1,'paths':[]})
+        state['native_mailbox']={'recipients':{},'messages':{'old':{'status':'acknowledged'}}}
+        class Capture:
+            def read_state(self,branch):return copy.deepcopy(self.state),'fixture-sha'
+            def write_state(self,branch,value,sha):self.state=copy.deepcopy(value)
+        provider=Capture();provider.state=state;store=n.Store(Memory.branch,provider)
+        for number in range(10):
+            result=store.mutate(lambda s:c.notify(s,'provider',str(number)))
+            self.assertEqual(result,provider.state)
+            self.assertNotIn('native_mailbox',result)
+            self.assertEqual(len(result['notices']),1)
+            notice=next(iter(result['notices'].values()))
+            self.assertEqual(notice['change_count'],number+1)
+            self.assertEqual(notice['first_unconsumed_commit'],'0')
 
     def test_stopped_run_rejects_native_dispatch(self):
         self.store.state['stopped']=True;self.store.state['jobs']['provider']['status']='ready'

@@ -1,3 +1,59 @@
+# Current implemented state and next experiment
+
+Owner guidance is preserved verbatim. Native messages/submission/acks now local,
+bounded/atomic with progress headroom. Actual ARCH exchange first action11.837s,
+zero remote state calls and unchanged blob. Separate meaningful recovery migration
+removed remote mailbox, compacted report pending changes(range2), preserved jobs,
+owner stop/cap/instructions. Read COMMUNICATION-STORAGE and AUTHORITY-MATRIX.
+135bootstrap +44grants verification passed; source worker/practical provider checks
+are distinguished from live native exchange. Effective push destination is now
+validated perpush; no wrong-repo/provider forbidden write was attempted.
+
+All code workers are finished. Next pending executable work: automatic delayed child
+FINAL after ROOT final, measuring whether a new ROOT turn starts unaided. Protocol
+in native/PARENT-NOTIFICATION.md. Existing timer will temporarily become one-shot
+inspection3minutes then restore10minute continuation; scheduled entry must NEVER
+be called reactive wake. Trial state in /workspace/work/p4-native-cycle/parent-final-trial.json
+and completion receipt beside it (local only, not GitHub operational messages).
+On next entry FIRST record time and actual triggering source/preceding-final facts;
+inspect child receipt and live inventory, classify bounded outcome, restore existing
+10minute automation, record one meaningful aggregate evidence artifact, continue.
+If workspace/child lost, record that separately; do not fabricate absence/delivery.
+
+No notify_parent tool exists in tested child inventory; no guessed tool was called.
+CLIqueue is documented but no supported app-server/thread binding to ROOT is exposed;
+no inherited auth retry or inference subprocess. Other role mappings analyzed only,
+no roleauthority/depth changes adopted. No GitHub webhook bus approved.
+
+Prior pause/no-runnable claims below are historical, superseded by this work.
+
+---
+
+# Resumed under additional owner guidance
+
+OWNER-GUIDANCE-COMMUNICATION-20261116.txt is verbatim current owner instruction.
+Previous no-runnable/pause conclusion is superseded by new independent work.
+Existing ten-minute continuation is being resumed via supported update (five-minute
+rate limit unchanged). Do not use GitHub as routine message/ack/heartbeat transport.
+Native followup wake behavior must be preserved; remote state only meaningful
+bounded recovery milestones, not per-message bookkeeping. No webhook bus approved.
+
+Active ownership assignments (do not duplicate):
+- parent_notify_assessment: actual child notify_parent availability, ordered supported
+  alternatives and PARENT-NOTIFICATION.md/evidence only.
+- communication_lifecycle: native communication/cycle/continuation+tests and storage
+  design; bounded local atomic mailbox, native transport, compact durable provider
+  obligations, no routine remote writes. Preserve all-user notifications.
+- authority_inventory: actual inherited-tool/provider authority matrix, harmless
+  read-only metadata only; no dangerous/provider write trial or credential reads.
+ROOT owns guidance preservation, continuation updates, overall docs and live validation.
+Preserve all existing experimental branches/work; no grants/settings/main/CivicSmith2
+or paidinfra/metered inference. Optional module sandboxing is not a prerequisite.
+
+Historical decisions below remain evidence, superseded where current guidance differs.
+
+---
+
 # Timer status: PAUSED by supported self-owned update
 
 After preservation3519304 and actual native external_blocked assessment, supported

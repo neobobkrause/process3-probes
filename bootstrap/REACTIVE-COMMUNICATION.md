@@ -1,3 +1,32 @@
+# Current communication arrangement — additional owner guidance
+
+OWNER-GUIDANCE-COMMUNICATION-20261116.txt supersedes the former GitHub-backed
+routine mailbox. Preserve measured native child wake/steering/replacement behavior,
+but do not adopt GitHub as transport. The current route stores operational messages,
+submission records and acknowledgements in one bounded atomic local snapshot outside
+repository history. After one recovery seed, routine message operations require zero
+remote reads or writes. Native followup_task is still the actual non-root transport.
+
+Actual current-code ARCH exchange: first observable action11.837s; enqueue,
+submission recording and source-verified acknowledgement used zero remote state
+calls; remote blob unchanged. See evidence/communication-storage/actual-local-native-exchange.json.
+A distinct meaningful recovery-format migration removed the old remote mailbox,
+compacted report's two outstanding changes into one range/count obligation, and
+preserved jobs/owner controls. This did not rewrite old Git history.
+
+Read native/COMMUNICATION-STORAGE.md for bounds, byte-pressure progress, cleanup,
+process restart versus workspace loss, bounded deduplication and write-volume costs.
+Read native/PARENT-NOTIFICATION.md for ordered A–D parent-wake investigation.
+Actual child tool inventory has no notify_parent here. Automatic child-final delivery
+after ROOT final is a bounded pending experiment, not an established idle-wake path.
+Native CLIqueue exists but has no documented binding to this hosted ROOT. No guessed
+selector, auth retry, subprocess inference or GitHub event bus has been used.
+
+The older timings and successful behavior below remain evidence. Its description
+of remote routine state storage is historical and is superseded by this section.
+
+---
+
 # Reactive native communication — implementation and executed evidence
 
 The owner requires prompt idle-recipient wake, active delivery/queueing,

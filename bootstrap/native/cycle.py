@@ -7,6 +7,7 @@ All writes stay in probes' dedicated native state/job/integration branches.
 Ownership checking is an integration control, not an extra product-test stage.
 """
 import argparse
+import hashlib
 import base64
 import copy
 import json
@@ -173,9 +174,15 @@ class Provider:
     def push(self, workspace, branch, sha):
         ref(branch,'codex/p4-job-')
         if not SHA.fullmatch(sha): raise Rejected('exact checkpoint SHA required')
-        # A normal push only; no delete, force, main/tranche, or configurable URL.
+        # Validate effective push destinations after Git URL rewrite rules on
+        # EVERY push, not merely the checkout's fetch URL at construction.
+        destinations=git(workspace,'remote','get-url','--push','--all','origin').stdout.splitlines()
+        allowed={'https://github.com/'+REPO,'https://github.com/'+REPO+'.git'}
+        if len(destinations)!=1 or destinations[0] not in allowed:
+            raise Rejected('effective push destination is not the single approved probes repository')
         self._perform('github.branch.update',{'repo':REPO,'branch':branch,'head':sha},
-                      lambda:git(workspace,'push','origin',sha+':refs/heads/'+branch))
+                      lambda:git(workspace,'-c','remote.origin.mirror=false','-c','push.followTags=false',
+                                 'push','--no-follow-tags','--recurse-submodules=no','origin',sha+':refs/heads/'+branch))
 
     def draft_pr(self, job, base):
         head=ref(job['branch'],'codex/p4-job-'); ref(base,'codex/p4-integration-')
@@ -266,7 +273,9 @@ class Store:
         self.branch=ref(branch,'codex/p4-state-native-'); self.provider=provider or Provider()
 
     def read(self): return self.provider.read_state(self.branch)
-    def write(self,state,sha): return self.provider.write_state(self.branch,state,sha)
+    def write(self,state,sha):
+        compact_recovery(state)
+        return self.provider.write_state(self.branch,state,sha)
 
     def mutate(self, action):
         for attempt in range(4):
@@ -286,7 +295,7 @@ class Store:
         sha=self.provider.resolve(base)
         self.provider.ensure_branch(integration,sha)
         self.provider.ensure_branch(self.branch,sha)
-        state=c.empty(); state.update(native=True,integration_branch=integration,base=sha,native_mailbox=communication.empty())
+        state=c.empty(); state.update(native=True,integration_branch=integration,base=sha,native_roles={})
         self.write(state,None); return state
 
 
@@ -351,40 +360,77 @@ def control(state,action,job=None,value=None,source='arch'):
 
 
 def native_mailbox(state):
-    return state.setdefault('native_mailbox',communication.empty())
+    """Legacy snapshot reader only; routine operations use LocalMailbox."""
+    return state.get('native_mailbox',communication.empty())
 
 
-def enqueue_provider_notices(state):
-    """Durable fanout to registered native sessions, including idle sessions.
+def compact_notices(state):
+    """At most latest pending + active assignment rows + latest consumed per edge.
 
-    All declared users retain product notice rows regardless of whether they
-    currently have a session. Session registration catches up pending notices.
-    First-processing communication ack never consumes a product notice.
+    Counts/ranges cover superseded outstanding changes; source commits remain Git
+    history. Native fanout still happens at every actual provider checkpoint.
     """
-    mailbox=native_mailbox(state)
+    protected={key for job in state['jobs'].values() if job.get('status')!='done'
+               for key in job.get('notice_ids',[])}
+    groups={}
+    for key,notice in state['notices'].items():groups.setdefault((notice['provider'],notice['user']),[]).append((key,notice))
+    keep={}
+    for rows in groups.values():
+        pending=[(k,v) for k,v in rows if v['status']=='pending']
+        active=[(k,v) for k,v in pending if k in protected]
+        waiting=[(k,v) for k,v in pending if k not in protected]
+        for k,v in active:keep[k]=v
+        if waiting:
+            key,last=waiting[-1];last=copy.deepcopy(last)
+            last['first_unconsumed_commit']=waiting[0][1].get('first_unconsumed_commit',waiting[0][1]['commit'])
+            last['change_count']=sum(v.get('change_count',1) for _,v in waiting)
+            keep[key]=last
+        consumed=[(k,v) for k,v in rows if v['status']!='pending']
+        if consumed:keep[consumed[-1][0]]=consumed[-1][1]
+    state['notices']=keep
+
+
+def compact_recovery(state):
+    compact_notices(state)
+    legacy=state.pop('native_mailbox',None)
+    roles=state.setdefault('native_roles',{})
+    if legacy:
+        for role,recipient in legacy.get('recipients',{}).items():roles.setdefault(role,recipient)
+    # Latest acceptance/checkpoint milestones suffice for current recovery. Never
+    # accumulate transient message/submission/ack/heartbeat records in Git history.
+    events=state.get('events',[]);latest={};preserved=[]
+    for event in events:
+        kind=event.get('kind','')
+        if kind.startswith('native-'):
+            latest[(kind,event.get('job'),event.get('command'))]=event
+        else:preserved.append(event)
+    state['events']=preserved+list(latest.values())
+
+
+def enqueue_provider_notices(state,mailbox):
+    """Fan out every changed provider to every registered consumer locally."""
     for ident,notice in state['notices'].items():
         recipient='JOB:'+notice['user']
         if notice['status']!='pending' or recipient not in mailbox['recipients']:continue
-        text=('Provider changed; begin handling this durable notice and report the message ID, '
-              'your current native target/generation, and first-processing time to ARCH through '
-              'the native message tool. First-processing acknowledgement does not complete '
-              'module work. Keep your assigned paths; ask ARCH for the current attempt workspace '
-              'before editing after replacement. Notice: '+json.dumps({
+        text=('Provider changed; report this message ID, current native generation and '
+              'first-processing time to ARCH. Receipt does not complete module work. '
+              'Keep assigned paths. Recovery obligation: '+json.dumps({
                   'notice_id':ident,'provider':notice['provider'],'user':notice['user'],
-                  'commit':notice['commit']},sort_keys=True))
-        communication.enqueue(mailbox,'PROVIDER:'+notice['provider'],recipient,text,'provider-notice:'+ident)
+                  'commit':notice['commit'],'first_unconsumed_commit':notice.get('first_unconsumed_commit',notice['commit']),
+                  'change_count':notice.get('change_count',1)},sort_keys=True))
+        # Existing pending IDs retain their original text when a recovery range
+        # expands. A new provider commit always has a distinct ID and native send.
+        key='provider-notice:'+ident
+        if key not in mailbox['messages']:communication.enqueue(mailbox,'PROVIDER:'+notice['provider'],recipient,text,key)
     return tuple(key for key,value in mailbox['messages'].items()
                  if key.startswith('provider-notice:') and value['status']!='acknowledged')
 
 
-def current_native_recipient(state, message_id):
-    mailbox=native_mailbox(state)
-    message=mailbox['messages'][message_id]
-    recipient=mailbox['recipients'][message['recipient']]
+def current_native_recipient(mailbox,message_id):
+    message=mailbox['messages'][message_id];recipient=mailbox['recipients'][message['recipient']]
     if message['recipient'].startswith('JOB:'):
-        jid=message['recipient'].removeprefix('JOB:')
-        job=state['jobs'].get(jid)
-        if job and recipient['generation']!=job['attempt']:
+        attempt=mailbox.get('job_attempts',{}).get(message['recipient'])
+        if attempt is not None and recipient['generation']!=attempt:
             raise communication.StaleRecipient('current job attempt needs its actual native session registered first')
     return recipient
 
@@ -448,6 +494,28 @@ class Cycle:
         origin=git(self.repo,'remote','get-url','origin').stdout.strip().rstrip('/').removesuffix('.git')
         if origin!='https://github.com/'+REPO: raise Rejected('checkout origin is not process3-probes')
         self.runtime.mkdir(parents=True,exist_ok=True)
+        name=hashlib.sha256(self.store.branch.encode()).hexdigest()[:16]+'.json'
+        self.mailbox=communication.LocalMailbox(self.runtime/'operational'/name,self._seed_mailbox)
+
+    def _seed_mailbox(self):
+        state,_=self.store.read();mailbox=copy.deepcopy(native_mailbox(state))
+        mailbox.setdefault('recipients',{}).update(state.get('native_roles',{}))
+        mailbox['job_attempts']={'JOB:'+key:job['attempt'] for key,job in state['jobs'].items()}
+        enqueue_provider_notices(state,mailbox)
+        return mailbox
+
+    def sync_mailbox(self,state=None):
+        state=state or self.store.read()[0]
+        def sync(mailbox):
+            mailbox.setdefault('job_attempts',{}).update({'JOB:'+key:job['attempt'] for key,job in state['jobs'].items()})
+            return enqueue_provider_notices(state,mailbox)
+        _,pending=self.mailbox.mutate(sync)
+        return pending
+
+    def assess(self):
+        # Remote recovery facts plus local transient work, without remote writes.
+        state,_=self.store.read();state['native_mailbox']=self.mailbox.read()
+        return native_continuation.assess(state).to_dict()
 
     def prepare(self, jid):
         state,_=self.store.read(); job=state['jobs'][jid]
@@ -464,6 +532,7 @@ class Cycle:
             j['notice_ids']=[key for key,n in s['notices'].items() if n['user']==jid and n['status']=='pending']
             c.event(s,'native-reserve',job=jid,attempt=j['attempt'])
         state=self.store.mutate(reserve); job=state['jobs'][jid]
+        self.sync_mailbox(state)
         path=self.runtime/(jid+'-'+str(job['attempt']))
         if not path.exists():
             git(self.repo,'fetch','origin',ref(job['branch'],'codex/p4-job-'))
@@ -501,86 +570,70 @@ class Cycle:
         return {'job':jid,'attempt':job['attempt'],'workspace':str(path),'prompt':prompt,'branch':job['branch']}
 
     def session(self,jid,address):
-        if not isinstance(address,str) or not address.startswith('/root/'): raise Rejected('native session address required')
+        if not isinstance(address,str) or not address.startswith('/root/'):raise Rejected('native session address required')
+        self.mailbox.read()  # Import legacy snapshot before significant recovery write.
         def register(s):
             job=s['jobs'][jid]
-            if job['attempt']<1:raise Rejected('prepare the native job before recording its actual session')
-            communication.register(native_mailbox(s),'JOB:'+jid,address,job['attempt'])
+            if job['attempt']<1:raise Rejected('prepare job before recording actual session')
             job.update(session=address,session_generation=job['attempt'])
-            enqueue_provider_notices(s)
-        state=self.store.mutate(register)
-        return {'job':jid,'target':address,'generation':state['jobs'][jid]['attempt'],
-                'message_ids_to_deliver':communication.pending_for(native_mailbox(state),'JOB:'+jid)}
+            s.setdefault('native_roles',{})['JOB:'+jid]={'target':address,'generation':job['attempt']}
+        state=self.store.mutate(register);attempt=state['jobs'][jid]['attempt']
+        self.mailbox.mutate(lambda m:communication.register(m,'JOB:'+jid,address,attempt))
+        pending=self.sync_mailbox(state)
+        return {'job':jid,'target':address,'generation':attempt,'message_ids_to_deliver':tuple(k for k in pending if self.mailbox.read()['messages'][k]['recipient']=='JOB:'+jid)}
 
     def register_role(self,role,target,generation):
-        # Host/controller interface: identity comes from a real observed native
-        # session-tool event. CLI arguments are not an authentication mechanism.
         if role not in ('ARCH','COORDINATOR','WATCHER','PROCESS') and not (
                 role.startswith('JOB:') and role.removeprefix('JOB:') in self.store.read()[0]['modules']):
             raise Rejected('register a supported native child role or declared module recipient')
-        if not isinstance(target,str) or not target.startswith('/root/'):
-            raise Rejected('current-tree non-root native target required')
-        def register(s):
-            communication.register(native_mailbox(s),role,target,generation)
-            enqueue_provider_notices(s)
-        state=self.store.mutate(register)
+        if not isinstance(target,str) or not target.startswith('/root/'):raise Rejected('current-tree non-root native target required')
+        mailbox=self.mailbox.read()
+        communication.register(copy.deepcopy(mailbox),role,target,generation)
+        # Role replacement is a meaningful recovery milestone, not a message.
+        state,_=self.store.read();new={'target':target,'generation':generation}
+        if state.get('native_roles',{}).get(role)!=new:
+            def record(s):
+                previous=s.setdefault('native_roles',{}).get(role)
+                if previous and previous['generation']>=generation and previous!=new:raise communication.StaleRecipient('replacement generation must increase')
+                s['native_roles'][role]=new
+            state=self.store.mutate(record)
+        self.mailbox.mutate(lambda m:communication.register(m,role,target,generation))
+        self.sync_mailbox(state)
         return {'recipient':role,'target':target,'generation':generation,
-                'message_ids_to_deliver':communication.pending_for(native_mailbox(state),role)}
+                'message_ids_to_deliver':communication.pending_for(self.mailbox.read(),role)}
 
     def message(self,sender,recipient,text,message_id=None):
-        result={}
-        def enqueue(s):result['message_id']=communication.enqueue(native_mailbox(s),sender,recipient,text,message_id)
-        self.store.mutate(enqueue)
-        return result
+        _,ident=self.mailbox.mutate(lambda m:communication.enqueue(m,sender,recipient,text,message_id))
+        return {'message_id':ident,'storage':'workspace_ephemeral'}
 
     def messages(self,recipient=None):
-        state,_=self.store.read();mailbox=native_mailbox(state)
-        return {key:value for key,value in mailbox['messages'].items()
+        return {key:value for key,value in self.mailbox.read()['messages'].items()
                 if recipient is None or value['recipient']==recipient}
 
     def intent(self,message_id,activity):
-        # The activity must be freshly observed through the real native agent
-        # catalog. followup_task itself handles an idle/running transition race.
-        state,_=self.store.read();current_native_recipient(state,message_id)
-        return communication.delivery_intent(native_mailbox(state),message_id,activity)
+        mailbox=self.mailbox.read();current_native_recipient(mailbox,message_id)
+        return communication.delivery_intent(mailbox,message_id,activity)
 
     def delivered(self,intent,native_result=None):
-        # Called only AFTER the hosted controller actually invokes the returned
-        # native followup_task intent. This does not invoke or invent that API.
-        def record(s):
-            current_native_recipient(s,intent['message_id'])
-            mailbox=native_mailbox(s)
-            previous=len(mailbox['messages'][intent['message_id']]['deliveries'])
+        # Only after actual native followup submission; no invented tool API.
+        def record(mailbox):
+            current_native_recipient(mailbox,intent['message_id'])
             communication.record_delivery(mailbox,intent)
-            deliveries=mailbox['messages'][intent['message_id']]['deliveries']
-            if native_result is not None and len(deliveries)>previous:
-                deliveries[-1]['native_tool_result']=native_result
-        state=self.store.mutate(record)
-        return {'message_id':intent['message_id'],
-                'status':native_mailbox(state)['messages'][intent['message_id']]['status']}
+        state,_=self.mailbox.mutate(record)
+        return {'message_id':intent['message_id'],'status':state['messages'][intent['message_id']]['status']}
 
     def acknowledge(self,message_id,target,generation,started_at,receipt):
-        # Only trusted ARCH/controller records a receipt from an ACTUAL native
-        # actor event. A queue result is not receipt/processing evidence, and
-        # these CLI fields do not authenticate an arbitrary user's identity.
-        if not isinstance(receipt,str) or message_id not in receipt:
-            raise Rejected('observed native actor receipt must identify the exact message')
-        if type(started_at) not in (int,float) or not 0<started_at<=time.time()+300:
-            raise Rejected('valid observed first-processing timestamp required')
-        result={}
-        def ack(s):
-            current_native_recipient(s,message_id)
-            mailbox=native_mailbox(s);message=mailbox['messages'][message_id]
-            if started_at<message['created_at']-5:
-                raise Rejected('processing receipt predates durable message creation')
-            if not any(d['target']==target and d['generation']==generation for d in message['deliveries']):
-                raise Rejected('record actual native submission before recording actor receipt')
-            result['new_ack']=communication.acknowledge(mailbox,message_id,target,generation,started_at)
-            if result['new_ack']:
-                message['ack'].update(source='observed-native-actor-event',receipt=receipt,
-                                      latency_seconds=max(0,started_at-message['created_at']))
-        self.store.mutate(ack)
-        return {'message_id':message_id,'status':'first_processing_acknowledged',**result}
+        if not isinstance(receipt,str) or message_id not in receipt:raise Rejected('observed native actor receipt must identify exact message')
+        if type(started_at) not in (int,float) or not 0<started_at<=time.time()+300:raise Rejected('valid observed timestamp required')
+        def ack(mailbox):
+            current_native_recipient(mailbox,message_id);message=mailbox['messages'][message_id]
+            if started_at<message['created_at']-5:raise Rejected('processing receipt predates message creation')
+            if not any(d['target']==target and d['generation']==generation for d in message['deliveries']):raise Rejected('record actual native submission before actor receipt')
+            new=communication.acknowledge(mailbox,message_id,target,generation,started_at)
+            if new:message['ack'].update(source='observed-native-actor-event',receipt=receipt.encode()[:1024].decode(errors='ignore'),latency_seconds=max(0,started_at-message['created_at']))
+            return new
+        _,new=self.mailbox.mutate(ack)
+        return {'message_id':message_id,'status':'first_processing_acknowledged','new_ack':new}
 
     def checkpoint(self, jid, outcome):
         if outcome not in ('completed','interrupted','blocked'): raise Rejected('unknown native outcome')
@@ -610,7 +663,7 @@ class Cycle:
             j=s['jobs'][jid]
             if j['attempt']!=job['attempt']: raise Rejected('stale native attempt result')
             if sha!=j.get('checkpoint') and sha!=j['base']: c.notify(s,jid,sha)
-            enqueue_provider_notices(s)
+            compact_notices(s)
             j.update(checkpoint=sha,last_outcome=outcome,verification=verification,
                      accepted=bool(outcome=='completed' and verification and verification['returncode']==0 and verification['test_count']>0),
                      status='paused' if outcome=='interrupted' else 'review' if verification and verification['returncode']==0 and verification['test_count']>0 else 'blocked')
@@ -621,8 +674,7 @@ class Cycle:
             pr=self.provider.draft_pr(current,state['integration_branch'])
             self.store.mutate(lambda s:s['jobs'][jid].update(pr=pr['url'],pr_number=pr['number']))
         latest=self.store.read()[0]
-        pending=[key for key,value in native_mailbox(latest)['messages'].items()
-                 if key.startswith('provider-notice:') and value['status']!='acknowledged']
+        pending=self.sync_mailbox(latest)
         return {**latest['jobs'][jid],'message_ids_to_deliver':pending}
 
     def integrate(self,jid):
@@ -668,6 +720,7 @@ class Cycle:
                 if key in s['notices']: s['notices'][key]['status']='delivered-and-completed'
             if any(n['user']==jid and n['status']=='pending' for n in s['notices'].values()): j['status']='ready'
             c.event(s,'native-integrated',job=jid,checkpoint=checked_head,integration=integration_sha)
+            compact_notices(s)
         return self.store.mutate(integrated)
 
 
@@ -696,7 +749,7 @@ def main():
     args=parser.parse_args();store=Store(args.state)
     if args.command=='init': result=store.init(args.base,args.integration)
     elif args.command=='status':result=store.read()[0]
-    elif args.command=='assess':result=native_continuation.assess(store.read()[0]).to_dict()
+    elif args.command=='assess':result=Cycle(store,args.repo,args.runtime).assess()
     elif args.command=='assign':result=store.mutate(lambda s:assign(s,json.loads(Path(args.file).read_text()),store.branch))
     elif args.command=='declare':result=store.mutate(lambda s:c.declare(s,json.loads(Path(args.file).read_text())))
     elif args.command=='control':result=store.mutate(lambda s:control(s,args.action,args.job,args.value,args.source))

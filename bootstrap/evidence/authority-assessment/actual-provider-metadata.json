@@ -1,0 +1,144 @@
+{
+  "classification": "Actual read-only gh metadata; no mutations, token reads or credential inspection",
+  "utc_seconds": 1794866667.6695979,
+  "queries": {
+    "repository_permissions": {
+      "argv": [
+        "gh",
+        "api",
+        "repos/neobobkrause/process3-probes",
+        "--jq",
+        "{full_name,visibility,default_branch,permissions,allow_merge_commit,allow_squash_merge,allow_rebase_merge,allow_auto_merge}"
+      ],
+      "returncode": 0,
+      "response": {
+        "allow_auto_merge": false,
+        "allow_merge_commit": true,
+        "allow_rebase_merge": true,
+        "allow_squash_merge": true,
+        "default_branch": "main",
+        "full_name": "neobobkrause/process3-probes",
+        "permissions": {
+          "admin": false,
+          "maintain": false,
+          "pull": true,
+          "push": true,
+          "triage": true
+        },
+        "visibility": "public"
+      },
+      "stderr": ""
+    },
+    "main_branch": {
+      "argv": [
+        "gh",
+        "api",
+        "repos/neobobkrause/process3-probes/branches/main",
+        "--jq",
+        "{name,protected,protection,protection_url}"
+      ],
+      "returncode": 0,
+      "response": {
+        "name": "main",
+        "protected": true,
+        "protection": {
+          "enabled": false,
+          "required_status_checks": {
+            "checks": [],
+            "contexts": [],
+            "enforcement_level": "off"
+          }
+        },
+        "protection_url": "https://api.github.com/repos/neobobkrause/process3-probes/branches/main/protection"
+      },
+      "stderr": ""
+    },
+    "integration_branch": {
+      "argv": [
+        "gh",
+        "api",
+        "repos/neobobkrause/process3-probes/branches/codex/p4-integration-workshop-20261116",
+        "--jq",
+        "{name,protected,protection,protection_url}"
+      ],
+      "returncode": 0,
+      "response": {
+        "name": "codex/p4-integration-workshop-20261116",
+        "protected": true,
+        "protection": {
+          "enabled": false,
+          "required_status_checks": {
+            "checks": [],
+            "contexts": [],
+            "enforcement_level": "off"
+          }
+        },
+        "protection_url": "https://api.github.com/repos/neobobkrause/process3-probes/branches/codex/p4-integration-workshop-20261116/protection"
+      },
+      "stderr": ""
+    },
+    "repository_rulesets": {
+      "argv": [
+        "gh",
+        "api",
+        "repos/neobobkrause/process3-probes/rulesets"
+      ],
+      "returncode": 0,
+      "response": [
+        {
+          "id": 26389336,
+          "name": "every-branch",
+          "target": "branch",
+          "source_type": "Repository",
+          "source": "neobobkrause/process3-probes",
+          "enforcement": "active",
+          "node_id": "RRS_lACqUmVwb3NpdG9yec5V8nLlzgGSq1g",
+          "_links": {
+            "self": {
+              "href": "https://api.github.com/repos/neobobkrause/process3-probes/rulesets/26389336"
+            },
+            "html": {
+              "href": "https://github.com/neobobkrause/process3-probes/rules/26389336"
+            }
+          },
+          "created_at": "2026-11-02T10:37:52.355-08:00",
+          "updated_at": "2026-11-02T10:37:52.384-08:00"
+        },
+        {
+          "id": 26389189,
+          "name": "process3",
+          "target": "branch",
+          "source_type": "Repository",
+          "source": "neobobkrause/process3-probes",
+          "enforcement": "active",
+          "node_id": "RRS_lACqUmVwb3NpdG9yec5V8nLlzgGSqsU",
+          "_links": {
+            "self": {
+              "href": "https://api.github.com/repos/neobobkrause/process3-probes/rulesets/26389189"
+            },
+            "html": {
+              "href": "https://github.com/neobobkrause/process3-probes/rules/26389189"
+            }
+          },
+          "created_at": "2026-11-02T10:35:20.283-08:00",
+          "updated_at": "2026-11-02T10:35:20.424-08:00"
+        }
+      ],
+      "stderr": ""
+    },
+    "main_protection": {
+      "argv": [
+        "gh",
+        "api",
+        "repos/neobobkrause/process3-probes/branches/main/protection"
+      ],
+      "returncode": 1,
+      "response": {
+        "message": "Resource not accessible by integration",
+        "documentation_url": "https://docs.github.com/rest/branches/branch-protection#get-branch-protection",
+        "status": "403"
+      },
+      "stderr": "gh: Resource not accessible by integration (HTTP 403)\n"
+    }
+  }
+}
