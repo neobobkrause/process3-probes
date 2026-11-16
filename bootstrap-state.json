@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "stopped": true,
+  "stopped": false,
   "slots": 1,
   "lease": null,
   "modules": {
@@ -152,6 +152,13 @@
       "turn_completed": false,
       "verified": false,
       "timed_out": false
+    },
+    {
+      "at": 1794851808.902859,
+      "kind": "owner-control",
+      "command": "continue",
+      "job": null,
+      "value": null
     }
   ]
 }
