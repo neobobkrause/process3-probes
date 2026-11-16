@@ -39,7 +39,7 @@
         "import pathlib,sys,unittest; sys.path.insert(0,'toy/provider'); from value import value; assert value()==42; suite=unittest.defaultTestLoader.discover('toy/provider',pattern='test_*.py'); assert suite.countTestCases()>0; result=unittest.TextTestRunner().run(suite); sys.exit(not result.wasSuccessful())"
       ],
       "timeout": 45,
-      "status": "blocked",
+      "status": "ready",
       "attempt": 1,
       "branch": "codex/p4-job-bootstrap-20261116-provider",
       "instructions": [],
@@ -57,7 +57,8 @@
         "turn_completed": false,
         "verified": false,
         "timed_out": true
-      }
+      },
+      "restart": true
     }
   },
   "notices": {},
@@ -90,6 +91,13 @@
       "turn_completed": false,
       "verified": false,
       "timed_out": true
+    },
+    {
+      "at": 1794851690.8685105,
+      "kind": "owner-control",
+      "command": "retry",
+      "job": "provider",
+      "value": null
     }
   ]
 }
