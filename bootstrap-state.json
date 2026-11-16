@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "stopped": true,
+  "stopped": false,
   "slots": 1,
   "lease": null,
   "modules": {
@@ -208,6 +208,13 @@
       "kind": "technical-probe-timeout",
       "job": "provider",
       "seconds": 180
+    },
+    {
+      "at": 1794852520.2302558,
+      "kind": "owner-control",
+      "command": "continue",
+      "job": null,
+      "value": null
     }
   ],
   "external_dependencies": {
