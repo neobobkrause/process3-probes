@@ -61,7 +61,8 @@
       "instructions": [],
       "checkpoint": null,
       "base": "f98b7002e0fee803fb3e6da6d0cd8be8d1f9751e",
-      "notice_ids": []
+      "notice_ids": [],
+      "workspace": "/workspace/work/p4-native-cycle/provider-1"
     },
     "web": {
       "id": "web",
