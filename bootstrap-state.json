@@ -59,7 +59,8 @@
         "turn_completed": false,
         "verified": false,
         "timed_out": false
-      }
+      },
+      "blocker": "Subscription inference blocked by cloud outbound destination policy; no completed turn."
     }
   },
   "notices": {},
@@ -190,6 +191,18 @@
       "turn_completed": false,
       "verified": false,
       "timed_out": false
+    },
+    {
+      "at": 1794851977.410866,
+      "kind": "external-dependency-recorded",
+      "dependency": "codex-inference"
     }
-  ]
+  ],
+  "external_dependencies": {
+    "codex-inference": {
+      "status": "blocked",
+      "observed": "Actual Codex CLI HTTP CONNECT 403; chatgpt.com absent from enforced environment allowlist.",
+      "resume": "Add chatgpt.com to running environment allowlist, preserving existing grants; verify status, clear stop, retry provider, run supervisor on same state branch."
+    }
+  }
 }
