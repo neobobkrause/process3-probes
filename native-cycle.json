@@ -102,8 +102,8 @@
         "-v"
       ],
       "timeout": 180,
-      "status": "paused",
-      "attempt": 2,
+      "status": "running",
+      "attempt": 3,
       "branch": "codex/p4-job-native-workshop-20261116-web",
       "instructions": [],
       "checkpoint": "6ae1ca7e5967f400c0e60bb58e575208b4e06ff2",
@@ -260,6 +260,12 @@
       "job": "web",
       "checkpoint": "6ae1ca7e5967f400c0e60bb58e575208b4e06ff2",
       "status": "paused"
+    },
+    {
+      "at": 1794862930.4067855,
+      "kind": "native-reserve",
+      "job": "web",
+      "attempt": 3
     }
   ],
   "native": true,
