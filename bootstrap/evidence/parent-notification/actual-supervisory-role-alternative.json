@@ -145,5 +145,13 @@
     "Native inherited alternative tools unchanged; not credential isolation",
     "Timings include model/tool scheduling and bound first observable processing, not service latency or SLA"
   ],
-  "proposed_owner_decision": "Whether the owner-started Process4 ROOT may be the addressable depth1 supervisory session, with existing chat as owner-facing bridge/safety runner, rather than require this depth0 chat itself to reactively wake"
+  "proposed_owner_decision": "Whether the owner-started Process4 ROOT may be the addressable depth1 supervisory session, with existing chat as owner-facing bridge/safety runner, rather than require this depth0 chat itself to reactively wake",
+  "runtime_retirement": {
+    "performed": true,
+    "conditions": "All fixture actors confirmed completed/interrupted, no future tasks; every JSON receipt matched preserved aggregate",
+    "local_directory_removed": "/workspace/work/p4-native-cycle/supervisor-fixture",
+    "receipt_files_removed": 11,
+    "per_message_git_archive_created": false,
+    "unrelated_operational_mailbox_untouched": true
+  }
 }

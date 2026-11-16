@@ -1,3 +1,15 @@
+# Timer PAUSED awaiting owner ROOT-identity decision
+
+Supported self-owned update confirmed is_enabled=false2026-11-16T22:44:29UTC;
+normal10minute schedule retained. Current-owner-decision-assessment.json includes
+actual pause confirmation. No newtimer. Do not pollowner or treat queuedoldwake as
+approval. ExistingtopROOTidlewake stillunmet; measuredaddressableROOTalternative
+ready for ownerdecision in ROOT-LAYOUT-PROPOSAL.md. No operatinghierarchy remap done.
+Fixture actors allcompleted/interrupted; localreceipt directory retired after every
+file matched preservedaggregate. No permessage Gitarchive or unrelatedmailboxcleanup.
+On approval resume existingtimer and implement opted-inmode as documented; no
+additional ownerlogin, paidinfra, grant/settings/main/CivicSmith2 change authorized.
+
 # Current status: narrow owner ROOT-identity decision pending
 
 All new owner-guided investigations and read-only alternative fixture are complete.
