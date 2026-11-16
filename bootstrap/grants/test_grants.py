@@ -83,16 +83,22 @@ class GrantsTests(unittest.TestCase):
         self.deny(JOB, "github.branch.update", req(repo="other/repo", branch=JOB.branch, paths=["toy/provider/a"]), "REPO_NOT_GRANTED", owned())
 
     def test_tranche_merge_missing_walk(self):
-        self.deny(ARCH, "github.pr.merge_tranche", req(base="main"), "TRANCHE_NOT_VERIFIED", {"all_module_tests_pass": True, "internal_walk_clean": True, "head_sha_matches": True})
+        self.deny(ARCH, "github.pr.merge_tranche", req(base="main", expected_head="abc"), "TRANCHE_NOT_VERIFIED", {"all_module_tests_pass": True, "internal_walk_clean": True, "head_sha_matches": True, "pr_target_matches": True, "observed_head": "abc"})
 
     def test_tranche_merge_all_three(self):
-        self.allow(ARCH, "github.pr.merge_tranche", req(base="main"), {"all_module_tests_pass": True, "internal_walk_clean": True, "external_walk_clean": True, "head_sha_matches": True})
+        self.allow(ARCH, "github.pr.merge_tranche", req(base="main", expected_head="abc"), {"all_module_tests_pass": True, "internal_walk_clean": True, "external_walk_clean": True, "head_sha_matches": True, "pr_target_matches": True, "observed_head": "abc"})
+
+    def test_job_merge_wrong_target(self):
+        self.deny(ARCH, "github.pr.merge_job", req(base="tranche", expected_head="abc"), "JOB_MERGE_NOT_VERIFIED", {"required_module_tests_pass": True, "head_sha_matches": True, "pr_target_matches": False, "observed_head": "abc"})
+
+    def test_tranche_merge_stale_head(self):
+        self.deny(ARCH, "github.pr.merge_tranche", req(base="main", expected_head="old"), "STALE_PR_HEAD", {"all_module_tests_pass": True, "internal_walk_clean": True, "external_walk_clean": True, "head_sha_matches": True, "pr_target_matches": True, "observed_head": "new"})
 
     def test_job_merge_verified(self):
-        self.allow(ARCH, "github.pr.merge_job", req(base="tranche", expected_head="abc"), {"required_module_tests_pass": True, "head_sha_matches": True, "observed_head": "abc"})
+        self.allow(ARCH, "github.pr.merge_job", req(base="tranche", expected_head="abc"), {"required_module_tests_pass": True, "head_sha_matches": True, "pr_target_matches": True, "observed_head": "abc"})
 
     def test_job_merge_stale_head(self):
-        self.deny(ARCH, "github.pr.merge_job", req(base="tranche", expected_head="abc"), "STALE_PR_HEAD", {"required_module_tests_pass": True, "head_sha_matches": True, "observed_head": "def"})
+        self.deny(ARCH, "github.pr.merge_job", req(base="tranche", expected_head="abc"), "STALE_PR_HEAD", {"required_module_tests_pass": True, "head_sha_matches": True, "pr_target_matches": True, "observed_head": "def"})
 
     def test_cf_protected_resource(self):
         self.deny(ARCH, "cloudflare.dev.deploy", req(account="probe-development-account", resource="civicsmith-site"), "CLOUDFLARE_RESOURCE")
