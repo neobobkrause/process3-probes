@@ -420,3 +420,60 @@ class NativeControlJournalTests(unittest.TestCase):
         with self.assertRaises(n.Rejected):n.control(state,'slots',value='3')
         n.control(state,'slots',value='1')
         self.assertEqual(state['owner_job_cap'],2);self.assertEqual(state['slots'],1)
+
+
+class NativeBrokerTests(unittest.TestCase):
+    def setUp(self):
+        self.provider=n.Provider()
+        self.subject=n.Subject('native-arch-controller','ARCH',n.REPO)
+        self.sha='a'*40
+
+    def test_scope_denies_identity_repo_and_untyped_changes_before_adapter(self):
+        requests=[('github.state.update',{'repo':n.REPO,'branch':'main'}),
+                  ('github.state.update',{'repo':'neobobkrause/CivicSmith2','branch':'codex/p4-state-native-demo'}),
+                  ('github.branch.create',{'repo':n.REPO,'branch':'tranche','base':self.sha}),
+                  ('github.branch.update',{'repo':n.REPO,'branch':'codex/p4-job-demo','head':self.sha,'force':True}),
+                  ('github.settings.update',{'repo':n.REPO})]
+        for operation,request in requests:
+            with self.subTest(operation=operation,request=request):
+                with patch.object(self.provider,'_request') as transport:
+                    with self.assertRaises(n.Denied):
+                        self.provider._perform(operation,request,lambda:self.provider._request('forbidden','PATCH',{}))
+                    transport.assert_not_called()
+        for subject in (n.Subject('job','JOB',n.REPO),n.Subject('native-arch-controller','ARCH','other/repo'),None):
+            with self.assertRaises(n.Denied):
+                n.NativeInstructionScope().authorize(subject,'github.state.update',{'repo':n.REPO,'branch':'codex/p4-state-native-demo'})
+
+    def test_raw_mutating_api_is_rejected_before_transport(self):
+        with patch.object(self.provider,'_request') as transport:
+            with self.assertRaisesRegex(n.Denied,'TYPED_NATIVE_MUTATION_REQUIRED'):
+                self.provider._api('git/refs/heads/main','PATCH',{'sha':self.sha})
+            transport.assert_not_called()
+
+    def test_state_write_uses_broker_and_records_actual_adapter_return(self):
+        with patch.object(n.NativeInstructionScope,'authorize',autospec=True,wraps=None) as authorize:
+            # This fixture only checks wiring; actual scope denial is above.
+            with patch.object(self.provider,'_request',return_value={'fixture':'return'}) as transport:
+                self.provider.write_state('codex/p4-state-native-demo',{'test':True},self.sha)
+            authorize.assert_called_once()
+            self.assertEqual(authorize.call_args.args[2],'github.state.update')
+            self.assertEqual(transport.call_args.args[1],'PUT')
+        self.assertEqual(self.provider.audit[-1]['outcome'],'adapter-returned')
+
+    def test_adapter_failure_is_not_recorded_as_returned(self):
+        with patch.object(self.provider,'_request',side_effect=RuntimeError('fixture transport failure')):
+            with self.assertRaises(RuntimeError):self.provider.write_state('codex/p4-state-native-demo',{},self.sha)
+        self.assertEqual(self.provider.audit,[])
+
+    def test_merge_requires_current_head_gate_and_experimental_base(self):
+        request={'repo':n.REPO,'head':'codex/p4-job-demo','base':'codex/p4-integration-demo','pr':1,'expected_head':self.sha}
+        scope=n.NativeInstructionScope()
+        for facts in ({},{'observed_head':'b'*40,'existing_gate_green':True},{'observed_head':self.sha,'existing_gate_green':False}):
+            with self.assertRaises(n.Denied):scope.authorize(self.subject,'github.pr.merge_job',request,trusted=facts)
+        scope.authorize(self.subject,'github.pr.merge_job',request,trusted={'observed_head':self.sha,'existing_gate_green':True})
+        with self.assertRaises(n.Denied):scope.authorize(self.subject,'github.pr.merge_job',{**request,'base':'main'},trusted={'observed_head':self.sha,'existing_gate_green':True})
+
+    def test_ready_reads_actual_pr_scope_before_adapter(self):
+        with patch.object(self.provider,'pr_info',return_value={'headRefName':'codex/p4-job-demo','baseRefName':'main'}),patch.object(c,'run') as adapter:
+            with self.assertRaises(n.Denied):self.provider.ready_pr(99)
+            adapter.assert_not_called()

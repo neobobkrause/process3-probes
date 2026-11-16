@@ -22,6 +22,7 @@ from urllib.parse import quote
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 import coordinator as c
 from native import communication as communication
+from grants.grants import Broker, Subject, Denied
 
 REPO=c.REPO
 FILE='native-cycle.json'
@@ -57,12 +58,73 @@ def git(repo, *args, check=True):
                           cwd=repo,text=True,capture_output=True,check=check,timeout=60)
 
 
+class NativeInstructionScope:
+    """Technical restriction of standing instructions, NOT an approved policy.
+
+    Reuses the grants Broker's deny-before-adapter path. Identity and evidence
+    are supplied by supervisor code, never authenticated by CLI packet fields.
+    This is not platform credential isolation or prevention of Python bypass.
+    """
+    schemas = {
+        'github.branch.create': {'repo','branch','base'},
+        'github.state.update': {'repo','branch'},
+        'github.branch.update': {'repo','branch','head'},
+        'github.pr.open': {'repo','head','base'},
+        'github.pr.update': {'repo','head','base','pr'},
+        'github.pr.merge_job': {'repo','head','base','pr','expected_head'},
+    }
+
+    def authorize(self, subject, operation, request, *, trusted=None):
+        facts=trusted or {}
+        if not isinstance(subject,Subject) or subject.session_id!='native-arch-controller' or subject.role!='ARCH' or subject.repo!=REPO:
+            raise Denied('NATIVE_CONTROLLER_IDENTITY')
+        if operation not in self.schemas or not isinstance(request,dict) or set(request)!=self.schemas[operation] or request.get('repo')!=REPO:
+            raise Denied('NATIVE_OPERATION_SCOPE')
+        try:
+            if operation=='github.branch.create':
+                ref(request['branch'])
+                if not isinstance(request['base'],str) or not SHA.fullmatch(request['base']):raise Rejected('exact SHA')
+            elif operation=='github.state.update':ref(request['branch'],'codex/p4-state-native-')
+            elif operation=='github.branch.update':
+                ref(request['branch'],'codex/p4-job-')
+                if not isinstance(request['head'],str) or not SHA.fullmatch(request['head']):raise Rejected('exact SHA')
+            else:
+                ref(request['head'],'codex/p4-job-');ref(request['base'],'codex/p4-integration-')
+                if 'pr' in request and (type(request['pr']) is not int or request['pr']<1):raise Rejected('PR identity')
+                if operation=='github.pr.merge_job':
+                    if not isinstance(request['expected_head'],str) or not SHA.fullmatch(request['expected_head']):raise Rejected('exact SHA')
+                    if facts.get('observed_head')!=request['expected_head'] or not facts.get('existing_gate_green'):
+                        raise Rejected('fresh gate/head required')
+        except (Rejected,TypeError,KeyError):
+            raise Denied('NATIVE_REFERENCE_OR_EVIDENCE') from None
+
+
 class Provider:
     """Closed write methods; no public arbitrary API forwarding command."""
     def __init__(self, repo=REPO):
         if repo!=REPO: raise Rejected('only process3-probes is authorized')
+        self.audit=[]
 
     def _api(self, path, method='GET', body=None):
+        if method!='GET' or body is not None:
+            self.audit.append({'operation':'untyped-api','outcome':'denied','reason':'TYPED_NATIVE_MUTATION_REQUIRED'})
+            raise Denied('TYPED_NATIVE_MUTATION_REQUIRED')
+        return self._request(path)
+
+    def _perform(self, operation, request, adapter, facts=None):
+        # Fixed supervisor identity, not a user-provided role/session claim.
+        subject=Subject('native-arch-controller','ARCH',REPO)
+        broker=Broker(NativeInstructionScope(),lambda *_:adapter(),
+                      lambda sid:subject if sid==subject.session_id else None,
+                      lambda *_:facts or {})
+        try:result=broker.perform(subject.session_id,operation,request)
+        except Denied as error:
+            self.audit.append({'operation':operation,'request':request,'outcome':'denied','reason':error.reason});raise
+        self.audit.append({'operation':operation,'request':request,'outcome':'adapter-returned'})
+        return result
+
+    def _request(self, path, method='GET', body=None):
+        # Internal adapter transport; never exposed as an agent forwarding API.
         args=['gh','api','repos/'+REPO+'/'+path,'--method',method]
         if body is not None: args+=['--input','-']
         out=c.run(args,input=json.dumps(body) if body is not None else None)
@@ -88,7 +150,8 @@ class Provider:
         else:
             if existing!=sha: raise Rejected('existing unreserved branch differs; never reset it')
             return
-        self._api('git/refs','POST',{'ref':'refs/heads/'+branch,'sha':sha})
+        self._perform('github.branch.create',{'repo':REPO,'branch':branch,'base':sha},
+                      lambda:self._request('git/refs','POST',{'ref':'refs/heads/'+branch,'sha':sha}))
 
     def read_state(self, branch):
         ref(branch,'codex/p4-state-native-')
@@ -100,7 +163,8 @@ class Provider:
         body={'branch':branch,'message':'Process4 native cycle state',
               'content':base64.b64encode((json.dumps(state,indent=2)+'\n').encode()).decode()}
         if sha: body['sha']=sha
-        try: self._api('contents/'+FILE,'PUT',body)
+        try: self._perform('github.state.update',{'repo':REPO,'branch':branch},
+                           lambda:self._request('contents/'+FILE,'PUT',body))
         except subprocess.CalledProcessError as error:
             if any(code in (error.stderr or '') for code in ('409','422')): raise c.StateConflict('native state changed; reread') from error
             raise
@@ -109,7 +173,8 @@ class Provider:
         ref(branch,'codex/p4-job-')
         if not SHA.fullmatch(sha): raise Rejected('exact checkpoint SHA required')
         # A normal push only; no delete, force, main/tranche, or configurable URL.
-        git(workspace,'push','origin',sha+':refs/heads/'+branch)
+        self._perform('github.branch.update',{'repo':REPO,'branch':branch,'head':sha},
+                      lambda:git(workspace,'push','origin',sha+':refs/heads/'+branch))
 
     def draft_pr(self, job, base):
         head=ref(job['branch'],'codex/p4-job-'); ref(base,'codex/p4-integration-')
@@ -128,8 +193,8 @@ class Provider:
               'Controller checkpoint '+job['checkpoint']+'. Module tests and native session outcome '
               'are recorded on the native state branch. Keep draft pending ARCH integration through '
               'the existing process merge tool. No main merge, grant changes, or new product-test stage.')
-        url=c.run(['gh','pr','create','--repo',REPO,'--base',base,'--head',head,'--draft',
-                   '--title','Process4 native module: '+job['id'],'--body-file','-'],input=body)
+        url=self._perform('github.pr.open',{'repo':REPO,'head':head,'base':base},lambda:c.run(['gh','pr','create','--repo',REPO,'--base',base,'--head',head,'--draft',
+                   '--title','Process4 native module: '+job['id'],'--body-file','-'],input=body))
         # Read provider identity rather than infer a PR number from an arbitrary URL.
         return json.loads(c.run(['gh','pr','view',url,'--repo',REPO,'--json','number,url,state,isDraft,baseRefName,headRefName']))
 
@@ -171,7 +236,9 @@ class Provider:
 
     def ready_pr(self, number):
         if type(number) is not int or number<1: raise Rejected('invalid PR identity')
-        return c.run(['gh','pr','ready',str(number),'--repo',REPO])
+        pr=self.pr_info(number)
+        return self._perform('github.pr.update',{'repo':REPO,'head':pr['headRefName'],'base':pr['baseRefName'],'pr':number},
+                             lambda:c.run(['gh','pr','ready',str(number),'--repo',REPO]))
 
     def merge_with_pinned_tool(self, repo, number):
         pinned=git(repo,'rev-parse','HEAD:.process').stdout.strip()
@@ -180,10 +247,13 @@ class Provider:
             raise Rejected('existing immutable process pin/tool not available cleanly')
         # This stock tool rechecks PR scope, required checks and expected head
         # and uses the SHA-conditional merge route. No direct merge API fallback.
-        return c.run(['node',str(Path(repo)/'.process/tool/p3.mjs'),'merge',str(number),
+        pr=self.pr_info(number)
+        request={'repo':REPO,'head':pr['headRefName'],'base':pr['baseRefName'],'pr':number,'expected_head':pr['headRefOid']}
+        facts={'observed_head':self.head(pr['headRefName']),'existing_gate_green':self.gate_green(pr['headRefOid'])}
+        return self._perform('github.pr.merge_job',request,lambda:c.run(['node',str(Path(repo)/'.process/tool/p3.mjs'),'merge',str(number),
                       '--plain','--no-review',
                       'Disposable native Process4 experiment: ARCH-owned module tests and actual ownership validated; no separate reviewer or new product stage introduced.'],
-                     cwd=repo,timeout=120)
+                     cwd=repo,timeout=120),facts)
 
     def contains(self, ancestor, descendant):
         if not SHA.fullmatch(ancestor) or not SHA.fullmatch(descendant): raise Rejected('exact integration SHAs required')

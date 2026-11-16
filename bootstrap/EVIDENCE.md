@@ -1,3 +1,23 @@
+# Latest grants-route integration and pending-worker recovery
+
+111 bootstrap and44 grants tests now pass. All closed native Provider mutation
+methods traverse the existing Broker with an explicitly technical NativeInstructionScope.
+No owner policy was fabricated or changed. Actual native ARCH verification persisted
+one state event with all other state unchanged; a forbidden main-merge request and
+untyped write were denied with zero adapter/transport calls. Evidence:
+evidence/native-development-cycle/actual-broker-route-validation.json.
+
+A scheduled wake arrived after ROOT final and restored the managed workspace. The
+old unfinished worker was absent from live inventory and its patch absent; ROOT
+replaced that pending assignment from durable handoff. This establishes observed
+bounded pending-work recovery, not VM replacement, credential rotation or idle
+reactive wake. Evidence: actual-pending-worker-recovery.json in the same directory.
+
+The five-minute timer requested by owner was rejected by scheduler's six/hour
+limit; ten-minute continuation remains enabled. Reactive messages do not use it.
+
+---
+
 # Latest actual native development and communication evidence
 
 This section supersedes historical acceptance conclusions below. The owner's

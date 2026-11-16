@@ -1,0 +1,14 @@
+{
+  "classification": "Actual scheduled continuation and bounded unfinished-worker recovery",
+  "wake": "Scheduled instruction arrived after preceding assistant final",
+  "environment": "Managed environment initially starting; supported wait returned ready",
+  "workspace_head": "18a3004",
+  "workspace_status_before_replacement": "clean",
+  "native_inventory_before_replacement": [
+    "/root"
+  ],
+  "pending_assignment": "native Provider writes through existing grants broker",
+  "observation": "Earlier worker patch absent; old native worker not in live inventory. No assertion about cause, VM replacement, or credential renewal.",
+  "recovery": "ROOT read durable handoff and started /root/native_grants_integration with same narrow file ownership; completed cycle not restarted",
+  "reactive_wake_claim": false
+}

@@ -106,3 +106,20 @@ standing prohibitions. Pause only for actual individually confirmed external
 conditions after independent implementation work is exhausted—not optional isolation
 or deletion-resurrection experiments. Do not duplicate timers or repeat completed
 capability probes merely to produce activity.
+
+## Native provider broker integration
+
+All closed native Provider write methods now traverse the existing grants Broker
+with a supervisor-constructed Subject and NativeInstructionScope. This scope is a
+technical restriction of this already-authorized experiment; it is not a generated
+owner-approved policy, and Host.configured remains unchanged. Typed state/ref/push/
+PR routes reject other repositories, protected refs and unknown mutation payloads.
+Merge refreshes actual PR scope/head/gate before the existing pinned process tool.
+Cycle's actual ownership/module checks remain prerequisites, not replaced by the
+broker. Raw mutating _api calls are rejected before transport.
+
+This is controller-route integration, not platform-exclusive provider authority:
+the internal Python adapter and inherited native tools are not an OS security
+boundary. Current validation: 111 bootstrap and 44 grants tests pass. Actual native
+ARCH state-write/denial evidence is recorded separately, without treating fixture
+adapters or supervisor-supplied identity text as platform authentication.

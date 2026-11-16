@@ -81,3 +81,12 @@ Do not treat a block in one path (such as invalid OAuth credentials) as an
 assignment-level block when separate implementation, security review or
 verification work remains executable. The supervisor must record exactly which
 individual items are blocked and why.
+
+## Native controller route
+
+The approved native implementation in ../native/cycle.py reuses Broker/Subject
+with NativeInstructionScope, a technical restriction of existing assignment
+instructions. It does not synthesize an owner_approved policy or alter the pinned
+Host.configured path. All closed native Provider writes pass this broker route;
+Cycle still supplies actual ownership/module acceptance and exact-head gate checks.
+This cannot prevent Python/raw-tool bypass in inherited native permissions.

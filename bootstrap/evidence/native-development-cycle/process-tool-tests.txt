@@ -63,6 +63,12 @@ test_idle_wake_and_active_delivery_are_different (test_native_communication.Mail
 test_pending_survives_delivery_and_new_messages (test_native_communication.MailboxTests.test_pending_survives_delivery_and_new_messages) ... ok
 test_replacement_redelivers_unacknowledged_message (test_native_communication.MailboxTests.test_replacement_redelivers_unacknowledged_message) ... ok
 test_unknown_activity_and_generation_fail_closed (test_native_communication.MailboxTests.test_unknown_activity_and_generation_fail_closed) ... ok
+test_adapter_failure_is_not_recorded_as_returned (test_native_cycle.NativeBrokerTests.test_adapter_failure_is_not_recorded_as_returned) ... ok
+test_merge_requires_current_head_gate_and_experimental_base (test_native_cycle.NativeBrokerTests.test_merge_requires_current_head_gate_and_experimental_base) ... ok
+test_raw_mutating_api_is_rejected_before_transport (test_native_cycle.NativeBrokerTests.test_raw_mutating_api_is_rejected_before_transport) ... ok
+test_ready_reads_actual_pr_scope_before_adapter (test_native_cycle.NativeBrokerTests.test_ready_reads_actual_pr_scope_before_adapter) ... ok
+test_scope_denies_identity_repo_and_untyped_changes_before_adapter (test_native_cycle.NativeBrokerTests.test_scope_denies_identity_repo_and_untyped_changes_before_adapter) ... ok
+test_state_write_uses_broker_and_records_actual_adapter_return (test_native_cycle.NativeBrokerTests.test_state_write_uses_broker_and_records_actual_adapter_return) ... ok
 test_arch_correction_is_not_recorded_as_owner_words (test_native_cycle.NativeControlJournalTests.test_arch_correction_is_not_recorded_as_owner_words) ... ok
 test_arch_retry_preserves_history_and_owner_cap (test_native_cycle.NativeControlJournalTests.test_arch_retry_preserves_history_and_owner_cap) ... ok
 test_owner_instruction_requires_explicit_source_and_retains_exact_text (test_native_cycle.NativeControlJournalTests.test_owner_instruction_requires_explicit_source_and_retains_exact_text) ... ok
@@ -106,6 +112,6 @@ test_root_starts_configures_and_replaces_subordinates (test_roles.RoleTests.test
 test_watcher_takeover_preserves_stop_and_no_self_successor (test_roles.RoleTests.test_watcher_takeover_preserves_stop_and_no_self_successor) ... ok
 
 ----------------------------------------------------------------------
-Ran 105 tests in 6.700s
+Ran 111 tests in 5.780s
 
 OK

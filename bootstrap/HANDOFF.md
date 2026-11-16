@@ -1,3 +1,22 @@
+Latest broker integration: native Provider closed write methods now reuse existing
+Broker/Subject with a technical NativeInstructionScope; no owner-approved policy is
+synthesized and Host.configured is unchanged. 111 bootstrap +44 grants tests pass.
+Actual native ARCH verification persisted one technical state event; all other
+state unchanged. Forbidden main-merge request denied before sentinel adapter (0calls);
+untyped mutation denied before transport (0calls). Evidence:
+evidence/native-development-cycle/actual-broker-route-validation.json.
+This proves controller-route enforcement, not platform-exclusive credentials/tools.
+The replacement implementation assignment is complete. native_grants_integration
+is now performing a read-only remaining-requirements audit; do not duplicate it.
+
+Latest scheduled wake arrived after the preceding final. Managed environment changed
+starting→ready via supported wait; workspace at18a3004 was clean. Native inventory
+contained only ROOT, and earlier worker's planned broker patch was absent. ROOT
+reassigned the unfinished narrow work to native_grants_integration from this durable
+handoff, preserving the completed run. Do not duplicate that active code assignment.
+Evidence: evidence/native-development-cycle/actual-pending-worker-recovery.json.
+This proves bounded pending-work recovery, not VM replacement or credential refresh.
+
 Owner requested five-minute bootstrap continuation. Actual supported scheduler
 rejected it: tasks cannot run more than six times per hour. Private read-back
 confirmed existing timer still enabled every ten minutes. Do not create duplicate
