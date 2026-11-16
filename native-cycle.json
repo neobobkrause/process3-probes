@@ -395,7 +395,7 @@
         "sender": "ROOT",
         "recipient": "ARCH",
         "text": "Recovery verification: preserve completed jobs, pending report notices, owner stop and cap. Report RECEIVED with this exact message ID and generation2; take no product action.",
-        "status": "delivered_unacknowledged",
+        "status": "acknowledged",
         "created_at": 1794865179.8108277,
         "deliveries": [
           {
@@ -404,7 +404,16 @@
             "tool": "followup_task",
             "recorded_at": 1794865201.5098329
           }
-        ]
+        ],
+        "ack": {
+          "target": "/root/arch_recovered",
+          "generation": 2,
+          "processing_started_at": 1794865205.9136355,
+          "recorded_at": 1794865229.2846935,
+          "source": "observed-native-actor-event",
+          "receipt": "Actual native actor RECEIVED role-recovery-arch-g2 generation2; source event observed by ROOT",
+          "latency_seconds": 26.102807760238647
+        }
       }
     },
     "events": []
