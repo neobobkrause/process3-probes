@@ -302,6 +302,10 @@
       "JOB:web": {
         "target": "/root/p4_arch_native_cycle/web_replacement",
         "generation": 3
+      },
+      "COORDINATOR": {
+        "target": "/root/p4_coordinator",
+        "generation": 1
       }
     },
     "messages": {
