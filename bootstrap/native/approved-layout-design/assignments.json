@@ -6,7 +6,7 @@
   "runtime": "/workspace/work/p4-native-cycle",
   "root": "/root/process4_root",
   "arch": "/root/process4_root/arch",
-  "start_condition": "Wait for console layout adoption and ROOT/ARCH binding handshake before JOB/session/provider mutations",
+  "start_condition": "Bound-mode ROOT/ARCH handshake observed; product work remains held until ROOT confirms all four independent bootstrap streams are combined by console integrator.",
   "module_order": [
     "provider",
     "web",
@@ -48,5 +48,24 @@
     "host": "127.0.0.1",
     "port": 8766
   },
-  "actual_execution": false
+  "actual_execution": false,
+  "bound_context": {
+    "mode": "addressable_root",
+    "root": {
+      "target": "/root/process4_root",
+      "generation": 1
+    },
+    "arch": {
+      "target": "/root/process4_root/arch",
+      "generation": 3
+    },
+    "coordinator": {
+      "target": "/root/process4_root/coordinator",
+      "generation": 3
+    },
+    "source": "Actual durable state read by ARCH; ROOT technical execution hold remains"
+  },
+  "product_execution_hold": true,
+  "process_lane_request": "ARCH explicitly requested ROOT to start dedicated owner-authorized PROCESS lane for stream C governance; product JOBs may not repair process.",
+  "legacy_consumer_preflight": "Resolve existing DONE web old-tree target safely; only current eligible session may receive edit authority, otherwise retain provider obligation until fresh attempt/session registration."
 }
