@@ -58,6 +58,21 @@ def validate_module_evidence(evidence, expected_head, *, module=None, trusted=No
         'owned_trees': copy.deepcopy(tested), 'dependency_trees': copy.deepcopy(dependencies)}}
 
 
+def _job_paths(state, module):
+    job = state.get('jobs', {}).get(module)
+    paths = job.get('paths') if isinstance(job, dict) else None
+    if not isinstance(paths, (list, tuple)) or not paths:
+        raise ValueError('current assigned module owned paths required')
+    for path in paths: _text(path, 'assigned owned path')
+    if len(set(paths)) != len(paths): raise ValueError('duplicate assigned owned paths')
+    declared = state.get('modules', {}).get(module, {})
+    if 'paths' in declared:
+        defined = declared['paths']
+        if not isinstance(defined, (list, tuple)) or not all(isinstance(p, str) for p in defined) or set(defined) != set(paths):
+            raise ValueError('assigned paths differ from current declared module ownership')
+    return sorted(paths)
+
+
 def start_round(state, head, modules=None):
     exact_head(head)
     declared = state.get('modules', state.get('jobs', {}))
@@ -68,6 +83,7 @@ def start_round(state, head, modules=None):
     if previous and previous['head'] == head:
         if previous['required_modules'] != modules:
             raise ValueError('same-head round scope cannot silently change')
+        _round(state, head)  # Reusing a round must not relabel its assignment paths.
         return previous
     carry = {} if not previous else copy.deepcopy(previous.get('carry_flaws', {}))
     if previous:
@@ -77,7 +93,8 @@ def start_round(state, head, modules=None):
             for flaw in walk['flaws']: carry[flaw['id']] = copy.deepcopy(flaw)
     if len(carry) > 256: raise ValueError('outstanding flaw capacity exceeded; ARCH must resolve existing obligations')
     state['native_development'] = {'round': 1 if not previous else previous['round'] + 1,
-        'head': head, 'required_modules': modules, 'module_evidence': {},
+        'head': head, 'required_modules': modules,
+        'required_owned_paths': {module: _job_paths(state, module) for module in modules}, 'module_evidence': {},
         'walks': {}, 'carry_flaws': carry}
     return state['native_development']
 
@@ -92,6 +109,8 @@ def _round(state, head=None):
         raise ValueError('invalid current development round')
     if not set(state.get('jobs', {})).issubset(value['required_modules']):
         raise ValueError('round scope is stale: newly assigned module requires integration and new round')
+    if value.get('required_owned_paths') != {module: _job_paths(state, module) for module in value['required_modules']}:
+        raise ValueError('round scope is stale: module ownership paths changed at the same head')
     if head is not None and value['head'] != head: raise ValueError('stale round integration head')
     return value
 
@@ -99,6 +118,8 @@ def _round(state, head=None):
 def record_module_evidence(state, module, evidence, *, trusted):
     value = _round(state)
     if module not in value['required_modules']: raise ValueError('module outside current product scope')
+    if sorted(trusted.get('owned_paths', [])) != _job_paths(state, module):
+        raise ValueError('trusted owned paths must exactly match current assigned job paths')
     declared_dependencies = state.get('modules', {}).get(module, {}).get('uses', [])
     if set(trusted.get('required_dependencies', [])) != set(declared_dependencies):
         raise ValueError('trusted dependency scope must match declared module uses')
@@ -114,6 +135,7 @@ def _modules_valid(state, value):
         if not isinstance(job, dict) or job.get('accepted') is not True or job.get('checkpoint') != e.get('tested_head'): return False
         proof = e.get('provenance', {})
         try:
+            if sorted(proof.get('owned_paths', [])) != _job_paths(state, module): return False
             validate_module_evidence(e, value['head'], module=module, trusted={
                 'accepted': job['accepted'], 'checkpoint': job['checkpoint'],
                 'owned_paths': proof.get('owned_paths'), 'tested_trees': proof.get('owned_trees'),

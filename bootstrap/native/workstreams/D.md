@@ -19,7 +19,10 @@ resource. No GitHub message transport is introduced.
 `walks.start_round(state, head, modules=None)` starts or idempotently returns the
 latest round at an exact integration SHA. Default module scope is actual assigned
 jobs, not every declared consumer: it does not invent a report-module assignment.
-At a new head it clears stale module/walk receipts and carries unresolved flaws.
+The round also snapshots each required job's owned paths. Trusted facts and stored
+proof must match the current assigned job paths and current declared ownership;
+a same-head assignment-path change invalidates the round instead of relabeling old
+acceptance. At a new head it clears stale module/walk receipts and carries unresolved flaws.
 Only current-round state is retained; source commits and meaningful report references
 remain in Git. Outstanding flaws are bounded to 256; capacity errors preserve work.
 
@@ -116,7 +119,7 @@ pin was changed.
 
 ## Verification and live-pilot boundary
 
-The focused suite verifies 14 control-plane cases: stale module/dependency tests,
+The focused suite verifies 15 control-plane cases: stale module/dependency tests,
 missing/prose evidence, stage order, exact SHA, flaw-to-job routing, new-round rewalk,
 prior flaw closure, newly assigned scope changes, owner stop, loopback/path/symlink limits, real-receipt requirements,
 manifest idempotency/bounds and unconditional publication denial. These are code

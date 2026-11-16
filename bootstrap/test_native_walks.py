@@ -9,7 +9,7 @@ TREE = 'c' * 40
 
 
 def state(head=H):
-    return {'jobs': {'web': {'accepted': True, 'checkpoint': J}},
+    return {'jobs': {'web': {'accepted': True, 'checkpoint': J, 'paths': ['toy/web']}},
             'modules': {'web': {'paths': ['toy/web'], 'uses': ['provider']}, 'report': {'paths': ['toy/report']}},
             'stopped': False}
 
@@ -107,6 +107,30 @@ class WalkTests(unittest.TestCase):
         with self.assertRaises(ValueError): w.record_walk(s, 'external_walk', walk())
         wrong = {**flaw, 'module': 'other-repo'}
         with self.assertRaises(ValueError): w.record_walk(s, 'internal_walk', walk(flaws=[wrong]))
+
+    def test_evidence_paths_match_assignment_and_same_head_cannot_relabel_scope(self):
+        s = state(); w.start_round(s, H)
+        wrong = {**module_facts(), 'owned_paths': ['toy/other'],
+                 'tested_trees': {'toy/other': TREE}, 'current_trees': {'toy/other': TREE}}
+        with self.assertRaisesRegex(ValueError, 'current assigned job paths'):
+            w.record_module_evidence(s, 'web', module_receipt(), trusted=wrong)
+        self.assertEqual(s['native_development']['module_evidence'], {})
+        w.record_module_evidence(s, 'web', module_receipt(), trusted=module_facts())
+        forged = copy.deepcopy(s)
+        forged['native_development']['module_evidence']['web']['provenance'].update(
+            owned_paths=['toy/other'], owned_trees={'toy/other': TREE})
+        self.assertEqual(w.assess_round(forged)['status'], 'module_tests')
+        # Even matching changes to declared+assigned ownership cannot retitle an
+        # existing same-head round and reuse its previous module/walk acceptance.
+        s['jobs']['web']['paths'] = ['toy/other']; s['modules']['web']['paths'] = ['toy/other']
+        with self.assertRaisesRegex(ValueError, 'ownership paths changed'):
+            w.assess_round(s)
+        with self.assertRaisesRegex(ValueError, 'ownership paths changed'):
+            w.start_round(s, H)
+        with self.assertRaisesRegex(ValueError, 'ownership paths changed'):
+            w.record_module_evidence(s, 'web', module_receipt(), trusted=wrong)
+        w.start_round(s, 'f'*40)
+        self.assertEqual(s['native_development']['required_owned_paths'], {'web': ['toy/other']})
 
     def test_new_assigned_module_cannot_be_omitted_to_finish_old_round(self):
         s = ready(); w.record_walk(s, 'internal_walk', walk()); w.record_walk(s, 'external_walk', walk())
