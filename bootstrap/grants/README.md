@@ -51,3 +51,29 @@ on disposable probe resources, and measure actual role restart and recovery.
 
 These are security and process proofs, not additional product testing stages.
 Process4 product stages remain module tests, internal walk, external walk.
+
+## Continuation and stop conditions
+
+The new continuation.py and test_continuation.py distinguish five situations:
+
+- COMPLETE: every assigned job is accepted AND every required live proof is recorded.
+- CONTINUE: at least one independently executable assignment or proof remains.
+- EXTERNAL_BLOCKED: every outstanding item has a specific confirmed external dependency.
+- OWNER_STOPPED: owner-directed stop, preserved but never represented as complete.
+- INVALID STATE: reject rather than manufacture a success status.
+
+An individual Codex turn ending, a draft PR, or passing unit tests is *not*
+assignment completion. A runner must invoke assess() on trusted, durable
+state after every turn and dispatch a successor when the result is CONTINUE.
+It must persist the status and recover after crash or host replacement.
+
+IMPORTANT: This repository prototype does not create a permanent cloud runner.
+The ChatGPT conversation that wrote it cannot continue executing once it ends.
+Until an independent runner is provisioned, automatic cross-task continuation
+remains unproven. The contract must not be described as self-sustaining merely
+because its classification tests pass.
+
+Do not treat a block in one path (such as invalid OAuth credentials) as an
+assignment-level block when separate implementation, security review or
+verification work remains executable. The supervisor must record exactly which
+individual items are blocked and why.
