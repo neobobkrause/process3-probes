@@ -11,6 +11,16 @@
         "toy/native-cycle/provider"
       ],
       "uses": []
+    },
+    "web": {
+      "id": "web",
+      "order": 20,
+      "paths": [
+        "toy/native-cycle/web"
+      ],
+      "uses": [
+        "provider"
+      ]
     }
   },
   "jobs": {
@@ -40,6 +50,35 @@
       "branch": "codex/p4-job-native-workshop-20261116-provider",
       "instructions": [],
       "checkpoint": null
+    },
+    "web": {
+      "id": "web",
+      "order": 20,
+      "paths": [
+        "toy/native-cycle/web"
+      ],
+      "uses": [
+        "provider"
+      ],
+      "prompt": "Work only within your assigned paths and tests. No bootstrap, process, .process, settings, grants, credentials, network accounts, inference API, git pushes, PRs, merges, or other module edits. Python standard library only. Leave preservation and provider operations to the native controller. Report changed files, test argv/result, and any unfinished work truthfully. Implement the standard-library workshop-card HTTP app per UX_SCREENS S1-S4: CLI --provider-path --host --port; import provider from injected directory; create_server(host, port, provider_path); loopback binding only. GET / form, GET /quote result or 400 validation, unknown 404. Provider constants drive visible unit price/range; integer cents formatting, escaped HTML, labelled input, role=alert. Initial invalid input may reset to 1, explicitly record this known unfinished correction in module README. Own unittest tests run a loopback ephemeral server and make real HTTP requests, covering result, validation/duplicate/missing parameters, unknown routes, escaping and injected revised provider values. Do not implement provider logic or edit provider. No long-running server in final test command.",
+      "completion": "S1-S4 implemented, own tests pass using actual HTTP and injected provider; known rejected-input retention shortcoming recorded for later correction.",
+      "verify": [
+        "python3",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "toy/native-cycle/web",
+        "-p",
+        "test_*.py",
+        "-v"
+      ],
+      "timeout": 180,
+      "status": "ready",
+      "attempt": 0,
+      "branch": "codex/p4-job-native-workshop-20261116-web",
+      "instructions": [],
+      "checkpoint": null
     }
   },
   "notices": {},
@@ -55,6 +94,11 @@
       "at": 1794862414.2317126,
       "kind": "assignment",
       "job": "provider"
+    },
+    {
+      "at": 1794862415.920997,
+      "kind": "assignment",
+      "job": "web"
     }
   ],
   "native": true,
