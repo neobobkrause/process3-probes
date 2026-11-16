@@ -404,8 +404,8 @@
       "generation": 3
     },
     "COORDINATOR": {
-      "target": "/root/coordinator_recovered",
-      "generation": 2
+      "target": "/root/process4_root/coordinator",
+      "generation": 3
     },
     "ARCH": {
       "target": "/root/process4_root/arch",
