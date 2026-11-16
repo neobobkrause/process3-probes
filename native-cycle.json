@@ -102,11 +102,11 @@
         "-v"
       ],
       "timeout": 180,
-      "status": "running",
+      "status": "paused",
       "attempt": 2,
       "branch": "codex/p4-job-native-workshop-20261116-web",
       "instructions": [],
-      "checkpoint": "253e7fb458f8cb2baf7f696e50c70fac6652f8ed",
+      "checkpoint": "6ae1ca7e5967f400c0e60bb58e575208b4e06ff2",
       "base": "253e7fb458f8cb2baf7f696e50c70fac6652f8ed",
       "original_base": "3d4f7dbf624dba0c04af3d67a0b5fcea0b4c2e52",
       "accepted": false,
@@ -115,13 +115,8 @@
       ],
       "workspace": "/workspace/work/p4-native-cycle/web-2",
       "session": "/root/p4_arch_native_cycle/web_job",
-      "last_outcome": "completed",
-      "verification": {
-        "returncode": 0,
-        "test_count": 6,
-        "stdout": "",
-        "stderr": "test_form (test_app.WebTests.test_form) ... ok\ntest_injected_revised_provider_and_escaping (test_app.WebTests.test_injected_revised_provider_and_escaping) ... ok\ntest_loopback_only (test_app.WebTests.test_loopback_only) ... ok\ntest_not_found (test_app.WebTests.test_not_found) ... ok\ntest_result_and_refresh (test_app.WebTests.test_result_and_refresh) ... ok\ntest_validation (test_app.WebTests.test_validation) ... ok\n\n----------------------------------------------------------------------\nRan 6 tests in 3.524s\n\nOK\n"
-      },
+      "last_outcome": "interrupted",
+      "verification": null,
       "pr": "https://github.com/neobobkrause/process3-probes/pull/272",
       "pr_number": 272,
       "integrated": "a6f613b5461afc4a0996c4bb5016a5668fc4c9f7",
@@ -258,9 +253,21 @@
       "job": "web",
       "base": "253e7fb458f8cb2baf7f696e50c70fac6652f8ed",
       "checkpoint": "253e7fb458f8cb2baf7f696e50c70fac6652f8ed"
+    },
+    {
+      "at": 1794862918.6316495,
+      "kind": "native-checkpoint",
+      "job": "web",
+      "checkpoint": "6ae1ca7e5967f400c0e60bb58e575208b4e06ff2",
+      "status": "paused"
     }
   ],
   "native": true,
   "integration_branch": "codex/p4-integration-workshop-20261116",
-  "base": "f98b7002e0fee803fb3e6da6d0cd8be8d1f9751e"
+  "base": "f98b7002e0fee803fb3e6da6d0cd8be8d1f9751e",
+  "native_mailbox": {
+    "recipients": {},
+    "messages": {},
+    "events": []
+  }
 }
