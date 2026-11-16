@@ -1,3 +1,28 @@
+# Latest owner-guided operational and lifecycle evidence
+
+Routine messaging now uses one bounded local atomic snapshot and native transport.
+Actual ARCHexchange11.837s used zero remote state calls, remote blob unchanged.
+Separate meaningful recoverymigration24265→18121bytes removed remote mailbox while
+preserving jobs/owner controls and both report changes as compact obligation. Bounds,
+cleanup/headroom and workspace-loss limits documented; no GitHub messagebus adopted.
+135bootstrap+44grants tests pass. Provider authority layers and pushURL guards verified.
+
+After-ROOT-final candidate: child prepared completion about72s before scheduledentry;
+normal final becamevisible afterentry. No unaided topROOTwake observed in boundedwindow,
+not universalabsence proof. Default local appserver daemon unavailable; noauthretry.
+
+Corrected source depthinterpretation: historicalzeroindexed≤3 allows fournodes.
+Segregated fixture bridge0→supervisor1→ARCH2→JOB3 actually works: JOB→idleancestor
+11.139s; sender independent whilefinalheld45s. Synthetic coordinator question started
+no productwork/sessions. Activebridge interrupted supervisory1 while running, created
+siblingreplacement2; it resumedpendingfixturestep through retainedARCH and received
+retainedJOB's newmessage13.542s aftersend. No operatingregistry/grant/lineagechanges.
+Aggregate actualevidence under parent-notification. See ROOT-LAYOUT-PROPOSAL.md for
+narrowowneridentitydecision; originaltopROOTwake, idleconsolealerts and instantfailure
+replacement remain unclaimed. This is NOT fullProcess4completion or a productstage.
+
+---
+
 # Latest native role recovery and continuation assessment
 
 120 bootstrap +44 grants tests pass. Native coordinator and ARCH generation2

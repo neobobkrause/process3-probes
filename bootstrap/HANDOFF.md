@@ -1,3 +1,21 @@
+# Current status: narrow owner ROOT-identity decision pending
+
+All new owner-guided investigations and read-only alternative fixture are complete.
+Actual assessment: evidence/parent-notification/current-owner-decision-assessment.json
+reports no runnable work, currenttopROOTidlewake remains unmet and alternative
+adoption requires explicitowneridentitydecision. No ownerstop or grants/caps changed.
+Pragmaticauthority assessment is complete; no physical no-bypass claim silently
+added as a new gate. Existing controller/provider/instruction limits stay visible.
+
+Proposal is concrete and measured: native/ROOT-LAYOUT-PROPOSAL.md. Ifownerapproves,
+resume existingtimer and implement explicitaddressableROOTlayout/rootbinding/console
+forwarding/safetyrecovery, preserve oldmode and verify nativecycle undernewmode.
+Approval has NOT been received. Do not interpret scheduledwake or fixture success
+as approval; do not silentlyrename ROOT. Parentmaypause currentcontinuation while
+awaiting this genuine roleidentitydecision, not routine technical/auth action.
+Do not repeat completedcapability experiments or pollowner. Normal10minute schedule
+was restored aftertrial; recordactual supportedpause result beforeclaimingpaused.
+
 # Current reviewable lifecycle alternative (not adopted)
 
 After-final candidate outcome: child completed/prepared result, but this ROOT entry
