@@ -1,3 +1,36 @@
+# Second scheduled continuation and current feasibility boundary
+
+The second scheduled native continuation arrived after a preceding final and ran
+six passing module tests. A native ARCH child also started a JOB child, received
+its actual six-test success and reported NATIVE_ARCH_JOB_CHAIN_OK. The child-authored
+module artifact is preserved as draft PR #270, targeting the experimental grants
+branch. Parent manually created this PR; exclusive broker operation is not claimed.
+
+The current mandatory-native-capability assessment is platform_blocked, not complete.
+Four missing capabilities have individually recorded prerequisites:
+independent ROOT recreation, whole-task-loss recovery, enforced role/module isolation,
+and exclusive grants enforcement. The first two require a supported independent
+native task/ROOT lifecycle operation not exposed here. The latter two require a
+platform role capability boundary absent in the native child interface; actual
+sibling-canary write succeeded and official inheritance documentation agrees.
+
+All bounded positive native trials identified in NATIVE-CLOUD.md are recorded,
+including two actual post-final continuations and ROOT→ARCH→JOB. No invented API,
+credential access or extra permissions were used to force the missing proofs.
+The saved continuation prompt explicitly required pausing when remaining mandatory
+demonstrations were blocked; the supported automation update confirmed disabled.
+See evidence/native-cloud/actual-second-wake-and-feasibility.json and
+schedule-pause.json. No duplicate timers should be created to repeat these tests.
+This scoped feasibility conclusion does not assert every conceivable software
+improvement is finished or all OpenAI products/accounts have identical capabilities.
+
+Final process-tool verification: 66 bootstrap tests and 44 grants/continuation tests
+pass. Native module tests pass separately. No full Process4 completion, whole-ROOT
+replacement, credential-refresh, security-isolation or real product walk is claimed.
+All code/evidence is preserved on the existing draft implementation branches.
+
+---
+
 # Current approved native-Cloud evidence — 16 November 2026
 
 The owner prohibits third-party VM hosting and metered inference. The prior

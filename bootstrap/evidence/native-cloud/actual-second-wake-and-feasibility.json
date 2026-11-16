@@ -1,0 +1,107 @@
+{
+  "scope": "Mandatory native Process4 capability feasibility under current exposed interfaces, not a claim that every conceivable software improvement is finished.",
+  "findings": {
+    "managed_execution": {
+      "state": "observed",
+      "evidence": "Managed Cloud commands in both scheduled successor turns; same provided environment.",
+      "limitation": ""
+    },
+    "native_child_start": {
+      "state": "observed",
+      "evidence": "actual-native-lifecycle.json; native_provider completed actual code/tests.",
+      "limitation": ""
+    },
+    "native_child_message": {
+      "state": "observed",
+      "evidence": "actual-native-lifecycle.json; follow-up and NATIVE_PARTIAL_READY receipt.",
+      "limitation": ""
+    },
+    "native_child_interrupt": {
+      "state": "observed",
+      "evidence": "actual-native-lifecycle.json; interrupted running child.",
+      "limitation": ""
+    },
+    "native_child_replacement": {
+      "state": "observed",
+      "evidence": "actual-native-lifecycle.json; replacement completed prior unfinished work.",
+      "limitation": ""
+    },
+    "hosted_wake_delivery": {
+      "state": "observed",
+      "evidence": "actual-successor-wake.json plus second scheduled turn after a final; actual shell/tests executed.",
+      "limitation": ""
+    },
+    "root_recreation": {
+      "state": "not_exposed",
+      "evidence": "Current collaboration/automation tool schemas and codex cloud command inventory.",
+      "limitation": "No supported operation exposed here creates an independent top-level replacement ROOT; child creation is confined to current tree and scheduled delivery addresses retained chat."
+    },
+    "root_loss_recovery": {
+      "state": "blocked",
+      "evidence": "Current supported lifecycle inventory; repeated wake trials retained the same chat/environment.",
+      "limitation": "Whole-task-loss demonstration needs a supported independent ROOT/task restore/create control. No such control is exposed; do not destroy the only task or invent an endpoint."
+    },
+    "role_security_isolation": {
+      "state": "blocked",
+      "evidence": "Actual authorized sibling-canary write succeeded; official Subagents approvals/sandbox documentation confirms inherited parent permissions.",
+      "limitation": "Native child interface supplies no independent role sandbox/credential/tool policy; instructions cannot establish the required boundary."
+    },
+    "exclusive_grants_enforcement": {
+      "state": "blocked",
+      "evidence": "Same parent tools available to children; observed file-boundary bypass; no per-role capability parameter in native spawn interface.",
+      "limitation": "The proposed broker cannot be exclusive while model sessions retain direct bypass-capable tools. A platform-enforced role capability boundary is required."
+    }
+  },
+  "assessment": {
+    "status": "platform_blocked",
+    "demonstrated": [
+      "managed_execution",
+      "native_child_start",
+      "native_child_message",
+      "native_child_interrupt",
+      "native_child_replacement",
+      "hosted_wake_delivery"
+    ],
+    "missing": [
+      "root_recreation",
+      "root_loss_recovery",
+      "role_security_isolation",
+      "exclusive_grants_enforcement"
+    ],
+    "blocked": [
+      "root_recreation",
+      "root_loss_recovery",
+      "role_security_isolation",
+      "exclusive_grants_enforcement"
+    ],
+    "unresolved": []
+  },
+  "actual_this_turn": {
+    "scheduled_after_previous_final": true,
+    "post_turn_wake_number": 2,
+    "module_tests": 6,
+    "native_role_chain": {
+      "parent": "/root",
+      "arch": "/root/native_arch_chain_probe",
+      "job": "/root/native_arch_chain_probe/arch_job_probe",
+      "marker": "NATIVE_ARCH_JOB_CHAIN_OK",
+      "tests": 6
+    },
+    "module_artifact": "https://github.com/neobobkrause/process3-probes/pull/270",
+    "artifact_creation": "parent operator, not autonomous exclusive-grants route"
+  },
+  "required_demonstrations_dependent_on_blockers": [
+    "whole-ROOT/watcher takeover after loss",
+    "ordinary role-restricted autonomous development",
+    "real exclusive-controller allow/deny/bypass proof",
+    "credential isolation of product sessions",
+    "full constrained Process4 bootstrap supervision"
+  ],
+  "limits": [
+    "No assertion of global impossibility for every OpenAI account/future release.",
+    "Native subscription inference worked without another login; real OAuth rotation was not tested or required for native transport.",
+    "Product walks/releases are outside current probes-only/no-CivicSmith2 authority.",
+    "Do not substitute paid hosting, metered inference, repeated inherited login, new grants or hidden APIs."
+  ],
+  "schedule_action": "Pause existing continuation after recording the confirmed blockers; do not consume indefinite duplicate trial runs."
+}

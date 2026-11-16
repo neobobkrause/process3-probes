@@ -1,3 +1,36 @@
+# Current feasibility conclusion after two scheduled continuations
+
+Two scheduled native continuations have now arrived after prior final responses
+and executed work. The second reran six passing module tests and started a native
+ARCH child, which independently started and supervised a JOB child passing those
+six tests. The native child-authored module is preserved in draft PR #270:
+https://github.com/neobobkrause/process3-probes/pull/270 . Its checkpoint and PR
+creation were parent operator actions, not exclusive-grants-controller proof.
+
+The native bounded child lifecycle and repeated same-chat continuation are observed.
+Full Process4 cannot currently be demonstrated through the tested exposed interfaces:
+independent whole-ROOT recreation/recovery is not exposed, and required role/module
+isolation failed its actual canary challenge. Native children inherit parent
+permissions/tools; a proposed broker cannot be exclusive while bypass routes remain.
+No amount of repeated passing toy tests establishes those missing controls.
+
+`evidence/native-cloud/actual-second-wake-and-feasibility.json` individually maps
+every missing mandatory native capability to its specific supported-interface or
+observed enforcement blocker. The classifier returns platform_blocked, not complete.
+This conclusion is scoped to this account's tested interfaces, not every possible
+OpenAI product/account or future release. It does not claim all conceivable code
+improvements are finished. Further mandatory *demonstrations* require the missing
+native lifecycle/capability controls rather than another routine technical choice.
+
+The existing continuation timer is now paused under its explicit stop condition.
+The supported update confirmed is_enabled=false; see schedule-pause.json. Do not create replacement
+timers to repeat the same tests. Resume substantive native work when a supported
+mechanism addresses one of the recorded blockers; preserve all branches and grants.
+No paid VM, API fallback, credential reauthentication or wider permissions is proposed.
+The research and chronological trial notes below remain historical evidence.
+
+---
+
 # Native Codex Cloud feasibility and actual probes
 
 16 November 2026. This is the approved architectural direction: OpenAI-managed

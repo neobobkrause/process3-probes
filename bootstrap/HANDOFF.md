@@ -1,3 +1,26 @@
+# Current handoff: native feasibility limitation, not completion
+
+Second post-final scheduled wake observed. Six module tests passed; a real bounded
+ROOT→ARCH→JOB native tree also passed six tests. Module artifact: draft PR #270.
+Implementation/evidence remains on #269 stacked on preserved #268. No merges.
+
+Read NATIVE-CLOUD.md's current conclusion and
+`evidence/native-cloud/actual-second-wake-and-feasibility.json`. All missing mandatory
+native capability demonstrations now have specific recorded blockers: no exposed
+independent whole-ROOT restore/create control, and no per-role restricted capability
+boundary (actual sibling-canary write succeeded; inherited permissions documented).
+The grants prototype cannot be exclusive without that platform boundary. The
+assessment is platform_blocked, never complete. No hidden task API, third-party VM,
+metered inference, recurring owner login or grant expansion is an acceptable fallback.
+
+Pause confirmation is recorded in evidence/native-cloud/schedule-pause.json. The
+explicit schedule stop condition applies; do not create duplicate timers or repeat
+passing tests indefinitely. Preserve all work and resume when a supported native
+mechanism addresses a recorded blocker. This does not prohibit a useful independent
+code task if one is later identified; it prevents overstating mandatory live proofs.
+
+---
+
 # Latest actual successor evidence
 
 The hourly native schedule delivered a new turn after the preceding final.
