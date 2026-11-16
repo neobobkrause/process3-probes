@@ -291,7 +291,7 @@
         "sender": "PROVIDER:provider",
         "recipient": "JOB:web",
         "text": "Provider changed; begin handling this durable notice and report the message ID, your current native target/generation, and first-processing time to ARCH through the native message tool. First-processing acknowledgement does not complete module work. Keep your assigned paths; ask ARCH for the current attempt workspace before editing after replacement. Notice: {\"commit\": \"d4eaa939c90d614d40fd50eab439632217d83a9b\", \"notice_id\": \"provider:d4eaa939c90d614d40fd50eab439632217d83a9b:web\", \"provider\": \"provider\", \"user\": \"web\"}",
-        "status": "delivered_unacknowledged",
+        "status": "acknowledged",
         "created_at": 1794862947.0384865,
         "deliveries": [
           {
@@ -300,7 +300,15 @@
             "tool": "followup_task",
             "recorded_at": 1794863029.1418333
           }
-        ]
+        ],
+        "ack": {
+          "target": "/root/p4_arch_native_cycle/web_replacement",
+          "generation": 3,
+          "processing_started_at": 1794863028.9048054,
+          "recorded_at": 1794863039.8818302,
+          "source": "observed-native-actor-event",
+          "receipt": "RECEIVED provider-notice:provider:d4eaa939c90d614d40fd50eab439632217d83a9b:web target=/root/p4_arch_native_cycle/web_replacement generation=3 started_at=1794863028.9048054"
+        }
       }
     },
     "events": []
