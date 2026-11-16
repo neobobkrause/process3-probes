@@ -114,13 +114,14 @@
         "provider:d4eaa939c90d614d40fd50eab439632217d83a9b:web"
       ],
       "workspace": "/workspace/work/p4-native-cycle/web-3",
-      "session": "/root/p4_arch_native_cycle/web_job",
+      "session": "/root/p4_arch_native_cycle/web_replacement",
       "last_outcome": "interrupted",
       "verification": null,
       "pr": "https://github.com/neobobkrause/process3-probes/pull/274",
       "pr_number": 274,
       "integrated": "a6f613b5461afc4a0996c4bb5016a5668fc4c9f7",
-      "trusted_baseline_merges": []
+      "trusted_baseline_merges": [],
+      "session_generation": 3
     }
   },
   "notices": {
@@ -272,8 +273,22 @@
   "integration_branch": "codex/p4-integration-workshop-20261116",
   "base": "f98b7002e0fee803fb3e6da6d0cd8be8d1f9751e",
   "native_mailbox": {
-    "recipients": {},
-    "messages": {},
+    "recipients": {
+      "JOB:web": {
+        "target": "/root/p4_arch_native_cycle/web_replacement",
+        "generation": 3
+      }
+    },
+    "messages": {
+      "provider-notice:provider:d4eaa939c90d614d40fd50eab439632217d83a9b:web": {
+        "sender": "PROVIDER:provider",
+        "recipient": "JOB:web",
+        "text": "Provider changed; begin handling this durable notice and report the message ID, your current native target/generation, and first-processing time to ARCH through the native message tool. First-processing acknowledgement does not complete module work. Keep your assigned paths; ask ARCH for the current attempt workspace before editing after replacement. Notice: {\"commit\": \"d4eaa939c90d614d40fd50eab439632217d83a9b\", \"notice_id\": \"provider:d4eaa939c90d614d40fd50eab439632217d83a9b:web\", \"provider\": \"provider\", \"user\": \"web\"}",
+        "status": "pending",
+        "created_at": 1794862947.0384865,
+        "deliveries": []
+      }
+    },
     "events": []
   }
 }
