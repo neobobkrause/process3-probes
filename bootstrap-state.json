@@ -253,6 +253,14 @@
       "kind": "role-turn-start",
       "role": "ROOT",
       "generation": 1
+    },
+    {
+      "at": 1794852711.0490327,
+      "kind": "role-turn-result",
+      "role": "ROOT",
+      "status": "blocked",
+      "thread_id": null,
+      "failure": "Codex exited 1"
     }
   ],
   "external_dependencies": {
@@ -274,15 +282,13 @@
   "role_sessions": {
     "ROOT": {
       "generation": 1,
-      "status": "running",
+      "status": "blocked",
       "timeout": 180,
       "reason": "Owner-authorized bootstrap entry role",
       "next_wake": 0,
-      "thread_id": null
+      "thread_id": null,
+      "blocker": "Codex exited 1"
     }
   },
-  "role_lease": {
-    "owner": "447dcc18-6bf5-4201-bbba-1599300dacff",
-    "until": 1794852915.8891563
-  }
+  "role_lease": null
 }
