@@ -14,6 +14,7 @@ from dataclasses import asdict, dataclass
 import re
 from collections.abc import Mapping
 from .capabilities import Finding, REQUIRED
+from . import layout
 
 SHA=re.compile(r'^[a-f0-9]{40}$')
 
@@ -63,6 +64,12 @@ def assess(state):
         else:
             item='capability:'+key;outstanding.append(item)
             if not finding or finding.state not in ('blocked','not_exposed'):never_block.add(item)
+    # Adoption is not role startup evidence. A missing current binding remains
+    # runnable recovery work even if old capability findings were observed.
+    if layout.configured(state):
+        for role in ('ROOT','ARCH','COORDINATOR'):
+            if layout.current(state,role) is None:
+                item='layout:'+role;outstanding.append(item);never_block.add(item)
     unfinished=[]
     for key,job in state['jobs'].items():
         if not isinstance(job,Mapping):raise ValueError('invalid native job')

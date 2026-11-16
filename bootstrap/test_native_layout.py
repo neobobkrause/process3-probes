@@ -120,3 +120,24 @@ class LayoutTests(unittest.TestCase):
         intent=l.plan(s,'JOB:web-render','/root/supervisor/arch','unavailable')
         self.assertRegex(intent['arguments']['task_name'],r'^[a-z0-9_]+$')
         self.assertEqual(intent['arguments']['task_name'],'p4_job_web_render_g1')
+
+    def test_design_lane_is_declared_arch_child_at_depth_three(self):
+        s=self.hierarchy();role='LANE:ux'
+        with self.assertRaises(l.InvalidLayout):l.plan(s,role,'/root/supervisor/arch','unavailable')
+        s['design_lanes']={'ux':{'need':{'source':'observed-owner-need','evidence':'fixture','text':'fixture explicit need'},
+                                'paths':['design/ux'],'arch':copy.deepcopy(s['native_roles']['ARCH']),'status':'requested'}}
+        intent=l.plan(s,role,'/root/supervisor/arch','unavailable')
+        self.assertEqual(intent['required_native_parent'],'/root/supervisor/arch')
+        self.bind(s,role,'/root/supervisor/arch/ux_lane',1,'/root/supervisor/arch')
+        self.assertEqual(l.depth(s['native_roles'][role]['target']),3)
+        with self.assertRaises(l.InvalidLayout):self.bind(s,role,'/root/supervisor/arch/job/ux',2,'/root/supervisor/arch')
+        s['design_lanes']['ux']['arch']={'target':'/root/old_arch','generation':1}
+        with self.assertRaises(l.InvalidLayout):l.plan(s,role,'/root/supervisor/arch','unavailable')
+
+    def test_boolean_expected_generation_and_unprepared_job_attempt_rejected(self):
+        s=self.hierarchy()
+        with self.assertRaises(l.InvalidLayout):l.plan(s,'ROOT','/root','idle',True)
+        s['native_roles'].pop('JOB:web')
+        for attempt in (0,True,None):
+            s['jobs']['web']['attempt']=attempt
+            with self.assertRaises(l.InvalidLayout):l.plan(s,'JOB:web','/root/supervisor/arch','unavailable')

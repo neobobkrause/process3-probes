@@ -39,6 +39,10 @@ RULES={
         'Do not start sessions, merge, deploy or change process/configuration. Leave changes for host checkpointing.',
         'Record blockers, preserve partial work and free the slot. A turn ending does not establish completion.',
     ),
+    'LANE':COMMON+(
+        'Handle only the explicit owner-identified design need and assigned design paths under the current ARCH; design lanes are ARCH children at native depth3.',
+        'Do not implement product code, merge, deploy, create sessions, broaden grants or adopt unapproved draft process proposals. Return design findings to ARCH; a lane proposal is not an owner decision.',
+    ),
     'PROCESS':COMMON+(
         'Handle owner-authorized process work in its separate lane. Never adopt a process/grant change without owner authority.',
         'Prepare proposals and experimental implementation within the current assignment; distinguish them from owner words.',

@@ -56,8 +56,8 @@ def creator(state,role):
         request=state.get('native_layout',{}).get('process_request');arch=current(state,'ARCH')
         if not isinstance(request,dict) or arch is None or request.get('arch')!=arch or request.get('source')!='observed-native-ARCH-request' or not isinstance(request.get('evidence'),str) or not request['evidence'].strip():
             raise InvalidLayout('PROCESS requires actual current ARCH request recorded by trusted supervisor')
-    parent='ARCH' if role.startswith('JOB:') else 'ROOT'
-    if role not in ('ARCH','COORDINATOR','PROCESS') and not role.startswith('JOB:'):
+    parent='ARCH' if role.startswith(('JOB:','LANE:')) else 'ROOT'
+    if role not in ('ARCH','COORDINATOR','PROCESS') and not role.startswith(('JOB:','LANE:')):
         raise InvalidLayout('unknown native role')
     binding=current(state,parent)
     if binding is None:raise InvalidLayout(parent+' binding required before child lifecycle')
@@ -77,12 +77,16 @@ def validate_binding(state,role,target,generation,actor):
     expected=creator(state,role)
     if actor!=expected:raise InvalidLayout('only current native creator may bind this role')
     actual_depth=depth(target)
-    expected_depth=3 if role.startswith('JOB:') else 1 if role in ('ROOT','WATCHER') else 2
+    expected_depth=3 if role.startswith(('JOB:','LANE:')) else 1 if role in ('ROOT','WATCHER') else 2
     if actual_depth!=expected_depth or target.rsplit('/',1)[0]!=expected:
         raise InvalidLayout('role must be an immediate child of its current creator, depth at most3')
     if role.startswith('JOB:'):
         jid=role.removeprefix('JOB:');job=state.get('jobs',{}).get(jid)
         if job is None or generation!=job.get('attempt'):raise InvalidLayout('JOB generation must match its durable assignment attempt')
+    if role.startswith('LANE:'):
+        lane=state.get('design_lanes',{}).get(role.removeprefix('LANE:'))
+        if not isinstance(lane,dict) or lane.get('status') not in ('requested','active') or lane.get('arch')!=current(state,'ARCH'):
+            raise InvalidLayout('LANE requires declared request under current ARCH; C validates owner need/provenance/paths')
     if any(value.get('target')==target for key,value in state.get('native_roles',{}).items() if key!=role):
         raise InvalidLayout('distinct roles require distinct native sessions')
 
@@ -102,9 +106,17 @@ def plan(state,role,actor,activity,expected_generation=None,state_branch=None,me
     cap=state.get('owner_job_cap',8);slots=state.get('slots',1)
     if type(cap) is not int or type(slots) is not int or not 1<=slots<=cap<=8:raise InvalidLayout('owner cap/slot state invalid')
     binding=current(state,role)
+    if expected_generation is not None and (type(expected_generation) is not int or not 1<=expected_generation<2**63):
+        raise InvalidLayout('positive integer expected generation required')
     if expected_generation is not None and (binding is None or expected_generation!=binding['generation']):
         raise InvalidLayout('stale or missing role generation')
     if role.startswith('JOB:') and role.removeprefix('JOB:') not in state.get('jobs',{}):raise InvalidLayout('unknown assigned JOB')
+    if role.startswith('LANE:'):
+        lane=state.get('design_lanes',{}).get(role.removeprefix('LANE:'))
+        if not isinstance(lane,dict) or lane.get('status') not in ('requested','active'):
+            raise InvalidLayout('declared current design lane required')
+        if activity=='unavailable' and lane.get('arch')!=current(state,'ARCH'):
+            raise InvalidLayout('new lane lifecycle requires current ARCH request')
     expected=creator(state,role)
     if actor!=expected:raise InvalidLayout('native lifecycle action belongs to current creator')
     if state.get('stopped'):
@@ -127,6 +139,8 @@ def plan(state,role,actor,activity,expected_generation=None,state_branch=None,me
         # prepare must reserve/increment the real assignment attempt before spawn.
         if binding and job['attempt']<=binding['generation']:raise InvalidLayout('prepare replacement JOB attempt before lifecycle plan')
         generation=job['attempt']
+        if type(generation) is not int or not 1<=generation<2**63:
+            raise InvalidLayout('prepare actual positive JOB attempt before lifecycle plan')
     else:generation=(binding['generation'] if binding else 0)+1
     if generation>=2**63:raise InvalidLayout('generation capacity exhausted')
     name='p4_'+role.lower().replace(':','_').replace('-','_')+'_g'+str(generation)

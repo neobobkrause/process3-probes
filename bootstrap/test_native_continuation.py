@@ -90,3 +90,15 @@ class NativeContinuationTests(unittest.TestCase):
         with self.assertRaises(ValueError):n.assess(state)
         state['native_continuation']['work']['recovery']['evidence']='fixture recovery receipt'
         self.assertEqual(n.assess(state).status,'demonstrated')
+
+    def test_adopting_layout_does_not_substitute_for_actual_role_bindings(self):
+        from native import layout
+        state=self.state();layout.adopt(state,'fixture actual owner approval')
+        self.dependency(state,'layout:ROOT')
+        result=n.assess(state)
+        self.assertEqual(result.status,'continue');self.assertIn('layout:ROOT',result.runnable)
+        self.assertNotIn('layout:ROOT',result.blocked)
+        state['native_roles']={'ROOT':{'target':'/root/role','generation':1},
+                               'ARCH':{'target':'/root/role/arch','generation':1},
+                               'COORDINATOR':{'target':'/root/role/coord','generation':1}}
+        self.assertEqual(n.assess(state).status,'demonstrated')
