@@ -1,0 +1,24 @@
+{
+  "classification": "actual failed nested Cloud inference; no transferable credential claim",
+  "cli": "0.167.0-alpha.4",
+  "events": [
+    {
+      "type": "thread.started",
+      "thread_id": "01a1e5cc-dd2b-70c2-9af5-2ca6a98729c4"
+    },
+    {
+      "type": "turn.started"
+    },
+    {
+      "type": "error",
+      "message": "Your access token could not be refreshed because you have since logged out or signed in to another account. Please sign in again."
+    },
+    {
+      "type": "turn.failed",
+      "error": {
+        "message": "Your access token could not be refreshed because you have since logged out or signed in to another account. Please sign in again."
+      }
+    }
+  ],
+  "owner_direction": "Do not request inherited Cloud reauthentication again; persistent SIWC architecture required."
+}

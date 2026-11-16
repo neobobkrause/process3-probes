@@ -1,0 +1,24 @@
+# TEMPLATE ONLY, same protected principal as trusted app-server controllers.
+[Unit]
+Description=Process4 single SIWC credential owner
+Before=process4.service
+After=local-fs.target network-online.target
+Wants=network-online.target
+StartLimitIntervalSec=0
+
+[Service]
+Type=simple
+User=process4-host
+RuntimeDirectory=process4-auth
+RuntimeDirectoryMode=0700
+ExecStart=/usr/bin/python3 /srv/process4/host/bootstrap/auth/daemon.py --vault /var/lib/process4-auth --socket /run/process4-auth/owner.sock
+Restart=on-failure
+RestartSec=10
+UMask=0077
+NoNewPrivileges=true
+ProtectSystem=strict
+ProtectHome=true
+ReadWritePaths=/var/lib/process4-auth /run/process4-auth
+
+[Install]
+WantedBy=multi-user.target

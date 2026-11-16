@@ -1,0 +1,16 @@
+{
+  "status": "stopped",
+  "reason": "durable stop is not completion",
+  "runnable": [],
+  "blocked": [
+    "provider"
+  ],
+  "missing_proofs": [
+    "trusted_broker_integrated",
+    "jobs_cannot_bypass_broker",
+    "github_allow_and_deny_live",
+    "cloudflare_allow_and_deny_live",
+    "role_replacement_live",
+    "oauth_inference_and_refresh_live"
+  ]
+}

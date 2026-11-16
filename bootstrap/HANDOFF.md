@@ -1,3 +1,46 @@
+# Current continuation point — persistent SIWC host
+
+Continue on `codex/p4-grants-broker-20261116`, draft PR #269, stacked on #268's
+unchanged bootstrap branch. All work from both PRs is retained. No main changes,
+merges, grant edits, product writes or metered fallback are authorized.
+
+The owner's latest direction rejects another inherited Cloud reauthentication
+request. Treat failed nested Cloud inference as an architectural blocker. Read
+[HOSTING.md](HOSTING.md) for the implemented supported SIWC/app-server path,
+current code boundaries, exact installation/enrollment procedure and remaining
+live demonstrations. Do not use the old auth-symlink/login instructions below as
+permanent credential provisioning. No native Cloud auth file is transferred.
+
+Implemented: owner-only credential daemon; serialized fsync/atomic OAuth rotation,
+pending-response recovery, OIDC checks and terminal invalidation latch; custom
+subscription Responses provider; app-server restart/thread resume; mandatory named
+permission profile for model commands and acceptance; grants-gated writes/role
+intents; current-assignment scope overlay; durable continuation runner; ARCH module
+assignment packets; renewable repo-scoped GitHub App identity adapter; install and
+service templates. None of that is a claim of deployment or full enforcement.
+
+Actual: app-server initialization succeeded without login, thread or inference.
+Actual inherited nested inference still failed with unrefreshable auth. Named
+sandbox launch failed at the platform's app-server socket directory protection;
+a direct namespace probe also failed uid-map setup. Unit/storage/RPC/protocol
+fixtures are labeled in tests. See evidence/persistent-host and EVIDENCE.md.
+
+Current durable provider/state/ROOT are intentionally preserved, not retried under
+known-invalid Cloud credentials. Live inference, renewal, OS bypass trials,
+role replacement and VM recovery require the independent owner-controlled host
+and its one-time selected SIWC registration. No permanent process runs here.
+The host's pinned policy must encode existing authority; a fixture is never an
+approval. Missing installation prerequisites must not be described as demonstrated.
+
+After authorized host access, install the protected software, validate the target
+kernel sandbox and existing repo-limited identity, then perform the one-time SIWC
+ceremony. Only then resume the same stopped harness assignment and replace its
+blocked ROOT through explicit operator recovery; preserve real owner stops.
+Continue every independent implementation item; do not mark all work blocked
+merely because one model operation is unavailable.
+
+---
+
 # Successor update — 16 November 2026
 
 This section is the current continuation point. The earlier handoff below is retained as historical evidence. Keep repository `neobobkrause/process3-probes`, branch `codex/process4-bootstrap-20261116`, draft PR #268, the same state branch and the same provider branch. Do not merge, mark ready, delete branches, alter settings, run Actions supervision, use metered inference, expose credentials or modify CivicSmith2. All prior scope/authority restrictions remain.

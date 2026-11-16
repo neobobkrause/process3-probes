@@ -1,3 +1,53 @@
+# Persistent-host integration evidence — 16 November 2026
+
+Continued from PR #269 tip `20fee2d1f7793b3aeddbbb24ba6ac5a08fc851a8`, which
+already includes PR #268 tip `c5a2551d52ebf8ac88cfc053f294282fb4f3dab6`.
+Both branches are preserved; the implementation continues on #269, still draft.
+Authoritative process4 sources were read by the parent and the HANDOFF-requested
+reading worker, including all owner_words and relevant role/permission sections.
+
+The owner explicitly rejected another inherited Cloud reauthentication request.
+The new architecture follows the official SIWC VM/custom-provider instructions in
+HOSTING.md. It does not transfer native Codex Cloud auth or presume that token
+sharing is the same as the experimental chatgptAuthTokens interface.
+
+| Evidence | Actual result and limit |
+| --- | --- |
+| `persistent-host/actual-cloud-auth-failure.json` | A real nested request reached ChatGPT but failed with unrefreshable credentials. No successful inference. It was not repeatedly retried. |
+| `persistent-host/actual-appserver-initialize.json` | Actual Codex app-server completed JSON-RPC initialization using the SIWC provider configuration and a noncredential fixture string. No login/thread/inference requested; not authentication proof. |
+| `persistent-host/actual-sandbox-failure.json` | Actual named-profile command launch refused because the platform's app-server socket directory is not user-owned mode 0700 as required. No permission change/bypass attempted. An earlier direct bwrap probe also failed uid-map setup with read-only filesystem. |
+| `persistent-host/bootstrap-tests.txt` | Process-tool tests pass, including four-process serialized token rotation, atomic storage/restart recovery after JWKS outage, terminal latch, actual local private-socket RPC with fixture credentials, SIWC provider selection, app-server restart/resume fixtures, grants adapter denials, scope-restricted GitHub App issuance fixtures and continuation. No test token was a real OAuth credential. |
+| `persistent-host/grants-tests.txt` | Grants/continuation tests pass. The fixture policy remains a fixture; it is not deployed approval. |
+| `persistent-host/preserved-state.json` | Read back the same live state: stopped, provider attempt 5 blocked, ROOT generation 1 blocked, leases released. No reset/new assignment or inferred success. |
+| `persistent-host/actual-continuation-assessment.json` | Read-only assessment reports stopped, unfinished provider and all live proofs missing. A historical harness stop is not fabricated as a new owner instruction. |
+
+New code wires grants into supervisor state/checkpoint/branch/PR/role paths,
+requires isolation for both model commands and acceptance, adds continuous host
+runner/ARCH job assignments/corrections, and prepares root-owned deployment/service
+files. Bounded supervisor shutdown now requeues unfinished work while preserving
+real stop. Current assignment scope rejects operations outside probes even under
+broader historical grants. GitHub App token renewal is implemented but unverified
+against a real installation. The protected host's policy and provider identities
+must be provisioned from existing authority; no active grants were altered here.
+
+Syntax/import/diff checks pass. `systemd-analyze verify` could not run here because
+/run/systemd is read-only; service units have not been installed or executed.
+No claim of VM readiness based on that unavailable check is made.
+
+No actual successful inference, ordinary OAuth renewal, isolated model permission
+trial, role replacement chain, product/module acceptance or VM recovery has been
+obtained. No permanent service runs here. An independently controlled VM with a
+working kernel sandbox, current durable volume, scoped identity and one initial
+SIWC registration is required for those demonstrations. HOSTING.md gives the exact
+prepared procedure and preserves the OAuth remote-rotation/local-persistence crash
+gap as an exceptional limitation. Neither passing tests nor this PR completes the
+assignment. Existing product walks/development remain unproven as recorded below.
+
+No main write/merge, branch deletion, owner-grant edit, repository permission
+expansion, CivicSmith2 write or metered inference occurred.
+
+---
+
 # Successor evidence — 16 November 2026
 
 The new environment's enforced policy now includes chatgpt.com. Actual Codex requests reach its backend and receive HTTP 401. Both resumed provider attempt 5 and ROOT generation 1 failed because the supplied subscription token cannot refresh. **No successful inference or module development is claimed.** `codex login status` reports ChatGPT but does not establish usable authentication.

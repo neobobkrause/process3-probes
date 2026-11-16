@@ -28,6 +28,7 @@ class Subject:
 
 
 FIELDS = {
+    "github.branch.create": {"repo", "branch", "base"},
     "github.branch.update": {"repo", "branch", "paths"},
     "github.pr.open": {"repo", "head", "base"},
     "github.pr.update": {"repo", "head", "base", "pr"},
@@ -80,7 +81,7 @@ class GrantPolicy:
             data = json.loads(content)
         except (ValueError, UnicodeDecodeError):
             raise Denied("INVALID_POLICY") from None
-        if set(data) != {"version", "owner_approved", "repositories", "actions", "cloudflare"} or data["version"] != 1 or data["owner_approved"] is not True:
+        if not isinstance(data, dict) or set(data) != {"version", "owner_approved", "repositories", "actions", "cloudflare"} or data["version"] != 1 or data["owner_approved"] is not True:
             raise Denied("POLICY_NOT_APPROVED")
         if not isinstance(data["repositories"], list) or not all(isinstance(x, str) and REPO_RE.fullmatch(x) for x in data["repositories"]):
             raise Denied("INVALID_POLICY_REPOS")
@@ -95,6 +96,8 @@ class GrantPolicy:
         self.digest = expected_sha256
 
     def authorize(self, subject: Subject, operation: str, request: Mapping[str, Any], *, trusted: Mapping[str, Any] | None = None):
+        if not isinstance(subject, Subject):
+            raise Denied("UNKNOWN_SUBJECT")
         if operation not in FIELDS:
             raise Denied("UNKNOWN_OPERATION")
         if subject.role not in ROLES or operation not in self._data["actions"][subject.role]:
@@ -120,8 +123,11 @@ class GrantPolicy:
     def _github(self, s, operation, request, facts):
         ref = branch_name(request.get("branch", s.branch)) if operation not in ("github.pr.comment",) else None
         if operation == "github.state.update":
-            if ref != "process4-state" or s.role not in ("ROOT", "WATCHER", "COORDINATOR", "ARCH", "PROCESS"):
+            if ref != facts.get("state_branch", "process4-state") or s.role not in ("ROOT", "WATCHER", "COORDINATOR", "ARCH", "PROCESS"):
                 raise Denied("STATE_WRITER_NOT_ALLOWED")
+        elif operation == "github.branch.create":
+            if s.role != "ARCH" or not ref.startswith("codex/p4-job-") or ref != facts.get("assigned_branch") or request.get("base") != facts.get("assigned_base"):
+                raise Denied("BRANCH_PROVISIONING_NOT_ASSIGNED")
         elif operation == "github.branch.update":
             if s.role not in ("JOB", "LANE", "PROCESS"):
                 raise Denied("BRANCH_WRITER_ROLE")
@@ -131,7 +137,7 @@ class GrantPolicy:
             assigned = facts.get("owned_paths")
             if not isinstance(assigned, tuple) or not assigned or not all(any(owns(path, owned) for owned in assigned) for path in changes):
                 raise Denied("OUTSIDE_MODULE_OWNERSHIP")
-            if any(path.startswith((".github/", ".claude/", ".codex/")) or path in ("CLAUDE.md", "AGENTS.md") for path in changes):
+            if any(any(part in (".github", ".claude", ".codex", ".git", ".agents", ".aws", "CLAUDE.md", "AGENTS.md") for part in path.split("/")) for path in changes):
                 raise Denied("PROTECTED_CONFIGURATION_PATH")
         elif operation in ("github.pr.open", "github.pr.update"):
             if s.role not in ("JOB", "LANE", "ARCH", "PROCESS") or request.get("head") != s.branch or request.get("base") not in ("tranche", "codex/process4-bootstrap-20261116"):

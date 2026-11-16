@@ -11,6 +11,9 @@ import time
 import uuid
 
 import coordinator as c
+from execution import Executor
+from grants import host as grant_host
+from grants.grants import Subject
 
 ROLES = ('ROOT', 'watcher', 'ARCH', 'coordinator', 'PROCESS')
 CHILDREN = {'ROOT': {'watcher', 'ARCH', 'coordinator', 'PROCESS'},
@@ -34,7 +37,7 @@ def enroll(s, role, reason, replace=False):
 
 def apply(s, actor, packet):
     """Called inside a CAS transaction; packets contain data, never executable commands."""
-    if actor not in ROLES or not isinstance(packet, dict) or set(packet) != {'summary', 'actions'}:
+    if actor not in ROLES or not isinstance(packet, dict) or not {'summary','actions'} <= set(packet) or set(packet)-{'summary','actions','assignments','job_controls'}:
         raise ValueError('invalid role packet')
     if not isinstance(packet['summary'], str) or not isinstance(packet['actions'], list):
         raise ValueError('invalid role packet types')
@@ -76,7 +79,65 @@ def apply(s, actor, packet):
                 s['role_sessions'][target]['timeout'] = a['timeout']
         else:
             raise ValueError('unknown action')
-    c.event(s, 'role-actions', actor=actor, summary=packet['summary'], count=len(packet['actions']))
+    assignments=packet.get('assignments',[])
+    if not isinstance(assignments,list) or len(assignments)>8 or assignments and actor!='ARCH':
+        raise ValueError('only ARCH may supply bounded module assignments')
+    for spec in assignments:
+        c.add(s,spec)
+    controls=packet.get('job_controls',[])
+    if not isinstance(controls,list) or len(controls)>8 or controls and actor!='ARCH':
+        raise ValueError('only ARCH may supply bounded job controls')
+    for control in controls:
+        if not isinstance(control,dict) or set(control)!={'id','action','text'} or not isinstance(control['text'],str):
+            raise ValueError('invalid technical job control')
+        job=s['jobs'][control['id']]
+        dependency=s.get('external_dependencies',{}).get(job['id'],{})
+        if dependency.get('dependency') in ('subscription-authorization','subscription-service') and dependency.get('status')!='resolved':
+            raise ValueError('external credential dependency requires new host evidence, not automatic retry')
+        if control['action']=='instruction':
+            job.setdefault('technical_instructions',[]).append(control['text'])
+            job['status']='interrupting' if job['status'] in ('running','interrupting') else 'ready'
+            job['restart']=True
+        elif control['action'] in ('retry','replace'):
+            job['status']='interrupting' if job['status'] in ('running','interrupting') else 'ready'
+            job['restart']=True
+        else: raise ValueError('invalid technical job control action')
+        c.event(s,'arch-job-control',job=job['id'],action=control['action'],text=control['text'])
+    c.event(s, 'role-actions', actor=actor, summary=packet['summary'], count=len(packet['actions']), assignments=len(assignments), job_controls=len(controls))
+
+
+def authorize_packet(state, actor, packet):
+    """Policy checks run inside the same state transaction as lifecycle changes.
+
+    Existing structural validation in apply remains an additional restriction.
+    Configuration uses the same lifecycle scope as starting that child, and
+    never grants an ability the parent did not already hold.
+    """
+    generation = state['role_sessions'][actor]['generation']
+    subject = Subject(f'role:{actor}:{generation}', actor.upper(), c.REPO,
+                      generation=generation)
+    host = grant_host.Host.configured()
+    for spec in packet.get('assignments',[]):
+        host.perform(subject,'session.start',{'repo':c.REPO,'child_role':'JOB'},lambda:None,
+                     {'child_slot_available':not state['stopped'],'valid_generation':True})
+    for control in packet.get('job_controls',[]):
+        if control['id'] not in state['jobs']: raise ValueError('unknown controlled job')
+        host.perform(subject,'session.replace',{'repo':c.REPO,'child_role':'JOB'},lambda:None,
+                     {'child_slot_available':not state['stopped'],'valid_generation':True})
+    for action in packet['actions']:
+        kind, target = action['kind'], action['target']
+        operation = 'session.' + ('replace' if kind == 'replace' else
+                    'start' if kind in ('start', 'configure') else 'message')
+        request = {'repo': c.REPO}
+        if operation in ('session.start', 'session.replace'):
+            request['child_role'] = target.upper()
+            child = state.get('role_sessions', {}).get(target)
+            facts = {'child_slot_available': not state['stopped'],
+                     'valid_generation': not child or child['status'] != 'running'}
+        else:
+            request['recipient'] = target
+            facts = {'recipient_relation_verified': target in ROLES and target != actor}
+        host.perform(subject, operation, request, lambda: None, facts)
 
 
 def response(log):
@@ -112,7 +173,8 @@ class Runtime:
         self.owner = str(uuid.uuid4())
 
     def turn(self, role):
-        env = c.auth()
+        grant_host.Host.configured()
+        executor = Executor(self.repo)
         now = time.time()
         def reserve(s):
             if s['stopped']:
@@ -136,19 +198,27 @@ class Runtime:
             'merge, deploy, use metered inference, or expose credentials. Return ONLY JSON: '
             '{"summary":"...","actions":[{"kind":"start|replace|configure|message|request-process",'
             '"target":"ROOT|watcher|ARCH|coordinator|PROCESS","text":"reason or message",'
-            '"timeout":180}]}. Host validates all actions. No product decisions. '
+            '"timeout":180}]}. Host validates all actions. Only ARCH makes technical module decisions. '
             'ROOT should start missing ARCH/coordinator/watcher; replace failed children. '
             'Watcher replaces failed ROOT only; no role replaces itself. PROCESS starts only '
             'after ARCH sends ROOT an explicit request-process action. Other roles report status and route process faults. '
             'These turns are bounded bootstrap rehearsals, not permanent hosting. '
-            'Use actions=[] if no authorized work is needed. Requirements: '
+            'Use actions=[] if no authorized work is needed. ARCH alone may add optional '
+            'assignments: a list of module specs with id, order, paths, uses, prompt, completion, '
+            'verify (argv array), timeout. Register isolated toy development work only in process3-probes; '
+            'no merge or deployment. Existing jobs must be continued, never duplicated or discarded. '
+            'Module code and acceptance run in isolated execution. ARCH may also supply optional '
+            'job_controls:[{"id":"existing-job-id","action":"instruction|retry|replace","text":"technical reason"}]. '
+            'Inspect actual failure/checkpoint before technical correction or replacement. Never retry a known '
+            'external authentication or isolation dependency until host evidence establishes it resolved. '
+            'These technical instructions are not owner instructions. Requirements: '
             +(self.repo/'bootstrap/REQUIREMENTS.md').read_text()+'\nDurable state: '+json.dumps(state))
-        argv=['codex','exec','--ignore-user-config','--json','-c','forced_login_method="chatgpt"',
-              '-C',str(self.repo),'-s','read-only',prompt]
         packet=None; thread=None; failure=None
         with open(str(prefix)+'.jsonl','w') as log, open(str(prefix)+'.stderr','w') as err:
-            p=subprocess.Popen(argv,stdin=subprocess.DEVNULL,stdout=log,stderr=err,
-                               env=env,start_new_session=True)
+            p=executor.start({'workspace': str(self.repo), 'prompt': prompt, 'role': role,
+                              'generation': r['generation'], 'auth': 'chatgpt',
+                              'approval_policy': 'never', 'network': 'broker-only',
+                              'filesystem': 'read-only'}, log, err)
             try:
                 deadline=time.monotonic()+r['timeout']
                 while p.poll() is None:
@@ -175,6 +245,7 @@ class Runtime:
                 if parent in s['role_sessions']:
                     s['role_sessions'][parent]['next_wake']=0
             else:
+                authorize_packet(s, role, packet)
                 apply(s,role,packet)
                 current.update(status='ready',thread_id=thread,next_wake=time.time()+3600)
                 for m in s.get('role_messages',[]):
@@ -183,7 +254,7 @@ class Runtime:
             c.event(s,'role-turn-result',role=role,status=current['status'],thread_id=thread,failure=failure)
         try:
             self.store.mutate(finish)
-        except (ValueError, KeyError) as exc:
+        except (ValueError, KeyError, TypeError, PermissionError) as exc:
             # Reject the whole packet, including earlier actions in it, atomically.
             failure='Rejected packet: '+str(exc)
             self.store.mutate(finish)

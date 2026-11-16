@@ -1,0 +1,6 @@
+{
+  "classification": "actual capability failure; no isolated model or verifier launched",
+  "returncode": 1,
+  "stdout": "",
+  "stderr": "error building bubblewrap command: app-server socket directory must be a user-owned directory with mode 0700\n"
+}

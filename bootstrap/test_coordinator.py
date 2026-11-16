@@ -141,6 +141,7 @@ class CompletionTests(unittest.TestCase):
             p=subprocess.Popen(['python','-c','print(\'{"type":"turn.completed"}\')'],stdout=log,stderr=err,start_new_session=True)
             p.wait(); sup.live={'provider':(p,log,err,path,time.monotonic())}
             sup.checkpoint=lambda *_:'base'
+            sup.verify=lambda job,path: subprocess.run(job['verify'],cwd=path,text=True,capture_output=True,timeout=60)
             m.s['jobs']['provider']['verify']=verify
             if conflict:
                 original=m.write

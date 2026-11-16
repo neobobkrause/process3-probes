@@ -41,9 +41,14 @@ def assess(state: Mapping[str, Any], *, proofs: Mapping[str, bool],
         raise ValueError("invalid evidence data")
     missing = tuple(k for k in PROOF_KEYS if proofs.get(k) is not True)
     unfinished = tuple(k for k, v in jobs.items()
-                       if not isinstance(v, Mapping) or v.get("status") != "done")
+                       if not isinstance(v, Mapping) or v.get("status") != "done"
+                       or not isinstance(v.get("last_result"), Mapping)
+                       or v["last_result"].get("verified") is not True
+                       or v["last_result"].get("turn_completed") is not True
+                       or not v.get("checkpoint"))
     if state.get("stopped") is True:
-        return Result("owner_stopped", "owner stop is not completion", (), unfinished, missing)
+        return Result("owner_stopped" if state.get("stop_source") == "owner" else "stopped",
+                      "durable stop is not completion", (), unfinished, missing)
     # A turn.completed, a local test result, or a committed PR is not a
     # substitute for actual acceptance evidence.
     if not unfinished and not missing:
@@ -62,5 +67,5 @@ def assess(state: Mapping[str, Any], *, proofs: Mapping[str, bool],
 
 def require_valid_exit(result: Result) -> None:
     """For supervised use: a supervisor must not accept a premature close."""
-    if result.status not in ("complete", "owner_stopped", "external_blocked"):
+    if result.status not in ("complete", "owner_stopped", "stopped", "external_blocked"):
         raise RuntimeError("unfinished runnable work: supervisor must continue or recover")

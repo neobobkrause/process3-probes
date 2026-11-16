@@ -30,7 +30,8 @@ class DraftPRTests(unittest.TestCase):
             run.assert_not_called()
 
     def test_create_is_draft_and_targets_only_bootstrap(self):
-        with patch.object(p.c,'run',side_effect=['[]','fixture-new-url']) as run:
+        with patch.object(p.host,'perform',side_effect=lambda subject, op, request, adapter: adapter()), \
+             patch.object(p.c,'run',side_effect=['[]','fixture-new-url']) as run:
             self.assertEqual(p.ensure(self.job()),'fixture-new-url')
             argv=run.call_args.args[0]
             self.assertIn('--draft',argv)

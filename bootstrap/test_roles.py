@@ -12,6 +12,15 @@ import roles as r
 from test_coordinator import Memory
 
 
+class FixtureExecutor:
+    """Explicit subprocess fixture, not an isolated or authenticated host."""
+    def __init__(self, repo): pass
+    def start(self, payload, log, err):
+        return r.subprocess.Popen(["fixture", payload["prompt"]], stdin=r.subprocess.DEVNULL,
+                                  stdout=log, stderr=err, start_new_session=True)
+
+
+
 def action(kind, target, text='Bootstrap rehearsal', timeout=180):
     return dict(kind=kind,target=target,text=text,timeout=timeout)
 
@@ -80,7 +89,7 @@ class RoleTests(unittest.TestCase):
                 json.dumps(packet(action('start','ARCH'))).replace('"','\\"'),
                 json.dumps(packet()).replace('"','\\"'))
             return real_popen([sys.executable,'-c','print('+repr(actual)+')'],**kw)
-        with tempfile.TemporaryDirectory() as td, patch.object(c,'auth',return_value={}), \
+        with tempfile.TemporaryDirectory() as td, patch.object(r,'Executor',FixtureExecutor), patch.object(r.grant_host.Host,'configured'), patch.object(r,'authorize_packet'), \
              patch.object(c,'run',return_value='https://github.com/'+c.REPO+'.git'), \
              patch.object(r.subprocess,'Popen',side_effect=fixture):
             requirements=Path(td)/'bootstrap/REQUIREMENTS.md'
@@ -104,7 +113,7 @@ class RoleTests(unittest.TestCase):
         def fixture(argv,**kw):
             return real_popen([sys.executable,'-c',
                 'print(\'{"type":"turn.failed"}\'); raise SystemExit(1)'],**kw)
-        with tempfile.TemporaryDirectory() as td, patch.object(c,'auth',return_value={}), \
+        with tempfile.TemporaryDirectory() as td, patch.object(r,'Executor',FixtureExecutor), patch.object(r.grant_host.Host,'configured'), patch.object(r,'authorize_packet'), \
              patch.object(c,'run',return_value='https://github.com/'+c.REPO+'.git'), \
              patch.object(r.subprocess,'Popen',side_effect=fixture):
             req=Path(td)/'bootstrap/REQUIREMENTS.md'; req.parent.mkdir(); req.write_text('Fixture')

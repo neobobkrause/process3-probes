@@ -1,0 +1,32 @@
+# TEMPLATE ONLY: install on an independently persistent authorized cloud host.
+# The executor must provide a separate OS security boundary for all model tools
+# and module-test code. This service unit by itself does not establish that.
+[Unit]
+Description=Process4 durable supervisor
+Wants=network-online.target
+After=network-online.target process4-auth.service
+Requires=process4-auth.service
+StartLimitIntervalSec=0
+
+[Service]
+Type=simple
+User=process4-host
+WorkingDirectory=/srv/process4/process3-probes
+EnvironmentFile=/etc/process4/host.env
+ExecStart=/usr/bin/python3 /srv/process4/host/bootstrap/runner.py --state codex/p4-state-bootstrap-20261116 --repo /srv/process4/process3-probes --runtime /var/lib/process4
+Restart=on-failure
+RestartSec=95
+KillMode=control-group
+TimeoutStopSec=30
+UMask=0077
+NoNewPrivileges=true
+ProtectSystem=strict
+ProtectHome=true
+ReadWritePaths=/var/lib/process4 /srv/process4/process3-probes
+# PrivateTmp intentionally omitted: Codex must mask the same host-global daemon
+# socket rendezvous directory in its tool sandboxes.
+ProtectProc=invisible
+# Kernel user namespaces and bubblewrap must remain available; verify on target.
+
+[Install]
+WantedBy=multi-user.target

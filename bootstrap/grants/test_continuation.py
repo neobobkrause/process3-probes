@@ -13,12 +13,12 @@ class ContinuationTests(unittest.TestCase):
 
     def test_passed_tests_not_assignment_completion(self):
         proof = {**ALL, "oauth_inference_and_refresh_live": False}
-        outcome = assess({"jobs": {"provider": {"status": "done"}}}, proofs=proof, dependencies={})
+        outcome = assess({"jobs": {"provider": {"status": "done", "checkpoint":"fixture", "last_result":{"verified":True,"turn_completed":True}}}}, proofs=proof, dependencies={})
         self.assertEqual(outcome.status, "continue")
         self.assertIn("oauth_inference_and_refresh_live", outcome.runnable)
 
     def test_actual_full_completion(self):
-        outcome = assess({"jobs": {"provider": {"status": "done"}}}, proofs=ALL, dependencies={})
+        outcome = assess({"jobs": {"provider": {"status": "done", "checkpoint":"fixture", "last_result":{"verified":True,"turn_completed":True}}}}, proofs=ALL, dependencies={})
         self.assertEqual(outcome.status, "complete")
         require_valid_exit(outcome)
 
@@ -51,7 +51,7 @@ class ContinuationTests(unittest.TestCase):
         outcome = assess({"jobs": {"provider": {"status": "ready"}}},
                          proofs=ALL, dependencies={},)
         self.assertEqual(outcome.status, "continue")
-        stopped = assess({"jobs": {"provider": {"status": "ready"}}, "stopped": True},
+        stopped = assess({"jobs": {"provider": {"status": "ready"}}, "stopped": True, "stop_source":"owner"},
                          proofs=ALL, dependencies={})
         self.assertEqual(stopped.status, "owner_stopped")
         self.assertNotEqual(stopped.status, "complete")

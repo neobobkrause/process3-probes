@@ -1,3 +1,26 @@
+# Current persistent-host implementation — 16 November 2026
+
+Read [HOSTING.md](HOSTING.md) before the historical instructions below. The owner
+rejected recurring restoration of inherited Cloud credentials. The implementation
+now requires one protected SIWC credential owner, a pinned grant policy, and the
+isolated executor; it does not silently fall back to the earlier credentialed
+subprocess path. Existing branches/state/PRs are preserved. The active changes
+continue on draft #269, stacked on draft #268, with no merges.
+
+`runner.py` connects continuation assessment, bounded role/job turns and draft PR
+reconciliation. `appserver.py`, `auth/` and `executor_main.py` implement the
+supported SIWC custom-provider architecture and isolation-first launch. Service
+units/install procedure are prepared for an independent VM; no service has been
+installed or started here. Current actual evidence is under
+[evidence/persistent-host/](evidence/persistent-host/).
+
+Earlier instructions involving `codex login`, task-local auth symlinks and direct
+`codex exec` describe historical experiments only. They are not the permanent
+architecture or the current activation procedure. Tests and protocol initialization
+are not live authentication, kernel isolation or complete Process4 demonstration.
+
+---
+
 # Process4 Codex bootstrap probe
 
 This is executable experimental process software, not adoption of draft 6 and not a claim that a Process4 tranche has run. Writes are hardcoded to `neobobkrause/process3-probes`, dedicated branches only. No merge, branch deletion, settings modification, Actions launch or Agents API is implemented.
