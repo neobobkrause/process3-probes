@@ -44,8 +44,15 @@ Every proposal includes expected attempt and preserved branch/PR references.
 Observations are trusted host inputs, not authentication of agent text. Native
 activity is keyed by `JOB:<id>` and contains `{target, generation, activity}`, where
 activity is `idle`, `running` or `unavailable` from a fresh actual inventory/event.
-The target/generation must match the durable binding. Missing observations hold
-for a fresh read; they are never treated as a dead session. An idle turn does not
+The target/generation must match the durable binding. A's shared packet may also
+contain `observed_at` (Unix seconds) and `source: actual-native-inventory`; B accepts
+those metadata fields without rejecting the packet. **The integrator must apply
+A's freshness/source validator before both B APIs** (currently at most 60 seconds)
+and omit stale/unknown entries. B deliberately does not independently interpret
+wall-clock timestamps or treat a caller-asserted source string as authentication.
+Its narrow responsibility is identity/generation/activity consistency after that
+host validation. Missing observations hold for a fresh read; they are never treated
+as a dead session. An idle turn does not
 prove assignment completion. An unbound reservation requires inventory review
 before another spawn, avoiding duplicate work after a crash between spawn and bind.
 
