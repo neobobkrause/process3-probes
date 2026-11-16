@@ -2,10 +2,7 @@
   "version": 1,
   "stopped": true,
   "slots": 1,
-  "lease": {
-    "owner": "d6f76757-adaa-4231-b6d8-352e0bb6387f",
-    "until": 1794851834.9390855
-  },
+  "lease": null,
   "modules": {
     "consumer": {
       "id": "consumer",
