@@ -22,6 +22,7 @@ from urllib.parse import quote
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 import coordinator as c
 from native import communication as communication
+from native import continuation as native_continuation
 from grants.grants import Broker, Subject, Denied
 
 REPO=c.REPO
@@ -679,6 +680,7 @@ def main():
     for command in ('assign','declare'):
         p=sub.add_parser(command); p.add_argument('file')
     sub.add_parser('status')
+    sub.add_parser('assess',help='Read-only native continuation assessment from actual durable evidence')
     p=sub.add_parser('control'); p.add_argument('action',choices=['stop','continue','retry','interrupt','replace','slots','priority','instruction']);p.add_argument('--job');p.add_argument('--value');p.add_argument('--source',choices=['arch','owner'],default='arch')
     p=sub.add_parser('prepare');p.add_argument('job')
     p=sub.add_parser('session');p.add_argument('job');p.add_argument('address')
@@ -694,6 +696,7 @@ def main():
     args=parser.parse_args();store=Store(args.state)
     if args.command=='init': result=store.init(args.base,args.integration)
     elif args.command=='status':result=store.read()[0]
+    elif args.command=='assess':result=native_continuation.assess(store.read()[0]).to_dict()
     elif args.command=='assign':result=store.mutate(lambda s:assign(s,json.loads(Path(args.file).read_text()),store.branch))
     elif args.command=='declare':result=store.mutate(lambda s:c.declare(s,json.loads(Path(args.file).read_text())))
     elif args.command=='control':result=store.mutate(lambda s:control(s,args.action,args.job,args.value,args.source))

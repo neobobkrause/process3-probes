@@ -123,3 +123,19 @@ the internal Python adapter and inherited native tools are not an OS security
 boundary. Current validation: 111 bootstrap and 44 grants tests pass. Actual native
 ARCH state-write/denial evidence is recorded separately, without treating fixture
 adapters or supervisor-supplied identity text as platform authentication.
+
+## Latest bounded completion assessment
+
+Actual native CLI `assess` reads the existing run and supervisor-recorded evidence
+references. After role recovery and registry population it reports external_blocked
+with no runnable assignments/messages, separately identifying retained-idle-ROOT
+wake and protected credential/tool confinement prerequisites. Evidence references
+classify existing execution; the classifier does not create proofs. This is not
+full Process4 completion. Native auth continuity across environment startup was
+observed; hosted internal token rotation is not exposed or claimed.
+
+COORDINATOR/ARCH generation2 processed actual recovery messages, preserving owner
+controls, accepted jobs and notices. WATCHER generation1 is enrolled standby, not
+a demonstrated top-ROOT failover. 120bootstrap +44grants tests pass. Report notices
+are deferred until an actual report assignment exists, not invented work.
+See latest HANDOFF for the conditional timer-pause decision and exact prerequisites.

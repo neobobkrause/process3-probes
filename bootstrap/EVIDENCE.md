@@ -1,3 +1,22 @@
+# Latest native role recovery and continuation assessment
+
+120 bootstrap +44 grants tests pass. Native coordinator and ARCH generation2
+recovered from durable state and processed actual new-generation messages. Completed
+jobs, pending notices, owner stop and cap stayed unchanged. Obsolete actor submission
+was rejected; local generation validation on the actual snapshot rejected stale ack.
+WATCHER generation1 enrolled standby; no top-ROOT takeover claim.
+
+The new native continuation classifier is wired to `cycle.py assess`, preserving
+unknown evidence as investigation work and requiring explicit individual external
+prerequisites before blockage. Its actual current-run result after evidence-registry
+population is external_blocked with runnable=[]: retained idle ROOT reactive wake
+and protected credential/tool authority lack supported exposed mechanisms. Optional
+module sandboxing and deleted-ROOT resurrection are not blockers. All relevant actual
+source records are in evidence/native-development-cycle. Internal token rotation,
+platform-exclusive privileged authority and full Process4 operation remain unclaimed.
+
+---
+
 # Latest grants-route integration and pending-worker recovery
 
 111 bootstrap and44 grants tests now pass. All closed native Provider mutation

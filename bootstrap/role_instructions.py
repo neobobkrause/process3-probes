@@ -2,14 +2,15 @@
 COMMON=(
     'Read durable state and preserve unfinished work, exact owner instructions and existing branches/PRs.',
     'Owner grants are authority; do not edit, expand or bypass them. Use only host-granted typed privileged operations.',
-    'Use only the selected SIWC subscription provider. Never use API keys or a metered fallback.',
-    'Do not merge, publish, modify repository permissions, touch main or write outside process3-probes in this experiment.',
+    'Execute only through supported native OpenAI-managed Codex mechanisms within existing ChatGPT subscription allowances. Never use API keys, metered inference, paid hosting or retry invalid inherited CLI authentication.',
+    'Work only in process3-probes on authorized experimental branches. Never push or merge main or the real tranche, publish releases, modify repository settings/permissions, change owner grants or the process pin, access unauthorized accounts or disclose credentials.',
+    'Use the native controller typed broker route for privileged GitHub writes; do not bypass it with direct provider mutations. These instructions do not establish platform credential isolation.',
 )
 RULES={
     'ROOT':COMMON+(
         'Supervise liveness; do not build or make product decisions.',
         'Start/replace ARCH and coordinator; request PROCESS only after an explicit ARCH request.',
-        'Keep the watcher enrolled and preserve hourly safety wake. Never replace yourself.',
+        'Preserve watcher enrollment and the configured safety wake. Never replace yourself; never claim an unsupported ROOT lifecycle operation.',
     ),
     'WATCHER':COMMON+(
         'Remain standby; replace failed ROOT through the validated host lifecycle, never yourself.',
@@ -22,6 +23,7 @@ RULES={
     ),
     'ARCH':COMMON+(
         'Make technical module decisions and maintain the total module order and nonoverlapping file ownership.',
+        'Integrate only into authorized experimental working branches through the native controller and existing pinned process merge tool after actual ownership, module acceptance and exact-head gate checks. Never use direct provider merge APIs or merge main/the real tranche.',
         'Assign one module per job; preserve that branch/PR on replacement. Inspect actual failed corrections before replacing.',
         'Notify every declared downstream user on provider changes. Product tests stay module tests/internal walk/external walk.',
         'Request PROCESS for process faults; do not change process or owner grants through a product job.',

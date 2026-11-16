@@ -63,6 +63,15 @@ test_idle_wake_and_active_delivery_are_different (test_native_communication.Mail
 test_pending_survives_delivery_and_new_messages (test_native_communication.MailboxTests.test_pending_survives_delivery_and_new_messages) ... ok
 test_replacement_redelivers_unacknowledged_message (test_native_communication.MailboxTests.test_replacement_redelivers_unacknowledged_message) ... ok
 test_unknown_activity_and_generation_fail_closed (test_native_communication.MailboxTests.test_unknown_activity_and_generation_fail_closed) ... ok
+test_dependency_requires_confirmed_specific_evidence (test_native_continuation.NativeContinuationTests.test_dependency_requires_confirmed_specific_evidence) ... ok
+test_done_or_passing_test_does_not_substitute_for_integration_evidence (test_native_continuation.NativeContinuationTests.test_done_or_passing_test_does_not_substitute_for_integration_evidence) ... ok
+test_explicit_completed_control_requires_actual_evidence_reference (test_native_continuation.NativeContinuationTests.test_explicit_completed_control_requires_actual_evidence_reference) ... ok
+test_narrow_platform_block_does_not_hide_independent_work (test_native_continuation.NativeContinuationTests.test_narrow_platform_block_does_not_hide_independent_work) ... ok
+test_no_fixture_siwc_cloudflare_or_optional_recovery_requirement (test_native_continuation.NativeContinuationTests.test_no_fixture_siwc_cloudflare_or_optional_recovery_requirement) ... ok
+test_owner_stop_and_cap_preserved_without_mutation (test_native_continuation.NativeContinuationTests.test_owner_stop_and_cap_preserved_without_mutation) ... ok
+test_pending_message_remains_work_even_when_job_done (test_native_continuation.NativeContinuationTests.test_pending_message_remains_work_even_when_job_done) ... ok
+test_unassigned_user_notice_is_exposed_without_inventing_assignment (test_native_continuation.NativeContinuationTests.test_unassigned_user_notice_is_exposed_without_inventing_assignment) ... ok
+test_unknown_evidence_cannot_be_declared_external_blocked (test_native_continuation.NativeContinuationTests.test_unknown_evidence_cannot_be_declared_external_blocked) ... ok
 test_adapter_failure_is_not_recorded_as_returned (test_native_cycle.NativeBrokerTests.test_adapter_failure_is_not_recorded_as_returned) ... ok
 test_merge_requires_current_head_gate_and_experimental_base (test_native_cycle.NativeBrokerTests.test_merge_requires_current_head_gate_and_experimental_base) ... ok
 test_raw_mutating_api_is_rejected_before_transport (test_native_cycle.NativeBrokerTests.test_raw_mutating_api_is_rejected_before_transport) ... ok
@@ -112,6 +121,6 @@ test_root_starts_configures_and_replaces_subordinates (test_roles.RoleTests.test
 test_watcher_takeover_preserves_stop_and_no_self_successor (test_roles.RoleTests.test_watcher_takeover_preserves_stop_and_no_self_successor) ... ok
 
 ----------------------------------------------------------------------
-Ran 111 tests in 5.780s
+Ran 120 tests in 5.967s
 
 OK

@@ -1,3 +1,42 @@
+# Current continuation decision: confirmed platform dependencies
+
+Read evidence/native-development-cycle/actual-native-continuation-assessment.json.
+The new native `assess` CLI reads trusted durable evidence/assignments; actual result
+is external_blocked, runnable=[], no unfinished jobs/messages. Remaining unmet work:
+1. Supported nonblocking message-triggered new turn for retained idle top-level ROOT.
+   Child wake works; actual immediate automation action returned404. A periodic
+   wake is not reactive communication; no invented endpoint or hierarchy relabeling.
+2. Native per-role credential/tool/provider-route confinement for literal exclusive
+   privileged authority. The broker route now works, but inherited native tools
+   cannot be confined by the exposed session schema. This is distinct from OPTIONAL
+   module-file isolation. No credential-read or dangerous bypass trial was performed.
+
+All substantive independently executable requirements identified in the scoped audit
+are implemented/executed/preserved. This is not full Process4 completion or a claim
+all conceivable software improvements are finished. Watcher is enrolled standby;
+no unsupported top-ROOT takeover or internal subscription-token rotation is claimed.
+No deleted/archived ROOT resurrection requirement has been imposed.
+
+Latest actual recovery: COORDINATOR /root/coordinator_recovered generation2 and ARCH
+/root/arch_recovered generation2 restored from durable state, processed actual native
+recovery messages. All jobs/notices/stop/cap unchanged. WATCHER /root/watcher_native
+generation1 enrolled standby. Source receipts and stale-actor denial are in
+actual-native-role-recovery.json and actual-watcher-enrollment.json in same evidence folder.
+Native role instructions corrected; continuation uses clarified native acceptance,
+not legacy selfhost Cloudflare/OAuth fixtures. 120bootstrap +44grants tests pass.
+Two report notices remain intentionally deferred because no report assignment exists;
+do not invent a new product feature to consume them or repeat completed probes.
+
+The continuation condition now authorizes pausing the existing timer after durable
+preservation; verify supported automation update result before claiming paused.
+Resume only when a substantive runnable task or supported missing platform mechanism
+is available. Do not provision infrastructure, retry inherited login, purchase credits,
+expand grants, touch CivicSmith2/main/tranche/settings/process pin or use metered inference.
+
+Older entries below are historical; this current decision takes precedence.
+
+---
+
 Latest broker integration: native Provider closed write methods now reuse existing
 Broker/Subject with a technical NativeInstructionScope; no owner-approved policy is
 synthesized and Host.configured is unchanged. 111 bootstrap +44 grants tests pass.
