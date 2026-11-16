@@ -55,11 +55,13 @@
         "-v"
       ],
       "timeout": 180,
-      "status": "ready",
-      "attempt": 0,
+      "status": "running",
+      "attempt": 1,
       "branch": "codex/p4-job-native-workshop-20261116-provider",
       "instructions": [],
-      "checkpoint": null
+      "checkpoint": null,
+      "base": "f98b7002e0fee803fb3e6da6d0cd8be8d1f9751e",
+      "notice_ids": []
     },
     "web": {
       "id": "web",
@@ -109,6 +111,12 @@
       "at": 1794862415.920997,
       "kind": "assignment",
       "job": "web"
+    },
+    {
+      "at": 1794862421.8927934,
+      "kind": "native-reserve",
+      "job": "provider",
+      "attempt": 1
     }
   ],
   "native": true,
