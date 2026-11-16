@@ -110,3 +110,9 @@ bootstrap -p 'test_*.py' -v` passed162tests in7.161s; full output is transient
 baseline tests; fourteen added control-plane regressions exercise this stream.
 No source/GitHub mutation trial, inference proof or full Process4 completion is
 inferred from that result. The integrator must run combined verification/pilot.
+
+Final typed-input correction rejects JSON boolean generations and unprepared JOB
+attempt0/None before an intent. Malformed native activity data holds rather than
+raising an unhashable-value error. The final full bootstrap run passed164tests
+in6.982s (sixteen added regressions above baseline148); diff check passed. All
+changes remain within Stream A paths and independent component interfaces.

@@ -106,6 +106,8 @@ def plan(state,role,actor,activity,expected_generation=None,state_branch=None,me
     cap=state.get('owner_job_cap',8);slots=state.get('slots',1)
     if type(cap) is not int or type(slots) is not int or not 1<=slots<=cap<=8:raise InvalidLayout('owner cap/slot state invalid')
     binding=current(state,role)
+    if expected_generation is not None and (type(expected_generation) is not int or not 1<=expected_generation<2**63):
+        raise InvalidLayout('positive integer expected generation required')
     if expected_generation is not None and (binding is None or expected_generation!=binding['generation']):
         raise InvalidLayout('stale or missing role generation')
     if role.startswith('JOB:') and role.removeprefix('JOB:') not in state.get('jobs',{}):raise InvalidLayout('unknown assigned JOB')
@@ -137,6 +139,8 @@ def plan(state,role,actor,activity,expected_generation=None,state_branch=None,me
         # prepare must reserve/increment the real assignment attempt before spawn.
         if binding and job['attempt']<=binding['generation']:raise InvalidLayout('prepare replacement JOB attempt before lifecycle plan')
         generation=job['attempt']
+        if type(generation) is not int or not 1<=generation<2**63:
+            raise InvalidLayout('prepare actual positive JOB attempt before lifecycle plan')
     else:generation=(binding['generation'] if binding else 0)+1
     if generation>=2**63:raise InvalidLayout('generation capacity exhausted')
     name='p4_'+role.lower().replace(':','_').replace('-','_')+'_g'+str(generation)

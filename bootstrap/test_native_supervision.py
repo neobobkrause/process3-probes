@@ -54,3 +54,9 @@ class SupervisionTests(unittest.TestCase):
         self.assertFalse(supervision.plan_supervision(s,actor=actor,observations=obs,now=101)['actions'])
         result=supervision.plan_supervision(s,actor=actor,observations=obs,pending_roles=('COORDINATOR',),now=101)
         self.assertEqual(result['actions'][0]['role'],'COORDINATOR')
+
+    def test_malformed_inventory_generation_or_activity_holds_before_intent(self):
+        s=self.state();s['native_roles']['ROOT']['generation']=1
+        for fields in ({'generation':True},{'activity':['running']}):
+            result=supervision.plan_supervision(s,observations={'ROOT':{**self.obs(s,'ROOT'),**fields}},now=101)
+            self.assertFalse(result['actions']);self.assertTrue(result['holds'])

@@ -26,10 +26,12 @@ def observation(state,role,value,*,now=None,max_age=MAX_OBSERVATION_AGE):
     stamp=value['observed_at']
     if type(stamp) not in (int,float) or not math.isfinite(stamp) or not 0<=now-stamp<=max_age:
         return None,'native observation is stale or future-dated'
-    if value['source']!='actual-native-inventory' or value['activity'] not in ACTIVITIES:
+    if value['source']!='actual-native-inventory' or not isinstance(value['activity'],str) or value['activity'] not in ACTIVITIES:
         return None,'unsupported native observation source/activity'
     binding=layout.current(state,role)
     expected=binding or {'target':None,'generation':None}
+    if binding and type(value['generation']) is not int:
+        return None,'native observation generation must be integer, not a truth value'
     if value['target']!=expected['target'] or value['generation']!=expected['generation']:
         return None,'native observation belongs to obsolete target/generation'
     if binding is None and value['activity']!='unavailable':

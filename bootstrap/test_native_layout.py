@@ -133,3 +133,11 @@ class LayoutTests(unittest.TestCase):
         with self.assertRaises(l.InvalidLayout):self.bind(s,role,'/root/supervisor/arch/job/ux',2,'/root/supervisor/arch')
         s['design_lanes']['ux']['arch']={'target':'/root/old_arch','generation':1}
         with self.assertRaises(l.InvalidLayout):l.plan(s,role,'/root/supervisor/arch','unavailable')
+
+    def test_boolean_expected_generation_and_unprepared_job_attempt_rejected(self):
+        s=self.hierarchy()
+        with self.assertRaises(l.InvalidLayout):l.plan(s,'ROOT','/root','idle',True)
+        s['native_roles'].pop('JOB:web')
+        for attempt in (0,True,None):
+            s['jobs']['web']['attempt']=attempt
+            with self.assertRaises(l.InvalidLayout):l.plan(s,'JOB:web','/root/supervisor/arch','unavailable')
