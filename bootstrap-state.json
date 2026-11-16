@@ -4,7 +4,7 @@
   "slots": 1,
   "lease": {
     "owner": "6ea87932-daca-4f9e-a8cf-26cf1e7ea878",
-    "until": 1794851716.3923001
+    "until": 1794851633.6184769
   },
   "modules": {
     "storage-provider": {
@@ -61,11 +61,30 @@
       "instructions": [
         "Instruction: preserve these words exactly.\nThis is a storage rehearsal, not an owner product decision."
       ],
-      "checkpoint": null,
+      "checkpoint": "6e7f17fc0ebd81b77b4b49913583743a76136efe",
       "base": "d5c6f2a628daff023ba6e63864755fa14acafadb"
     }
   },
-  "notices": {},
+  "notices": {
+    "storage-provider:6e7f17fc0ebd81b77b4b49913583743a76136efe:declared-user-0": {
+      "provider": "storage-provider",
+      "user": "declared-user-0",
+      "commit": "6e7f17fc0ebd81b77b4b49913583743a76136efe",
+      "status": "pending"
+    },
+    "storage-provider:6e7f17fc0ebd81b77b4b49913583743a76136efe:declared-user-1": {
+      "provider": "storage-provider",
+      "user": "declared-user-1",
+      "commit": "6e7f17fc0ebd81b77b4b49913583743a76136efe",
+      "status": "pending"
+    },
+    "storage-provider:6e7f17fc0ebd81b77b4b49913583743a76136efe:declared-user-2": {
+      "provider": "storage-provider",
+      "user": "declared-user-2",
+      "commit": "6e7f17fc0ebd81b77b4b49913583743a76136efe",
+      "status": "pending"
+    }
+  },
   "instructions": [
     {
       "at": 1794851621.9266803,
