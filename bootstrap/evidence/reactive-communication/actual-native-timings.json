@@ -1,0 +1,125 @@
+{
+  "classification": "ACTUAL NATIVE CURRENT-TREE CHILD EXECUTION; operator-recorded native tool calls and shell receipt files. Not fixture inference.",
+  "measurement": "Sender host monotonic timestamp immediately before issuing native tool call; receiver first observable shell action timestamp. Includes sender model/tool scheduling and receiver inference/tool delay. Upper bound on processing start, not server-internal dispatch latency. Sender-return observation also includes parent model/tool delay, so is not precise RPC latency.",
+  "idle_state_evidence": "list_agents showed recipient completed READY_IDLE before followup_task.",
+  "active_state_evidence": "list_agents showed recipient running after ACTIVE_READY before send_message.",
+  "replacement_state_evidence": "interrupt_agent returned previous_status running; replacement completed REPLACEMENT_READY_IDLE before followup_task. Same logical message replaced-one remained pending through generation change.",
+  "sender_nonblocking": "Native calls returned without recipient final-response result. Sender executed independent arithmetic/file commands without awaiting final responses; recipients produced final notifications separately. Timing alone is not RPC blocking proof.",
+  "schedule_used": false,
+  "cases": {
+    "idle": {
+      "send": {
+        "utc_ns": 1794862371700086778,
+        "monotonic_ns": 5677318916798,
+        "recipient_status": "completed READY_IDLE",
+        "method": "followup_task"
+      },
+      "first_observable_processing": {
+        "utc_ns": 1794862382827023467,
+        "monotonic_ns": 5688445853727,
+        "message_id": "idle-one",
+        "generation": 1
+      },
+      "sender_return_observed": {
+        "utc_ns": 1794862387924058048,
+        "monotonic_ns": 5693542887807,
+        "sender_independent_work": 499500,
+        "note": "Sender executed this without awaiting recipient final response."
+      },
+      "elapsed_ms": 11126.936929,
+      "sender_return_observed_ms": 16223.971009
+    },
+    "active": {
+      "send": {
+        "utc_ns": 1794862415457701024,
+        "monotonic_ns": 5721076531405,
+        "recipient_status": "running confirmed list_agents",
+        "method": "send_message"
+      },
+      "first_observable_processing": {
+        "utc_ns": 1794862423401057127,
+        "monotonic_ns": 5729019886836,
+        "message_id": "active-one",
+        "generation": 1
+      },
+      "sender_return_observed": {
+        "utc_ns": 1794862427086442605,
+        "monotonic_ns": 5732705272315,
+        "sender_independent_work": 332833500,
+        "note": "Independent command executed without awaiting recipient response."
+      },
+      "elapsed_ms": 7943.355431,
+      "sender_return_observed_ms": 11628.74091
+    },
+    "replaced": {
+      "original_send": {
+        "utc_ns": 1794862467482919766,
+        "monotonic_ns": 5773101750107,
+        "method": "send_message to old running generation1",
+        "logical_message_id": "replaced-one"
+      },
+      "replacement_idle_wake_send": {
+        "utc_ns": 1794862505236475036,
+        "monotonic_ns": 5810855304976,
+        "method": "followup_task to completed replacement generation2",
+        "logical_message_id": "replaced-one"
+      },
+      "first_observable_processing": {
+        "utc_ns": 1794862519555300938,
+        "monotonic_ns": 5825174131839,
+        "generation": 2,
+        "target": "/root/reactive_communication_probe/replacement_recipient",
+        "message_id": "replaced-one"
+      },
+      "sender_return_observed": {
+        "utc_ns": 1794862521179576307,
+        "monotonic_ns": 5826798405767,
+        "sender_independent_work": 1999000,
+        "note": "Sender did not wait for replacement response."
+      },
+      "original_send_to_replacement_processing_ms": 52072.381732,
+      "replacement_wake_to_processing_ms": 14318.826863,
+      "sender_return_observed_ms": 15943.100791,
+      "acknowledgement": {
+        "target": "/root/reactive_communication_probe/replacement_recipient",
+        "generation": 2,
+        "processing_started_at": 1794862519.555301,
+        "recorded_at": 1794862530.6356544
+      },
+      "ack_count": 1
+    },
+    "active_production_followup": {
+      "send": {
+        "utc_ns": 1794862623309430546,
+        "monotonic_ns": 5928928260366,
+        "recipient_status": "running confirmed",
+        "method": "followup_task"
+      },
+      "first_observable_processing": {
+        "utc_ns": 1794862633226700889,
+        "monotonic_ns": 5938845530709,
+        "message_id": "active-followup-one",
+        "generation": 2
+      },
+      "sender_return_observed": {
+        "utc_ns": 1794862632124090628,
+        "monotonic_ns": 5937742920618,
+        "independent_sender_work": 49995000,
+        "recipient_final_response_released": false
+      },
+      "sender_progress_before_final_release": {
+        "utc_ns": 1794862657534657433,
+        "monotonic_ns": 5963153487123,
+        "sender_progress_while_recipient_awaited_release": true,
+        "received_notification": "RECEIVED_BUT_WAITING",
+        "final_not_released": true
+      },
+      "elapsed_ms": 9917.270343,
+      "sender_return_observed_ms": 8814.660252,
+      "result": "ACTIVE_FOLLOWUP_PROCESSED after explicit parent RELEASE_FINAL"
+    }
+  },
+  "scope_limit": "Tools address existing non-root child agents in the current native agent tree. Arbitrary unrelated Cloud chats or top-level ROOT cannot be addressed/awakened by this interface. Do not represent current-tree child wake as arbitrary-session wake.",
+  "production_routing": "Use followup_task for both idle and running recipients; native service handles wake-or-steer. send_message alone only used in the active-delivery experiment; not safe for production due active-to-idle race.",
+  "delivery_semantics": "Durable enqueue before transport, current-generation routing, pending until acknowledged, retry/redelivery after replacement. One logical ack is idempotent; no claim of exactly-once arbitrary business side effects."
+}

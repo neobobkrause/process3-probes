@@ -1,3 +1,43 @@
+# Latest actual native development and communication evidence
+
+This section supersedes historical acceptance conclusions below. The owner's
+clarification makes whole-task ROOT resurrection unnecessary and physical module
+sandboxing optional. Neither is a blocker for the demonstrated development cycle.
+
+Actual native ARCH/JOB sessions completed a provider/web proof app. The controller
+preserved work, created PRs #271–274 and used the existing pinned process tool to
+integrate into `codex/p4-integration-workshop-20261116`, final
+`7fbcbd444c748179ad76220c22c3d0f93f6ad901`. No main/tranche/settings/grants/pin
+change occurred. Provider 4 and final web 12 tests passed, followed by the prescribed
+internal Screens walk and actual Chromium external journeys walk. An unfinished
+failing correction was interrupted and replaced; an actual out-of-scope generated
+file was rejected before integration and quarantined. All declared provider users
+have durable notices, including the unassigned report user whose notices remain pending.
+
+Reactive native child measurements: idle 11.127 s; active send_message 7.943 s;
+active production followup_task 9.917 s; replacement 14.319 s after wake, 52.072 s
+including interruption/replacement preparation. Actual production ROOT→coordinator
+mailbox route: 10.075 s. These measure send to first observable recipient action,
+including model/tool scheduling. Sender independent progress before recipient final
+release demonstrates nonblocking submission. No periodic timer supplied these wakes.
+
+Retained idle top-level ROOT wake is a specific unresolved essential communication
+boundary: current-tree controls address non-root recipients; an actual advertised
+immediate automation attempt returned HTTP404. This is distinct from optional
+whole-ROOT resurrection. The existing ten-minute continuation remains active for
+independent work, not as reactive transport. Full Process4 completion is not claimed.
+
+Validation: 105 bootstrap tests and 44 grants tests pass. Real module tests above
+are separate. Hardened exact-head gate-source verification passed for all four
+actual PR heads; this later read-only verification is not retroactively described
+as the code that performed earlier merges. Source receipts, state, gate checks,
+walk reports and screenshot are in evidence/native-development-cycle and
+evidence/reactive-communication. See REACTIVE-COMMUNICATION.md for protocol and limits.
+
+---
+
+# Historical evidence (current conclusions above take precedence)
+
 # Second scheduled continuation and current feasibility boundary
 
 The second scheduled native continuation arrived after a preceding final and ran

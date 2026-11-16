@@ -4,7 +4,7 @@ Updated 2026-11-16 (UTC). Bounded coordinator research turn; not overall complet
 
 ## Owner instructions (exact quotations)
 
-Source: `/workspace/attachments/57aa207c-2d37-4a8d-86d9-caecca2f0764/Pasted text.txt`.
+Source: `bootstrap/OWNER-CLARIFICATION-20261116.txt` (verbatim owner upload).
 
 - “The objective is to reproduce the effective unattended development capabilities of Claude Code Remote running Process4, using OpenAI-hosted, subscription-funded Codex execution.”
 - “Independent ROOT resurrection is not required.”

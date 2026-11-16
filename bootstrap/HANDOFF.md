@@ -1,3 +1,47 @@
+# Latest executed native cycle and reactive communication
+
+Owner clarification in OWNER-CLARIFICATION-20261116.txt governs acceptance. Do not
+resurrect obsolete whole-ROOT-deletion or physical-module-sandbox blockers.
+
+Native cycle state codex/p4-state-native-workshop-20261116 now has provider/web
+DONE. Actual native JOBs wrote tests and code; controller automatically preserved,
+created PRs #271–274 and integrated through the existing pinned process tool into
+codex/p4-integration-workshop-20261116. Final head7fbcbd444c748179ad76220c22c3d0f93f6ad901.
+Provider4 tests and final web12 pass. Internal UX Screens and actual Chromium
+external UX-journey walk PASS for this proof app. Reports in native/probe-design.
+This is an isolated toy development cycle, not CivicSmith2 or adoption certification.
+
+A genuine unfinished web correction was preserved on PR274, interrupted and completed
+by replacement generation3 on the same branch/PR. Actual out-of-scope generated
+provider bytecode was rejected before preservation and mechanically quarantined;
+no provider source was silently admitted. Product notices fan out to web+unassigned
+report. Web notices consumed only after integration; report remains durably pending.
+
+Read REACTIVE-COMMUNICATION.md. Native idle/active/replaced child wake is measured,
+nonblocking, no schedule polling. Production mailbox is native_mailbox inside the
+same GitHub state; use intent -> REAL native followup_task -> delivered -> actual
+actor receipt/ack. Always followup_task, even for active recipients, to avoid an
+active-to-idle race. Do not fabricate submission or ack, and do not consume product
+notices merely from first-processing receipt. Actual ROOT→coordinator status route
+used this controller and began processing in10.075s.
+
+Specific remaining communication limitation: no exposed direct wake for retained
+idle top-level ROOT. Actual advertised automations_run_now attempt returned404
+Action not found before invocation; webhook discovery/trigger schema is absent.
+Do not substitute the continuation timer or invented endpoint, and do not confuse
+this with nonrequired recreation after ROOT deletion. Continue independent work
+and supported alternative investigation; all child/control roles remain usable.
+
+The existing ten-minute continuation is ACTIVE. No new duplicate timer. No main,
+tranche, settings, grants, process pin or CivicSmith2 changes; no API-key/metered
+inference, paid infrastructure or repeated inherited-credential login. Current
+server is loopback8765 in deployment worktree, exec71660; it may be stopped once
+actual walk evidence is preserved if no further app work needs it.
+
+Older setup notes below are historical; current state above takes precedence.
+
+---
+
 # Active native Process4 development cycle — clarified owner requirements
 
 Owner's current instructions are preserved verbatim in OWNER-CLARIFICATION-20261116.txt.

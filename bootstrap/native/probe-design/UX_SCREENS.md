@@ -10,7 +10,7 @@ Web owns `toy/native-cycle/web/` and its tests. `app.py` imports `quote_provider
 
 ## S1: quote form — GET /
 
-HTTP 200, UTF-8 HTML, title and h1 “Workshop card quote”. Visible label “Quantity”, associated number input named quantity, default 1, current provider min/max attributes, and “Get quote” submit button. Form uses GET /quote. Visible unit price and allowed range come from the loaded provider, formatted as dollars with two decimal places.
+HTTP 200, UTF-8 HTML, title and h1 “Workshop card quote”. Visible label “Quantity”, associated input named quantity, default 1, current provider min/max attributes (initial implementation type=number; final corrected implementation type=text with inputmode=numeric, as explicitly required by the correction scenario), and “Get quote” submit button. Form uses GET /quote. Visible unit price and allowed range come from the loaded provider, formatted as dollars with two decimal places.
 
 ## S2: quote result — GET /quote?quantity=12
 

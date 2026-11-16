@@ -1,0 +1,646 @@
+#!/usr/bin/env python3
+"""Native ARCH's bounded probe development controller.
+
+This is a technical restriction of the current assignment, not a new owner grant.
+Native session tools supply session outcomes; this file never launches inference.
+All writes stay in probes' dedicated native state/job/integration branches.
+Ownership checking is an integration control, not an extra product-test stage.
+"""
+import argparse
+import base64
+import copy
+import json
+import os
+from pathlib import Path, PurePosixPath
+import re
+import subprocess
+import sys
+import tempfile
+import time
+from urllib.parse import quote
+
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+import coordinator as c
+from native import communication as communication
+
+REPO=c.REPO
+FILE='native-cycle.json'
+PREFIXES=('codex/p4-job-','codex/p4-state-native-','codex/p4-integration-')
+PROTECTED={'.git','.github','.claude','.codex','.agents','.aws','.process','bootstrap','process','CLAUDE.md','AGENTS.md','.gitmodules'}
+PROCESS_PIN='7a1b45dc97b0532f77b1300c11c5263682cfe7a5'
+GITHUB_ACTIONS_APP_ID=15368
+GATE_WORKFLOW_PATH='.github/workflows/process-gate.yml'
+SHA=re.compile(r'^[a-f0-9]{40}$')
+
+
+class Rejected(PermissionError): pass
+
+
+def ref(value, kind=None):
+    prefixes=(kind,) if kind else PREFIXES
+    if not isinstance(value,str) or not any(value.startswith(p) for p in prefixes) or not re.fullmatch(r'[A-Za-z0-9][A-Za-z0-9._/-]*',value) or any(t in value for t in ('..','//','@{')) or value.endswith(('/','.lock')):
+        raise Rejected('reference outside current native probe authority')
+    return value
+
+
+def path_name(value):
+    if not isinstance(value,str) or not value or '\\' in value or value.startswith('/') or any(p in ('','.','..') for p in value.split('/')):
+        raise Rejected('invalid module path')
+    if any(p in PROTECTED for p in value.split('/')):
+        raise Rejected('protected process/permission path')
+    return value.rstrip('/')
+
+
+def git(repo, *args, check=True):
+    # Job-created hooks/fsmonitor never execute in the controller credential scope.
+    return subprocess.run(['git','-c','core.hooksPath=/dev/null','-c','core.fsmonitor=false',*args],
+                          cwd=repo,text=True,capture_output=True,check=check,timeout=60)
+
+
+class Provider:
+    """Closed write methods; no public arbitrary API forwarding command."""
+    def __init__(self, repo=REPO):
+        if repo!=REPO: raise Rejected('only process3-probes is authorized')
+
+    def _api(self, path, method='GET', body=None):
+        args=['gh','api','repos/'+REPO+'/'+path,'--method',method]
+        if body is not None: args+=['--input','-']
+        out=c.run(args,input=json.dumps(body) if body is not None else None)
+        return json.loads(out) if out else {}
+
+    def head(self, branch):
+        ref(branch)
+        return self._api('git/ref/heads/'+branch)['object']['sha']
+
+    def resolve(self, source):
+        # Read-only source resolution is not permission to mutate that ref.
+        if not isinstance(source,str) or not (SHA.fullmatch(source) or source.startswith('codex/')) or '..' in source:
+            raise Rejected('source must be a known experimental ref or exact commit')
+        return self._api('commits/'+quote(source,safe=''))['sha']
+
+    def ensure_branch(self, branch, sha):
+        ref(branch)
+        if not SHA.fullmatch(sha): raise Rejected('exact base SHA required')
+        try:
+            existing=self.head(branch)
+        except subprocess.CalledProcessError as error:
+            if '404' not in (error.stderr or ''): raise
+        else:
+            if existing!=sha: raise Rejected('existing unreserved branch differs; never reset it')
+            return
+        self._api('git/refs','POST',{'ref':'refs/heads/'+branch,'sha':sha})
+
+    def read_state(self, branch):
+        ref(branch,'codex/p4-state-native-')
+        data=self._api('contents/'+FILE+'?ref='+quote(branch,safe=''))
+        return json.loads(base64.b64decode(data['content'])),data['sha']
+
+    def write_state(self, branch, state, sha):
+        ref(branch,'codex/p4-state-native-')
+        body={'branch':branch,'message':'Process4 native cycle state',
+              'content':base64.b64encode((json.dumps(state,indent=2)+'\n').encode()).decode()}
+        if sha: body['sha']=sha
+        try: self._api('contents/'+FILE,'PUT',body)
+        except subprocess.CalledProcessError as error:
+            if any(code in (error.stderr or '') for code in ('409','422')): raise c.StateConflict('native state changed; reread') from error
+            raise
+
+    def push(self, workspace, branch, sha):
+        ref(branch,'codex/p4-job-')
+        if not SHA.fullmatch(sha): raise Rejected('exact checkpoint SHA required')
+        # A normal push only; no delete, force, main/tranche, or configurable URL.
+        git(workspace,'push','origin',sha+':refs/heads/'+branch)
+
+    def draft_pr(self, job, base):
+        head=ref(job['branch'],'codex/p4-job-'); ref(base,'codex/p4-integration-')
+        prs=json.loads(c.run(['gh','pr','list','--repo',REPO,'--head',head,'--state','all',
+                             '--json','number,url,state,isDraft,baseRefName,headRefName']))
+        opened=[pr for pr in prs if pr['state']=='OPEN']
+        if len(opened)>1: raise Rejected('multiple open job PRs; preserve for ARCH')
+        if any(pr['baseRefName']!=base or pr['headRefName']!=head for pr in prs):
+            raise Rejected('existing PR scope differs; preserve for ARCH')
+        if opened: return opened[0]
+        if any(pr['state']!='MERGED' for pr in prs):
+            raise Rejected('closed unmerged job PR requires ARCH decision; never reopen/reset it')
+        # A later round uses the same branch, preserving merged historical PRs,
+        # and opens at most one new PR for its new accepted checkpoint.
+        body=('Native Process4 module '+job['id']+'. '+job['completion']+'\n\n'
+              'Controller checkpoint '+job['checkpoint']+'. Module tests and native session outcome '
+              'are recorded on the native state branch. Keep draft pending ARCH integration through '
+              'the existing process merge tool. No main merge, grant changes, or new product-test stage.')
+        url=c.run(['gh','pr','create','--repo',REPO,'--base',base,'--head',head,'--draft',
+                   '--title','Process4 native module: '+job['id'],'--body-file','-'],input=body)
+        # Read provider identity rather than infer a PR number from an arbitrary URL.
+        return json.loads(c.run(['gh','pr','view',url,'--repo',REPO,'--json','number,url,state,isDraft,baseRefName,headRefName']))
+
+    def pr_info(self, number):
+        if type(number) is not int or number<1: raise Rejected('invalid PR identity')
+        return json.loads(c.run(['gh','pr','view',str(number),'--repo',REPO,'--json',
+            'number,url,state,isDraft,baseRefName,headRefName,headRefOid,statusCheckRollup,mergeCommit']))
+
+    def gate_green(self, head):
+        """Existing process gate, authenticated by source app/workflow and SHA.
+
+        A commit status named 'gate' or a foreign application's check is never
+        accepted. The pinned merge tool still independently repeats its required
+        check/source/head controls; this method adds no product-test stage.
+        """
+        if not isinstance(head,str) or not SHA.fullmatch(head):
+            raise Rejected('exact accepted head SHA required for process gate')
+        response=self._api('commits/'+head+'/check-runs?check_name=gate&filter=latest&per_page=100')
+        checks=response.get('check_runs',[])
+        if response.get('total_count',len(checks))>len(checks):return False
+        candidates=[check for check in checks if check.get('name')=='gate'
+                    and check.get('head_sha')==head
+                    and check.get('app',{}).get('id')==GITHUB_ACTIONS_APP_ID
+                    and type(check.get('check_suite',{}).get('id')) is int]
+        if not candidates:return False
+        runs_response=self._api('actions/runs?head_sha='+head+'&per_page=100')
+        runs=runs_response.get('workflow_runs',[])
+        if runs_response.get('total_count',len(runs))>len(runs):return False
+        suites={run['check_suite_id'] for run in runs
+                if run.get('head_sha')==head and run.get('path')==GATE_WORKFLOW_PATH
+                and run.get('repository',{}).get('full_name',REPO)==REPO
+                and type(run.get('check_suite_id')) is int}
+        sourced=[check for check in candidates if check['check_suite']['id'] in suites]
+        if not sourced:return False
+        # Never let an older success override a newer pending/failed rerun from
+        # the same actual process-gate source.
+        latest=max(sourced,key=lambda check:check.get('id',-1))
+        return latest.get('status')=='completed' and latest.get('conclusion')=='success'
+
+    def ready_pr(self, number):
+        if type(number) is not int or number<1: raise Rejected('invalid PR identity')
+        return c.run(['gh','pr','ready',str(number),'--repo',REPO])
+
+    def merge_with_pinned_tool(self, repo, number):
+        pinned=git(repo,'rev-parse','HEAD:.process').stdout.strip()
+        actual=git(Path(repo)/'.process','rev-parse','HEAD').stdout.strip()
+        if pinned!=PROCESS_PIN or actual!=PROCESS_PIN or git(Path(repo)/'.process','status','--porcelain').stdout:
+            raise Rejected('existing immutable process pin/tool not available cleanly')
+        # This stock tool rechecks PR scope, required checks and expected head
+        # and uses the SHA-conditional merge route. No direct merge API fallback.
+        return c.run(['node',str(Path(repo)/'.process/tool/p3.mjs'),'merge',str(number),
+                      '--plain','--no-review',
+                      'Disposable native Process4 experiment: ARCH-owned module tests and actual ownership validated; no separate reviewer or new product stage introduced.'],
+                     cwd=repo,timeout=120)
+
+    def contains(self, ancestor, descendant):
+        if not SHA.fullmatch(ancestor) or not SHA.fullmatch(descendant): raise Rejected('exact integration SHAs required')
+        return self._api('compare/'+ancestor+'...'+descendant)['status'] in ('ahead','identical')
+
+
+class Store:
+    def __init__(self, branch, provider=None):
+        self.branch=ref(branch,'codex/p4-state-native-'); self.provider=provider or Provider()
+
+    def read(self): return self.provider.read_state(self.branch)
+    def write(self,state,sha): return self.provider.write_state(self.branch,state,sha)
+
+    def mutate(self, action):
+        for attempt in range(4):
+            state,sha=self.read(); action(state)
+            try: self.write(state,sha); return state
+            except c.StateConflict:
+                if attempt==3: raise
+
+    def init(self, base, integration):
+        ref(integration,'codex/p4-integration-')
+        try: existing,_=self.read()
+        except subprocess.CalledProcessError as error:
+            if '404' not in (error.stderr or ''): raise
+        else:
+            if existing['integration_branch']!=integration: raise Rejected('existing run configuration differs')
+            return existing
+        sha=self.provider.resolve(base)
+        self.provider.ensure_branch(integration,sha)
+        self.provider.ensure_branch(self.branch,sha)
+        state=c.empty(); state.update(native=True,integration_branch=integration,base=sha,native_mailbox=communication.empty())
+        self.write(state,None); return state
+
+
+def assign(state, spec, state_branch):
+    allowed={'id','order','paths','uses','prompt','completion','verify','timeout'}
+    if not isinstance(spec,dict) or set(spec)-allowed:
+        raise Rejected('assignment contains untrusted controller fields')
+    if 'timeout' in spec and (type(spec['timeout']) is not int or not 1<=spec['timeout']<=600):
+        raise Rejected('invalid bounded job timeout')
+    if not isinstance(spec.get('uses',[]),list) or not all(isinstance(x,str) for x in spec.get('uses',[])):
+        raise Rejected('uses must name declared modules')
+    paths=[path_name(p) for p in spec.get('paths',[])]
+    candidate={**spec,'paths':paths}
+    c.add(state,candidate)
+    job=state['jobs'][spec['id']]
+    job['branch']=ref('codex/p4-job-native-'+state_branch.removeprefix('codex/p4-state-native-')+'-'+job['id'],'codex/p4-job-')
+
+
+def control(state,action,job=None,value=None,source='arch'):
+    """Trusted controller journal: technical choices are never owner words.
+
+    source=owner must be selected by ROOT/coordinator only for an actual owner
+    instruction/control. These CLI fields do not authenticate arbitrary callers.
+    Historical events emitted by the earlier helper are left unchanged.
+    """
+    if source not in ('arch','owner'):raise Rejected('unknown control instruction source')
+    if action not in ('stop','continue','retry','interrupt','replace','slots','priority','instruction'):
+        raise Rejected('unknown native control')
+    if source=='owner':
+        if action=='slots':
+            cap=int(value)
+            if not 1<=cap<=8:raise Rejected('owner slot cap must stay within granted account maximum')
+            state['owner_job_cap']=cap
+        return c.control(state,action,job,value)
+    if action=='stop':
+        if not (state.get('stopped') and state.get('stop_source')=='owner'):
+            state.update(stopped=True,stop_source='technical')
+    elif action=='continue':
+        if state.get('stopped') and state.get('stop_source')=='owner':
+            raise Rejected('technical control cannot clear an actual owner stop')
+        state['stopped']=False;state.pop('stop_source',None)
+    elif action=='slots':
+        slots=int(value)
+        if not 1<=slots<=state.get('owner_job_cap',8):raise Rejected('technical concurrency exceeds owner cap')
+        state['slots']=slots
+    elif action=='priority':raise Rejected('module-order priority override requires an actual owner instruction')
+    elif action=='instruction':
+        if not isinstance(value,str) or not value:raise Rejected('technical instruction text required')
+        state.setdefault('technical_instructions',[]).append({'at':time.time(),'job':job,'text':value})
+        targets=[state['jobs'][job]] if job else list(state['jobs'].values())
+        for target in targets:
+            target.setdefault('technical_instructions',[]).append(value)
+            if target['status'] in ('running','interrupting'):
+                target.update(status='interrupting',restart=True)
+            elif target['status'] in ('blocked','paused'):target.update(status='ready',restart=True)
+    else:
+        target=state['jobs'][job]
+        target['status']='interrupting' if target['status'] in ('running','interrupting') else 'paused'
+        target['restart']=action!='interrupt'
+        if action!='interrupt' and target['status']=='paused':target['status']='ready'
+    c.event(state,'native-arch-control',command=action,job=job,value=value,source='arch')
+
+
+def native_mailbox(state):
+    return state.setdefault('native_mailbox',communication.empty())
+
+
+def enqueue_provider_notices(state):
+    """Durable fanout to registered native sessions, including idle sessions.
+
+    All declared users retain product notice rows regardless of whether they
+    currently have a session. Session registration catches up pending notices.
+    First-processing communication ack never consumes a product notice.
+    """
+    mailbox=native_mailbox(state)
+    for ident,notice in state['notices'].items():
+        recipient='JOB:'+notice['user']
+        if notice['status']!='pending' or recipient not in mailbox['recipients']:continue
+        text=('Provider changed; begin handling this durable notice and report the message ID, '
+              'your current native target/generation, and first-processing time to ARCH through '
+              'the native message tool. First-processing acknowledgement does not complete '
+              'module work. Keep your assigned paths; ask ARCH for the current attempt workspace '
+              'before editing after replacement. Notice: '+json.dumps({
+                  'notice_id':ident,'provider':notice['provider'],'user':notice['user'],
+                  'commit':notice['commit']},sort_keys=True))
+        communication.enqueue(mailbox,'PROVIDER:'+notice['provider'],recipient,text,'provider-notice:'+ident)
+    return tuple(key for key,value in mailbox['messages'].items()
+                 if key.startswith('provider-notice:') and value['status']!='acknowledged')
+
+
+def current_native_recipient(state, message_id):
+    mailbox=native_mailbox(state)
+    message=mailbox['messages'][message_id]
+    recipient=mailbox['recipients'][message['recipient']]
+    if message['recipient'].startswith('JOB:'):
+        jid=message['recipient'].removeprefix('JOB:')
+        job=state['jobs'].get(jid)
+        if job and recipient['generation']!=job['attempt']:
+            raise communication.StaleRecipient('current job attempt needs its actual native session registered first')
+    return recipient
+
+
+def check_workspace(workspace, job):
+    workspace=Path(workspace).resolve(strict=True)
+    owned=tuple(path_name(p) for p in job['paths'])
+    def owns(p): return any(p==o or p.startswith(o+'/') for o in owned)
+    changed=set()
+    for args in (('diff','--name-only','-z','--no-renames',job['base'],'HEAD'),
+                 ('diff','--name-only','-z','--no-renames',job['base']),
+                 ('diff','--cached','--name-only','-z','--no-renames',job['base']),
+                 ('ls-files','--others','--exclude-standard','-z')):
+        changed.update(p for p in git(workspace,*args).stdout.split('\0') if p)
+    # Check each local commit as well: an out-of-scope file cannot be leaked in
+    # pushed history even if a later local commit reverted its final contents.
+    trusted_merges={item['commit']:item['base'] for item in job.get('trusted_baseline_merges',[])}
+    for commit in git(workspace,'rev-list',job['base']+'..HEAD').stdout.splitlines():
+        if commit in trusted_merges:
+            parents=git(workspace,'rev-list','--parents','-n','1',commit).stdout.split()
+            if len(parents)!=3 or parents[2]!=trusted_merges[commit]:
+                raise Rejected('trusted baseline merge identity differs')
+            continue
+        changed.update(p for p in git(workspace,'diff-tree','-m','--no-commit-id','--name-only','-r','-z','--no-renames',commit).stdout.split('\0') if p)
+    for name in changed:
+        path_name(name)
+        if not owns(name): raise Rejected('outside assigned module: '+name)
+        cursor=workspace
+        for part in PurePosixPath(name).parts:
+            cursor=cursor/part
+            if cursor.is_symlink(): raise Rejected('symlink change rejected: '+name)
+        if not cursor.resolve(strict=False).is_relative_to(workspace): raise Rejected('path escaped workspace')
+    for entry in git(workspace,'ls-files','--stage','-z').stdout.split('\0'):
+        if not entry: continue
+        metadata,name=entry.split('\t',1)
+        if name in changed and metadata.split()[0] in ('120000','160000'):
+            raise Rejected('symlink/submodule index entry rejected: '+name)
+    return sorted(changed)
+
+
+def verify(workspace, job):
+    # Product test code never inherits host provider secrets/config. This is
+    # credential hygiene, NOT a claim of physical filesystem/network isolation.
+    with tempfile.TemporaryDirectory(prefix='p4-module-test-') as private:
+        env={k:v for k,v in os.environ.items() if k in ('PATH','LANG','LC_ALL','SYSTEMROOT')}
+        env.update(HOME=private,CODEX_HOME=private,GH_CONFIG_DIR=private,
+                   GIT_CONFIG_NOSYSTEM='1',GIT_CONFIG_GLOBAL=os.devnull,PYTHONDONTWRITEBYTECODE='1')
+        result=subprocess.run(job['verify'],cwd=workspace,env=env,text=True,capture_output=True,
+                              timeout=min(int(job.get('timeout',180)),600))
+        output=result.stdout+'\n'+result.stderr
+        counts=[int(value) for value in re.findall(r'\bRan\s+(\d+)\s+tests?\b',output)]
+        counts += [int(value) for value in re.findall(r'^# tests (\d+)\s*$',output,re.MULTILINE)]
+        return {'returncode':result.returncode,'test_count':sum(counts),
+                'stdout':result.stdout[-4000:],'stderr':result.stderr[-4000:]}
+
+
+class Cycle:
+    def __init__(self, store, repo, runtime):
+        self.store=store; self.provider=store.provider
+        self.repo=Path(repo).resolve(); self.runtime=Path(runtime).resolve()
+        origin=git(self.repo,'remote','get-url','origin').stdout.strip().rstrip('/').removesuffix('.git')
+        if origin!='https://github.com/'+REPO: raise Rejected('checkout origin is not process3-probes')
+        self.runtime.mkdir(parents=True,exist_ok=True)
+
+    def prepare(self, jid):
+        state,_=self.store.read(); job=state['jobs'][jid]
+        if state['stopped'] or job['status'] not in ('ready','paused','blocked'): raise Rejected('job not dispatchable or run stopped')
+        integration_base=self.provider.head(state['integration_branch'])
+        base=job.get('base') or integration_base
+        if not job.get('base'): self.provider.ensure_branch(job['branch'],base)
+        def reserve(s):
+            j=s['jobs'][jid]
+            if s['stopped'] or j['status'] not in ('ready','paused','blocked'): raise Rejected('job changed before reservation')
+            if sum(x['status']=='running' for x in s['jobs'].values())>=s['slots']: raise Rejected('native job slot cap reached')
+            j.setdefault('base',base); j.setdefault('original_base',base)
+            j['attempt']+=1; j['status']='running'; j['accepted']=False
+            j['notice_ids']=[key for key,n in s['notices'].items() if n['user']==jid and n['status']=='pending']
+            c.event(s,'native-reserve',job=jid,attempt=j['attempt'])
+        state=self.store.mutate(reserve); job=state['jobs'][jid]
+        path=self.runtime/(jid+'-'+str(job['attempt']))
+        if not path.exists():
+            git(self.repo,'fetch','origin',ref(job['branch'],'codex/p4-job-'))
+            git(self.repo,'worktree','add','--detach',str(path),'FETCH_HEAD')
+        # Refresh a notified/replaced consumer from the trusted integration tip,
+        # preserving its own partial commits, branch and PR. Only the controller
+        # performs this baseline merge; jobs never modify other modules.
+        check_workspace(path,job)
+        if integration_base!=job['base']:
+            git(self.repo,'fetch','origin',state['integration_branch'])
+            git(path,'-c','user.name=Process4 native controller',
+                '-c','user.email=process4@users.noreply.github.com',
+                'merge','--no-edit',integration_base)
+            merged=git(path,'rev-parse','HEAD').stdout.strip()
+            if merged!=integration_base:
+                job.setdefault('trusted_baseline_merges',[]).append({'commit':merged,'base':integration_base})
+            job['base']=integration_base
+            check_workspace(path,job)
+            self.provider.push(path,job['branch'],merged)
+            def synced(s):
+                current=s['jobs'][jid]
+                if current['attempt']!=job['attempt']: raise Rejected('stale baseline sync')
+                current.update(base=integration_base,checkpoint=merged,
+                               trusted_baseline_merges=job.get('trusted_baseline_merges',[]))
+                c.event(s,'native-baseline-sync',job=jid,base=integration_base,checkpoint=merged)
+            state=self.store.mutate(synced);job=state['jobs'][jid]
+        prompt=('Native Process4 JOB '+jid+'. Work ONLY in '+json.dumps(job['paths'])+
+                '. Do not commit/push/call provider APIs/start sessions/change grants or process/configuration. '
+                'Write your own module tests. Preserve existing work. Assignment: '+job['prompt']+
+                '\nCompletion: '+job['completion']+'\nOwner instructions (verbatim): '+json.dumps(job['instructions'])+
+                '\nARCH technical instructions (not owner words): '+json.dumps(job.get('technical_instructions',[]))+
+                '\nProvider notices: '+json.dumps({k:state['notices'][k] for k in job['notice_ids']})+
+                '\nLeave files for controller checkpointing; report actual work and tests, not overall Process4 completion.')
+        self.store.mutate(lambda s:s['jobs'][jid].update(workspace=str(path)))
+        return {'job':jid,'attempt':job['attempt'],'workspace':str(path),'prompt':prompt,'branch':job['branch']}
+
+    def session(self,jid,address):
+        if not isinstance(address,str) or not address.startswith('/root/'): raise Rejected('native session address required')
+        def register(s):
+            job=s['jobs'][jid]
+            if job['attempt']<1:raise Rejected('prepare the native job before recording its actual session')
+            communication.register(native_mailbox(s),'JOB:'+jid,address,job['attempt'])
+            job.update(session=address,session_generation=job['attempt'])
+            enqueue_provider_notices(s)
+        state=self.store.mutate(register)
+        return {'job':jid,'target':address,'generation':state['jobs'][jid]['attempt'],
+                'message_ids_to_deliver':communication.pending_for(native_mailbox(state),'JOB:'+jid)}
+
+    def register_role(self,role,target,generation):
+        # Host/controller interface: identity comes from a real observed native
+        # session-tool event. CLI arguments are not an authentication mechanism.
+        if role not in ('ARCH','COORDINATOR','WATCHER','PROCESS') and not (
+                role.startswith('JOB:') and role.removeprefix('JOB:') in self.store.read()[0]['modules']):
+            raise Rejected('register a supported native child role or declared module recipient')
+        if not isinstance(target,str) or not target.startswith('/root/'):
+            raise Rejected('current-tree non-root native target required')
+        def register(s):
+            communication.register(native_mailbox(s),role,target,generation)
+            enqueue_provider_notices(s)
+        state=self.store.mutate(register)
+        return {'recipient':role,'target':target,'generation':generation,
+                'message_ids_to_deliver':communication.pending_for(native_mailbox(state),role)}
+
+    def message(self,sender,recipient,text,message_id=None):
+        result={}
+        def enqueue(s):result['message_id']=communication.enqueue(native_mailbox(s),sender,recipient,text,message_id)
+        self.store.mutate(enqueue)
+        return result
+
+    def messages(self,recipient=None):
+        state,_=self.store.read();mailbox=native_mailbox(state)
+        return {key:value for key,value in mailbox['messages'].items()
+                if recipient is None or value['recipient']==recipient}
+
+    def intent(self,message_id,activity):
+        # The activity must be freshly observed through the real native agent
+        # catalog. followup_task itself handles an idle/running transition race.
+        state,_=self.store.read();current_native_recipient(state,message_id)
+        return communication.delivery_intent(native_mailbox(state),message_id,activity)
+
+    def delivered(self,intent,native_result=None):
+        # Called only AFTER the hosted controller actually invokes the returned
+        # native followup_task intent. This does not invoke or invent that API.
+        def record(s):
+            current_native_recipient(s,intent['message_id'])
+            mailbox=native_mailbox(s)
+            previous=len(mailbox['messages'][intent['message_id']]['deliveries'])
+            communication.record_delivery(mailbox,intent)
+            deliveries=mailbox['messages'][intent['message_id']]['deliveries']
+            if native_result is not None and len(deliveries)>previous:
+                deliveries[-1]['native_tool_result']=native_result
+        state=self.store.mutate(record)
+        return {'message_id':intent['message_id'],
+                'status':native_mailbox(state)['messages'][intent['message_id']]['status']}
+
+    def acknowledge(self,message_id,target,generation,started_at,receipt):
+        # Only trusted ARCH/controller records a receipt from an ACTUAL native
+        # actor event. A queue result is not receipt/processing evidence, and
+        # these CLI fields do not authenticate an arbitrary user's identity.
+        if not isinstance(receipt,str) or message_id not in receipt:
+            raise Rejected('observed native actor receipt must identify the exact message')
+        if type(started_at) not in (int,float) or not 0<started_at<=time.time()+300:
+            raise Rejected('valid observed first-processing timestamp required')
+        result={}
+        def ack(s):
+            current_native_recipient(s,message_id)
+            mailbox=native_mailbox(s);message=mailbox['messages'][message_id]
+            if started_at<message['created_at']-5:
+                raise Rejected('processing receipt predates durable message creation')
+            if not any(d['target']==target and d['generation']==generation for d in message['deliveries']):
+                raise Rejected('record actual native submission before recording actor receipt')
+            result['new_ack']=communication.acknowledge(mailbox,message_id,target,generation,started_at)
+            if result['new_ack']:
+                message['ack'].update(source='observed-native-actor-event',receipt=receipt,
+                                      latency_seconds=max(0,started_at-message['created_at']))
+        self.store.mutate(ack)
+        return {'message_id':message_id,'status':'first_processing_acknowledged',**result}
+
+    def checkpoint(self, jid, outcome):
+        if outcome not in ('completed','interrupted','blocked'): raise Rejected('unknown native outcome')
+        state,_=self.store.read(); job=state['jobs'][jid]; path=Path(job['workspace'])
+        ref(job['branch'],'codex/p4-job-')
+        try:
+            changes=check_workspace(path,job)
+            verification=verify(path,job) if outcome=='completed' else None
+            # Acceptance may itself create changes; check the actual final candidate.
+            check_workspace(path,job)
+        except (Rejected,subprocess.TimeoutExpired) as error:
+            def reject(s):
+                s['jobs'][jid].update(status='blocked',ownership_violation=str(error))
+                c.event(s,'native-rejected',job=jid,reason=str(error))
+            # No remote content/branch/PR write occurs. The state audit is the
+            # only permitted remote write recording that rejection.
+            self.store.mutate(reject)
+            raise
+        git(path,'add','-A','--','.')
+        if git(path,'diff','--cached','--quiet',check=False).returncode:
+            git(path,'-c','user.name=Process4 native controller','-c','user.email=process4@users.noreply.github.com',
+                'commit','-m','Native checkpoint '+jid+' attempt '+str(job['attempt']))
+        check_workspace(path,job)
+        sha=git(path,'rev-parse','HEAD').stdout.strip()
+        self.provider.push(path,job['branch'],sha)
+        def record(s):
+            j=s['jobs'][jid]
+            if j['attempt']!=job['attempt']: raise Rejected('stale native attempt result')
+            if sha!=j.get('checkpoint') and sha!=j['base']: c.notify(s,jid,sha)
+            enqueue_provider_notices(s)
+            j.update(checkpoint=sha,last_outcome=outcome,verification=verification,
+                     accepted=bool(outcome=='completed' and verification and verification['returncode']==0 and verification['test_count']>0),
+                     status='paused' if outcome=='interrupted' else 'review' if verification and verification['returncode']==0 and verification['test_count']>0 else 'blocked')
+            j.pop('ownership_violation',None)
+            c.event(s,'native-checkpoint',job=jid,checkpoint=sha,status=j['status'])
+        state=self.store.mutate(record); current=state['jobs'][jid]
+        if sha!=job['base']:
+            pr=self.provider.draft_pr(current,state['integration_branch'])
+            self.store.mutate(lambda s:s['jobs'][jid].update(pr=pr['url'],pr_number=pr['number']))
+        latest=self.store.read()[0]
+        pending=[key for key,value in native_mailbox(latest)['messages'].items()
+                 if key.startswith('provider-notice:') and value['status']!='acknowledged']
+        return {**latest['jobs'][jid],'message_ids_to_deliver':pending}
+
+    def integrate(self,jid):
+        state,_=self.store.read();job=state['jobs'][jid]
+        if state['stopped'] or not job.get('accepted') or not job.get('pr_number'):
+            raise Rejected('run stopped or module not accepted with a preserved PR')
+        ref(job['branch'],'codex/p4-job-');ref(state['integration_branch'],'codex/p4-integration-')
+        check_workspace(job['workspace'],job)
+        head=job['checkpoint']
+        if git(job['workspace'],'rev-parse','HEAD').stdout.strip()!=head or self.provider.head(job['branch'])!=head:
+            raise Rejected('job checkpoint moved after acceptance')
+        pr=self.provider.pr_info(job['pr_number'])
+        if pr['headRefName']!=job['branch'] or pr['baseRefName']!=state['integration_branch'] or pr['headRefOid']!=head:
+            raise Rejected('PR identity/base/head differs from accepted assignment')
+        if pr['state']=='MERGED':
+            # Reconcile a prior successful mutation if durable recording failed.
+            merged=self.provider.head(state['integration_branch'])
+            self.record_integration(jid,head,merged)
+            return {'status':'integrated','reconciled':True,'pr':job['pr_number'],'checkpoint':head,'integration':merged}
+        if pr['state']!='OPEN':raise Rejected('PR is neither open nor already merged')
+        if pr['isDraft']:
+            self.provider.ready_pr(job['pr_number'])
+            return {'status':'waiting-checks','pr':job['pr_number'],'checkpoint':head}
+        if not self.provider.gate_green(head):
+            return {'status':'waiting-checks','pr':job['pr_number'],'checkpoint':head}
+        # The existing process tool remains the only merge route and repeats
+        # all required-check/pin/head checks. No main/tranche base is accepted.
+        self.provider.merge_with_pinned_tool(self.repo,job['pr_number'])
+        merged=self.provider.head(state['integration_branch'])
+        self.record_integration(jid,head,merged)
+        return {'status':'integrated','pr':job['pr_number'],'checkpoint':head,'integration':merged}
+
+    def record_integration(self,jid,checked_head,integration_sha):
+        state,_=self.store.read(); job=state['jobs'][jid]
+        if job.get('checkpoint')!=checked_head or not job.get('accepted'): raise Rejected('integration head not accepted/current')
+        if self.provider.head(state['integration_branch'])!=integration_sha or not self.provider.contains(checked_head,integration_sha):
+            raise Rejected('provider does not confirm exact merged checkpoint')
+        def integrated(s):
+            j=s['jobs'][jid]
+            if j['checkpoint']!=checked_head: raise Rejected('checkpoint changed during integration')
+            j.update(integrated=integration_sha,status='done')
+            for key in j.get('notice_ids',[]):
+                if key in s['notices']: s['notices'][key]['status']='delivered-and-completed'
+            if any(n['user']==jid and n['status']=='pending' for n in s['notices'].values()): j['status']='ready'
+            c.event(s,'native-integrated',job=jid,checkpoint=checked_head,integration=integration_sha)
+        return self.store.mutate(integrated)
+
+
+def main():
+    parser=argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('--state',required=True); parser.add_argument('--repo',default='.')
+    parser.add_argument('--runtime',default='/workspace/work/p4-native-cycle')
+    sub=parser.add_subparsers(dest='command',required=True)
+    p=sub.add_parser('init'); p.add_argument('--base',required=True); p.add_argument('--integration',required=True)
+    for command in ('assign','declare'):
+        p=sub.add_parser(command); p.add_argument('file')
+    sub.add_parser('status')
+    p=sub.add_parser('control'); p.add_argument('action',choices=['stop','continue','retry','interrupt','replace','slots','priority','instruction']);p.add_argument('--job');p.add_argument('--value');p.add_argument('--source',choices=['arch','owner'],default='arch')
+    p=sub.add_parser('prepare');p.add_argument('job')
+    p=sub.add_parser('session');p.add_argument('job');p.add_argument('address')
+    p=sub.add_parser('register-role');p.add_argument('role');p.add_argument('target');p.add_argument('--generation',type=int,required=True)
+    p=sub.add_parser('message');p.add_argument('--sender',required=True);p.add_argument('--recipient',required=True);p.add_argument('--text',required=True);p.add_argument('--message-id')
+    p=sub.add_parser('messages');p.add_argument('--recipient')
+    p=sub.add_parser('intent');p.add_argument('message_id');p.add_argument('--activity',choices=['idle','running'],required=True)
+    p=sub.add_parser('delivered');p.add_argument('intent_file');p.add_argument('--result-file')
+    p=sub.add_parser('ack');p.add_argument('message_id');p.add_argument('--target',required=True);p.add_argument('--generation',type=int,required=True);p.add_argument('--started-at',type=float,required=True);p.add_argument('--receipt',required=True)
+    p=sub.add_parser('checkpoint');p.add_argument('job');p.add_argument('--outcome',choices=['completed','interrupted','blocked'],required=True)
+    p=sub.add_parser('integrate');p.add_argument('job')
+    p=sub.add_parser('record-integration');p.add_argument('job');p.add_argument('--head',required=True);p.add_argument('--commit',required=True)
+    args=parser.parse_args();store=Store(args.state)
+    if args.command=='init': result=store.init(args.base,args.integration)
+    elif args.command=='status':result=store.read()[0]
+    elif args.command=='assign':result=store.mutate(lambda s:assign(s,json.loads(Path(args.file).read_text()),store.branch))
+    elif args.command=='declare':result=store.mutate(lambda s:c.declare(s,json.loads(Path(args.file).read_text())))
+    elif args.command=='control':result=store.mutate(lambda s:control(s,args.action,args.job,args.value,args.source))
+    else:
+        cycle=Cycle(store,args.repo,args.runtime)
+        if args.command=='prepare':result=cycle.prepare(args.job)
+        elif args.command=='session':result=cycle.session(args.job,args.address)
+        elif args.command=='register-role':result=cycle.register_role(args.role,args.target,args.generation)
+        elif args.command=='message':result=cycle.message(args.sender,args.recipient,args.text,args.message_id)
+        elif args.command=='messages':result=cycle.messages(args.recipient)
+        elif args.command=='intent':result=cycle.intent(args.message_id,args.activity)
+        elif args.command=='delivered':result=cycle.delivered(json.loads(Path(args.intent_file).read_text()),json.loads(Path(args.result_file).read_text()) if args.result_file else None)
+        elif args.command=='ack':result=cycle.acknowledge(args.message_id,args.target,args.generation,args.started_at,args.receipt)
+        elif args.command=='checkpoint':result=cycle.checkpoint(args.job,args.outcome)
+        elif args.command=='integrate':result=cycle.integrate(args.job)
+        else:result=cycle.record_integration(args.job,args.head,args.commit)
+    print(json.dumps(result,indent=2))
+
+
+if __name__=='__main__':main()

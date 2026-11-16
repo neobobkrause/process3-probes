@@ -1,0 +1,23 @@
+{
+  "classification": "Actual GitHub-backed controller mailbox -> native idle coordinator followup -> actual first action and source-verified actor receipt -> controller acknowledgement",
+  "send": {
+    "utc": 1794863326.6240182,
+    "monotonic_ns": 6632242848974
+  },
+  "receipt": {
+    "message_id": "root-coordinator-status-20261116",
+    "generation": 1,
+    "time": 1794863336.699012,
+    "monotonic_ns": 6642317842573
+  },
+  "sender_independent_progress": {
+    "utc": 1794863339.6392019,
+    "monotonic_ns": 6645258032753,
+    "independent_work": 12497500,
+    "waited_for_reply": false
+  },
+  "elapsed_seconds": 10.074993599,
+  "latency_boundary": "before native tool invocation to first observable recipient shell action; includes model/tool scheduling, not precise service latency",
+  "nonblocking": "ROOT performed independent command before waiting for any coordinator response",
+  "schedule_used": false
+}

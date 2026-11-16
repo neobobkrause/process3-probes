@@ -77,20 +77,24 @@ Runtime: `/workspace/work/p4-native-cycle`.
 Design and job assignments: `native/probe-design/`.
 ARCH: `/root/p4_arch_native_cycle`; coordinator: `/root/p4_coordinator`.
 
-ARCH designed a real small workshop-card quote HTTP app: ordered provider and web
-modules, plus an unassigned report user. Provider changes must notify both web and
-report. The run is initialized and provider attempt 1 is assigned to an actual
-native JOB. Completion/PR/integration must be recorded only after real execution.
-Read state before any next operation; never restart this run or duplicate a reservation.
+ARCH and actual native JOBs completed the workshop-card quote HTTP app, then
+revised its provider and web consumer. Controller-created PRs #271–274 integrated
+through the existing process tool into the authorized experimental branch. Final
+head: `7fbcbd444c748179ad76220c22c3d0f93f6ad901`. Provider 4 and final web 12 module
+tests passed; internal Screens and actual Chromium external journeys walks passed.
+Reports and screenshot are preserved under native/probe-design and evidence/native-development-cycle.
 
-Next: provider checkpoint/PR/integration; web job and integration; provider revision
-and all-user notices; consumer processing; preservation/interruption/replacement of
-an unfinished web correction; internal Screens walk and external journeys walk
-against the loopback development service on the existing OpenAI-managed computer.
-This is an isolated proof application, not a CivicSmith2 tranche or product adoption.
+An unfinished failing web correction was checkpointed, interrupted and completed
+by a distinct replacement on the same branch/PR. Actual out-of-scope provider
+bytecode was rejected and mechanically quarantined before integration. Both declared
+users received durable provider notices; the unassigned report user's notices remain
+pending, rather than being falsely reported delivered to a nonexistent session.
 
-Reactive message routing and latency trials are in progress in the native
-communication worker; keep measured native evidence separate from helper unit tests.
+Reactive idle/active/replaced child-session communication is implemented and measured;
+see REACTIVE-COMMUNICATION.md. Production always uses native followup_task to avoid
+the running-to-idle race. Retained idle top-level ROOT wake remains unproven: the
+advertised immediate automation action actually returned HTTP404 before invocation.
+This is an isolated proof application, not CivicSmith2 adoption or full Process4 completion.
 
 ## Continuation
 

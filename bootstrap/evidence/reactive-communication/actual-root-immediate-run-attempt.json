@@ -1,0 +1,26 @@
+{
+  "classification": "Actual supported-tool alternative investigation, not a successful ROOT wake",
+  "operation": "automations_run_now on existing enabled standing-ROOT continuation under owner-requested immediate-message trial",
+  "result": {
+    "content": [
+      {
+        "type": "text",
+        "text": "HTTP error prior to action invocation. HTTPException: 404: Action not found"
+      }
+    ],
+    "structuredContent": {
+      "error": "HTTP error prior to action invocation. HTTPException: 404: Action not found",
+      "error_code": "NOT_FOUND"
+    },
+    "isError": true
+  },
+  "limitation": "Action lookup returned 404 Action not found before invocation. No new turn, recipient wake, nonblocking ROOT delivery or timing can be claimed. Current followup_task targets existing non-root child agents only. This concerns a retained idle ROOT, not resurrection after deletion/archive.",
+  "alternatives_investigated": [
+    "followup_task: measured independent idle wake and active steering for current-tree non-root sessions",
+    "send_message: measured active delivery; cannot independently wake idle recipient",
+    "automations_run_now: advertised schema allows inline_run (caller executes prompt), so independent target wake is not guaranteed even if available; actual invocation returned action-not-found",
+    "GitHub event-triggered hosted task: officially documented, but discovery tool and triggers schema are not exposed here; no invented endpoint/parameters used",
+    "Standing ROOT can receive messages during an active turn/event wait; that is not an independently awakened idle ROOT"
+  ],
+  "schedule_substitution": false
+}

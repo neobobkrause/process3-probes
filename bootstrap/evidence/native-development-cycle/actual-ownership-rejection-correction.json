@@ -1,0 +1,7 @@
+{
+  "original": "/workspace/work/p4-native-cycle/web-3/toy/native-cycle/provider/__pycache__/quote_provider.cpython-312.pyc",
+  "quarantined": "/workspace/work/p4-native-cycle/quarantine/web3-provider-bytecode.pyc",
+  "untracked_check_returncode": 1,
+  "reason": "Controller rejected untracked provider bytecode produced by web module tests outside ownership; ROOT authorized exact mechanical quarantine; provider source untouched.",
+  "rejected_outcome": "completed checkpoint rejected before preservation; accepted false until fresh checkpoint"
+}
