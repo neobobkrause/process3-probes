@@ -317,6 +317,10 @@
       "ARCH": {
         "target": "/root/arch_recovered",
         "generation": 2
+      },
+      "WATCHER": {
+        "target": "/root/watcher_native",
+        "generation": 1
       }
     },
     "messages": {
