@@ -485,5 +485,17 @@
     "branch": "codex/p4-grants-broker-20261116",
     "central_source_owner": "bootstrap/native/cycle.py",
     "pilot_hold": true
+  },
+  "owner_records": {
+    "owner-root-layout-approved-20261116": {
+      "kind": "decision",
+      "text": "Yes",
+      "at": 1794871861.3800547,
+      "source_evidence": "Actual owner Yes reply to ROOT-layout proposal; bootstrap/OWNER-ROOT-LAYOUT-APPROVAL-20261116.txt",
+      "recorded_by": {
+        "target": "/root/process4_root/coordinator",
+        "generation": 3
+      }
+    }
   }
 }
