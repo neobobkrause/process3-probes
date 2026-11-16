@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "stopped": false,
+  "stopped": true,
   "slots": 1,
   "lease": null,
   "modules": {
@@ -86,6 +86,13 @@
       "command": "instruction",
       "job": "storage-provider",
       "value": "Instruction: preserve these words exactly.\nThis is a storage rehearsal, not an owner product decision."
+    },
+    {
+      "at": 1794851624.7947826,
+      "kind": "owner-control",
+      "command": "stop",
+      "job": null,
+      "value": null
     }
   ]
 }
