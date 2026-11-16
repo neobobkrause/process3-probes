@@ -1,0 +1,10 @@
+Owner approval,16November2026.
+
+Question presented: Do you approve adopting this ROOT-role mapping for the experimental bootstrap?
+
+Mapping presented: this chat as owner console -> addressable ROOT child -> ARCH -> JOB; coordinator separate. Existing chat does not gain reactive idle wake; owner-facing notifications and replacement of failed ROOT may wait for ten-minute console continuation. No operating-role/grant changes before approval.
+
+Exact owner reply:
+Yes
+
+This approves the role mapping only; consequential standing grants/prohibitions are unchanged.

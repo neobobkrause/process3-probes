@@ -1,3 +1,19 @@
+# Owner APPROVED addressable ROOT layout — implementation active
+
+Exact owner reply Yes approved the mapping presented in ROOT-LAYOUT-PROPOSAL.md.
+See OWNER-ROOT-LAYOUT-APPROVAL-20261116.txt. No repeatapproval needed for mapping.
+This chat is ownerconsole/safetybridge0; native ROOTchild1; ARCH/coordinator2; JOB3.
+Existing10minute continuation resumed via supported update. Historicalpaused/pending
+statements below superseded. Consoleidlewake remains unclaimed; internalROOTreactive
+wake supported by actualfixture. No changed grants/settings/accountscope.
+
+approved_layout_implementation exclusively owns cycle.py/layout.py/their tests and
+roleinstruction wiring. Parentconsole owns docs/approval/schedule and actualnative
+role creation/verification. Preserve existingrun/jobs/PRs and legacy mode. Next: opt-in
+explicitlayout/rootbinding, consoleforwarding/safetyrecovery, actualdevelopmentcycle
+undernewmode with all-usernotices and threeprescribed productstages. No GitHubbus,
+paidinfra/metered/inheritedloginretry/main/tranche/CivicSmith2 changes.
+
 # Timer PAUSED awaiting owner ROOT-identity decision
 
 Supported self-owned update confirmed is_enabled=false2026-11-16T22:44:29UTC;
