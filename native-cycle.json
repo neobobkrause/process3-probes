@@ -117,7 +117,9 @@
         "test_count": 6,
         "stdout": "",
         "stderr": "test_form (test_app.WebTests.test_form) ... ok\ntest_injected_revised_provider_and_escaping (test_app.WebTests.test_injected_revised_provider_and_escaping) ... ok\ntest_loopback_only (test_app.WebTests.test_loopback_only) ... ok\ntest_not_found (test_app.WebTests.test_not_found) ... ok\ntest_result_and_refresh (test_app.WebTests.test_result_and_refresh) ... ok\ntest_validation (test_app.WebTests.test_validation) ... ok\n\n----------------------------------------------------------------------\nRan 6 tests in 3.524s\n\nOK\n"
-      }
+      },
+      "pr": "https://github.com/neobobkrause/process3-probes/pull/272",
+      "pr_number": 272
     }
   },
   "notices": {
