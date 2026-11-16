@@ -55,8 +55,8 @@
         "-v"
       ],
       "timeout": 180,
-      "status": "ready",
-      "attempt": 1,
+      "status": "running",
+      "attempt": 2,
       "branch": "codex/p4-job-native-workshop-20261116-provider",
       "instructions": [],
       "checkpoint": "26796e064fb586ca893124bd8ec2414699bedd6c",
@@ -70,11 +70,12 @@
         "stdout": "",
         "stderr": "test_contract_constants (test_quote_provider.PriceForTests.test_contract_constants) ... ok\ntest_invalid_bounds (test_quote_provider.PriceForTests.test_invalid_bounds) ... ok\ntest_invalid_types (test_quote_provider.PriceForTests.test_invalid_types) ... ok\ntest_ordinary_and_boundary_totals (test_quote_provider.PriceForTests.test_ordinary_and_boundary_totals) ... ok\n\n----------------------------------------------------------------------\nRan 4 tests in 0.000s\n\nOK\n"
       },
-      "accepted": true,
+      "accepted": false,
       "pr": "https://github.com/neobobkrause/process3-probes/pull/271",
       "pr_number": 271,
       "integrated": "3d4f7dbf624dba0c04af3d67a0b5fcea0b4c2e52",
-      "restart": true
+      "restart": true,
+      "original_base": "f98b7002e0fee803fb3e6da6d0cd8be8d1f9751e"
     },
     "web": {
       "id": "web",
@@ -202,6 +203,12 @@
       "command": "retry",
       "job": "provider",
       "value": null
+    },
+    {
+      "at": 1794862750.7021186,
+      "kind": "native-reserve",
+      "job": "provider",
+      "attempt": 2
     }
   ],
   "native": true,
