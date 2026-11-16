@@ -55,13 +55,14 @@
         "-c",
         "pass"
       ],
-      "status": "ready",
-      "attempt": 0,
-      "branch": null,
+      "status": "running",
+      "attempt": 1,
+      "branch": "codex/p4-job-storage-final-20261116-storage-provider",
       "instructions": [
         "Instruction: preserve these words exactly.\nThis is a storage rehearsal, not an owner product decision."
       ],
-      "checkpoint": null
+      "checkpoint": null,
+      "base": "d5c6f2a628daff023ba6e63864755fa14acafadb"
     }
   },
   "notices": {},
