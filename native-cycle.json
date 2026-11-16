@@ -55,7 +55,7 @@
         "-v"
       ],
       "timeout": 180,
-      "status": "done",
+      "status": "ready",
       "attempt": 1,
       "branch": "codex/p4-job-native-workshop-20261116-provider",
       "instructions": [],
@@ -73,7 +73,8 @@
       "accepted": true,
       "pr": "https://github.com/neobobkrause/process3-probes/pull/271",
       "pr_number": 271,
-      "integrated": "3d4f7dbf624dba0c04af3d67a0b5fcea0b4c2e52"
+      "integrated": "3d4f7dbf624dba0c04af3d67a0b5fcea0b4c2e52",
+      "restart": true
     },
     "web": {
       "id": "web",
@@ -194,6 +195,13 @@
       "job": "web",
       "checkpoint": "ac7fe1345580967943ede76a56123ce7d2994021",
       "integration": "a6f613b5461afc4a0996c4bb5016a5668fc4c9f7"
+    },
+    {
+      "at": 1794862744.555569,
+      "kind": "owner-control",
+      "command": "retry",
+      "job": "provider",
+      "value": null
     }
   ],
   "native": true,
