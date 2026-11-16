@@ -114,3 +114,8 @@ idle ROOT wake. A standing supervisory role hosted as an addressable child could
 use the measured native wake path while the top chat remains the owner bridge.
 This is a possible explicit hierarchy mapping, not an implemented solution or
 proof that the existing top-level ROOT awakens. No role reassignment has been made.
+
+The alternative must also preserve owner-started ROOT semantics and the specified
+three-level session limit. A literal bridge → ROOT-child → ARCH → JOB tree adds a
+fourth native level; a flattened logical mapping would need explicit documentation
+and verification. It is therefore not currently accepted as a completed substitute.

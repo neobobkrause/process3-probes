@@ -1,3 +1,8 @@
+Owner requested five-minute bootstrap continuation. Actual supported scheduler
+rejected it: tasks cannot run more than six times per hour. Private read-back
+confirmed existing timer still enabled every ten minutes. Do not create duplicate
+staggered timers to evade the limit. Actual response: evidence/native-cloud/five-minute-schedule-rejection.json.
+
 Next independent work: native_cycle_controller is auditing and implementing any
 missing native privileged-operation integration with the existing grants controller.
 Do not duplicate that assignment. Coordinator confirmed active parent mailbox delivery
