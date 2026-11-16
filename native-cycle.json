@@ -98,7 +98,7 @@
         "-v"
       ],
       "timeout": 180,
-      "status": "review",
+      "status": "done",
       "attempt": 1,
       "branch": "codex/p4-job-native-workshop-20261116-web",
       "instructions": [],
@@ -119,7 +119,8 @@
         "stderr": "test_form (test_app.WebTests.test_form) ... ok\ntest_injected_revised_provider_and_escaping (test_app.WebTests.test_injected_revised_provider_and_escaping) ... ok\ntest_loopback_only (test_app.WebTests.test_loopback_only) ... ok\ntest_not_found (test_app.WebTests.test_not_found) ... ok\ntest_result_and_refresh (test_app.WebTests.test_result_and_refresh) ... ok\ntest_validation (test_app.WebTests.test_validation) ... ok\n\n----------------------------------------------------------------------\nRan 6 tests in 3.524s\n\nOK\n"
       },
       "pr": "https://github.com/neobobkrause/process3-probes/pull/272",
-      "pr_number": 272
+      "pr_number": 272,
+      "integrated": "a6f613b5461afc4a0996c4bb5016a5668fc4c9f7"
     }
   },
   "notices": {
@@ -127,7 +128,7 @@
       "provider": "provider",
       "user": "web",
       "commit": "26796e064fb586ca893124bd8ec2414699bedd6c",
-      "status": "pending"
+      "status": "delivered-and-completed"
     },
     "provider:26796e064fb586ca893124bd8ec2414699bedd6c:report": {
       "provider": "provider",
@@ -186,6 +187,13 @@
       "job": "web",
       "checkpoint": "ac7fe1345580967943ede76a56123ce7d2994021",
       "status": "review"
+    },
+    {
+      "at": 1794862737.7212896,
+      "kind": "native-integrated",
+      "job": "web",
+      "checkpoint": "ac7fe1345580967943ede76a56123ce7d2994021",
+      "integration": "a6f613b5461afc4a0996c4bb5016a5668fc4c9f7"
     }
   ],
   "native": true,
