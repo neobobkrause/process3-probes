@@ -1,3 +1,15 @@
+# Armed parent-final candidate: existing timer backstop
+
+The attempted3minute one-off update failed. Read-back confirmed existing enabled
+10minute schedule unchanged; a subsequent PROMPT-ONLY update succeeded. Its next
+scheduled inspection was14:23:30 America/Los_Angeles on16Nov2026. Do not claim a
+one-shot was created. ROOT is deliberately ending its turn, with only delayed
+parent_final_probe active. On next entry record actual triggering source FIRST.
+If automation is firstentry, that is scheduled inspection, not reactive wake.
+Local trial/restore/backstop records are under /workspace/work/p4-native-cycle.
+Restore saved normal owner-guided prompt after inspection; regular timer needs no
+schedule change. Source eebd613 preserves implementation; allother workers idle.
+
 # Current implemented state and next experiment
 
 Owner guidance is preserved verbatim. Native messages/submission/acks now local,

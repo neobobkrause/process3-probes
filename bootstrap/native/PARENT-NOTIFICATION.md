@@ -112,3 +112,8 @@ actual entry source and time; do not infer it from scheduled backend counters.
 
 Even a positive result would not prove arbitrary mid-turn parent notifications or
 unlimited session lifetime. Assess reuse and functional implications before adoption.
+
+Arming correction: the3minute one-off scheduling attempt returned unexpected error;
+read-back confirmed no schedule change. A prompt-only update succeeded on the
+existing enabled10minute schedule, with next inspection14:23:30America/Los_Angeles.
+Use that independent inspection instead; no duplicate timer or extra frequency.
