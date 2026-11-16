@@ -421,5 +421,124 @@
       }
     },
     "events": []
+  },
+  "native_continuation": {
+    "findings": {
+      "managed_execution": {
+        "state": "observed",
+        "evidence": "bootstrap/evidence/native-development-cycle/actual-pending-worker-recovery.json; actual native commands and actor execution"
+      },
+      "native_child_start": {
+        "state": "observed",
+        "evidence": "bootstrap/evidence/native-development-cycle/actual-native-role-recovery.json; ROOT observed actual spawn events"
+      },
+      "native_child_message": {
+        "state": "observed",
+        "evidence": "bootstrap/evidence/reactive-communication/actual-native-timings.json"
+      },
+      "native_child_interrupt": {
+        "state": "observed",
+        "evidence": "bootstrap/evidence/native-cloud/actual-native-lifecycle.json; actual interrupted web correction preserved on PR274"
+      },
+      "native_child_replacement": {
+        "state": "observed",
+        "evidence": "bootstrap/evidence/native-development-cycle/actual-native-state.json; web attempt3 completed unfinished attempt2"
+      },
+      "hosted_wake_delivery": {
+        "state": "observed",
+        "evidence": "bootstrap/evidence/native-development-cycle/actual-pending-worker-recovery.json; actual after-final scheduled delivery"
+      },
+      "standing_root": {
+        "state": "observed",
+        "evidence": "bootstrap/evidence/native-development-cycle/actual-pending-worker-recovery.json; retained chat continues after final"
+      },
+      "coordinator": {
+        "state": "observed",
+        "evidence": "bootstrap/evidence/native-development-cycle/actual-native-role-recovery.json; source-observed generation2 receipt"
+      },
+      "arch_job_management": {
+        "state": "observed",
+        "evidence": "bootstrap/evidence/native-development-cycle/actual-native-state.json; actual ARCH/JOB cycle PR271\u2013274"
+      },
+      "job_ownership_instructions": {
+        "state": "observed",
+        "evidence": "bootstrap/native/probe-design/assignments.json; actual native JOB assignments and cycle.prepare instructions"
+      },
+      "ownership_integration_control": {
+        "state": "observed",
+        "evidence": "bootstrap/evidence/native-development-cycle/actual-ownership-rejection-correction.json; actual out-of-scope generated file rejected"
+      },
+      "automated_preservation_pr": {
+        "state": "observed",
+        "evidence": "bootstrap/evidence/native-development-cycle/actual-native-state.json; controller created/preserved PR271\u2013274"
+      },
+      "authorized_working_integration": {
+        "state": "observed",
+        "evidence": "bootstrap/evidence/native-development-cycle/actual-native-state.json and actual-gate-source-verification.json; final experimental integration7fbcbd444c748179ad76220c22c3d0f93f6ad901"
+      },
+      "all_user_notifications": {
+        "state": "observed",
+        "evidence": "bootstrap/evidence/native-development-cycle/actual-native-state.json; web notices completed, unassigned report notices durably pending"
+      },
+      "unfinished_recovery": {
+        "state": "observed",
+        "evidence": "bootstrap/evidence/native-development-cycle/actual-native-role-recovery.json and actual-pending-worker-recovery.json; interrupted web attempt2\u21923"
+      },
+      "module_tests": {
+        "state": "observed",
+        "evidence": "bootstrap/evidence/native-development-cycle/actual-native-state.json; provider4/web12 actual module tests"
+      },
+      "internal_walk": {
+        "state": "observed",
+        "evidence": "bootstrap/native/probe-design/INTERNAL-WALK.md; actual final Screens walk"
+      },
+      "external_walk": {
+        "state": "observed",
+        "evidence": "bootstrap/native/probe-design/EXTERNAL-WALK.md and bootstrap/evidence/native-development-cycle/external-home.jpg; actual Chromium journeys"
+      },
+      "consequential_restrictions": {
+        "state": "observed",
+        "evidence": "bootstrap/evidence/native-development-cycle/actual-broker-route-validation.json; actual permitted state write and forbidden-route zero-adapter denials; main and bootstrap refs unchanged",
+        "limitation": "Observed controller-route compliance and preserved owner restrictions, not platform-wide impossibility of raw-tool bypass; separate protected-credential dependency remains."
+      },
+      "reactive_inter_session": {
+        "state": "not_exposed",
+        "evidence": "bootstrap/evidence/reactive-communication/actual-native-timings.json and actual-root-immediate-run-attempt.json; current native followup contract excludes ROOT",
+        "limitation": "Idle/active/replaced children work; retained idle top-level ROOT has no demonstrated supported message-triggered turn-start operation. Ten-minute schedule is not reactive transport."
+      }
+    },
+    "dependencies": {
+      "capability:reactive_inter_session": {
+        "confirmed": true,
+        "prerequisite": "Supported nonblocking message-triggered new-turn operation for retained idle top-level ROOT, with replace-safe routing. Current non-root followup tools cannot supply it; advertised immediate automation action returned404.",
+        "evidence": "bootstrap/evidence/reactive-communication/actual-root-immediate-run-attempt.json; bootstrap/REACTIVE-COMMUNICATION.md"
+      },
+      "control:protected_credential_route": {
+        "confirmed": true,
+        "prerequisite": "Native per-role tool/credential/provider-route confinement while supervisor retains approved writes, to demonstrate literal exclusive privileged route/protected credential owner. No such option is exposed in current native session controls. This is distinct from optional module-file isolation.",
+        "evidence": "Current native session tool schema; official subagent inheritance documentation; bootstrap/NATIVE-CLOUD.md and bootstrap/evidence/native-development-cycle/actual-broker-route-validation.json explicitly limit the demonstrated route"
+      }
+    },
+    "work": {
+      "protected_credential_route": {
+        "status": "blocked"
+      },
+      "broker_integration": {
+        "status": "done",
+        "evidence": "bootstrap/evidence/native-development-cycle/actual-broker-route-validation.json"
+      },
+      "coordinator_arch_recovery": {
+        "status": "done",
+        "evidence": "bootstrap/evidence/native-development-cycle/actual-native-role-recovery.json"
+      },
+      "watcher_enrollment": {
+        "status": "done",
+        "evidence": "bootstrap/evidence/native-development-cycle/actual-watcher-enrollment.json; enrollment only, no takeover claim"
+      },
+      "native_instruction_correction": {
+        "status": "done",
+        "evidence": "bootstrap/role_instructions.py; recovered ARCH/coordinator observed and applied corrected instructions"
+      }
+    }
   }
 }
