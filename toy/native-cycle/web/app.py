@@ -45,7 +45,7 @@ def create_server(host, port, provider_path):
                 body += f'<p role="alert">{esc(error)}</p>'
             body += ('<form action="/quote" method="get">'
                      '<label for="quantity">Quantity</label>'
-                     f'<input id="quantity" name="quantity" type="number" '
+                     f'<input id="quantity" name="quantity" type="text" inputmode="numeric" '
                      f'min="{esc(low)}" max="{esc(high)}" value="{esc(quantity)}">'
                      '<button type="submit">Get quote</button></form>')
             if total is not None:
@@ -62,6 +62,7 @@ def create_server(host, port, provider_path):
             elif route.path == "/quote":
                 params = parse_qs(route.query, keep_blank_values=True)
                 values = params.get("quantity", [])
+                submitted = values[0] if values else ""
                 try:
                     if len(values) != 1:
                         raise ValueError
@@ -71,7 +72,7 @@ def create_server(host, port, provider_path):
                     quantity = int(value)
                     total = provider.price_for(quantity)
                 except ValueError:
-                    self.send_html(400, self.page(error=(
+                    self.send_html(400, self.page(quantity=submitted, error=(
                         f"Enter a whole quantity from {provider.MIN_QUANTITY} "
                         f"to {provider.MAX_QUANTITY}.")))
                 else:
