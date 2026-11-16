@@ -1,0 +1,95 @@
+{
+  "version": 1,
+  "stopped": false,
+  "slots": 1,
+  "lease": null,
+  "modules": {
+    "consumer": {
+      "id": "consumer",
+      "order": 1,
+      "paths": [
+        "toy/consumer"
+      ],
+      "uses": [
+        "provider"
+      ]
+    },
+    "provider": {
+      "id": "provider",
+      "order": 0,
+      "paths": [
+        "toy/provider"
+      ],
+      "uses": []
+    }
+  },
+  "jobs": {
+    "provider": {
+      "id": "provider",
+      "order": 0,
+      "paths": [
+        "toy/provider"
+      ],
+      "uses": [],
+      "prompt": "Create toy/provider/value.py with value() returning 42. Create toy/provider/test_value.py using unittest to assert it returns 42. Do not commit; supervisor will checkpoint.",
+      "completion": "The value module returns 42 and its job-written module test passes.",
+      "verify": [
+        "python",
+        "-c",
+        "import pathlib,sys,unittest; sys.path.insert(0,'toy/provider'); from value import value; assert value()==42; suite=unittest.defaultTestLoader.discover('toy/provider',pattern='test_*.py'); assert suite.countTestCases()>0; result=unittest.TextTestRunner().run(suite); sys.exit(not result.wasSuccessful())"
+      ],
+      "timeout": 45,
+      "status": "blocked",
+      "attempt": 1,
+      "branch": "codex/p4-job-bootstrap-20261116-provider",
+      "instructions": [],
+      "checkpoint": "d5c6f2a628daff023ba6e63864755fa14acafadb",
+      "base": "d5c6f2a628daff023ba6e63864755fa14acafadb",
+      "notice_ids": [],
+      "progress": {
+        "event_count": 9,
+        "elapsed_seconds": 39,
+        "last_event_type": "error"
+      },
+      "thread_id": "01a1e57c-47f7-7140-bd8d-036c6451f849",
+      "last_result": {
+        "returncode": -15,
+        "turn_completed": false,
+        "verified": false,
+        "timed_out": true
+      }
+    }
+  },
+  "notices": {},
+  "instructions": [],
+  "roles": {
+    "ROOT": "liveness/recovery",
+    "watcher": "ROOT replacement",
+    "coordinator": "owner control and reporting",
+    "ARCH": "dispatch and technical assignments"
+  },
+  "events": [
+    {
+      "at": 1794851482.0228622,
+      "kind": "assignment",
+      "job": "provider"
+    },
+    {
+      "at": 1794851487.3020787,
+      "kind": "dispatch",
+      "job": "provider",
+      "attempt": 1,
+      "branch": "codex/p4-job-bootstrap-20261116-provider"
+    },
+    {
+      "at": 1794851536.5097768,
+      "kind": "job-result",
+      "job": "provider",
+      "status": "blocked",
+      "returncode": -15,
+      "turn_completed": false,
+      "verified": false,
+      "timed_out": true
+    }
+  ]
+}

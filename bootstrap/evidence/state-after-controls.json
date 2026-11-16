@@ -1,0 +1,157 @@
+{
+  "version": 1,
+  "stopped": true,
+  "slots": 1,
+  "lease": null,
+  "modules": {
+    "consumer": {
+      "id": "consumer",
+      "order": 1,
+      "paths": [
+        "toy/consumer"
+      ],
+      "uses": [
+        "provider"
+      ]
+    },
+    "provider": {
+      "id": "provider",
+      "order": 0,
+      "paths": [
+        "toy/provider"
+      ],
+      "uses": []
+    }
+  },
+  "jobs": {
+    "provider": {
+      "id": "provider",
+      "order": 0,
+      "paths": [
+        "toy/provider"
+      ],
+      "uses": [],
+      "prompt": "Create toy/provider/value.py with value() returning 42. Create toy/provider/test_value.py using unittest to assert it returns 42. Do not commit; supervisor will checkpoint.",
+      "completion": "The value module returns 42 and its job-written module test passes.",
+      "verify": [
+        "python",
+        "-c",
+        "import pathlib,sys,unittest; sys.path.insert(0,'toy/provider'); from value import value; assert value()==42; suite=unittest.defaultTestLoader.discover('toy/provider',pattern='test_*.py'); assert suite.countTestCases()>0; result=unittest.TextTestRunner().run(suite); sys.exit(not result.wasSuccessful())"
+      ],
+      "timeout": 45,
+      "status": "paused",
+      "attempt": 3,
+      "branch": "codex/p4-job-bootstrap-20261116-provider",
+      "instructions": [
+        "Bootstrap control rehearsal authorized by execution assignment: continue the same unfinished module; this is not a new owner product decision."
+      ],
+      "checkpoint": "d5c6f2a628daff023ba6e63864755fa14acafadb",
+      "base": "d5c6f2a628daff023ba6e63864755fa14acafadb",
+      "notice_ids": [],
+      "progress": {
+        "event_count": 6,
+        "elapsed_seconds": 12,
+        "last_event_type": "error"
+      },
+      "thread_id": "01a1e57f-d60c-7061-aeac-0451e745df4c",
+      "last_result": {
+        "returncode": -15,
+        "turn_completed": false,
+        "verified": false,
+        "timed_out": false
+      }
+    }
+  },
+  "notices": {},
+  "instructions": [
+    {
+      "at": 1794851715.622578,
+      "text": "Bootstrap control rehearsal authorized by execution assignment: continue the same unfinished module; this is not a new owner product decision."
+    }
+  ],
+  "roles": {
+    "ROOT": "liveness/recovery",
+    "watcher": "ROOT replacement",
+    "coordinator": "owner control and reporting",
+    "ARCH": "dispatch and technical assignments"
+  },
+  "events": [
+    {
+      "at": 1794851482.0228622,
+      "kind": "assignment",
+      "job": "provider"
+    },
+    {
+      "at": 1794851487.3020787,
+      "kind": "dispatch",
+      "job": "provider",
+      "attempt": 1,
+      "branch": "codex/p4-job-bootstrap-20261116-provider"
+    },
+    {
+      "at": 1794851536.5097768,
+      "kind": "job-result",
+      "job": "provider",
+      "status": "blocked",
+      "returncode": -15,
+      "turn_completed": false,
+      "verified": false,
+      "timed_out": true
+    },
+    {
+      "at": 1794851690.8685105,
+      "kind": "owner-control",
+      "command": "retry",
+      "job": "provider",
+      "value": null
+    },
+    {
+      "at": 1794851694.856755,
+      "kind": "dispatch",
+      "job": "provider",
+      "attempt": 2,
+      "branch": "codex/p4-job-bootstrap-20261116-provider"
+    },
+    {
+      "at": 1794851715.6225822,
+      "kind": "owner-control",
+      "command": "instruction",
+      "job": "provider",
+      "value": "Bootstrap control rehearsal authorized by execution assignment: continue the same unfinished module; this is not a new owner product decision."
+    },
+    {
+      "at": 1794851720.944285,
+      "kind": "job-result",
+      "job": "provider",
+      "status": "ready",
+      "returncode": -15,
+      "turn_completed": false,
+      "verified": false,
+      "timed_out": false
+    },
+    {
+      "at": 1794851720.9443016,
+      "kind": "dispatch",
+      "job": "provider",
+      "attempt": 3,
+      "branch": "codex/p4-job-bootstrap-20261116-provider"
+    },
+    {
+      "at": 1794851741.4835036,
+      "kind": "owner-control",
+      "command": "stop",
+      "job": null,
+      "value": null
+    },
+    {
+      "at": 1794851745.478321,
+      "kind": "job-result",
+      "job": "provider",
+      "status": "paused",
+      "returncode": -15,
+      "turn_completed": false,
+      "verified": false,
+      "timed_out": false
+    }
+  ]
+}

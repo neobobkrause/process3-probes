@@ -1,0 +1,12 @@
+{
+  "observations_current": true,
+  "state": "enforced",
+  "revision": "1",
+  "mode": "restricted",
+  "custom_allowed_hosts": [
+    "api.github.com",
+    "chatgpt.com"
+  ],
+  "actual_client": "Reached chatgpt.com/backend-api/codex/models; HTTP 401, replacing prior CONNECT 403",
+  "authentication": "codex login status: Logged in using ChatGPT; actual token rejected; no completed inference"
+}

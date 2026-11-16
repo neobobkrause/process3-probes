@@ -1,0 +1,16 @@
+{
+  "id": "provider",
+  "order": 0,
+  "paths": [
+    "toy/provider"
+  ],
+  "uses": [],
+  "prompt": "Create toy/provider/value.py with value() returning 42. Create toy/provider/test_value.py using unittest to assert it returns 42. Do not commit; supervisor will checkpoint.",
+  "completion": "The value module returns 42 and its job-written module test passes.",
+  "verify": [
+    "python",
+    "-c",
+    "import pathlib,sys,unittest; sys.path.insert(0,'toy/provider'); from value import value; assert value()==42; suite=unittest.defaultTestLoader.discover('toy/provider',pattern='test_*.py'); assert suite.countTestCases()>0; result=unittest.TextTestRunner().run(suite); sys.exit(not result.wasSuccessful())"
+  ],
+  "timeout": 45
+}
