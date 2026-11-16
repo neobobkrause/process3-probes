@@ -21,6 +21,16 @@
       "uses": [
         "provider"
       ]
+    },
+    "report": {
+      "id": "report",
+      "order": 30,
+      "paths": [
+        "toy/native-cycle/report"
+      ],
+      "uses": [
+        "provider"
+      ]
     }
   },
   "jobs": {
