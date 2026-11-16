@@ -366,6 +366,14 @@
           "receipt": "RECEIVED root-coordinator-status-20261116 generation 1 timestamp 1794863336.699012 from observed native actor /root/p4_coordinator",
           "latency_seconds": 12.105664253234863
         }
+      },
+      "role-recovery-coordinator-g2": {
+        "sender": "ROOT",
+        "recipient": "COORDINATOR",
+        "text": "Recovery verification: preserve completed jobs, pending report notices, owner stop and cap. Report RECEIVED with this exact message ID and generation2; take no product action.",
+        "status": "pending",
+        "created_at": 1794865177.9995594,
+        "deliveries": []
       }
     },
     "events": []
