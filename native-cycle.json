@@ -415,5 +415,11 @@
       "target": "/root/watcher_native",
       "generation": 1
     }
+  },
+  "native_layout": {
+    "mode": "addressable_root",
+    "console": "/root",
+    "approval_evidence": "bootstrap/OWNER-ROOT-LAYOUT-APPROVAL-20261116.txt",
+    "identity_source": "trusted supervisor observed owner approval"
   }
 }
