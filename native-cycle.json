@@ -102,27 +102,31 @@
         "-v"
       ],
       "timeout": 180,
-      "status": "blocked",
+      "status": "review",
       "attempt": 3,
       "branch": "codex/p4-job-native-workshop-20261116-web",
       "instructions": [],
-      "checkpoint": "6ae1ca7e5967f400c0e60bb58e575208b4e06ff2",
+      "checkpoint": "5ae3d9093e084fcdb6f00e806766a9539e07dc0d",
       "base": "253e7fb458f8cb2baf7f696e50c70fac6652f8ed",
       "original_base": "3d4f7dbf624dba0c04af3d67a0b5fcea0b4c2e52",
-      "accepted": false,
+      "accepted": true,
       "notice_ids": [
         "provider:d4eaa939c90d614d40fd50eab439632217d83a9b:web"
       ],
       "workspace": "/workspace/work/p4-native-cycle/web-3",
       "session": "/root/p4_arch_native_cycle/web_replacement",
-      "last_outcome": "interrupted",
-      "verification": null,
+      "last_outcome": "completed",
+      "verification": {
+        "returncode": 0,
+        "test_count": 12,
+        "stdout": "",
+        "stderr": "test_form (test_app.WebTests.test_form) ... ok\ntest_injected_revised_provider_and_escaping (test_app.WebTests.test_injected_revised_provider_and_escaping) ... ok\ntest_loopback_only (test_app.WebTests.test_loopback_only) ... ok\ntest_not_found (test_app.WebTests.test_not_found) ... ok\ntest_provider_upper_bound (test_app.WebTests.test_provider_upper_bound) ... ok\ntest_rejected_html_is_retained_and_escaped (test_app.WebTests.test_rejected_html_is_retained_and_escaped) ... ok\ntest_rejected_text_is_retained (test_app.WebTests.test_rejected_text_is_retained) ... ok\ntest_rejected_whitespace_and_empty_are_retained (test_app.WebTests.test_rejected_whitespace_and_empty_are_retained) ... ok\ntest_result_and_refresh (test_app.WebTests.test_result_and_refresh) ... ok\ntest_text_input_supports_editing_rejected_text (test_app.WebTests.test_text_input_supports_editing_rejected_text) ... ok\ntest_valid_request_clears_validation_error (test_app.WebTests.test_valid_request_clears_validation_error) ... ok\ntest_validation (test_app.WebTests.test_validation) ... ok\n\n----------------------------------------------------------------------\nRan 12 tests in 6.547s\n\nOK\n"
+      },
       "pr": "https://github.com/neobobkrause/process3-probes/pull/274",
       "pr_number": 274,
       "integrated": "a6f613b5461afc4a0996c4bb5016a5668fc4c9f7",
       "trusted_baseline_merges": [],
-      "session_generation": 3,
-      "ownership_violation": "outside assigned module: toy/native-cycle/provider/__pycache__/quote_provider.cpython-312.pyc"
+      "session_generation": 3
     }
   },
   "notices": {
@@ -274,6 +278,13 @@
       "kind": "native-rejected",
       "job": "web",
       "reason": "outside assigned module: toy/native-cycle/provider/__pycache__/quote_provider.cpython-312.pyc"
+    },
+    {
+      "at": 1794863064.591595,
+      "kind": "native-checkpoint",
+      "job": "web",
+      "checkpoint": "5ae3d9093e084fcdb6f00e806766a9539e07dc0d",
+      "status": "review"
     }
   ],
   "native": true,
