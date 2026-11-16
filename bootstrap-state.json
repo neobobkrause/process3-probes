@@ -196,13 +196,28 @@
       "at": 1794851977.410866,
       "kind": "external-dependency-recorded",
       "dependency": "codex-inference"
+    },
+    {
+      "at": 1794852127.9398804,
+      "kind": "handoff-to-new-environment",
+      "handoff": "bootstrap/HANDOFF.md",
+      "pull_request": 268
     }
   ],
   "external_dependencies": {
     "codex-inference": {
-      "status": "blocked",
+      "status": "awaiting-new-task-on-republished-environment",
       "observed": "Actual Codex CLI HTTP CONNECT 403; chatgpt.com absent from enforced environment allowlist.",
-      "resume": "Add chatgpt.com to running environment allowlist, preserving existing grants; verify status, clear stop, retry provider, run supervisor on same state branch."
+      "resume": "Start a new Codex Cloud task using the newly published configuration. Read bootstrap/HANDOFF.md on codex/process4-bootstrap-20261116, verify current policy and ChatGPT login, raise provider timeout to 180 seconds, continue/retry same state and run supervisor.",
+      "owner_update": "I have added chatgpt.com to the environment's permitted domains and republished the environment.",
+      "current_instance_observation": "Enforced revision 1 remains unchanged; chatgpt.com is still absent. This old task retains its original policy."
     }
-  }
+  },
+  "owner_messages": [
+    {
+      "at": 1794852127.9398735,
+      "text": "I have added chatgpt.com to the environment's permitted domains and republished the environment.",
+      "source": "owner message in originating task"
+    }
+  ]
 }
