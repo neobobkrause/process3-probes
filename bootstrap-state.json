@@ -247,6 +247,12 @@
       "role": "ROOT",
       "generation": 1,
       "reason": "Owner-authorized bootstrap entry role"
+    },
+    {
+      "at": 1794852706.3527052,
+      "kind": "role-turn-start",
+      "role": "ROOT",
+      "generation": 1
     }
   ],
   "external_dependencies": {
@@ -268,11 +274,15 @@
   "role_sessions": {
     "ROOT": {
       "generation": 1,
-      "status": "ready",
+      "status": "running",
       "timeout": 180,
       "reason": "Owner-authorized bootstrap entry role",
       "next_wake": 0,
       "thread_id": null
     }
+  },
+  "role_lease": {
+    "owner": "447dcc18-6bf5-4201-bbba-1599300dacff",
+    "until": 1794852915.8891563
   }
 }
