@@ -4,7 +4,7 @@
   "slots": 1,
   "lease": {
     "owner": "fffdb34f-baff-41d2-99d7-23e7417a452a",
-    "until": 1794851574.0747082
+    "until": 1794851576.219574
   },
   "modules": {
     "consumer": {
@@ -42,11 +42,13 @@
         "import pathlib,sys,unittest; sys.path.insert(0,'toy/provider'); from value import value; assert value()==42; suite=unittest.defaultTestLoader.discover('toy/provider',pattern='test_*.py'); assert suite.countTestCases()>0; result=unittest.TextTestRunner().run(suite); sys.exit(not result.wasSuccessful())"
       ],
       "timeout": 45,
-      "status": "ready",
-      "attempt": 0,
-      "branch": null,
+      "status": "running",
+      "attempt": 1,
+      "branch": "codex/p4-job-bootstrap-20261116-provider",
       "instructions": [],
-      "checkpoint": null
+      "checkpoint": null,
+      "base": "d5c6f2a628daff023ba6e63864755fa14acafadb",
+      "notice_ids": []
     }
   },
   "notices": {},
@@ -62,6 +64,13 @@
       "at": 1794851482.0228622,
       "kind": "assignment",
       "job": "provider"
+    },
+    {
+      "at": 1794851487.3020787,
+      "kind": "dispatch",
+      "job": "provider",
+      "attempt": 1,
+      "branch": "codex/p4-job-bootstrap-20261116-provider"
     }
   ]
 }
