@@ -1,0 +1,130 @@
+PASS real GitHub assignment and three declared users without open jobs
+PASS stale GitHub SHA write rejected; exact instruction preserved
+PASS replacement supervisor respects durable stop
+PASS actual owned-path Git commit and remote branch checkpoint 8873bd7d01ec169cf32b349aadc4a08f8a57a64c
+PASS every declared user notified once on actual provider checkpoint
+PASS new runtime reconstructs unfinished branch from GitHub; stop still set
+{
+  "version": 1,
+  "stopped": true,
+  "slots": 1,
+  "lease": null,
+  "modules": {
+    "storage-provider": {
+      "id": "storage-provider",
+      "order": 0,
+      "paths": [
+        "toy/storage-provider"
+      ],
+      "uses": []
+    },
+    "declared-user-0": {
+      "id": "declared-user-0",
+      "order": 1,
+      "paths": [],
+      "uses": [
+        "storage-provider"
+      ]
+    },
+    "declared-user-1": {
+      "id": "declared-user-1",
+      "order": 2,
+      "paths": [],
+      "uses": [
+        "storage-provider"
+      ]
+    },
+    "declared-user-2": {
+      "id": "declared-user-2",
+      "order": 3,
+      "paths": [],
+      "uses": [
+        "storage-provider"
+      ]
+    }
+  },
+  "jobs": {
+    "storage-provider": {
+      "id": "storage-provider",
+      "order": 0,
+      "paths": [
+        "toy/storage-provider"
+      ],
+      "uses": [],
+      "prompt": "Storage rehearsal only; no Codex assignment execution.",
+      "completion": "Harness-authored checkpoint survives reconstruction.",
+      "verify": [
+        "python",
+        "-c",
+        "pass"
+      ],
+      "status": "ready",
+      "attempt": 1,
+      "branch": "codex/p4-job-storage-final-20261116-storage-provider",
+      "instructions": [
+        "Instruction: preserve these words exactly.\nThis is a storage rehearsal, not an owner product decision."
+      ],
+      "checkpoint": "8873bd7d01ec169cf32b349aadc4a08f8a57a64c",
+      "base": "d5c6f2a628daff023ba6e63864755fa14acafadb"
+    }
+  },
+  "notices": {
+    "storage-provider:8873bd7d01ec169cf32b349aadc4a08f8a57a64c:declared-user-0": {
+      "provider": "storage-provider",
+      "user": "declared-user-0",
+      "commit": "8873bd7d01ec169cf32b349aadc4a08f8a57a64c",
+      "status": "pending"
+    },
+    "storage-provider:8873bd7d01ec169cf32b349aadc4a08f8a57a64c:declared-user-1": {
+      "provider": "storage-provider",
+      "user": "declared-user-1",
+      "commit": "8873bd7d01ec169cf32b349aadc4a08f8a57a64c",
+      "status": "pending"
+    },
+    "storage-provider:8873bd7d01ec169cf32b349aadc4a08f8a57a64c:declared-user-2": {
+      "provider": "storage-provider",
+      "user": "declared-user-2",
+      "commit": "8873bd7d01ec169cf32b349aadc4a08f8a57a64c",
+      "status": "pending"
+    }
+  },
+  "instructions": [
+    {
+      "at": 1794851841.50751,
+      "text": "Instruction: preserve these words exactly.\nThis is a storage rehearsal, not an owner product decision."
+    }
+  ],
+  "roles": {
+    "ROOT": "liveness/recovery",
+    "watcher": "ROOT replacement",
+    "coordinator": "owner control and reporting",
+    "ARCH": "dispatch and technical assignments"
+  },
+  "events": [
+    {
+      "at": 1794851834.700295,
+      "kind": "assignment",
+      "job": "storage-provider"
+    },
+    {
+      "at": 1794851841.5075164,
+      "kind": "owner-control",
+      "command": "instruction",
+      "job": "storage-provider",
+      "value": "Instruction: preserve these words exactly.\nThis is a storage rehearsal, not an owner product decision."
+    },
+    {
+      "at": 1794851846.5267167,
+      "kind": "owner-control",
+      "command": "stop",
+      "job": null,
+      "value": null
+    },
+    {
+      "at": 1794851856.8742135,
+      "kind": "recover-unfinished",
+      "job": "storage-provider",
+      "checkpoint": "8873bd7d01ec169cf32b349aadc4a08f8a57a64c"
+    }
+  ]
+}

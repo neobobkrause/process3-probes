@@ -111,4 +111,61 @@ class Tests(unittest.TestCase):
             sup.tick(dispatch=False)
             self.assertIsNotNone(p.poll()); self.assertEqual(m.s['jobs']['provider']['status'],'paused')
 
+class CompletionTests(unittest.TestCase):
+    def finish(self, verify, notices=None, launch_ids=None, conflict=False):
+        with tempfile.TemporaryDirectory() as d:
+            s=c.empty(); c.add(s,job()); j=s['jobs']['provider']
+            j.update(status='running',attempt=1,base='base',checkpoint='base',branch='dedicated',notice_ids=launch_ids or [])
+            s['notices']=notices or {}; s['lease']=dict(owner='mine',until=time.time()+90)
+            m=Memory(s); sup=object.__new__(c.Supervisor)
+            sup.store=m; sup.owner='mine'; sup.ttl=90; sup.runtime=Path(d)
+            path=Path(d); log=open(path/'provider-1.jsonl','w'); err=open(path/'provider-1.stderr','w')
+            p=subprocess.Popen(['python','-c','print(\'{"type":"turn.completed"}\')'],stdout=log,stderr=err,start_new_session=True)
+            p.wait(); sup.live={'provider':(p,log,err,path,time.monotonic())}
+            sup.checkpoint=lambda *_:'base'
+            m.s['jobs']['provider']['verify']=verify
+            if conflict:
+                original=m.write
+                def race(state,sha):
+                    m.s['stopped']=True; m.n+=1; m.write=original
+                    raise c.StateConflict('test concurrent owner stop')
+                m.write=race
+                with self.assertRaises(c.StateConflict): sup.tick(dispatch=False)
+                self.assertIn('provider',sup.live)
+            sup.tick(dispatch=False)
+            return m.s
+
+    def test_completed_marker_with_failed_acceptance_is_unfinished(self):
+        s=self.finish(['python','-c','raise SystemExit(1)'])
+        self.assertEqual(s['jobs']['provider']['status'],'blocked')
+        self.assertTrue(s['jobs']['provider']['last_result']['turn_completed'])
+        self.assertFalse(s['jobs']['provider']['last_result']['verified'])
+
+    def test_completed_fixture_requires_acceptance(self):
+        s=self.finish(['python','-c','assert 6*7==42'])
+        self.assertEqual(s['jobs']['provider']['status'],'done')
+        self.assertTrue(s['jobs']['provider']['last_result']['verified'])
+
+    def test_new_inflight_notice_is_not_acknowledged(self):
+        old=dict(provider='upstream',user='provider',commit='old',status='pending')
+        new=dict(provider='upstream',user='provider',commit='new',status='pending')
+        s=self.finish(['python','-c','pass'],{'old':old,'new':new},['old'])
+        self.assertEqual(s['notices']['old']['status'],'delivered-and-completed')
+        self.assertEqual(s['notices']['new']['status'],'pending')
+        self.assertEqual(s['jobs']['provider']['status'],'ready')
+
+    def test_concurrent_stop_is_preserved_on_result_retry(self):
+        s=self.finish(['python','-c','pass'],conflict=True)
+        self.assertTrue(s['stopped'])
+        self.assertEqual(s['jobs']['provider']['status'],'paused')
+
+    def test_watchdog_restarts_real_failed_process(self):
+        ws=importlib.util.spec_from_file_location('watch',Path(__file__).with_name('watch.py'))
+        w=importlib.util.module_from_spec(ws); ws.loader.exec_module(w)
+        with tempfile.TemporaryDirectory() as d:
+            marker=Path(d)/'marker'
+            code='from pathlib import Path; import sys; p=Path(sys.argv[1]); existed=p.exists(); p.touch(); sys.exit(0 if existed else 1)'
+            self.assertEqual(w.watch(['python','-c',code,str(marker)],delay=0,max_restarts=1),0)
+
+
 if __name__=='__main__': unittest.main(verbosity=2)

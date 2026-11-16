@@ -17,7 +17,12 @@ STATE_PATH = 'bootstrap-state.json'
 IDENT = re.compile(r'^[a-z][a-z0-9-]{0,48}$')
 
 
+class StateConflict(RuntimeError):
+    pass
+
+
 def run(argv, cwd=None, **kw):
+    kw.setdefault('timeout',45)
     return subprocess.run(argv, cwd=cwd, text=True, capture_output=True, check=True, **kw).stdout.strip()
 
 
@@ -44,7 +49,11 @@ class GitHub:
                     content=base64.b64encode((json.dumps(state, indent=2)+'\n').encode()).decode())
         if sha:
             body['sha'] = sha
-        return self.api(f'contents/{STATE_PATH}', 'PUT', body)
+        try:
+            return self.api(f'contents/{STATE_PATH}', 'PUT', body)
+        except subprocess.CalledProcessError as exc:
+            if '409' in exc.stderr: raise StateConflict('GitHub state changed; reread before retry') from exc
+            raise
 
     def init(self, base):
         commit = self.api(f'commits/{base}')['sha']
@@ -52,11 +61,15 @@ class GitHub:
         self.write(empty(), None)
 
     def mutate(self, action):
-        # No blind retry: a conflicting writer must read the new state first.
-        state, sha = self.read()
-        action(state)
-        self.write(state, sha)
-        return state
+        # Only pure state actions are retried, always after a fresh read.
+        for attempt in range(3):
+            state, sha = self.read()
+            action(state)
+            try:
+                self.write(state, sha)
+                return state
+            except StateConflict:
+                if attempt==2: raise
 
 
 def empty():
@@ -228,6 +241,7 @@ class Supervisor:
             raise RuntimeError('supervisor lease lost; refusing launches')
         s['lease']['until']=time.time()+self.ttl
         starts=[]
+        finished=[]
         for jid,(p,log,err,path,began) in list(self.live.items()):
             j=s['jobs'][jid]
             interrupted=s['stopped'] or j['status']=='interrupting'
@@ -260,9 +274,12 @@ class Supervisor:
             completed=any(e.get('type')=='turn.completed' for e in events)
             verified=False
             if rc==0 and completed and not interrupted and not timed_out:
-                v=subprocess.run(j['verify'],cwd=path,text=True,capture_output=True,timeout=60)
-                verified=v.returncode==0
-                j['verification']={'returncode':v.returncode,'stdout':v.stdout[-2000:],'stderr':v.stderr[-2000:]}
+                try:
+                    v=subprocess.run(j['verify'],cwd=path,text=True,capture_output=True,timeout=60)
+                    verified=v.returncode==0
+                    j['verification']={'returncode':v.returncode,'stdout':v.stdout[-2000:],'stderr':v.stderr[-2000:]}
+                except (subprocess.TimeoutExpired,OSError) as exc:
+                    j['verification']={'error':type(exc).__name__}
             j['status']='done' if verified else ('paused' if interrupted else 'blocked')
             if interrupted and j.pop('restart',False) and not s['stopped']:
                 j['status']='ready'
@@ -273,13 +290,18 @@ class Supervisor:
                 if any(n['user']==jid and n['status']=='pending' for n in s['notices'].values()):
                     j['status']='ready'
             event(s,'job-result',job=jid,status=j['status'],**j['last_result'])
-            del self.live[jid]
-        capacity=s['slots']-len(self.live)
+            finished.append(jid)
+        capacity=s['slots']-(len(self.live)-len(finished))
         for j in (ready(s)[:max(0,capacity)] if dispatch else []):
             if not j['branch']:
                 j['branch']=f'codex/p4-job-{self.store.branch.removeprefix("codex/p4-state-")}-{j["id"]}'
                 base=run(['git','rev-parse','HEAD'],self.repo)
-                self.store.api('git/refs','POST',{'ref':'refs/heads/'+j['branch'],'sha':base})
+                try:
+                    self.store.api('git/refs','POST',{'ref':'refs/heads/'+j['branch'],'sha':base})
+                except subprocess.CalledProcessError as exc:
+                    if '422' not in exc.stderr: raise
+                    existing=self.store.api('git/ref/heads/'+j['branch'])['object']['sha']
+                    if existing!=base: raise RuntimeError('existing unreserved job branch differs from base')
                 j['base']=base
             j['notice_ids']=[k for k,n in s['notices'].items() if n['user']==j['id'] and n['status']=='pending']
             j['attempt']+=1
@@ -287,6 +309,7 @@ class Supervisor:
             event(s,'dispatch',job=j['id'],attempt=j['attempt'],branch=j['branch'])
             starts.append(copy.deepcopy(j))
         self.store.write(s,sha) # reservation must be durable before launch
+        for jid in finished: del self.live[jid]
         for j in starts:
             self.start(j,s)
         return s
@@ -299,16 +322,20 @@ class Supervisor:
             except subprocess.TimeoutExpired:
                 os.killpg(p.pid,signal.SIGKILL); p.wait()
 
-    def serve(self,seconds):
+    def serve(self,seconds,interval=15):
         self.env=auth()
         self.claim()
         until=time.monotonic()+seconds
         try:
             while time.monotonic()<until:
-                s=self.tick()
+                try: s=self.tick()
+                except StateConflict:
+                    print('Concurrent control received; rereading GitHub state.',flush=True)
+                    time.sleep(1)
+                    continue
                 print(json.dumps({'jobs':{k:v['status'] for k,v in s['jobs'].items()},'stopped':s['stopped']}),flush=True)
                 if not self.live and not ready(s): break
-                time.sleep(5)
+                time.sleep(interval)
         finally:
             for p,*_ in self.live.values(): self.terminate(p)
             # Final tick checkpoints terminated work; no further launches after bounded run.
@@ -334,13 +361,13 @@ def main():
     m=sub.add_parser('declare'); m.add_argument('file')
     sub.add_parser('status')
     c=sub.add_parser('control'); c.add_argument('action',choices=['stop','continue','slots','instruction','priority','interrupt','replace','retry']); c.add_argument('--job'); c.add_argument('--value')
-    d=sub.add_parser('serve'); d.add_argument('--repo',default='.'); d.add_argument('--runtime',required=True); d.add_argument('--seconds',type=int,default=300)
+    d=sub.add_parser('serve'); d.add_argument('--repo',default='.'); d.add_argument('--runtime',required=True); d.add_argument('--seconds',type=int,default=300); d.add_argument('--interval',type=int,default=15)
     args=p.parse_args(); store=GitHub(args.state)
     if args.cmd=='init': store.init(args.base)
     elif args.cmd=='assign': store.mutate(lambda s:add(s,json.loads(Path(args.file).read_text())))
     elif args.cmd=='control': store.mutate(lambda s:control(s,args.action,args.job,args.value))
     elif args.cmd=='declare': store.mutate(lambda s:declare(s,json.loads(Path(args.file).read_text())))
     elif args.cmd=='status': print(json.dumps(store.read()[0],indent=2))
-    elif args.cmd=='serve': Supervisor(store,args.repo,args.runtime).serve(args.seconds)
+    elif args.cmd=='serve': Supervisor(store,args.repo,args.runtime).serve(args.seconds,args.interval)
 
 if __name__=='__main__': main()

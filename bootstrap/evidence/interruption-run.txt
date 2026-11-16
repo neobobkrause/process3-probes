@@ -1,0 +1,31 @@
+{"jobs": {"provider": "running"}, "stopped": false}
+{"jobs": {"provider": "running"}, "stopped": false}
+{"jobs": {"provider": "running"}, "stopped": false}
+{"jobs": {"provider": "running"}, "stopped": false}
+{"jobs": {"provider": "running"}, "stopped": false}
+{"jobs": {"provider": "running"}, "stopped": false}
+Traceback (most recent call last):
+  File "/workspace/process3-probes/bootstrap/coordinator.py", line 346, in <module>
+    if __name__=='__main__': main()
+                             ^^^^^^
+  File "/workspace/process3-probes/bootstrap/coordinator.py", line 344, in main
+    elif args.cmd=='serve': Supervisor(store,args.repo,args.runtime).serve(args.seconds,args.interval)
+                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/process3-probes/bootstrap/coordinator.py", line 308, in serve
+    s=self.tick()
+      ^^^^^^^^^^^
+  File "/workspace/process3-probes/bootstrap/coordinator.py", line 289, in tick
+    self.store.write(s,sha) # reservation must be durable before launch
+    ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/process3-probes/bootstrap/coordinator.py", line 47, in write
+    return self.api(f'contents/{STATE_PATH}', 'PUT', body)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/process3-probes/bootstrap/coordinator.py", line 35, in api
+    out = run(args, input=json.dumps(body) if body is not None else None)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/process3-probes/bootstrap/coordinator.py", line 21, in run
+    return subprocess.run(argv, cwd=cwd, text=True, capture_output=True, check=True, **kw).stdout.strip()
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/subprocess.py", line 571, in run
+    raise CalledProcessError(retcode, process.args,
+subprocess.CalledProcessError: Command '['gh', 'api', 'repos/neobobkrause/process3-probes/contents/bootstrap-state.json', '--method', 'PUT', '--input', '-']' returned non-zero exit status 1.
