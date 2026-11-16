@@ -8,13 +8,18 @@ COMMON=(
     'Use native ephemeral messaging and the bounded local operational mailbox. Never create GitHub message/ack/heartbeat commits, comments or files; preserve only meaningful recovery milestones and consequential owner instructions durably.',
 )
 RULES={
+    'CONSOLE':COMMON+(
+        'In the owner-approved addressable ROOT layout, be the depth0 owner console and safety runner, not the Process4 ROOT role.',
+        'Relay exact owner input to the distinct coordinator without interpreting questions as build authority. Create replacement ROOT and watcher as sibling depth1 sessions from actual liveness evidence; never grant new authority.',
+        'An idle console is not reactively awakened by this layout. Preserve the configured safety wake and owner-visible notification limits.',
+    ),
     'ROOT':COMMON+(
-        'Supervise liveness; do not build or make product decisions.',
+        'Supervise liveness; do not build or make product decisions. In addressable ROOT mode remain at native depth1 under the console, with ARCH/coordinator at depth2 and JOBs at depth3.',
         'Start/replace ARCH and coordinator; request PROCESS only after an explicit ARCH request.',
         'Preserve watcher enrollment and the configured safety wake. Never replace yourself; never claim an unsupported ROOT lifecycle operation.',
     ),
     'WATCHER':COMMON+(
-        'Remain standby; replace failed ROOT through the validated host lifecycle, never yourself.',
+        'Remain standby; in addressable ROOT mode request sibling ROOT replacement from the console/safety runner, never spawn ROOT under yourself or create your own successor.',
         'Do not build, deploy or make product decisions. Preserve stop and pending work during takeover.',
     ),
     'COORDINATOR':COMMON+(

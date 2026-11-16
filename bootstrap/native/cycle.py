@@ -24,6 +24,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 import coordinator as c
 from native import communication as communication
 from native import continuation as native_continuation
+from native import layout as native_layout
 from grants.grants import Broker, Subject, Denied
 
 REPO=c.REPO
@@ -569,12 +570,13 @@ class Cycle:
         self.store.mutate(lambda s:s['jobs'][jid].update(workspace=str(path)))
         return {'job':jid,'attempt':job['attempt'],'workspace':str(path),'prompt':prompt,'branch':job['branch']}
 
-    def session(self,jid,address):
+    def session(self,jid,address,actor=None):
         if not isinstance(address,str) or not address.startswith('/root/'):raise Rejected('native session address required')
         self.mailbox.read()  # Import legacy snapshot before significant recovery write.
         def register(s):
             job=s['jobs'][jid]
             if job['attempt']<1:raise Rejected('prepare job before recording actual session')
+            if native_layout.configured(s):native_layout.validate_binding(s,'JOB:'+jid,address,job['attempt'],actor)
             job.update(session=address,session_generation=job['attempt'])
             s.setdefault('native_roles',{})['JOB:'+jid]={'target':address,'generation':job['attempt']}
         state=self.store.mutate(register);attempt=state['jobs'][jid]['attempt']
@@ -582,8 +584,9 @@ class Cycle:
         pending=self.sync_mailbox(state)
         return {'job':jid,'target':address,'generation':attempt,'message_ids_to_deliver':tuple(k for k in pending if self.mailbox.read()['messages'][k]['recipient']=='JOB:'+jid)}
 
-    def register_role(self,role,target,generation):
-        if role not in ('ARCH','COORDINATOR','WATCHER','PROCESS') and not (
+    def register_role(self,role,target,generation,actor=None):
+        opted=native_layout.configured(self.store.read()[0]) if role=='ROOT' or actor is not None else False
+        if role not in (('ROOT','ARCH','COORDINATOR','WATCHER','PROCESS') if opted else ('ARCH','COORDINATOR','WATCHER','PROCESS')) and not (
                 role.startswith('JOB:') and role.removeprefix('JOB:') in self.store.read()[0]['modules']):
             raise Rejected('register a supported native child role or declared module recipient')
         if not isinstance(target,str) or not target.startswith('/root/'):raise Rejected('current-tree non-root native target required')
@@ -591,8 +594,10 @@ class Cycle:
         communication.register(copy.deepcopy(mailbox),role,target,generation)
         # Role replacement is a meaningful recovery milestone, not a message.
         state,_=self.store.read();new={'target':target,'generation':generation}
+        if native_layout.configured(state):native_layout.validate_binding(state,role,target,generation,actor)
         if state.get('native_roles',{}).get(role)!=new:
             def record(s):
+                if native_layout.configured(s):native_layout.validate_binding(s,role,target,generation,actor)
                 previous=s.setdefault('native_roles',{}).get(role)
                 if previous and previous['generation']>=generation and previous!=new:raise communication.StaleRecipient('replacement generation must increase')
                 s['native_roles'][role]=new
@@ -601,6 +606,17 @@ class Cycle:
         self.sync_mailbox(state)
         return {'recipient':role,'target':target,'generation':generation,
                 'message_ids_to_deliver':communication.pending_for(self.mailbox.read(),role)}
+
+    def adopt_layout(self,approval_evidence,console='/root'):
+        # Explicit observed owner decision; no grant policy or authority expansion.
+        self.mailbox.read()  # Seed legacy operational data before recovery milestone.
+        state=self.store.mutate(lambda s:native_layout.adopt(s,approval_evidence,console))
+        return native_layout.status(state)
+
+    def layout_status(self):return native_layout.status(self.store.read()[0])
+
+    def layout_plan(self,role,actor,activity,expected_generation=None,message=None,replace=False):
+        return native_layout.plan(self.store.read()[0],role,actor,activity,expected_generation,self.store.branch,message,replace)
 
     def message(self,sender,recipient,text,message_id=None):
         _,ident=self.mailbox.mutate(lambda m:communication.enqueue(m,sender,recipient,text,message_id))
@@ -736,8 +752,11 @@ def main():
     sub.add_parser('assess',help='Read-only native continuation assessment from actual durable evidence')
     p=sub.add_parser('control'); p.add_argument('action',choices=['stop','continue','retry','interrupt','replace','slots','priority','instruction']);p.add_argument('--job');p.add_argument('--value');p.add_argument('--source',choices=['arch','owner'],default='arch')
     p=sub.add_parser('prepare');p.add_argument('job')
-    p=sub.add_parser('session');p.add_argument('job');p.add_argument('address')
-    p=sub.add_parser('register-role');p.add_argument('role');p.add_argument('target');p.add_argument('--generation',type=int,required=True)
+    p=sub.add_parser('session');p.add_argument('job');p.add_argument('address');p.add_argument('--actor')
+    p=sub.add_parser('register-role');p.add_argument('role');p.add_argument('target');p.add_argument('--generation',type=int,required=True);p.add_argument('--actor')
+    p=sub.add_parser('adopt-layout');p.add_argument('--approval-evidence',required=True);p.add_argument('--console',default='/root')
+    sub.add_parser('layout-status')
+    p=sub.add_parser('layout-plan');p.add_argument('--role',required=True);p.add_argument('--actor',required=True);p.add_argument('--activity',choices=['unavailable','idle','running'],required=True);p.add_argument('--expected-generation',type=int);p.add_argument('--message');p.add_argument('--replace',action='store_true')
     p=sub.add_parser('message');p.add_argument('--sender',required=True);p.add_argument('--recipient',required=True);p.add_argument('--text',required=True);p.add_argument('--message-id')
     p=sub.add_parser('messages');p.add_argument('--recipient')
     p=sub.add_parser('intent');p.add_argument('message_id');p.add_argument('--activity',choices=['idle','running'],required=True)
@@ -756,8 +775,11 @@ def main():
     else:
         cycle=Cycle(store,args.repo,args.runtime)
         if args.command=='prepare':result=cycle.prepare(args.job)
-        elif args.command=='session':result=cycle.session(args.job,args.address)
-        elif args.command=='register-role':result=cycle.register_role(args.role,args.target,args.generation)
+        elif args.command=='session':result=cycle.session(args.job,args.address,args.actor)
+        elif args.command=='register-role':result=cycle.register_role(args.role,args.target,args.generation,args.actor)
+        elif args.command=='adopt-layout':result=cycle.adopt_layout(args.approval_evidence,args.console)
+        elif args.command=='layout-status':result=cycle.layout_status()
+        elif args.command=='layout-plan':result=cycle.layout_plan(args.role,args.actor,args.activity,args.expected_generation,args.message,args.replace)
         elif args.command=='message':result=cycle.message(args.sender,args.recipient,args.text,args.message_id)
         elif args.command=='messages':result=cycle.messages(args.recipient)
         elif args.command=='intent':result=cycle.intent(args.message_id,args.activity)

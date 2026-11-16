@@ -421,8 +421,33 @@ class NativeCycleTests(unittest.TestCase):
         self.assertEqual(self.provider.calls,[])
 
 
-if __name__=='__main__':unittest.main()
+    def test_opted_in_root_binding_preserves_state_and_routes_locally(self):
+        prior=copy.deepcopy(self.store.state)
+        self.cycle.adopt_layout('fixture actual owner approval reference')
+        self.assertEqual(self.store.state['jobs'],prior['jobs'])
+        self.assertEqual(self.store.state['notices'],prior['notices'])
+        with self.assertRaises(n.native_layout.InvalidLayout):self.cycle.register_role('ROOT','/root/supervisor',1)
+        self.cycle.register_role('ROOT','/root/supervisor',1,actor='/root')
+        self.cycle.register_role('ARCH','/root/supervisor/arch',1,actor='/root/supervisor')
+        with patch.object(self.store,'read',side_effect=AssertionError('routine remote read')),patch.object(self.store,'mutate',side_effect=AssertionError('routine remote write')):
+            self.cycle.message('ARCH','ROOT','Continue existing supervision','root-local')
+            intent=self.cycle.intent('root-local','idle')
+            self.assertEqual(intent['target'],'/root/supervisor')
+            self.cycle.delivered(intent)
+            self.cycle.acknowledge('root-local','/root/supervisor',1,time.time(),'actual fixture receipt root-local')
 
+    def test_opted_in_bind_requires_current_creator_and_rechecks_durable_generation(self):
+        self.cycle.adopt_layout('fixture actual owner approval reference')
+        self.cycle.register_role('ROOT','/root/supervisor',1,actor='/root')
+        before=copy.deepcopy(self.store.state)
+        with self.assertRaises(n.native_layout.InvalidLayout):self.cycle.register_role('ARCH','/root/supervisor/arch',1,actor='/root')
+        self.assertEqual(self.store.state,before)
+        self.cycle.register_role('ARCH','/root/supervisor/arch',1,actor='/root/supervisor')
+        with self.assertRaises(n.native_layout.InvalidLayout):self.cycle.session('provider','/root/supervisor/wrongjob',actor='/root/supervisor/arch')
+        self.cycle.session('provider','/root/supervisor/arch/job',actor='/root/supervisor/arch')
+        self.cycle.register_role('ROOT','/root/replacement',2,actor='/root')
+        with self.assertRaises(n.native_layout.InvalidLayout):self.cycle.register_role('ARCH','/root/supervisor/newarch',2,actor='/root/supervisor')
+        self.assertEqual(self.store.state['jobs']['provider']['session'],'/root/supervisor/arch/job')
 
 class ProcessGateSourceTests(unittest.TestCase):
     head='a'*40
@@ -576,3 +601,6 @@ class NativeBrokerTests(unittest.TestCase):
         with patch.object(self.provider,'pr_info',return_value={'headRefName':'codex/p4-job-demo','baseRefName':'main'}),patch.object(c,'run') as adapter:
             with self.assertRaises(n.Denied):self.provider.ready_pr(99)
             adapter.assert_not_called()
+
+
+if __name__=='__main__':unittest.main()
