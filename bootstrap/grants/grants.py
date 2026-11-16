@@ -89,7 +89,7 @@ class GrantPolicy:
         if any(not isinstance(actions, list) or any(a not in FIELDS for a in actions) for actions in data["actions"].values()):
             raise Denied("INVALID_POLICY_ACTION")
         cloud = data["cloudflare"]
-        if not isinstance(cloud, dict) or set(cloud) != {"account", "resources"} or not isinstance(cloud["account"], str) or not isinstance(cloud["resources"], list):
+        if not isinstance(cloud, dict) or set(cloud) != {"account", "resources"} or not isinstance(cloud["account"], str) or not isinstance(cloud["resources"], list) or not all(isinstance(x, str) and re.fullmatch(r"[a-z0-9][a-z0-9-]*-", x) for x in cloud["resources"]):
             raise Denied("INVALID_POLICY_CLOUDFLARE")
         self._data = data
         self.digest = expected_sha256
@@ -137,13 +137,15 @@ class GrantPolicy:
             if s.role not in ("JOB", "LANE", "ARCH", "PROCESS") or request.get("head") != s.branch or request.get("base") not in ("tranche", "codex/process4-bootstrap-20261116"):
                 raise Denied("PR_SCOPE")
         elif operation == "github.pr.merge_job":
-            if s.role != "ARCH" or request.get("base") != "tranche" or not facts.get("required_module_tests_pass") or not facts.get("head_sha_matches"):
+            if s.role != "ARCH" or request.get("base") != "tranche" or not facts.get("required_module_tests_pass") or not facts.get("head_sha_matches") or not facts.get("pr_target_matches"):
                 raise Denied("JOB_MERGE_NOT_VERIFIED")
             if not isinstance(request.get("expected_head"), str) or request["expected_head"] != facts.get("observed_head"):
                 raise Denied("STALE_PR_HEAD")
         elif operation == "github.pr.merge_tranche":
-            if s.role != "ARCH" or request.get("base") != "main" or not all(facts.get(k) for k in ("all_module_tests_pass", "internal_walk_clean", "external_walk_clean", "head_sha_matches")):
+            if s.role != "ARCH" or request.get("base") != "main" or not all(facts.get(k) for k in ("all_module_tests_pass", "internal_walk_clean", "external_walk_clean", "head_sha_matches", "pr_target_matches")):
                 raise Denied("TRANCHE_NOT_VERIFIED")
+            if not isinstance(request.get("expected_head"), str) or request["expected_head"] != facts.get("observed_head"):
+                raise Denied("STALE_PR_HEAD")
         elif operation == "github.pr.comment":
             if not isinstance(request.get("pr"), int) or request["pr"] < 1:
                 raise Denied("INVALID_PR")
