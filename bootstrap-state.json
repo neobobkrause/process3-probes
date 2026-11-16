@@ -38,7 +38,7 @@
         "-c",
         "import pathlib,sys,unittest; sys.path.insert(0,'toy/provider'); from value import value; assert value()==42; suite=unittest.defaultTestLoader.discover('toy/provider',pattern='test_*.py'); assert suite.countTestCases()>0; result=unittest.TextTestRunner().run(suite); sys.exit(not result.wasSuccessful())"
       ],
-      "timeout": 45,
+      "timeout": 180,
       "status": "paused",
       "attempt": 4,
       "branch": "codex/p4-job-bootstrap-20261116-provider",
@@ -202,11 +202,17 @@
       "kind": "handoff-to-new-environment",
       "handoff": "bootstrap/HANDOFF.md",
       "pull_request": 268
+    },
+    {
+      "at": 1794852518.616708,
+      "kind": "technical-probe-timeout",
+      "job": "provider",
+      "seconds": 180
     }
   ],
   "external_dependencies": {
     "codex-inference": {
-      "status": "awaiting-new-task-on-republished-environment",
+      "status": "retesting-on-new-instance",
       "observed": "Actual Codex CLI HTTP CONNECT 403; chatgpt.com absent from enforced environment allowlist.",
       "resume": "Start a new Codex Cloud task using the newly published configuration. Read bootstrap/HANDOFF.md on codex/process4-bootstrap-20261116, verify current policy and ChatGPT login, raise provider timeout to 180 seconds, continue/retry same state and run supervisor.",
       "owner_update": "I have added chatgpt.com to the environment's permitted domains and republished the environment.",
