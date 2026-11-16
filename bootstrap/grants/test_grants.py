@@ -1,7 +1,7 @@
 import json
 import hashlib
 import unittest
-from grants import GrantPolicy, Denied, Subject, Broker
+from grants import GrantPolicy, Denied, Subject, Broker, check_operation
 
 REPO = "neobobkrause/process3-probes"
 POLICY = {
@@ -165,6 +165,27 @@ class GrantsTests(unittest.TestCase):
 
     def test_dev_release_with_evidence(self):
         self.allow(ARCH, "release.dev.prepare", req(), {"development_release_verified": True})
+
+
+    def test_unknown_broker_subject_is_denied_before_fact_lookup(self):
+        calls = []
+        def unexpected_facts(*_):
+            raise AssertionError("unknown subject reached trusted facts")
+        broker = Broker(self.p, lambda *_: calls.append("bad"), lambda _: None, unexpected_facts)
+        with self.assertRaisesRegex(Denied, "UNKNOWN_SUBJECT"):
+            broker.perform("missing", "github.state.update", req(branch="codex/p4-state-demo"))
+        self.assertEqual(calls, [])
+
+    def test_current_assignment_does_not_change_or_expand_pinned_policy(self):
+        before = json.dumps(self.p._data, sort_keys=True)
+        facts = {"all_module_tests_pass": True, "internal_walk_clean": True,
+                 "external_walk_clean": True, "head_sha_matches": True,
+                 "pr_target_matches": True, "observed_head": "a" * 40}
+        request = req(base="main", pr=1, expected_head="a" * 40)
+        self.assertTrue(self.p.authorize(ARCH, "github.pr.merge_tranche", request, trusted=facts)["allow"])
+        with self.assertRaisesRegex(Denied, "OUTSIDE_CURRENT_ASSIGNMENT"):
+            check_operation(ARCH, "github.pr.merge_tranche", request, facts)
+        self.assertEqual(json.dumps(self.p._data, sort_keys=True), before)
 
 
 if __name__ == "__main__":

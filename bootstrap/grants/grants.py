@@ -71,6 +71,145 @@ def owns(path, entry):
     return path.startswith(entry) if entry.endswith("/") else path == entry
 
 
+CURRENT_REPO = "neobobkrause/process3-probes"
+_SHA = re.compile(r"^[a-f0-9]{40}$")
+_PROTECTED_PARTS = frozenset((".git", ".github", ".claude", ".codex", ".agents", ".aws", ".process", "CLAUDE.md", "AGENTS.md", ".gitmodules"))
+_CURRENT_FIELDS = {
+    "github.state.update": ({"repo", "branch"}, set()),
+    "github.branch.create": ({"repo", "branch", "base"}, set()),
+    "github.branch.update": ({"repo", "branch"}, {"paths", "head"}),
+    "github.pr.open": ({"repo", "head", "base"}, set()),
+    "github.pr.update": ({"repo", "head", "base", "pr"}, set()),
+    "github.pr.merge_job": ({"repo", "base", "pr", "expected_head"}, {"head"}),
+    "github.pr.comment": ({"repo", "pr"}, set()),
+    "session.start": ({"repo", "child_role"}, set()),
+    "session.replace": ({"repo", "child_role"}, set()),
+    "session.message": ({"repo", "recipient"}, set()),
+    "session.interrupt": ({"repo", "recipient"}, set()),
+    "release.dev.prepare": ({"repo", "release_id"}, set()),
+}
+
+
+def _experimental(ref):
+    return branch_name(ref).startswith(("codex/p4-", "codex/process4-bootstrap-"))
+
+
+def _guard_paths(changes, facts):
+    changes = paths_of(changes)
+    immutable = facts.get("immutable_paths", ())
+    if not isinstance(immutable, (tuple, list)) or any(not isinstance(p, str) or not p for p in immutable):
+        raise Denied("INVALID_IMMUTABLE_PATHS")
+    for path in changes:
+        if ("\x00" in path or any(part in _PROTECTED_PARTS for part in path.split("/"))
+                or path == "process/config.json" or path.startswith("bootstrap/OWNER-")
+                or any(owns(path, p) for p in immutable)):
+            raise Denied("CONSEQUENTIAL_PATH_PROTECTED")
+    assigned = facts.get("owned_paths")
+    if not isinstance(assigned, (tuple, list)) or not assigned or any(not isinstance(p, str) or not p for p in assigned):
+        raise Denied("OWNERSHIP_FACTS_REQUIRED")
+    if not all(any(owns(path, owned) for owned in assigned) for path in changes):
+        raise Denied("OUTSIDE_MODULE_OWNERSHIP")
+
+
+def check_operation(subject, operation, request, facts):
+    """Narrow this experiment's instructions before an existing adapter/policy.
+
+    This does not load, generate or approve an owner policy. Facts and Subject
+    come from trusted supervisor code, not an agent's claimed role. A caller must
+    still run its existing module-ownership, acceptance and provider checks.
+    Native ARCH checkpoint requests carry an exact SHA; changed-path requests
+    additionally require host-derived ownership. No Python/tool confinement claim.
+    """
+    if (not isinstance(subject, Subject) or subject.role not in ROLES or subject.role == "WORKER"
+            or not isinstance(subject.session_id, str) or not subject.session_id
+            or type(subject.generation) is not int or not 0 <= subject.generation < 2**63):
+        raise Denied("UNKNOWN_OR_UNPRIVILEGED_SUBJECT")
+    if subject.repo != CURRENT_REPO or not isinstance(request, dict):
+        raise Denied("OUTSIDE_CURRENT_REPOSITORY")
+    # Preserve Host/GrantPolicy compatibility: an omitted repo is the fixed
+    # trusted Subject repo, never an agent-selected default or another account.
+    request = {"repo": subject.repo, **request}
+    if request["repo"] != CURRENT_REPO:
+        raise Denied("OUTSIDE_CURRENT_REPOSITORY")
+    if not isinstance(facts, Mapping):
+        raise Denied("TRUSTED_FACTS_REQUIRED")
+    if operation == "release.public.publish":
+        raise Denied("PUBLIC_RELEASE_OWNER_APPROVAL_REQUIRED")
+    if operation not in _CURRENT_FIELDS:
+        raise Denied("OUTSIDE_CURRENT_ASSIGNMENT")
+    required, optional = _CURRENT_FIELDS[operation]
+    if not required <= set(request) or set(request) - required - optional:
+        raise Denied("INVALID_OPERATION_PAYLOAD")
+    expected_generation = facts.get("expected_generation")
+    if expected_generation is not None and (type(expected_generation) is not int or subject.generation != expected_generation):
+        raise Denied("STALE_SUBJECT_GENERATION")
+    if "owner_stopped" in facts and type(facts["owner_stopped"]) is not bool:
+        raise Denied("INVALID_STOP_FACT")
+    if facts.get("owner_stopped") is True:
+        raise Denied("OWNER_STOPPED")
+    if operation == "github.state.update":
+        branch = branch_name(request["branch"])
+        if subject.role not in ("ROOT", "WATCHER", "COORDINATOR", "ARCH", "PROCESS") or not branch.startswith("codex/p4-state-"):
+            raise Denied("STATE_WRITER_SCOPE")
+        if facts.get("state_branch", branch) != branch:
+            raise Denied("WRONG_STATE_BRANCH")
+    elif operation == "github.branch.create":
+        if subject.role != "ARCH" or not _experimental(request["branch"]) or not _SHA.fullmatch(str(request["base"])):
+            raise Denied("BRANCH_CREATION_SCOPE")
+    elif operation == "github.branch.update":
+        branch = branch_name(request["branch"])
+        if (subject.role not in ("ARCH", "JOB", "LANE", "PROCESS") or not _experimental(branch)
+                or branch.startswith(("codex/p4-integration-", "codex/p4-state-"))
+                or (subject.branch is not None and branch != subject.branch)):
+            raise Denied("BRANCH_WRITER_SCOPE")
+        if ("paths" in request) == ("head" in request):
+            raise Denied("EXACT_CHECKPOINT_OR_PATHS_REQUIRED")
+        if "paths" in request:
+            _guard_paths(request["paths"], facts)
+        else:
+            if subject.role != "ARCH" or not branch.startswith("codex/p4-job-") or not _SHA.fullmatch(str(request["head"])):
+                raise Denied("NATIVE_CHECKPOINT_SCOPE")
+            if "changed_paths" in facts:
+                _guard_paths(facts["changed_paths"], facts)
+            if facts.get("observed_head", request["head"]) != request["head"]:
+                raise Denied("STALE_PR_HEAD")
+    elif operation in ("github.pr.open", "github.pr.update", "github.pr.merge_job"):
+        base = branch_name(request["base"])
+        if subject.role not in ("ARCH", "JOB", "LANE", "PROCESS") or not base.startswith(("codex/p4-integration-", "codex/p4-grants-broker-", "codex/process4-bootstrap-")):
+            raise Denied("PR_SCOPE")
+        if "head" in request:
+            if not _experimental(request["head"]) or (subject.branch is not None and request["head"] != subject.branch):
+                raise Denied("PR_HEAD_SCOPE")
+        if "pr" in request and (type(request["pr"]) is not int or request["pr"] < 1):
+            raise Denied("INVALID_PR")
+        if operation == "github.pr.merge_job":
+            head = request["expected_head"]
+            if (subject.role != "ARCH" or not base.startswith("codex/p4-integration-")
+                    or not isinstance(head, str) or not _SHA.fullmatch(head)
+                    or facts.get("observed_head") != head or facts.get("existing_gate_green") is not True):
+                raise Denied("EXACT_HEAD_GATE_REQUIRED")
+            if any(key in facts and facts[key] is not True for key in ("ownership_verified", "required_module_tests_pass", "pr_target_matches")):
+                raise Denied("MODULE_ACCEPTANCE_REQUIRED")
+    elif operation == "github.pr.comment":
+        if type(request["pr"]) is not int or request["pr"] < 1 or facts.get("comment_purpose") not in ("development_artifact", "review"):
+            raise Denied("ROUTINE_GITHUB_COMMUNICATION_FORBIDDEN")
+    elif operation in ("session.start", "session.replace"):
+        allowed = {"ROOT": {"ARCH", "COORDINATOR", "WATCHER", "PROCESS"}, "ARCH": {"JOB", "LANE"}, "WATCHER": {"ROOT"}}
+        if request["child_role"] not in allowed.get(subject.role, set()):
+            raise Denied("SESSION_PARENT_RULE")
+        if facts.get("valid_generation") is not True or facts.get("child_slot_available") is not True:
+            raise Denied("SESSION_LIFECYCLE_CONSTRAINT")
+        if request["child_role"] == "PROCESS" and facts.get("process_request_verified") is not True:
+            raise Denied("OBSERVED_ARCH_PROCESS_REQUEST_REQUIRED")
+    elif operation.startswith("session."):
+        if not isinstance(request["recipient"], str) or not request["recipient"] or facts.get("recipient_relation_verified") is not True:
+            raise Denied("SESSION_RELATION_NOT_VERIFIED")
+    elif operation == "release.dev.prepare":
+        if subject.role != "ARCH" or not isinstance(request["release_id"], str) or not request["release_id"] or facts.get("development_release_verified") is not True:
+            raise Denied("DEVELOPMENT_RELEASE_NOT_VERIFIED")
+    return {"allow": True, "operation": operation, "scope": "current-bootstrap-instructions", "owner_policy_changed": False, "platform_isolation": False}
+
+
 class GrantPolicy:
     """Host verifies owner-approved bytes against an independently pinned hash."""
 
@@ -189,6 +328,8 @@ class Broker:
 
     def perform(self, session_id: str, operation: str, request: dict):
         subject = self.__subject_lookup(session_id)
+        if not isinstance(subject, Subject):
+            raise Denied("UNKNOWN_SUBJECT")
         facts = self.__trusted_facts(subject, operation, request)
         self.__policy.authorize(subject, operation, request, trusted=facts)
         return self.__adapter(operation, request)

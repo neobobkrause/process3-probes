@@ -6,7 +6,7 @@ for privileged supervisor writes; it is not an OS sandbox or an RPC endpoint.
 import os
 from pathlib import Path
 
-from .grants import Broker, Denied, GrantPolicy, Subject
+from .grants import Broker, Denied, GrantPolicy, Subject, check_operation
 
 
 class Host:
@@ -24,11 +24,7 @@ class Host:
     def perform(self, subject, operation, request, adapter, facts=None):
         # Current assignment narrows any broader standing owner policy. No
         # agent, policy file or inherited grant can expand this experiment.
-        allowed = {'github.state.update', 'github.branch.update', 'github.branch.create',
-                   'github.pr.open', 'github.pr.update', 'github.pr.comment',
-                   'session.start', 'session.replace', 'session.message', 'session.interrupt'}
-        if operation not in allowed or subject.repo != 'neobobkrause/process3-probes':
-            raise Denied('OUTSIDE_CURRENT_ASSIGNMENT')
+        check_operation(subject, operation, request, facts if facts is not None else {})
         # Callbacks and identity are constructed by trusted supervisor code.
         # They must never be accepted from an agent packet or public RPC caller.
         broker = Broker(self.policy, lambda op, payload: adapter(),
