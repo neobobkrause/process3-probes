@@ -130,18 +130,6 @@
     }
   },
   "notices": {
-    "provider:26796e064fb586ca893124bd8ec2414699bedd6c:web": {
-      "provider": "provider",
-      "user": "web",
-      "commit": "26796e064fb586ca893124bd8ec2414699bedd6c",
-      "status": "delivered-and-completed"
-    },
-    "provider:26796e064fb586ca893124bd8ec2414699bedd6c:report": {
-      "provider": "provider",
-      "user": "report",
-      "commit": "26796e064fb586ca893124bd8ec2414699bedd6c",
-      "status": "pending"
-    },
     "provider:d4eaa939c90d614d40fd50eab439632217d83a9b:web": {
       "provider": "provider",
       "user": "web",
@@ -152,7 +140,9 @@
       "provider": "provider",
       "user": "report",
       "commit": "d4eaa939c90d614d40fd50eab439632217d83a9b",
-      "status": "pending"
+      "status": "pending",
+      "first_unconsumed_commit": "26796e064fb586ca893124bd8ec2414699bedd6c",
+      "change_count": 2
     }
   },
   "instructions": [],
@@ -174,46 +164,6 @@
       "job": "web"
     },
     {
-      "at": 1794862421.8927934,
-      "kind": "native-reserve",
-      "job": "provider",
-      "attempt": 1
-    },
-    {
-      "at": 1794862498.1373901,
-      "kind": "native-checkpoint",
-      "job": "provider",
-      "checkpoint": "26796e064fb586ca893124bd8ec2414699bedd6c",
-      "status": "review"
-    },
-    {
-      "at": 1794862561.952069,
-      "kind": "native-integrated",
-      "job": "provider",
-      "checkpoint": "26796e064fb586ca893124bd8ec2414699bedd6c",
-      "integration": "3d4f7dbf624dba0c04af3d67a0b5fcea0b4c2e52"
-    },
-    {
-      "at": 1794862570.383266,
-      "kind": "native-reserve",
-      "job": "web",
-      "attempt": 1
-    },
-    {
-      "at": 1794862683.5663593,
-      "kind": "native-checkpoint",
-      "job": "web",
-      "checkpoint": "ac7fe1345580967943ede76a56123ce7d2994021",
-      "status": "review"
-    },
-    {
-      "at": 1794862737.7212896,
-      "kind": "native-integrated",
-      "job": "web",
-      "checkpoint": "ac7fe1345580967943ede76a56123ce7d2994021",
-      "integration": "a6f613b5461afc4a0996c4bb5016a5668fc4c9f7"
-    },
-    {
       "at": 1794862744.555569,
       "kind": "owner-control",
       "command": "retry",
@@ -225,13 +175,6 @@
       "kind": "native-reserve",
       "job": "provider",
       "attempt": 2
-    },
-    {
-      "at": 1794862754.5248172,
-      "kind": "native-baseline-sync",
-      "job": "provider",
-      "base": "a6f613b5461afc4a0996c4bb5016a5668fc4c9f7",
-      "checkpoint": "a6f613b5461afc4a0996c4bb5016a5668fc4c9f7"
     },
     {
       "at": 1794862799.0452569,
@@ -248,36 +191,10 @@
       "integration": "253e7fb458f8cb2baf7f696e50c70fac6652f8ed"
     },
     {
-      "at": 1794862863.8672054,
-      "kind": "native-reserve",
-      "job": "web",
-      "attempt": 2
-    },
-    {
-      "at": 1794862867.7938879,
-      "kind": "native-baseline-sync",
-      "job": "web",
-      "base": "253e7fb458f8cb2baf7f696e50c70fac6652f8ed",
-      "checkpoint": "253e7fb458f8cb2baf7f696e50c70fac6652f8ed"
-    },
-    {
-      "at": 1794862918.6316495,
-      "kind": "native-checkpoint",
-      "job": "web",
-      "checkpoint": "6ae1ca7e5967f400c0e60bb58e575208b4e06ff2",
-      "status": "paused"
-    },
-    {
       "at": 1794862930.4067855,
       "kind": "native-reserve",
       "job": "web",
       "attempt": 3
-    },
-    {
-      "at": 1794862995.8404975,
-      "kind": "native-rejected",
-      "job": "web",
-      "reason": "outside assigned module: toy/native-cycle/provider/__pycache__/quote_provider.cpython-312.pyc"
     },
     {
       "at": 1794863064.591595,
@@ -294,134 +211,43 @@
       "integration": "7fbcbd444c748179ad76220c22c3d0f93f6ad901"
     },
     {
+      "at": 1794862754.5248172,
+      "kind": "native-baseline-sync",
+      "job": "provider",
+      "base": "a6f613b5461afc4a0996c4bb5016a5668fc4c9f7",
+      "checkpoint": "a6f613b5461afc4a0996c4bb5016a5668fc4c9f7"
+    },
+    {
+      "at": 1794862867.7938879,
+      "kind": "native-baseline-sync",
+      "job": "web",
+      "base": "253e7fb458f8cb2baf7f696e50c70fac6652f8ed",
+      "checkpoint": "253e7fb458f8cb2baf7f696e50c70fac6652f8ed"
+    },
+    {
+      "at": 1794862995.8404975,
+      "kind": "native-rejected",
+      "job": "web",
+      "reason": "outside assigned module: toy/native-cycle/provider/__pycache__/quote_provider.cpython-312.pyc"
+    },
+    {
       "kind": "native-broker-live-validation",
       "source": "actual-native-ARCH",
       "native_actor": "/root/native_arch_broker_validation",
       "event_id": "d11c767b-7ed9-43c2-89c9-b40434cfb359",
       "at": 1794864997.3835242
+    },
+    {
+      "kind": "native-storage-migration",
+      "at": 1794867400.8731165,
+      "source": "technical",
+      "instruction_source": "OWNER-GUIDANCE-COMMUNICATION-20261116.txt",
+      "summary": "Routine native transport local; compact meaningful recovery state only"
     }
   ],
   "native": true,
   "integration_branch": "codex/p4-integration-workshop-20261116",
   "base": "f98b7002e0fee803fb3e6da6d0cd8be8d1f9751e",
-  "native_mailbox": {
-    "recipients": {
-      "JOB:web": {
-        "target": "/root/p4_arch_native_cycle/web_replacement",
-        "generation": 3
-      },
-      "COORDINATOR": {
-        "target": "/root/coordinator_recovered",
-        "generation": 2
-      },
-      "ARCH": {
-        "target": "/root/arch_recovered",
-        "generation": 2
-      },
-      "WATCHER": {
-        "target": "/root/watcher_native",
-        "generation": 1
-      }
-    },
-    "messages": {
-      "provider-notice:provider:d4eaa939c90d614d40fd50eab439632217d83a9b:web": {
-        "sender": "PROVIDER:provider",
-        "recipient": "JOB:web",
-        "text": "Provider changed; begin handling this durable notice and report the message ID, your current native target/generation, and first-processing time to ARCH through the native message tool. First-processing acknowledgement does not complete module work. Keep your assigned paths; ask ARCH for the current attempt workspace before editing after replacement. Notice: {\"commit\": \"d4eaa939c90d614d40fd50eab439632217d83a9b\", \"notice_id\": \"provider:d4eaa939c90d614d40fd50eab439632217d83a9b:web\", \"provider\": \"provider\", \"user\": \"web\"}",
-        "status": "acknowledged",
-        "created_at": 1794862947.0384865,
-        "deliveries": [
-          {
-            "target": "/root/p4_arch_native_cycle/web_replacement",
-            "generation": 3,
-            "tool": "followup_task",
-            "recorded_at": 1794863029.1418333
-          }
-        ],
-        "ack": {
-          "target": "/root/p4_arch_native_cycle/web_replacement",
-          "generation": 3,
-          "processing_started_at": 1794863028.9048054,
-          "recorded_at": 1794863039.8818302,
-          "source": "observed-native-actor-event",
-          "receipt": "RECEIVED provider-notice:provider:d4eaa939c90d614d40fd50eab439632217d83a9b:web target=/root/p4_arch_native_cycle/web_replacement generation=3 started_at=1794863028.9048054"
-        }
-      },
-      "root-coordinator-status-20261116": {
-        "sender": "ROOT",
-        "recipient": "COORDINATOR",
-        "text": "Status query only. At your first observable action record time.time() and monotonic_ns plus this exact message ID in /workspace/work/p4-native-cycle/coordinator-receipt.json, then immediately send ROOT a RECEIVED message with exact ID/generation1/timestamp. Read current native run state using controller status and relay concise owner-facing status: actual integrated work, pending notices, tests/walks, remaining limitation. Do not assign/build/change product or owner instructions; finish this bounded status turn and remain available.",
-        "status": "acknowledged",
-        "created_at": 1794863324.5933478,
-        "deliveries": [
-          {
-            "target": "/root/p4_coordinator",
-            "generation": 1,
-            "tool": "followup_task",
-            "recorded_at": 1794863338.479468
-          }
-        ],
-        "ack": {
-          "target": "/root/p4_coordinator",
-          "generation": 1,
-          "processing_started_at": 1794863336.699012,
-          "recorded_at": 1794863420.3574743,
-          "source": "observed-native-actor-event",
-          "receipt": "RECEIVED root-coordinator-status-20261116 generation 1 timestamp 1794863336.699012 from observed native actor /root/p4_coordinator",
-          "latency_seconds": 12.105664253234863
-        }
-      },
-      "role-recovery-coordinator-g2": {
-        "sender": "ROOT",
-        "recipient": "COORDINATOR",
-        "text": "Recovery verification: preserve completed jobs, pending report notices, owner stop and cap. Report RECEIVED with this exact message ID and generation2; take no product action.",
-        "status": "acknowledged",
-        "created_at": 1794865177.9995594,
-        "deliveries": [
-          {
-            "target": "/root/coordinator_recovered",
-            "generation": 2,
-            "tool": "followup_task",
-            "recorded_at": 1794865199.7118864
-          }
-        ],
-        "ack": {
-          "target": "/root/coordinator_recovered",
-          "generation": 2,
-          "processing_started_at": 1794865198.4773166,
-          "recorded_at": 1794865227.701348,
-          "source": "observed-native-actor-event",
-          "receipt": "Actual native actor RECEIVED role-recovery-coordinator-g2 generation2; source event observed by ROOT",
-          "latency_seconds": 20.477757215499878
-        }
-      },
-      "role-recovery-arch-g2": {
-        "sender": "ROOT",
-        "recipient": "ARCH",
-        "text": "Recovery verification: preserve completed jobs, pending report notices, owner stop and cap. Report RECEIVED with this exact message ID and generation2; take no product action.",
-        "status": "acknowledged",
-        "created_at": 1794865179.8108277,
-        "deliveries": [
-          {
-            "target": "/root/arch_recovered",
-            "generation": 2,
-            "tool": "followup_task",
-            "recorded_at": 1794865201.5098329
-          }
-        ],
-        "ack": {
-          "target": "/root/arch_recovered",
-          "generation": 2,
-          "processing_started_at": 1794865205.9136355,
-          "recorded_at": 1794865229.2846935,
-          "source": "observed-native-actor-event",
-          "receipt": "Actual native actor RECEIVED role-recovery-arch-g2 generation2; source event observed by ROOT",
-          "latency_seconds": 26.102807760238647
-        }
-      }
-    },
-    "events": []
-  },
   "native_continuation": {
     "findings": {
       "managed_execution": {
@@ -502,9 +328,9 @@
         "limitation": "Observed controller-route compliance and preserved owner restrictions, not platform-wide impossibility of raw-tool bypass; separate protected-credential dependency remains."
       },
       "reactive_inter_session": {
-        "state": "not_exposed",
-        "evidence": "bootstrap/evidence/reactive-communication/actual-native-timings.json and actual-root-immediate-run-attempt.json; current native followup contract excludes ROOT",
-        "limitation": "Idle/active/replaced children work; retained idle top-level ROOT has no demonstrated supported message-triggered turn-start operation. Ten-minute schedule is not reactive transport."
+        "state": "unproven",
+        "evidence": "Actual child tool inventory has no notify_parent; automatic child-final after-parent-final is an available but untested candidate. See PARENT-NOTIFICATION.md.",
+        "limitation": "Do not infer idle ROOT wake from active parent delivery or timer."
       }
     },
     "dependencies": {
@@ -538,7 +364,37 @@
       "native_instruction_correction": {
         "status": "done",
         "evidence": "bootstrap/role_instructions.py; recovered ARCH/coordinator observed and applied corrected instructions"
+      },
+      "communication_lifecycle": {
+        "status": "done",
+        "evidence": "bootstrap/native/COMMUNICATION-STORAGE.md; actual-local-native-exchange.json (zero remote routine calls)"
+      },
+      "authority_inventory": {
+        "status": "done",
+        "evidence": "bootstrap/native/AUTHORITY-MATRIX.md and actual read-only provider metadata"
+      },
+      "parent_final_wake_trial": {
+        "status": "pending"
       }
+    }
+  },
+  "operational_storage_version": 1,
+  "native_roles": {
+    "JOB:web": {
+      "target": "/root/p4_arch_native_cycle/web_replacement",
+      "generation": 3
+    },
+    "COORDINATOR": {
+      "target": "/root/coordinator_recovered",
+      "generation": 2
+    },
+    "ARCH": {
+      "target": "/root/arch_recovered",
+      "generation": 2
+    },
+    "WATCHER": {
+      "target": "/root/watcher_native",
+      "generation": 1
     }
   }
 }
