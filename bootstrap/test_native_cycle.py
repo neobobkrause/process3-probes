@@ -479,6 +479,24 @@ class NativeCycleTests(unittest.TestCase):
         with self.assertRaisesRegex(n.Rejected,'verification pending'):self.cycle.prepare('provider')
         self.assertEqual(self.store.state,before);self.assertEqual(self.provider.calls,[])
 
+    def test_repeated_owner_record_milestone_does_not_write_an_empty_remote_commit(self):
+        self.cycle.adopt_layout('fixture observed approval')
+        self.cycle.register_role('ROOT','/root/supervisor',1,actor='/root')
+        self.cycle.register_role('COORDINATOR','/root/supervisor/coord',1,actor='/root/supervisor')
+        proposal=self.cycle.owner_input(actor='/root',text='Hold the existing scope.',kind='instruction',
+                                       message_id='owner-once',marked=True)
+        durable=copy.deepcopy(self.store.state);writes=[]
+        def read(branch):return copy.deepcopy(durable),'fixture-blob'
+        def write(branch,state,sha):writes.append(copy.deepcopy(state));durable.update(copy.deepcopy(state))
+        with patch.object(self.provider,'read_state',side_effect=read,create=True),patch.object(self.provider,'write_state',side_effect=write,create=True):
+            self.cycle.store=n.Store(Memory.branch,self.provider)
+            kwargs={'actor':'/root/supervisor/coord','envelope':proposal['envelope'],
+                    'observed_at':time.time(),'source_evidence':'fixture actual owner event'}
+            self.assertTrue(self.cycle.owner_record(**kwargs)['new_record'])
+            self.assertFalse(self.cycle.owner_record(**kwargs)['new_record'])
+        self.assertEqual(len(writes),1)
+        self.assertEqual(durable['owner_records']['owner-once']['text'],'Hold the existing scope.')
+
     def test_owner_question_forwarding_is_local_and_cannot_create_owner_record(self):
         self.cycle.adopt_layout('fixture observed owner approval')
         self.cycle.register_role('ROOT','/root/supervisor',1,actor='/root')

@@ -280,7 +280,10 @@ class Store:
 
     def mutate(self, action):
         for attempt in range(4):
-            state,sha=self.read(); action(state)
+            state,sha=self.read();before=copy.deepcopy(state);action(state)
+            # Retries of an already recorded decision/milestone are not new
+            # recovery information and must not accumulate empty Git commits.
+            if state==before:return state
             try: self.write(state,sha); return state
             except c.StateConflict:
                 if attempt==3: raise
