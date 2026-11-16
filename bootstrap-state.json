@@ -11,6 +11,14 @@
         "toy/storage-provider"
       ],
       "uses": []
+    },
+    "declared-user-0": {
+      "id": "declared-user-0",
+      "order": 1,
+      "paths": [],
+      "uses": [
+        "storage-provider"
+      ]
     }
   },
   "jobs": {
