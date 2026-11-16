@@ -105,3 +105,12 @@ never a claimed substitute for reactive inter-session wake. Child-session reacti
 behavior is implemented and measured; retained top-level ROOT idle wake is not yet
 demonstrated through an available supported operation. Continue independent native
 Process4 development while investigating this narrowly identified limitation.
+
+### Subsequent coordinator assessment
+
+The native parent mailbox/event wait provides active-turn delivery, with no documented
+idle-parent turn-start guarantee. Child final notifications therefore cannot prove
+idle ROOT wake. A standing supervisory role hosted as an addressable child could
+use the measured native wake path while the top chat remains the owner bridge.
+This is a possible explicit hierarchy mapping, not an implemented solution or
+proof that the existing top-level ROOT awakens. No role reassignment has been made.

@@ -1,3 +1,9 @@
+Next independent work: native_cycle_controller is auditing and implementing any
+missing native privileged-operation integration with the existing grants controller.
+Do not duplicate that assignment. Coordinator confirmed active parent mailbox delivery
+does not establish idle top-ROOT wake. An addressable child supervisory role is a
+possible explicit hierarchy mapping only; it has not been adopted or demonstrated.
+
 # Latest executed native cycle and reactive communication
 
 Owner clarification in OWNER-CLARIFICATION-20261116.txt governs acceptance. Do not
