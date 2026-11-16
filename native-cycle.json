@@ -1,0 +1,20 @@
+{
+  "version": 1,
+  "stopped": false,
+  "slots": 1,
+  "lease": null,
+  "modules": {},
+  "jobs": {},
+  "notices": {},
+  "instructions": [],
+  "roles": {
+    "ROOT": "liveness/recovery",
+    "watcher": "ROOT replacement",
+    "coordinator": "owner control and reporting",
+    "ARCH": "dispatch and technical assignments"
+  },
+  "events": [],
+  "native": true,
+  "integration_branch": "codex/p4-integration-workshop-20261116",
+  "base": "f98b7002e0fee803fb3e6da6d0cd8be8d1f9751e"
+}
