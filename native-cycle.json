@@ -3,8 +3,45 @@
   "stopped": false,
   "slots": 1,
   "lease": null,
-  "modules": {},
-  "jobs": {},
+  "modules": {
+    "provider": {
+      "id": "provider",
+      "order": 10,
+      "paths": [
+        "toy/native-cycle/provider"
+      ],
+      "uses": []
+    }
+  },
+  "jobs": {
+    "provider": {
+      "id": "provider",
+      "order": 10,
+      "paths": [
+        "toy/native-cycle/provider"
+      ],
+      "uses": [],
+      "prompt": "Work only within your assigned paths and tests. No bootstrap, process, .process, settings, grants, credentials, network accounts, inference API, git pushes, PRs, merges, or other module edits. Python standard library only. Leave preservation and provider operations to the native controller. Report changed files, test argv/result, and any unfinished work truthfully. Implement quote_provider.py for workshop cards: MIN_QUANTITY=1, MAX_QUANTITY=100, UNIT_PRICE_CENTS=250. price_for accepts only int excluding bool, bounds inclusive, returns integer cents, raises ValueError otherwise. Write unittest module tests covering ordinary/boundary totals and invalid types/bounds. Include a short module README. Later provider revision is separately assigned, not preimplemented.",
+      "completion": "Provider exports the specified constants and validated price_for; own tests pass and invalid inputs are covered.",
+      "verify": [
+        "python3",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "toy/native-cycle/provider",
+        "-p",
+        "test_*.py",
+        "-v"
+      ],
+      "timeout": 180,
+      "status": "ready",
+      "attempt": 0,
+      "branch": "codex/p4-job-native-workshop-20261116-provider",
+      "instructions": [],
+      "checkpoint": null
+    }
+  },
   "notices": {},
   "instructions": [],
   "roles": {
@@ -13,7 +50,13 @@
     "coordinator": "owner control and reporting",
     "ARCH": "dispatch and technical assignments"
   },
-  "events": [],
+  "events": [
+    {
+      "at": 1794862414.2317126,
+      "kind": "assignment",
+      "job": "provider"
+    }
+  ],
   "native": true,
   "integration_branch": "codex/p4-integration-workshop-20261116",
   "base": "f98b7002e0fee803fb3e6da6d0cd8be8d1f9751e"
