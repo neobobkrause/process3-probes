@@ -1,6 +1,6 @@
 """Native capability classification tests; live evidence is recorded separately."""
 import unittest
-from native.capabilities import Finding,assess,require_approved_runtime,replacement_scope
+from native.capabilities import Finding,assess,require_approved_runtime,replacement_scope,require_development_admission
 
 
 class NativeCapabilityTests(unittest.TestCase):
@@ -29,3 +29,17 @@ class NativeCapabilityTests(unittest.TestCase):
     def test_external_block_does_not_end_independent_implementation(self):
         result=assess({'root_recreation':Finding('not_exposed','fixture inventory')},('implement durable mailbox',))
         self.assertEqual(result.status,'continue')
+
+
+class NativeAdmissionTests(unittest.TestCase):
+    def test_child_success_does_not_authorize_unrestricted_development(self):
+        findings={'native_child_start':Finding('observed','actual child completion'),
+                  'role_security_isolation':Finding('blocked','actual sibling canary was writable'),
+                  'exclusive_grants_enforcement':Finding('unproven','shared parent tools')}
+        with self.assertRaisesRegex(PermissionError,'NATIVE_ROLE_ENFORCEMENT_NOT_ESTABLISHED'):
+            require_development_admission(findings)
+
+    def test_documented_isolation_without_execution_is_insufficient(self):
+        findings={'role_security_isolation':Finding('documented','fixture description'),
+                  'exclusive_grants_enforcement':Finding('observed','fixture broker proof')}
+        with self.assertRaises(PermissionError): require_development_admission(findings)

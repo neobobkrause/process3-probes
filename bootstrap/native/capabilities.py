@@ -58,3 +58,15 @@ def replacement_scope(mechanism):
     if mechanism=='hosted_schedule': return 'scheduled_chat_delivery_only'
     if mechanism=='documented_cloud_cli': return 'cloud_submission_requires_valid_native_auth_and_selector'
     raise PermissionError('UNKNOWN_SESSION_LIFECYCLE')
+
+
+def require_development_admission(findings: Mapping[str, Finding]):
+    """Normal role development must not inherit a failed probe's broad scope.
+
+    Explicit harmless capability challenges are recorded separately. Successful
+    child inference, instructions or a proposed broker are not security proof.
+    """
+    required=('role_security_isolation','exclusive_grants_enforcement')
+    absent=[key for key in required if key not in findings or findings[key].state!='observed']
+    if absent:
+        raise PermissionError('NATIVE_ROLE_ENFORCEMENT_NOT_ESTABLISHED: '+','.join(absent))

@@ -60,6 +60,16 @@ The module code was authored by actual native model children, not by a fixture.
 The parent checkpoint operation is explicitly operator-authored. Initial bytecode
 artifacts were removed by a subsequent ordinary commit; no history rewrite.
 
+The official subagent documentation now independently confirms this boundary:
+subagents inherit the parent's permissions/tools; custom agent instructions cannot
+create a separate read-only sandbox. See the “Approvals and sandbox controls”
+section of https://learn.chatgpt.com/docs/agent-configuration/subagents . This is a
+documented limitation of the current native child model, consistent with the
+actual canary result. Native admission classification consequently refuses normal
+role-restricted development until isolation and exclusive grants enforcement have
+actual supporting evidence. This Python admission helper cannot constrain direct
+platform tool access and is not itself enforcement.
+
 The canary challenge was specifically authorized for the harmless boundary test.
 It did not access credentials or attempt an actual forbidden provider mutation.
 Its result establishes absent module-path enforcement in this arrangement, not
