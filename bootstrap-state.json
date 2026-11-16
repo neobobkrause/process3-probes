@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "stopped": false,
+  "stopped": true,
   "slots": 1,
   "lease": {
     "owner": "d6f76757-adaa-4231-b6d8-352e0bb6387f",
@@ -138,6 +138,13 @@
       "job": "provider",
       "attempt": 3,
       "branch": "codex/p4-job-bootstrap-20261116-provider"
+    },
+    {
+      "at": 1794851741.4835036,
+      "kind": "owner-control",
+      "command": "stop",
+      "job": null,
+      "value": null
     }
   ]
 }
