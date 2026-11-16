@@ -70,7 +70,9 @@
         "stdout": "",
         "stderr": "test_contract_constants (test_quote_provider.PriceForTests.test_contract_constants) ... ok\ntest_invalid_bounds (test_quote_provider.PriceForTests.test_invalid_bounds) ... ok\ntest_invalid_types (test_quote_provider.PriceForTests.test_invalid_types) ... ok\ntest_ordinary_and_boundary_totals (test_quote_provider.PriceForTests.test_ordinary_and_boundary_totals) ... ok\n\n----------------------------------------------------------------------\nRan 4 tests in 0.000s\n\nOK\n"
       },
-      "accepted": true
+      "accepted": true,
+      "pr": "https://github.com/neobobkrause/process3-probes/pull/271",
+      "pr_number": 271
     },
     "web": {
       "id": "web",
