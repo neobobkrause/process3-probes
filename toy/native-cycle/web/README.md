@@ -9,4 +9,4 @@ python3 -m unittest discover -s toy/native-cycle/web -p 'test_*.py' -v
 
 The app loads pricing and quantity bounds from the explicitly supplied provider directory. It binds only to loopback, performs no persistence, and formats integer cents without floating point arithmetic.
 
-Known unfinished correction: validation responses currently reset rejected input to `1`. A later correction must retain the rejected text in the input value for editing, HTML-escape that text, and add regression coverage. S3 permits this initial shortcoming; it is not yet corrected.
+Correction completed: validation responses retain rejected text for editing and HTML-escape the input value. The quantity field uses `type="text"` with `inputmode="numeric"` so browsers preserve invalid text, while visible provider-derived bounds and server-side ASCII integer validation remain in place. Missing and duplicate quantities return HTTP 400. Regression coverage verifies retention, escaping, and recovery after a valid submission.

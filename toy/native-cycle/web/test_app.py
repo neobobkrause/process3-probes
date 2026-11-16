@@ -2,9 +2,13 @@
 import http.client
 from pathlib import Path
 import tempfile
+import sys
 import threading
 import unittest
 from urllib.parse import quote
+
+# Provider modules live outside this module; tests must not create bytecode there.
+sys.dont_write_bytecode = True
 
 import app
 
@@ -95,6 +99,21 @@ class WebTests(unittest.TestCase):
         self.assertIn('id="quote-result"', body)
         self.assertNotIn('role="alert"', body)
         self.assertNotIn('value="abc"', body)
+
+    def test_provider_upper_bound(self):
+        status, _, body = self.get('/quote?quantity=50')
+        self.assertEqual(status, 200)
+        self.assertIn('Quantity: 50', body)
+        self.assertIn('$137.50', body)
+        self.assertEqual(self.get('/quote?quantity=51')[0], 400)
+
+    def test_rejected_whitespace_and_empty_are_retained(self):
+        for rejected in (' abc ', ''):
+            with self.subTest(rejected=rejected):
+                status, _, body = self.get('/quote?quantity=' + quote(rejected))
+                self.assertEqual(status, 400)
+                self.assertIn('value="' + rejected + '"', body)
+                self.assertNotIn('id="quote-result"', body)
 
     def test_not_found(self):
         status, _, body = self.get('/missing')
