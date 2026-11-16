@@ -3,7 +3,18 @@
   "stopped": false,
   "slots": 1,
   "lease": null,
-  "modules": {},
+  "modules": {
+    "consumer": {
+      "id": "consumer",
+      "order": 1,
+      "paths": [
+        "toy/consumer"
+      ],
+      "uses": [
+        "provider"
+      ]
+    }
+  },
   "jobs": {},
   "notices": {},
   "instructions": [],
