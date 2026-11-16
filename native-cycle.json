@@ -108,7 +108,8 @@
       "accepted": false,
       "notice_ids": [
         "provider:26796e064fb586ca893124bd8ec2414699bedd6c:web"
-      ]
+      ],
+      "workspace": "/workspace/work/p4-native-cycle/web-1"
     }
   },
   "notices": {
