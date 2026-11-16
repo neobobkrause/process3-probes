@@ -62,7 +62,8 @@
       "checkpoint": null,
       "base": "f98b7002e0fee803fb3e6da6d0cd8be8d1f9751e",
       "notice_ids": [],
-      "workspace": "/workspace/work/p4-native-cycle/provider-1"
+      "workspace": "/workspace/work/p4-native-cycle/provider-1",
+      "session": "/root/p4_arch_native_cycle/provider_job"
     },
     "web": {
       "id": "web",
