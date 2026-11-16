@@ -161,6 +161,25 @@ def codex_env():
     return env
 
 
+# The coordinator owns GitHub and deployment credentials. Model jobs do not.
+# This removes obvious environment inheritance but is NOT full isolation:
+# the trusted host must also deny credential files, direct provider network
+# routes, Git credential helpers, and unauthorized system calls.
+JOB_SECRET_KEYS = frozenset({
+    'GH_TOKEN', 'GITHUB_TOKEN', 'GH_ENTERPRISE_TOKEN', 'GITHUB_PERSONAL_ACCESS_TOKEN',
+    'CLOUDFLARE_API_TOKEN', 'CLOUDFLARE_ACCOUNT_ID', 'CF_TOKEN', 'CF_ACCT',
+    'AWS_ACCESS_KEY_ID', 'AWS_SECRET_ACCESS_KEY', 'AWS_SESSION_TOKEN',
+    'BIO_RELEASE_SEED', 'BIO_ADMIN_TOKEN', 'BIO_MEMBER_TOKEN',
+    'GIT_ASKPASS', 'SSH_ASKPASS', 'SSH_AUTH_SOCK', 'GIT_SSH_COMMAND'
+})
+
+
+def restricted_job_env(parent):
+    env = {k: v for k, v in parent.items()
+           if k not in JOB_SECRET_KEYS and not k.startswith(('GIT_CONFIG_', 'GH_', 'GITHUB_', 'CLOUDFLARE_', 'AWS_'))}
+    return env
+
+
 def auth():
     env=codex_env()
     # CLI currently writes status to stderr on some releases.
@@ -221,7 +240,7 @@ class Supervisor:
         err=open(self.runtime/f'{j["id"]}-{j["attempt"]}.stderr','w')
         argv=['codex','exec','--ignore-user-config','--json','-c','forced_login_method="chatgpt"',
               '-C',str(path),'-s','workspace-write',prompt]
-        p=subprocess.Popen(argv,stdin=subprocess.DEVNULL,stdout=log,stderr=err,env=self.env,start_new_session=True)
+        p=subprocess.Popen(argv,stdin=subprocess.DEVNULL,stdout=log,stderr=err,env=restricted_job_env(self.env),start_new_session=True)
         self.live[j['id']]=(p,log,err,path,time.monotonic())
 
     def checkpoint(self,j,path):
