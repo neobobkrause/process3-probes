@@ -344,11 +344,6 @@
         "confirmed": true,
         "prerequisite": "Either supported message-triggered existing depth0 ROOT turnstart, or owner-approved addressable ROOT role mapping followed by mode implementation/verification.",
         "evidence": "ROOT-LAYOUT-PROPOSAL.md; actual-after-final-result.json; actual-supervisory-role-alternative.json"
-      },
-      "control:root_identity_adoption": {
-        "confirmed": true,
-        "prerequisite": "Owner decision whether Process4 ROOT may be an addressable native child with existing chat as owner console/safety runner; current explicit top-level ROOT identity must not be silently redefined. No numericdepth/grant exception requested.",
-        "evidence": "bootstrap/native/ROOT-LAYOUT-PROPOSAL.md and latest owner guidance identifying idle top-level ROOT as unresolved"
       }
     },
     "work": {
@@ -393,7 +388,20 @@
         "evidence": "bootstrap/native/AUTHORITY-MATRIX.md; instructed/controller/provider/alternative layers evaluated, raw tools remain exposed; no exclusive enforcement claimed or grants changed"
       },
       "root_identity_adoption": {
-        "status": "blocked"
+        "status": "done",
+        "evidence": "ExactownerYesrecord; actualCLIadopt-layoutandROOT1/ARCH3/COORD3/PROCESS1bindingssourceevents"
+      },
+      "stream_A": {
+        "status": "running"
+      },
+      "stream_B": {
+        "status": "running"
+      },
+      "stream_C": {
+        "status": "running"
+      },
+      "stream_D": {
+        "status": "running"
       }
     }
   },
@@ -437,5 +445,45 @@
       "source": "observed-native-ARCH-request",
       "evidence": "Actual native ARCH gen3 request to ROOT: dedicated PROCESS lane for owner-authorized stream C governance/native approval and design-lane rules; current registry lacks PROCESS. Technical request, not owner words or expanded grant."
     }
+  },
+  "bootstrap_workstreams": {
+    "A": {
+      "branch": "codex/p4-stream-a-20261116",
+      "worktree": "/workspace/work/p4-stream-a",
+      "actor": "/root/approved_layout_implementation",
+      "baseline": "c901c9f",
+      "ownership_contract": "bootstrap/PARALLEL-WORKSTREAMS.md",
+      "status": "running"
+    },
+    "B": {
+      "branch": "codex/p4-stream-b-20261116",
+      "worktree": "/workspace/work/p4-stream-b",
+      "actor": "/root/stream_b_scheduler",
+      "baseline": "c901c9f",
+      "ownership_contract": "bootstrap/PARALLEL-WORKSTREAMS.md",
+      "status": "running"
+    },
+    "C": {
+      "branch": "codex/p4-stream-c-20261116",
+      "worktree": "/workspace/work/p4-stream-c",
+      "actor": "/root/process4_root/p4_process_g1",
+      "baseline": "c901c9f",
+      "ownership_contract": "bootstrap/PARALLEL-WORKSTREAMS.md",
+      "status": "running"
+    },
+    "D": {
+      "branch": "codex/p4-stream-d-20261116",
+      "worktree": "/workspace/work/p4-stream-d",
+      "actor": "/root/stream_d_walks",
+      "baseline": "c901c9f",
+      "ownership_contract": "bootstrap/PARALLEL-WORKSTREAMS.md",
+      "status": "running"
+    }
+  },
+  "bootstrap_integrator": {
+    "actor": "/root",
+    "branch": "codex/p4-grants-broker-20261116",
+    "central_source_owner": "bootstrap/native/cycle.py",
+    "pilot_hold": true
   }
 }
