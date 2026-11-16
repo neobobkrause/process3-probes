@@ -4,7 +4,7 @@
   "slots": 1,
   "lease": {
     "owner": "fffdb34f-baff-41d2-99d7-23e7417a452a",
-    "until": 1794851612.0253718
+    "until": 1794851618.9999506
   },
   "modules": {
     "consumer": {
@@ -51,7 +51,7 @@
       "notice_ids": [],
       "progress": {
         "event_count": 9,
-        "elapsed_seconds": 32,
+        "elapsed_seconds": 39,
         "last_event_type": "error"
       },
       "thread_id": "01a1e57c-47f7-7140-bd8d-036c6451f849"
