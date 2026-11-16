@@ -1,0 +1,1 @@
+{"id":"consumer","order":1,"paths":["toy/consumer"],"uses":["provider"]}
