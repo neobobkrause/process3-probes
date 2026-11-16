@@ -55,12 +55,19 @@
       "status": "ready",
       "attempt": 0,
       "branch": null,
-      "instructions": [],
+      "instructions": [
+        "Instruction: preserve these words exactly.\nThis is a storage rehearsal, not an owner product decision."
+      ],
       "checkpoint": null
     }
   },
   "notices": {},
-  "instructions": [],
+  "instructions": [
+    {
+      "at": 1794851841.50751,
+      "text": "Instruction: preserve these words exactly.\nThis is a storage rehearsal, not an owner product decision."
+    }
+  ],
   "roles": {
     "ROOT": "liveness/recovery",
     "watcher": "ROOT replacement",
@@ -72,6 +79,13 @@
       "at": 1794851834.700295,
       "kind": "assignment",
       "job": "storage-provider"
+    },
+    {
+      "at": 1794851841.5075164,
+      "kind": "owner-control",
+      "command": "instruction",
+      "job": "storage-provider",
+      "value": "Instruction: preserve these words exactly.\nThis is a storage rehearsal, not an owner product decision."
     }
   ]
 }
