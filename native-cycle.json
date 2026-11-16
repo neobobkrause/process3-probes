@@ -98,11 +98,17 @@
         "-v"
       ],
       "timeout": 180,
-      "status": "ready",
-      "attempt": 0,
+      "status": "running",
+      "attempt": 1,
       "branch": "codex/p4-job-native-workshop-20261116-web",
       "instructions": [],
-      "checkpoint": null
+      "checkpoint": null,
+      "base": "3d4f7dbf624dba0c04af3d67a0b5fcea0b4c2e52",
+      "original_base": "3d4f7dbf624dba0c04af3d67a0b5fcea0b4c2e52",
+      "accepted": false,
+      "notice_ids": [
+        "provider:26796e064fb586ca893124bd8ec2414699bedd6c:web"
+      ]
     }
   },
   "notices": {
@@ -156,6 +162,12 @@
       "job": "provider",
       "checkpoint": "26796e064fb586ca893124bd8ec2414699bedd6c",
       "integration": "3d4f7dbf624dba0c04af3d67a0b5fcea0b4c2e52"
+    },
+    {
+      "at": 1794862570.383266,
+      "kind": "native-reserve",
+      "job": "web",
+      "attempt": 1
     }
   ],
   "native": true,
