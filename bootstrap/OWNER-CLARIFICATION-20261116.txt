@@ -1,0 +1,80 @@
+Continue the Codex Process4 assessment and implementation in light of the following clarification of the owner's requirements.
+
+**The objective is to reproduce the effective unattended development capabilities of Claude Code Remote running Process4, using OpenAI-hosted, subscription-funded Codex execution.** Do not introduce more demanding requirements merely because Codex has a different architecture.
+
+Two important clarifications:
+
+**1. Independent ROOT resurrection is not required.**
+
+Under Claude Code, ROOT is a standing session. If ROOT were archived or deleted, its functions would cease. Process4 has never required ROOT to recreate itself after that event.
+
+Codex should provide comparable behavior:
+
+- ROOT remains available as the standing supervisory session.
+- ROOT can create, configure, direct, interrupt, and replace subordinate sessions.
+- Scheduled continuation can wake ROOT and allow development to proceed unattended.
+- Ordinary interruptions and subordinate-session failures are handled without owner involvement.
+
+Do not make independent recreation of ROOT following whole-task loss, deletion, or archival a mandatory acceptance condition. Record any practical lifecycle limitations, but do not block development on a stronger recovery requirement than the Claude implementation has.
+
+**2. Physical module-level sandbox isolation is desirable, not mandatory.**
+
+Module jobs must work only on their assigned module and its tests. They must respect their instructions, and out-of-scope changes must be detected and prevented from entering the integrated product.
+
+However, Process4 does not require the runtime to make it physically impossible for a job to write to another module. Under Claude Code, jobs have generally respected their assigned boundaries without that additional protection.
+
+Therefore:
+
+- Give each job explicit ownership instructions and narrow assignments.
+- Check actual changes against assigned ownership before integration.
+- Reject or correct unauthorized changes.
+- Observe whether Codex jobs respect their boundaries during ordinary development.
+- Retain sandbox-enforced module isolation as an optional improvement, informed by actual experience.
+
+The earlier canary experiment established that the tested Codex child could write outside its assigned module. That is useful evidence, but it is not by itself a Process4 feasibility failure.
+
+**Important: These clarifications do not weaken the owner's explicit standing grants and prohibitions.**
+
+Maintain strong restrictions around unauthorized accounts, credentials, repository settings, protected branches, production infrastructure, public releases, and changes to owner-approved permissions.
+
+Do not reinterpret this message as authorization to broaden any grant. Existing owner decisions and standing prohibitions remain authoritative.
+
+**Reassess the native Codex Cloud results accordingly.**
+
+The experiments have already demonstrated:
+
+- Subscription-funded, OpenAI-hosted agent execution.
+- Automatic continuation of the existing conversation through scheduled tasks.
+- A bounded ROOT → ARCH → JOB delegation chain.
+- Successful module work and six passing tests.
+- Child interruption and replacement.
+- GitHub-backed preservation of development work.
+
+These are meaningful positive findings. Identify the capabilities that still need implementation or demonstration without restarting completed experiments.
+
+**Continue implementation rather than returning another feasibility plan.**
+
+Prioritize a functioning native Process4 development cycle:
+
+1. A standing ROOT and functioning coordinator, with unattended scheduled continuation.
+2. ARCH independently managing module assignments and job sessions.
+3. Jobs producing changes and their own module tests.
+4. Automated preservation of job work, creation of pull requests, and authorized integration without the parent manually performing every GitHub operation.
+5. Notifications to every declared user whenever a provider changes.
+6. Correct handling of interruptions, unfinished work, and replacement sessions.
+7. Correct implementation of the three Process4 product tests: module tests, internal walk using UX Screens, and external walk using UX journeys on a development deployment.
+8. Enforcement of consequential owner-level restrictions and observation of ordinary job behavior.
+
+Use the existing implementation and evidence in PRs #268, #269, and #270. Continue in the disposable `neobobkrause/process3-probes` repository. Leave CivicSmith2 unchanged and do not merge into main or expand grants.
+
+Do not provision paid infrastructure or use metered API inference.
+
+**Autonomy remains the central requirement.** When work remains executable, continue it without asking the owner for another prompt. Make ordinary technical decisions yourself. Bring only genuine owner-level matters to the owner.
+
+You may modify, replace, or retire experimental mechanisms that have proved unnecessary, provided no owner-approved requirement or grant is changed.
+
+Update the assessment to distinguish essential requirements, desirable improvements, actual test findings, and remaining limitations. Do not claim capabilities that have not been demonstrated.
+
+Resume the paused continuation automation if appropriate to support productive unattended development, but avoid repeating experiments already completed.
+
+The assignment is to make Process4 work—not to keep expanding the list of conditions that must be proved before development can proceed.

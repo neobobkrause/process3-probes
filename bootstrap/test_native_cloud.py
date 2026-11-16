@@ -1,12 +1,10 @@
-"""Native capability classification tests; live evidence is recorded separately."""
+"""Clarified native acceptance; actual execution evidence remains separate."""
 import unittest
 from native.capabilities import Finding,assess,require_approved_runtime,replacement_scope,require_development_admission,REQUIRED
 
-
 class NativeCapabilityTests(unittest.TestCase):
     def test_paid_fallback_cannot_satisfy_owner_runtime_constraint(self):
-        for provider,billing in [('third_party_vm','existing_subscription_allowance'),
-                                 ('openai_managed','metered_api'),('openai_managed','unknown')]:
+        for provider,billing in [('third_party_vm','existing_subscription_allowance'),('openai_managed','metered_api'),('openai_managed','unknown')]:
             with self.assertRaises(PermissionError):
                 require_approved_runtime(provider=provider,billing=billing,mechanism='native_subagent')
 
@@ -14,48 +12,43 @@ class NativeCapabilityTests(unittest.TestCase):
         with self.assertRaises(PermissionError):
             require_approved_runtime(provider='openai_managed',billing='existing_subscription_allowance',mechanism='guessed_task_endpoint')
 
-    def test_bounded_child_and_schedule_cannot_prove_root_recreation(self):
-        result=assess({'native_child_start':Finding('observed','fixture child completion'),
-                       'hosted_wake_delivery':Finding('observed','fixture delivered wake'),
-                       'root_recreation':Finding('not_exposed','actual tool inventory')})
-        self.assertEqual(result.status,'continue')
-        self.assertIn('root_recreation',result.missing)
+    def test_missing_root_resurrection_and_optional_sandbox_do_not_block(self):
+        findings={key:Finding('observed','fixture required evidence') for key in REQUIRED}
+        findings['root_recreation']=Finding('not_exposed','fixture lifecycle inventory')
+        findings['root_loss_recovery']=Finding('blocked','fixture lifecycle limitation')
+        findings['module_sandbox_isolation']=Finding('blocked','fixture writable sibling canary')
+        self.assertEqual(assess(findings).status,'demonstrated')
         self.assertEqual(replacement_scope('native_subagent'),'current_agent_tree_child_only')
 
     def test_documentation_is_not_execution_evidence(self):
-        result=assess({'root_loss_recovery':Finding('documented','fixture documentation')})
-        self.assertNotIn('root_loss_recovery',result.demonstrated)
+        result=assess({'authorized_working_integration':Finding('documented','fixture documentation')})
+        self.assertIn('authorized_working_integration',result.unresolved)
 
-    def test_external_block_does_not_end_independent_implementation(self):
-        result=assess({'root_recreation':Finding('not_exposed','fixture inventory')},('implement durable mailbox',))
-        self.assertEqual(result.status,'continue')
-
+    def test_independent_work_survives_external_blocker(self):
+        findings={key:Finding('blocked','fixture dependency') for key in REQUIRED}
+        self.assertEqual(assess(findings,('implement durable mailbox',)).status,'continue')
 
 class NativeAdmissionTests(unittest.TestCase):
-    def test_child_success_does_not_authorize_unrestricted_development(self):
-        findings={'native_child_start':Finding('observed','actual child completion'),
-                  'role_security_isolation':Finding('blocked','actual sibling canary was writable'),
-                  'exclusive_grants_enforcement':Finding('unproven','shared parent tools')}
-        with self.assertRaisesRegex(PermissionError,'NATIVE_ROLE_ENFORCEMENT_NOT_ESTABLISHED'):
-            require_development_admission(findings)
+    def test_explicit_scope_allows_development_despite_optional_sandbox_failure(self):
+        findings={'job_ownership_instructions':Finding('observed','fixture assignment'),
+                  'consequential_restrictions':Finding('observed','fixture controller restrictions'),
+                  'module_sandbox_isolation':Finding('blocked','fixture canary result')}
+        require_development_admission(findings)
 
-    def test_documented_isolation_without_execution_is_insufficient(self):
-        findings={'role_security_isolation':Finding('documented','fixture description'),
-                  'exclusive_grants_enforcement':Finding('observed','fixture broker proof')}
-        with self.assertRaises(PermissionError): require_development_admission(findings)
-
+    def test_missing_scope_or_consequential_restrictions_still_refuses(self):
+        with self.assertRaisesRegex(PermissionError,'JOB_SCOPE'):
+            require_development_admission({'module_sandbox_isolation':Finding('observed','fixture OS policy')})
 
 class NativeContinuationTests(unittest.TestCase):
-    def test_only_confirmed_individual_blockers_allow_platform_blocked_exit(self):
-        findings={key:Finding('blocked','fixture external dependency for '+key) for key in REQUIRED}
-        self.assertEqual(assess(findings).status,'platform_blocked')
-        findings.pop('root_loss_recovery')
+    def test_unknown_requirement_is_work_not_external_block(self):
+        findings={key:Finding('blocked','fixture external dependency') for key in REQUIRED}
+        self.assertEqual(assess(findings).status,'external_blocked')
+        findings.pop('all_user_notifications')
         result=assess(findings)
         self.assertEqual(result.status,'continue')
-        self.assertIn('root_loss_recovery',result.unresolved)
+        self.assertIn('all_user_notifications',result.unresolved)
 
-    def test_one_pending_live_trial_keeps_continuation_open(self):
-        findings={key:Finding('observed','fixture completed evidence for '+key) for key in REQUIRED}
-        findings['root_recreation']=Finding('not_exposed','fixture tool inventory')
-        findings['root_loss_recovery']=Finding('unproven','pending bounded scheduled trial')
+    def test_one_pending_development_cycle_keeps_continuation_open(self):
+        findings={key:Finding('observed','fixture completed evidence') for key in REQUIRED}
+        findings['automated_preservation_pr']=Finding('unproven','pending real native cycle')
         self.assertEqual(assess(findings).status,'continue')

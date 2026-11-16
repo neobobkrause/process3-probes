@@ -1,3 +1,21 @@
+# Owner clarification superseding earlier acceptance assumptions
+
+Read OWNER-CLARIFICATION-20261116.txt verbatim. The effective Claude Remote Process4
+capabilities are the target; do not impose stronger conditions due to Codex design.
+Independent ROOT resurrection after archival/deletion/whole-task loss is NOT required.
+Physical module sandboxing is desirable, NOT required. Explicit module assignments,
+actual-change inspection/rejection before integration, and ordinary compliance
+observation ARE required. Consequential standing grants and prohibitions are unchanged.
+Reactive idle-recipient wake, active delivery/queueing, nonblocking sends and
+replacement routing are essential under the owner's subsequent message; timer
+polling is not an acceptable message-wake substitute.
+
+The previous conclusion that optional isolation or independent resurrection blocks
+all development is superseded. Existing factual evidence stays valid. Continue the
+native controller/ARCH/JOB/coordinator cycle and three prescribed product tests.
+
+---
+
 # Bootstrap operating requirements and authority
 
 Research read from `neobobkrause/process3`, `process4` commit `c11682ccf903dff83f09c7505fc366760481f2ad`. Sources: all owner_words files; sixth draft sections B–P; HANDOFF; roles_root_coordinator evidence; foundations and DECISIONS passages; trial_plan_facts introduction and trials. No authoritative or product writes.
