@@ -315,8 +315,8 @@
         "generation": 2
       },
       "ARCH": {
-        "target": "/root/p4_arch_native_cycle",
-        "generation": 1
+        "target": "/root/arch_recovered",
+        "generation": 2
       }
     },
     "messages": {
