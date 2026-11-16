@@ -27,6 +27,14 @@
       "uses": [
         "storage-provider"
       ]
+    },
+    "declared-user-2": {
+      "id": "declared-user-2",
+      "order": 3,
+      "paths": [],
+      "uses": [
+        "storage-provider"
+      ]
     }
   },
   "jobs": {
