@@ -1,0 +1,2 @@
+Codex Process4 permission test.
+This harmless text file verifies GitHub branch, commit, and draft pull request write permissions.
