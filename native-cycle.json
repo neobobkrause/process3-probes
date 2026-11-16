@@ -424,6 +424,14 @@
     "mode": "addressable_root",
     "console": "/root",
     "approval_evidence": "bootstrap/OWNER-ROOT-LAYOUT-APPROVAL-20261116.txt",
-    "identity_source": "trusted supervisor observed owner approval"
+    "identity_source": "trusted supervisor observed owner approval",
+    "process_request": {
+      "arch": {
+        "target": "/root/process4_root/arch",
+        "generation": 3
+      },
+      "source": "observed-native-ARCH-request",
+      "evidence": "Actual native ARCH gen3 request to ROOT: dedicated PROCESS lane for owner-authorized stream C governance/native approval and design-lane rules; current registry lacks PROCESS. Technical request, not owner words or expanded grant."
+    }
   }
 }
