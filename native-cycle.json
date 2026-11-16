@@ -292,6 +292,13 @@
       "job": "web",
       "checkpoint": "5ae3d9093e084fcdb6f00e806766a9539e07dc0d",
       "integration": "7fbcbd444c748179ad76220c22c3d0f93f6ad901"
+    },
+    {
+      "kind": "native-broker-live-validation",
+      "source": "actual-native-ARCH",
+      "native_actor": "/root/native_arch_broker_validation",
+      "event_id": "d11c767b-7ed9-43c2-89c9-b40434cfb359",
+      "at": 1794864997.3835242
     }
   ],
   "native": true,
