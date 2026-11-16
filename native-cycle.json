@@ -109,7 +109,8 @@
       "notice_ids": [
         "provider:26796e064fb586ca893124bd8ec2414699bedd6c:web"
       ],
-      "workspace": "/workspace/work/p4-native-cycle/web-1"
+      "workspace": "/workspace/work/p4-native-cycle/web-1",
+      "session": "/root/p4_arch_native_cycle/web_job"
     }
   },
   "notices": {
