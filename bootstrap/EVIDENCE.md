@@ -1,3 +1,15 @@
+# Successor evidence — 16 November 2026
+
+The new environment's enforced policy now includes chatgpt.com. Actual Codex requests reach its backend and receive HTTP 401. Both resumed provider attempt 5 and ROOT generation 1 failed because the supplied subscription token cannot refresh. **No successful inference or module development is claimed.** `codex login status` reports ChatGPT but does not establish usable authentication.
+
+The same state/provider branches and checkpoint were preserved. State is stopped, provider and ROOT blocked, both leases null. Authentication restoration through supported sign-in is the immediate external dependency; the old missing-domain dependency is resolved. No policy bypass or metered fallback was attempted.
+
+Added role lifecycle/mailbox/lease/due-time code and draft module PR reconciliation. The host validates lifecycle requests, forbids self/live replacement, preserves stop, requires explicit ARCH-to-ROOT PROCESS requests and rejects packets atomically. 26 bootstrap tests pass, including subprocess and PR fixtures. Those fixtures do not demonstrate real AI decisions, real successful role startup/replacement, module PR creation or a permanent hourly wake. The actual ROOT invocation failed closed and started no children. ARCH product-job dispatch remains through the pre-existing trusted assignment supervisor, not an integrated role action.
+
+Evidence files: `evidence/successor-network.json` (current policy and actual client result), `successor-auth-failures.json` (actual JSONL events and service error), `successor-state.json` (actual preserved remote state), `successor-unit-tests.txt`. Prior evidence remains below. No bootstrap-launched processes or permanent hosting remain. Main is unchanged; PR #268 remains open/draft. No merges, repository settings changes, branch deletion, metered inference, credential disclosure or CivicSmith2 writes occurred.
+
+---
+
 # Executed evidence and recoverable state
 
 16 November 2026. This is an initial bootstrap deliverable, **not successful proof of the complete Process4 development system**. No successful Codex inference turn or completed Codex development assignment was obtained. No concurrency increase was attempted.

@@ -1,3 +1,34 @@
+# Successor update — 16 November 2026
+
+This section is the current continuation point. The earlier handoff below is retained as historical evidence. Keep repository `neobobkrause/process3-probes`, branch `codex/process4-bootstrap-20261116`, draft PR #268, the same state branch and the same provider branch. Do not merge, mark ready, delete branches, alter settings, run Actions supervision, use metered inference, expose credentials or modify CivicSmith2. All prior scope/authority restrictions remain.
+
+## New verified facts
+
+- Fetched and started from remote implementation tip `b7e01df`; no prior work restarted or state replaced.
+- New cloud instance has current observations and enforced restricted revision 1, with custom hosts **api.github.com and chatgpt.com**. The old domain block is resolved.
+- CLI 0.167.0-alpha.4 reports ChatGPT login. A new writable task-local runtime references this task's supplied auth file; no authentication contents were printed or committed.
+- Resumed existing provider as **attempt 5**, timeout **180 seconds**. Actual service response is now **HTTP 401**, and the actual turn failed: “Your access token could not be refreshed because you have since logged out or signed in to another account. Please sign in again.” No turn completed and no provider work was produced.
+- Added bounded `roles.py` CLI turns, validated lifecycle/message intents, durable generations/mailboxes/lease, hourly due times, host-loss parent wake and no-self-replacement enforcement. Seeded ROOT generation 1 and executed an actual ROOT CLI turn; it failed the same authentication check. No subordinate started. This is not a successful standing-role chain.
+- Added `job_pr.py` draft-PR reconciliation for completed module assignments. No actual module PR exists yet; fixture tests demonstrate policy only.
+- **26 bootstrap tests pass**. These include labeled subprocess fixtures for role lifecycle and PR API fixtures; they are never counted as inference.
+
+## Exact current durable state
+
+`codex/p4-state-bootstrap-20261116`: stopped true; job lease null; role lease null. Provider blocked, attempt 5, original job branch and checkpoint `d5c6f2a628daff023ba6e63864755fa14acafadb`, timeout 180. ROOT generation 1 blocked, no successful thread result, no ARCH/coordinator/watcher sessions enrolled. Failed actual thread IDs are in `evidence/successor-auth-failures.json`. `external_dependencies.codex-inference` now identifies authentication rather than the resolved domain grant. Prior states/events and stopped storage rehearsals are preserved.
+
+## Exact next steps
+
+1. Fetch latest implementation branch, read this file, README, REQUIREMENTS and EVIDENCE; check instructions and the new host's current policy. Preserve all existing work and restrictions.
+2. Restore **usable supported ChatGPT subscription authentication** on the cloud host. The supplied auth file was rejected, despite login status. Do not read/export tokens, try API keys, silently use another account, broaden domains without concrete denial evidence, or repeatedly retry known-invalid auth. The owner was asked to restore supported sign-in while independent implementation continued. No supported unattended login/provisioning identity is configured.
+3. Prepare a task-local writable Codex runtime as documented below only if required. Then `control continue`, `control retry --job provider`, and run the SAME supervisor/state with timeout 180. Require actual `turn.completed`, exit zero, nonempty passing job-written module tests, value()==42 and remote checkpoint before clearing the authentication dependency. Do not count login status, thread start or fixtures.
+4. After valid authentication, replace the blocked entry ROOT via the explicitly labeled bootstrap operator recovery in README, then run `roles.py ... serve`. A successful ROOT output should start/configure ARCH/coordinator/watcher through validated host actions. Demonstrate parent replacement and watcher takeover with real successful inference. ROOT never replaces itself. Host policy/fixture success alone is not that demonstration.
+5. Continue provider/consumer fanout, real in-development interruption/replacement and fresh-runtime reconstruction; only after a real completed job raise modest concurrency. Use `job_pr.py --state ...` to reconcile completed module draft PRs. No merges are permitted. ARCH-to-job assignment transport remains separate trusted CLI input; the new role turns do not yet implement an autonomous integrated product development loop.
+6. Continue integration and evidence updates on this PR. Permanent hosting and hourly wake execution beyond the managed task remain external provisioning dependencies; a loop and due-time fields do not establish them. Owner approvals/checker equivalence, PROCESS interaction and real product walks remain unproven. Do not claim full Process4 establishment.
+
+All bootstrap-launched CLI processes terminated; no background service remains. Main verified unchanged at `f353d60ef6b00da3a040b048788cb571a2870e64`. Actual evidence: `successor-network.json`, `successor-auth-failures.json`, `successor-state.json`, `successor-unit-tests.txt`. The earlier evidence is preserved, with its historical context below.
+
+---
+
 # Durable continuation handoff
 
 Updated 16 November 2026 after the owner reported adding `chatgpt.com` and republishing the environment.

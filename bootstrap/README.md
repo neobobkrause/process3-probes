@@ -4,6 +4,33 @@ This is executable experimental process software, not adoption of draft 6 and no
 
 For continuation after environment republish, read [HANDOFF.md](HANDOFF.md) first. The initial draft PR is [#268](https://github.com/neobobkrause/process3-probes/pull/268).
 
+### Successor-session additions, 16 November
+
+The new instance includes `chatgpt.com` in its current enforced allowlist. Actual provider attempt 5 reached the service but failed with HTTP 401 and an unrefreshable ChatGPT token. A real ROOT turn failed the same way. Login status alone does not prove usable authentication. See `evidence/successor-auth-failures.json`.
+
+`roles.py` now implements bounded, independent CLI role turns with GitHub-backed generations, mailbox messages, a separate CAS lease, timeouts, hourly due times, host-loss detection and parent replacement requests. ROOT can request start/configuration/replacement of ARCH, coordinator and watcher. Watcher can replace failed ROOT; no role can replace itself or a live turn. PROCESS startup requires an explicit ARCH request. Host code accepts only validated JSON intents; it never evaluates model-provided shell commands. These are bootstrap technical choices, including ROOT starting the rehearsal watcher, not adoption of unresolved product proposals.
+
+The host launches ready subordinate role turns after ROOT's completed output is validated. Role turns are sequential and fresh conversations reconstruct their context from GitHub, not local history. A completed ROOT turn schedules its next safety wake in one hour. This is a due-time mechanism, not proof of permanent wake service. Role prompts forbid shell commands/building and use read-only sandboxing; this does not establish a permission checker equivalent or prevent all possible network side effects. ARCH role turns currently report/route status; the existing job supervisor still executes trusted assignments separately. A live integrated role-to-product-job chain is not claimed.
+
+After restoring usable subscription authentication, clear the durable stop and replace the blocked entry ROOT as an explicitly labeled bootstrap operator recovery (ROOT does not replace itself):
+
+```sh
+python bootstrap/coordinator.py --state codex/p4-state-bootstrap-20261116 control continue
+python - <<'PY'
+import sys
+sys.path.insert(0, 'bootstrap')
+import coordinator as c
+import roles
+c.GitHub('codex/p4-state-bootstrap-20261116').mutate(
+    lambda s: roles.enroll(s, 'ROOT', 'Bootstrap operator recovery after authentication restoration', replace=True))
+PY
+CODEX_HOME=/workspace/work/p4-codex-runtime python bootstrap/roles.py --state codex/p4-state-bootstrap-20261116 --runtime /workspace/work/p4-roles-restored serve --seconds 600
+```
+
+Adapt the runtime auth path for the actual task. A ROOT failure before watcher startup remains an entry-role authentication dependency; a state label is never counted as a running watcher. Do not repeatedly resume while the supplied credentials are invalid.
+
+`job_pr.py --state STATE` reconciles completed module assignments to draft PRs targeting the bootstrap implementation branch. It preserves the same branch/PR across replacements, refuses closed/ready/differently based PRs, and never merges. It is a separate explicit reconciliation command; a completed job does not silently imply it ran. No real module PR was created because no real module assignment completed. Fixture tests cover creation/reuse/refusal.
+
 ## What runs
 
 Python 3 standard library, Git, authenticated `gh`, and official `codex exec`. An ordinary Linux cloud machine hosts the supervisor and independent Git worktrees; the owner's computer is not used. Codex must report **Logged in using ChatGPT**. The child environment removes API-key/base-URL overrides, ignores user provider configuration, and forces ChatGPT login. Subscription limits still apply; a thread-start event does not establish successful inference.

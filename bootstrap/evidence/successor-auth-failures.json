@@ -1,0 +1,50 @@
+[
+  {
+    "role": "provider",
+    "events": [
+      {
+        "type": "thread.started",
+        "thread_id": "01a1e58c-1a35-71d2-bb06-19dc76c77f1c"
+      },
+      {
+        "type": "turn.started"
+      },
+      {
+        "type": "error",
+        "message": "Your access token could not be refreshed because you have since logged out or signed in to another account. Please sign in again."
+      },
+      {
+        "type": "turn.failed",
+        "error": {
+          "message": "Your access token could not be refreshed because you have since logged out or signed in to another account. Please sign in again."
+        }
+      }
+    ],
+    "service_error": "HTTP 401 Unauthorized: Could not parse your authentication token. Please try signing in again.",
+    "source": "Actual Codex CLI JSONL and stderr, successor instance; no fixture inference"
+  },
+  {
+    "role": "ROOT",
+    "events": [
+      {
+        "type": "thread.started",
+        "thread_id": "01a1e58e-ddfd-7d60-bfcd-19bcb79e1ac7"
+      },
+      {
+        "type": "turn.started"
+      },
+      {
+        "type": "error",
+        "message": "Your access token could not be refreshed because you have since logged out or signed in to another account. Please sign in again."
+      },
+      {
+        "type": "turn.failed",
+        "error": {
+          "message": "Your access token could not be refreshed because you have since logged out or signed in to another account. Please sign in again."
+        }
+      }
+    ],
+    "service_error": "HTTP 401 Unauthorized: Could not parse your authentication token. Please try signing in again.",
+    "source": "Actual Codex CLI JSONL and stderr, successor instance; no fixture inference"
+  }
+]
