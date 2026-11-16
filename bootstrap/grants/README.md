@@ -8,7 +8,7 @@ From the repository root:
 
     python -m unittest discover -s bootstrap/grants -p 'test_*.py' -v
 
-The 32 unit tests exercise granted and forbidden operations, role scopes,
+The authorization and continuation tests exercise granted and forbidden operations, role scopes,
 module/branch/repository boundaries, path traversal, stale PR heads,
 module tests and walk prerequisites, Cloudflare development resource scopes,
 session delegation, policy digest mismatch and denial before the adapter.
@@ -40,7 +40,7 @@ users of any changed provider. The test fixture is not new owner approval.
 
 ## What is and is not proven
 
-Proven: local Python execution of all 32 policy-unit tests; branch isolation.
+Proven: local authorization/continuation tests; see current evidence for exact counts. Native cycle ownership rejection and experimental branch integration have separate actual evidence.
 Unproven: host-controlled credentials, authenticated broker RPC, real provider adapters,
 Codex sandbox isolation, live denial of bypass routes, repository rulesets, Cloudflare
 permission boundaries, process role replacement, and renewable subscription inference.
@@ -67,11 +67,15 @@ assignment completion. A runner must invoke assess() on trusted, durable
 state after every turn and dispatch a successor when the result is CONTINUE.
 It must persist the status and recover after crash or host replacement.
 
-IMPORTANT: This repository prototype does not create a permanent cloud runner.
-The ChatGPT conversation that wrote it cannot continue executing once it ends.
-Until an independent runner is provisioned, automatic cross-task continuation
-remains unproven. The contract must not be described as self-sustaining merely
-because its classification tests pass.
+Current approved execution is native OpenAI-managed Cloud. Two actual scheduled
+after-final continuations and native child wake have been demonstrated; the existing
+ten-minute continuation remains enabled. This is not independent whole-task ROOT
+recreation, which the owner clarified is unnecessary. Physical module sandboxing is
+optional; ownership instructions and checking/rejecting unauthorized changes before
+integration remain required. The native controller is an additional restricted route,
+not evidence that inherited bypass-capable platform tools have been removed.
+See ../REACTIVE-COMMUNICATION.md for the distinct unresolved retained-idle-ROOT wake
+limitation. No paid host or repeated inherited credential login is authorized.
 
 Do not treat a block in one path (such as invalid OAuth credentials) as an
 assignment-level block when separate implementation, security review or

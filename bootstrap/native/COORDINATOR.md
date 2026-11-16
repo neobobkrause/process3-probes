@@ -63,3 +63,21 @@ No provider mutation or merge was performed by this coordinator. Module tests, i
 4. Demonstrate provider-change notices to every declared user, unfinished-work preservation, interruption/replacement and continuation in a real cycle. Distinguish fixtures and parent operations from autonomous operations.
 5. Implement and demonstrate all three product tests: module tests, internal walk using UX Screens, external walk using UX journeys on a development deployment. Toy module success does not establish the walks or full product completion.
 6. Preserve evidence and remaining limitations honestly. Enforcement of consequential restrictions and prevention of out-of-scope integration remain essential; no account, credential, permission, settings, release or infrastructure grant is enlarged.
+
+## Reactive retained-ROOT assessment (ours, 2026-11-16 continuation)
+
+Read current REACTIVE-COMMUNICATION.md and HANDOFF.md. Child idle/active/replacement wake and nonblocking delivery are already measured; do not repeat them. Current cycle and both walks are complete for the toy app, not adoption certification. The remaining communication question is waking the retained idle top-level ROOT, not recreating a deleted ROOT.
+
+Supported native tool contracts distinguish three cases:
+
+- `send_message` delivers to existing agents but explicitly does not trigger an idle turn. A running ROOT, including one in `wait_agent`, can process child events. Event-wait wake is active-turn behavior, not idle-turn awakening.
+- `followup_task` explicitly targets existing non-root agents and starts an idle turn or steers an active one. Child final results are delivered to the parent mailbox, but neither that fact nor the public subagent documentation guarantees a new turn for an idle top-level parent. Do not infer that guarantee from a pending parent message.
+- `automations_run_now` was actually attempted and returned HTTP404 before invocation. Its metadata also permits inline execution by the caller, which would not prove independent ROOT wake. GitHub task events are documented, but current webhook discovery and create-trigger schema are absent. No retry of the failed route or invented endpoint is justified by this research.
+
+Additional inventory: Codex Document Control only addresses connected Excel/PowerPoint/Sheets/Word documents, not chat/session messaging. Official subagent orchestration documentation describes parent collection and follow-up routing; it supplies no addressable arbitrary Cloud-chat wake method: https://learn.chatgpt.com/docs/agent-configuration/subagents .
+
+A supported alternative architecture is an explicitly registered standing supervisory ROLE implemented as a retained non-root native agent, while the top chat remains the owner bridge and safety parent. That role can use the already demonstrated mailbox/generation/followup path, manage ARCH/coordinator and be replaced by its parent. It needs no new account, grant, subprocess inference or paid host. It DOES change the role-to-native-hierarchy mapping: record that mapping and assess it against the owner's intended ROOT semantics before implementing, rather than silently renaming a child or claiming the original top chat has gained idle wake. Parent bridge commands can forward immediately while active; autonomous child-to-role messages can use direct followup without depending on the bridge's idle wake.
+
+If ROOT must remain the current top-level chat AND must finish its turns, the exact missing prerequisite is a supported operation/event contract that starts a new turn on that retained chat upon durable message submission, returns to the sender before recipient completion, and preserves routing after replacement. This is narrower than whole-ROOT lifecycle recovery. Availability, acknowledgement and first-processing behavior need actual evidence before claiming success. Continue independent executable development; this does not invalidate completed child delivery or product work.
+
+No new agent, hierarchy change, provider mutation, credential access or inference subprocess was performed during this assessment.
