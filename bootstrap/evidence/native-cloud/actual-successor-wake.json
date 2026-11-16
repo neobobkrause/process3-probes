@@ -1,0 +1,36 @@
+{
+  "classification": "Actual scheduled same-chat successor turn; operator-recorded observations from native tools and transcript",
+  "marker": "NATIVE_PROCESS4_SUCCESSOR_WAKE",
+  "after_previous_final": true,
+  "prior_final_summary": "Yes. I just continued development, reran tests and pushed another correction; no continuous background execution claimed.",
+  "environment": {
+    "id": "ccarenv_b64_Y2NhcmVudl80MjE5YzA5MmY2MmM4MTkxOWU2ZGMyMzI1Y2I4ZjZhZQ",
+    "provider": "cloud",
+    "connected": "connected",
+    "observations_current": true
+  },
+  "execution": {
+    "shell_marker": "NATIVE_PROCESS4_SUCCESSOR_EXECUTION_OK",
+    "action": "fetched existing remote module branch and constructed separate detached worktree"
+  },
+  "child": {
+    "task": "/root/scheduled_recovery_worker",
+    "context": "fork_turns=none",
+    "result": "NATIVE_SCHEDULED_RECOVERY_OK",
+    "tests": 6,
+    "checkpoint": "da308c37584b8ec0e707ca5a8d931a0066c1aace",
+    "scope": "read-only verification of prior child-authored work"
+  },
+  "implementation": {
+    "change": "Unknown and unproven native requirements keep status continue; platform_blocked requires individual confirmed blockers for every missing item.",
+    "bootstrap_tests": 66,
+    "grants_tests": 44
+  },
+  "limits": [
+    "Same chat and same environment identity, not independent ROOT recreation",
+    "No whole-task-loss or VM-loss experiment",
+    "No per-role enforcement or credential-refresh claim",
+    "Automation run_details remained null; execution is evidenced by delivered instruction and actual commands/child result"
+  ],
+  "next": "Observe a second post-turn scheduled wake to establish repeated continuation; preserve schedule while this trial remains executable. Do not consume indefinite wakes on confirmed platform blockers."
+}

@@ -34,14 +34,17 @@ class Assessment:
     demonstrated: tuple[str,...]
     missing: tuple[str,...]
     blocked: tuple[str,...]
+    unresolved: tuple[str,...]
 
 
 def assess(findings: Mapping[str, Finding], independent_work: tuple[str,...]=()) -> Assessment:
     observed=tuple(k for k in REQUIRED if k in findings and findings[k].state=='observed')
     missing=tuple(k for k in REQUIRED if k not in observed)
     blocked=tuple(k for k in missing if k in findings and findings[k].state in ('not_exposed','blocked'))
-    status='continue' if independent_work else 'demonstrated' if not missing else 'feasibility_limited'
-    return Assessment(status,observed,missing,blocked)
+    unresolved=tuple(k for k in missing if k not in blocked)
+    # Unknown/unproven is investigation work, not a confirmed external block.
+    status='continue' if independent_work or unresolved else 'demonstrated' if not missing else 'platform_blocked'
+    return Assessment(status,observed,missing,blocked,unresolved)
 
 
 def require_approved_runtime(*, provider, billing, mechanism):

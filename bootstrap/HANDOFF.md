@@ -1,3 +1,17 @@
+# Latest actual successor evidence
+
+The hourly native schedule delivered a new turn after the preceding final.
+That turn used the managed Cloud command tool, fetched remote checkpoint da308c3
+into a new worktree, and invoked a fresh native worker which passed six tests.
+See evidence/native-cloud/actual-successor-wake.json. No owner login, CLI inference,
+VM or new permissions were used. This is same-chat after-turn continuation, not
+whole-ROOT recreation. A second post-turn scheduled trial remains pending; use the
+existing schedule, never duplicate it. NATIVE-CLOUD.md gives the next bounded trial
+and pause condition. Unknown requirements must remain investigation work rather
+than being mislabeled external blockers.
+
+---
+
 # Approved architecture correction — native Codex Cloud only
 
 The owner's latest instruction requires development on OpenAI-managed

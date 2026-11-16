@@ -94,15 +94,33 @@ remaining work is blocked by specific confirmed platform limitations. It must no
 request a VM, another inherited login, extra credits or permissions. No background
 OS service is being used as the continuation mechanism.
 
-A future delivered turn must report whether it followed the previous final response,
+The first post-turn scheduled continuation has now been observed: after the prior
+assistant final, NATIVE_PROCESS4_SUCCESSOR_WAKE arrived, the normal execution tool
+worked, the same remote module checkpoint was fetched into a fresh worktree, and
+a new native child with no inherited conversation passed all six tests. See
+`evidence/native-cloud/actual-successor-wake.json`. Same-chat after-turn work is
+therefore observed. This does not establish ROOT recreation or whole-task loss.
+The backend recorded-run/result history was still null; actual transcript/tool
+execution is the evidence, not the task card's counters.
+
+A second post-turn scheduled wake remains an independently executable repetition
+trial. Leave the existing schedule active for that trial; do not create another.
+On the next real scheduled turn, record whether it followed a final and execute a
+bounded verification. Once that is observed, inventory remaining independent work.
+If every remaining requirement is blocked by the documented absent native role
+isolation/whole-ROOT lifecycle controls, pause the self-owned schedule rather than
+spend indefinite usage on duplicate tests. Do not call an unproven item externally
+blocked unless its specific missing prerequisite has been established.
+
+Any later delivered turn must report whether it followed the previous final response,
 which environment/tools it actually has, and what work it actually executed.
 Do not claim after-turn continuation before observing it. Do not infer success from
 a task card, completed_count or last_run_time when recorded result history is null.
 
 ## Remaining feasibility requirements
 
-1. Observe scheduled continuation after the preceding assistant turn ends, then
-   repeated execution/recovery. A scheduled same-chat wake may provide useful ROOT
+1. First scheduled continuation after a preceding final is observed. Next verify
+   a second scheduled continuation; whole-task-loss recovery remains separate. A scheduled same-chat wake may provide useful ROOT
    continuation, but is not proof of an independent watcher replacing lost ROOT.
 2. Identify and execute a supported whole-ROOT creation/replacement mechanism, if
    this account exposes one. Current tool inventory and CLI do not expose it.

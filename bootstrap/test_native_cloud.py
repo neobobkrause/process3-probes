@@ -1,6 +1,6 @@
 """Native capability classification tests; live evidence is recorded separately."""
 import unittest
-from native.capabilities import Finding,assess,require_approved_runtime,replacement_scope,require_development_admission
+from native.capabilities import Finding,assess,require_approved_runtime,replacement_scope,require_development_admission,REQUIRED
 
 
 class NativeCapabilityTests(unittest.TestCase):
@@ -18,7 +18,7 @@ class NativeCapabilityTests(unittest.TestCase):
         result=assess({'native_child_start':Finding('observed','fixture child completion'),
                        'hosted_wake_delivery':Finding('observed','fixture delivered wake'),
                        'root_recreation':Finding('not_exposed','actual tool inventory')})
-        self.assertEqual(result.status,'feasibility_limited')
+        self.assertEqual(result.status,'continue')
         self.assertIn('root_recreation',result.missing)
         self.assertEqual(replacement_scope('native_subagent'),'current_agent_tree_child_only')
 
@@ -43,3 +43,19 @@ class NativeAdmissionTests(unittest.TestCase):
         findings={'role_security_isolation':Finding('documented','fixture description'),
                   'exclusive_grants_enforcement':Finding('observed','fixture broker proof')}
         with self.assertRaises(PermissionError): require_development_admission(findings)
+
+
+class NativeContinuationTests(unittest.TestCase):
+    def test_only_confirmed_individual_blockers_allow_platform_blocked_exit(self):
+        findings={key:Finding('blocked','fixture external dependency for '+key) for key in REQUIRED}
+        self.assertEqual(assess(findings).status,'platform_blocked')
+        findings.pop('root_loss_recovery')
+        result=assess(findings)
+        self.assertEqual(result.status,'continue')
+        self.assertIn('root_loss_recovery',result.unresolved)
+
+    def test_one_pending_live_trial_keeps_continuation_open(self):
+        findings={key:Finding('observed','fixture completed evidence for '+key) for key in REQUIRED}
+        findings['root_recreation']=Finding('not_exposed','fixture tool inventory')
+        findings['root_loss_recovery']=Finding('unproven','pending bounded scheduled trial')
+        self.assertEqual(assess(findings).status,'continue')
