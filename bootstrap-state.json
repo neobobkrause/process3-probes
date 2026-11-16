@@ -4,7 +4,7 @@
   "slots": 1,
   "lease": {
     "owner": "d6f76757-adaa-4231-b6d8-352e0bb6387f",
-    "until": 1794851794.970678
+    "until": 1794851803.4427276
   },
   "modules": {
     "consumer": {
@@ -50,9 +50,9 @@
       "base": "d5c6f2a628daff023ba6e63864755fa14acafadb",
       "notice_ids": [],
       "progress": {
-        "event_count": 1,
-        "elapsed_seconds": 8,
-        "last_event_type": "thread.started"
+        "event_count": 7,
+        "elapsed_seconds": 16,
+        "last_event_type": "item.completed"
       },
       "thread_id": "01a1e57f-7173-7d92-996e-02c485a9eeb2",
       "last_result": {
