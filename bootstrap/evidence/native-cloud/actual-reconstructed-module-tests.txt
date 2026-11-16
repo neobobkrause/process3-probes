@@ -1,0 +1,11 @@
+test_arguments_outside_contract_are_rejected (test_double_value.DoubleValueTests.test_arguments_outside_contract_are_rejected) ... ok
+test_assigned_result_and_type (test_double_value.DoubleValueTests.test_assigned_result_and_type) ... ok
+test_uses_existing_provider (test_double_value.DoubleValueTests.test_uses_existing_provider) ... ok
+test_arguments_outside_contract_are_rejected (test_value.ValueTests.test_arguments_outside_contract_are_rejected) ... ok
+test_assigned_value_and_type (test_value.ValueTests.test_assigned_value_and_type) ... ok
+test_repeated_calls_preserve_result (test_value.ValueTests.test_repeated_calls_preserve_result) ... ok
+
+----------------------------------------------------------------------
+Ran 6 tests in 0.001s
+
+OK

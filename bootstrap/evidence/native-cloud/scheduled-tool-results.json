@@ -1,0 +1,78 @@
+{
+  "wake_created": {
+    "content": [
+      {
+        "type": "text",
+        "text": "Action completed."
+      }
+    ],
+    "structuredContent": {
+      "meta": null,
+      "content": [],
+      "structuredContent": {
+        "success": true,
+        "automation_id": "Automation_b48f82bfe5988191829ce3213ef6460f",
+        "message": "Automation created.",
+        "automation": {
+          "id": "Automation_b48f82bfe5988191829ce3213ef6460f",
+          "team_id": null,
+          "title": "Probe native Process4 wake",
+          "prompt": "Execute one bounded, read-only Process4 native Cloud capability probe. Do not provision infrastructure, use API-key/metered inference, restore inherited Codex credentials, change permissions, write repositories, or launch subprocess inference. Report NATIVE_PROCESS4_SCHEDULED_WAKE, whether a managed Cloud execution environment is attached, and whether you can run a harmless shell command there. If a managed environment is available, run pwd and python -c \"print('NATIVE_PROCESS4_EXECUTION_OK')\" using the normal provided command tool. Do not read any credentials. Report actual output and environment availability; do not claim session replacement, persistence, billing proof or full Process4 completion. If no execution tool/environment is available, report that precise limitation. End after this one probe.",
+          "schedule": "BEGIN:VEVENT\nDTSTART:20261116T195502Z\nEND:VEVENT",
+          "timing_mode": "exact_schedule",
+          "display_schedule": null,
+          "is_enabled": true,
+          "conversation_id": null,
+          "thread_id": "6afb56f0-277c-8191-ad3c-cd395778202e",
+          "default_timezone": "America/Los_Angeles",
+          "next_run_time": "2026-11-16T11:55:02-08:00",
+          "last_run_time": null,
+          "updated_at": "2026-11-16T19:54:02.784346+00:00",
+          "environment_selection": "inherited",
+          "environments": null
+        },
+        "assistant_response_guidance": "Do NOT mention the automation id to the user in  your response."
+      },
+      "isError": false
+    },
+    "isError": false
+  },
+  "continuation_created": {
+    "content": [
+      {
+        "type": "text",
+        "text": "Action completed."
+      }
+    ],
+    "structuredContent": {
+      "meta": null,
+      "content": [],
+      "structuredContent": {
+        "success": true,
+        "automation_id": "Automation_81bcb22cdab48191aea4b02fd08730e4",
+        "message": "Automation created.",
+        "automation": {
+          "id": "Automation_81bcb22cdab48191aea4b02fd08730e4",
+          "team_id": null,
+          "title": "Continue native Process4",
+          "prompt": "Continue the authorized Process4 native Codex Cloud implementation and feasibility work from this chat and neobobkrause/process3-probes branch codex/p4-grants-broker-20261116. Read bootstrap/HANDOFF.md and bootstrap/NATIVE-CLOUD.md from the latest branch. All execution must remain on OpenAI-managed infrastructure within existing ChatGPT subscription allowances. Never provision/request a third-party VM, use metered/API-key inference, purchase credits, retry invalid inherited CLI authentication, broaden permissions, modify CivicSmith2, merge, or write main. Use native provided tools and native hosted subagents where available. Preserve existing work, branches, exact owner instructions and durable evidence. First report NATIVE_PROCESS4_SUCCESSOR_WAKE and whether this instruction arrived after the preceding assistant turn ended; record only actually observed environment/tool/execution facts. Continue independently executable probe implementation and tests; checkpoint useful changes to the existing experimental branch. A passing test, completed child, commit or assistant turn is not overall completion. Distinguish current-tree child replacement, scheduled same-chat continuation and independent whole-ROOT recreation. Do not invent any task-launch API. If every remaining item is genuinely blocked by a specific confirmed platform limitation, record those limitations, pause this scheduled continuation using its supported self-owned automation control, and report feasibility limits without proposing paid infrastructure or another inherited-credential login. Otherwise keep progressing without another owner prompt.",
+          "schedule": "BEGIN:VEVENT\nDTSTART:20261116T200227Z\nRRULE:FREQ=HOURLY\nEND:VEVENT",
+          "timing_mode": "exact_schedule",
+          "display_schedule": null,
+          "is_enabled": true,
+          "conversation_id": null,
+          "thread_id": "6afb56f0-277c-8191-ad3c-cd395778202e",
+          "default_timezone": "America/Los_Angeles",
+          "next_run_time": "2026-11-16T12:02:27-08:00",
+          "last_run_time": null,
+          "updated_at": "2026-11-16T19:57:27.523661+00:00",
+          "environment_selection": "inherited",
+          "environments": null
+        },
+        "assistant_response_guidance": "Do NOT mention the automation id to the user in  your response."
+      },
+      "isError": false
+    },
+    "isError": false
+  }
+}

@@ -1,3 +1,27 @@
+# Current approved native-Cloud evidence — 16 November 2026
+
+The owner prohibits third-party VM hosting and metered inference. The prior
+self-hosted deployment proposal is withdrawn, with its code retained as research.
+See [NATIVE-CLOUD.md](NATIVE-CLOUD.md) and evidence/native-cloud for current findings.
+
+Actual native children developed a toy module, received follow-up instructions,
+were interrupted/replaced and completed unfinished work. Six module tests pass
+from a fresh worktree fetched from remote checkpoint da308c3. A hosted scheduled
+instruction actually reached this Cloud chat and normal shell execution worked.
+These are successful native bounded operations, distinct from earlier failed CLI
+inference. Parent-managed children share the task context; no whole-ROOT recovery
+is claimed. A specifically authorized sibling-canary write succeeded, demonstrating
+that the tested native sandbox does not enforce the required module-only write
+boundary. Exclusive grants enforcement is therefore not established.
+
+A native hourly continuation trial is scheduled; its creation is not an observed
+future run or proof of permanent supervision. The completed and hourly cards are
+scheduler entries, not documents or independent roles. All previous evidence is
+preserved with its historical limits below. No VM/service was provisioned, owner
+grants changed, main merged or CivicSmith2 modified.
+
+---
+
 # Persistent-host integration evidence — 16 November 2026
 
 Continued from PR #269 tip `20fee2d1f7793b3aeddbbb24ba6ac5a08fc851a8`, which

@@ -1,3 +1,22 @@
+# Approved architecture correction — native Codex Cloud only
+
+The owner's latest instruction requires development on OpenAI-managed
+infrastructure using existing ChatGPT subscription allowances. Third-party VM
+hosting and metered API inference are not authorized. No VM was provisioned.
+The earlier VM request is withdrawn. `HOSTING.md`, SIWC services and the self-hosted
+runner remain researched experimental alternatives, not the approved deployment.
+Do not install/activate them or request VM authorization.
+
+Continue the native feasibility and implementation work recorded in
+[NATIVE-CLOUD.md](NATIVE-CLOUD.md). Use supported native hosted subagents and
+scheduled tasks when available. Do not guess a task-launch endpoint, reuse
+managed identifiers as legacy CLI environment IDs, repeat inherited-credential
+reauthentication requests or broaden permissions. A bounded child or scheduled
+message does not prove independently replaceable ROOT or exclusive grants
+isolation. Main/CivicSmith2 and owner grants remain untouched.
+
+---
+
 # Current continuation point — persistent SIWC host
 
 Continue on `codex/p4-grants-broker-20261116`, draft PR #269, stacked on #268's

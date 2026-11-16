@@ -1,0 +1,49 @@
+test_actual_full_completion (test_continuation.ContinuationTests.test_actual_full_completion) ... ok
+test_failed_job_not_completion (test_continuation.ContinuationTests.test_failed_job_not_completion) ... ok
+test_independent_work_survives_external_blocker (test_continuation.ContinuationTests.test_independent_work_survives_external_blocker) ... ok
+test_invalid_state_fails_closed (test_continuation.ContinuationTests.test_invalid_state_fails_closed) ... ok
+test_no_jobs_not_completion_without_proofs (test_continuation.ContinuationTests.test_no_jobs_not_completion_without_proofs) ... ok
+test_only_concretely_blocked_work_may_suspend (test_continuation.ContinuationTests.test_only_concretely_blocked_work_may_suspend) ... ok
+test_owner_stop_is_not_completion (test_continuation.ContinuationTests.test_owner_stop_is_not_completion) ... ok
+test_passed_tests_not_assignment_completion (test_continuation.ContinuationTests.test_passed_tests_not_assignment_completion) ... ok
+test_replacement_session_needs_proof (test_continuation.ContinuationTests.test_replacement_session_needs_proof) ... ok
+test_unknown_blocker_is_not_confirmed_external_dependency (test_continuation.ContinuationTests.test_unknown_blocker_is_not_confirmed_external_dependency) ... ok
+test_absolute_path (test_grants.GrantsTests.test_absolute_path) ... ok
+test_broker_denied_does_not_reach_adapter (test_grants.GrantsTests.test_broker_denied_does_not_reach_adapter) ... ok
+test_broker_permitted_invokes_adapter (test_grants.GrantsTests.test_broker_permitted_invokes_adapter) ... ok
+test_cf_dev_resource (test_grants.GrantsTests.test_cf_dev_resource) ... ok
+test_cf_other_account (test_grants.GrantsTests.test_cf_other_account) ... ok
+test_cf_protected_resource (test_grants.GrantsTests.test_cf_protected_resource) ... ok
+test_cross_module_denied (test_grants.GrantsTests.test_cross_module_denied) ... ok
+test_dev_release_with_evidence (test_grants.GrantsTests.test_dev_release_with_evidence) ... ok
+test_dev_release_without_evidence (test_grants.GrantsTests.test_dev_release_without_evidence) ... ok
+test_digest_mismatch (test_grants.GrantsTests.test_digest_mismatch) ... ok
+test_job_cannot_merge (test_grants.GrantsTests.test_job_cannot_merge) ... ok
+test_job_cannot_start (test_grants.GrantsTests.test_job_cannot_start) ... ok
+test_job_cf_refused (test_grants.GrantsTests.test_job_cf_refused) ... ok
+test_job_merge_stale_head (test_grants.GrantsTests.test_job_merge_stale_head) ... ok
+test_job_merge_verified (test_grants.GrantsTests.test_job_merge_verified) ... ok
+test_job_merge_wrong_target (test_grants.GrantsTests.test_job_merge_wrong_target) ... ok
+test_missing_paths (test_grants.GrantsTests.test_missing_paths) ... ok
+test_no_approval (test_grants.GrantsTests.test_no_approval) ... ok
+test_no_slot (test_grants.GrantsTests.test_no_slot) ... ok
+test_other_repo (test_grants.GrantsTests.test_other_repo) ... ok
+test_owned_job_commit (test_grants.GrantsTests.test_owned_job_commit) ... ok
+test_protected_settings_denied (test_grants.GrantsTests.test_protected_settings_denied) ... ok
+test_public_release_not_granted (test_grants.GrantsTests.test_public_release_not_granted) ... ok
+test_relative_traversal (test_grants.GrantsTests.test_relative_traversal) ... ok
+test_role_spoof_is_rejected (test_grants.GrantsTests.test_role_spoof_is_rejected) ... ok
+test_root_not_start_job (test_grants.GrantsTests.test_root_not_start_job) ... ok
+test_root_start_arch (test_grants.GrantsTests.test_root_start_arch) ... ok
+test_tranche_merge_all_three (test_grants.GrantsTests.test_tranche_merge_all_three) ... ok
+test_tranche_merge_missing_walk (test_grants.GrantsTests.test_tranche_merge_missing_walk) ... ok
+test_tranche_merge_stale_head (test_grants.GrantsTests.test_tranche_merge_stale_head) ... ok
+test_unknown_operation (test_grants.GrantsTests.test_unknown_operation) ... ok
+test_unrelated_message (test_grants.GrantsTests.test_unrelated_message) ... ok
+test_valid_message (test_grants.GrantsTests.test_valid_message) ... ok
+test_wrong_branch (test_grants.GrantsTests.test_wrong_branch) ... ok
+
+----------------------------------------------------------------------
+Ran 44 tests in 0.003s
+
+OK
