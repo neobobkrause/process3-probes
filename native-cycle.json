@@ -340,9 +340,16 @@
         "sender": "ROOT",
         "recipient": "COORDINATOR",
         "text": "Status query only. At your first observable action record time.time() and monotonic_ns plus this exact message ID in /workspace/work/p4-native-cycle/coordinator-receipt.json, then immediately send ROOT a RECEIVED message with exact ID/generation1/timestamp. Read current native run state using controller status and relay concise owner-facing status: actual integrated work, pending notices, tests/walks, remaining limitation. Do not assign/build/change product or owner instructions; finish this bounded status turn and remain available.",
-        "status": "pending",
+        "status": "delivered_unacknowledged",
         "created_at": 1794863324.5933478,
-        "deliveries": []
+        "deliveries": [
+          {
+            "target": "/root/p4_coordinator",
+            "generation": 1,
+            "tool": "followup_task",
+            "recorded_at": 1794863338.479468
+          }
+        ]
       }
     },
     "events": []
