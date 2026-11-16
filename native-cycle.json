@@ -306,6 +306,10 @@
       "COORDINATOR": {
         "target": "/root/p4_coordinator",
         "generation": 1
+      },
+      "ARCH": {
+        "target": "/root/p4_arch_native_cycle",
+        "generation": 1
       }
     },
     "messages": {
