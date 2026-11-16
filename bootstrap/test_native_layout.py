@@ -141,3 +141,5 @@ class LayoutTests(unittest.TestCase):
         for attempt in (0,True,None):
             s['jobs']['web']['attempt']=attempt
             with self.assertRaises(l.InvalidLayout):l.plan(s,'JOB:web','/root/supervisor/arch','unavailable')
+        s['jobs']['web']['attempt']=True
+        with self.assertRaises(l.InvalidLayout):self.bind(s,'JOB:web','/root/supervisor/arch/job',1,'/root/supervisor/arch')
