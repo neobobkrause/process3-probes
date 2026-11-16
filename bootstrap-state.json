@@ -240,6 +240,13 @@
       "turn_completed": false,
       "verified": false,
       "timed_out": false
+    },
+    {
+      "at": 1794852704.2048805,
+      "kind": "role-enrolled",
+      "role": "ROOT",
+      "generation": 1,
+      "reason": "Owner-authorized bootstrap entry role"
     }
   ],
   "external_dependencies": {
@@ -257,5 +264,15 @@
       "text": "I have added chatgpt.com to the environment's permitted domains and republished the environment.",
       "source": "owner message in originating task"
     }
-  ]
+  ],
+  "role_sessions": {
+    "ROOT": {
+      "generation": 1,
+      "status": "ready",
+      "timeout": 180,
+      "reason": "Owner-authorized bootstrap entry role",
+      "next_wake": 0,
+      "thread_id": null
+    }
+  }
 }
