@@ -518,6 +518,72 @@ class Cycle:
         state,_=self.store.read();state['native_mailbox']=self.mailbox.read()
         return native_continuation.assess(state).to_dict()
 
+    def _arch_actor(self,state,actor):
+        if native_layout.configured(state):
+            binding=native_layout.current(state,'ARCH')
+            if not binding or actor!=binding['target']:
+                raise Rejected('current ARCH actor required for product orchestration')
+
+    def _fresh_job_observations(self,state,observations):
+        """Join A's freshness checks to B's historical JOB binding semantics.
+
+        PR/result facts are retained only after the corresponding native inventory
+        observation is validated. These are trusted host inputs, not authentication.
+        """
+        from native import supervision,scheduling
+        if not isinstance(observations,dict):raise Rejected('native observations mapping required')
+        valid={};holds=[];snapshot=copy.deepcopy(state)
+        for role,value in observations.items():
+            if not isinstance(role,str) or not role.startswith('JOB:') or role[4:] not in state['jobs']:
+                continue
+            # Earlier native runs persisted session identity on the job before
+            # there was a separate role registry. Validate against that same
+            # durable identity B will use, without rewriting recovery state.
+            binding=scheduling.binding_for(state,role[4:])
+            if binding and role not in snapshot.setdefault('native_roles',{}):
+                snapshot['native_roles'][role]=binding
+            packet={key:value.get(key) for key in ('target','generation','activity','observed_at','source')} if isinstance(value,dict) else None
+            activity,reason=supervision.observation(snapshot,role,packet)
+            if reason:holds.append({'role':role,'reason':reason})
+            else:valid[role]={**value,'activity':activity}
+        return valid,holds
+
+    def schedule_plan(self,observations,actor,active_account_jobs=0,native_capacity=None):
+        from native.scheduling import plan_dispatch
+        state,_=self.store.read();self._arch_actor(state,actor)
+        fresh,holds=self._fresh_job_observations(state,observations)
+        result=plan_dispatch(state,observations=fresh,active_account_jobs=active_account_jobs,native_capacity=native_capacity)
+        return {**result,'observation_holds':holds,'execution_required':'ARCH must execute actual prepare/spawn/session operations; plans are not receipts'}
+
+    def recovery_plan(self,observations,actor):
+        from native.job_recovery import reconcile_jobs
+        state,_=self.store.read();self._arch_actor(state,actor)
+        fresh,holds=self._fresh_job_observations(state,observations)
+        return {**reconcile_jobs(state,fresh),'observation_holds':holds}
+
+    def supervision_plan(self,observations,actor,native_capacity=None,pending_roles=()):
+        from native.supervision import plan_supervision
+        state,_=self.store.read()
+        return plan_supervision(state,observations=observations,actor=actor,native_capacity=native_capacity,
+                                pending_roles=pending_roles,state_branch=self.store.branch)
+
+    def owner_input(self,*,actor,text,kind,message_id,marked=False,expected_generation=None):
+        from native.coordination import plan_owner_message
+        state,_=self.store.read()
+        proposal=plan_owner_message(state,actor=actor,text=text,kind=kind,message_id=message_id,
+                                    marked=marked,expected_generation=expected_generation)
+        self.message(**proposal['message'])
+        return proposal
+
+    def owner_record(self,*,actor,envelope,observed_at,source_evidence):
+        from native.coordination import record_owner_words
+        result={}
+        def record(state):
+            result['new_record']=record_owner_words(state,actor=actor,envelope=envelope,
+                observed_at=observed_at,source_evidence=source_evidence)
+        self.store.mutate(record)
+        return {'message_id':envelope['message_id'],**result,'grants_changed':False}
+
     def prepare(self, jid):
         state,_=self.store.read(); job=state['jobs'][jid]
         if state['stopped'] or job['status'] not in ('ready','paused','blocked'): raise Rejected('job not dispatchable or run stopped')
@@ -750,6 +816,13 @@ def main():
         p=sub.add_parser(command); p.add_argument('file')
     sub.add_parser('status')
     sub.add_parser('assess',help='Read-only native continuation assessment from actual durable evidence')
+    for command in ('schedule-plan','recovery-plan','supervision-plan'):
+        p=sub.add_parser(command);p.add_argument('--observations',required=True);p.add_argument('--actor',required=True)
+        if command!='recovery-plan':p.add_argument('--native-capacity',type=int)
+        if command=='schedule-plan':p.add_argument('--active-account-jobs',type=int,default=0)
+        if command=='supervision-plan':p.add_argument('--pending-role',action='append',default=[])
+    for command in ('owner-forward','owner-record'):
+        p=sub.add_parser(command);p.add_argument('--actor',required=True);p.add_argument('--packet',required=True)
     p=sub.add_parser('control'); p.add_argument('action',choices=['stop','continue','retry','interrupt','replace','slots','priority','instruction']);p.add_argument('--job');p.add_argument('--value');p.add_argument('--source',choices=['arch','owner'],default='arch')
     p=sub.add_parser('prepare');p.add_argument('job')
     p=sub.add_parser('session');p.add_argument('job');p.add_argument('address');p.add_argument('--actor')
@@ -775,6 +848,11 @@ def main():
     else:
         cycle=Cycle(store,args.repo,args.runtime)
         if args.command=='prepare':result=cycle.prepare(args.job)
+        elif args.command=='schedule-plan':result=cycle.schedule_plan(json.loads(Path(args.observations).read_text()),args.actor,args.active_account_jobs,args.native_capacity)
+        elif args.command=='recovery-plan':result=cycle.recovery_plan(json.loads(Path(args.observations).read_text()),args.actor)
+        elif args.command=='supervision-plan':result=cycle.supervision_plan(json.loads(Path(args.observations).read_text()),args.actor,args.native_capacity,args.pending_role)
+        elif args.command=='owner-forward':result=cycle.owner_input(actor=args.actor,**json.loads(Path(args.packet).read_text()))
+        elif args.command=='owner-record':result=cycle.owner_record(actor=args.actor,**json.loads(Path(args.packet).read_text()))
         elif args.command=='session':result=cycle.session(args.job,args.address,args.actor)
         elif args.command=='register-role':result=cycle.register_role(args.role,args.target,args.generation,args.actor)
         elif args.command=='adopt-layout':result=cycle.adopt_layout(args.approval_evidence,args.console)

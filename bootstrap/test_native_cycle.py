@@ -449,6 +449,44 @@ class NativeCycleTests(unittest.TestCase):
         with self.assertRaises(n.native_layout.InvalidLayout):self.cycle.register_role('ARCH','/root/supervisor/newarch',2,actor='/root/supervisor')
         self.assertEqual(self.store.state['jobs']['provider']['session'],'/root/supervisor/arch/job')
 
+    def test_parallel_dispatch_filters_stale_observation_and_preserves_legacy_session(self):
+        self.store.state['jobs']['provider'].update(status='ready',session='/root/old_arch/old_job')
+        packet={'JOB:provider':{'target':'/root/old_arch/old_job','generation':1,'activity':'unavailable',
+                              'observed_at':time.time()-120,'source':'actual-native-inventory'}}
+        before=copy.deepcopy(self.store.state)
+        stale=self.cycle.schedule_plan(packet,actor='/root/arch',native_capacity=1)
+        self.assertEqual(stale['dispatch'],[]);self.assertTrue(stale['observation_holds'])
+        packet['JOB:provider']['observed_at']=time.time()
+        fresh=self.cycle.schedule_plan(packet,actor='/root/arch',native_capacity=1)
+        self.assertEqual(fresh['dispatch'][0]['next_attempt'],2)
+        self.assertEqual(fresh['dispatch'][0]['preserve_branch'],before['jobs']['provider']['branch'])
+        self.assertEqual(self.store.state,before);self.assertEqual(self.provider.calls,[])
+
+    def test_parallel_controller_requires_current_arch_in_approved_layout(self):
+        self.cycle.adopt_layout('fixture observed owner approval')
+        self.cycle.register_role('ROOT','/root/supervisor',1,actor='/root')
+        self.cycle.register_role('ARCH','/root/supervisor/arch',1,actor='/root/supervisor')
+        before=copy.deepcopy(self.store.state)
+        for method in (self.cycle.schedule_plan,self.cycle.recovery_plan):
+            with self.assertRaises(n.Rejected):method({},actor='/root')
+        self.assertEqual(self.store.state,before)
+
+    def test_owner_question_forwarding_is_local_and_cannot_create_owner_record(self):
+        self.cycle.adopt_layout('fixture observed owner approval')
+        self.cycle.register_role('ROOT','/root/supervisor',1,actor='/root')
+        self.cycle.register_role('COORDINATOR','/root/supervisor/coord',1,actor='/root/supervisor')
+        before=copy.deepcopy(self.store.state)
+        packet={'actor':'/root','text':'What is running?\nDo not build.','kind':'question','message_id':'question-one'}
+        result=self.cycle.owner_input(**packet)
+        self.assertFalse(result['build_authorized_by_forwarding'])
+        self.assertEqual(result['envelope']['verbatim'],packet['text'])
+        self.assertEqual(self.store.state,before)
+        with self.assertRaises(PermissionError):
+            self.cycle.owner_record(actor='/root/supervisor/coord',envelope=result['envelope'],
+                observed_at=time.time(),source_evidence='fixture source event')
+        self.assertEqual(self.store.state,before)
+
+
 class ProcessGateSourceTests(unittest.TestCase):
     head='a'*40
     def check(self,**updates):
