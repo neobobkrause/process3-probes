@@ -110,7 +110,12 @@ sandbox or credential-exclusive enforcement is claimed. Code/source checks do no
 mark the overall Process4 bootstrap complete.
 
 Final stream verification: `python -m unittest discover -s bootstrap -p 'test_*.py' -v`
-passed **165 tests**; separate `bootstrap/grants` discovery passed **46 tests**.
-This includes 17 new native governance/design-lane cases and two added grant/Broker
+passed **167 tests**; separate `bootstrap/grants` discovery passed **46 tests**.
+This includes 19 new native governance/design-lane cases and two added grant/Broker
 regressions. `git diff --check` passed. Output is bounded local test evidence in
 `/tmp/p4-stream-c-{bootstrap,grants}-final.txt`, not a GitHub operational log stream.
+
+Follow-up guard correction: non-ARCH branch writers and PR authors must have an
+explicit matching assigned Subject branch. Native controller ARCH generation0 with
+no branch remains compatible. Denial-before-adapter regressions cover missing and
+wrong branch bindings. No provider trial or scope expansion was used.

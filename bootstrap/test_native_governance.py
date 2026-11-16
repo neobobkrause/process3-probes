@@ -88,6 +88,26 @@ class NativeGovernanceTests(unittest.TestCase):
             {'repo': REPO, 'branch': process.branch, 'paths': ['bootstrap/grants/grants.py']},
             {'owned_paths': ('bootstrap/grants/',)})['allow'])
 
+    def test_non_arch_writer_requires_explicit_assigned_branch(self):
+        for role in ('JOB', 'LANE', 'PROCESS'):
+            subject = Subject('fixture-' + role, role, REPO)
+            calls = []
+            broker = Broker(TechnicalPolicy(), lambda *_: calls.append('bad'), lambda _: subject,
+                            lambda *_: {'owned_paths': ('toy/demo/',)})
+            with self.subTest(role=role), self.assertRaises(Denied):
+                broker.perform(subject.session_id, 'github.branch.update',
+                    {'repo': REPO, 'branch': 'codex/p4-job-demo', 'paths': ['toy/demo/value.py']})
+            self.assertEqual(calls, [])
+
+    def test_non_arch_pr_cannot_select_unassigned_head(self):
+        for role in ('JOB', 'LANE', 'PROCESS'):
+            for branch in (None, 'codex/p4-job-other'):
+                with self.subTest(role=role, branch=branch), self.assertRaises(Denied):
+                    check_operation(Subject('fixture', role, REPO, branch), 'github.pr.open',
+                        {'repo': REPO, 'head': 'codex/p4-job-demo', 'base': 'codex/p4-integration-demo'}, {})
+        self.assertTrue(check_operation(ARCH, 'github.pr.open',
+            {'repo': REPO, 'head': 'codex/p4-job-demo', 'base': 'codex/p4-integration-demo'}, {})['allow'])
+
     def test_no_role_spoof_unknown_subject_stale_generation_or_github_message_bus(self):
         request = {'repo': REPO, 'branch': 'codex/p4-state-demo'}
         for subject, payload, facts in [(None, request, {}), (ARCH, {**request, 'role': 'ROOT'}, {}),

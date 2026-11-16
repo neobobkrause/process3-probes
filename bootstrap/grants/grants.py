@@ -160,6 +160,7 @@ def check_operation(subject, operation, request, facts):
         branch = branch_name(request["branch"])
         if (subject.role not in ("ARCH", "JOB", "LANE", "PROCESS") or not _experimental(branch)
                 or branch.startswith(("codex/p4-integration-", "codex/p4-state-"))
+                or (subject.role != "ARCH" and branch != subject.branch)
                 or (subject.branch is not None and branch != subject.branch)):
             raise Denied("BRANCH_WRITER_SCOPE")
         if ("paths" in request) == ("head" in request):
@@ -178,7 +179,9 @@ def check_operation(subject, operation, request, facts):
         if subject.role not in ("ARCH", "JOB", "LANE", "PROCESS") or not base.startswith(("codex/p4-integration-", "codex/p4-grants-broker-", "codex/process4-bootstrap-")):
             raise Denied("PR_SCOPE")
         if "head" in request:
-            if not _experimental(request["head"]) or (subject.branch is not None and request["head"] != subject.branch):
+            if (not _experimental(request["head"])
+                    or (subject.role != "ARCH" and request["head"] != subject.branch)
+                    or (subject.branch is not None and request["head"] != subject.branch)):
                 raise Denied("PR_HEAD_SCOPE")
         if "pr" in request and (type(request["pr"]) is not int or request["pr"] < 1):
             raise Denied("INVALID_PR")
