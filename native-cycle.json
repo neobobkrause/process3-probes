@@ -55,15 +55,22 @@
         "-v"
       ],
       "timeout": 180,
-      "status": "running",
+      "status": "review",
       "attempt": 1,
       "branch": "codex/p4-job-native-workshop-20261116-provider",
       "instructions": [],
-      "checkpoint": null,
+      "checkpoint": "26796e064fb586ca893124bd8ec2414699bedd6c",
       "base": "f98b7002e0fee803fb3e6da6d0cd8be8d1f9751e",
       "notice_ids": [],
       "workspace": "/workspace/work/p4-native-cycle/provider-1",
-      "session": "/root/p4_arch_native_cycle/provider_job"
+      "session": "/root/p4_arch_native_cycle/provider_job",
+      "last_outcome": "completed",
+      "verification": {
+        "returncode": 0,
+        "stdout": "",
+        "stderr": "test_contract_constants (test_quote_provider.PriceForTests.test_contract_constants) ... ok\ntest_invalid_bounds (test_quote_provider.PriceForTests.test_invalid_bounds) ... ok\ntest_invalid_types (test_quote_provider.PriceForTests.test_invalid_types) ... ok\ntest_ordinary_and_boundary_totals (test_quote_provider.PriceForTests.test_ordinary_and_boundary_totals) ... ok\n\n----------------------------------------------------------------------\nRan 4 tests in 0.000s\n\nOK\n"
+      },
+      "accepted": true
     },
     "web": {
       "id": "web",
@@ -95,7 +102,20 @@
       "checkpoint": null
     }
   },
-  "notices": {},
+  "notices": {
+    "provider:26796e064fb586ca893124bd8ec2414699bedd6c:web": {
+      "provider": "provider",
+      "user": "web",
+      "commit": "26796e064fb586ca893124bd8ec2414699bedd6c",
+      "status": "pending"
+    },
+    "provider:26796e064fb586ca893124bd8ec2414699bedd6c:report": {
+      "provider": "provider",
+      "user": "report",
+      "commit": "26796e064fb586ca893124bd8ec2414699bedd6c",
+      "status": "pending"
+    }
+  },
   "instructions": [],
   "roles": {
     "ROOT": "liveness/recovery",
@@ -119,6 +139,13 @@
       "kind": "native-reserve",
       "job": "provider",
       "attempt": 1
+    },
+    {
+      "at": 1794862498.1373901,
+      "kind": "native-checkpoint",
+      "job": "provider",
+      "checkpoint": "26796e064fb586ca893124bd8ec2414699bedd6c",
+      "status": "review"
     }
   ],
   "native": true,
