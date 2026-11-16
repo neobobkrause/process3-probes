@@ -4,7 +4,7 @@
   "slots": 1,
   "lease": {
     "owner": "d6f76757-adaa-4231-b6d8-352e0bb6387f",
-    "until": 1794851783.0785768
+    "until": 1794851784.8567326
   },
   "modules": {
     "consumer": {
@@ -42,8 +42,8 @@
         "import pathlib,sys,unittest; sys.path.insert(0,'toy/provider'); from value import value; assert value()==42; suite=unittest.defaultTestLoader.discover('toy/provider',pattern='test_*.py'); assert suite.countTestCases()>0; result=unittest.TextTestRunner().run(suite); sys.exit(not result.wasSuccessful())"
       ],
       "timeout": 45,
-      "status": "ready",
-      "attempt": 1,
+      "status": "running",
+      "attempt": 2,
       "branch": "codex/p4-job-bootstrap-20261116-provider",
       "instructions": [],
       "checkpoint": "d5c6f2a628daff023ba6e63864755fa14acafadb",
@@ -101,6 +101,13 @@
       "command": "retry",
       "job": "provider",
       "value": null
+    },
+    {
+      "at": 1794851694.856755,
+      "kind": "dispatch",
+      "job": "provider",
+      "attempt": 2,
+      "branch": "codex/p4-job-bootstrap-20261116-provider"
     }
   ]
 }
