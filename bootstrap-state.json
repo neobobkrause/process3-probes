@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "stopped": false,
+  "stopped": true,
   "slots": 1,
   "lease": null,
   "modules": {
@@ -60,7 +60,7 @@
         "verified": false,
         "timed_out": false
       },
-      "blocker": "Subscription inference blocked by cloud outbound destination policy; no completed turn.",
+      "blocker": "Attempt 5: service HTTP 401; supplied ChatGPT token cannot refresh. No completed inference.",
       "restart": true
     }
   },
@@ -261,15 +261,27 @@
       "status": "blocked",
       "thread_id": null,
       "failure": "Codex exited 1"
+    },
+    {
+      "at": 1794852854.254839,
+      "kind": "successor-authentication-blocked",
+      "provider_attempt": 5,
+      "root_generation": 1,
+      "policy_includes_chatgpt": true
+    },
+    {
+      "at": 1794852854.2548454,
+      "kind": "technical-safety-stop",
+      "reason": "No valid inference authentication; preserve unfinished assignments and release all leases"
     }
   ],
   "external_dependencies": {
     "codex-inference": {
-      "status": "retesting-on-new-instance",
-      "observed": "Actual Codex CLI HTTP CONNECT 403; chatgpt.com absent from enforced environment allowlist.",
-      "resume": "Start a new Codex Cloud task using the newly published configuration. Read bootstrap/HANDOFF.md on codex/process4-bootstrap-20261116, verify current policy and ChatGPT login, raise provider timeout to 180 seconds, continue/retry same state and run supervisor.",
+      "status": "blocked-subscription-authentication",
+      "observed": "New instance policy includes chatgpt.com. Actual provider attempt 5 and ROOT generation 1 turn failed: HTTP 401, token cannot refresh after logout/account change.",
+      "resume": "Restore supported ChatGPT subscription login on cloud host, then follow latest bootstrap/HANDOFF.md. Keep same state/provider branch.",
       "owner_update": "I have added chatgpt.com to the environment's permitted domains and republished the environment.",
-      "current_instance_observation": "Enforced revision 1 remains unchanged; chatgpt.com is still absent. This old task retains its original policy."
+      "current_instance_observation": "Current enforced revision 1 includes chatgpt.com; network grant verified, authentication rejected."
     }
   },
   "owner_messages": [
