@@ -243,6 +243,12 @@
       "source": "technical",
       "instruction_source": "OWNER-GUIDANCE-COMMUNICATION-20261116.txt",
       "summary": "Routine native transport local; compact meaningful recovery state only"
+    },
+    {
+      "kind": "native-owner-guided-assessment",
+      "at": 1794868996.9011617,
+      "source": "technical",
+      "summary": "Layered authority assessment complete; no new physical no-bypass gate; measured ROOT-role alternative awaits explicit identity decision"
     }
   ],
   "native": true,
@@ -325,30 +331,27 @@
       "consequential_restrictions": {
         "state": "observed",
         "evidence": "bootstrap/evidence/native-development-cycle/actual-broker-route-validation.json; actual permitted state write and forbidden-route zero-adapter denials; main and bootstrap refs unchanged",
-        "limitation": "Observed controller-route compliance and preserved owner restrictions, not platform-wide impossibility of raw-tool bypass; separate protected-credential dependency remains."
+        "limitation": "Controller-route checks and actual provider rules observed; inherited alternatives remain exposed and unauthorized. No physical exclusive credential/tool confinement claimed; ordinary module isolation remains optional."
       },
       "reactive_inter_session": {
-        "state": "unproven",
-        "evidence": "Actual child tool inventory has no notify_parent; automatic child-final after-parent-final is an available but untested candidate. See PARENT-NOTIFICATION.md.",
-        "limitation": "Do not infer idle ROOT wake from active parent delivery or timer."
+        "state": "not_exposed",
+        "evidence": "Actual directtool inventory/defaultdaemon probe/afterfinal trial in parent-notification evidence; addressable supervisory alternative11.139s/13.542s separately demonstrated but unadopted.",
+        "limitation": "Current depth0 ROOT idlewake unmet; adoption of child ROOT changes role identity, not topchat capability."
       }
     },
     "dependencies": {
       "capability:reactive_inter_session": {
         "confirmed": true,
-        "prerequisite": "Supported nonblocking message-triggered new-turn operation for retained idle top-level ROOT, with replace-safe routing. Current non-root followup tools cannot supply it; advertised immediate automation action returned404.",
-        "evidence": "bootstrap/evidence/reactive-communication/actual-root-immediate-run-attempt.json; bootstrap/REACTIVE-COMMUNICATION.md"
+        "prerequisite": "Either supported message-triggered existing depth0 ROOT turnstart, or owner-approved addressable ROOT role mapping followed by mode implementation/verification.",
+        "evidence": "ROOT-LAYOUT-PROPOSAL.md; actual-after-final-result.json; actual-supervisory-role-alternative.json"
       },
-      "control:protected_credential_route": {
+      "control:root_identity_adoption": {
         "confirmed": true,
-        "prerequisite": "Native per-role tool/credential/provider-route confinement while supervisor retains approved writes, to demonstrate literal exclusive privileged route/protected credential owner. No such option is exposed in current native session controls. This is distinct from optional module-file isolation.",
-        "evidence": "Current native session tool schema; official subagent inheritance documentation; bootstrap/NATIVE-CLOUD.md and bootstrap/evidence/native-development-cycle/actual-broker-route-validation.json explicitly limit the demonstrated route"
+        "prerequisite": "Owner decision whether Process4 ROOT may be an addressable native child with existing chat as owner console/safety runner; current explicit top-level ROOT identity must not be silently redefined. No numericdepth/grant exception requested.",
+        "evidence": "bootstrap/native/ROOT-LAYOUT-PROPOSAL.md and latest owner guidance identifying idle top-level ROOT as unresolved"
       }
     },
     "work": {
-      "protected_credential_route": {
-        "status": "blocked"
-      },
       "broker_integration": {
         "status": "done",
         "evidence": "bootstrap/evidence/native-development-cycle/actual-broker-route-validation.json"
@@ -374,7 +377,23 @@
         "evidence": "bootstrap/native/AUTHORITY-MATRIX.md and actual read-only provider metadata"
       },
       "parent_final_wake_trial": {
-        "status": "pending"
+        "status": "done",
+        "evidence": "bootstrap/evidence/parent-notification/actual-after-final-result.json; scheduled entry, no unaided wake observed"
+      },
+      "cli_binding_assessment": {
+        "status": "done",
+        "evidence": "actual-availability.json; documented defaultdaemon version exit1 missinglocalcontrolsocket, no auth/queue/serverstart"
+      },
+      "supervisory_lifecycle_fixture": {
+        "status": "done",
+        "evidence": "bootstrap/evidence/parent-notification/actual-supervisory-role-alternative.json;11.139s ancestor and13.542s replacement wake"
+      },
+      "authority_assessment": {
+        "status": "done",
+        "evidence": "bootstrap/native/AUTHORITY-MATRIX.md; instructed/controller/provider/alternative layers evaluated, raw tools remain exposed; no exclusive enforcement claimed or grants changed"
+      },
+      "root_identity_adoption": {
+        "status": "blocked"
       }
     }
   },
