@@ -59,8 +59,8 @@
       "attempt": 2,
       "branch": "codex/p4-job-native-workshop-20261116-provider",
       "instructions": [],
-      "checkpoint": "26796e064fb586ca893124bd8ec2414699bedd6c",
-      "base": "f98b7002e0fee803fb3e6da6d0cd8be8d1f9751e",
+      "checkpoint": "a6f613b5461afc4a0996c4bb5016a5668fc4c9f7",
+      "base": "a6f613b5461afc4a0996c4bb5016a5668fc4c9f7",
       "notice_ids": [],
       "workspace": "/workspace/work/p4-native-cycle/provider-1",
       "session": "/root/p4_arch_native_cycle/provider_job",
@@ -75,7 +75,8 @@
       "pr_number": 271,
       "integrated": "3d4f7dbf624dba0c04af3d67a0b5fcea0b4c2e52",
       "restart": true,
-      "original_base": "f98b7002e0fee803fb3e6da6d0cd8be8d1f9751e"
+      "original_base": "f98b7002e0fee803fb3e6da6d0cd8be8d1f9751e",
+      "trusted_baseline_merges": []
     },
     "web": {
       "id": "web",
@@ -209,6 +210,13 @@
       "kind": "native-reserve",
       "job": "provider",
       "attempt": 2
+    },
+    {
+      "at": 1794862754.5248172,
+      "kind": "native-baseline-sync",
+      "job": "provider",
+      "base": "a6f613b5461afc4a0996c4bb5016a5668fc4c9f7",
+      "checkpoint": "a6f613b5461afc4a0996c4bb5016a5668fc4c9f7"
     }
   ],
   "native": true,
