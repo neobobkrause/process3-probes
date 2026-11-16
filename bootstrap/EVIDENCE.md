@@ -2,6 +2,8 @@
 
 16 November 2026. This is an initial bootstrap deliverable, **not successful proof of the complete Process4 development system**. No successful Codex inference turn or completed Codex development assignment was obtained. No concurrency increase was attempted.
 
+**Later owner update:** the owner has added `chatgpt.com` and republished the environment. The current task still reports enforced revision 1 without that domain. Continue in a new task from the newly published configuration; see [HANDOFF.md](HANDOFF.md) for the current resume instructions and unresolved work. The older current-task resume example below is historical, not an instruction to keep retrying this old instance.
+
 ## Read and selected
 
 Authoritative research: `neobobkrause/process3`, branch `process4`, resolved to `c11682ccf903dff83f09c7505fc366760481f2ad`. Read the applicable repository instructions, sixth draft, all owner-word files through the reading worker required by HANDOFF, roles/foundations/decision evidence and existing trial plan. Read the existing probe `CLAUDE.md`, README and `process/config.json`; none was edited. `REQUIREMENTS.md` records the hierarchy and unsettled proposals. Nothing in draft 6 was treated as adoption authority.

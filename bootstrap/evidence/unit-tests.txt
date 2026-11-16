@@ -15,6 +15,6 @@ test_order_and_stop (test_coordinator.Tests.test_order_and_stop) ... ok
 test_real_process_interrupt_is_paused (test_coordinator.Tests.test_real_process_interrupt_is_paused) ... ok
 
 ----------------------------------------------------------------------
-Ran 14 tests in 0.196s
+Ran 14 tests in 0.166s
 
 OK

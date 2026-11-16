@@ -2,6 +2,8 @@
 
 This is executable experimental process software, not adoption of draft 6 and not a claim that a Process4 tranche has run. Writes are hardcoded to `neobobkrause/process3-probes`, dedicated branches only. No merge, branch deletion, settings modification, Actions launch or Agents API is implemented.
 
+For continuation after environment republish, read [HANDOFF.md](HANDOFF.md) first. The initial draft PR is [#268](https://github.com/neobobkrause/process3-probes/pull/268).
+
 ## What runs
 
 Python 3 standard library, Git, authenticated `gh`, and official `codex exec`. An ordinary Linux cloud machine hosts the supervisor and independent Git worktrees; the owner's computer is not used. Codex must report **Logged in using ChatGPT**. The child environment removes API-key/base-URL overrides, ignores user provider configuration, and forces ChatGPT login. Subscription limits still apply; a thread-start event does not establish successful inference.
