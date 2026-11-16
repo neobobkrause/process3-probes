@@ -386,9 +386,16 @@
         "sender": "ROOT",
         "recipient": "ARCH",
         "text": "Recovery verification: preserve completed jobs, pending report notices, owner stop and cap. Report RECEIVED with this exact message ID and generation2; take no product action.",
-        "status": "pending",
+        "status": "delivered_unacknowledged",
         "created_at": 1794865179.8108277,
-        "deliveries": []
+        "deliveries": [
+          {
+            "target": "/root/arch_recovered",
+            "generation": 2,
+            "tool": "followup_task",
+            "recorded_at": 1794865201.5098329
+          }
+        ]
       }
     },
     "events": []
