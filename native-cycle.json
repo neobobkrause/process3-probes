@@ -414,6 +414,10 @@
     "WATCHER": {
       "target": "/root/watcher_native",
       "generation": 1
+    },
+    "ROOT": {
+      "target": "/root/process4_root",
+      "generation": 1
     }
   },
   "native_layout": {
