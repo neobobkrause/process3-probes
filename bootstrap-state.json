@@ -3,8 +3,38 @@
   "stopped": false,
   "slots": 1,
   "lease": null,
-  "modules": {},
-  "jobs": {},
+  "modules": {
+    "storage-provider": {
+      "id": "storage-provider",
+      "order": 0,
+      "paths": [
+        "toy/storage-provider"
+      ],
+      "uses": []
+    }
+  },
+  "jobs": {
+    "storage-provider": {
+      "id": "storage-provider",
+      "order": 0,
+      "paths": [
+        "toy/storage-provider"
+      ],
+      "uses": [],
+      "prompt": "Storage rehearsal only; no Codex assignment execution.",
+      "completion": "Harness-authored checkpoint survives reconstruction.",
+      "verify": [
+        "python",
+        "-c",
+        "pass"
+      ],
+      "status": "ready",
+      "attempt": 0,
+      "branch": null,
+      "instructions": [],
+      "checkpoint": null
+    }
+  },
   "notices": {},
   "instructions": [],
   "roles": {
@@ -13,5 +43,11 @@
     "coordinator": "owner control and reporting",
     "ARCH": "dispatch and technical assignments"
   },
-  "events": []
+  "events": [
+    {
+      "at": 1794851614.1752627,
+      "kind": "assignment",
+      "job": "storage-provider"
+    }
+  ]
 }
