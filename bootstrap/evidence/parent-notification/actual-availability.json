@@ -47,5 +47,25 @@
   "repository_transport_writes": 0,
   "credential_reads_or_login": 0,
   "idle_ROOT_wake_latency": null,
-  "conclusion": "No callable notify_parent or equivalent idle-top-ROOT notification found on this actual child surface. Codex queue is a distinct documented local/app-server candidate whose binding to standing native ROOT is missing; not proof of wake."
+  "conclusion": "No callable notify_parent or equivalent idle-top-ROOT notification found on this actual child surface. Codex queue is a distinct documented local/app-server candidate whose binding to standing native ROOT is missing; not proof of wake.",
+  "local_daemon_binding_probe": {
+    "classification": "One actual documented local daemon availability check, not account/inference or ROOT wake",
+    "actor": "/root/parent_notify_assessment",
+    "help_reviewed": [
+      "codex app-server daemon --help",
+      "codex app-server daemon version --help"
+    ],
+    "help_contract": "Print local CLI and running app-server versions as JSON",
+    "command": "codex app-server daemon version",
+    "exit_code": 1,
+    "error": "failed to connect to /home/agent/.codex/app-server-control/app-server-control.sock: No such file or directory (os error 2)",
+    "observed_scope": "Default local daemon control socket unavailable at this probe; no claim that every possible remote/nondefault server is absent.",
+    "auth_request_observed": false,
+    "start_or_resume_attempted": false,
+    "account_auth_retry": false,
+    "queue_or_inference_attempted": false,
+    "credentials_or_config_values_read": false,
+    "root_binding_verified": false,
+    "next_prerequisite": "Documented exposed app-server connection and thread identity corresponding to the existing managed ROOT, with supported subscription-funded authorization. No guessed socket/URL/ID or inherited credential retry."
+  }
 }

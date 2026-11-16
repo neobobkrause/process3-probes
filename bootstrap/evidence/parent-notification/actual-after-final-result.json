@@ -1,0 +1,54 @@
+{
+  "classification": "Actual bounded automatic child FINAL candidate; scheduled ROOT entry, no unaided wake observed",
+  "trial": {
+    "trial_id": "native-parent-final-owner-guidance-20261116",
+    "phase": "inspected-scheduled-entry",
+    "prepared_at": 1794867620.3710995,
+    "root_turn_active_when_prepared": true,
+    "candidate": "native automatic child final result delivery",
+    "not_notify_parent": true,
+    "child_delay_seconds": 45,
+    "inspection_backstop_minutes": null,
+    "positive_criterion": "new ROOT turn after preceding final, child-result-triggered before independent inspection; actual source attribution required",
+    "negative_limit": "No observed wake within bounded window is not universal absence; missing child completion is separate lifecycle outcome",
+    "no_github_transport": true,
+    "restore_file": "/workspace/work/p4-native-cycle/parent-final-restore.json",
+    "armed_at": 1794867703.0322611,
+    "other_running_children_before_arm": 0,
+    "restore_required": false,
+    "inspection_actual": "Existing enabled10minute timer, next2026-11-16T14:23:30-08:00; inspection prompt confirmed",
+    "one_off_attempt": "failed; readback confirmed no change"
+  },
+  "child_receipt": {
+    "trial_id": "native-parent-final-owner-guidance-20261116",
+    "native_actor": "/root/parent_final_probe",
+    "started_at": 1794867728.9061005,
+    "completion_prepared_at": 1794867773.9062858,
+    "monotonic_ns": 11079525272241,
+    "action": "automatic normal final result; no explicit parent message"
+  },
+  "root_entry": {
+    "source": "PARENT_FINAL_INSPECTION user automation delivery",
+    "entry_clock_utc": "2026-11-16 22:24:06 UTC",
+    "first_workspace_action": 1794867855.308499,
+    "preceding_root_final": true,
+    "child_final_notification_observed": "after scheduled-entry commentary and first tool call; not the entry trigger"
+  },
+  "first_entry_utc_seconds": 1794867846.0,
+  "completion_prepared_to_scheduled_entry_seconds": 72.09371423721313,
+  "actual_trigger": "PARENT_FINAL_INSPECTION scheduled user instruction after ROOT final",
+  "child_final_observed": "Normal FINAL marker delivered after scheduled turn started, following first ROOT tool call",
+  "unaided_idle_root_wake_observed": false,
+  "lifecycle": "Child completed shell delay and prepared result after ROOT final; workspace receipt survived",
+  "limits": [
+    "Completion-prepared timestamp is not exact server final-dispatch time",
+    "No inference of universal absence or impossible future platform support",
+    "Timer is independent inspection, not message transport",
+    "No notify_parent callable was present in actual child tool inventory"
+  ],
+  "github_transport_writes": 0,
+  "native_child_reactive_route": "Preserved; separate actual11.837s localARCHexchange zero remote state calls",
+  "next_prerequisite": "Supported retained-idle-ROOT notification contract or verified hostedROOT binding for documented queue/resume; not guessed endpoints",
+  "entry_clock_precision_seconds": 1,
+  "timing_interpretation": "Approximately72seconds from child completion preparation to scheduled-entry clock; not exact final-dispatch/notification latency"
+}

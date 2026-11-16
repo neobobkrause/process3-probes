@@ -1,3 +1,41 @@
+# Current reviewable lifecycle alternative (not adopted)
+
+After-final candidate outcome: child completed/prepared result, but this ROOT entry
+was scheduled; final notification arrived after turn started. No unaided idle-topROOT
+wake observed in boundedwindow (~72s from completionpreparation to entry). Normal
+10minute continuation prompt/schedule restored successfully, no duplicate timer.
+Default local appserver daemon version probe failedmissingcontrolsocket; no auth/
+queue/resume/serverstart/inference attempted. Direct notify_parent absent here.
+
+Read native/ROOT-LAYOUT-PROPOSAL.md. New segregated native fixture DOES work:
+console0→addressable supervisor1→ARCH2→JOB3. Earlier3-node depth blocker was our
+mistaken compression; historicalzeroindexeddepth≤3 permits4nodes. JOB wokeidle
+supervisoryancestor11.139s, senderindependent whilefinalheld45s; distinctcoordinator
+answered syntheticquestionwithoutbuilding. Activeconsole interruptedsupervisorrunning,
+createdsiblingreplacementgen2, which resumedfixturework through retainedARCH; oldJOB
+wokeidlereplacement13.542s. No operatingregistry/source/provider/grant changes.
+Aggregate evidence: evidence/parent-notification/actual-supervisory-role-alternative.json.
+
+No further trial is needed to repeat these findings. The next dependency is an owner
+ROOT-identity decision: may the addressable nativechild hold Process4ROOT while this
+chat is ownerconsole/safetyrunner? Proposal recommendsyes with explicit limits: no
+idleconsoleinstantwake, owner-visible alerts/rootfailure replacement canwaitsafety
+wake, oneextrasession/context, no strongercredentialisolation. Adoption not executed.
+Ifapproved, implement explicitlayout/rootbinding/consoleforwarding/safetyrecovery,
+thenverify nativecycleundernewmode. Do not silentlyremap currentROOTorclaimoriginal
+chatwake. Existingcurrentmode, branches, all-user notices and3productstages preserved.
+
+All independent owner-guided investigation/refactor work is now preserved/reviewable;
+135bootstrap+44grants tests passed, actuallocalARCHexchange0remote calls. Further
+codechange for proposal adoption depends on this narrowownerdecision, not OAuth,
+paidinfrastructure, modulefileisolation or deletedROOTresurrection. Beforefinalresponse
+preserve newevidence/PR and use supportedself-ownedpause ifawaitingdecision; do not
+poll owner/repeat experiments. No broaderscope/grants/permissions requested.
+
+Historical entries below are superseded where they differ.
+
+---
+
 # Armed parent-final candidate: existing timer backstop
 
 The attempted3minute one-off update failed. Read-back confirmed existing enabled
