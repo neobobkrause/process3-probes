@@ -1,0 +1,11 @@
+{
+  "status": "completed",
+  "work": "Implemented double_value using existing value()",
+  "evidence": {
+    "command": "python -m unittest discover -s . -p 'test_*.py' -v",
+    "tests_run": 6,
+    "result": "OK",
+    "double_value_result": 84,
+    "scope": "bounded parent-managed native subagent replacement; no top-level ROOT or OS isolation proof"
+  }
+}
