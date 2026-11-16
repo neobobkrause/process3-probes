@@ -49,6 +49,9 @@ def token():
         now=int(time.time())
         unsigned=b64(b'{"alg":"RS256","typ":"JWT"}')+'.'+b64(json.dumps({'iat':now-60,'exp':now+540,'iss':app}).encode())
         jwt=unsigned+'.'+b64(key.sign(unsigned.encode(),padding.PKCS1v15(),hashes.SHA256()))
+        installed=request('/app/installations/'+installation,jwt)
+        if installed.get('account',{}).get('login')!='neobobkrause':
+            raise RuntimeError('GitHub installation account differs from owner scope')
         result=request('/app/installations/'+installation+'/access_tokens',jwt,{
             'repositories':['process3-probes'],
             'permissions':{'contents':'write','pull_requests':'write','metadata':'read'}})

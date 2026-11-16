@@ -44,6 +44,8 @@ class GitHub:
         if method != 'GET':
             # There is no generic privileged forwarding interface for agents.
             if method == 'PUT' and path == f'contents/{STATE_PATH}':
+                if not isinstance(body,dict) or body.get('branch')!=self.branch:
+                    raise PermissionError('state payload branch differs from authorized store')
                 return grant_host.perform(grant_host.state_subject(self.branch),
                     'github.state.update', {'repo': REPO, 'branch': self.branch},
                     lambda: self._api(path, method, body), {'state_branch': self.branch})

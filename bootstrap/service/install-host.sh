@@ -9,6 +9,7 @@ command -v bwrap >/dev/null
 python3 -c 'import cryptography'
 id process4-host >/dev/null 2>&1 || useradd --system --create-home --home-dir /var/lib/process4-home --shell /usr/sbin/nologin process4-host
 install -d -m 0755 /srv/process4/host
+install -d -o process4-host -g process4-host -m 0700 /srv/process4/process3-probes
 # Installed host software is root-owned and is never mounted writable to jobs.
 cp -R "$source_dir/bootstrap" /srv/process4/host/
 chown -R root:root /srv/process4/host

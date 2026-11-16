@@ -44,6 +44,6 @@ test_valid_message (test_grants.GrantsTests.test_valid_message) ... ok
 test_wrong_branch (test_grants.GrantsTests.test_wrong_branch) ... ok
 
 ----------------------------------------------------------------------
-Ran 44 tests in 0.002s
+Ran 44 tests in 0.003s
 
 OK

@@ -137,3 +137,10 @@ class TechnicalControlTests(unittest.TestCase):
         state=c.empty(); c.add(state,job()); state['external_dependencies']={'provider':{'dependency':'subscription-authorization','terminal':True}}
         packet={'summary':'fixture','actions':[],'job_controls':[{'id':'provider','action':'retry','text':'retry'}]}
         with self.assertRaisesRegex(ValueError,'new host evidence'): roles.apply(state,'ARCH',packet)
+
+class StatePayloadTests(unittest.TestCase):
+    def test_state_adapter_rejects_branch_substitution_before_provider_call(self):
+        with patch.object(c,'run') as run:
+            with self.assertRaisesRegex(PermissionError,'payload branch'):
+                c.GitHub('codex/p4-state-fixture').api('contents/bootstrap-state.json','PUT',{'branch':'main'})
+            run.assert_not_called()

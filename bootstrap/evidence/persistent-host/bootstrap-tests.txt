@@ -41,6 +41,7 @@ test_no_raw_github_mutation_escape (test_host.HostTests.test_no_raw_github_mutat
 test_state_branch_is_bound_to_host_store (test_host.HostTests.test_state_branch_is_bound_to_host_store) ... ok
 test_stop_and_individual_external_block_survive_runner (test_host.HostTests.test_stop_and_individual_external_block_survive_runner) ... ok
 test_wrong_module_never_reaches_adapter (test_host.HostTests.test_wrong_module_never_reaches_adapter) ... ok
+test_state_adapter_rejects_branch_substitution_before_provider_call (test_host.StatePayloadTests.test_state_adapter_rejects_branch_substitution_before_provider_call) ... ok
 test_arch_cannot_retry_known_invalid_authorization (test_host.TechnicalControlTests.test_arch_cannot_retry_known_invalid_authorization) ... ok
 test_arch_correction_is_not_fabricated_owner_instruction (test_host.TechnicalControlTests.test_arch_correction_is_not_fabricated_owner_instruction) ... ok
 test_closed_or_ready_pr_is_preserved (test_job_pr.DraftPRTests.test_closed_or_ready_pr_is_preserved) ... ok
@@ -57,6 +58,6 @@ test_root_starts_configures_and_replaces_subordinates (test_roles.RoleTests.test
 test_watcher_takeover_preserves_stop_and_no_self_successor (test_roles.RoleTests.test_watcher_takeover_preserves_stop_and_no_self_successor) ... ok
 
 ----------------------------------------------------------------------
-Ran 56 tests in 4.085s
+Ran 57 tests in 4.157s
 
 OK
