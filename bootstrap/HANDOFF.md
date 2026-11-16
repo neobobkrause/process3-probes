@@ -1,3 +1,13 @@
+# Timer status: PAUSED by supported self-owned update
+
+After preservation3519304 and actual native external_blocked assessment, supported
+automation update confirmed is_enabled=false. Evidence:
+evidence/native-development-cycle/actual-confirmed-dependency-pause.json.
+This is the current timer state; historical ACTIVE statements below are superseded.
+A previously queued delivery may still arrive; do not treat it as a new runnable
+assignment or duplicate finished probes. Reassess only substantive new work or a
+supported route resolving the recorded prerequisites. Full Process4 is not complete.
+
 # Current continuation decision: confirmed platform dependencies
 
 Read evidence/native-development-cycle/actual-native-continuation-assessment.json.

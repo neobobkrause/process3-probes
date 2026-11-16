@@ -1,0 +1,39 @@
+{
+  "content": [
+    {
+      "type": "text",
+      "text": "Action completed."
+    }
+  ],
+  "structuredContent": {
+    "meta": null,
+    "content": [],
+    "structuredContent": {
+      "success": true,
+      "automation_id": "Automation_81bcb22cdab48191aea4b02fd08730e4",
+      "message": "Automation updated.",
+      "automation": {
+        "id": "Automation_81bcb22cdab48191aea4b02fd08730e4",
+        "team_id": null,
+        "title": "Continue native Process4",
+        "prompt": "Continue authorized native Process4 development on neobobkrause/process3-probes branch codex/p4-grants-broker-20261116. Read latest bootstrap/HANDOFF.md, NATIVE-CLOUD.md and REACTIVE-COMMUNICATION.md; preserve completed native cycle and evidence c06b299, PRs #268/#269/#270 and experimental integrations #271–274. Do not repeat completed probes. Reactive communication is essential: use durable mailbox and actual native followup_task immediately for idle/running non-root recipients, acknowledge only actual receipts; periodic scheduling is not reactive transport. Continue supported alternatives assessment for retained idle top-level ROOT wake (actual immediate automation call returned404); addressable child supervisory role is a possible explicit hierarchy mapping, not proof that current top ROOT wakes. Whole-ROOT deletion resurrection is not required; physical module isolation is optional. Maintain explicit job ownership and actual-change rejection before integration. Continue remaining independent grants/supervisor and recovery work with native hosted roles, automatic experimental preservation/integration and all-user notifications. Preserve exact consequential restrictions: no CivicSmith2, main/tranche push/merge, settings/grant/process-pin changes, unauthorized accounts/public release, credential disclosure, paid hosting, API-key/metered inference or invalid inherited-login retry. Use only OpenAI-managed execution within existing subscription allowances. No invented APIs or added product-test stages. Record actual evidence and specific remaining prerequisites; never infer overall completion from a test/commit/turn end. Pause only if every substantive remaining item has a genuine specific external dependency. Otherwise continue without routine owner prompts.",
+        "schedule": "BEGIN:VEVENT\nDTSTART:20261116T205330Z\nRRULE:FREQ=MINUTELY;INTERVAL=10\nEND:VEVENT",
+        "timing_mode": "exact_schedule",
+        "display_schedule": null,
+        "is_enabled": false,
+        "conversation_id": null,
+        "thread_id": "6afb56f0-277c-8191-ad3c-cd395778202e",
+        "is_self_owned_automation": true,
+        "default_timezone": "America/Los_Angeles",
+        "next_run_time": "2026-11-16T13:53:30-08:00",
+        "last_run_time": "2026-11-16T21:44:00.295788+00:00",
+        "updated_at": "2026-11-16T21:45:32.195191+00:00",
+        "environment_selection": "inherited",
+        "environments": null
+      },
+      "assistant_response_guidance": null
+    },
+    "isError": false
+  },
+  "isError": false
+}
