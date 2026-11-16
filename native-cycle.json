@@ -408,8 +408,8 @@
       "generation": 2
     },
     "ARCH": {
-      "target": "/root/arch_recovered",
-      "generation": 2
+      "target": "/root/process4_root/arch",
+      "generation": 3
     },
     "WATCHER": {
       "target": "/root/watcher_native",
