@@ -9,7 +9,7 @@ import time
 from . import layout
 
 MAX_OBSERVATION_AGE=60
-ACTIVITIES=frozenset(('idle','completed','running','interrupted','unavailable'))
+ACTIVITIES=frozenset(('idle','completed','running','retained_unlisted','interrupted','unavailable'))
 
 
 def observation(state,role,value,*,now=None,max_age=MAX_OBSERVATION_AGE):
@@ -18,7 +18,11 @@ def observation(state,role,value,*,now=None,max_age=MAX_OBSERVATION_AGE):
     value={target: path|None, generation: int|None, activity: ..., observed_at:
     host Unix seconds, source:'actual-native-inventory'}. Absent role uses None
     target/generation plus unavailable; callers must reconcile any unbound actual
-    agent before declaring unavailable. Fields are not caller authentication.
+    agent before declaring unavailable. retained_unlisted means an existing known
+    binding was omitted from inventory: probe it with followup, never replace it
+    from absence. unavailable requires actual failed followup plus diagnosis or
+    explicit replacement evidence from the trusted host, not mere list absence.
+    Fields are not caller authentication.
     """
     now=time.time() if now is None else now
     if not isinstance(value,dict) or set(value)!={'target','generation','activity','observed_at','source'}:
@@ -74,11 +78,14 @@ def plan_supervision(state, *, observations, actor=layout.CONSOLE,
             result['holds'].append({'role':role,'reason':reason});continue
         if activity=='running':
             result['healthy'].append({'role':role,'activity':'running'});continue
-        if activity=='idle' and role not in pending and role!='ROOT' and not (role=='ARCH' and unfinished):
+        if activity in ('idle','retained_unlisted') and role not in pending and role!='ROOT' and not (role=='ARCH' and unfinished):
             result['healthy'].append({'role':role,'activity':'idle','reason':'no pending assigned role work'});continue
         if native_capacity is not None and len(result['actions'])>=native_capacity:
             result['holds'].append({'role':role,'reason':'actual native capacity unavailable; owner cap unchanged'});continue
         binding=layout.current(state,role)
-        intent=layout.plan(state,role,actor,activity,binding['generation'] if binding else None,state_branch)
+        # The native atomic wake-or-steer tool probes a retained omitted session.
+        # No new generation is reserved merely because inventory omitted it.
+        planned_activity='idle' if activity=='retained_unlisted' else activity
+        intent=layout.plan(state,role,actor,planned_activity,binding['generation'] if binding else None,state_branch)
         result['actions'].append(intent)
     return result

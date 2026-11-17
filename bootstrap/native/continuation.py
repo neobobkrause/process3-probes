@@ -12,9 +12,10 @@ live proofs from fixture tests, job prose, a commit or a completed assistant tur
 """
 from dataclasses import asdict, dataclass
 import re
+import json
 from collections.abc import Mapping
 from .capabilities import Finding, REQUIRED
-from . import layout
+from . import layout, interaction
 
 SHA=re.compile(r'^[a-f0-9]{40}$')
 
@@ -32,6 +33,43 @@ class Result:
     reason: str
 
     def to_dict(self):return asdict(self)
+
+
+def conversation_obligations(local):
+    """Validate an ephemeral local overlay; never persist routine dialogue to Git.
+
+    Processing ACKs, assignment completion and retirement do not answer questions.
+    A retired role's unresolved obligations remain visible for explicit resolution.
+    """
+    if (not isinstance(local, dict) or set(local) != {'version', 'roles'}
+            or type(local['version']) is not int or local['version'] != 1
+            or not isinstance(local['roles'], dict)
+            or len(local['roles']) > interaction.MAX_ROLES):
+        raise ValueError('bounded local interaction overlay required')
+    try:
+        if len(json.dumps(local).encode()) > interaction.MAX_BYTES:
+            raise ValueError('local interaction overlay exceeds byte bound')
+        for value in local['roles'].values():
+            if not isinstance(value, dict): raise ValueError('invalid local conversation role')
+            binding = value['binding']
+            if binding is not None:
+                if (not isinstance(binding, dict) or set(binding) != {'target', 'generation'}
+                        or type(binding['generation']) is not int or not 1 <= binding['generation'] < 2**63):
+                    raise ValueError('invalid local conversation binding')
+                layout.depth(binding['target'])
+            if value['lifecycle'] not in ('active', 'retained_idle', 'retired'):
+                raise ValueError('invalid local conversation lifecycle')
+            if (value['lifecycle'] == 'retired') != (value['disposition'] == 'retired'):
+                raise ValueError('inconsistent explicit retirement disposition')
+        # Reuse recovery validation for bounded stable IDs/knowledge/assignments
+        # and correlated questions, while omitting ACK/history from obligations.
+        snapshot = interaction.recovery_snapshot(local)
+        interaction.restore_snapshot(interaction.empty(), snapshot)
+    except (KeyError, TypeError, interaction.InteractionFull) as error:
+        raise ValueError('invalid bounded local interaction overlay') from error
+    return tuple('conversation:' + role + ':' + ident
+                 for role, value in local['roles'].items()
+                 for ident in value['pending_questions'])
 
 
 def assess(state):
@@ -100,6 +138,8 @@ def assess(state):
             if not isinstance(item.get('evidence'),str) or not item['evidence'].strip():
                 raise ValueError('completed explicit work needs actual evidence reference')
         else:pending_controls.append(key);outstanding.append('control:'+key)
+    for item in conversation_obligations(state.get('native_interaction', interaction.empty())):
+        pending_controls.append(item);outstanding.append(item)
     notices=[];deferred=[]
     for key,notice in state.get('notices',{}).items():
         if notice.get('status')!='delivered-and-completed':
