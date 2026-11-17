@@ -196,8 +196,8 @@
         "-v"
       ],
       "timeout": 180,
-      "status": "ready",
-      "attempt": 1,
+      "status": "running",
+      "attempt": 2,
       "branch": "codex/p4-job-native-workshop-20261116-report",
       "instructions": [],
       "checkpoint": "1fb981e478a2a68e38abcd11b31fdc8f3ef3e8ee",
@@ -207,10 +207,8 @@
       ],
       "base": "716b6bddc6330cb1e0c19a584ee3b225ad9ae8f3",
       "original_base": "716b6bddc6330cb1e0c19a584ee3b225ad9ae8f3",
-      "accepted": true,
-      "notice_ids": [
-        "provider:0ee73afc9ff9d735f1b10b2d4262f1235032760b:report"
-      ],
+      "accepted": false,
+      "notice_ids": [],
       "workspace": "/workspace/work/p4-native-cycle/report-1",
       "session": "/root/p4_root_g2/p4_arch_g5/report_g1",
       "session_generation": 1,
@@ -451,10 +449,10 @@
       "source": "arch"
     },
     {
-      "at": 1794876641.6724896,
+      "at": 1794876942.358339,
       "kind": "native-reserve",
       "job": "report",
-      "attempt": 1
+      "attempt": 2
     },
     {
       "at": 1794876829.1183367,
