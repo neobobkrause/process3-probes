@@ -947,7 +947,28 @@
         }
       }
     },
-    "walks": {},
+    "walks": {
+      "internal_walk": {
+        "observed": true,
+        "actor": "/root/p4_root_g2/p4_arch_g5",
+        "source": "Actual source inspection and final-head loopback Screens S1-S4+C1-C4; /workspace/work/p4-native-cycle/evidence/extended-assessment/internal-observations.json",
+        "observed_at": 1794877575.49682,
+        "head": "4414c0325f1e2a56585e644eecccd8abfba8a88e",
+        "design": "bootstrap/native/approved-layout-design/quote-comparison/UX_SCREENS.md",
+        "coverage": [
+          "S1",
+          "S2",
+          "S3",
+          "S4",
+          "C1",
+          "C2",
+          "C3",
+          "C4"
+        ],
+        "outcome": "clean",
+        "flaws": []
+      }
+    },
     "carry_flaws": {}
   },
   "design_lanes": {
