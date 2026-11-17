@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "stopped": false,
+  "stopped": true,
   "slots": 2,
   "lease": null,
   "modules": {
@@ -120,6 +120,13 @@
       "command": "interrupt",
       "job": "alpha",
       "value": null
+    },
+    {
+      "at": 1794876495.6216671,
+      "kind": "owner-control",
+      "command": "stop",
+      "job": null,
+      "value": null
     }
   ],
   "native": true,
@@ -145,5 +152,6 @@
     "approval_evidence": "bootstrap/OWNER-ROOT-LAYOUT-APPROVAL-20261116.txt",
     "identity_source": "trusted supervisor observed owner approval"
   },
-  "owner_job_cap": 2
+  "owner_job_cap": 2,
+  "stop_source": "owner"
 }
