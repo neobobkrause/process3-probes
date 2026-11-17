@@ -210,8 +210,8 @@
       "accepted": false,
       "notice_ids": [],
       "workspace": "/workspace/work/p4-native-cycle/report-2",
-      "session": "/root/p4_root_g2/p4_arch_g5/report_g1",
-      "session_generation": 1,
+      "session": "/root/p4_root_g2/p4_arch_g5/report_g2",
+      "session_generation": 2,
       "last_outcome": "completed",
       "verification": {
         "returncode": 0,
@@ -686,8 +686,8 @@
       "generation": 1
     },
     "JOB:report": {
-      "target": "/root/p4_root_g2/p4_arch_g5/report_g1",
-      "generation": 1
+      "target": "/root/p4_root_g2/p4_arch_g5/report_g2",
+      "generation": 2
     }
   },
   "native_layout": {
