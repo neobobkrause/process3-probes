@@ -77,7 +77,10 @@
       "integrated": "253e7fb458f8cb2baf7f696e50c70fac6652f8ed",
       "restart": true,
       "original_base": "f98b7002e0fee803fb3e6da6d0cd8be8d1f9751e",
-      "trusted_baseline_merges": []
+      "trusted_baseline_merges": [],
+      "technical_instructions": [
+        "Work only within assigned module paths and own tests/README. No bootstrap/process/.process/settings/grants/credentials/account/inference-API/other-module edits, git push, PR, merge or new sessions. Python standard library only. Leave preservation/provider operations to native controller. Report actual tests and unfinished work truthfully. Later ARCH technical revision supersedes completed initial quantity contract only: raise MIN_QUANTITY from 1 to 2, keep MAX_QUANTITY=50 and UNIT_PRICE_CENTS=275 and signature/type validation. Update bound-aware messages/docs/own tests: 2=550,12=3300,50=13750;1 and51 rejected, bool/nonints rejected. Do not change web. Report consumer-visible effects."
+      ]
     },
     "web": {
       "id": "web",
@@ -256,6 +259,14 @@
       "source": "technical",
       "verification": "232bootstrap+46grants; allfourstreams integrated",
       "source_commit": "ffc7b12"
+    },
+    {
+      "at": 1794874333.955565,
+      "kind": "native-arch-control",
+      "command": "instruction",
+      "job": "provider",
+      "value": "Work only within assigned module paths and own tests/README. No bootstrap/process/.process/settings/grants/credentials/account/inference-API/other-module edits, git push, PR, merge or new sessions. Python standard library only. Leave preservation/provider operations to native controller. Report actual tests and unfinished work truthfully. Later ARCH technical revision supersedes completed initial quantity contract only: raise MIN_QUANTITY from 1 to 2, keep MAX_QUANTITY=50 and UNIT_PRICE_CENTS=275 and signature/type validation. Update bound-aware messages/docs/own tests: 2=550,12=3300,50=13750;1 and51 rejected, bool/nonints rejected. Do not change web. Report consumer-visible effects.",
+      "source": "arch"
     }
   ],
   "native": true,
@@ -521,5 +532,12 @@
         "generation": 3
       }
     }
-  }
+  },
+  "technical_instructions": [
+    {
+      "at": 1794874333.9555583,
+      "job": "provider",
+      "text": "Work only within assigned module paths and own tests/README. No bootstrap/process/.process/settings/grants/credentials/account/inference-API/other-module edits, git push, PR, merge or new sessions. Python standard library only. Leave preservation/provider operations to native controller. Report actual tests and unfinished work truthfully. Later ARCH technical revision supersedes completed initial quantity contract only: raise MIN_QUANTITY from 1 to 2, keep MAX_QUANTITY=50 and UNIT_PRICE_CENTS=275 and signature/type validation. Update bound-aware messages/docs/own tests: 2=550,12=3300,50=13750;1 and51 rejected, bool/nonints rejected. Do not change web. Report consumer-visible effects."
+    }
+  ]
 }
