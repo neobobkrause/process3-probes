@@ -46,6 +46,7 @@ class OwnerDialogue:
             return {**intent, 'question_id': question_id, 'question_pending': True}
         self.mailbox.mutate(lambda s: communication.enqueue(s, 'CONSOLE', role, body, message_id))
         delivery=communication.delivery_intent(self.mailbox.read(),message_id,'running' if activity=='running' else 'idle')
+        intent['arguments']={'target':delivery['target'],'message':delivery['message']}
         return {**intent, **delivery, 'message_id': message_id, 'question_id': question_id, 'question_pending': True,
                 'owner_interface': 'this standing owner-console conversation; target role explicitly',
                 'direct_child_composer_verified': False, 'requires_actual_native_submission': True,

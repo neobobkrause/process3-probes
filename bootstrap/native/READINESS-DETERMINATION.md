@@ -1,3 +1,14 @@
+# Essential interactivity addendum — November 16
+
+The original development-only determination was suspended when the owner made
+continuing interactive sessions essential. That extension is implemented and
+actually exercised; see [INTERACTIVE-SESSIONS.md](INTERACTIVE-SESSIONS.md) and
+[actual-interactivity.json](../evidence/interactive-sessions/actual-interactivity.json).
+The qualified verdict includes standing conversations through this owner console,
+not an unverified independent child composer. Completion does not retire roles.
+Actual provider errors and supported replacements are recorded; all current logical
+roles are retained. Existing product results below remain preserved historical proof.
+
 # Codex Process4 readiness determination — November 16, 2026
 
 **Verdict: ready for bounded unattended development within the approved retained

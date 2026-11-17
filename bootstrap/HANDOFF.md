@@ -1,3 +1,38 @@
+# Essential continuing interactivity — implemented and actually exercised
+
+Read native/INTERACTIVE-SESSIONS.md + evidence/interactive-sessions/actual-interactivity.json.
+Source0e632b4 centralwiring, PR287/288/289 accepted; integrated288bootstrapPASS,
+unchangedgrants46priorPASS. Current source adds canonicalmessageID in returnednative
+arguments; fourfocused tests passed. No new productwalk/retest was needed.
+
+Owner's REALquestion toPROCESS "Which design lanes are currently active?" was routed
+verbatim toactualPROCESS3 and its answer emitted here. Nativefirstprocessing22.249s,
+consoleanswerrecord104.882s (includesmodel/tool/relay, notclientlatency/SLA).
+Supportedownerinterface is thisconsole with logicalrole addressing; separatechild
+composer unverified. Do not claim transcriptinspection equals conversation.
+
+NativecompletedROOT3/COORD5/WATCHER3 reactivated; newARCH6/PROCESS3/LANE2/JOBweb8
+proved furtherturns aftercompletion. Sixoldinstances actuallyerrored400request_country;
+boundeddiagnosis+supportedreplacement preservedlogicalIDs/context/questions. Noauthretry.
+COORD5→6 plannedrunninginterrupt preservedACKed-but-unansweredproxyquestion, then6
+actuallyanswered. AllJOBs readonlyconversation recovery preserved moduleattempt7/2/3,
+nativegenerations8/3/4, acceptedproduct4414c032/status/tests/PRs unchanged.
+
+CurrentROOT3 /root/p4_root_g3; ARCH6 /root/p4_root_g3/p4_arch_g6;
+COORD6 /root/p4_root_g3/p4_coordinator_g6; PROCESS3 /root/p4_root_g3/p4_process_g3;
+LANE2 underARCH6; JOBweb8/report3/provider4 underARCH6; WATCHER3sibling /root/p4_watcher_g3.
+Resolve actualcurrentrolebindings, not thesehistoricaladdresses, beforefutureactions.
+Mainlocaldialogue capsules/replies reconciled; allnine logicalroles retained, no
+pendingquestions afteractualanswers. Meaningfulrecovery checkpoint saved, notperturnGit.
+
+Keepstandingcontinuationenabled as safety; no automaticretirement/archival/pause from
+assignment/turn completion. Ifno newwork/messages, remainidle withoutinventing/repeating
+experiments or remote bookkeeping. Owner may continue substantive role conversations
+here without requesting another project. PR286 remains NOTadopted; STOP/caps/grants/
+pin/main/tranche/CivicSmith2/Claude and paid/metered prohibitions unchanged.
+
+Historicalentries below are retained chronology, superseded by this addendum.
+
 # Essential continuing-interactivity assessment — ACTIVE
 
 Owner clarification OWNER-INTERACTIVE-SESSIONS-20261116.txt supersedes previous

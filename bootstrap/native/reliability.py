@@ -3,7 +3,7 @@
 Trusted supervisors supply actual execution evidence. This module cannot attest
 native identity, billing, observations or perpetual reliability. A completed JOB,
 clean round, empty queue or historical 'demonstrated' capability result never
-substitutes for the owner's seven remaining readiness areas.
+substitutes for the owner's development and essential interactivity requirements.
 """
 from collections.abc import Mapping
 import math

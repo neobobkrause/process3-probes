@@ -19,6 +19,8 @@ class OwnerDialogueTests(unittest.TestCase):
         self.adapter.lifecycle('ARCH','turn_completed',generation=1,evidence='actual final')
         first=self.adapter.request('ARCH','q1','Explain the CSV design.',provenance='observed-owner-input',activity='completed')
         self.assertEqual(first['tool'],'followup_task')
+        self.assertIn(first['message_id'],first['arguments']['message'])
+        self.assertIn('Explain the CSV design.',first['arguments']['message'])
         self.assertFalse(first['envelope']['build_authorized_by_forwarding'])
         self.adapter.reply('ARCH','q1','Fixed integer-cent columns avoid rounding ambiguity.',generation=1,evidence='actual native reply')
         second=self.adapter.request('ARCH','q2','What happens with invalid quantities?',provenance='observed-owner-input',activity='retained_unlisted')
