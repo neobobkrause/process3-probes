@@ -874,6 +874,41 @@
           },
           "dependency_trees": {}
         }
+      },
+      "report": {
+        "observed": true,
+        "actor": "/root/p4_root_g2/p4_arch_g5",
+        "observed_at": 1794877128.7788877,
+        "source": "Actual native controller module verification at eaab4aee7325949a5dee6926c15b5d1b78ff1d44",
+        "module": "report",
+        "integration_head": "4414c0325f1e2a56585e644eecccd8abfba8a88e",
+        "tested_head": "eaab4aee7325949a5dee6926c15b5d1b78ff1d44",
+        "returncode": 0,
+        "test_count": 21,
+        "command": [
+          "python3",
+          "-m",
+          "unittest",
+          "discover",
+          "-s",
+          "toy/native-cycle/report",
+          "-p",
+          "test_*.py",
+          "-v"
+        ],
+        "skipped_count": null,
+        "provenance": {
+          "checkpoint": "eaab4aee7325949a5dee6926c15b5d1b78ff1d44",
+          "owned_paths": [
+            "toy/native-cycle/report"
+          ],
+          "owned_trees": {
+            "toy/native-cycle/report": "bd62b21a9f10bf2f4f76df433cbf05dfa8769bb4"
+          },
+          "dependency_trees": {
+            "provider": "0fe72988b1cd4a99195a3ef4c2e8316a218cd3e1"
+          }
+        }
       }
     },
     "walks": {},
