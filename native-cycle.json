@@ -1,7 +1,7 @@
 {
   "version": 1,
   "stopped": false,
-  "slots": 1,
+  "slots": 2,
   "lease": null,
   "modules": {
     "provider": {
@@ -294,6 +294,14 @@
       "command": "retry",
       "job": "web",
       "value": null,
+      "source": "arch"
+    },
+    {
+      "at": 1794874340.7084382,
+      "kind": "native-arch-control",
+      "command": "slots",
+      "job": null,
+      "value": "2",
       "source": "arch"
     }
   ],
