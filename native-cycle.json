@@ -55,11 +55,11 @@
         "-v"
       ],
       "timeout": 180,
-      "status": "running",
+      "status": "review",
       "attempt": 3,
       "branch": "codex/p4-job-native-workshop-20261116-provider",
       "instructions": [],
-      "checkpoint": "7fbcbd444c748179ad76220c22c3d0f93f6ad901",
+      "checkpoint": "0ee73afc9ff9d735f1b10b2d4262f1235032760b",
       "base": "7fbcbd444c748179ad76220c22c3d0f93f6ad901",
       "notice_ids": [],
       "workspace": "/workspace/work/p4-native-cycle/provider-3",
@@ -68,10 +68,24 @@
       "verification": {
         "returncode": 0,
         "test_count": 4,
+        "command": [
+          "python3",
+          "-m",
+          "unittest",
+          "discover",
+          "-s",
+          "toy/native-cycle/provider",
+          "-p",
+          "test_*.py",
+          "-v"
+        ],
         "stdout": "",
-        "stderr": "test_contract_constants (test_quote_provider.PriceForTests.test_contract_constants) ... ok\ntest_invalid_bounds (test_quote_provider.PriceForTests.test_invalid_bounds) ... ok\ntest_invalid_types (test_quote_provider.PriceForTests.test_invalid_types) ... ok\ntest_ordinary_and_boundary_totals (test_quote_provider.PriceForTests.test_ordinary_and_boundary_totals) ... ok\n\n----------------------------------------------------------------------\nRan 4 tests in 0.000s\n\nOK\n"
+        "stderr": "test_contract_constants (test_quote_provider.PriceForTests.test_contract_constants) ... ok\ntest_invalid_bounds (test_quote_provider.PriceForTests.test_invalid_bounds) ... ok\ntest_invalid_types (test_quote_provider.PriceForTests.test_invalid_types) ... ok\ntest_ordinary_and_boundary_totals (test_quote_provider.PriceForTests.test_ordinary_and_boundary_totals) ... ok\n\n----------------------------------------------------------------------\nRan 4 tests in 0.001s\n\nOK\n",
+        "observed_at": 1794874514.2492955,
+        "actor": "/root/process4_root/p4_arch_g4",
+        "dependency_trees": {}
       },
-      "accepted": false,
+      "accepted": true,
       "pr": "https://github.com/neobobkrause/process3-probes/pull/273",
       "pr_number": 273,
       "integrated": "253e7fb458f8cb2baf7f696e50c70fac6652f8ed",
@@ -136,19 +150,27 @@
     }
   },
   "notices": {
+    "provider:0ee73afc9ff9d735f1b10b2d4262f1235032760b:web": {
+      "provider": "provider",
+      "user": "web",
+      "commit": "0ee73afc9ff9d735f1b10b2d4262f1235032760b",
+      "status": "pending",
+      "first_unconsumed_commit": "0ee73afc9ff9d735f1b10b2d4262f1235032760b",
+      "change_count": 1
+    },
     "provider:d4eaa939c90d614d40fd50eab439632217d83a9b:web": {
       "provider": "provider",
       "user": "web",
       "commit": "d4eaa939c90d614d40fd50eab439632217d83a9b",
       "status": "delivered-and-completed"
     },
-    "provider:d4eaa939c90d614d40fd50eab439632217d83a9b:report": {
+    "provider:0ee73afc9ff9d735f1b10b2d4262f1235032760b:report": {
       "provider": "provider",
       "user": "report",
-      "commit": "d4eaa939c90d614d40fd50eab439632217d83a9b",
+      "commit": "0ee73afc9ff9d735f1b10b2d4262f1235032760b",
       "status": "pending",
       "first_unconsumed_commit": "26796e064fb586ca893124bd8ec2414699bedd6c",
-      "change_count": 2
+      "change_count": 3
     }
   },
   "instructions": [],
@@ -183,10 +205,10 @@
       "attempt": 3
     },
     {
-      "at": 1794862799.0452569,
+      "at": 1794874515.9612873,
       "kind": "native-checkpoint",
       "job": "provider",
-      "checkpoint": "d4eaa939c90d614d40fd50eab439632217d83a9b",
+      "checkpoint": "0ee73afc9ff9d735f1b10b2d4262f1235032760b",
       "status": "review"
     },
     {
