@@ -10,10 +10,15 @@ python3 toy/native-cycle/report/quote_report.py \
   --provider-path toy/native-cycle/provider --quantities '2,12,50'
 python3 toy/native-cycle/report/quote_report.py \
   --provider-path toy/native-cycle/provider --quantities '50,2' --format json
+python3 toy/native-cycle/report/quote_report.py \
+  --provider-path toy/native-cycle/provider --quantities '50,2,12' --format csv
 ```
 
 The default readable table shows quantity, unit price and that alternative's total.
-`--format json` prints the public model. Invalid CLI input exits 2 with an error on
+`--format json` prints the public model. `--format csv` writes UTF-8 CSV bytes with
+fixed `quantity,unit_price_cents,total_cents` columns, CRLF line endings and rows
+in the requested order. Cents are integers without currency symbols or floats.
+Invalid CLI input exits 2 with an error on
 stderr and no partial result on stdout. Quantities are comma or newline separated
 unsigned ASCII decimals with optional surrounding token whitespace; empty tokens,
 duplicates after integer normalization, signs, fractions and exponents are invalid.
@@ -24,10 +29,13 @@ raises `ValueError` for invalid input. Its result contains `min_quantity`,
 `max_quantity`, `unit_price_cents`, and ordered `rows` of `quantity`/`total_cents`.
 Provider loading does not write bytecode into the injected provider directory.
 
-This accepted first phase implements the comparison model and text/JSON CLI only.
-The already planned second report phase adds `to_csv(comparison)` with fixed
-`quantity,unit_price_cents,total_cents` columns and CRLF, and CLI `--format csv`.
-CSV is not claimed implemented by this phase.
+The second report phase adds `to_csv(comparison) -> str` and the CSV CLI format,
+preserving the first phase's model and text/JSON behavior. The renderer validates
+the entire model before returning any CSV: bounds, unit price, quantities and
+totals must be valid integers (not bool), quantities must be distinct and within
+bounds, and there must be 1–8 alternatives. It preserves provider-delegated totals
+rather than recalculating prices. Arbitrary text or spreadsheet formulas cannot
+enter numeric cells. There is no aggregate row or extra blank line.
 
 Run the module tests:
 
