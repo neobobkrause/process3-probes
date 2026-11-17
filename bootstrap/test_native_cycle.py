@@ -192,6 +192,27 @@ class NativeCycleTests(unittest.TestCase):
         self.assertFalse(result['accepted']);self.assertEqual(result['status'],'blocked')
         with self.assertRaises(n.Rejected):self.cycle.integrate('provider')
 
+    def test_missing_declared_dependency_is_preserved_but_not_accepted(self):
+        self.change()
+        self.store.state['modules']['unavailable']={'paths':['toy/unavailable']}
+        self.store.state['modules']['provider']['uses']=['unavailable']
+        result=self.cycle.checkpoint('provider','completed')
+        self.assertEqual(result['verification']['returncode'],0)
+        self.assertGreater(result['verification']['test_count'],0)
+        self.assertEqual(result['verification']['missing_dependencies'],['unavailable'])
+        self.assertFalse(result['accepted'])
+        self.assertEqual(result['status'],'blocked')
+        self.assertTrue(result['pr_number'])
+        with self.assertRaises(n.Rejected):self.cycle.integrate('provider')
+
+    def test_module_skip_count_is_reported_without_claiming_all_tests_executed(self):
+        (self.repo/'toy/provider/test_value.py').write_text(
+            'import unittest\nclass Tests(unittest.TestCase):\n @unittest.skip("optional fixture")\n def test_optional(self): pass\n')
+        result=n.verify(self.repo,self.store.state['jobs']['provider'])
+        self.assertEqual(result['returncode'],0)
+        self.assertEqual(result['test_count'],1)
+        self.assertEqual(result['skipped_count'],1)
+
     def test_new_round_preserves_merged_pr_and_opens_one_new_pr(self):
         provider=n.Provider();job=self.store.state['jobs']['provider'];job['checkpoint']=self.base
         old={**self.provider.pr,'state':'MERGED'}

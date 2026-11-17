@@ -1,3 +1,16 @@
+# Live sustained assessment recovery — November 16
+
+Console deliberately interrupted operatingROOT2 while actualrunning and created/
+registered siblingROOT3 /root/p4_root_g3 through the supportedsupervisionplan.
+Retained ARCH5 /root/p4_root_g2/p4_arch_g5 continues; no reparent/restart. Actual
+report/web JOB overlap observed; report modelPR282 integrated, CSVreport2 follows;
+web6 checkpoint blocked pendingactualreport dependency, must reverifyzeroskips.
+Qualifieddesignlane output PR283 integrated af76c62. ActualscheduledSTOPread and
+freshassessmentreader preserved isolatedsyntheticstop; automaticcoordinatorunderstop
+stillheld and PROCESSproposal NOTadopted. Seven-area readiness remainsrunning.
+Current durablebindings/inventory supersede historical addresses below. Do not
+request a new productobjective or pause onemptyqueue; originalassessmentunfinished.
+
 # Original readiness assessment resumed — owner direction, November 16
 
 Owner explicitly says the completed716b6bdd pilot and empty queue do NOT complete

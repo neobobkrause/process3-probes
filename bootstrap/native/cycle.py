@@ -492,6 +492,7 @@ def verify(workspace, job):
         counts=[int(value) for value in re.findall(r'\bRan\s+(\d+)\s+tests?\b',output)]
         counts += [int(value) for value in re.findall(r'^# tests (\d+)\s*$',output,re.MULTILINE)]
         return {'returncode':result.returncode,'test_count':sum(counts),'command':list(job['verify']),
+                'skipped_count':sum(int(v) for v in re.findall(r'\bskipped=(\d+)\b',output)) + sum(int(v) for v in re.findall(r'^# skipped (\d+)\s*$',output,re.MULTILINE)),
                 'stdout':result.stdout[-4000:],'stderr':result.stderr[-4000:]}
 
 
@@ -674,7 +675,7 @@ class Cycle:
                   'observed_at':verification.get('observed_at'),'source':'Actual native controller module verification at '+tested,
                   'module':jid,'integration_head':head,'tested_head':tested,
                   'returncode':verification.get('returncode'),'test_count':verification.get('test_count'),
-                  'command':verification.get('command')}
+                  'command':verification.get('command'),'skipped_count':verification.get('skipped_count')}
         result={}
         def record(s):result.update(record_module_evidence(s,jid,evidence,trusted=facts))
         self.store.mutate(record)
@@ -890,9 +891,11 @@ class Cycle:
             if j['attempt']!=job['attempt']: raise Rejected('stale native attempt result')
             if sha!=j.get('checkpoint') and sha!=j['base']: c.notify(s,jid,sha)
             compact_notices(s)
+            accepted=bool(outcome=='completed' and verification and verification['returncode']==0
+                          and verification['test_count']>0 and not verification.get('missing_dependencies'))
             j.update(checkpoint=sha,last_outcome=outcome,verification=verification,
-                     accepted=bool(outcome=='completed' and verification and verification['returncode']==0 and verification['test_count']>0),
-                     status='paused' if outcome=='interrupted' else 'review' if verification and verification['returncode']==0 and verification['test_count']>0 else 'blocked')
+                     accepted=accepted,
+                     status='paused' if outcome=='interrupted' else 'review' if accepted else 'blocked')
             j.pop('ownership_violation',None)
             c.event(s,'native-checkpoint',job=jid,checkpoint=sha,status=j['status'])
         state=self.store.mutate(record); current=state['jobs'][jid]
