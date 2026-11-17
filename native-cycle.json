@@ -124,8 +124,8 @@
       "attempt": 5,
       "branch": "codex/p4-job-native-workshop-20261116-web",
       "instructions": [],
-      "checkpoint": "d707c26bfbdfa52e65b13624d0721f0255471647",
-      "base": "7fbcbd444c748179ad76220c22c3d0f93f6ad901",
+      "checkpoint": "1850787de5bdc631578e5f0e59ca470e5b7bd5a6",
+      "base": "00c5b6bb990fdf0f8ac069c2bd795ddce1d29788",
       "original_base": "3d4f7dbf624dba0c04af3d67a0b5fcea0b4c2e52",
       "accepted": false,
       "notice_ids": [
@@ -138,7 +138,12 @@
       "pr": "https://github.com/neobobkrause/process3-probes/pull/281",
       "pr_number": 281,
       "integrated": "7fbcbd444c748179ad76220c22c3d0f93f6ad901",
-      "trusted_baseline_merges": [],
+      "trusted_baseline_merges": [
+        {
+          "commit": "1850787de5bdc631578e5f0e59ca470e5b7bd5a6",
+          "base": "00c5b6bb990fdf0f8ac069c2bd795ddce1d29788"
+        }
+      ],
       "session_generation": 4,
       "technical_instructions": [
         "This phase supersedes old completed web instructions. Round1: add/run own injected-provider fresh-default regressions for minimum2 and minimum7, report actual failing INCOMPLETE, do not change app yet; preserve partial work for ARCH interruption/checkpoint. Ownpaths only toy/native-cycle/web. No app edits until later correction-phase instruction. Keep oldtests/source, run actual HTTP regression; report INCOMPLETE and remain available for supported interruption; no provider/gitpush/PR/merge/session/process action.",
@@ -244,11 +249,11 @@
       "checkpoint": "7fbcbd444c748179ad76220c22c3d0f93f6ad901"
     },
     {
-      "at": 1794874361.2340329,
+      "at": 1794875321.2309997,
       "kind": "native-baseline-sync",
       "job": "web",
-      "base": "7fbcbd444c748179ad76220c22c3d0f93f6ad901",
-      "checkpoint": "7fbcbd444c748179ad76220c22c3d0f93f6ad901"
+      "base": "00c5b6bb990fdf0f8ac069c2bd795ddce1d29788",
+      "checkpoint": "1850787de5bdc631578e5f0e59ca470e5b7bd5a6"
     },
     {
       "at": 1794862995.8404975,
