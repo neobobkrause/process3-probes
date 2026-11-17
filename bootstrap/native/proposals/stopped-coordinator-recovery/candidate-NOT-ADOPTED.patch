@@ -1,0 +1,42 @@
+--- a/bootstrap/native/layout.py
++++ b/bootstrap/native/layout.py
+@@ -102,0 +103,16 @@
++def stopped_coordinator_recovery_approved(state):
++    """Proposed policy gate; no adoption writer exists in this candidate.
++
++    A trusted adoption adapter must preserve actual owner approval separately.
++    A policy field is not identity authentication or permission to clear stop.
++    """
++    policy=state.get('native_layout',{}).get('stopped_coordinator_recovery')
++    if not isinstance(policy,dict) or policy.get('enabled') is not True:return False
++    approval=policy.get('owner_approval')
++    if not isinstance(approval,dict):return False
++    return (approval.get('source')=='observed-owner-input'
++            and approval.get('kind')=='decision'
++            and all(isinstance(approval.get(key),str) and approval[key].strip()
++                    for key in ('text','evidence')))
++
++
+@@ -122 +138,4 @@
+-    if state.get('stopped'):
++    stopped_recovery=(state.get('stopped') and role=='COORDINATOR'
++                      and activity=='unavailable' and not replace
++                      and stopped_coordinator_recovery_approved(state))
++    if state.get('stopped') and not stopped_recovery:
+@@ -153,0 +173,4 @@
++    if stopped_recovery:
++        prompt+=(' STOPPED OWNER FRONT DOOR ONLY: immediately read durable stopped state; '
++                 'receive questions/status and preserve exact input. Never prepare/resume/integrate/deploy '
++                 'product work or clear stop without an actual owner continue through existing controls. ')
+--- a/bootstrap/native/supervision.py
++++ b/bootstrap/native/supervision.py
+@@ -66 +66,2 @@
+-    if state.get('stopped'):
++    stopped=bool(state.get('stopped'))
++    if stopped and not (actor!=layout.CONSOLE and layout.stopped_coordinator_recovery_approved(state)):
+@@ -71,0 +73,2 @@
++        if stopped and role!='COORDINATOR':
++            result['holds'].append({'role':role,'reason':'durable stop preserved','stop_source':state.get('stop_source')});continue
+@@ -74,0 +78,2 @@
++        if stopped and activity!='unavailable':
++            result['holds'].append({'role':role,'reason':'stopped recovery permits unavailable coordinator replacement only'});continue

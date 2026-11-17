@@ -1,0 +1,19 @@
+{
+  "observed_at": 1794876639.1285603,
+  "actor": "/root/p4_root_g2/p4_process_g2",
+  "source": "actual-local-existing-governance-call",
+  "call": "native.governance.require_owner_evidence(PROCESS proposal)",
+  "input": {
+    "source": "observed-PROCESS-proposal",
+    "kind": "proposal",
+    "text": "Permit narrowly scoped read-only coordinator recovery while preserving all owner-stop product prohibitions.",
+    "evidence": "process-proposal/PROPOSAL.md; no owner adoption decision exists"
+  },
+  "result": {
+    "denied": true,
+    "reason": "OBSERVED_OWNER_AUTHORITY_REQUIRED"
+  },
+  "scope": "Existing provenance guard call only; not a provider mutation, adoption API, or physical tool confinement proof",
+  "owner_approval_required": true,
+  "adopted": false
+}
