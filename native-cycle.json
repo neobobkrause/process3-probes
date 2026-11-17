@@ -823,11 +823,12 @@
     }
   ],
   "native_development": {
-    "round": 1,
-    "head": "716b6bddc6330cb1e0c19a584ee3b225ad9ae8f3",
+    "round": 2,
+    "head": "4414c0325f1e2a56585e644eecccd8abfba8a88e",
     "required_modules": [
       "provider",
-      "web"
+      "web",
+      "report"
     ],
     "required_owned_paths": {
       "provider": [
@@ -835,133 +836,14 @@
       ],
       "web": [
         "toy/native-cycle/web"
+      ],
+      "report": [
+        "toy/native-cycle/report"
       ]
     },
-    "module_evidence": {
-      "provider": {
-        "observed": true,
-        "actor": "/root/process4_root/p4_arch_g4",
-        "observed_at": 1794874514.2492955,
-        "source": "Actual native controller module verification at 0ee73afc9ff9d735f1b10b2d4262f1235032760b",
-        "module": "provider",
-        "integration_head": "716b6bddc6330cb1e0c19a584ee3b225ad9ae8f3",
-        "tested_head": "0ee73afc9ff9d735f1b10b2d4262f1235032760b",
-        "returncode": 0,
-        "test_count": 4,
-        "command": [
-          "python3",
-          "-m",
-          "unittest",
-          "discover",
-          "-s",
-          "toy/native-cycle/provider",
-          "-p",
-          "test_*.py",
-          "-v"
-        ],
-        "provenance": {
-          "checkpoint": "0ee73afc9ff9d735f1b10b2d4262f1235032760b",
-          "owned_paths": [
-            "toy/native-cycle/provider"
-          ],
-          "owned_trees": {
-            "toy/native-cycle/provider": "0fe72988b1cd4a99195a3ef4c2e8316a218cd3e1"
-          },
-          "dependency_trees": {}
-        }
-      },
-      "web": {
-        "observed": true,
-        "actor": "/root/p4_root_g2/p4_arch_g5",
-        "observed_at": 1794875440.2642934,
-        "source": "Actual native controller module verification at 88b501c607ae64f1173828b15b68d830a78ec7be",
-        "module": "web",
-        "integration_head": "716b6bddc6330cb1e0c19a584ee3b225ad9ae8f3",
-        "tested_head": "88b501c607ae64f1173828b15b68d830a78ec7be",
-        "returncode": 0,
-        "test_count": 14,
-        "command": [
-          "python3",
-          "-m",
-          "unittest",
-          "discover",
-          "-s",
-          "toy/native-cycle/web",
-          "-p",
-          "test_*.py",
-          "-v"
-        ],
-        "provenance": {
-          "checkpoint": "88b501c607ae64f1173828b15b68d830a78ec7be",
-          "owned_paths": [
-            "toy/native-cycle/web"
-          ],
-          "owned_trees": {
-            "toy/native-cycle/web": "b9b7da25f8ec305bb01dbbc7f496fc784ba21704"
-          },
-          "dependency_trees": {
-            "provider": "0fe72988b1cd4a99195a3ef4c2e8316a218cd3e1"
-          }
-        }
-      }
-    },
-    "walks": {
-      "internal_walk": {
-        "observed": true,
-        "actor": "/root/p4_root_g2/p4_arch_g5",
-        "source": "Actual final source inspection and ephemeral loopback HTTP screen walk; /workspace/work/p4-native-cycle/evidence/current-pilot/internal-observations.json",
-        "observed_at": 1794875566.049664,
-        "head": "716b6bddc6330cb1e0c19a584ee3b225ad9ae8f3",
-        "design": "bootstrap/native/approved-layout-design/UX_SCREENS.md",
-        "coverage": [
-          "S1",
-          "S2",
-          "S3",
-          "S4"
-        ],
-        "outcome": "clean",
-        "flaws": []
-      },
-      "external_walk": {
-        "observed": true,
-        "actor": "/root/p4_root_g2/p4_arch_g5/external_walk_g1",
-        "source": "Actual independent deployed HTTP client journeys; /workspace/work/p4-native-cycle/evidence/current-pilot/external-observations.json",
-        "observed_at": 1794875647.3157988,
-        "head": "716b6bddc6330cb1e0c19a584ee3b225ad9ae8f3",
-        "design": "bootstrap/native/approved-layout-design/UX_JOURNEYS.md",
-        "coverage": [
-          "1",
-          "2",
-          "3",
-          "4"
-        ],
-        "outcome": "clean",
-        "flaws": [],
-        "deployment": {
-          "observed": true,
-          "actor": "/root/p4_root_g2/p4_arch_g5",
-          "source": "Actual subprocess startup using exact development plan environment replacement and HTTP probe",
-          "observed_at": 1794875587.4310994,
-          "head": "716b6bddc6330cb1e0c19a584ee3b225ad9ae8f3",
-          "status": "running",
-          "url": "http://127.0.0.1:8766/",
-          "http_status": 200,
-          "plan_id": "4a047f42535bd4165c8dd97e56d4f75f7a23ea7f6d2a46cb54ec3353a5ff6cba",
-          "pid": 96907
-        },
-        "limits": "Independent standard-library HTTP/HTML client. Browser attempt encountered Browser Use could not read requirements and native Chromium AT-SPI unavailable; no app browser rendering, keyboard/focus interaction or JavaScript execution proof."
-      }
-    },
-    "carry_flaws": {},
-    "prepared_release": {
-      "head": "716b6bddc6330cb1e0c19a584ee3b225ad9ae8f3",
-      "release_id": "workshop-minimum2-20261117",
-      "path": "/workspace/work/p4-native-cycle/evidence/current-pilot/development-release.json",
-      "sha256": "b69dc624b20ed5d018fe73a506981f76d42c67b4ae3ddea06ec7dadf9407c325",
-      "bytes": 903,
-      "published": false,
-      "scope": "local development manifest only"
-    }
+    "module_evidence": {},
+    "walks": {},
+    "carry_flaws": {}
   },
   "design_lanes": {
     "quote-comparison": {
