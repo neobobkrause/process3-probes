@@ -31,6 +31,41 @@ class SupervisionTests(unittest.TestCase):
         for invalid in (None,self.obs(s,'ROOT',stamp=1),{**self.obs(s,'ROOT'),'generation':1},self.obs(s,'ROOT',stamp=102)):
             result=supervision.plan_supervision(s,observations={'ROOT':invalid},now=101)
             self.assertFalse(result['actions']);self.assertTrue(result['holds'])
+    def test_retained_unlisted_known_binding_uses_followup_not_replacement(self):
+        s=self.state();before=copy.deepcopy(s)
+        result=supervision.plan_supervision(s,actor='/root/root_role',
+            observations={'ARCH':self.obs(s,'ARCH','retained_unlisted')},
+            pending_roles=('ARCH',),now=101)
+        action=result['actions'][0]
+        self.assertEqual(action['tool'],'followup_task')
+        self.assertEqual(action['arguments']['target'],s['native_roles']['ARCH']['target'])
+        self.assertEqual(action['generation'],3);self.assertEqual(s,before)
+        self.assertFalse(any(a.get('tool')=='spawn_agent' for a in result['actions']))
+
+    def test_unlisted_role_without_pending_work_remains_retained(self):
+        s=self.state();before=copy.deepcopy(s)
+        result=supervision.plan_supervision(s,actor='/root/root_role',
+            observations={'COORDINATOR':self.obs(s,'COORDINATOR','retained_unlisted')},now=101)
+        self.assertFalse(result['actions'])
+        self.assertEqual(result['healthy'][0]['role'],'COORDINATOR');self.assertEqual(s,before)
+        result=supervision.plan_supervision(s,actor='/root/root_role',observations={},pending_roles=('COORDINATOR',),now=101)
+        self.assertFalse(result['actions']);self.assertTrue(result['holds'])
+
+    def test_unlisted_probe_preserves_stop_capacity_and_binding_requirements(self):
+        s=self.state();s.update(stopped=True,stop_source='owner');before=copy.deepcopy(s)
+        result=supervision.plan_supervision(s,actor='/root/root_role',
+            observations={'COORDINATOR':self.obs(s,'COORDINATOR','retained_unlisted')},
+            pending_roles=('COORDINATOR',),now=101)
+        self.assertFalse(result['actions']);self.assertEqual(s,before)
+        s['stopped']=False
+        result=supervision.plan_supervision(s,actor='/root/root_role',
+            observations={'COORDINATOR':self.obs(s,'COORDINATOR','retained_unlisted')},
+            pending_roles=('COORDINATOR',),native_capacity=0,now=101)
+        self.assertFalse(result['actions'])
+        del s['native_roles']['COORDINATOR']
+        activity,reason=supervision.observation(s,'COORDINATOR',self.obs(s,'COORDINATOR','retained_unlisted'),now=101)
+        self.assertIsNone(activity);self.assertIn('unbound',reason)
+
     def test_owner_stop_and_slot_cap_preserved(self):
         s=self.state();s.update(stopped=True,stop_source='owner');old=copy.deepcopy(s)
         result=supervision.plan_supervision(s,observations={'ROOT':self.obs(s,'ROOT','unavailable')},now=101)

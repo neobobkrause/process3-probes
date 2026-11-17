@@ -91,6 +91,58 @@ class NativeContinuationTests(unittest.TestCase):
         state['native_continuation']['work']['recovery']['evidence']='fixture recovery receipt'
         self.assertEqual(n.assess(state).status,'demonstrated')
 
+    def test_pending_conversation_survives_ack_completion_and_retirement(self):
+        from native import interaction as i
+        state=self.state();local=i.empty();i.bind(local,'ARCH','/root/role/arch',1,conversation_id='arch')
+        i.ask(local,'ARCH','question','Still needs a substantive answer',provenance='proxy-test')
+        i.acknowledge(local,'ARCH','question',generation=1,evidence='actual processing ACK fixture')
+        i.event(local,'ARCH','turn_completed',generation=1,evidence='native completed fixture')
+        i.event(local,'ARCH','assignment_started',generation=1,assignment_id='task',evidence='fixture task')
+        i.event(local,'ARCH','assignment_completed',generation=1,assignment_id='task',evidence='fixture complete')
+        state['native_interaction']=local;before=copy.deepcopy(state)
+        result=n.assess(state);key='conversation:ARCH:question'
+        self.assertIn(key,result.pending_controls);self.assertIn(key,result.runnable)
+        self.assertEqual(state,before)
+        i.retire(local,'ARCH',generation=1,reason='explicit fixture retirement',source='fixture trusted host',evidence='fixture decision')
+        self.assertIn(key,n.assess(state).pending_controls)
+        i.answer(local,'ARCH','question','Actual explicit correlated reply fixture',generation=1,
+                 provenance='observed-native-reply',evidence='fixture actual reply')
+        self.assertNotIn(key,n.assess(state).pending_controls)
+
+    def test_pending_conversation_does_not_clear_owner_stop(self):
+        from native import interaction as i
+        state=self.state();local=i.empty();i.bind(local,'PROCESS','/root/role/process',1)
+        i.ask(local,'PROCESS','q','Pending question',provenance='observed-owner-input')
+        state.update(native_interaction=local,stopped=True,stop_source='owner')
+        before=copy.deepcopy(state);result=n.assess(state)
+        self.assertIn('conversation:PROCESS:q',result.pending_controls)
+        self.assertFalse(result.runnable);self.assertEqual(result.status,'owner_stopped');self.assertEqual(state,before)
+
+    def test_local_conversation_overlay_validates_schema_and_bounds(self):
+        from native import interaction as i
+        from unittest.mock import patch
+        local=i.empty();i.bind(local,'ARCH','/root/role/arch',1)
+        invalid=[]
+        x=copy.deepcopy(local);x['version']=True;invalid.append(x)
+        x=copy.deepcopy(local);x['roles']['ARCH']['binding']['generation']=True;invalid.append(x)
+        x=copy.deepcopy(local);x['roles']['ARCH']['lifecycle']='completed';invalid.append(x)
+        x=copy.deepcopy(local);x['roles']['ARCH']['pending_questions']={'q':{'id':'different','text':'q','provenance':'proxy-test'}};invalid.append(x)
+        x=copy.deepcopy(local);x['roles']['ARCH']['disposition']='retired';invalid.append(x)
+        for value in invalid:
+            state=self.state();state['native_interaction']=value
+            with self.assertRaises(ValueError):n.assess(state)
+        with patch.object(i,'MAX_BYTES',1):
+            state=self.state();state['native_interaction']=local
+            with self.assertRaises(ValueError):n.assess(state)
+
+    def test_restored_unbound_questions_remain_visible(self):
+        from native import interaction as i
+        local=i.empty();i.bind(local,'ARCH','/root/role/arch',1)
+        i.ask(local,'ARCH','pending','Carry into replacement',provenance='proxy-test')
+        recovered=i.empty();i.restore_snapshot(recovered,i.recovery_snapshot(local))
+        state=self.state();state['native_interaction']=recovered
+        self.assertIn('conversation:ARCH:pending',n.assess(state).pending_controls)
+
     def test_adopting_layout_does_not_substitute_for_actual_role_bindings(self):
         from native import layout
         state=self.state();layout.adopt(state,'fixture actual owner approval')
