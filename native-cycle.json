@@ -1238,7 +1238,7 @@
         "disposition": "retained",
         "assignment": {
           "id": "interactive-session-assessment",
-          "status": "active"
+          "status": "completed"
         },
         "decisions": [
           "Preserve product4414c032 and completed module/internal/browser/release evidence; no repeated product walk.",
