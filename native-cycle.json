@@ -122,7 +122,7 @@
         "-v"
       ],
       "timeout": 180,
-      "status": "done",
+      "status": "ready",
       "attempt": 5,
       "branch": "codex/p4-job-native-workshop-20261116-web",
       "instructions": [],
@@ -366,7 +366,7 @@
       "source": "arch"
     },
     {
-      "at": 1794874339.1359992,
+      "at": 1794876604.1364079,
       "kind": "native-arch-control",
       "command": "retry",
       "job": "web",
