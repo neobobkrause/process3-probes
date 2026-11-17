@@ -1,7 +1,7 @@
 {
   "version": 1,
   "stopped": false,
-  "slots": 1,
+  "slots": 2,
   "lease": null,
   "modules": {
     "alpha": {
@@ -105,6 +105,13 @@
       "command": "slots",
       "job": null,
       "value": "1"
+    },
+    {
+      "at": 1794876492.3370194,
+      "kind": "owner-control",
+      "command": "slots",
+      "job": null,
+      "value": "2"
     }
   ],
   "native": true,
@@ -130,5 +137,5 @@
     "approval_evidence": "bootstrap/OWNER-ROOT-LAYOUT-APPROVAL-20261116.txt",
     "identity_source": "trusted supervisor observed owner approval"
   },
-  "owner_job_cap": 1
+  "owner_job_cap": 2
 }
