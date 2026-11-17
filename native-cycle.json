@@ -405,27 +405,27 @@
       },
       "authorized_working_integration": {
         "state": "observed",
-        "evidence": "bootstrap/evidence/native-development-cycle/actual-native-state.json and actual-gate-source-verification.json; final experimental integration7fbcbd444c748179ad76220c22c3d0f93f6ad901"
+        "evidence": "bootstrap/evidence/integrated-pilot/actual-combined-pilot.json; actual716b6bdd pilot results, preserved PR280/281, provider4/web14, four Screens/17HTTPJourneys, samebranch web4\u21925 recovery; pending unassigned report retained."
       },
       "all_user_notifications": {
         "state": "observed",
-        "evidence": "bootstrap/evidence/native-development-cycle/actual-native-state.json; web notices completed, unassigned report notices durably pending"
+        "evidence": "bootstrap/evidence/integrated-pilot/actual-combined-pilot.json; actual716b6bdd pilot results, preserved PR280/281, provider4/web14, four Screens/17HTTPJourneys, samebranch web4\u21925 recovery; pending unassigned report retained."
       },
       "unfinished_recovery": {
         "state": "observed",
-        "evidence": "bootstrap/evidence/native-development-cycle/actual-native-role-recovery.json and actual-pending-worker-recovery.json; interrupted web attempt2\u21923"
+        "evidence": "bootstrap/evidence/integrated-pilot/actual-combined-pilot.json; actual716b6bdd pilot results, preserved PR280/281, provider4/web14, four Screens/17HTTPJourneys, samebranch web4\u21925 recovery; pending unassigned report retained."
       },
       "module_tests": {
         "state": "observed",
-        "evidence": "bootstrap/evidence/native-development-cycle/actual-native-state.json; provider4/web12 actual module tests"
+        "evidence": "bootstrap/evidence/integrated-pilot/actual-combined-pilot.json; actual716b6bdd pilot results, preserved PR280/281, provider4/web14, four Screens/17HTTPJourneys, samebranch web4\u21925 recovery; pending unassigned report retained."
       },
       "internal_walk": {
         "state": "observed",
-        "evidence": "bootstrap/native/probe-design/INTERNAL-WALK.md; actual final Screens walk"
+        "evidence": "bootstrap/evidence/integrated-pilot/actual-combined-pilot.json; actual716b6bdd pilot results, preserved PR280/281, provider4/web14, four Screens/17HTTPJourneys, samebranch web4\u21925 recovery; pending unassigned report retained."
       },
       "external_walk": {
         "state": "observed",
-        "evidence": "bootstrap/native/probe-design/EXTERNAL-WALK.md and bootstrap/evidence/native-development-cycle/external-home.jpg; actual Chromium journeys"
+        "evidence": "bootstrap/evidence/integrated-pilot/actual-combined-pilot.json; actual716b6bdd pilot results, preserved PR280/281, provider4/web14, four Screens/17HTTPJourneys, samebranch web4\u21925 recovery; pending unassigned report retained."
       },
       "consequential_restrictions": {
         "state": "observed",
@@ -433,9 +433,9 @@
         "limitation": "Controller-route checks and actual provider rules observed; inherited alternatives remain exposed and unauthorized. No physical exclusive credential/tool confinement claimed; ordinary module isolation remains optional."
       },
       "reactive_inter_session": {
-        "state": "not_exposed",
-        "evidence": "Actual directtool inventory/defaultdaemon probe/afterfinal trial in parent-notification evidence; addressable supervisory alternative11.139s/13.542s separately demonstrated but unadopted.",
-        "limitation": "Current depth0 ROOT idlewake unmet; adoption of child ROOT changes role identity, not topchat capability."
+        "state": "observed",
+        "evidence": "Owner-approved adopted addressable ROOT; bootstrap/evidence/reactive-communication/actual-native-timings.json (idle/active/replaced); bootstrap/evidence/parent-notification/actual-supervisory-role-alternative.json (11.139s ancestor,13.542s replacement); actual adopted ROOT ARCH_READY receipt at1794869427.097034; combined pilot provider notice currentweb5 receipt1794875358.",
+        "limitation": "Reactive non-root operational roles only. Idle depth0 owner console has no exposed immediate wake; ROOT replacement waits active console/safety continuation. No periodic timer substituted for reactive transport."
       }
     },
     "dependencies": {
