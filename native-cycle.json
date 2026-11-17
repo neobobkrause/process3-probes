@@ -120,7 +120,7 @@
         "-v"
       ],
       "timeout": 180,
-      "status": "paused",
+      "status": "ready",
       "attempt": 4,
       "branch": "codex/p4-job-native-workshop-20261116-web",
       "instructions": [],
@@ -139,9 +139,10 @@
       "trusted_baseline_merges": [],
       "session_generation": 4,
       "technical_instructions": [
-        "This phase supersedes old completed web instructions. Round1: add/run own injected-provider fresh-default regressions for minimum2 and minimum7, report actual failing INCOMPLETE, do not change app yet; preserve partial work for ARCH interruption/checkpoint. Ownpaths only toy/native-cycle/web. No app edits until later correction-phase instruction. Keep oldtests/source, run actual HTTP regression; report INCOMPLETE and remain available for supported interruption; no provider/gitpush/PR/merge/session/process action."
+        "This phase supersedes old completed web instructions. Round1: add/run own injected-provider fresh-default regressions for minimum2 and minimum7, report actual failing INCOMPLETE, do not change app yet; preserve partial work for ARCH interruption/checkpoint. Ownpaths only toy/native-cycle/web. No app edits until later correction-phase instruction. Keep oldtests/source, run actual HTTP regression; report INCOMPLETE and remain available for supported interruption; no provider/gitpush/PR/merge/session/process action.",
+        "Correction phase supersedes round1 test-only limitation: preserve existing real failing HTTP regressions and same branch/PR. Implement fresh GET / and Start again default derived dynamically from injected provider.MIN_QUANTITY, never literal2. Preserve submitted invalid text including empty/1 and safe escaping, existing validation and loopback controls. Update own README from unfinished to actual correction. Ownpaths only toy/native-cycle/web; do not edit provider/process/bootstrap or commit/push/PR/merge/start sessions. Run full own HTTP unittest suite and report actual result. Provider minimum2 accepted integration00c5b6bb990fdf0f8ac069c2bd795ddce1d29788; prepared trustedbaseline incorporates it. Notice acknowledgement is receipt only."
       ],
-      "restart": false
+      "restart": true
     }
   },
   "notices": {
@@ -297,11 +298,11 @@
       "source": "arch"
     },
     {
-      "at": 1794874337.2178524,
+      "at": 1794875314.487048,
       "kind": "native-arch-control",
       "command": "instruction",
       "job": "web",
-      "value": "This phase supersedes old completed web instructions. Round1: add/run own injected-provider fresh-default regressions for minimum2 and minimum7, report actual failing INCOMPLETE, do not change app yet; preserve partial work for ARCH interruption/checkpoint. Ownpaths only toy/native-cycle/web. No app edits until later correction-phase instruction. Keep oldtests/source, run actual HTTP regression; report INCOMPLETE and remain available for supported interruption; no provider/gitpush/PR/merge/session/process action.",
+      "value": "Correction phase supersedes round1 test-only limitation: preserve existing real failing HTTP regressions and same branch/PR. Implement fresh GET / and Start again default derived dynamically from injected provider.MIN_QUANTITY, never literal2. Preserve submitted invalid text including empty/1 and safe escaping, existing validation and loopback controls. Update own README from unfinished to actual correction. Ownpaths only toy/native-cycle/web; do not edit provider/process/bootstrap or commit/push/PR/merge/start sessions. Run full own HTTP unittest suite and report actual result. Provider minimum2 accepted integration00c5b6bb990fdf0f8ac069c2bd795ddce1d29788; prepared trustedbaseline incorporates it. Notice acknowledgement is receipt only.",
       "source": "arch"
     },
     {
@@ -607,6 +608,11 @@
       "at": 1794874337.2178457,
       "job": "web",
       "text": "This phase supersedes old completed web instructions. Round1: add/run own injected-provider fresh-default regressions for minimum2 and minimum7, report actual failing INCOMPLETE, do not change app yet; preserve partial work for ARCH interruption/checkpoint. Ownpaths only toy/native-cycle/web. No app edits until later correction-phase instruction. Keep oldtests/source, run actual HTTP regression; report INCOMPLETE and remain available for supported interruption; no provider/gitpush/PR/merge/session/process action."
+    },
+    {
+      "at": 1794875314.4870386,
+      "job": "web",
+      "text": "Correction phase supersedes round1 test-only limitation: preserve existing real failing HTTP regressions and same branch/PR. Implement fresh GET / and Start again default derived dynamically from injected provider.MIN_QUANTITY, never literal2. Preserve submitted invalid text including empty/1 and safe escaping, existing validation and loopback controls. Update own README from unfinished to actual correction. Ownpaths only toy/native-cycle/web; do not edit provider/process/bootstrap or commit/push/PR/merge/start sessions. Run full own HTTP unittest suite and report actual result. Provider minimum2 accepted integration00c5b6bb990fdf0f8ac069c2bd795ddce1d29788; prepared trustedbaseline incorporates it. Notice acknowledgement is receipt only."
     }
   ]
 }
