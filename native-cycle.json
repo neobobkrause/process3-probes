@@ -1166,5 +1166,39 @@
         ]
       }
     }
+  },
+  "interactive_recovery": {
+    "version": 1,
+    "roles": {
+      "PROCESS": {
+        "conversation_id": "p4-native-workshop-20261116:PROCESS",
+        "disposition": "retained",
+        "assignment": null,
+        "decisions": [],
+        "references": [],
+        "pending_questions": {}
+      },
+      "COORDINATOR": {
+        "conversation_id": "p4-native-workshop-20261116:COORDINATOR",
+        "disposition": "retained",
+        "assignment": null,
+        "decisions": [
+          "Turn completion and assignment completion do not retire the coordinator; pending questions require substantive correlated replies.",
+          "Preserve exact owner instructions once; forwarding never changes stop, cap, grants or build authority.",
+          "Isolated synthetic controls exercise remains owner-source STOP; PR286 is proposed and unadopted, no stopped-role recovery exception authorized."
+        ],
+        "references": [
+          "bootstrap/OWNER-INTERACTIVE-SESSIONS-20261116.txt",
+          "/workspace/work/p4-reliability-phase/coordinator5-interactive-reactivation.json"
+        ],
+        "pending_questions": {
+          "proxy-coordinator-unanswered-across-replacement-20261116": {
+            "id": "proxy-coordinator-unanswered-across-replacement-20261116",
+            "text": "Why must a completed coordinator assignment leave its conversation available, and what must a replacement preserve for an already acknowledged but unanswered question?",
+            "provenance": "proxy-test"
+          }
+        }
+      }
+    }
   }
 }
