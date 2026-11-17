@@ -705,8 +705,8 @@
       "generation": 3
     },
     "LANE:quote-comparison": {
-      "target": "/root/p4_root_g2/p4_arch_g5/p4_lane_quote_comparison_g1",
-      "generation": 1
+      "target": "/root/p4_root_g3/p4_arch_g6/p4_lane_quote_comparison_g2",
+      "generation": 2
     },
     "JOB:report": {
       "target": "/root/p4_root_g2/p4_arch_g5/report_g2",
@@ -1043,7 +1043,11 @@
         "target": "/root/p4_root_g3/p4_arch_g6",
         "generation": 6
       },
-      "status": "requested"
+      "status": "active",
+      "session": {
+        "target": "/root/p4_root_g3/p4_arch_g6/p4_lane_quote_comparison_g2",
+        "generation": 2
+      }
     }
   },
   "native_readiness": {
