@@ -96,7 +96,9 @@
       "technical_instructions": [
         "Work only within assigned module paths and own tests/README. No bootstrap/process/.process/settings/grants/credentials/account/inference-API/other-module edits, git push, PR, merge or new sessions. Python standard library only. Leave preservation/provider operations to native controller. Report actual tests and unfinished work truthfully. Later ARCH technical revision supersedes completed initial quantity contract only: raise MIN_QUANTITY from 1 to 2, keep MAX_QUANTITY=50 and UNIT_PRICE_CENTS=275 and signature/type validation. Update bound-aware messages/docs/own tests: 2=550,12=3300,50=13750;1 and51 rejected, bool/nonints rejected. Do not change web. Report consumer-visible effects."
       ],
-      "session_generation": 3
+      "session_generation": 3,
+      "expected_session_generation": 4,
+      "conversation_only_recovery": true
     },
     "web": {
       "id": "web",
@@ -521,6 +523,13 @@
       "kind": "native-job-conversation-recovery",
       "job": "report",
       "generation": 3,
+      "evidence": "/workspace/work/p4-native-cycle/evidence/interactive-assessment/root-unsuccessful-actions.json"
+    },
+    {
+      "at": 1794882581.2548556,
+      "kind": "native-job-conversation-recovery",
+      "job": "provider",
+      "generation": 4,
       "evidence": "/workspace/work/p4-native-cycle/evidence/interactive-assessment/root-unsuccessful-actions.json"
     }
   ],
