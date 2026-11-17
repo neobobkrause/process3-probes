@@ -644,8 +644,8 @@
       "generation": 7
     },
     "COORDINATOR": {
-      "target": "/root/p4_root_g2/p4_coordinator_g4",
-      "generation": 4
+      "target": "/root/p4_root_g3/p4_coordinator_g5",
+      "generation": 5
     },
     "ARCH": {
       "target": "/root/p4_root_g2/p4_arch_g5",
