@@ -122,7 +122,7 @@
         "-v"
       ],
       "timeout": 180,
-      "status": "blocked",
+      "status": "ready",
       "attempt": 6,
       "branch": "codex/p4-job-native-workshop-20261116-web",
       "instructions": [],
@@ -148,7 +148,8 @@
       "technical_instructions": [
         "This phase supersedes old completed web instructions. Round1: add/run own injected-provider fresh-default regressions for minimum2 and minimum7, report actual failing INCOMPLETE, do not change app yet; preserve partial work for ARCH interruption/checkpoint. Ownpaths only toy/native-cycle/web. No app edits until later correction-phase instruction. Keep oldtests/source, run actual HTTP regression; report INCOMPLETE and remain available for supported interruption; no provider/gitpush/PR/merge/session/process action.",
         "Correction phase supersedes round1 test-only limitation: preserve existing real failing HTTP regressions and same branch/PR. Implement fresh GET / and Start again default derived dynamically from injected provider.MIN_QUANTITY, never literal2. Preserve submitted invalid text including empty/1 and safe escaping, existing validation and loopback controls. Update own README from unfinished to actual correction. Ownpaths only toy/native-cycle/web; do not edit provider/process/bootstrap or commit/push/PR/merge/start sessions. Run full own HTTP unittest suite and report actual result. Provider minimum2 accepted integration00c5b6bb990fdf0f8ac069c2bd795ddce1d29788; prepared trustedbaseline incorporates it. Notice acknowledgement is receipt only.",
-        "New extendedfeature phase supersedes earlier minimum-only phase. Frozen accepted design /workspace/process3-probes/bootstrap/native/approved-layout-design/quote-comparison/interface-contract.json and Screens/Journeys whenready. Own ONLY toy/native-cycle/web; preserve oldsinglequoteUX/tests. Implement /compare form/result and /compare.csv CSVattachment; textarea comma/newline ASCIIunsignedtokens1\u20138distinct normalizedquantities, strictwholebatch validation, rawinvalidretainedescaped, provider-drivenbounds/defaults clamp2/12/50dedupe. Call injected report quote_report.py build_comparison(provider,quantities),to_csv(model), neverduplicatepricing. Optional report_path fourthcreate_serverargument and CLI --report-path, defaultsiblingreportdir compatibleexistingdeploymentplan. Preserve oldsinglequotestartup evenif reportdependency notyetinbaseline; independenttests supply temporaryreportstub, report module is separatelybuilt and will trustedmerge before finalacceptance. Tests realHTTP includes singlequoteunchanged, navigation, orderedcomparetable, HTMLpayloadretention, duplicates/missing/empty/oversize/invalidgrammar, injectedprovider minimum7 and maxchanged, CSVheaders/disposition/UTF8/CRLF/roundtrip, propererrors and recovery. At finalbaseline run against actualreport too. No othermodule/process/bootstrap/gitcommit/push/PR/merge/session/credentials/accounts/public/paid/metered. Leavefilesforhost; reportactualtests+unfinished truthfully."
+        "New extendedfeature phase supersedes earlier minimum-only phase. Frozen accepted design /workspace/process3-probes/bootstrap/native/approved-layout-design/quote-comparison/interface-contract.json and Screens/Journeys whenready. Own ONLY toy/native-cycle/web; preserve oldsinglequoteUX/tests. Implement /compare form/result and /compare.csv CSVattachment; textarea comma/newline ASCIIunsignedtokens1\u20138distinct normalizedquantities, strictwholebatch validation, rawinvalidretainedescaped, provider-drivenbounds/defaults clamp2/12/50dedupe. Call injected report quote_report.py build_comparison(provider,quantities),to_csv(model), neverduplicatepricing. Optional report_path fourthcreate_serverargument and CLI --report-path, defaultsiblingreportdir compatibleexistingdeploymentplan. Preserve oldsinglequotestartup evenif reportdependency notyetinbaseline; independenttests supply temporaryreportstub, report module is separatelybuilt and will trustedmerge before finalacceptance. Tests realHTTP includes singlequoteunchanged, navigation, orderedcomparetable, HTMLpayloadretention, duplicates/missing/empty/oversize/invalidgrammar, injectedprovider minimum7 and maxchanged, CSVheaders/disposition/UTF8/CRLF/roundtrip, propererrors and recovery. At finalbaseline run against actualreport too. No othermodule/process/bootstrap/gitcommit/push/PR/merge/session/credentials/accounts/public/paid/metered. Leavefilesforhost; reportactualtests+unfinished truthfully.",
+        "Final dependency acceptance phase: preserve web6partial/source/tests and samebranchPR284. Trustedbaseline now191db453b2de66a9cd4bb9d744fa6ac66f28c31b includes actualreportCSV21tests accepted. Run fullownHTTPsuite with actualsiblingreportdefaulttest running NO SKIPS; inspect actualcomparisonCSVbytes vs realreport. Correct only genuineownedwebissues iffound; do not fabricateflaws. Update README pendingdependency note to actualverification truthfully. OwnONLY toy/native-cycle/web; no othermodule/process/gitcommit/push/PR/merge/provider/session/credentials/accounts/paid/public/metered. Report actualfullargv/count/skips/result and firstprocessingUnix; leaveforhostcheckpoint."
       ],
       "restart": true
     },
@@ -379,15 +380,15 @@
       "source": "arch"
     },
     {
-      "at": 1794876602.4192894,
+      "at": 1794877259.4223819,
       "kind": "native-arch-control",
       "command": "instruction",
       "job": "web",
-      "value": "New extendedfeature phase supersedes earlier minimum-only phase. Frozen accepted design /workspace/process3-probes/bootstrap/native/approved-layout-design/quote-comparison/interface-contract.json and Screens/Journeys whenready. Own ONLY toy/native-cycle/web; preserve oldsinglequoteUX/tests. Implement /compare form/result and /compare.csv CSVattachment; textarea comma/newline ASCIIunsignedtokens1\u20138distinct normalizedquantities, strictwholebatch validation, rawinvalidretainedescaped, provider-drivenbounds/defaults clamp2/12/50dedupe. Call injected report quote_report.py build_comparison(provider,quantities),to_csv(model), neverduplicatepricing. Optional report_path fourthcreate_serverargument and CLI --report-path, defaultsiblingreportdir compatibleexistingdeploymentplan. Preserve oldsinglequotestartup evenif reportdependency notyetinbaseline; independenttests supply temporaryreportstub, report module is separatelybuilt and will trustedmerge before finalacceptance. Tests realHTTP includes singlequoteunchanged, navigation, orderedcomparetable, HTMLpayloadretention, duplicates/missing/empty/oversize/invalidgrammar, injectedprovider minimum7 and maxchanged, CSVheaders/disposition/UTF8/CRLF/roundtrip, propererrors and recovery. At finalbaseline run against actualreport too. No othermodule/process/bootstrap/gitcommit/push/PR/merge/session/credentials/accounts/public/paid/metered. Leavefilesforhost; reportactualtests+unfinished truthfully.",
+      "value": "Final dependency acceptance phase: preserve web6partial/source/tests and samebranchPR284. Trustedbaseline now191db453b2de66a9cd4bb9d744fa6ac66f28c31b includes actualreportCSV21tests accepted. Run fullownHTTPsuite with actualsiblingreportdefaulttest running NO SKIPS; inspect actualcomparisonCSVbytes vs realreport. Correct only genuineownedwebissues iffound; do not fabricateflaws. Update README pendingdependency note to actualverification truthfully. OwnONLY toy/native-cycle/web; no othermodule/process/gitcommit/push/PR/merge/provider/session/credentials/accounts/paid/public/metered. Report actualfullargv/count/skips/result and firstprocessingUnix; leaveforhostcheckpoint.",
       "source": "arch"
     },
     {
-      "at": 1794876604.1364079,
+      "at": 1794877259.422401,
       "kind": "native-arch-control",
       "command": "retry",
       "job": "web",
@@ -775,6 +776,11 @@
       "at": 1794876939.9174912,
       "job": "report",
       "text": "Phase2 queuedCSVexport nowdispatch: preserve phase1model/textJSON source/tests/samebranch/PRhistory. Add to_csv(comparison)->str exactfrozen fixedheader quantity,unit_price_cents,total_cents CRLF, numericrows sameorder and UTF8. CLI --format csv writes exactbytes no extraCR or blankline; retaintext/json. Validatemalformedmodels cannot produceformula/nonintcells; ownmodelpubliccontract stays. Thoroughownunittests csv.readerroundtrip/lineendings/order/singleton/eightrows/injectedprovider/CLI actualbytesinvalidnooutput; allphase1testsremainpass. Docsaccuratefullfeature. OwnONLY toy/native-cycle/report; noothermodule/git/provider/process/session/credentials/accounts/paid/public/metered. Actualbaseline5c0d6db69a6ea16101e32792e5c5eeedd63cf8a8 providerunchangedmin2. Leaveforhostcheckpoint, reportactualtests."
+    },
+    {
+      "at": 1794877259.4223733,
+      "job": "web",
+      "text": "Final dependency acceptance phase: preserve web6partial/source/tests and samebranchPR284. Trustedbaseline now191db453b2de66a9cd4bb9d744fa6ac66f28c31b includes actualreportCSV21tests accepted. Run fullownHTTPsuite with actualsiblingreportdefaulttest running NO SKIPS; inspect actualcomparisonCSVbytes vs realreport. Correct only genuineownedwebissues iffound; do not fabricateflaws. Update README pendingdependency note to actualverification truthfully. OwnONLY toy/native-cycle/web; no othermodule/process/gitcommit/push/PR/merge/provider/session/credentials/accounts/paid/public/metered. Report actualfullargv/count/skips/result and firstprocessingUnix; leaveforhostcheckpoint."
     }
   ],
   "native_development": {
