@@ -11,6 +11,14 @@
         "toy/controls-exercise/alpha"
       ],
       "uses": []
+    },
+    "beta": {
+      "id": "beta",
+      "order": 20,
+      "paths": [
+        "toy/controls-exercise/beta"
+      ],
+      "uses": []
     }
   },
   "jobs": {
@@ -34,6 +42,27 @@
       "branch": "codex/p4-job-native-controls-exercise-20261117-g4-alpha",
       "instructions": [],
       "checkpoint": null
+    },
+    "beta": {
+      "id": "beta",
+      "order": 20,
+      "paths": [
+        "toy/controls-exercise/beta"
+      ],
+      "uses": [],
+      "prompt": "EXERCISE inert scheduling fixture. Never prepare or execute source work.",
+      "completion": "EXERCISE no product execution",
+      "verify": [
+        "python3",
+        "-c",
+        "pass"
+      ],
+      "timeout": 10,
+      "status": "ready",
+      "attempt": 0,
+      "branch": "codex/p4-job-native-controls-exercise-20261117-g4-beta",
+      "instructions": [],
+      "checkpoint": null
     }
   },
   "notices": {},
@@ -49,6 +78,11 @@
       "at": 1794876482.851076,
       "kind": "assignment",
       "job": "alpha"
+    },
+    {
+      "at": 1794876484.4679513,
+      "kind": "assignment",
+      "job": "beta"
     }
   ],
   "native": true,
