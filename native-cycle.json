@@ -554,11 +554,11 @@
     "identity_source": "trusted supervisor observed owner approval",
     "process_request": {
       "arch": {
-        "target": "/root/process4_root/arch",
-        "generation": 3
+        "target": "/root/p4_root_g2/p4_arch_g5",
+        "generation": 5
       },
       "source": "observed-native-ARCH-request",
-      "evidence": "Actual native ARCH gen3 request to ROOT: dedicated PROCESS lane for owner-authorized stream C governance/native approval and design-lane rules; current registry lacks PROCESS. Technical request, not owner words or expanded grant."
+      "evidence": "Actual coordinator isolated controls reproduction /workspace/work/p4-controls-exercise-20261117-g4/results.json,25CLIresults; codex/p4-state-native-controls-exercise-20261117-g4 owner stop=true causes supervision-plan durable-stop holds for coordinator recovery, so owner question/control front door unavailable after coordinator loss. Technical continue and prepare correctly denied; no bypass. Request PROCESS proposal only: problem/repro/minimal correction/test plan and owner approval before adoption; standing pilot controls unchanged."
     }
   },
   "bootstrap_workstreams": {
