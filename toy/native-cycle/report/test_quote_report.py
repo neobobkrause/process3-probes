@@ -1,5 +1,8 @@
 """Comparison contract and real CLI subprocess coverage."""
 import importlib.util
+import copy
+import csv
+import io
 import json
 from pathlib import Path
 import subprocess
@@ -101,6 +104,61 @@ class GrammarTests(unittest.TestCase):
             report.parse_quantities([2])
 
 
+class CsvTests(unittest.TestCase):
+    def test_exact_numeric_crlf_and_preserved_order(self):
+        model = report.build_comparison(provider(), [50, 2, 12])
+        before = copy.deepcopy(model)
+        result = report.to_csv(model)
+        self.assertEqual(result, "quantity,unit_price_cents,total_cents\r\n"
+                         "50,275,13750\r\n2,275,550\r\n12,275,3300\r\n")
+        self.assertEqual(model, before)
+        self.assertNotIn("\r\r\n", result)
+        self.assertNotIn("\n", result.replace("\r\n", ""))
+        self.assertEqual(list(csv.reader(io.StringIO(result, newline=""))),
+                         [["quantity", "unit_price_cents", "total_cents"],
+                          ["50", "275", "13750"], ["2", "275", "550"],
+                          ["12", "275", "3300"]])
+
+    def test_singleton_eight_rows_and_injected_delegated_totals(self):
+        revised = provider(7, 20, 199, lambda quantity: quantity * 199 + 17)
+        for quantities in ([7], list(range(14, 6, -1))):
+            with self.subTest(quantities=quantities):
+                result = report.to_csv(report.build_comparison(revised, quantities))
+                rows = list(csv.DictReader(io.StringIO(result, newline="")))
+                self.assertEqual([int(row["quantity"]) for row in rows], quantities)
+                self.assertEqual([int(row["unit_price_cents"]) for row in rows],
+                                 [199] * len(quantities))
+                self.assertEqual([int(row["total_cents"]) for row in rows],
+                                 [quantity * 199 + 17 for quantity in quantities])
+
+    def test_rejects_malformed_models_and_row_counts(self):
+        valid = report.build_comparison(provider(), [2, 12])
+        invalid = [None, [], "=SUM(A1)", {}, {**valid, "rows": []},
+                   {**valid, "rows": valid["rows"] * 5},
+                   {**valid, "rows": "2,275,550"},
+                   {**valid, "rows": [None]},
+                   {**valid, "rows": [{"quantity": 2}]},
+                   {**valid, "rows": [valid["rows"][0]] * 2}]
+        for model in invalid:
+            with self.subTest(model=model), self.assertRaises(ValueError):
+                report.to_csv(model)
+
+    def test_formula_boolean_float_and_invalid_bounds_cannot_enter_cells(self):
+        valid = report.build_comparison(provider(), [2])
+        for field, values in (("quantity", ("=1+1", "2", True, 2.0, 1, 51)),
+                              ("total_cents", ("+SUM(A1)", "550", True, 5.5, -1))):
+            for value in values:
+                model = copy.deepcopy(valid)
+                model["rows"][0][field] = value
+                with self.subTest(field=field, value=value), self.assertRaises(ValueError):
+                    report.to_csv(model)
+        for field, value in (("unit_price_cents", "@SUM(A1)"),
+                             ("unit_price_cents", True), ("unit_price_cents", -1),
+                             ("min_quantity", "2"), ("max_quantity", 1)):
+            with self.subTest(field=field, value=value), self.assertRaises(ValueError):
+                report.to_csv({**valid, field: value})
+
+
 class CliTests(unittest.TestCase):
     def run_cli(self, *args):
         return subprocess.run([sys.executable, "-B", str(ROOT / "quote_report.py"), *args],
@@ -145,6 +203,38 @@ class CliTests(unittest.TestCase):
         missing_argument = self.run_cli("--provider-path", str(PROVIDER))
         self.assertEqual(missing_argument.returncode, 2)
         self.assertIn("--quantities", missing_argument.stderr)
+
+    def test_csv_stdout_exact_bytes_and_roundtrip(self):
+        result = subprocess.run([sys.executable, "-B", str(ROOT / "quote_report.py"),
+                                 "--provider-path", str(PROVIDER), "--quantities", "50,2,12",
+                                 "--format", "csv"], capture_output=True, timeout=10)
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertEqual(result.stderr, b"")
+        self.assertEqual(result.stdout, b"quantity,unit_price_cents,total_cents\r\n"
+                         b"50,275,13750\r\n2,275,550\r\n12,275,3300\r\n")
+        parsed = list(csv.DictReader(io.StringIO(result.stdout.decode("utf-8"), newline="")))
+        self.assertEqual([int(row["quantity"]) for row in parsed], [50, 2, 12])
+
+    def test_csv_injected_provider_and_invalid_input_have_no_partial_output(self):
+        with tempfile.TemporaryDirectory() as directory:
+            source = Path(directory) / "quote_provider.py"
+            source.write_text("MIN_QUANTITY=7\nMAX_QUANTITY=9\nUNIT_PRICE_CENTS=199\n"
+                              "def price_for(q):\n return q*199+17\n")
+            result = subprocess.run([sys.executable, "-B", str(ROOT / "quote_report.py"),
+                                     "--provider-path", directory, "--quantities", "9\n7",
+                                     "--format", "csv"], capture_output=True, timeout=10)
+            self.assertEqual(result.returncode, 0, result.stderr)
+            self.assertEqual(result.stdout, b"quantity,unit_price_cents,total_cents\r\n"
+                             b"9,199,1808\r\n7,199,1410\r\n")
+            self.assertEqual(list(Path(directory).iterdir()), [source])
+            for quantities in ("7,6", "7,07", "7,", "", "7,=1+1"):
+                with self.subTest(quantities=quantities):
+                    invalid = self.run_cli("--provider-path", directory, "--quantities",
+                                           quantities, "--format", "csv")
+                    self.assertEqual(invalid.returncode, 2)
+                    self.assertEqual(invalid.stdout, "")
+                    self.assertIn("error:", invalid.stderr)
+                    self.assertNotIn("Traceback", invalid.stderr)
 
 
 if __name__ == "__main__":

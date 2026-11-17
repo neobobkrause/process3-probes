@@ -1,6 +1,8 @@
 """Provider-injected comparisons of alternative workshop-card quantities."""
 import argparse
+import csv
 import importlib.util
+import io
 import json
 from pathlib import Path
 import re
@@ -81,12 +83,48 @@ def to_text(comparison):
     return "\n".join(lines) + "\n"
 
 
+def to_csv(comparison):
+    """Return the ordered numeric alternatives as a UTF-8-ready CSV string.
+
+    Validate the complete public model before rendering. In particular, arbitrary
+    strings cannot become spreadsheet formulas or partially emitted rows.
+    """
+    if not isinstance(comparison, dict):
+        raise ValueError("comparison must be a model dictionary")
+    try:
+        low, high, unit = (comparison["min_quantity"], comparison["max_quantity"],
+                           comparison["unit_price_cents"])
+        rows = comparison["rows"]
+    except KeyError:
+        raise ValueError("comparison model is missing required fields") from None
+    if (any(type(value) is not int for value in (low, high, unit))
+            or low > high or unit < 0):
+        raise ValueError("comparison bounds and cents must be valid integers")
+    if not isinstance(rows, (list, tuple)) or not 1 <= len(rows) <= 8:
+        raise ValueError("comparison must contain 1 to 8 alternatives")
+    values, seen = [], set()
+    for row in rows:
+        if not isinstance(row, dict):
+            raise ValueError("comparison rows must be dictionaries")
+        quantity, total = row.get("quantity"), row.get("total_cents")
+        if (type(quantity) is not int or not low <= quantity <= high
+                or type(total) is not int or total < 0 or quantity in seen):
+            raise ValueError("comparison rows must contain distinct valid integer quantities and cents")
+        seen.add(quantity)
+        values.append((quantity, unit, total))
+    output = io.StringIO(newline="")
+    writer = csv.writer(output, lineterminator="\r\n")
+    writer.writerow(("quantity", "unit_price_cents", "total_cents"))
+    writer.writerows(values)
+    return output.getvalue()
+
+
 def main(argv=None):
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--provider-path", required=True)
     parser.add_argument("--quantities", required=True,
                         help="1–8 distinct quantities separated by commas or newlines")
-    parser.add_argument("--format", choices=("text", "json"), default="text")
+    parser.add_argument("--format", choices=("text", "json", "csv"), default="text")
     args = parser.parse_args(argv)
     try:
         quantities = parse_quantities(args.quantities)
@@ -94,7 +132,9 @@ def main(argv=None):
         model = build_comparison(provider, quantities)
     except (ValueError, OSError, ImportError, AttributeError) as error:
         parser.error(str(error))
-    if args.format == "json":
+    if args.format == "csv":
+        sys.stdout.buffer.write(to_csv(model).encode("utf-8"))
+    elif args.format == "json":
         print(json.dumps(model))
     else:
         print(to_text(model), end="")
