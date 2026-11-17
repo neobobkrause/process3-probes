@@ -109,8 +109,8 @@
       "attempt": 4,
       "branch": "codex/p4-job-native-workshop-20261116-web",
       "instructions": [],
-      "checkpoint": "5ae3d9093e084fcdb6f00e806766a9539e07dc0d",
-      "base": "253e7fb458f8cb2baf7f696e50c70fac6652f8ed",
+      "checkpoint": "7fbcbd444c748179ad76220c22c3d0f93f6ad901",
+      "base": "7fbcbd444c748179ad76220c22c3d0f93f6ad901",
       "original_base": "3d4f7dbf624dba0c04af3d67a0b5fcea0b4c2e52",
       "accepted": false,
       "notice_ids": [],
@@ -223,11 +223,11 @@
       "checkpoint": "7fbcbd444c748179ad76220c22c3d0f93f6ad901"
     },
     {
-      "at": 1794862867.7938879,
+      "at": 1794874361.2340329,
       "kind": "native-baseline-sync",
       "job": "web",
-      "base": "253e7fb458f8cb2baf7f696e50c70fac6652f8ed",
-      "checkpoint": "253e7fb458f8cb2baf7f696e50c70fac6652f8ed"
+      "base": "7fbcbd444c748179ad76220c22c3d0f93f6ad901",
+      "checkpoint": "7fbcbd444c748179ad76220c22c3d0f93f6ad901"
     },
     {
       "at": 1794862995.8404975,
