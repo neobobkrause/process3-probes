@@ -105,17 +105,15 @@
         "-v"
       ],
       "timeout": 180,
-      "status": "ready",
-      "attempt": 3,
+      "status": "running",
+      "attempt": 4,
       "branch": "codex/p4-job-native-workshop-20261116-web",
       "instructions": [],
       "checkpoint": "5ae3d9093e084fcdb6f00e806766a9539e07dc0d",
       "base": "253e7fb458f8cb2baf7f696e50c70fac6652f8ed",
       "original_base": "3d4f7dbf624dba0c04af3d67a0b5fcea0b4c2e52",
-      "accepted": true,
-      "notice_ids": [
-        "provider:d4eaa939c90d614d40fd50eab439632217d83a9b:web"
-      ],
+      "accepted": false,
+      "notice_ids": [],
       "workspace": "/workspace/work/p4-native-cycle/web-3",
       "session": "/root/p4_arch_native_cycle/web_replacement",
       "last_outcome": "completed",
@@ -198,10 +196,10 @@
       "integration": "253e7fb458f8cb2baf7f696e50c70fac6652f8ed"
     },
     {
-      "at": 1794862930.4067855,
+      "at": 1794874357.982751,
       "kind": "native-reserve",
       "job": "web",
-      "attempt": 3
+      "attempt": 4
     },
     {
       "at": 1794863064.591595,
