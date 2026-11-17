@@ -523,7 +523,22 @@ class Cycle:
     def assess(self):
         # Remote recovery facts plus local transient work, without remote writes.
         state,_=self.store.read();state['native_mailbox']=self.mailbox.read()
-        return native_continuation.assess(state).to_dict()
+        result=native_continuation.assess(state).to_dict()
+        readiness=state.get('native_readiness')
+        if readiness is not None:
+            from native.reliability import assess as assess_readiness
+            if not isinstance(readiness,dict) or set(readiness)!={'required','evidence'} or readiness['required'] is not True:
+                raise Rejected('explicit readiness scope and evidence required')
+            assessment=assess_readiness(readiness['evidence'])
+            result.update(basic_status=result['status'],readiness=assessment)
+            if assessment['unfinished']:
+                pending=['readiness:'+area for area in assessment['unfinished']
+                         if area not in assessment['confirmed_prerequisites']]
+                result['runnable']=tuple(result['runnable'])+tuple(pending)
+                result['blocked']=tuple(result['blocked'])+tuple('readiness:'+area for area in assessment['confirmed_prerequisites'])
+                result['status']='continue' if result['runnable'] else 'external_blocked'
+                result['reason']='Overall readiness requires the remaining owner-requested execution evidence; basic capability findings are not completion.'
+        return result
 
     def _arch_actor(self,state,actor):
         if native_layout.configured(state):

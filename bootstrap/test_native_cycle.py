@@ -489,6 +489,13 @@ class NativeCycleTests(unittest.TestCase):
                     self.cycle.prepare('provider')
                 self.assertEqual(self.store.state,before)
 
+    def test_extended_readiness_is_not_closed_by_basic_capability_assessment(self):
+        self.store.state['native_readiness']={'required':True,'evidence':{}}
+        result=self.cycle.assess()
+        self.assertEqual(result['status'],'continue')
+        self.assertIn('readiness:parallel_jobs',result['runnable'])
+        self.assertEqual(result['readiness']['status'],'assessment_incomplete')
+
     def test_repeated_owner_record_milestone_does_not_write_an_empty_remote_commit(self):
         self.cycle.adopt_layout('fixture observed approval')
         self.cycle.register_role('ROOT','/root/supervisor',1,actor='/root')
