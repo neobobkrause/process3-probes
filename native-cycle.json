@@ -59,8 +59,8 @@
       "attempt": 3,
       "branch": "codex/p4-job-native-workshop-20261116-provider",
       "instructions": [],
-      "checkpoint": "d4eaa939c90d614d40fd50eab439632217d83a9b",
-      "base": "a6f613b5461afc4a0996c4bb5016a5668fc4c9f7",
+      "checkpoint": "7fbcbd444c748179ad76220c22c3d0f93f6ad901",
+      "base": "7fbcbd444c748179ad76220c22c3d0f93f6ad901",
       "notice_ids": [],
       "workspace": "/workspace/work/p4-native-cycle/provider-2",
       "session": "/root/p4_arch_native_cycle/provider_job",
@@ -218,11 +218,11 @@
       "integration": "7fbcbd444c748179ad76220c22c3d0f93f6ad901"
     },
     {
-      "at": 1794862754.5248172,
+      "at": 1794874354.5934396,
       "kind": "native-baseline-sync",
       "job": "provider",
-      "base": "a6f613b5461afc4a0996c4bb5016a5668fc4c9f7",
-      "checkpoint": "a6f613b5461afc4a0996c4bb5016a5668fc4c9f7"
+      "base": "7fbcbd444c748179ad76220c22c3d0f93f6ad901",
+      "checkpoint": "7fbcbd444c748179ad76220c22c3d0f93f6ad901"
     },
     {
       "at": 1794862867.7938879,
