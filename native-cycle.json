@@ -122,7 +122,7 @@
         "-v"
       ],
       "timeout": 180,
-      "status": "review",
+      "status": "done",
       "attempt": 7,
       "branch": "codex/p4-job-native-workshop-20261116-web",
       "instructions": [],
@@ -162,7 +162,7 @@
       },
       "pr": "https://github.com/neobobkrause/process3-probes/pull/284",
       "pr_number": 284,
-      "integrated": "716b6bddc6330cb1e0c19a584ee3b225ad9ae8f3",
+      "integrated": "4414c0325f1e2a56585e644eecccd8abfba8a88e",
       "trusted_baseline_merges": [
         {
           "commit": "1850787de5bdc631578e5f0e59ca470e5b7bd5a6",
@@ -270,7 +270,7 @@
       "provider": "report",
       "user": "web",
       "commit": "eaab4aee7325949a5dee6926c15b5d1b78ff1d44",
-      "status": "pending",
+      "status": "delivered-and-completed",
       "first_unconsumed_commit": "1fb981e478a2a68e38abcd11b31fdc8f3ef3e8ee",
       "change_count": 2
     }
@@ -339,11 +339,11 @@
       "status": "review"
     },
     {
-      "at": 1794875526.8852262,
+      "at": 1794877548.3761804,
       "kind": "native-integrated",
       "job": "web",
-      "checkpoint": "88b501c607ae64f1173828b15b68d830a78ec7be",
-      "integration": "716b6bddc6330cb1e0c19a584ee3b225ad9ae8f3"
+      "checkpoint": "213863ee30f1aa601b340b6ee319fa9aa42b99d6",
+      "integration": "4414c0325f1e2a56585e644eecccd8abfba8a88e"
     },
     {
       "at": 1794874354.5934396,
