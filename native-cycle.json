@@ -1185,8 +1185,12 @@
         "conversation_id": "p4-native-workshop-20261116:PROCESS",
         "disposition": "retained",
         "assignment": null,
-        "decisions": [],
-        "references": [],
+        "decisions": [
+          "PR286 is proposed, not adopted. Actual owner approval is required before governing changes."
+        ],
+        "references": [
+          "https://github.com/neobobkrause/process3-probes/pull/286"
+        ],
         "pending_questions": {}
       },
       "COORDINATOR": {
@@ -1202,13 +1206,105 @@
           "bootstrap/OWNER-INTERACTIVE-SESSIONS-20261116.txt",
           "/workspace/work/p4-reliability-phase/coordinator5-interactive-reactivation.json"
         ],
-        "pending_questions": {
-          "proxy-coordinator-unanswered-across-replacement-20261116": {
-            "id": "proxy-coordinator-unanswered-across-replacement-20261116",
-            "text": "Why must a completed coordinator assignment leave its conversation available, and what must a replacement preserve for an already acknowledged but unanswered question?",
-            "provenance": "proxy-test"
-          }
-        }
+        "pending_questions": {}
+      },
+      "ARCH": {
+        "conversation_id": "p4-native-workshop-20261116:ARCH",
+        "disposition": "retained",
+        "assignment": {
+          "id": "interactive-session-assessment",
+          "status": "active"
+        },
+        "decisions": [
+          "Preserve product4414c032 and completed module/internal/browser/release evidence; no repeated product walk.",
+          "Keep stable logical roles after native turn/assignment completion; explicit retirement is separate from replacement."
+        ],
+        "references": [
+          "bootstrap/native/approved-layout-design/EXTENDED-PLAN.md",
+          "bootstrap/native/approved-layout-design/quote-comparison/interface-contract.json",
+          "runtime/evidence/extended-assessment/arch-final-summary.json"
+        ],
+        "pending_questions": {}
+      },
+      "LANE:quote-comparison": {
+        "conversation_id": "p4-native-workshop-20261116:LANE:quote-comparison",
+        "disposition": "retained",
+        "assignment": {
+          "id": "qualified-quote-comparison-design",
+          "status": "completed"
+        },
+        "decisions": [
+          "Accepted productdesign staysfrozen; alternatives1..8, no aggregatepurchase, rawinvalidretention, safeCSV; no newdesignwork."
+        ],
+        "references": [
+          "bootstrap/native/approved-layout-design/quote-comparison/DECISIONS.md"
+        ],
+        "pending_questions": {}
+      },
+      "JOB:web": {
+        "conversation_id": "p4-native-workshop-20261116:JOB:web",
+        "disposition": "retained",
+        "assignment": {
+          "id": "web-module-attempt7",
+          "status": "completed"
+        },
+        "decisions": [
+          "Accepted finalhead4414 web26HTTPtests ZEROskips using actualreportCSV; preserve completedcode, no productrepeat."
+        ],
+        "references": [
+          "runtime/evidence/extended-assessment/web7-checkpoint.json"
+        ],
+        "pending_questions": {}
+      },
+      "JOB:report": {
+        "conversation_id": "p4-native-workshop-20261116:JOB:report",
+        "disposition": "retained",
+        "assignment": {
+          "id": "report-module-attempt2",
+          "status": "completed"
+        },
+        "decisions": [
+          "AcceptedreportCSV21tests, integercentfixedheaderCRLF/orderedrows; preserve acceptedwork."
+        ],
+        "references": [
+          "toy/native-cycle/report/README.md"
+        ],
+        "pending_questions": {}
+      },
+      "JOB:provider": {
+        "conversation_id": "p4-native-workshop-20261116:JOB:provider",
+        "disposition": "retained",
+        "assignment": {
+          "id": "provider-module-attempt3",
+          "status": "completed"
+        },
+        "decisions": [
+          "Acceptedprovider MIN2 MAX50 UNIT275 strictintincludingboolrejection; preserve completedwork."
+        ],
+        "references": [
+          "toy/native-cycle/provider/README.md"
+        ],
+        "pending_questions": {}
+      },
+      "ROOT": {
+        "conversation_id": "p4-native-workshop-20261116:ROOT",
+        "disposition": "retained",
+        "assignment": null,
+        "decisions": [],
+        "references": [
+          "bootstrap/OWNER-INTERACTIVE-SESSIONS-20261116.txt"
+        ],
+        "pending_questions": {}
+      },
+      "WATCHER": {
+        "conversation_id": "p4-native-workshop-20261116:WATCHER",
+        "disposition": "retained",
+        "assignment": null,
+        "decisions": [
+          "Remain a retained console-created sibling standby; report observed faults, never create ROOT under WATCHER or claim waking idle console."
+        ],
+        "references": [],
+        "pending_questions": {}
       }
     }
   }
