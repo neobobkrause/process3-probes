@@ -37,11 +37,12 @@
         "pass"
       ],
       "timeout": 10,
-      "status": "ready",
+      "status": "paused",
       "attempt": 0,
       "branch": "codex/p4-job-native-controls-exercise-20261117-g4-alpha",
       "instructions": [],
-      "checkpoint": null
+      "checkpoint": null,
+      "restart": false
     },
     "beta": {
       "id": "beta",
@@ -112,6 +113,13 @@
       "command": "slots",
       "job": null,
       "value": "2"
+    },
+    {
+      "at": 1794876493.76663,
+      "kind": "owner-control",
+      "command": "interrupt",
+      "job": "alpha",
+      "value": null
     }
   ],
   "native": true,
