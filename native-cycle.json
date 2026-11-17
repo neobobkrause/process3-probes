@@ -180,7 +180,9 @@
         "New extendedfeature phase supersedes earlier minimum-only phase. Frozen accepted design /workspace/process3-probes/bootstrap/native/approved-layout-design/quote-comparison/interface-contract.json and Screens/Journeys whenready. Own ONLY toy/native-cycle/web; preserve oldsinglequoteUX/tests. Implement /compare form/result and /compare.csv CSVattachment; textarea comma/newline ASCIIunsignedtokens1\u20138distinct normalizedquantities, strictwholebatch validation, rawinvalidretainedescaped, provider-drivenbounds/defaults clamp2/12/50dedupe. Call injected report quote_report.py build_comparison(provider,quantities),to_csv(model), neverduplicatepricing. Optional report_path fourthcreate_serverargument and CLI --report-path, defaultsiblingreportdir compatibleexistingdeploymentplan. Preserve oldsinglequotestartup evenif reportdependency notyetinbaseline; independenttests supply temporaryreportstub, report module is separatelybuilt and will trustedmerge before finalacceptance. Tests realHTTP includes singlequoteunchanged, navigation, orderedcomparetable, HTMLpayloadretention, duplicates/missing/empty/oversize/invalidgrammar, injectedprovider minimum7 and maxchanged, CSVheaders/disposition/UTF8/CRLF/roundtrip, propererrors and recovery. At finalbaseline run against actualreport too. No othermodule/process/bootstrap/gitcommit/push/PR/merge/session/credentials/accounts/public/paid/metered. Leavefilesforhost; reportactualtests+unfinished truthfully.",
         "Final dependency acceptance phase: preserve web6partial/source/tests and samebranchPR284. Trustedbaseline now191db453b2de66a9cd4bb9d744fa6ac66f28c31b includes actualreportCSV21tests accepted. Run fullownHTTPsuite with actualsiblingreportdefaulttest running NO SKIPS; inspect actualcomparisonCSVbytes vs realreport. Correct only genuineownedwebissues iffound; do not fabricateflaws. Update README pendingdependency note to actualverification truthfully. OwnONLY toy/native-cycle/web; no othermodule/process/gitcommit/push/PR/merge/provider/session/credentials/accounts/paid/public/metered. Report actualfullargv/count/skips/result and firstprocessingUnix; leaveforhostcheckpoint."
       ],
-      "restart": true
+      "restart": true,
+      "expected_session_generation": 8,
+      "conversation_only_recovery": true
     },
     "report": {
       "id": "report",
@@ -501,6 +503,13 @@
         "target": "/root/p4_root_g2/p4_arch_g5/p4_lane_quote_comparison_g1",
         "generation": 1
       },
+      "evidence": "/workspace/work/p4-native-cycle/evidence/interactive-assessment/root-unsuccessful-actions.json"
+    },
+    {
+      "at": 1794882490.2000527,
+      "kind": "native-job-conversation-recovery",
+      "job": "web",
+      "generation": 8,
       "evidence": "/workspace/work/p4-native-cycle/evidence/interactive-assessment/root-unsuccessful-actions.json"
     }
   ],
