@@ -19,12 +19,13 @@
         "toy/native-cycle/web"
       ],
       "uses": [
-        "provider"
+        "provider",
+        "report"
       ]
     },
     "report": {
       "id": "report",
-      "order": 30,
+      "order": 15,
       "paths": [
         "toy/native-cycle/report"
       ],
@@ -104,7 +105,8 @@
         "toy/native-cycle/web"
       ],
       "uses": [
-        "provider"
+        "provider",
+        "report"
       ],
       "prompt": "Work only within your assigned paths and tests. No bootstrap, process, .process, settings, grants, credentials, network accounts, inference API, git pushes, PRs, merges, or other module edits. Python standard library only. Leave preservation and provider operations to the native controller. Report changed files, test argv/result, and any unfinished work truthfully. Implement the standard-library workshop-card HTTP app per UX_SCREENS S1-S4: CLI --provider-path --host --port; import provider from injected directory; create_server(host, port, provider_path); loopback binding only. GET / form, GET /quote result or 400 validation, unknown 404. Provider constants drive visible unit price/range; integer cents formatting, escaped HTML, labelled input, role=alert. Initial invalid input may reset to 1, explicitly record this known unfinished correction in module README. Own unittest tests run a loopback ephemeral server and make real HTTP requests, covering result, validation/duplicate/missing parameters, unknown routes, escaping and injected revised provider values. Do not implement provider logic or edit provider. No long-running server in final test command.",
       "completion": "S1-S4 implemented, own tests pass using actual HTTP and injected provider; known rejected-input retention shortcoming recorded for later correction.",
@@ -171,6 +173,35 @@
         "Correction phase supersedes round1 test-only limitation: preserve existing real failing HTTP regressions and same branch/PR. Implement fresh GET / and Start again default derived dynamically from injected provider.MIN_QUANTITY, never literal2. Preserve submitted invalid text including empty/1 and safe escaping, existing validation and loopback controls. Update own README from unfinished to actual correction. Ownpaths only toy/native-cycle/web; do not edit provider/process/bootstrap or commit/push/PR/merge/start sessions. Run full own HTTP unittest suite and report actual result. Provider minimum2 accepted integration00c5b6bb990fdf0f8ac069c2bd795ddce1d29788; prepared trustedbaseline incorporates it. Notice acknowledgement is receipt only."
       ],
       "restart": true
+    },
+    "report": {
+      "id": "report",
+      "order": 15,
+      "paths": [
+        "toy/native-cycle/report"
+      ],
+      "uses": [
+        "provider"
+      ],
+      "prompt": "Implement substantive phase1 of accepted quantity-comparison feature. Read frozen contract /workspace/process3-probes/bootstrap/native/approved-layout-design/quote-comparison/interface-contract.json. Own only toy/native-cycle/report. Build quote_report.py build_comparison(provider,quantities) exact typed ordered1\u20138 alternatives API, provider-driven bounds/cents, no fake discounts/aggregate. Add standardlibrary CLI --provider-path --quantities accepting JSON list input? Use comma/newline input grammar from contract; --format text|json (defaulttext), safe error exit2. Import injected provider without bytecode. Human text table and JSON model output. Thorough own unittest tests for boundaries,types,bool,duplicates,sequencecount,provider min7/max changed,delegatedpricing/order,CLI subprocess success/error,private temporaryprovider. README publiccontract. This phase1 scope intentionally excludes to_csv/CLIcsv which is the alreadyqueued next substantive samebranch phase; do not weaken/model skip. No edits outside ownpaths, gitcommit/push/PR/merge/provideroperations/newsession/process/grants/credentials/accounts/paid/public/metered. Leave files for host checkpoint. Report actualtests/results and incompleteitems honestly.",
+      "completion": "Comparison model and text/JSON CLI implemented, actual own tests pass; exact CSVcontract retained for phase2, no overallcompletionclaim.",
+      "verify": [
+        "python3",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "toy/native-cycle/report",
+        "-p",
+        "test_*.py",
+        "-v"
+      ],
+      "timeout": 180,
+      "status": "ready",
+      "attempt": 0,
+      "branch": "codex/p4-job-native-workshop-20261116-report",
+      "instructions": [],
+      "checkpoint": null
     }
   },
   "notices": {
@@ -213,6 +244,11 @@
       "command": "retry",
       "job": "provider",
       "value": null
+    },
+    {
+      "at": 1794876573.4529405,
+      "kind": "assignment",
+      "job": "report"
     },
     {
       "at": 1794874351.4398065,
@@ -348,6 +384,16 @@
       "job": "web",
       "value": null,
       "source": "arch"
+    },
+    {
+      "at": 1794876573.4529786,
+      "kind": "native-technical-assignment-graph",
+      "actor": "/root/p4_root_g2/p4_arch_g5",
+      "modules": [
+        "report",
+        "web"
+      ],
+      "source": "Owner-authorized extended functional requirement; nonoverlapping ownership and frozen design"
     }
   ],
   "native": true,
