@@ -438,7 +438,9 @@ def current_native_recipient(mailbox,message_id):
     message=mailbox['messages'][message_id];recipient=mailbox['recipients'][message['recipient']]
     if message['recipient'].startswith('JOB:'):
         attempt=mailbox.get('job_attempts',{}).get(message['recipient'])
-        if attempt is not None and recipient['generation']!=attempt:
+        generation=mailbox.get('job_session_generations',{}).get(message['recipient'],attempt)
+        bound_attempt=mailbox.get('job_bound_attempts',{}).get(message['recipient'],recipient['generation'])
+        if attempt is not None and (bound_attempt!=attempt or recipient['generation']!=generation):
             raise communication.StaleRecipient('current job attempt needs its actual native session registered first')
     return recipient
 
@@ -505,11 +507,16 @@ class Cycle:
         self.runtime.mkdir(parents=True,exist_ok=True)
         name=hashlib.sha256(self.store.branch.encode()).hexdigest()[:16]+'.json'
         self.mailbox=communication.LocalMailbox(self.runtime/'operational'/name,self._seed_mailbox)
+        from native.interaction import LocalInteraction
+        from native.owner_dialogue import OwnerDialogue
+        self.dialogue=OwnerDialogue(LocalInteraction(self.runtime/'operational'/(name+'.interaction')),self.mailbox)
 
     def _seed_mailbox(self):
         state,_=self.store.read();mailbox=copy.deepcopy(native_mailbox(state))
         mailbox.setdefault('recipients',{}).update(state.get('native_roles',{}))
         mailbox['job_attempts']={'JOB:'+key:job['attempt'] for key,job in state['jobs'].items()}
+        mailbox['job_session_generations']={'JOB:'+key:job.get('session_generation',job['attempt']) for key,job in state['jobs'].items()}
+        mailbox['job_bound_attempts']={'JOB:'+key:job.get('session_attempt',job.get('session_generation',job['attempt'])) for key,job in state['jobs'].items()}
         enqueue_provider_notices(state,mailbox)
         return mailbox
 
@@ -517,6 +524,8 @@ class Cycle:
         state=state or self.store.read()[0]
         def sync(mailbox):
             mailbox.setdefault('job_attempts',{}).update({'JOB:'+key:job['attempt'] for key,job in state['jobs'].items()})
+            mailbox.setdefault('job_session_generations',{}).update({'JOB:'+key:job.get('session_generation',job['attempt']) for key,job in state['jobs'].items()})
+            mailbox.setdefault('job_bound_attempts',{}).update({'JOB:'+key:job.get('session_attempt',job.get('session_generation',job['attempt'])) for key,job in state['jobs'].items()})
             return enqueue_provider_notices(state,mailbox)
         _,pending=self.mailbox.mutate(sync)
         return pending
@@ -524,6 +533,7 @@ class Cycle:
     def assess(self):
         # Remote recovery facts plus local transient work, without remote writes.
         state,_=self.store.read();state['native_mailbox']=self.mailbox.read()
+        state['native_interaction']=self.dialogue.local.read()  # Ephemeral overlay, never remote routine traffic.
         result=native_continuation.assess(state).to_dict()
         readiness=state.get('native_readiness')
         if readiness is not None:
@@ -540,6 +550,51 @@ class Cycle:
                 result['status']='continue' if result['runnable'] else 'external_blocked'
                 result['reason']='Overall readiness requires the remaining owner-requested execution evidence; basic capability findings are not completion.'
         return result
+
+    def _logical_role_retired(self,role):
+        return self.dialogue.local.read()['roles'].get(role,{}).get('disposition')=='retired'
+
+    def _restore_role_if_missing(self,role,state):
+        saved=state.get('interactive_recovery',{}).get('roles',{}).get(role)
+        if saved is not None and role not in self.dialogue.local.read()['roles']:
+            self.dialogue.restore({'version':1,'roles':{role:saved}})
+
+    def _conversation_binding_precheck(self,role,target,generation):
+        from native.interaction import bind
+        snapshot=self.dialogue.local.read()
+        if role in snapshot['roles']:
+            bind(snapshot,role,target,generation)
+
+    def _conversation_binding_observed(self,role,target,generation):
+        if role in self.dialogue.local.read()['roles']:
+            self.dialogue.bind(role,target,generation,evidence='Actual native registration observed by trusted creator')
+
+    def dialogue_bind(self,role,actor,evidence,conversation_id=None):
+        state,_=self.store.read()
+        root=native_layout.current(state,'ROOT')
+        if not root or actor not in ('/root',root['target']):
+            raise Rejected('trusted console or current ROOT observes conversation binding')
+        binding=native_layout.current(state,role)
+        if not binding:raise Rejected('actual registered native role required')
+        self._restore_role_if_missing(role,state)
+        return self.dialogue.bind(role,binding['target'],binding['generation'],
+                                  evidence=evidence,conversation_id=conversation_id)
+
+    def dialogue_checkpoint(self,actor):
+        state,_=self.store.read()
+        root=native_layout.current(state,'ROOT')
+        if not root or actor not in ('/root',root['target']):
+            raise Rejected('trusted console or current ROOT records meaningful recovery')
+        snapshot=self.dialogue.recovery_snapshot()
+        self.store.mutate(lambda s:s.update(interactive_recovery=snapshot))
+        return {'recovery':snapshot,'routine_remote_transport':False,'meaningful_checkpoint':True}
+
+    def dialogue_restore(self,actor,snapshot=None):
+        state,_=self.store.read()
+        root=native_layout.current(state,'ROOT')
+        if not root or actor not in ('/root',root['target']):
+            raise Rejected('trusted console or current ROOT restores meaningful recovery')
+        return self.dialogue.restore(snapshot if snapshot is not None else state.get('interactive_recovery',{'version':1,'roles':{}}))
 
     def _arch_actor(self,state,actor):
         if native_layout.configured(state):
@@ -589,8 +644,15 @@ class Cycle:
     def supervision_plan(self,observations,actor,native_capacity=None,pending_roles=()):
         from native.supervision import plan_supervision
         state,_=self.store.read()
-        return plan_supervision(state,observations=observations,actor=actor,native_capacity=native_capacity,
+        result=plan_supervision(state,observations=observations,actor=actor,native_capacity=native_capacity,
                                 pending_roles=pending_roles,state_branch=self.store.branch)
+        permitted=[]
+        for action in result['actions']:
+            if self._logical_role_retired(action['role']):
+                result['holds'].append({'role':action['role'],'reason':'explicit logical retirement; no automatic reactivation'})
+            else:permitted.append(action)
+        result['actions']=permitted
+        return result
 
     def owner_input(self,*,actor,text,kind,message_id,marked=False,expected_generation=None):
         from native.coordination import plan_owner_message
@@ -630,7 +692,21 @@ class Cycle:
         self.store.mutate(record)
         return result
 
+    def lane_recover(self,name,actor,generation,expected_generation,evidence):
+        if self._logical_role_retired('LANE:'+name):raise Rejected('explicit logical lane retirement preserved')
+        from native.design_lanes import revalidate_lane
+        def record(state):
+            previous=copy.deepcopy(state['native_roles'].get('LANE:'+name))
+            state['design_lanes'][name]=revalidate_lane(state,name,actor=actor,generation=generation,
+                expected_generation=expected_generation,evidence=evidence)
+            c.event(state,'native-lane-recovery',job='LANE:'+name,previous_binding=previous,evidence=evidence)
+        result=self.store.mutate(record)
+        return {'role':'LANE:'+name,'lane':result['design_lanes'][name],
+                'previous_native_binding':result['native_roles'].get('LANE:'+name),
+                'requires_actual_native_replacement':True,'logical_role_retired':False}
+
     def lane_plan(self,name,actor,activity,expected_generation=None):
+        if self._logical_role_retired('LANE:'+name):return {'action':'hold','role':'LANE:'+name,'reason':'explicit logical retirement'}
         from native.design_lanes import plan_lane
         state,_=self.store.read();scope=plan_lane(state,name,actor=actor)
         if scope['action']=='hold':return scope
@@ -714,6 +790,7 @@ class Cycle:
         return {'manifest':manifest,**result}
 
     def prepare(self, jid):
+        if self._logical_role_retired('JOB:'+jid):raise Rejected('explicitly retired logical JOB requires deliberate new role decision')
         state,_=self.store.read(); job=state['jobs'][jid]
         if self._pilot_held(state):raise Rejected('combined bootstrap verification pending; new product jobs held')
         if state['stopped'] or job['status'] not in ('ready','paused','blocked'): raise Rejected('job not dispatchable or run stopped')
@@ -727,6 +804,9 @@ class Cycle:
             if sum(x['status'] in ACTIVE for x in s['jobs'].values())>=min(s['slots'],s.get('owner_job_cap',8)): raise Rejected('native job slot cap reached')
             j.setdefault('base',base); j.setdefault('original_base',base)
             j['attempt']+=1; j['status']='running'; j['accepted']=False
+            previous=s.get('native_roles',{}).get('JOB:'+jid,{}).get('generation',0)
+            j['expected_session_generation']=max(j['attempt'],previous+1)
+            j['conversation_only_recovery']=False
             # Planned workspace is deterministic recovery metadata, not proof of execution.
             # Persist it with the reservation rather than a second remote commit.
             j['workspace']=str(self.runtime/(jid+'-'+str(j['attempt'])))
@@ -769,17 +849,42 @@ class Cycle:
                 '\nLeave files for controller checkpointing; report actual work and tests, not overall Process4 completion.')
         return {'job':jid,'attempt':job['attempt'],'workspace':str(path),'prompt':prompt,'branch':job['branch']}
 
+    def job_conversation_recover(self,jid,actor,expected_generation,evidence):
+        if self._logical_role_retired('JOB:'+jid):raise Rejected('explicit logical JOB retirement preserved')
+        def reserve(state):
+            if not native_layout.configured(state):raise Rejected('approved native layout required')
+            self._arch_actor(state,actor)
+            if state.get('stopped'):raise Rejected('durable stop preserved')
+            job=state['jobs'][jid];binding=native_layout.current(state,'JOB:'+jid)
+            if not binding or type(expected_generation) is not int or expected_generation!=binding['generation']:
+                raise Rejected('current actual JOB generation required')
+            if job.get('status')!='done' or job.get('accepted') is not True:
+                raise Rejected('completed accepted module assignment required for conversation-only recovery')
+            if not isinstance(evidence,str) or not evidence.strip():raise Rejected('actual failure or explicit replacement evidence required')
+            if binding['generation']>=2**63-1:raise Rejected('native generation capacity exhausted')
+            job['expected_session_generation']=binding['generation']+1
+            job['conversation_only_recovery']=True
+            c.event(state,'native-job-conversation-recovery',job=jid,generation=job['expected_session_generation'],evidence=evidence)
+        state=self.store.mutate(reserve)
+        return {'job':jid,'attempt':state['jobs'][jid]['attempt'],'status':state['jobs'][jid]['status'],
+                'generation':state['jobs'][jid]['expected_session_generation'],
+                'source_edit_authorized':False,'requires_actual_native_event':True}
+
     def session(self,jid,address,actor=None):
         if not isinstance(address,str) or not address.startswith('/root/'):raise Rejected('native session address required')
         self.mailbox.read()  # Import legacy snapshot before significant recovery write.
         def register(s):
             job=s['jobs'][jid]
             if job['attempt']<1:raise Rejected('prepare job before recording actual session')
-            if native_layout.configured(s):native_layout.validate_binding(s,'JOB:'+jid,address,job['attempt'],actor)
-            job.update(session=address,session_generation=job['attempt'])
-            s.setdefault('native_roles',{})['JOB:'+jid]={'target':address,'generation':job['attempt']}
-        state=self.store.mutate(register);attempt=state['jobs'][jid]['attempt']
+            generation=job.get('expected_session_generation',job['attempt'])
+            if native_layout.configured(s):native_layout.validate_binding(s,'JOB:'+jid,address,generation,actor)
+            self._restore_role_if_missing('JOB:'+jid,s)
+            self._conversation_binding_precheck('JOB:'+jid,address,generation)
+            job.update(session=address,session_generation=generation,session_attempt=job['attempt'])
+            s.setdefault('native_roles',{})['JOB:'+jid]={'target':address,'generation':generation}
+        state=self.store.mutate(register);attempt=state['jobs'][jid]['session_generation']
         self.mailbox.mutate(lambda m:communication.register(m,'JOB:'+jid,address,attempt))
+        self._conversation_binding_observed('JOB:'+jid,address,attempt)
         pending=self.sync_mailbox(state)
         return {'job':jid,'target':address,'generation':attempt,'message_ids_to_deliver':tuple(k for k in pending if self.mailbox.read()['messages'][k]['recipient']=='JOB:'+jid)}
 
@@ -793,6 +898,8 @@ class Cycle:
         communication.register(copy.deepcopy(mailbox),role,target,generation)
         # Role replacement is a meaningful recovery milestone, not a message.
         state,_=self.store.read();new={'target':target,'generation':generation}
+        self._restore_role_if_missing(role,state)
+        self._conversation_binding_precheck(role,target,generation)
         if role.startswith('LANE:'):
             from native.design_lanes import validate_lane
             validate_lane(state,role.removeprefix('LANE:'),current_arch=state.get('native_roles',{}).get(role)!=new)
@@ -809,6 +916,7 @@ class Cycle:
                     s['design_lanes'][name].update(session=copy.deepcopy(new),status='active')
             state=self.store.mutate(record)
         self.mailbox.mutate(lambda m:communication.register(m,role,target,generation))
+        self._conversation_binding_observed(role,target,generation)
         self.sync_mailbox(state)
         return {'recipient':role,'target':target,'generation':generation,
                 'message_ids_to_deliver':communication.pending_for(self.mailbox.read(),role)}
@@ -822,6 +930,7 @@ class Cycle:
     def layout_status(self):return native_layout.status(self.store.read()[0])
 
     def layout_plan(self,role,actor,activity,expected_generation=None,message=None,replace=False):
+        if self._logical_role_retired(role):return {'action':'hold','role':role,'reason':'explicit logical retirement'}
         return native_layout.plan(self.store.read()[0],role,actor,activity,expected_generation,self.store.branch,message,replace)
 
     def message(self,sender,recipient,text,message_id=None):
@@ -974,6 +1083,7 @@ def main():
         p=sub.add_parser(command);p.add_argument('--actor',required=True);p.add_argument('--packet',required=True)
     p=sub.add_parser('process-request');p.add_argument('--actor',required=True);p.add_argument('--generation',type=int,required=True);p.add_argument('--evidence',required=True)
     p=sub.add_parser('lane-request');p.add_argument('name');p.add_argument('--actor',required=True);p.add_argument('--packet',required=True)
+    p=sub.add_parser('lane-recover');p.add_argument('name');p.add_argument('--actor',required=True);p.add_argument('--packet',required=True)
     p=sub.add_parser('lane-plan');p.add_argument('name');p.add_argument('--actor',required=True);p.add_argument('--activity',choices=['unavailable','idle','running'],required=True);p.add_argument('--expected-generation',type=int)
     p=sub.add_parser('round-start');p.add_argument('--actor',required=True);p.add_argument('--expected-head')
     p=sub.add_parser('module-evidence');p.add_argument('job');p.add_argument('--actor',required=True)
@@ -983,11 +1093,21 @@ def main():
     p=sub.add_parser('release-prepare');p.add_argument('--actor',required=True);p.add_argument('--release-id',required=True);p.add_argument('--destination',required=True)
     p=sub.add_parser('control'); p.add_argument('action',choices=['stop','continue','retry','interrupt','replace','slots','priority','instruction']);p.add_argument('--job');p.add_argument('--value');p.add_argument('--source',choices=['arch','owner'],default='arch')
     p=sub.add_parser('prepare');p.add_argument('job')
+    p=sub.add_parser('job-conversation-recover');p.add_argument('job');p.add_argument('--actor',required=True);p.add_argument('--packet',required=True)
     p=sub.add_parser('session');p.add_argument('job');p.add_argument('address');p.add_argument('--actor')
     p=sub.add_parser('register-role');p.add_argument('role');p.add_argument('target');p.add_argument('--generation',type=int,required=True);p.add_argument('--actor')
     p=sub.add_parser('adopt-layout');p.add_argument('--approval-evidence',required=True);p.add_argument('--console',default='/root')
     sub.add_parser('layout-status')
     p=sub.add_parser('layout-plan');p.add_argument('--role',required=True);p.add_argument('--actor',required=True);p.add_argument('--activity',choices=['unavailable','idle','running'],required=True);p.add_argument('--expected-generation',type=int);p.add_argument('--message');p.add_argument('--replace',action='store_true')
+    p=sub.add_parser('dialogue-bind');p.add_argument('role');p.add_argument('--actor',required=True);p.add_argument('--evidence',required=True);p.add_argument('--conversation-id')
+    p=sub.add_parser('dialogue-request');p.add_argument('role');p.add_argument('--packet',required=True)
+    p=sub.add_parser('dialogue-ack');p.add_argument('role');p.add_argument('--packet',required=True)
+    p=sub.add_parser('dialogue-reply');p.add_argument('role');p.add_argument('--packet',required=True)
+    p=sub.add_parser('dialogue-status');p.add_argument('--role')
+    p=sub.add_parser('dialogue-event');p.add_argument('role');p.add_argument('--packet',required=True)
+    p=sub.add_parser('dialogue-remember');p.add_argument('role');p.add_argument('--decision');p.add_argument('--reference')
+    p=sub.add_parser('dialogue-checkpoint');p.add_argument('--actor',required=True)
+    p=sub.add_parser('dialogue-restore');p.add_argument('--actor',required=True);p.add_argument('--packet')
     p=sub.add_parser('message');p.add_argument('--sender',required=True);p.add_argument('--recipient',required=True);p.add_argument('--text',required=True);p.add_argument('--message-id')
     p=sub.add_parser('messages');p.add_argument('--recipient')
     p=sub.add_parser('intent');p.add_argument('message_id');p.add_argument('--activity',choices=['idle','running'],required=True)
@@ -1013,6 +1133,7 @@ def main():
         elif args.command=='owner-record':result=cycle.owner_record(actor=args.actor,**json.loads(Path(args.packet).read_text()))
         elif args.command=='process-request':result=cycle.process_request(args.actor,args.generation,args.evidence)
         elif args.command=='lane-request':result=cycle.lane_request(args.name,actor=args.actor,**json.loads(Path(args.packet).read_text()))
+        elif args.command=='lane-recover':result=cycle.lane_recover(args.name,args.actor,**json.loads(Path(args.packet).read_text()))
         elif args.command=='lane-plan':result=cycle.lane_plan(args.name,args.actor,args.activity,args.expected_generation)
         elif args.command=='round-start':result=cycle.round_start(args.actor,args.expected_head)
         elif args.command=='module-evidence':result=cycle.module_evidence(args.job,args.actor)
@@ -1020,11 +1141,21 @@ def main():
         elif args.command=='round-assess':result=cycle.round_assess(args.actor)
         elif args.command=='development-plan':result=cycle.development_plan(args.actor,args.worktree,args.entrypoint,args.provider_path,args.port)
         elif args.command=='release-prepare':result=cycle.release_prepare(args.actor,args.release_id,args.destination)
+        elif args.command=='job-conversation-recover':result=cycle.job_conversation_recover(args.job,args.actor,**json.loads(Path(args.packet).read_text()))
         elif args.command=='session':result=cycle.session(args.job,args.address,args.actor)
         elif args.command=='register-role':result=cycle.register_role(args.role,args.target,args.generation,args.actor)
         elif args.command=='adopt-layout':result=cycle.adopt_layout(args.approval_evidence,args.console)
         elif args.command=='layout-status':result=cycle.layout_status()
         elif args.command=='layout-plan':result=cycle.layout_plan(args.role,args.actor,args.activity,args.expected_generation,args.message,args.replace)
+        elif args.command=='dialogue-bind':result=cycle.dialogue_bind(args.role,args.actor,args.evidence,args.conversation_id)
+        elif args.command=='dialogue-request':result=cycle.dialogue.request(args.role,**json.loads(Path(args.packet).read_text()))
+        elif args.command=='dialogue-ack':result=cycle.dialogue.acknowledge(args.role,**json.loads(Path(args.packet).read_text()))
+        elif args.command=='dialogue-reply':result=cycle.dialogue.reply(args.role,**json.loads(Path(args.packet).read_text()))
+        elif args.command=='dialogue-status':result=cycle.dialogue.status(args.role)
+        elif args.command=='dialogue-event':result=cycle.dialogue.lifecycle(args.role,**json.loads(Path(args.packet).read_text()))
+        elif args.command=='dialogue-remember':result=cycle.dialogue.remember(args.role,decision=args.decision,reference=args.reference)
+        elif args.command=='dialogue-checkpoint':result=cycle.dialogue_checkpoint(args.actor)
+        elif args.command=='dialogue-restore':result=cycle.dialogue_restore(args.actor,json.loads(Path(args.packet).read_text()) if args.packet else None)
         elif args.command=='message':result=cycle.message(args.sender,args.recipient,args.text,args.message_id)
         elif args.command=='messages':result=cycle.messages(args.recipient)
         elif args.command=='intent':result=cycle.intent(args.message_id,args.activity)

@@ -82,7 +82,8 @@ def validate_binding(state,role,target,generation,actor):
         raise InvalidLayout('role must be an immediate child of its current creator, depth at most3')
     if role.startswith('JOB:'):
         jid=role.removeprefix('JOB:');job=state.get('jobs',{}).get(jid)
-        if job is None or type(job.get('attempt')) is not int or generation!=job.get('attempt'):raise InvalidLayout('JOB generation must match its durable integer assignment attempt')
+        expected=job.get('expected_session_generation',job.get('attempt')) if job else None
+        if job is None or type(job.get('attempt')) is not int or type(expected) is not int or generation!=expected:raise InvalidLayout('JOB generation must match its reserved native session generation')
     if role.startswith('LANE:'):
         lane=state.get('design_lanes',{}).get(role.removeprefix('LANE:'))
         if not isinstance(lane,dict) or lane.get('status') not in ('requested','active') or lane.get('arch')!=current(state,'ARCH'):
@@ -132,13 +133,17 @@ def plan(state,role,actor,activity,expected_generation=None,state_branch=None,me
                 'requires_actual_submission':True}
     if role.startswith('JOB:'):
         job=state['jobs'][role.removeprefix('JOB:')]
-        if job.get('status') not in ('ready','paused','blocked','running','interrupting'):
-            return {'action':'hold','role':role,'reason':'no unfinished assigned module work'}
-        if sum(j.get('status')=='running' for j in state['jobs'].values())>=slots and job.get('status')!='running':
-            return {'action':'hold','role':role,'reason':'current module slot cap reached'}
-        # prepare must reserve/increment the real assignment attempt before spawn.
-        if binding and job['attempt']<=binding['generation']:raise InvalidLayout('prepare replacement JOB attempt before lifecycle plan')
-        generation=job['attempt']
+        conversation_only=job.get('conversation_only_recovery') is True
+        if conversation_only:
+            if job.get('status')!='done' or job.get('accepted') is not True:
+                raise InvalidLayout('conversation-only recovery requires retained completed module assignment')
+        else:
+            if job.get('status') not in ('ready','paused','blocked','running','interrupting'):
+                return {'action':'hold','role':role,'reason':'no unfinished assigned module work'}
+            if sum(j.get('status')=='running' for j in state['jobs'].values())>=slots and job.get('status')!='running':
+                return {'action':'hold','role':role,'reason':'current module slot cap reached'}
+        generation=job.get('expected_session_generation',job['attempt'])
+        if binding and generation<=binding['generation']:raise InvalidLayout('reserve next native JOB session before lifecycle plan')
         if type(generation) is not int or not 1<=generation<2**63:
             raise InvalidLayout('prepare actual positive JOB attempt before lifecycle plan')
     else:generation=(binding['generation'] if binding else 0)+1
@@ -151,6 +156,8 @@ def plan(state,role,actor,activity,expected_generation=None,state_branch=None,me
             'Use native reactive child messaging and bounded local operational mailbox, never GitHub as message/ack/heartbeat bus. '
             'Do not create your own successor; product decisions stay ARCH and module work JOB. '
             'Report actual canonical address/READY for creator registration; no claim of completed work or receipt before execution.')
+    if role.startswith('JOB:') and state['jobs'][role.removeprefix('JOB:')].get('conversation_only_recovery') is True:
+        prompt+=' Retained completed JOB conversation ONLY: answer questions and retain decisions/context. No source editing, provider mutation, commits, tests as new product work or new assignment is authorized; the completed module attempt is unchanged.'
     return {'tool':'spawn_agent','actor':actor,'role':role,'generation':generation,
             'required_native_parent':actor,'arguments':{'task_name':name,'message':prompt},
             'registration_after_actual_event':{'role':role,'generation':generation,'actor':actor},

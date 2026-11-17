@@ -540,6 +540,82 @@ class NativeCycleTests(unittest.TestCase):
         self.assertIn('readiness:parallel_jobs',result['runnable'])
         self.assertEqual(result['readiness']['status'],'assessment_incomplete')
 
+    def interactive_completed_job(self):
+        self.cycle.adopt_layout('fixture observed owner approval')
+        self.cycle.register_role('ROOT','/root/supervisor',1,actor='/root')
+        self.cycle.register_role('ARCH','/root/supervisor/arch',1,actor='/root/supervisor')
+        self.cycle.session('provider','/root/supervisor/arch/provider',actor='/root/supervisor/arch')
+        self.change();self.cycle.checkpoint('provider','completed')
+        self.cycle.integrate('provider');self.cycle.integrate('provider')
+        self.cycle.dialogue_bind('JOB:provider','/root','fixture native reply','stable-provider')
+
+    def test_completed_job_conversation_recovers_without_new_module_work(self):
+        self.interactive_completed_job()
+        before=copy.deepcopy(self.store.state['jobs']['provider']);calls=list(self.provider.calls)
+        result=self.cycle.job_conversation_recover('provider','/root/supervisor/arch',1,'fixture actual instance failure')
+        self.assertEqual(result['generation'],2);self.assertFalse(result['source_edit_authorized'])
+        for key in ('attempt','status','checkpoint','verification','integrated','pr_number'):
+            self.assertEqual(self.store.state['jobs']['provider'][key],before[key])
+        plan=self.cycle.layout_plan('JOB:provider','/root/supervisor/arch','unavailable',1)
+        self.assertEqual(plan['tool'],'spawn_agent')
+        self.assertIn('conversation ONLY',plan['arguments']['message'])
+        self.cycle.session('provider','/root/supervisor/arch/provider_conversation',actor='/root/supervisor/arch')
+        current=self.store.state['jobs']['provider']
+        self.assertEqual((current['attempt'],current['session_attempt'],current['session_generation']),(1,1,2))
+        self.assertEqual(self.cycle.dialogue.status('JOB:provider')['conversation_id'],'stable-provider')
+        self.assertEqual(self.provider.calls,calls)
+
+    def test_new_assignment_after_conversation_gets_independent_session_generation(self):
+        self.interactive_completed_job()
+        self.cycle.job_conversation_recover('provider','/root/supervisor/arch',1,'fixture failure')
+        self.cycle.session('provider','/root/supervisor/arch/provider_chat',actor='/root/supervisor/arch')
+        n.control(self.store.state,'retry','provider')
+        checkpoint=self.store.state['jobs']['provider']['checkpoint'];real=n.git
+        def local_fetch(repo,*args,**kwargs):
+            if args[:2]==('fetch','origin'):return subprocess.CompletedProcess(args,0,'','')
+            if args[:2]==('worktree','add'):args=(*args[:-1],checkpoint)
+            return real(repo,*args,**kwargs)
+        with patch.object(n,'git',side_effect=local_fetch):self.cycle.prepare('provider')
+        job=self.store.state['jobs']['provider']
+        self.assertEqual(job['attempt'],2);self.assertEqual(job['expected_session_generation'],3)
+        self.assertFalse(job['conversation_only_recovery'])
+        self.cycle.session('provider','/root/supervisor/arch/provider_work2',actor='/root/supervisor/arch')
+        self.assertEqual(self.store.state['jobs']['provider']['session_attempt'],2)
+        self.assertEqual(self.store.state['jobs']['provider']['session_generation'],3)
+
+    def test_job_conversation_recovery_preserves_stop_and_current_creator(self):
+        self.interactive_completed_job()
+        before=copy.deepcopy(self.store.state)
+        for actor,generation,evidence in (('/root',1,'failure'),('/root/supervisor/arch',2,'failure'),('/root/supervisor/arch',1,'')):
+            with self.assertRaises(n.Rejected):self.cycle.job_conversation_recover('provider',actor,generation,evidence)
+            self.assertEqual(self.store.state,before)
+        self.store.state.update(stopped=True,stop_source='owner')
+        with self.assertRaises(n.Rejected):self.cycle.job_conversation_recover('provider','/root/supervisor/arch',1,'failure')
+        self.assertTrue(self.store.state['stopped'])
+
+    def test_explicit_retirement_is_not_overridden_by_supervision_or_assignment(self):
+        from native.interaction import retire
+        self.interactive_completed_job()
+        self.cycle.dialogue.local.mutate(lambda s:retire(s,'JOB:provider',generation=1,
+            reason='fixture deliberate retirement',source='fixture creator',evidence='explicit fixture decision'))
+        self.assertEqual(self.cycle.layout_plan('JOB:provider','/root/supervisor/arch','unavailable')['action'],'hold')
+        with self.assertRaises(n.Rejected):self.cycle.prepare('provider')
+        self.assertEqual(self.store.state['jobs']['provider']['attempt'],1)
+
+    def test_role_registration_automatically_preserves_pending_conversation(self):
+        self.cycle.adopt_layout('fixture observed owner approval')
+        self.cycle.register_role('ROOT','/root/supervisor',1,actor='/root')
+        self.cycle.register_role('COORDINATOR','/root/supervisor/coord',1,actor='/root/supervisor')
+        self.cycle.dialogue_bind('COORDINATOR','/root','fixture actual first reply','stable-coordinator')
+        self.cycle.dialogue.request('COORDINATOR','q','Pending question',provenance='proxy-test',activity='idle')
+        self.cycle.dialogue.acknowledge('COORDINATOR','q',generation=1,evidence='fixture actual processing')
+        self.cycle.register_role('COORDINATOR','/root/supervisor/coord2',2,actor='/root/supervisor')
+        capsule=self.cycle.dialogue.status('COORDINATOR')
+        self.assertEqual(capsule['conversation_id'],'stable-coordinator')
+        self.assertEqual(capsule['binding']['generation'],2)
+        self.assertIn('q',capsule['pending_questions'])
+        self.assertFalse(capsule['answered'])
+
     def test_repeated_owner_record_milestone_does_not_write_an_empty_remote_commit(self):
         self.cycle.adopt_layout('fixture observed approval')
         self.cycle.register_role('ROOT','/root/supervisor',1,actor='/root')
