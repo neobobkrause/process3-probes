@@ -553,23 +553,23 @@
       },
       "all_user_notifications": {
         "state": "observed",
-        "evidence": "bootstrap/evidence/integrated-pilot/actual-combined-pilot.json; actual716b6bdd pilot results, preserved PR280/281, provider4/web14, four Screens/17HTTPJourneys, samebranch web4\u21925 recovery; pending unassigned report retained."
+        "evidence": "bootstrap/evidence/readiness-assessment/actual-assessment.json; current4414c032 round2 actual product/module/walk/recovery observations; native/READINESS-DETERMINATION.md states limits."
       },
       "unfinished_recovery": {
         "state": "observed",
-        "evidence": "bootstrap/evidence/integrated-pilot/actual-combined-pilot.json; actual716b6bdd pilot results, preserved PR280/281, provider4/web14, four Screens/17HTTPJourneys, samebranch web4\u21925 recovery; pending unassigned report retained."
+        "evidence": "bootstrap/evidence/readiness-assessment/actual-assessment.json; current4414c032 round2 actual product/module/walk/recovery observations; native/READINESS-DETERMINATION.md states limits."
       },
       "module_tests": {
         "state": "observed",
-        "evidence": "bootstrap/evidence/integrated-pilot/actual-combined-pilot.json; actual716b6bdd pilot results, preserved PR280/281, provider4/web14, four Screens/17HTTPJourneys, samebranch web4\u21925 recovery; pending unassigned report retained."
+        "evidence": "bootstrap/evidence/readiness-assessment/actual-assessment.json; current4414c032 round2 actual product/module/walk/recovery observations; native/READINESS-DETERMINATION.md states limits."
       },
       "internal_walk": {
         "state": "observed",
-        "evidence": "bootstrap/evidence/integrated-pilot/actual-combined-pilot.json; actual716b6bdd pilot results, preserved PR280/281, provider4/web14, four Screens/17HTTPJourneys, samebranch web4\u21925 recovery; pending unassigned report retained."
+        "evidence": "bootstrap/evidence/readiness-assessment/actual-assessment.json; current4414c032 round2 actual product/module/walk/recovery observations; native/READINESS-DETERMINATION.md states limits."
       },
       "external_walk": {
         "state": "observed",
-        "evidence": "bootstrap/evidence/integrated-pilot/actual-combined-pilot.json; actual716b6bdd pilot results, preserved PR280/281, provider4/web14, four Screens/17HTTPJourneys, samebranch web4\u21925 recovery; pending unassigned report retained."
+        "evidence": "bootstrap/evidence/readiness-assessment/actual-assessment.json; current4414c032 round2 actual product/module/walk/recovery observations; native/READINESS-DETERMINATION.md states limits."
       },
       "consequential_restrictions": {
         "state": "observed",
@@ -655,8 +655,8 @@
         "evidence": "bootstrap/evidence/integrated-pilot/actual-combined-pilot.json; actual3stage clean716b6bdd plus localunpublished release manifest; bounded limits explicitly recorded, not universal completion."
       },
       "readiness_assessment": {
-        "status": "running",
-        "evidence": "bootstrap/OWNER-RELIABILITY-ASSESSMENT-20261116.txt; native/RELIABILITY-PHASE.md; priorpilot not overall completion."
+        "status": "done",
+        "evidence": "bootstrap/native/READINESS-DETERMINATION.md; bootstrap/evidence/readiness-assessment/actual-assessment.json; seven requested areas assessed with bounded operating limits, optional PR286 not adopted."
       }
     }
   },
@@ -1038,6 +1038,100 @@
   },
   "native_readiness": {
     "required": true,
-    "evidence": {}
+    "evidence": {
+      "parallel_jobs": {
+        "checks": {
+          "actual_overlap": true,
+          "arch_supervised": true,
+          "slot_refilled": true,
+          "limits_preserved": true
+        },
+        "evidence": "bootstrap/evidence/readiness-assessment/actual-assessment.json#parallel_jobs",
+        "limitations": [
+          "Actual distinct native JOB/progress windows overlap conservatively29.679s; no CPU sampling claim.",
+          "Slot-free to new JOB processing77.488s; avoidable part of67.424s setup/coordination overhead is not isolated."
+        ]
+      },
+      "multi_round_tranche": {
+        "checks": {
+          "real_requirement": true,
+          "multiple_heads": true,
+          "stages_repeated": true,
+          "actual_flaws_resolved": true
+        },
+        "evidence": "bootstrap/evidence/readiness-assessment/actual-assessment.json#multi_round_tranche",
+        "limitations": [
+          "Round1 preserved; new requirement reached exact-head round2. Walks found no flaws, so no walk-discovered correction loop claimed."
+        ]
+      },
+      "design_lane": {
+        "checks": {
+          "qualified": true,
+          "arch_question_route": true,
+          "knowledge_preserved": true,
+          "output_integrated": true
+        },
+        "evidence": "bootstrap/evidence/readiness-assessment/actual-assessment.json#design_lane"
+      },
+      "process_proposal": {
+        "checks": {
+          "actual_defect": true,
+          "routed_to_process": true,
+          "proposal_preserved": true,
+          "unapproved_adoption_denied": true
+        },
+        "evidence": "bootstrap/evidence/readiness-assessment/actual-assessment.json#process_proposal"
+      },
+      "owner_controls": {
+        "checks": {
+          "exact_source_preserved": true,
+          "question": true,
+          "instruction": true,
+          "stop": true,
+          "priority": true,
+          "hold": true,
+          "slots": true,
+          "stop_after_scheduled_wake": true,
+          "stop_after_replacement": true
+        },
+        "evidence": "bootstrap/evidence/readiness-assessment/actual-assessment.json#owner_controls",
+        "limitations": [
+          "Synthetic exercise inputs are labeled separately from actual exact owner instructions.",
+          "Stop persistence proved by genuine scheduled delivery during active console turn and fresh native read-only session on the unchanged stopped branch.",
+          "Normal coordinator replacement was a separate unstopped-run observation. Automatic coordinator replacement while stopped remains held; the owner did not require that stronger capability."
+        ]
+      },
+      "sustained_operation": {
+        "checks": {
+          "meaningful_extended_work": true,
+          "replacement": true,
+          "context_continuity": true,
+          "completion": true,
+          "integration": true,
+          "communication": true,
+          "recovery": true,
+          "metrics": true
+        },
+        "evidence": "bootstrap/evidence/readiness-assessment/actual-assessment.json#sustained_operation",
+        "limitations": [
+          "Overall assessment window includes implementation, control/recovery work and evidence review; narrower ARCH product/design execution was1272.72s.",
+          "Git history measurement is an actual snapshot interval; final evidence preservation adds source/state commits afterward.",
+          "Five recorded avoidable invocation/packaging errors corrected without owner intervention; no claim of exhaustive server-side telemetry."
+        ]
+      },
+      "browser_development_release": {
+        "checks": {
+          "exact_deployment": true,
+          "real_browser": true,
+          "journeys": true,
+          "release_prepared": true,
+          "no_publication": true
+        },
+        "evidence": "bootstrap/evidence/readiness-assessment/actual-assessment.json#browser_development_release",
+        "limitations": [
+          "One headless Chromium156 version on an actual loopback development deployment; no public deployment, cross-browser certification or publication."
+        ]
+      }
+    }
   }
 }
