@@ -53,6 +53,51 @@ class JobRecoveryTests(unittest.TestCase):
         state['jobs']['web']['attempt']=4
         self.assertEqual(r.reconcile_jobs(state,{'JOB:web':ob})['actions'][0]['action'],'inspect_unbound_reservation')
 
+    def test_native_replacement_generation_can_differ_from_bound_product_attempt(self):
+        state=fixture();ob=bind(state,'provider',2,'running');job=state['jobs']['provider']
+        job.update(status='running',session_generation=5,session_attempt=2)
+        state['native_roles']['JOB:provider']['generation']=5;ob['generation']=5
+        before=copy.deepcopy(state)
+        action=r.reconcile_jobs(state,{'JOB:provider':ob})['actions'][0]
+        self.assertEqual(action['action'],'retain');self.assertEqual(action['generation'],5)
+        self.assertEqual(action['expected_attempt'],2);self.assertEqual(state,before)
+        ob['activity']='idle'
+        self.assertEqual(r.reconcile_jobs(state,{'JOB:provider':ob})['actions'][0]['action'],'inspect_result')
+
+    def test_replaced_native_instance_cannot_receive_wrong_attempt_edit_instructions(self):
+        state=fixture();ob=bind(state,'provider',2,'running');job=state['jobs']['provider']
+        job.update(status='running',session_generation=5,session_attempt=1)
+        state['native_roles']['JOB:provider']['generation']=5;ob['generation']=5
+        action=r.reconcile_jobs(state,{'JOB:provider':ob})['actions'][0]
+        self.assertEqual(action['action'],'inspect_unbound_reservation')
+        self.assertEqual(action['reason'],'old_attempt_must_not_receive_edit_instructions')
+        job['session_attempt']=2;job['session_generation']=4
+        self.assertEqual(r.reconcile_jobs(state,{'JOB:provider':ob})['actions'][0]['action'],'inspect_unbound_reservation')
+        job['session_generation']=5;del job['session_attempt']
+        self.assertEqual(r.reconcile_jobs(state,{'JOB:provider':ob})['actions'][0]['action'],'inspect_unbound_reservation')
+
+    def test_legacy_attempt_binding_and_session_fallback_still_work(self):
+        state=fixture();ob=bind(state,'provider',2,'running');job=state['jobs']['provider'];job['status']='running'
+        self.assertEqual(r.reconcile_jobs(state,{'JOB:provider':ob})['actions'][0]['action'],'retain')
+        job.update(session=ob['target'],session_generation=5,session_attempt=2)
+        del state['native_roles']['JOB:provider'];ob['generation']=5
+        self.assertEqual(r.reconcile_jobs(state,{'JOB:provider':ob})['actions'][0]['action'],'retain')
+
+    def test_boolean_generation_or_bound_attempt_is_not_valid_metadata(self):
+        state=fixture();ob=bind(state,'provider',1,'running');job=state['jobs']['provider'];job['status']='running'
+        for key in ('session_generation','session_attempt'):
+            job[key]=True
+            self.assertEqual(r.reconcile_jobs(state,{'JOB:provider':ob})['actions'][0]['action'],'inspect_unbound_reservation')
+            del job[key]
+
+    def test_done_accepted_product_settles_before_conversation_binding_checks(self):
+        state=fixture();accepted(state,status='done');job=state['jobs']['provider'];job['integrated']='b'*40
+        job.update(session_generation=5,session_attempt=2)
+        state['native_roles']['JOB:provider']={'target':'/root/old/arch/provider','generation':5}
+        state['events']=[{'kind':'native-integrated','job':'provider','checkpoint':'a'*40,'integration':'b'*40}]
+        before=copy.deepcopy(state)
+        self.assertFalse(r.reconcile_jobs(state,{})['actions']);self.assertEqual(state,before)
+
     def test_done_claim_missing_real_acceptance_is_not_completion(self):
         state=fixture();state['jobs']['provider']['status']='done'
         self.assertEqual(r.reconcile_jobs(state,{})['actions'][0]['action'],'inspect_acceptance')

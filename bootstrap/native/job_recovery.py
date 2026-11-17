@@ -78,7 +78,13 @@ def reconcile_jobs(state, observations):
             result['actions'].append({**base,'action':'inspect_unbound_reservation','reason':'discover_actual_spawn_before_creating_duplicate'});continue
         observed,reason=observation_for(state,jid,observations)
         if reason:result['holds'].append({**base,'reason':reason});continue
-        if binding['generation']!=job['attempt']:
+        # Native conversation replacements do not create product attempts.
+        # Legacy bindings used generation==attempt; newer ones must explicitly
+        # retain which module attempt the native instance is bound to.
+        session_generation=job.get('session_generation',job['attempt'])
+        session_attempt=job.get('session_attempt',binding['generation'])
+        if (type(session_generation) is not int or type(session_attempt) is not int
+                or session_generation!=binding['generation'] or session_attempt!=job['attempt']):
             result['actions'].append({**base,'action':'inspect_unbound_reservation','reason':'old_attempt_must_not_receive_edit_instructions'});continue
         if not current_job_parent(state,jid):
             result['actions'].append({**base,'action':'interrupt' if observed['activity']=='running' else 'preserve_then_replace',
