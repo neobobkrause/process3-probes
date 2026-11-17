@@ -765,6 +765,15 @@
         "limits": "Independent standard-library HTTP/HTML client. Browser attempt encountered Browser Use could not read requirements and native Chromium AT-SPI unavailable; no app browser rendering, keyboard/focus interaction or JavaScript execution proof."
       }
     },
-    "carry_flaws": {}
+    "carry_flaws": {},
+    "prepared_release": {
+      "head": "716b6bddc6330cb1e0c19a584ee3b225ad9ae8f3",
+      "release_id": "workshop-minimum2-20261117",
+      "path": "/workspace/work/p4-native-cycle/evidence/current-pilot/development-release.json",
+      "sha256": "b69dc624b20ed5d018fe73a506981f76d42c67b4ae3ddea06ec7dadf9407c325",
+      "bytes": 903,
+      "published": false,
+      "scope": "local development manifest only"
+    }
   }
 }
