@@ -593,8 +593,8 @@
       "generation": 2
     },
     "PROCESS": {
-      "target": "/root/process4_root/p4_process_g1",
-      "generation": 1
+      "target": "/root/p4_root_g2/p4_process_g2",
+      "generation": 2
     },
     "JOB:provider": {
       "target": "/root/process4_root/p4_arch_g4/provider_g3",
