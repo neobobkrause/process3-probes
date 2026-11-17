@@ -1,3 +1,23 @@
+# Executed extended feature — 2026-11-17
+
+The accepted comparison requirement is integrated at `4414c0325f1e2a56585e644eecccd8abfba8a88e`. Current development round 2 is clean: provider 4, report 21 and web 26 module tests, 50 internal screen observations, and 33 independent Chromium 156 browser observations covering J1–J4. Web's final actual-report test ran with zero skips; stored provider/report dependency trees match final integration. No actual walk flaws occurred, so no walk-discovered correction is claimed.
+
+Report model PR282/checkpoint `1fb981e478a2a68e38abcd11b31fdc8f3ef3e8ee` integrated at `5c0d6db69a6ea16101e32792e5c5eeedd63cf8a8`; queued same-branch CSV phase PR285/checkpoint `eaab4aee7325949a5dee6926c15b5d1b78ff1d44` integrated at `191db453b2de66a9cd4bb9d744fa6ac66f28c31b`. Web6 independently implemented UI/tests, then honestly preserved dependency-blocked partial `b5f11ca416c9aab1ef495d81bcc25fc4bd8e6228` in PR284. Fresh web7 trusted-merged the actual report baseline and passed all 26 HTTP tests, checkpoint `213863ee30f1aa601b340b6ee319fa9aa42b99d6`, before pinned-tool integration at final head.
+
+Qualified lane `/root/p4_root_g2/p4_arch_g5/p4_lane_quote_comparison_g1` asked four actual interface/UX questions through ARCH, retained answers/rationale and produced only its owned design files. Dedicated source branch `codex/p4-design-quote-comparison-20261117`, exact commit `dd147cf`, PR283, was integrated by the console at `af76c62`. This is authorized product design, not governing-process adoption. Qualification means explicit owner need, task fit, restricted ownership, relevant observed output and ARCH acceptance; no external certification is claimed.
+
+The report1 and web6 native JOBs actually overlapped. First-processing/progress work spans conservatively overlap 29.679 seconds, with actual two-session native inventory and independent substantive source/test reports. Report CSV refill took 10.064 seconds from observed integration slot release to completed preparation and 77.488 seconds to actual first processing; remaining native creation/registration/ARCH coordination overhead is candidly recorded. No deliberate idle or padding was used. The measured product/design window was 1272.72 seconds (21.21 minutes), so this record alone does not establish a 30-minute sustained run. ROOT2→ROOT3 replacement retained ARCH/JOBs and existing work; broader assessment timing and controls evidence are console-owned.
+
+Fresh clean worktree `/workspace/work/p4-native-cycle/development-4414c032` runs only at `http://127.0.0.1:8767/`, with exact deployment plan environment replacement/private HOME. Independent walker `/root/p4_root_g2/p4_arch_g5/external_browser_g2` used real Chromium controls, keyboard focus/submission, actual downloaded CSV bytes/headers, screenshots, validation/DOM nonexecution, navigation and preserved quotes. It found no flaws or harness failures. Limits are one headless Chromium version and loopback, not production/cross-browser evidence.
+
+Local manifest `workshop-comparison-20261117`, SHA-256 `21d67455e6cbd1a8261ebce55c7a1d4b4af8a67e43712ea457c9b1ece94724fb`, is prepared only; no publication. Previously deferred report provider obligations were consumed by the real accepted report, and its two report versions were consumed by accepted web7; final pending provider notices are empty.
+
+Evidence lives in `/workspace/work/p4-native-cycle/evidence/extended-assessment/`, starting with `arch-final-summary.json`, `metrics.json`, `github-growth.json`, `final-state.json`, design qualification, checkpoint/provenance, internal/external/deployment receipts, browser screenshots/CSV and local release manifest. The measured state branch grew 44 commits and 24,664 current JSON bytes (2,424,249 total uncompressed JSON snapshot bytes across those commits), including concurrent meaningful ROOT/coordinator milestones. Routine native messages/acks/heartbeats caused zero remote writes.
+
+No independent product correction remains. Overall Process4 assessment stays separate: the console aggregates seven requested areas, including the genuine coordinator-recovery-under-STOP gap, proposed PROCESS correction, explicit owner-approval requirement, stop persistence and bounded sustained-operation limits. A clean round or empty product queue is not overall completion.
+
+---
+
 # Representative continued assessment — quantity comparison
 
 Owner authority: exact request in `bootstrap/OWNER-RELIABILITY-ASSESSMENT-20261116.txt`; original assessment continues. Existing pilot integration `716b6bddc6330cb1e0c19a584ee3b225ad9ae8f3` and its evidence are retained. ROOT and console received this narrow source ownership plan before any new source changes.
