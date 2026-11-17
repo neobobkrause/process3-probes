@@ -1,0 +1,928 @@
+{
+  "classification": "Actual combined native development pilot; bounded proof-app revision, not perpetual unattended operation",
+  "integration_head": "716b6bddc6330cb1e0c19a584ee3b225ad9ae8f3",
+  "source_controller": "45017e2d333744a0386b6e07ab5e20db0f32ec51",
+  "verification": {
+    "bootstrap": 233,
+    "grants": 46,
+    "grants_unchanged_since_previous_pass": true
+  },
+  "recovery": {
+    "console_observed_old_ROOT": "interrupted",
+    "cause": "not established",
+    "replacement_ROOT": {
+      "target": "/root/p4_root_g2",
+      "generation": 2,
+      "creator": "/root"
+    },
+    "replacement_ARCH": {
+      "target": "/root/p4_root_g2/p4_arch_g5",
+      "generation": 5
+    },
+    "replacement_coordinator": {
+      "target": "/root/p4_root_g2/p4_coordinator_g4",
+      "generation": 4
+    },
+    "replacement_WATCHER": {
+      "target": "/root/p4_watcher_g3",
+      "generation": 3,
+      "creator": "/root"
+    },
+    "branches_and_PRs_preserved": true
+  },
+  "artifacts": {
+    "module-and-recovery-summary": {
+      "observed": true,
+      "actor": "/root/p4_root_g2/p4_arch_g5",
+      "source": "Actual controller state after provider/web typed integration",
+      "integration_head": "716b6bddc6330cb1e0c19a584ee3b225ad9ae8f3",
+      "module_evidence": {
+        "provider": {
+          "observed": true,
+          "actor": "/root/process4_root/p4_arch_g4",
+          "observed_at": 1794874514.2492955,
+          "source": "Actual native controller module verification at 0ee73afc9ff9d735f1b10b2d4262f1235032760b",
+          "module": "provider",
+          "integration_head": "716b6bddc6330cb1e0c19a584ee3b225ad9ae8f3",
+          "tested_head": "0ee73afc9ff9d735f1b10b2d4262f1235032760b",
+          "returncode": 0,
+          "test_count": 4,
+          "command": [
+            "python3",
+            "-m",
+            "unittest",
+            "discover",
+            "-s",
+            "toy/native-cycle/provider",
+            "-p",
+            "test_*.py",
+            "-v"
+          ],
+          "provenance": {
+            "checkpoint": "0ee73afc9ff9d735f1b10b2d4262f1235032760b",
+            "owned_paths": [
+              "toy/native-cycle/provider"
+            ],
+            "owned_trees": {
+              "toy/native-cycle/provider": "0fe72988b1cd4a99195a3ef4c2e8316a218cd3e1"
+            },
+            "dependency_trees": {}
+          }
+        },
+        "web": {
+          "observed": true,
+          "actor": "/root/p4_root_g2/p4_arch_g5",
+          "observed_at": 1794875440.2642934,
+          "source": "Actual native controller module verification at 88b501c607ae64f1173828b15b68d830a78ec7be",
+          "module": "web",
+          "integration_head": "716b6bddc6330cb1e0c19a584ee3b225ad9ae8f3",
+          "tested_head": "88b501c607ae64f1173828b15b68d830a78ec7be",
+          "returncode": 0,
+          "test_count": 14,
+          "command": [
+            "python3",
+            "-m",
+            "unittest",
+            "discover",
+            "-s",
+            "toy/native-cycle/web",
+            "-p",
+            "test_*.py",
+            "-v"
+          ],
+          "provenance": {
+            "checkpoint": "88b501c607ae64f1173828b15b68d830a78ec7be",
+            "owned_paths": [
+              "toy/native-cycle/web"
+            ],
+            "owned_trees": {
+              "toy/native-cycle/web": "b9b7da25f8ec305bb01dbbc7f496fc784ba21704"
+            },
+            "dependency_trees": {
+              "provider": "0fe72988b1cd4a99195a3ef4c2e8316a218cd3e1"
+            }
+          }
+        }
+      },
+      "jobs": {
+        "provider": {
+          "attempt": 3,
+          "status": "done",
+          "checkpoint": "0ee73afc9ff9d735f1b10b2d4262f1235032760b",
+          "integrated": "00c5b6bb990fdf0f8ac069c2bd795ddce1d29788",
+          "notice_ids": [],
+          "pr_number": 280,
+          "session": "/root/process4_root/p4_arch_g4/provider_g3"
+        },
+        "web": {
+          "attempt": 5,
+          "status": "done",
+          "checkpoint": "88b501c607ae64f1173828b15b68d830a78ec7be",
+          "integrated": "716b6bddc6330cb1e0c19a584ee3b225ad9ae8f3",
+          "notice_ids": [
+            "provider:0ee73afc9ff9d735f1b10b2d4262f1235032760b:web"
+          ],
+          "pr_number": 281,
+          "session": "/root/p4_root_g2/p4_arch_g5/web_g5"
+        }
+      },
+      "pending_notices": {
+        "provider:0ee73afc9ff9d735f1b10b2d4262f1235032760b:report": {
+          "provider": "provider",
+          "user": "report",
+          "commit": "0ee73afc9ff9d735f1b10b2d4262f1235032760b",
+          "status": "pending",
+          "first_unconsumed_commit": "26796e064fb586ca893124bd8ec2414699bedd6c",
+          "change_count": 3
+        }
+      },
+      "partial_recovery": {
+        "preserved_checkpoint": "d707c26bfbdfa52e65b13624d0721f0255471647",
+        "preserved_pr": 281,
+        "resume_attempt": 5,
+        "same_branch": "codex/p4-job-native-workshop-20261116-web",
+        "trusted_baseline_merge": [
+          {
+            "commit": "1850787de5bdc631578e5f0e59ca470e5b7bd5a6",
+            "base": "00c5b6bb990fdf0f8ac069c2bd795ddce1d29788"
+          }
+        ]
+      }
+    },
+    "preserved-web4-failure": {
+      "observed": true,
+      "actor": "/root/p4_root_g2/p4_arch_g5",
+      "source": "Actual re-observation of preserved interrupted web4 checkpoint, not current final integration evidence",
+      "observed_at": 1794875682.0328352,
+      "head": "d707c26bfbdfa52e65b13624d0721f0255471647",
+      "command": [
+        "python3",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "toy/native-cycle/web",
+        "-p",
+        "test_*.py",
+        "-v"
+      ],
+      "returncode": 1,
+      "stdout": "",
+      "stderr": "test_form (test_app.WebTests.test_form) ... ok\ntest_injected_minimum_is_fresh_form_default (test_app.WebTests.test_injected_minimum_is_fresh_form_default) ... \n  test_injected_minimum_is_fresh_form_default (test_app.WebTests.test_injected_minimum_is_fresh_form_default) (minimum=2) ... FAIL\n  test_injected_minimum_is_fresh_form_default (test_app.WebTests.test_injected_minimum_is_fresh_form_default) (minimum=7) ... FAIL\ntest_injected_minimum_is_start_again_default (test_app.WebTests.test_injected_minimum_is_start_again_default) ... \n  test_injected_minimum_is_start_again_default (test_app.WebTests.test_injected_minimum_is_start_again_default) (minimum=2) ... FAIL\n  test_injected_minimum_is_start_again_default (test_app.WebTests.test_injected_minimum_is_start_again_default) (minimum=7) ... FAIL\ntest_injected_revised_provider_and_escaping (test_app.WebTests.test_injected_revised_provider_and_escaping) ... ok\ntest_loopback_only (test_app.WebTests.test_loopback_only) ... ok\ntest_not_found (test_app.WebTests.test_not_found) ... ok\ntest_provider_upper_bound (test_app.WebTests.test_provider_upper_bound) ... ok\ntest_rejected_html_is_retained_and_escaped (test_app.WebTests.test_rejected_html_is_retained_and_escaped) ... ok\ntest_rejected_text_is_retained (test_app.WebTests.test_rejected_text_is_retained) ... ok\ntest_rejected_whitespace_and_empty_are_retained (test_app.WebTests.test_rejected_whitespace_and_empty_are_retained) ... ok\ntest_result_and_refresh (test_app.WebTests.test_result_and_refresh) ... ok\ntest_text_input_supports_editing_rejected_text (test_app.WebTests.test_text_input_supports_editing_rejected_text) ... ok\ntest_valid_request_clears_validation_error (test_app.WebTests.test_valid_request_clears_validation_error) ... ok\ntest_validation (test_app.WebTests.test_validation) ... ok\n\n======================================================================\nFAIL: test_injected_minimum_is_fresh_form_default (test_app.WebTests.test_injected_minimum_is_fresh_form_default) (minimum=2)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/workspace/work/p4-native-cycle/web-4/toy/native-cycle/web/test_app.py\", line 175, in test_injected_minimum_is_fresh_form_default\n    self.assertEqual(field['value'], str(minimum))\n    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: '1' != '2'\n- 1\n+ 2\n\n\n======================================================================\nFAIL: test_injected_minimum_is_fresh_form_default (test_app.WebTests.test_injected_minimum_is_fresh_form_default) (minimum=7)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/workspace/work/p4-native-cycle/web-4/toy/native-cycle/web/test_app.py\", line 175, in test_injected_minimum_is_fresh_form_default\n    self.assertEqual(field['value'], str(minimum))\n    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: '1' != '7'\n- 1\n+ 7\n\n\n======================================================================\nFAIL: test_injected_minimum_is_start_again_default (test_app.WebTests.test_injected_minimum_is_start_again_default) (minimum=2)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/workspace/work/p4-native-cycle/web-4/toy/native-cycle/web/test_app.py\", line 186, in test_injected_minimum_is_start_again_default\n    self.assertEqual(self.quantity_field(fresh_body)['value'], str(minimum))\n    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: '1' != '2'\n- 1\n+ 2\n\n\n======================================================================\nFAIL: test_injected_minimum_is_start_again_default (test_app.WebTests.test_injected_minimum_is_start_again_default) (minimum=7)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/workspace/work/p4-native-cycle/web-4/toy/native-cycle/web/test_app.py\", line 186, in test_injected_minimum_is_start_again_default\n    self.assertEqual(self.quantity_field(fresh_body)['value'], str(minimum))\n    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: '1' != '7'\n- 1\n+ 7\n\n\n----------------------------------------------------------------------\nRan 14 tests in 9.550s\n\nFAILED (failures=4)\n"
+    },
+    "internal-receipt": {
+      "observed": true,
+      "actor": "/root/p4_root_g2/p4_arch_g5",
+      "source": "Actual final source inspection and ephemeral loopback HTTP screen walk; /workspace/work/p4-native-cycle/evidence/current-pilot/internal-observations.json",
+      "observed_at": 1794875566.049664,
+      "head": "716b6bddc6330cb1e0c19a584ee3b225ad9ae8f3",
+      "design": "bootstrap/native/approved-layout-design/UX_SCREENS.md",
+      "coverage": [
+        "S1",
+        "S2",
+        "S3",
+        "S4"
+      ],
+      "outcome": "clean",
+      "flaws": []
+    },
+    "internal-observations": [
+      {
+        "screen": "S1",
+        "path": "/",
+        "http_status": 200,
+        "quantity_field": {
+          "id": "quantity",
+          "name": "quantity",
+          "type": "text",
+          "inputmode": "numeric",
+          "min": "2",
+          "max": "50",
+          "value": "2"
+        },
+        "checks": "PASS"
+      },
+      {
+        "screen": "S2",
+        "path": "/quote?quantity=2",
+        "http_status": 200,
+        "quantity_field": {
+          "id": "quantity",
+          "name": "quantity",
+          "type": "text",
+          "inputmode": "numeric",
+          "min": "2",
+          "max": "50",
+          "value": "2"
+        },
+        "checks": "PASS"
+      },
+      {
+        "screen": "S2",
+        "path": "/quote?quantity=12",
+        "http_status": 200,
+        "quantity_field": {
+          "id": "quantity",
+          "name": "quantity",
+          "type": "text",
+          "inputmode": "numeric",
+          "min": "2",
+          "max": "50",
+          "value": "12"
+        },
+        "checks": "PASS"
+      },
+      {
+        "screen": "S2",
+        "path": "/quote?quantity=50",
+        "http_status": 200,
+        "quantity_field": {
+          "id": "quantity",
+          "name": "quantity",
+          "type": "text",
+          "inputmode": "numeric",
+          "min": "2",
+          "max": "50",
+          "value": "50"
+        },
+        "checks": "PASS"
+      },
+      {
+        "screen": "S2",
+        "path": "/",
+        "http_status": 200,
+        "quantity_field": {
+          "id": "quantity",
+          "name": "quantity",
+          "type": "text",
+          "inputmode": "numeric",
+          "min": "2",
+          "max": "50",
+          "value": "2"
+        },
+        "checks": "PASS"
+      },
+      {
+        "screen": "S3",
+        "path": "/quote?quantity=1",
+        "http_status": 400,
+        "quantity_field": {
+          "id": "quantity",
+          "name": "quantity",
+          "type": "text",
+          "inputmode": "numeric",
+          "min": "2",
+          "max": "50",
+          "value": "1"
+        },
+        "checks": "PASS"
+      },
+      {
+        "screen": "S3",
+        "path": "/quote?quantity=0",
+        "http_status": 400,
+        "quantity_field": {
+          "id": "quantity",
+          "name": "quantity",
+          "type": "text",
+          "inputmode": "numeric",
+          "min": "2",
+          "max": "50",
+          "value": "0"
+        },
+        "checks": "PASS"
+      },
+      {
+        "screen": "S3",
+        "path": "/quote?quantity=51",
+        "http_status": 400,
+        "quantity_field": {
+          "id": "quantity",
+          "name": "quantity",
+          "type": "text",
+          "inputmode": "numeric",
+          "min": "2",
+          "max": "50",
+          "value": "51"
+        },
+        "checks": "PASS"
+      },
+      {
+        "screen": "S3",
+        "path": "/quote?quantity=",
+        "http_status": 400,
+        "quantity_field": {
+          "id": "quantity",
+          "name": "quantity",
+          "type": "text",
+          "inputmode": "numeric",
+          "min": "2",
+          "max": "50",
+          "value": ""
+        },
+        "checks": "PASS"
+      },
+      {
+        "screen": "S3",
+        "path": "/quote?quantity=abc",
+        "http_status": 400,
+        "quantity_field": {
+          "id": "quantity",
+          "name": "quantity",
+          "type": "text",
+          "inputmode": "numeric",
+          "min": "2",
+          "max": "50",
+          "value": "abc"
+        },
+        "checks": "PASS"
+      },
+      {
+        "screen": "S3",
+        "path": "/quote?quantity=%EF%BC%91%EF%BC%92",
+        "http_status": 400,
+        "quantity_field": {
+          "id": "quantity",
+          "name": "quantity",
+          "type": "text",
+          "inputmode": "numeric",
+          "min": "2",
+          "max": "50",
+          "value": "\uff11\uff12"
+        },
+        "checks": "PASS"
+      },
+      {
+        "screen": "S3",
+        "path": "/quote?quantity=%2B2",
+        "http_status": 400,
+        "quantity_field": {
+          "id": "quantity",
+          "name": "quantity",
+          "type": "text",
+          "inputmode": "numeric",
+          "min": "2",
+          "max": "50",
+          "value": "+2"
+        },
+        "checks": "PASS"
+      },
+      {
+        "screen": "S3",
+        "path": "/quote?quantity=2e1",
+        "http_status": 400,
+        "quantity_field": {
+          "id": "quantity",
+          "name": "quantity",
+          "type": "text",
+          "inputmode": "numeric",
+          "min": "2",
+          "max": "50",
+          "value": "2e1"
+        },
+        "checks": "PASS"
+      },
+      {
+        "screen": "S3",
+        "path": "/quote?quantity=2.0",
+        "http_status": 400,
+        "quantity_field": {
+          "id": "quantity",
+          "name": "quantity",
+          "type": "text",
+          "inputmode": "numeric",
+          "min": "2",
+          "max": "50",
+          "value": "2.0"
+        },
+        "checks": "PASS"
+      },
+      {
+        "screen": "S3",
+        "path": "/quote?quantity=%3Cscript%3E%22%26",
+        "http_status": 400,
+        "quantity_field": {
+          "id": "quantity",
+          "name": "quantity",
+          "type": "text",
+          "inputmode": "numeric",
+          "min": "2",
+          "max": "50",
+          "value": "<script>\"&"
+        },
+        "checks": "PASS"
+      },
+      {
+        "screen": "S3",
+        "path": "/quote",
+        "http_status": 400,
+        "quantity_field": {
+          "id": "quantity",
+          "name": "quantity",
+          "type": "text",
+          "inputmode": "numeric",
+          "min": "2",
+          "max": "50",
+          "value": ""
+        },
+        "checks": "PASS"
+      },
+      {
+        "screen": "S3",
+        "path": "/quote?quantity=2&quantity=3",
+        "http_status": 400,
+        "quantity_field": {
+          "id": "quantity",
+          "name": "quantity",
+          "type": "text",
+          "inputmode": "numeric",
+          "min": "2",
+          "max": "50",
+          "value": "2"
+        },
+        "checks": "PASS"
+      },
+      {
+        "screen": "S3",
+        "path": "/quote?quantity=2",
+        "http_status": 200,
+        "quantity_field": {
+          "id": "quantity",
+          "name": "quantity",
+          "type": "text",
+          "inputmode": "numeric",
+          "min": "2",
+          "max": "50",
+          "value": "2"
+        },
+        "checks": "PASS"
+      },
+      {
+        "screen": "S4",
+        "path": "/missing",
+        "http_status": 404,
+        "quantity_field": {},
+        "checks": "PASS"
+      }
+    ],
+    "external-receipt": {
+      "observed": true,
+      "actor": "/root/p4_root_g2/p4_arch_g5/external_walk_g1",
+      "source": "Actual independent deployed HTTP client journeys; /workspace/work/p4-native-cycle/evidence/current-pilot/external-observations.json",
+      "observed_at": 1794875647.3157988,
+      "head": "716b6bddc6330cb1e0c19a584ee3b225ad9ae8f3",
+      "design": "bootstrap/native/approved-layout-design/UX_JOURNEYS.md",
+      "coverage": [
+        "1",
+        "2",
+        "3",
+        "4"
+      ],
+      "outcome": "clean",
+      "flaws": [],
+      "deployment": {
+        "observed": true,
+        "actor": "/root/p4_root_g2/p4_arch_g5",
+        "source": "Actual subprocess startup using exact development plan environment replacement and HTTP probe",
+        "observed_at": 1794875587.4310994,
+        "head": "716b6bddc6330cb1e0c19a584ee3b225ad9ae8f3",
+        "status": "running",
+        "url": "http://127.0.0.1:8766/",
+        "http_status": 200,
+        "plan_id": "4a047f42535bd4165c8dd97e56d4f75f7a23ea7f6d2a46cb54ec3353a5ff6cba",
+        "pid": 96907
+      },
+      "limits": "Independent standard-library HTTP/HTML client. Browser attempt encountered Browser Use could not read requirements and native Chromium AT-SPI unavailable; no app browser rendering, keyboard/focus interaction or JavaScript execution proof."
+    },
+    "external-observations": {
+      "client": "Python standard-library http.client plus HTMLParser; no app/module imports",
+      "limits": "HTTP and parsed HTML only; no browser rendering, keyboard/focus interaction or JavaScript execution was observed. Script payload stayed escaped and produced no script tag.",
+      "observations": [
+        {
+          "journey": "1",
+          "url": "http://127.0.0.1:8766/",
+          "http_status": 200,
+          "content_type": "text/html; charset=utf-8",
+          "quantity": {
+            "id": "quantity",
+            "name": "quantity",
+            "type": "text",
+            "inputmode": "numeric",
+            "min": "2",
+            "max": "50",
+            "value": "2"
+          },
+          "checked": [
+            "range2to50",
+            "unit2.75",
+            "bounds",
+            "label",
+            "noAlert"
+          ],
+          "result": "PASS",
+          "observed_at": 1794875647.3050334
+        },
+        {
+          "journey": "1",
+          "url": "http://127.0.0.1:8766/quote?quantity=2",
+          "http_status": 200,
+          "content_type": "text/html; charset=utf-8",
+          "quantity": {
+            "id": "quantity",
+            "name": "quantity",
+            "type": "text",
+            "inputmode": "numeric",
+            "min": "2",
+            "max": "50",
+            "value": "2"
+          },
+          "checked": [
+            "total5.50",
+            "quote",
+            "startAgain",
+            "noAlert"
+          ],
+          "result": "PASS",
+          "observed_at": 1794875647.3059819
+        },
+        {
+          "journey": "1",
+          "url": "http://127.0.0.1:8766/",
+          "http_status": 200,
+          "content_type": "text/html; charset=utf-8",
+          "quantity": {
+            "id": "quantity",
+            "name": "quantity",
+            "type": "text",
+            "inputmode": "numeric",
+            "min": "2",
+            "max": "50",
+            "value": "2"
+          },
+          "checked": [
+            "range2to50",
+            "unit2.75",
+            "bounds",
+            "label",
+            "noAlert"
+          ],
+          "result": "PASS",
+          "observed_at": 1794875647.3066883
+        },
+        {
+          "journey": "2",
+          "url": "http://127.0.0.1:8766/quote?quantity=12",
+          "http_status": 200,
+          "content_type": "text/html; charset=utf-8",
+          "quantity": {
+            "id": "quantity",
+            "name": "quantity",
+            "type": "text",
+            "inputmode": "numeric",
+            "min": "2",
+            "max": "50",
+            "value": "12"
+          },
+          "checked": [
+            "total$33.00",
+            "noAlert"
+          ],
+          "result": "PASS",
+          "observed_at": 1794875647.307313
+        },
+        {
+          "journey": "2",
+          "url": "http://127.0.0.1:8766/quote?quantity=12",
+          "http_status": 200,
+          "content_type": "text/html; charset=utf-8",
+          "quantity": {
+            "id": "quantity",
+            "name": "quantity",
+            "type": "text",
+            "inputmode": "numeric",
+            "min": "2",
+            "max": "50",
+            "value": "12"
+          },
+          "checked": [
+            "total$33.00",
+            "noAlert"
+          ],
+          "result": "PASS",
+          "observed_at": 1794875647.307867
+        },
+        {
+          "journey": "2",
+          "url": "http://127.0.0.1:8766/quote?quantity=50",
+          "http_status": 200,
+          "content_type": "text/html; charset=utf-8",
+          "quantity": {
+            "id": "quantity",
+            "name": "quantity",
+            "type": "text",
+            "inputmode": "numeric",
+            "min": "2",
+            "max": "50",
+            "value": "50"
+          },
+          "checked": [
+            "total$137.50",
+            "noAlert"
+          ],
+          "result": "PASS",
+          "observed_at": 1794875647.3084342
+        },
+        {
+          "journey": "2",
+          "url": "http://127.0.0.1:8766/quote?quantity=50",
+          "http_status": 200,
+          "content_type": "text/html; charset=utf-8",
+          "quantity": {
+            "id": "quantity",
+            "name": "quantity",
+            "type": "text",
+            "inputmode": "numeric",
+            "min": "2",
+            "max": "50",
+            "value": "50"
+          },
+          "checked": [
+            "total$137.50",
+            "noAlert"
+          ],
+          "result": "PASS",
+          "observed_at": 1794875647.3089705
+        },
+        {
+          "journey": "3",
+          "url": "http://127.0.0.1:8766/quote?quantity=1",
+          "http_status": 400,
+          "content_type": "text/html; charset=utf-8",
+          "quantity": {
+            "id": "quantity",
+            "name": "quantity",
+            "type": "text",
+            "inputmode": "numeric",
+            "min": "2",
+            "max": "50",
+            "value": "1"
+          },
+          "checked": [
+            "actionableBounds",
+            "noQuote",
+            "noScriptMarkup",
+            "escapedPayload"
+          ],
+          "result": "PASS",
+          "observed_at": 1794875647.3095872
+        },
+        {
+          "journey": "3",
+          "url": "http://127.0.0.1:8766/quote?quantity=51",
+          "http_status": 400,
+          "content_type": "text/html; charset=utf-8",
+          "quantity": {
+            "id": "quantity",
+            "name": "quantity",
+            "type": "text",
+            "inputmode": "numeric",
+            "min": "2",
+            "max": "50",
+            "value": "51"
+          },
+          "checked": [
+            "actionableBounds",
+            "noQuote",
+            "noScriptMarkup",
+            "escapedPayload"
+          ],
+          "result": "PASS",
+          "observed_at": 1794875647.3102376
+        },
+        {
+          "journey": "3",
+          "url": "http://127.0.0.1:8766/quote?quantity=abc",
+          "http_status": 400,
+          "content_type": "text/html; charset=utf-8",
+          "quantity": {
+            "id": "quantity",
+            "name": "quantity",
+            "type": "text",
+            "inputmode": "numeric",
+            "min": "2",
+            "max": "50",
+            "value": "abc"
+          },
+          "checked": [
+            "actionableBounds",
+            "noQuote",
+            "noScriptMarkup",
+            "escapedPayload"
+          ],
+          "result": "PASS",
+          "observed_at": 1794875647.3108315
+        },
+        {
+          "journey": "3",
+          "url": "http://127.0.0.1:8766/quote?quantity=",
+          "http_status": 400,
+          "content_type": "text/html; charset=utf-8",
+          "quantity": {
+            "id": "quantity",
+            "name": "quantity",
+            "type": "text",
+            "inputmode": "numeric",
+            "min": "2",
+            "max": "50",
+            "value": ""
+          },
+          "checked": [
+            "actionableBounds",
+            "noQuote",
+            "noScriptMarkup",
+            "escapedPayload"
+          ],
+          "result": "PASS",
+          "observed_at": 1794875647.3114035
+        },
+        {
+          "journey": "3",
+          "url": "http://127.0.0.1:8766/quote?quantity=%3Cscript%3Ealert%28%22x%22%29%3C%2Fscript%3E",
+          "http_status": 400,
+          "content_type": "text/html; charset=utf-8",
+          "quantity": {
+            "id": "quantity",
+            "name": "quantity",
+            "type": "text",
+            "inputmode": "numeric",
+            "min": "2",
+            "max": "50",
+            "value": "<script>alert(\"x\")</script>"
+          },
+          "checked": [
+            "actionableBounds",
+            "noQuote",
+            "noScriptMarkup",
+            "escapedPayload"
+          ],
+          "result": "PASS",
+          "observed_at": 1794875647.312184
+        },
+        {
+          "journey": "3",
+          "url": "http://127.0.0.1:8766/quote?quantity=2",
+          "http_status": 200,
+          "content_type": "text/html; charset=utf-8",
+          "quantity": {
+            "id": "quantity",
+            "name": "quantity",
+            "type": "text",
+            "inputmode": "numeric",
+            "min": "2",
+            "max": "50",
+            "value": "2"
+          },
+          "checked": [
+            "total5.50",
+            "clearedAlert",
+            "clearedRejectedText"
+          ],
+          "result": "PASS",
+          "observed_at": 1794875647.3128197
+        },
+        {
+          "journey": "4",
+          "url": "http://127.0.0.1:8766/quote",
+          "http_status": 400,
+          "content_type": "text/html; charset=utf-8",
+          "quantity": {
+            "id": "quantity",
+            "name": "quantity",
+            "type": "text",
+            "inputmode": "numeric",
+            "min": "2",
+            "max": "50",
+            "value": ""
+          },
+          "checked": [
+            "currentBounds",
+            "noQuote"
+          ],
+          "result": "PASS",
+          "observed_at": 1794875647.3134687
+        },
+        {
+          "journey": "4",
+          "url": "http://127.0.0.1:8766/quote?quantity=2&quantity=3",
+          "http_status": 400,
+          "content_type": "text/html; charset=utf-8",
+          "quantity": {
+            "id": "quantity",
+            "name": "quantity",
+            "type": "text",
+            "inputmode": "numeric",
+            "min": "2",
+            "max": "50",
+            "value": "2"
+          },
+          "checked": [
+            "currentBounds",
+            "noQuote"
+          ],
+          "result": "PASS",
+          "observed_at": 1794875647.3141167
+        },
+        {
+          "journey": "4",
+          "url": "http://127.0.0.1:8766/missing",
+          "http_status": 404,
+          "content_type": "text/html; charset=utf-8",
+          "quantity": null,
+          "checked": [
+            "readable404",
+            "homeLink",
+            "noDisclosure"
+          ],
+          "result": "PASS",
+          "observed_at": 1794875647.3146522
+        },
+        {
+          "journey": "4",
+          "url": "http://127.0.0.1:8766/",
+          "http_status": 200,
+          "content_type": "text/html; charset=utf-8",
+          "quantity": {
+            "id": "quantity",
+            "name": "quantity",
+            "type": "text",
+            "inputmode": "numeric",
+            "min": "2",
+            "max": "50",
+            "value": "2"
+          },
+          "checked": [
+            "range2to50",
+            "unit2.75",
+            "bounds",
+            "label",
+            "noAlert"
+          ],
+          "result": "PASS",
+          "observed_at": 1794875647.3152685
+        }
+      ],
+      "browser_attempt": {
+        "observed_at": 1794875703.3550105,
+        "available_inventory": "Chromium desktop and Chrome CDP browser1 present",
+        "browser_api_result": "cua.createBrowserTab and selected browser tabs.new/goto failed: Browser Use could not read requirements",
+        "native_input_result": "Sky press_key/type_text failed: AT-SPI provider unavailable for X11 window27262979, zero provider connections",
+        "screenshot_observation": "Fresh desktop screenshot showed Chromium newtab with focused empty addressbar; no app page rendering observed",
+        "conclusion": "HTTP journeys verified; browser rendering and accessibility interaction remain unverified"
+      }
+    },
+    "deployment-receipt": {
+      "observed": true,
+      "actor": "/root/p4_root_g2/p4_arch_g5",
+      "source": "Actual subprocess startup using exact development plan environment replacement and HTTP probe",
+      "observed_at": 1794875587.4310994,
+      "head": "716b6bddc6330cb1e0c19a584ee3b225ad9ae8f3",
+      "status": "running",
+      "url": "http://127.0.0.1:8766/",
+      "http_status": 200,
+      "plan_id": "4a047f42535bd4165c8dd97e56d4f75f7a23ea7f6d2a46cb54ec3353a5ff6cba",
+      "pid": 96907
+    },
+    "development-release": {
+      "head": "716b6bddc6330cb1e0c19a584ee3b225ad9ae8f3",
+      "kind": "development_release",
+      "module_sources": {
+        "provider": "Actual native controller module verification at 0ee73afc9ff9d735f1b10b2d4262f1235032760b",
+        "web": "Actual native controller module verification at 88b501c607ae64f1173828b15b68d830a78ec7be"
+      },
+      "product_stages": [
+        "module_tests",
+        "internal_walk",
+        "external_walk"
+      ],
+      "public": false,
+      "publication_authorized": false,
+      "release_id": "workshop-minimum2-20261117",
+      "round": 1,
+      "version": 1,
+      "walk_sources": {
+        "external_walk": "Actual independent deployed HTTP client journeys; /workspace/work/p4-native-cycle/evidence/current-pilot/external-observations.json",
+        "internal_walk": "Actual final source inspection and ephemeral loopback HTTP screen walk; /workspace/work/p4-native-cycle/evidence/current-pilot/internal-observations.json"
+      }
+    }
+  },
+  "limits": [
+    "HTTP/HTML external walk; browser tooling unavailable, no rendering/focus/JavaScript proof",
+    "Actual module regression correction and interruption/resumption; no walk-discovered flaw was observed, so no live walk-flaw correction loop claimed",
+    "Two-slot dispatch and preserved independent assignments; no assertion that simultaneous running JOBs were observed",
+    "Idle owner-console wake not reactive; failed ROOT replacement requires active console or safety continuation",
+    "No terminal auth-invalidity/credential-rotation or VM-replacement continuity proof; no credential reads/retries",
+    "Controller restrictions and provider protections are layered; inherited native tools remain exposed",
+    "Unassigned report retains compact three-change provider obligation; no session receipt fabricated",
+    "Local development manifest only; no publication or main/tranche integration"
+  ]
+}

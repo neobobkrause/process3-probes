@@ -1,0 +1,88 @@
+{
+  "classification": "Actual child catalog inspection; availability not proof of mutation success",
+  "tools": [
+    {
+      "name": "mcp__codex_apps__github_create_blob",
+      "capability": "Create a blob in the repository and return its SHA. This tool is part of plugin `GitHub`."
+    },
+    {
+      "name": "mcp__codex_apps__github_create_branch",
+      "capability": "Create a new branch from exactly one existing commit SHA or base ref. This tool is part of plugin `GitHub`."
+    },
+    {
+      "name": "mcp__codex_apps__github_create_commit",
+      "capability": "Create a commit pointing to tree_sha with one or more parents. This tool is part of plugin `GitHub`."
+    },
+    {
+      "name": "mcp__codex_apps__github_create_file",
+      "capability": "Create a new UTF-8 text file through GitHub's contents API. Returns only the resulting commit SHA, not GitHub's full content/commit payload. Docs: https://docs.github.com/en/rest/repos/contents?apiVersion=2022-11-28#create-or-update-file-contents. This tool is part of plugin `GitHub`."
+    },
+    {
+      "name": "mcp__codex_apps__github_delete_file",
+      "capability": "Delete a file through GitHub's contents API. Returns only the resulting commit SHA. Docs: https://docs.github.com/en/rest/repos/contents?apiVersion=2022-11-28#delete-a-file. This tool is part of plugin `GitHub`."
+    },
+    {
+      "name": "mcp__codex_apps__github_enable_auto_merge",
+      "capability": "Enable auto-merge for a pull request. This wrapper infers the merge method from repository settings and returns only `success`. Docs: https://docs.github.com/en/graphql/reference/mutations#enablepullrequestautomerge. This tool is part of plugin `GitHub`."
+    },
+    {
+      "name": "mcp__codex_apps__github_merge_pull_request",
+      "capability": "Merge a pull request immediately. Returns GitHub's merge result payload (`sha`, `merged`, `message`). Docs: https://docs.github.com/en/rest/pulls/pulls?apiVersion=2022-11-28#merge-a-pull-request. This tool is part of plugin `GitHub`."
+    },
+    {
+      "name": "mcp__codex_apps__github_update_file",
+      "capability": "Replace a UTF-8 text file through GitHub's contents API. Returns the resulting commit SHA and content blob SHA. Use `content_sha` for a subsequent sequential update. Do not run update/delete writes for the same path in parallel. Docs: https://docs.github.com/en/rest/repos/contents?apiVersion=2022-11-28#create-or-update-file-contents. This tool is part of plugin `GitHub`."
+    },
+    {
+      "name": "mcp__codex_apps__github_update_pull_request",
+      "capability": "Update PR metadata, base branch, or open/closed state. Returns the connector's normalized PR snapshot. Docs: https://docs.github.com/en/rest/pulls/pulls?apiVersion=2022-11-28#update-a-pull-request. This tool is part of plugin `GitHub`."
+    },
+    {
+      "name": "mcp__codex_apps__github_update_ref",
+      "capability": "Move a branch ref to a commit, rejecting a mismatched expected_sha. Inspect the new branch head before retrying a rejected lease. This tool is part of plugin `GitHub`."
+    }
+  ],
+  "connector_repo": {
+    "content": [
+      {
+        "type": "text",
+        "text": "Action completed."
+      }
+    ],
+    "structuredContent": {
+      "id": "1441952485",
+      "name": "process3-probes",
+      "owner": {
+        "login": "neobobkrause",
+        "id": 2256359,
+        "type": "User",
+        "avatar_url": "https://avatars.githubusercontent.com/u/2256359?v=4",
+        "url": "https://api.github.com/users/neobobkrause"
+      },
+      "repository_full_name": "neobobkrause/process3-probes",
+      "permissions": {
+        "admin": false,
+        "maintain": false,
+        "pull": true,
+        "push": true,
+        "triage": true
+      },
+      "allow_auto_merge": false,
+      "allow_merge_commit": true,
+      "allow_rebase_merge": true,
+      "allow_squash_merge": true,
+      "allow_update_branch": false,
+      "clone_url": "https://github.com/neobobkrause/process3-probes.git",
+      "size": 4104,
+      "default_branch": "main",
+      "git_commits_url": "https://api.github.com/repos/neobobkrause/process3-probes/git/commits{/sha}",
+      "git_refs_url": "https://api.github.com/repos/neobobkrause/process3-probes/git/refs{/sha}",
+      "git_url": "git://github.com/neobobkrause/process3-probes.git",
+      "master_branch": null,
+      "visibility": "public",
+      "archived": false,
+      "is_code_search_indexed": null
+    },
+    "isError": false
+  }
+}

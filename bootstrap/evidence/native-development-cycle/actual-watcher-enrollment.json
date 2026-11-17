@@ -1,0 +1,23 @@
+{
+  "classification": "Actual native standby enrollment, not unattended failover",
+  "native_actor": "/root/watcher_native",
+  "generation": 1,
+  "registered_by": "ROOT after actual spawn event",
+  "source_receipt": "Actual native actor ENROLLED_READY event observed by ROOT",
+  "observed": {
+    "root": "running",
+    "arch": "/root/arch_recovered generation2 idle",
+    "coordinator": "/root/coordinator_recovered generation2 idle",
+    "watcher": "/root/watcher_native generation1",
+    "stopped": false,
+    "slots": 1,
+    "provider": "done attempt2",
+    "web": "done attempt3"
+  },
+  "limitations": [
+    "No autonomous idle self-timer proved",
+    "No exposed supported operation for watcher to replace top-level ROOT",
+    "No deletion-resurrection requirement imposed"
+  ],
+  "provider_writes_by_watcher": false
+}

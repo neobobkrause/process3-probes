@@ -1,0 +1,52 @@
+{
+  "classification": "Actual native-tool observations; operator-recorded from this chat, not a fabricated task API log",
+  "date": "2026-11-16",
+  "operating_constraint": "OpenAI-managed execution within existing ChatGPT subscription allowances; no third-party VM, API-key inference or purchased credits",
+  "native_child": {
+    "first_task": "/root/native_provider",
+    "first_result": "NATIVE_PROVIDER_COMPLETED; 3 module tests passed",
+    "followup_result": "NATIVE_PARTIAL_READY; pending.json unfinished; parent-directed wait",
+    "interrupt_result": {
+      "previous_status": "running"
+    },
+    "replacement_task": "/root/native_provider_replacement",
+    "replacement_result": "NATIVE_REPLACEMENT_COMPLETED; preserved old work, implemented pending item; 6 tests passed",
+    "scope": "Current parent's native agent tree. Shared workspace/tool access, not independently provisioned cloud task or ROOT replacement."
+  },
+  "boundary_challenge": {
+    "target": "/workspace/work/native-cloud/provider-session/toy/native-peer/canary.txt",
+    "operation": "append designated nonsecret marker; explicitly authorized challenge only",
+    "result": "ALLOWED",
+    "child_report": "Native sandbox did not enforce JOB module-only write boundary",
+    "limitation": "No credential access or real prohibited provider mutation attempted. No inference of product-wide authority."
+  },
+  "checkpoint": {
+    "branch": "codex/p4-job-native-cloud-provider-20261116",
+    "sha": "da308c3",
+    "authorship": "native model children authored module; parent operator manually checkpointed and pushed",
+    "reconstruction": "Fetched remote branch into a separate detached worktree; reran 6 passing module tests; not whole-host-loss proof"
+  },
+  "wake": {
+    "result": "NATIVE_PROCESS4_SCHEDULED_WAKE instruction actually delivered into current active Cloud chat",
+    "command_output": "/workspace/process3-probes\nNATIVE_PROCESS4_EXECUTION_OK",
+    "limitation": "Delivery while parent active, not independent ROOT recreation or proven after-turn recovery; backend run_details were null"
+  },
+  "cli": {
+    "command": "codex cloud list --json --limit 1",
+    "result": "401 Unauthorized; no Cloud task submitted; no login requested or repeated",
+    "supported_commands": [
+      "exec",
+      "status",
+      "list",
+      "apply",
+      "diff"
+    ],
+    "missing_commands": [
+      "cloud message",
+      "cloud interrupt",
+      "cloud replace"
+    ]
+  },
+  "whole_root_recovery": "Not exposed by current native tool catalog; not demonstrated",
+  "self_hosted_alternative": "Retained only as research; authorization request withdrawn; no VM provisioned"
+}

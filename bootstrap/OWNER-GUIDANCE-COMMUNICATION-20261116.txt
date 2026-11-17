@@ -1,0 +1,105 @@
+Continue the Codex Process4 bootstrap, with the following additional owner guidance.
+
+## 1. Do not turn GitHub into the Process4 communications system
+
+An earlier version of my development process used GitHub for process communication and bookkeeping. This created thousands of unnecessary files, significantly bloated the repository, and left historical material that could not be cleanly removed.
+
+**Do not repeat that architecture.**
+
+GitHub remains appropriate for source code, branches, pull requests, requirements, approved process definitions, meaningful development artifacts, and the minimum durable state genuinely necessary for recovery.
+
+It must not become the default transport or storage system for routine inter-session messages, acknowledgements, heartbeats, polling records, transient events, or other high-frequency operational bookkeeping.
+
+In particular:
+
+- Do not create a GitHub commit, file, branch, PR comment, or issue for every inter-session message.
+- Do not use GitHub event-triggered automations as the preferred solution for reactive communication merely because they may be technically available.
+- Prefer native, ephemeral, event-driven communication mechanisms supported by the OpenAI platform.
+- Where durable message handling is necessary, investigate bounded storage and lifecycle management that do not accumulate thousands of permanent GitHub artifacts.
+- Distinguish genuine recovery state from temporary operational state.
+- Evaluate write volume, storage growth, cleanup behavior, Git history accumulation, and long-term maintainability before adopting any communication or bookkeeping mechanism.
+
+Do not silently substitute another complex persistence architecture without considering these operational consequences.
+
+## 2. Investigate reactive ROOT wake methodically
+
+Reactive inter-session communication is essential. A message to an idle recipient should promptly trigger processing, without waiting for a periodic schedule.
+
+You have demonstrated that native `followup_task` works for idle, active, and replacement child sessions, with observed processing starts around 8–14 seconds.
+
+Preserve that successful implementation.
+
+The remaining problem is the idle top-level ROOT.
+
+Investigate supported approaches in this order:
+
+**A. Direct parent notification**
+
+Investigate whether `notify_parent`, or an equivalent supported native capability, is available to the actual Process4 child sessions.
+
+Its documented behavior includes waking an idle parent. Determine whether it can target the standing ROOT, whether it works after ROOT completes a turn, and whether it supports nonblocking communication.
+
+Do not assume that a tool exposed in another ChatGPT execution context is necessarily available here.
+
+**B. Native parent/child lifecycle arrangements**
+
+Investigate whether the Process4 supervisory roles can be organized so that reactive messages reach the appropriate standing supervisor through supported native agent mechanisms.
+
+Preserve the functional responsibilities of ROOT, ARCH, the coordinator, and jobs. Do not introduce additional hierarchy depth or alter role authority without analyzing and documenting the implications.
+
+**C. Other documented event-driven facilities**
+
+Investigate other supported OpenAI-hosted capabilities for waking an existing idle session.
+
+A GitHub event-triggered automation may be considered as an alternative only after evaluating its operational costs and long-term effects on repository size and maintainability. Do not implement GitHub as a message bus without explicit justification and my approval.
+
+**D. Clearly bounded fallback**
+
+If an immediate idle ROOT wake is genuinely unavailable, identify precisely which communication paths remain reactive and which depend on scheduled continuation. Continue useful development without claiming that a periodic timer is equivalent to reactive messaging.
+
+For each candidate, establish actual availability, test it where possible, record observed results, and explain why it succeeds or fails.
+
+## 3. Approach privileged authority pragmatically
+
+The second challenge is ensuring that agents act within their grants when native children inherit the parent's available tools.
+
+Do not make physically enforced module-level sandbox isolation a prerequisite for Process4. That is desirable, not essential.
+
+For ordinary module jobs, the essential requirements are clear assignments, adherence to module ownership, verification of actual changes, and rejection of unauthorized modifications before integration.
+
+Preserve strong protections for consequential operations, including owner grants, credentials, repository settings, protected branches, public releases, production resources, and unauthorized accounts.
+
+Investigate the actual authority available through inherited native tools. Distinguish:
+
+- Authority the model is instructed not to exercise.
+- Authority enforced through the Process4 controller.
+- Authority independently restricted by GitHub or another provider.
+- Authority that remains accessible through an alternative route.
+
+Do not claim exclusive enforcement where alternative routes remain accessible.
+
+Evaluate practical solutions that preserve the native session delegation and reactive communication already demonstrated. Prefer simple, verifiable controls over an elaborate infrastructure architecture.
+
+## 4. Work methodically and continue autonomously
+
+For both challenges, follow a disciplined engineering process:
+
+1. State the precise requirement and acceptance criterion.
+2. Review all experiments already completed so they are not unnecessarily repeated.
+3. Identify supported alternatives from current documentation and available tools.
+4. Select the least complicated promising approach.
+5. Implement a small experiment using the existing disposable Process4 probe environment.
+6. Measure actual behavior and record the result.
+7. Correct defects and continue until the requirement is met or a genuine platform limitation is established.
+
+Keep proven capabilities intact while investigating missing ones.
+
+Do not stop all work because one experiment fails. Continue independent development and testing.
+
+Do not introduce paid hosting, metered inference, unauthorized grants, or changes to CivicSmith2.
+
+Maintain the existing owner-approved Process4 requirements, including notification of every declared user whenever a provider changes, and the three product tests: module tests, internal walk, and external walk.
+
+**Your objective is to make the Process4 development system functional, efficient, unattended, and maintainable over the long term—not simply to demonstrate isolated capabilities.**
+
+Take responsibility for ordinary technical decisions. Bring me only genuine owner-level decisions, with the context necessary to understand them and your recommended resolution.

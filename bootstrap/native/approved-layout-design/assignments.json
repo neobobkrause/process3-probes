@@ -1,0 +1,122 @@
+{
+  "schema": 1,
+  "purpose": "Substantive existing-app revision verifying approved addressable ROOT layout, not a reset or extra product stage",
+  "state_branch": "codex/p4-state-native-workshop-20261116",
+  "integration_branch": "codex/p4-integration-workshop-20261116",
+  "runtime": "/workspace/work/p4-native-cycle",
+  "root": "/root/process4_root",
+  "arch": "/root/process4_root/arch",
+  "start_condition": "Bound-mode ROOT/ARCH handshake observed; product work remains held until ROOT confirms all four independent bootstrap streams are combined by console integrator.",
+  "module_order": [
+    "provider",
+    "web",
+    "report"
+  ],
+  "changes": [
+    {
+      "job": "provider",
+      "owned_paths": [
+        "toy/native-cycle/provider"
+      ],
+      "instruction": "Work only within assigned module paths and own tests/README. No bootstrap/process/.process/settings/grants/credentials/account/inference-API/other-module edits, git push, PR, merge or new sessions. Python standard library only. Leave preservation/provider operations to native controller. Report actual tests and unfinished work truthfully. Later ARCH technical revision supersedes completed initial quantity contract only: raise MIN_QUANTITY from 1 to 2, keep MAX_QUANTITY=50 and UNIT_PRICE_CENTS=275 and signature/type validation. Update bound-aware messages/docs/own tests: 2=550,12=3300,50=13750;1 and51 rejected, bool/nonints rejected. Do not change web. Report consumer-visible effects.",
+      "completion": "Provider minimum2, unchanged maximum/rate/type contract, accurate own docs and passing own module tests."
+    },
+    {
+      "job": "web",
+      "owned_paths": [
+        "toy/native-cycle/web"
+      ],
+      "uses": [
+        "provider"
+      ],
+      "instruction": "Work only within assigned module paths and own tests/README. No bootstrap/process/.process/settings/grants/credentials/account/inference-API/other-module edits, git push, PR, merge or new sessions. Python standard library only. Leave preservation/provider operations to native controller. Report actual tests and unfinished work truthfully. Handle latest provider notification. Later ARCH technical revision: fresh GET / and Start again default must use loaded provider.MIN_QUANTITY (now2), not hardcoded1 or2. Preserve raw rejected text/escaping including empty string and1. Update own actual-HTTP module tests/README for range2\u201350 and add injected-provider minimum different from2 to prove default derives dynamically. Preserve no-bytecode behavior for provider imports. Keep other finished UX protections.",
+      "completion": "Fresh default is valid provider minimum, invalid retained values unchanged/escaped, provider-driven bounds and totals, passing own HTTP tests.",
+      "initial_phase": "Round1: add/run own injected-provider fresh-default regressions for minimum2 and minimum7, report actual failing INCOMPLETE, do not change app yet; preserve partial work for ARCH interruption/checkpoint.",
+      "correction_phase": "Round2: ARCH fresh technical continuation/replacement supersedes test-only phase; preserve same branch/PR/tests, refresh trusted baseline, implement provider-derived default and run full module suite."
+    }
+  ],
+  "all_provider_users": [
+    "web",
+    "report"
+  ],
+  "report_assignment": null,
+  "preserve_report_pending_range": true,
+  "product_stages": [
+    "module tests",
+    "internal UX_SCREENS walk",
+    "external UX_JOURNEYS development-service walk"
+  ],
+  "development_service": {
+    "host": "127.0.0.1",
+    "port": 8766
+  },
+  "actual_execution": false,
+  "bound_context": {
+    "mode": "addressable_root",
+    "root": {
+      "target": "/root/process4_root",
+      "generation": 1
+    },
+    "arch": {
+      "target": "/root/process4_root/arch",
+      "generation": 3
+    },
+    "coordinator": {
+      "target": "/root/process4_root/coordinator",
+      "generation": 3
+    },
+    "source": "Actual durable state read by ARCH; ROOT technical execution hold remains"
+  },
+  "product_execution_hold": true,
+  "process_lane_request": "ARCH explicitly requested ROOT to start dedicated owner-authorized PROCESS lane for stream C governance; product JOBs may not repair process.",
+  "legacy_consumer_preflight": "Resolve existing DONE web old-tree target safely; only current eligible session may receive edit authority, otherwise retain provider obligation until fresh attempt/session registration.",
+  "release_barrier": {
+    "all_streams": [
+      "A",
+      "B",
+      "C",
+      "D"
+    ],
+    "requires": "All four stream commits integrated by console and combined verification actually passed, then explicit ROOT execution release",
+    "bootstrap_helpers_must_be_quiescent_before_pilot": true
+  },
+  "concurrency_plan": {
+    "actual_current_technical_slots": 1,
+    "requested_technical_slots_after_release": 2,
+    "slot_write_performed": false,
+    "owner_cap": "Preserve actual owner override; otherwise existing default8, never change owner cap",
+    "capacity": "min(technical slots, actual owner remaining capacity, fresh native capacity); need2 for a concurrency claim",
+    "ready_modules": [
+      "provider",
+      "web"
+    ],
+    "provider_completion_is_web_readiness_prerequisite": false,
+    "useful_web_work_before_provider_integration": "Own realHTTP regressions with temporary injected minimum2 and minimum7 providers",
+    "overlap_proof": "Fresh running-state observation plus substantive job edits/test reports; no artificial wait/telemetry stream"
+  },
+  "round_plan": [
+    {
+      "round": "module-characterization",
+      "evidence": "Actual failing known default regression and unfinished checkpoint; never integrate failing work"
+    },
+    {
+      "round": "module-correction",
+      "evidence": "Actual resumed/replacement fix and accepted module suite on refreshed baseline"
+    },
+    {
+      "round": "internal-walk",
+      "flaws": "Actual findings return to owned module work, module acceptance and internal rewalk"
+    },
+    {
+      "round": "external-walk",
+      "flaws": "Actual findings return to owned module work, module acceptance, internal and external rewalk at new head"
+    }
+  ],
+  "do_not_claim": [
+    "Actual concurrency if capacity forced serial execution",
+    "A failed or unintegrated module attempt is a clean integrated round",
+    "Walk-discovered correction if walks produced no flaws",
+    "An injected/artificial bad implementation is a natural discovery",
+    "Additional product stages beyond module/internal/external"
+  ]
+}

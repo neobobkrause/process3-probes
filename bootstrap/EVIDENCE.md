@@ -1,3 +1,214 @@
+# Latest owner-guided operational and lifecycle evidence
+
+Routine messaging now uses one bounded local atomic snapshot and native transport.
+Actual ARCHexchange11.837s used zero remote state calls, remote blob unchanged.
+Separate meaningful recoverymigration24265→18121bytes removed remote mailbox while
+preserving jobs/owner controls and both report changes as compact obligation. Bounds,
+cleanup/headroom and workspace-loss limits documented; no GitHub messagebus adopted.
+135bootstrap+44grants tests pass. Provider authority layers and pushURL guards verified.
+
+After-ROOT-final candidate: child prepared completion about72s before scheduledentry;
+normal final becamevisible afterentry. No unaided topROOTwake observed in boundedwindow,
+not universalabsence proof. Default local appserver daemon unavailable; noauthretry.
+
+Corrected source depthinterpretation: historicalzeroindexed≤3 allows fournodes.
+Segregated fixture bridge0→supervisor1→ARCH2→JOB3 actually works: JOB→idleancestor
+11.139s; sender independent whilefinalheld45s. Synthetic coordinator question started
+no productwork/sessions. Activebridge interrupted supervisory1 while running, created
+siblingreplacement2; it resumedpendingfixturestep through retainedARCH and received
+retainedJOB's newmessage13.542s aftersend. No operatingregistry/grant/lineagechanges.
+Aggregate actualevidence under parent-notification. See ROOT-LAYOUT-PROPOSAL.md for
+narrowowneridentitydecision; originaltopROOTwake, idleconsolealerts and instantfailure
+replacement remain unclaimed. This is NOT fullProcess4completion or a productstage.
+
+---
+
+# Latest native role recovery and continuation assessment
+
+120 bootstrap +44 grants tests pass. Native coordinator and ARCH generation2
+recovered from durable state and processed actual new-generation messages. Completed
+jobs, pending notices, owner stop and cap stayed unchanged. Obsolete actor submission
+was rejected; local generation validation on the actual snapshot rejected stale ack.
+WATCHER generation1 enrolled standby; no top-ROOT takeover claim.
+
+The new native continuation classifier is wired to `cycle.py assess`, preserving
+unknown evidence as investigation work and requiring explicit individual external
+prerequisites before blockage. Its actual current-run result after evidence-registry
+population is external_blocked with runnable=[]: retained idle ROOT reactive wake
+and protected credential/tool authority lack supported exposed mechanisms. Optional
+module sandboxing and deleted-ROOT resurrection are not blockers. All relevant actual
+source records are in evidence/native-development-cycle. Internal token rotation,
+platform-exclusive privileged authority and full Process4 operation remain unclaimed.
+
+---
+
+# Latest grants-route integration and pending-worker recovery
+
+111 bootstrap and44 grants tests now pass. All closed native Provider mutation
+methods traverse the existing Broker with an explicitly technical NativeInstructionScope.
+No owner policy was fabricated or changed. Actual native ARCH verification persisted
+one state event with all other state unchanged; a forbidden main-merge request and
+untyped write were denied with zero adapter/transport calls. Evidence:
+evidence/native-development-cycle/actual-broker-route-validation.json.
+
+A scheduled wake arrived after ROOT final and restored the managed workspace. The
+old unfinished worker was absent from live inventory and its patch absent; ROOT
+replaced that pending assignment from durable handoff. This establishes observed
+bounded pending-work recovery, not VM replacement, credential rotation or idle
+reactive wake. Evidence: actual-pending-worker-recovery.json in the same directory.
+
+The five-minute timer requested by owner was rejected by scheduler's six/hour
+limit; ten-minute continuation remains enabled. Reactive messages do not use it.
+
+---
+
+# Latest actual native development and communication evidence
+
+This section supersedes historical acceptance conclusions below. The owner's
+clarification makes whole-task ROOT resurrection unnecessary and physical module
+sandboxing optional. Neither is a blocker for the demonstrated development cycle.
+
+Actual native ARCH/JOB sessions completed a provider/web proof app. The controller
+preserved work, created PRs #271–274 and used the existing pinned process tool to
+integrate into `codex/p4-integration-workshop-20261116`, final
+`7fbcbd444c748179ad76220c22c3d0f93f6ad901`. No main/tranche/settings/grants/pin
+change occurred. Provider 4 and final web 12 tests passed, followed by the prescribed
+internal Screens walk and actual Chromium external journeys walk. An unfinished
+failing correction was interrupted and replaced; an actual out-of-scope generated
+file was rejected before integration and quarantined. All declared provider users
+have durable notices, including the unassigned report user whose notices remain pending.
+
+Reactive native child measurements: idle 11.127 s; active send_message 7.943 s;
+active production followup_task 9.917 s; replacement 14.319 s after wake, 52.072 s
+including interruption/replacement preparation. Actual production ROOT→coordinator
+mailbox route: 10.075 s. These measure send to first observable recipient action,
+including model/tool scheduling. Sender independent progress before recipient final
+release demonstrates nonblocking submission. No periodic timer supplied these wakes.
+
+Retained idle top-level ROOT wake is a specific unresolved essential communication
+boundary: current-tree controls address non-root recipients; an actual advertised
+immediate automation attempt returned HTTP404. This is distinct from optional
+whole-ROOT resurrection. The existing ten-minute continuation remains active for
+independent work, not as reactive transport. Full Process4 completion is not claimed.
+
+Validation: 105 bootstrap tests and 44 grants tests pass. Real module tests above
+are separate. Hardened exact-head gate-source verification passed for all four
+actual PR heads; this later read-only verification is not retroactively described
+as the code that performed earlier merges. Source receipts, state, gate checks,
+walk reports and screenshot are in evidence/native-development-cycle and
+evidence/reactive-communication. See REACTIVE-COMMUNICATION.md for protocol and limits.
+
+---
+
+# Historical evidence (current conclusions above take precedence)
+
+# Second scheduled continuation and current feasibility boundary
+
+The second scheduled native continuation arrived after a preceding final and ran
+six passing module tests. A native ARCH child also started a JOB child, received
+its actual six-test success and reported NATIVE_ARCH_JOB_CHAIN_OK. The child-authored
+module artifact is preserved as draft PR #270, targeting the experimental grants
+branch. Parent manually created this PR; exclusive broker operation is not claimed.
+
+The current mandatory-native-capability assessment is platform_blocked, not complete.
+Four missing capabilities have individually recorded prerequisites:
+independent ROOT recreation, whole-task-loss recovery, enforced role/module isolation,
+and exclusive grants enforcement. The first two require a supported independent
+native task/ROOT lifecycle operation not exposed here. The latter two require a
+platform role capability boundary absent in the native child interface; actual
+sibling-canary write succeeded and official inheritance documentation agrees.
+
+All bounded positive native trials identified in NATIVE-CLOUD.md are recorded,
+including two actual post-final continuations and ROOT→ARCH→JOB. No invented API,
+credential access or extra permissions were used to force the missing proofs.
+The saved continuation prompt explicitly required pausing when remaining mandatory
+demonstrations were blocked; the supported automation update confirmed disabled.
+See evidence/native-cloud/actual-second-wake-and-feasibility.json and
+schedule-pause.json. No duplicate timers should be created to repeat these tests.
+This scoped feasibility conclusion does not assert every conceivable software
+improvement is finished or all OpenAI products/accounts have identical capabilities.
+
+Final process-tool verification: 66 bootstrap tests and 44 grants/continuation tests
+pass. Native module tests pass separately. No full Process4 completion, whole-ROOT
+replacement, credential-refresh, security-isolation or real product walk is claimed.
+All code/evidence is preserved on the existing draft implementation branches.
+
+---
+
+# Current approved native-Cloud evidence — 16 November 2026
+
+The owner prohibits third-party VM hosting and metered inference. The prior
+self-hosted deployment proposal is withdrawn, with its code retained as research.
+See [NATIVE-CLOUD.md](NATIVE-CLOUD.md) and evidence/native-cloud for current findings.
+
+Actual native children developed a toy module, received follow-up instructions,
+were interrupted/replaced and completed unfinished work. Six module tests pass
+from a fresh worktree fetched from remote checkpoint da308c3. A hosted scheduled
+instruction actually reached this Cloud chat and normal shell execution worked.
+These are successful native bounded operations, distinct from earlier failed CLI
+inference. Parent-managed children share the task context; no whole-ROOT recovery
+is claimed. A specifically authorized sibling-canary write succeeded, demonstrating
+that the tested native sandbox does not enforce the required module-only write
+boundary. Exclusive grants enforcement is therefore not established.
+
+A native hourly continuation trial is scheduled; its creation is not an observed
+future run or proof of permanent supervision. The completed and hourly cards are
+scheduler entries, not documents or independent roles. All previous evidence is
+preserved with its historical limits below. No VM/service was provisioned, owner
+grants changed, main merged or CivicSmith2 modified.
+
+---
+
+# Persistent-host integration evidence — 16 November 2026
+
+Continued from PR #269 tip `20fee2d1f7793b3aeddbbb24ba6ac5a08fc851a8`, which
+already includes PR #268 tip `c5a2551d52ebf8ac88cfc053f294282fb4f3dab6`.
+Both branches are preserved; the implementation continues on #269, still draft.
+Authoritative process4 sources were read by the parent and the HANDOFF-requested
+reading worker, including all owner_words and relevant role/permission sections.
+
+The owner explicitly rejected another inherited Cloud reauthentication request.
+The new architecture follows the official SIWC VM/custom-provider instructions in
+HOSTING.md. It does not transfer native Codex Cloud auth or presume that token
+sharing is the same as the experimental chatgptAuthTokens interface.
+
+| Evidence | Actual result and limit |
+| --- | --- |
+| `persistent-host/actual-cloud-auth-failure.json` | A real nested request reached ChatGPT but failed with unrefreshable credentials. No successful inference. It was not repeatedly retried. |
+| `persistent-host/actual-appserver-initialize.json` | Actual Codex app-server completed JSON-RPC initialization using the SIWC provider configuration and a noncredential fixture string. No login/thread/inference requested; not authentication proof. |
+| `persistent-host/actual-sandbox-failure.json` | Actual named-profile command launch refused because the platform's app-server socket directory is not user-owned mode 0700 as required. No permission change/bypass attempted. An earlier direct bwrap probe also failed uid-map setup with read-only filesystem. |
+| `persistent-host/bootstrap-tests.txt` | Process-tool tests pass, including four-process serialized token rotation, atomic storage/restart recovery after JWKS outage, terminal latch, actual local private-socket RPC with fixture credentials, SIWC provider selection, app-server restart/resume fixtures, grants adapter denials, scope-restricted GitHub App issuance fixtures and continuation. No test token was a real OAuth credential. |
+| `persistent-host/grants-tests.txt` | Grants/continuation tests pass. The fixture policy remains a fixture; it is not deployed approval. |
+| `persistent-host/preserved-state.json` | Read back the same live state: stopped, provider attempt 5 blocked, ROOT generation 1 blocked, leases released. No reset/new assignment or inferred success. |
+| `persistent-host/actual-continuation-assessment.json` | Read-only assessment reports stopped, unfinished provider and all live proofs missing. A historical harness stop is not fabricated as a new owner instruction. |
+
+New code wires grants into supervisor state/checkpoint/branch/PR/role paths,
+requires isolation for both model commands and acceptance, adds continuous host
+runner/ARCH job assignments/corrections, and prepares root-owned deployment/service
+files. Bounded supervisor shutdown now requeues unfinished work while preserving
+real stop. Current assignment scope rejects operations outside probes even under
+broader historical grants. GitHub App token renewal is implemented but unverified
+against a real installation. The protected host's policy and provider identities
+must be provisioned from existing authority; no active grants were altered here.
+
+Syntax/import/diff checks pass. `systemd-analyze verify` could not run here because
+/run/systemd is read-only; service units have not been installed or executed.
+No claim of VM readiness based on that unavailable check is made.
+
+No actual successful inference, ordinary OAuth renewal, isolated model permission
+trial, role replacement chain, product/module acceptance or VM recovery has been
+obtained. No permanent service runs here. An independently controlled VM with a
+working kernel sandbox, current durable volume, scoped identity and one initial
+SIWC registration is required for those demonstrations. HOSTING.md gives the exact
+prepared procedure and preserves the OAuth remote-rotation/local-persistence crash
+gap as an exceptional limitation. Neither passing tests nor this PR completes the
+assignment. Existing product walks/development remain unproven as recorded below.
+
+No main write/merge, branch deletion, owner-grant edit, repository permission
+expansion, CivicSmith2 write or metered inference occurred.
+
+---
+
 # Successor evidence — 16 November 2026
 
 The new environment's enforced policy now includes chatgpt.com. Actual Codex requests reach its backend and receive HTTP 401. Both resumed provider attempt 5 and ROOT generation 1 failed because the supplied subscription token cannot refresh. **No successful inference or module development is claimed.** `codex login status` reports ChatGPT but does not establish usable authentication.

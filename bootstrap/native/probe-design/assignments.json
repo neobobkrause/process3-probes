@@ -1,0 +1,134 @@
+{
+  "schema": 1,
+  "name": "workshop-card-quote-native-cycle",
+  "module_order": [
+    "provider",
+    "web",
+    "report"
+  ],
+  "jobs": [
+    {
+      "id": "provider",
+      "order": 10,
+      "paths": [
+        "toy/native-cycle/provider"
+      ],
+      "uses": [],
+      "prompt": "Work only within your assigned paths and tests. No bootstrap, process, .process, settings, grants, credentials, network accounts, inference API, git pushes, PRs, merges, or other module edits. Python standard library only. Leave preservation and provider operations to the native controller. Report changed files, test argv/result, and any unfinished work truthfully. Implement quote_provider.py for workshop cards: MIN_QUANTITY=1, MAX_QUANTITY=100, UNIT_PRICE_CENTS=250. price_for accepts only int excluding bool, bounds inclusive, returns integer cents, raises ValueError otherwise. Write unittest module tests covering ordinary/boundary totals and invalid types/bounds. Include a short module README. Later provider revision is separately assigned, not preimplemented.",
+      "completion": "Provider exports the specified constants and validated price_for; own tests pass and invalid inputs are covered.",
+      "verify": [
+        "python3",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "toy/native-cycle/provider",
+        "-p",
+        "test_*.py",
+        "-v"
+      ],
+      "timeout": 180
+    },
+    {
+      "id": "web",
+      "order": 20,
+      "paths": [
+        "toy/native-cycle/web"
+      ],
+      "uses": [
+        "provider"
+      ],
+      "prompt": "Work only within your assigned paths and tests. No bootstrap, process, .process, settings, grants, credentials, network accounts, inference API, git pushes, PRs, merges, or other module edits. Python standard library only. Leave preservation and provider operations to the native controller. Report changed files, test argv/result, and any unfinished work truthfully. Implement the standard-library workshop-card HTTP app per UX_SCREENS S1-S4: CLI --provider-path --host --port; import provider from injected directory; create_server(host, port, provider_path); loopback binding only. GET / form, GET /quote result or 400 validation, unknown 404. Provider constants drive visible unit price/range; integer cents formatting, escaped HTML, labelled input, role=alert. Initial invalid input may reset to 1, explicitly record this known unfinished correction in module README. Own unittest tests run a loopback ephemeral server and make real HTTP requests, covering result, validation/duplicate/missing parameters, unknown routes, escaping and injected revised provider values. Do not implement provider logic or edit provider. No long-running server in final test command.",
+      "completion": "S1-S4 implemented, own tests pass using actual HTTP and injected provider; known rejected-input retention shortcoming recorded for later correction.",
+      "verify": [
+        "python3",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "toy/native-cycle/web",
+        "-p",
+        "test_*.py",
+        "-v"
+      ],
+      "timeout": 180
+    }
+  ],
+  "declarations": [
+    {
+      "id": "report",
+      "order": 30,
+      "paths": [
+        "toy/native-cycle/report"
+      ],
+      "uses": [
+        "provider"
+      ]
+    }
+  ],
+  "provider_users": {
+    "provider": [
+      "web",
+      "report"
+    ]
+  },
+  "development_service": {
+    "host": "127.0.0.1",
+    "port": 8765,
+    "argv": [
+      "python3",
+      "toy/native-cycle/web/app.py",
+      "--provider-path",
+      "toy/native-cycle/provider",
+      "--host",
+      "127.0.0.1",
+      "--port",
+      "8765"
+    ]
+  },
+  "followups": {
+    "provider_revision": {
+      "job": "provider",
+      "prompt": "Work only within your assigned paths and tests. No bootstrap, process, .process, settings, grants, credentials, network accounts, inference API, git pushes, PRs, merges, or other module edits. Python standard library only. Leave preservation and provider operations to the native controller. Report changed files, test argv/result, and any unfinished work truthfully. Revise provider only to UNIT_PRICE_CENTS=275 and MAX_QUANTITY=50, retaining signature and validation semantics; update own tests for 12=3300, 50=13750, 51 rejected. Report consumer-visible effects. Controller must notify web and report for this checkpoint."
+    },
+    "unfinished_correction": {
+      "job": "web",
+      "prompt": "Work only within your assigned paths and tests. No bootstrap, process, .process, settings, grants, credentials, network accounts, inference API, git pushes, PRs, merges, or other module edits. Python standard library only. Leave preservation and provider operations to the native controller. Report changed files, test argv/result, and any unfinished work truthfully. Retain invalid submitted text in the form input, safely escaped. First add a failing regression test for abc retention and HTML-tag escaping and report/checkpoint INCOMPLETE before implementing the fix; await ARCH continuation. ARCH will interrupt this native session and replace it from the preserved head. Replacement implements retention, removes stale error after a valid request and runs the complete web suite. Do not claim completion until all tests pass. For real browser retention, change type=number to type=text inputmode=numeric; keep visible provider bounds and server validation. Test these attributes as well as escaped retained value."
+    }
+  },
+  "product_tests": [
+    "module",
+    "internal UX_SCREENS walk",
+    "external UX_JOURNEYS development-service walk"
+  ],
+  "modules": [
+    {
+      "id": "provider",
+      "order": 10,
+      "paths": [
+        "toy/native-cycle/provider"
+      ],
+      "uses": []
+    },
+    {
+      "id": "web",
+      "order": 20,
+      "paths": [
+        "toy/native-cycle/web"
+      ],
+      "uses": [
+        "provider"
+      ]
+    },
+    {
+      "id": "report",
+      "order": 30,
+      "paths": [
+        "toy/native-cycle/report"
+      ],
+      "uses": [
+        "provider"
+      ]
+    }
+  ]
+}

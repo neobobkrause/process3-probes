@@ -1,0 +1,62 @@
+{
+  "classification": "One meaningful implementation/recovery-format migration checkpoint, not routine-message commit",
+  "before_blob": "7f3adf529af177f98b7bd4e5da8ef1777702ed24",
+  "after_blob": "a7923250153ca5bade4578dbbdbcf5fed3ecfacc",
+  "remote_state_bytes_before": 24265,
+  "remote_state_bytes_after": 18121,
+  "remote_mailbox_removed": true,
+  "jobs_owner_controls_unchanged": true,
+  "pending_obligation": {
+    "provider": "provider",
+    "user": "report",
+    "commit": "d4eaa939c90d614d40fd50eab439632217d83a9b",
+    "status": "pending",
+    "first_unconsumed_commit": "26796e064fb586ca893124bd8ec2414699bedd6c",
+    "change_count": 2
+  },
+  "history_rewritten": false,
+  "assessment": {
+    "status": "continue",
+    "runnable": [
+      "capability:reactive_inter_session",
+      "control:parent_final_wake_trial"
+    ],
+    "blocked": [
+      "control:protected_credential_route"
+    ],
+    "demonstrated": [
+      "managed_execution",
+      "native_child_start",
+      "native_child_message",
+      "native_child_interrupt",
+      "native_child_replacement",
+      "hosted_wake_delivery",
+      "standing_root",
+      "coordinator",
+      "arch_job_management",
+      "job_ownership_instructions",
+      "ownership_integration_control",
+      "automated_preservation_pr",
+      "authorized_working_integration",
+      "all_user_notifications",
+      "unfinished_recovery",
+      "module_tests",
+      "internal_walk",
+      "external_walk",
+      "consequential_restrictions"
+    ],
+    "unfinished_jobs": [],
+    "pending_messages": [],
+    "pending_controls": [
+      "protected_credential_route",
+      "parent_final_wake_trial"
+    ],
+    "pending_notices": [
+      "provider:d4eaa939c90d614d40fd50eab439632217d83a9b:report"
+    ],
+    "deferred_notices": [
+      "provider:d4eaa939c90d614d40fd50eab439632217d83a9b:report"
+    ],
+    "reason": "Executable assignment, delivery or evidence investigation remains."
+  }
+}

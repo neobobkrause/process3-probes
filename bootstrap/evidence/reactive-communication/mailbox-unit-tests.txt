@@ -1,0 +1,11 @@
+test_active_to_idle_race_cannot_select_nonwaking_send (test_native_communication.MailboxTests.test_active_to_idle_race_cannot_select_nonwaking_send) ... ok
+test_idempotence_does_not_merge_different_messages (test_native_communication.MailboxTests.test_idempotence_does_not_merge_different_messages) ... ok
+test_idle_wake_and_active_delivery_are_different (test_native_communication.MailboxTests.test_idle_wake_and_active_delivery_are_different) ... ok
+test_pending_survives_delivery_and_new_messages (test_native_communication.MailboxTests.test_pending_survives_delivery_and_new_messages) ... ok
+test_replacement_redelivers_unacknowledged_message (test_native_communication.MailboxTests.test_replacement_redelivers_unacknowledged_message) ... ok
+test_unknown_activity_and_generation_fail_closed (test_native_communication.MailboxTests.test_unknown_activity_and_generation_fail_closed) ... ok
+
+----------------------------------------------------------------------
+Ran 6 tests in 0.000s
+
+OK

@@ -1,0 +1,33 @@
+The next development objective is to complete the remaining Process4 implementation and reliability assessment so that we can determine whether the Codex-based process is ready for real unattended product development.
+
+This is a continuation of your original assignment, not a new product-development project.
+
+Your latest integrated pilot was a successful milestone. Preserve its results and do not repeat completed experiments unnecessarily. However, the overall Process4 assessment is not complete.
+
+Proceed with the next representative development and verification phase, using `neobobkrause/process3-probes` exclusively.
+
+Specifically:
+
+1. **Demonstrate real parallel module development.** Run multiple independent JOB sessions simultaneously within the established slot limits, with ARCH scheduling, supervising, integrating, and promptly refilling available slots. Record actual concurrent execution, rather than relying only on scheduling tests.
+2. **Demonstrate a genuine multi-round tranche.** Introduce a bounded, realistic functional requirement into a disposable probe product. If the internal or external walk detects an actual defect, have ARCH assign the correction to the responsible module, complete another round, and repeat the necessary walk. Do not manufacture a passing result or weaken the walk definition.
+3. **Complete the design-lane workflow.** Demonstrate an appropriately qualified design lane, question routing through ARCH, preservation of its design knowledge, and integration of its authorized design output.
+4. **Complete the PROCESS workflow.** Demonstrate how a process defect is reported and routed to PROCESS, how PROCESS prepares a proposed correction, and how owner approval is preserved as a requirement before adoption. Do not actually change the governing process or invent my approval.
+5. **Exercise owner-facing controls.** Verify that the coordinator correctly handles questions, instructions, stops, priorities, holds, and slot changes. Preserve my exact instructions and ensure a stop survives scheduled continuation and session replacement.
+6. **Evaluate sustained unattended operation.** Run a meaningful extended pilot covering session replacement, context continuity, job completion, integration, communication, and recovery. Measure avoidable intervention, idle time while work is ready, unsuccessful actions, duplicated work, and GitHub bookkeeping growth.
+7. **Verify development release and deployment readiness.** Distinguish the already-demonstrated local HTTP external walk from a browser-based walk of an actual disposable development deployment. Implement and test remaining authorized mechanisms, but do not access CivicSmith2 or unapproved Cloudflare resources.
+
+Work on these areas in parallel wherever their source ownership and dependencies permit. Have ARCH coordinate the work and integrate it through the existing authorized experimental process.
+
+Continue making technical decisions independently. The owner-approved addressable ROOT arrangement is settled and must not be reopened.
+
+Keep the current grants, no-paid-hosting requirement, subscription-funded inference, native reactive communications, and prohibition on GitHub as a routine message bus.
+
+Do not add product-test categories beyond module tests, internal walk, and external walk.
+
+If a particular experiment requires an owner-level action, isolate that dependency and continue unrelated work.
+
+**The completion criterion is a documented, evidence-backed determination that the Codex version of Process4 can reliably manage real unattended development, or a precise account of the essential capabilities that still cannot be provided.**
+
+A completed pilot, passing unit tests, or an empty job queue is not sufficient reason to close the overall assessment.
+
+Resume the standing continuation mechanism as appropriate, launch the remaining independent workstreams, and proceed without requesting another development objective from me.

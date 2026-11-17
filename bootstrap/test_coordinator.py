@@ -78,6 +78,24 @@ class Tests(unittest.TestCase):
         with patch.object(c.subprocess,'run',return_value=subprocess.CompletedProcess([],0,'','Logged in using an API key')):
             with self.assertRaises(RuntimeError): c.auth()
 
+    def test_privileged_tokens_not_inherited_by_job(self):
+        parent = {'GH_TOKEN': 'fixture-git', 'GITHUB_TOKEN': 'fixture-git',
+                  'CLOUDFLARE_API_TOKEN': 'fixture-cf', 'AWS_SECRET_ACCESS_KEY': 'fixture-aws',
+                  'SSH_AUTH_SOCK': '/tmp/fixture', 'GIT_CONFIG_KEY_0': 'credential.helper',
+                  'PATH': '/usr/bin', 'CODEX_HOME': '/isolated/subscription'}
+        env = c.restricted_job_env(parent)
+        for key in ('GH_TOKEN', 'GITHUB_TOKEN', 'CLOUDFLARE_API_TOKEN',
+                    'AWS_SECRET_ACCESS_KEY', 'SSH_AUTH_SOCK', 'GIT_CONFIG_KEY_0'):
+            self.assertNotIn(key, env)
+        self.assertEqual(env['PATH'], '/usr/bin')
+        self.assertEqual(env['CODEX_HOME'], '/isolated/subscription')
+
+    def test_nonstandard_provider_environment_names(self):
+        parent = {'GITHUB_CUSTOM_AUTH': 'fixture', 'GH_HOST': 'fixture',
+                  'CLOUDFLARE_ACCESS': 'fixture', 'AWS_PROFILE': 'fixture',
+                  'GIT_CONFIG_COUNT': '1', 'SAFE_VALUE': 'preserved'}
+        self.assertEqual(c.restricted_job_env(parent), {'SAFE_VALUE': 'preserved'})
+
     def test_cas_conflict(self):
         m=Memory(c.empty()); a,sha=m.read(); m.mutate(lambda s:c.control(s,'stop'))
         with self.assertRaises(RuntimeError): m.write(a,sha)
@@ -123,6 +141,7 @@ class CompletionTests(unittest.TestCase):
             p=subprocess.Popen(['python','-c','print(\'{"type":"turn.completed"}\')'],stdout=log,stderr=err,start_new_session=True)
             p.wait(); sup.live={'provider':(p,log,err,path,time.monotonic())}
             sup.checkpoint=lambda *_:'base'
+            sup.verify=lambda job,path: subprocess.run(job['verify'],cwd=path,text=True,capture_output=True,timeout=60)
             m.s['jobs']['provider']['verify']=verify
             if conflict:
                 original=m.write

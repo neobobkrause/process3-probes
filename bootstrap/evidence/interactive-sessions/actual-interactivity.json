@@ -1,0 +1,1263 @@
+{
+  "classification": "Actual continuing role conversations, native failures/replacements and genuine owner-console exchange; not transcript-only inspection",
+  "recorded_at": 1794884381.7883317,
+  "source_controller": "0e632b4",
+  "source_prs": [
+    287,
+    288,
+    289
+  ],
+  "bootstrap_tests": 288,
+  "grants_tests_prior_pass_unchanged": 46,
+  "owner_clarification": "bootstrap/OWNER-INTERACTIVE-SESSIONS-20261116.txt",
+  "owner_clarification_sha256": "9653d0e9a4ef6e45512222ef2ae0648c56e63c0459bd0bd67ab4156e30f7c12c",
+  "actual_proofs": {
+    "arch5-provider-failure.json": {
+      "observed_at": 1794881129.0238926,
+      "actual_known_target": "/root/p4_root_g2/p4_arch_g5",
+      "followup_attempts": 2,
+      "actual_inventory_result": {
+        "errored": {
+          "status": 400,
+          "message": "Unsupported parameter: request_country"
+        }
+      },
+      "actual_first_processing_or_answer_received": false,
+      "diagnosis": "Retained instance cannot process two accepted supported followups; provider request-parameter failure, not list absence or explicit retirement.",
+      "replacement_authority": "console explicit supported replacement after bounded actual failure; stable ARCH remains retained"
+    },
+    "arch-replacement-reconciliation.json": {
+      "observed_at": 1794881237.7409804,
+      "actor": "/root/p4_root_g3",
+      "source": "Actual ARCH5 repeated400\u2192supportedactualARCH6spawnREADYregister\u2192newcontext correlatedreply; imported/safelybound/answered using integratedcomponent",
+      "stable_conversation_id": "p4-native-workshop-20261116:ARCH",
+      "actual_binding": {
+        "target": "/root/p4_root_g3/p4_arch_g6",
+        "generation": 6
+      },
+      "assignment": {
+        "id": "interactive-session-assessment",
+        "status": "active"
+      },
+      "pending_after_explicit_answer": [],
+      "actual_answer_evidence": "/workspace/work/p4-native-cycle/evidence/interactive-assessment/arch6-context-answer.json",
+      "routine_git_writes": 0,
+      "limits": [
+        "Unanswered real owner clarification survived actual replacement; no prior first-processing ACK by failing ARCH5 claimed.",
+        "Separate planned COORD ACKed-pending replacement test remains distinct."
+      ]
+    },
+    "arch6-context-answer.json": {
+      "observed_at": 1794881199.7555764,
+      "actor": "/root/p4_root_g3/p4_arch_g6",
+      "generation": 6,
+      "conversation_id": "p4-native-workshop-20261116:ARCH",
+      "question_id": "owner-interactive-clarification-20261116",
+      "question_source": "actual owner text from bootstrap/OWNER-INTERACTIVE-SESSIONS-20261116.txt, preserved by ROOT recovery capsule",
+      "answer_source": "actual native ARCH6 response delivered to ROOT3 after registration",
+      "answer": "ARCH remains retained after assignments. Decisions and unresolved questions follow the stable logical conversation. Supported followup probes retained unlisted sessions; ACK is not an answer. Explicit correlated replies clear questions. Replacement changes instance/generation, not logical retirement. Owner-console-mediated conversation is supported; independent child composer UI remains unverified. Preserve product evidence and suspended readiness.",
+      "preserved_decisions": [
+        "Preserve product4414c032 and completed module/internal/browser/release evidence; no repeatwalks.",
+        "Logical role retention is distinct from native turn completion, assignment completion and replacement."
+      ],
+      "preserved_references": [
+        "bootstrap/native/approved-layout-design/EXTENDED-PLAN.md",
+        "bootstrap/native/approved-layout-design/quote-comparison/interface-contract.json",
+        "runtime/evidence/extended-assessment/arch-final-summary.json"
+      ],
+      "limits": [
+        "This is actual fresh-instance context/reply evidence, not proof of independent child UI.",
+        "Central local question reconciliation remains console/ROOT-owned."
+      ]
+    },
+    "arch6-second-turn-and-assignment.json": {
+      "observed_at": 1794881656.1798747,
+      "actor": "/root/p4_root_g3/p4_arch_g6",
+      "generation": 6,
+      "source": "Actual supported followup after prior completed source-assignment turn",
+      "prompt_provenance": "ROOT proxy test, not owner words",
+      "recall_before_file_reads": true,
+      "actual_substantive_reply": "Frozen key state[native_interaction] is an ephemeral local Cycle.assess overlay, never GitStore. ACKed or retired unanswered questions remain visible until explicit correlated resolution. STOP still blocks runnable dispatch. Preserve product4414c032 and do not repeat walks.",
+      "new_bounded_assignment": "Diagnose genuine retained lane repeated400 failure after ARCH replacement; implement only subsequently authorized typed creator revalidation helper.",
+      "source_result": {
+        "initial_six_file_tip": "a18c786703107b6669a118a2cb4d2becd066f0fe",
+        "follow_on_two_file_tip": "a21acee58df731c63c8d99bbc027dc12caf43a58",
+        "initial_full_bootstrap_tests": 269,
+        "follow_on_design_tests": 14
+      },
+      "no_product_repeats": true,
+      "logical_role_retired": false
+    },
+    "process3-context-answer.json": {
+      "observed_at": 1794881428.568087,
+      "actor": "/root/p4_root_g3/p4_process_g3",
+      "generation": 3,
+      "role": "PROCESS",
+      "question_id": "owner-interactive-clarification-20261116:PROCESS",
+      "question_source": "Genuine owner text in bootstrap/OWNER-INTERACTIVE-SESSIONS-20261116.txt; ROOT3 supplied actual canonical reference after registration",
+      "answer_source": "Actual PROCESS3 native response after supported replacement and actual registration acknowledgement",
+      "answer": "PROCESS remains a retained interactive role after completing a proposal or a turn. I will preserve prior decisions, canonical references and unanswered questions under a stable logical PROCESS conversation when the native instance changes. A first-processing ACK is only a receipt; it does not answer or close a conversation. An actual correlated substantive reply is needed before a pending question can be cleared. The repeated PROCESS2 provider errors explain replacement of that instance, not retirement of logical PROCESS. The new owner clarification makes continuing conversation essential but does not approve PR286 or authorize a governing change. PROCESS2 authored the original proposal; ROOT3 later authored the candidate patch and nine isolated offline checks. The current conservative STOP rules remain active, the proposal remains unadopted, and product evidence is preserved. I can continue through the supported owner-console-mediated native route; independent child-composer access remains unverified.",
+      "preserved_decisions": [
+        "Native turn completion and proposal-assignment completion do not retire retained logical PROCESS.",
+        "PR286 remains PROPOSED NOT ADOPTED; current conservative all-role STOP remains unchanged.",
+        "PROCESS2 authored original proposal; ROOT3 authored subsequent candidate patch and nine isolated offline checks.",
+        "Question processing acknowledgement is distinct from an explicit substantive answer."
+      ],
+      "canonical_references": [
+        "bootstrap/OWNER-INTERACTIVE-SESSIONS-20261116.txt",
+        "bootstrap/OWNER-RELIABILITY-ASSESSMENT-20261116.txt",
+        "bootstrap/native/proposals/stopped-coordinator-recovery/PROPOSAL.md",
+        "bootstrap/native/proposals/stopped-coordinator-recovery/candidate-status.json"
+      ],
+      "limits": [
+        "Fresh replacement context and this actual substantive reply are observed; no PROCESS2 resumed-context recall is claimed.",
+        "Direct owner child-composer UI remains unverified.",
+        "No governing adoption, source edits, grant changes or product work were performed.",
+        "Central correlated question reconciliation remains ROOT/console-owned."
+      ],
+      "retained_after_turn": true
+    },
+    "lane2-recovery-and-two-turns.json": {
+      "observed_at": 1794882117.3368635,
+      "actor": "/root/p4_root_g3/p4_arch_g6",
+      "source": "Actual lane-recover and lane-plan CLI, spawn/READY/register-role native events, two actual child reply turns",
+      "actual_binding": {
+        "target": "/root/p4_root_g3/p4_arch_g6/p4_lane_quote_comparison_g2",
+        "generation": 2
+      },
+      "actual_lane_arch": {
+        "target": "/root/p4_root_g3/p4_arch_g6",
+        "generation": 6
+      },
+      "original_owner_need_preserved": {
+        "source": "observed-owner-need",
+        "evidence": "bootstrap/OWNER-RELIABILITY-ASSESSMENT-20261116.txt; exact owner request item3 qualified design lane, routed by ROOT",
+        "text": "The next development objective is to complete the remaining Process4 implementation and reliability assessment so that we can determine whether the Codex-based process is ready for real unattended product development.\n\nThis is a continuation of your original assignment, not a new product-development project.\n\nYour latest integrated pilot was a successful milestone. Preserve its results and do not repeat completed experiments unnecessarily. However, the overall Process4 assessment is not complete.\n\nProceed with the next representative development and verification phase, using `neobobkrause/process3-probes` exclusively.\n\nSpecifically:\n\n1. **Demonstrate real parallel module development.** Run multiple independent JOB sessions simultaneously within the established slot limits, with ARCH scheduling, supervising, integrating, and promptly refilling available slots. Record actual concurrent execution, rather than relying only on scheduling tests.\n2. **Demonstrate a genuine multi-round tranche.** Introduce a bounded, realistic functional requirement into a disposable probe product. If the internal or external walk detects an actual defect, have ARCH assign the correction to the responsible module, complete another round, and repeat the necessary walk. Do not manufacture a passing result or weaken the walk definition.\n3. **Complete the design-lane workflow.** Demonstrate an appropriately qualified design lane, question routing through ARCH, preservation of its design knowledge, and integration of its authorized design output.\n4. **Complete the PROCESS workflow.** Demonstrate how a process defect is reported and routed to PROCESS, how PROCESS prepares a proposed correction, and how owner approval is preserved as a requirement before adoption. Do not actually change the governing process or invent my approval.\n5. **Exercise owner-facing controls.** Verify that the coordinator correctly handles questions, instructions, stops, priorities, holds, and slot changes. Preserve my exact instructions and ensure a stop survives scheduled continuation and session replacement.\n6. **Evaluate sustained unattended operation.** Run a meaningful extended pilot covering session replacement, context continuity, job completion, integration, communication, and recovery. Measure avoidable intervention, idle time while work is ready, unsuccessful actions, duplicated work, and GitHub bookkeeping growth.\n7. **Verify development release and deployment readiness.** Distinguish the already-demonstrated local HTTP external walk from a browser-based walk of an actual disposable development deployment. Implement and test remaining authorized mechanisms, but do not access CivicSmith2 or unapproved Cloudflare resources.\n\nWork on these areas in parallel wherever their source ownership and dependencies permit. Have ARCH coordinate the work and integrate it through the existing authorized experimental process.\n\nContinue making technical decisions independently. The owner-approved addressable ROOT arrangement is settled and must not be reopened.\n\nKeep the current grants, no-paid-hosting requirement, subscription-funded inference, native reactive communications, and prohibition on GitHub as a routine message bus.\n\nDo not add product-test categories beyond module tests, internal walk, and external walk.\n\nIf a particular experiment requires an owner-level action, isolate that dependency and continue unrelated work.\n\n**The completion criterion is a documented, evidence-backed determination that the Codex version of Process4 can reliably manage real unattended development, or a precise account of the essential capabilities that still cannot be provided.**\n\nA completed pilot, passing unit tests, or an empty job queue is not sufficient reason to close the overall assessment.\n\nResume the standing continuation mechanism as appropriate, launch the remaining independent workstreams, and proceed without requesting another development objective from me.\n"
+      },
+      "original_paths_preserved": [
+        "bootstrap/native/approved-layout-design/quote-comparison"
+      ],
+      "logical_conversation_id": "p4-native-workshop-20261116:LANE:quote-comparison",
+      "question_id": "owner-interactive-clarification-20261116:LANE:quote-comparison",
+      "actual_substantive_answer": "Design completion did not retire this lane. Stable identity, accepted decisions/refs and qualified need/scope survive native replacement. Processing ACK is not an answer. Owner-console via ARCH works; independent child composer unverified. No design or product edits.",
+      "second_turn": {
+        "provenance": "ARCH proxy test, not owner words",
+        "after_actual_native_completed": true,
+        "recall_before_file_reads": true,
+        "actual_reply": "Stable identity p4-native-workshop-20261116:LANE:quote-comparison. Compare1-8 alternatives without aggregate purchase total; preserve invalid input exactly and safely escaped. New owner questions receive substantive replies via ARCH/console, never automatic edit authority.",
+        "actual_reply_exact": "Reactivated without reading files. My stable identity is `p4-native-workshop-20261116:LANE:quote-comparison`.\n\nTwo retained decisions: compare 1\u20138 alternatives without an aggregate purchase total; retain invalid input exactly and safely escaped.\n\nA new owner question should receive a substantive answer through ARCH and the console. It does not automatically authorize design or product edits. The lane remains retained after this turn."
+      },
+      "files_modified": false,
+      "logical_role_retired": false,
+      "limits": [
+        "Local evidence records final observation time, not invented first-processing latency.",
+        "OldLANE1 diagnosed repeated provider400; no spontaneous recovery claim.",
+        "Central dialogue adapter owns existing pending question answer reconciliation."
+      ],
+      "answer_receipt_recorded_at": 1794882144.3645058,
+      "actual_answer_text": "Actual registered LANE2 substantive answer to owner-interactive-clarification-20261116:LANE:quote-comparison (my role words, not owner text): Completing the quote-comparison design did not retire this design lane. I retain its stable conversation identity, accepted decisions and references, and remain available for later questions or new authorized assignments. Replacement changes my native instance, not the qualified need or design scope. A processing ACK does not resolve an unanswered question; only an explicit correlated substantive reply should do that. I can respond through the owner console via ARCH; independent child-session composer access remains unverified. The frozen comparison design and prior product evidence remain unchanged. References: DECISIONS.md, interface-contract.json, UX_SCREENS.md and UX_JOURNEYS.md in the quote-comparison design folder.",
+      "actual_answer_source": {
+        "native_actor": "/root/p4_root_g3/p4_arch_g6/p4_lane_quote_comparison_g2",
+        "generation": 2,
+        "event": "Actual child send_message after successful actual registration, followed by actual native FINAL",
+        "native_reply_timestamp_exposed": false,
+        "time_scope": "answer_receipt_recorded_at records local preservation time, not invented native first-processing/reply latency"
+      }
+    },
+    "coordinator5-planned-interrupt.json": {
+      "observed_at": 1794882585.9015033,
+      "actor": "/root/p4_root_g3",
+      "actual_interrupt_tool_result": {
+        "previous_status": "running"
+      },
+      "target": "/root/p4_root_g3/p4_coordinator_g5",
+      "generation": 5,
+      "followup_inventory": "interrupted",
+      "question_id": "proxy-coordinator-unanswered-across-replacement-20261116",
+      "source": "Actualnativeinterrupt + actualfreshinventory, consoleactualACK/checkpoint alreadyobserved; plannedtest NOTspontaneousfailure",
+      "not_retirement": true
+    },
+    "coordinator6-pending-question-answer.json": {
+      "observed_at": 1794882649.5679302,
+      "actor": "/root/p4_root_g3/p4_coordinator_g6",
+      "generation": 6,
+      "conversation_id": "p4-native-workshop-20261116:COORDINATOR",
+      "question_id": "proxy-coordinator-unanswered-across-replacement-20261116",
+      "question_text": "Why must a completed coordinator assignment leave its conversation available, and what must a replacement preserve for an already acknowledged but unanswered question?",
+      "question_provenance": "proxy-test",
+      "prior_processing_receipts": [
+        {
+          "generation": 5,
+          "evidence": "Actual COORD5 processing-only native receipt1794882533.0309048; query explicitly unanswered, awaiting planned transition"
+        }
+      ],
+      "pending_before_answer": true,
+      "answered_before_answer": false,
+      "preserved_decisions": [
+        "Turn completion and assignment completion do not retire the coordinator; pending questions require substantive correlated replies.",
+        "Preserve exact owner instructions once; forwarding never changes stop, cap, grants or build authority.",
+        "Isolated synthetic controls exercise remains owner-source STOP; PR286 is proposed and unadopted, no stopped-role recovery exception authorized."
+      ],
+      "preserved_references": [
+        "bootstrap/OWNER-INTERACTIVE-SESSIONS-20261116.txt",
+        "/workspace/work/p4-reliability-phase/coordinator5-interactive-reactivation.json"
+      ],
+      "answer": "Completing a coordinator assignment finishes that assignment, not the standing owner conversation. The coordinator must remain retained and reachable for later questions, instructions and new assignments. A replacement must preserve the same logical conversation identity, important decisions and references, and the original unanswered question identity, exact text and provenance. Generation5 acknowledged processing only; it did not answer this proxy question. I am generation6 in the same COORDINATOR conversation and now answer it explicitly. Exact owner instructions remain separate from proxy tests; forwarding never changes stop, cap, grants or build authority. The isolated synthetic STOP remains unchanged and PR286 remains unadopted.",
+      "answer_source": "Actual registered COORD6 read current dialogue context and authored this substantive correlated reply; native delivery follows to ROOT and console.",
+      "central_reply_written_by_this_agent": false,
+      "limitations": [
+        "Planned normal unstopped replacement, not spontaneous failure or automatic stopped-role recovery.",
+        "Console-mediated native conversation demonstrated; independent child composer UI remains unverified.",
+        "Observation time records this context/receipt, not an invented exact native start time."
+      ],
+      "logical_role_retained": true
+    },
+    "jobs-conversation-recovery-invariants.json": {
+      "observed_at": 1794882626.6044333,
+      "source": "Actual controller pre/post status comparison after three native conversation session bindings",
+      "jobs": {
+        "web": {
+          "preserved_product_fields": {
+            "attempt": true,
+            "status": true,
+            "checkpoint": true,
+            "verification": true,
+            "accepted": true,
+            "last_outcome": true,
+            "pr_number": true,
+            "pr": true,
+            "integrated": true,
+            "branch": true,
+            "workspace": true
+          },
+          "all_preserved": true,
+          "changed_job_fields": {
+            "conversation_only_recovery": {
+              "before": null,
+              "after": true
+            },
+            "expected_session_generation": {
+              "before": null,
+              "after": 8
+            },
+            "session_attempt": {
+              "before": null,
+              "after": 7
+            },
+            "session": {
+              "before": "/root/p4_root_g2/p4_arch_g5/web_g7",
+              "after": "/root/p4_root_g3/p4_arch_g6/p4_job_web_g8"
+            },
+            "session_generation": {
+              "before": 7,
+              "after": 8
+            }
+          },
+          "native_binding": {
+            "target": "/root/p4_root_g3/p4_arch_g6/p4_job_web_g8",
+            "generation": 8
+          }
+        },
+        "report": {
+          "preserved_product_fields": {
+            "attempt": true,
+            "status": true,
+            "checkpoint": true,
+            "verification": true,
+            "accepted": true,
+            "last_outcome": true,
+            "pr_number": true,
+            "pr": true,
+            "integrated": true,
+            "branch": true,
+            "workspace": true
+          },
+          "all_preserved": true,
+          "changed_job_fields": {
+            "conversation_only_recovery": {
+              "before": null,
+              "after": true
+            },
+            "expected_session_generation": {
+              "before": null,
+              "after": 3
+            },
+            "session_attempt": {
+              "before": null,
+              "after": 2
+            },
+            "session": {
+              "before": "/root/p4_root_g2/p4_arch_g5/report_g2",
+              "after": "/root/p4_root_g3/p4_arch_g6/p4_job_report_g3"
+            },
+            "session_generation": {
+              "before": 2,
+              "after": 3
+            }
+          },
+          "native_binding": {
+            "target": "/root/p4_root_g3/p4_arch_g6/p4_job_report_g3",
+            "generation": 3
+          }
+        },
+        "provider": {
+          "preserved_product_fields": {
+            "attempt": true,
+            "status": true,
+            "checkpoint": true,
+            "verification": true,
+            "accepted": true,
+            "last_outcome": true,
+            "pr_number": true,
+            "pr": true,
+            "integrated": true,
+            "branch": true,
+            "workspace": true
+          },
+          "all_preserved": true,
+          "changed_job_fields": {
+            "conversation_only_recovery": {
+              "before": null,
+              "after": true
+            },
+            "expected_session_generation": {
+              "before": null,
+              "after": 4
+            },
+            "session_attempt": {
+              "before": null,
+              "after": 3
+            },
+            "session": {
+              "before": "/root/process4_root/p4_arch_g4/provider_g3",
+              "after": "/root/p4_root_g3/p4_arch_g6/p4_job_provider_g4"
+            },
+            "session_generation": {
+              "before": 3,
+              "after": 4
+            }
+          },
+          "native_binding": {
+            "target": "/root/p4_root_g3/p4_arch_g6/p4_job_provider_g4",
+            "generation": 4
+          }
+        }
+      },
+      "no_product_retests_or_edits_executed": true
+    },
+    "jobs-final-interactive-aggregate.json": {
+      "observed_at": 1794882679.2663314,
+      "actor": "/root/p4_root_g3/p4_arch_g6",
+      "source": "Actual typed job-conversation recovery, native spawn/READY, supported session binding, actual substantive replies/FINALs, final controller state comparison",
+      "jobs": {
+        "web": {
+          "product_before": {
+            "attempt": 7,
+            "status": "done",
+            "checkpoint": "213863ee30f1aa601b340b6ee319fa9aa42b99d6",
+            "verification": {
+              "returncode": 0,
+              "test_count": 26,
+              "command": [
+                "python3",
+                "-m",
+                "unittest",
+                "discover",
+                "-s",
+                "toy/native-cycle/web",
+                "-p",
+                "test_*.py",
+                "-v"
+              ],
+              "skipped_count": 0,
+              "stdout": "",
+              "stderr": "test_form (test_app.WebTests.test_form) ... ok\ntest_injected_minimum_is_fresh_form_default (test_app.WebTests.test_injected_minimum_is_fresh_form_default) ... ok\ntest_injected_minimum_is_start_again_default (test_app.WebTests.test_injected_minimum_is_start_again_default) ... ok\ntest_injected_revised_provider_and_escaping (test_app.WebTests.test_injected_revised_provider_and_escaping) ... ok\ntest_loopback_only (test_app.WebTests.test_loopback_only) ... ok\ntest_not_found (test_app.WebTests.test_not_found) ... ok\ntest_provider_upper_bound (test_app.WebTests.test_provider_upper_bound) ... ok\ntest_rejected_html_is_retained_and_escaped (test_app.WebTests.test_rejected_html_is_retained_and_escaped) ... ok\ntest_rejected_text_is_retained (test_app.WebTests.test_rejected_text_is_retained) ... ok\ntest_rejected_whitespace_and_empty_are_retained (test_app.WebTests.test_rejected_whitespace_and_empty_are_retained) ... ok\ntest_result_and_refresh (test_app.WebTests.test_result_and_refresh) ... ok\ntest_text_input_supports_editing_rejected_text (test_app.WebTests.test_text_input_supports_editing_rejected_text) ... ok\ntest_valid_request_clears_validation_error (test_app.WebTests.test_valid_request_clears_validation_error) ... ok\ntest_validation (test_app.WebTests.test_validation) ... ok\ntest_actual_integrated_report_default_path (test_comparison.ComparisonTests.test_actual_integrated_report_default_path) ... ok\ntest_changed_provider_bounds_defaults_prices_and_report_injection (test_comparison.ComparisonTests.test_changed_provider_bounds_defaults_prices_and_report_injection) ... ok\ntest_csv_exact_bytes_headers_order_and_roundtrip (test_comparison.ComparisonTests.test_csv_exact_bytes_headers_order_and_roundtrip) ... ok\ntest_html_payload_is_literal_text_not_markup (test_comparison.ComparisonTests.test_html_payload_is_literal_text_not_markup) ... ok\ntest_invalid_batches_are_atomic_retained_and_actionable (test_comparison.ComparisonTests.test_invalid_batches_are_atomic_retained_and_actionable) ... ok\ntest_invalid_csv_is_html_and_no_attachment (test_comparison.ComparisonTests.test_invalid_csv_is_html_and_no_attachment) ... ok\ntest_missing_and_duplicate_parameters (test_comparison.ComparisonTests.test_missing_and_duplicate_parameters) ... ok\ntest_missing_report_does_not_break_single_quote (test_comparison.ComparisonTests.test_missing_report_does_not_break_single_quote) ... ok\ntest_navigation_and_fresh_comparison (test_comparison.ComparisonTests.test_navigation_and_fresh_comparison) ... ok\ntest_ordered_rows_download_link_and_refresh (test_comparison.ComparisonTests.test_ordered_rows_download_link_and_refresh) ... ok\ntest_singleton_eight_options_and_normalized_leading_zeros (test_comparison.ComparisonTests.test_singleton_eight_options_and_normalized_leading_zeros) ... ok\ntest_valid_recovery_and_single_quote_preserved (test_comparison.ComparisonTests.test_valid_recovery_and_single_quote_preserved) ... ok\n\n----------------------------------------------------------------------\nRan 26 tests in 12.624s\n\nOK\n",
+              "observed_at": 1794877430.641554,
+              "actor": "/root/p4_root_g2/p4_arch_g5",
+              "dependency_trees": {
+                "provider": "0fe72988b1cd4a99195a3ef4c2e8316a218cd3e1",
+                "report": "bd62b21a9f10bf2f4f76df433cbf05dfa8769bb4"
+              }
+            },
+            "accepted": true,
+            "last_outcome": "completed",
+            "pr_number": 284,
+            "pr": "https://github.com/neobobkrause/process3-probes/pull/284",
+            "integrated": "4414c0325f1e2a56585e644eecccd8abfba8a88e",
+            "branch": "codex/p4-job-native-workshop-20261116-web",
+            "workspace": "/workspace/work/p4-native-cycle/web-7"
+          },
+          "product_after": {
+            "attempt": 7,
+            "status": "done",
+            "checkpoint": "213863ee30f1aa601b340b6ee319fa9aa42b99d6",
+            "verification": {
+              "returncode": 0,
+              "test_count": 26,
+              "command": [
+                "python3",
+                "-m",
+                "unittest",
+                "discover",
+                "-s",
+                "toy/native-cycle/web",
+                "-p",
+                "test_*.py",
+                "-v"
+              ],
+              "skipped_count": 0,
+              "stdout": "",
+              "stderr": "test_form (test_app.WebTests.test_form) ... ok\ntest_injected_minimum_is_fresh_form_default (test_app.WebTests.test_injected_minimum_is_fresh_form_default) ... ok\ntest_injected_minimum_is_start_again_default (test_app.WebTests.test_injected_minimum_is_start_again_default) ... ok\ntest_injected_revised_provider_and_escaping (test_app.WebTests.test_injected_revised_provider_and_escaping) ... ok\ntest_loopback_only (test_app.WebTests.test_loopback_only) ... ok\ntest_not_found (test_app.WebTests.test_not_found) ... ok\ntest_provider_upper_bound (test_app.WebTests.test_provider_upper_bound) ... ok\ntest_rejected_html_is_retained_and_escaped (test_app.WebTests.test_rejected_html_is_retained_and_escaped) ... ok\ntest_rejected_text_is_retained (test_app.WebTests.test_rejected_text_is_retained) ... ok\ntest_rejected_whitespace_and_empty_are_retained (test_app.WebTests.test_rejected_whitespace_and_empty_are_retained) ... ok\ntest_result_and_refresh (test_app.WebTests.test_result_and_refresh) ... ok\ntest_text_input_supports_editing_rejected_text (test_app.WebTests.test_text_input_supports_editing_rejected_text) ... ok\ntest_valid_request_clears_validation_error (test_app.WebTests.test_valid_request_clears_validation_error) ... ok\ntest_validation (test_app.WebTests.test_validation) ... ok\ntest_actual_integrated_report_default_path (test_comparison.ComparisonTests.test_actual_integrated_report_default_path) ... ok\ntest_changed_provider_bounds_defaults_prices_and_report_injection (test_comparison.ComparisonTests.test_changed_provider_bounds_defaults_prices_and_report_injection) ... ok\ntest_csv_exact_bytes_headers_order_and_roundtrip (test_comparison.ComparisonTests.test_csv_exact_bytes_headers_order_and_roundtrip) ... ok\ntest_html_payload_is_literal_text_not_markup (test_comparison.ComparisonTests.test_html_payload_is_literal_text_not_markup) ... ok\ntest_invalid_batches_are_atomic_retained_and_actionable (test_comparison.ComparisonTests.test_invalid_batches_are_atomic_retained_and_actionable) ... ok\ntest_invalid_csv_is_html_and_no_attachment (test_comparison.ComparisonTests.test_invalid_csv_is_html_and_no_attachment) ... ok\ntest_missing_and_duplicate_parameters (test_comparison.ComparisonTests.test_missing_and_duplicate_parameters) ... ok\ntest_missing_report_does_not_break_single_quote (test_comparison.ComparisonTests.test_missing_report_does_not_break_single_quote) ... ok\ntest_navigation_and_fresh_comparison (test_comparison.ComparisonTests.test_navigation_and_fresh_comparison) ... ok\ntest_ordered_rows_download_link_and_refresh (test_comparison.ComparisonTests.test_ordered_rows_download_link_and_refresh) ... ok\ntest_singleton_eight_options_and_normalized_leading_zeros (test_comparison.ComparisonTests.test_singleton_eight_options_and_normalized_leading_zeros) ... ok\ntest_valid_recovery_and_single_quote_preserved (test_comparison.ComparisonTests.test_valid_recovery_and_single_quote_preserved) ... ok\n\n----------------------------------------------------------------------\nRan 26 tests in 12.624s\n\nOK\n",
+              "observed_at": 1794877430.641554,
+              "actor": "/root/p4_root_g2/p4_arch_g5",
+              "dependency_trees": {
+                "provider": "0fe72988b1cd4a99195a3ef4c2e8316a218cd3e1",
+                "report": "bd62b21a9f10bf2f4f76df433cbf05dfa8769bb4"
+              }
+            },
+            "accepted": true,
+            "last_outcome": "completed",
+            "pr_number": 284,
+            "pr": "https://github.com/neobobkrause/process3-probes/pull/284",
+            "integrated": "4414c0325f1e2a56585e644eecccd8abfba8a88e",
+            "branch": "codex/p4-job-native-workshop-20261116-web",
+            "workspace": "/workspace/work/p4-native-cycle/web-7"
+          },
+          "exact_product_fields_unchanged": true,
+          "native_binding_before": {
+            "target": "/root/p4_root_g2/p4_arch_g5/web_g7",
+            "generation": 7
+          },
+          "native_binding_after": {
+            "target": "/root/p4_root_g3/p4_arch_g6/p4_job_web_g8",
+            "generation": 8
+          },
+          "session_generation": 8,
+          "session_attempt": 7,
+          "conversation_id": "p4-native-workshop-20261116:JOB:web",
+          "question_id": "owner-interactive-clarification-20261116:JOB:web",
+          "actual_reply_actor": "/root/p4_root_g3/p4_arch_g6/p4_job_web_g8",
+          "actual_answer_text": "Actual registered JOB:web generation8 answer to owner-interactive-clarification-20261116:JOB:web (my role words, not owner text): Completing web module attempt7 did not retire this JOB conversation. I retain stable identity p4-native-workshop-20261116:JOB:web, its accepted decisions and unresolved questions, and remain reachable for later questions or authorized assignments. Replacing native instance7 with8 does not create a new product attempt or invalidate the completed acceptance. A processing ACK is not an answer; only an explicit correlated substantive reply resolves a question. Owner-console communication through ARCH is available, while an independent child-session composer remains unverified. My retained module decision is to delegate comparison calculation and CSV encoding to the actual report dependency, preserve raw invalid input safely, and preserve the final 26 HTTP tests with zero skips. No source changes or retests occurred.",
+          "actual_first_answer_receipt": "/workspace/work/p4-native-cycle/evidence/interactive-assessment/job-web-conversation-recovery-reply.json",
+          "native_turn_completed": true,
+          "logical_role_retired": false,
+          "session_attempt_equals_product_attempt": true
+        },
+        "report": {
+          "product_before": {
+            "attempt": 2,
+            "status": "done",
+            "checkpoint": "eaab4aee7325949a5dee6926c15b5d1b78ff1d44",
+            "verification": {
+              "returncode": 0,
+              "test_count": 21,
+              "command": [
+                "python3",
+                "-m",
+                "unittest",
+                "discover",
+                "-s",
+                "toy/native-cycle/report",
+                "-p",
+                "test_*.py",
+                "-v"
+              ],
+              "stdout": "",
+              "stderr": "test_actual_provider_text_and_json (test_quote_report.CliTests.test_actual_provider_text_and_json) ... ok\ntest_csv_injected_provider_and_invalid_input_have_no_partial_output (test_quote_report.CliTests.test_csv_injected_provider_and_invalid_input_have_no_partial_output) ... ok\ntest_csv_stdout_exact_bytes_and_roundtrip (test_quote_report.CliTests.test_csv_stdout_exact_bytes_and_roundtrip) ... ok\ntest_injected_provider_and_no_bytecode_write (test_quote_report.CliTests.test_injected_provider_and_no_bytecode_write) ... ok\ntest_invalid_inputs_exit_two_without_partial_output_or_traceback (test_quote_report.CliTests.test_invalid_inputs_exit_two_without_partial_output_or_traceback) ... ok\ntest_missing_provider_and_required_arguments_are_readable (test_quote_report.CliTests.test_missing_provider_and_required_arguments_are_readable) ... ok\ntest_changed_bounds_and_delegated_price_are_not_hardcoded (test_quote_report.ComparisonTests.test_changed_bounds_and_delegated_price_are_not_hardcoded) ... ok\ntest_invalid_items_duplicates_and_bounds (test_quote_report.ComparisonTests.test_invalid_items_duplicates_and_bounds) ... ok\ntest_invalid_provider_cents_cannot_enter_model (test_quote_report.ComparisonTests.test_invalid_provider_cents_cannot_enter_model) ... ok\ntest_invalid_sequence_type_and_size (test_quote_report.ComparisonTests.test_invalid_sequence_type_and_size) ... ok\ntest_model_does_not_mutate_input_or_share_rows (test_quote_report.ComparisonTests.test_model_does_not_mutate_input_or_share_rows) ... ok\ntest_ordered_alternatives_and_real_provider (test_quote_report.ComparisonTests.test_ordered_alternatives_and_real_provider) ... ok\ntest_text_renders_alternatives_without_combined_total (test_quote_report.ComparisonTests.test_text_renders_alternatives_without_combined_total) ... ok\ntest_tuple_and_eight_alternatives (test_quote_report.ComparisonTests.test_tuple_and_eight_alternatives) ... ok\ntest_whole_list_validated_before_pricing (test_quote_report.ComparisonTests.test_whole_list_validated_before_pricing) ... ok\ntest_exact_numeric_crlf_and_preserved_order (test_quote_report.CsvTests.test_exact_numeric_crlf_and_preserved_order) ... ok\ntest_formula_boolean_float_and_invalid_bounds_cannot_enter_cells (test_quote_report.CsvTests.test_formula_boolean_float_and_invalid_bounds_cannot_enter_cells) ... ok\ntest_rejects_malformed_models_and_row_counts (test_quote_report.CsvTests.test_rejects_malformed_models_and_row_counts) ... ok\ntest_singleton_eight_rows_and_injected_delegated_totals (test_quote_report.CsvTests.test_singleton_eight_rows_and_injected_delegated_totals) ... ok\ntest_comma_newline_whitespace_and_normalization (test_quote_report.GrammarTests.test_comma_newline_whitespace_and_normalization) ... ok\ntest_rejected_grammar_is_atomic (test_quote_report.GrammarTests.test_rejected_grammar_is_atomic) ... ok\n\n----------------------------------------------------------------------\nRan 21 tests in 0.631s\n\nOK\n",
+              "observed_at": 1794877128.7788877,
+              "actor": "/root/p4_root_g2/p4_arch_g5",
+              "dependency_trees": {
+                "provider": "0fe72988b1cd4a99195a3ef4c2e8316a218cd3e1"
+              }
+            },
+            "accepted": true,
+            "last_outcome": "completed",
+            "pr_number": 285,
+            "pr": "https://github.com/neobobkrause/process3-probes/pull/285",
+            "integrated": "191db453b2de66a9cd4bb9d744fa6ac66f28c31b",
+            "branch": "codex/p4-job-native-workshop-20261116-report",
+            "workspace": "/workspace/work/p4-native-cycle/report-2"
+          },
+          "product_after": {
+            "attempt": 2,
+            "status": "done",
+            "checkpoint": "eaab4aee7325949a5dee6926c15b5d1b78ff1d44",
+            "verification": {
+              "returncode": 0,
+              "test_count": 21,
+              "command": [
+                "python3",
+                "-m",
+                "unittest",
+                "discover",
+                "-s",
+                "toy/native-cycle/report",
+                "-p",
+                "test_*.py",
+                "-v"
+              ],
+              "stdout": "",
+              "stderr": "test_actual_provider_text_and_json (test_quote_report.CliTests.test_actual_provider_text_and_json) ... ok\ntest_csv_injected_provider_and_invalid_input_have_no_partial_output (test_quote_report.CliTests.test_csv_injected_provider_and_invalid_input_have_no_partial_output) ... ok\ntest_csv_stdout_exact_bytes_and_roundtrip (test_quote_report.CliTests.test_csv_stdout_exact_bytes_and_roundtrip) ... ok\ntest_injected_provider_and_no_bytecode_write (test_quote_report.CliTests.test_injected_provider_and_no_bytecode_write) ... ok\ntest_invalid_inputs_exit_two_without_partial_output_or_traceback (test_quote_report.CliTests.test_invalid_inputs_exit_two_without_partial_output_or_traceback) ... ok\ntest_missing_provider_and_required_arguments_are_readable (test_quote_report.CliTests.test_missing_provider_and_required_arguments_are_readable) ... ok\ntest_changed_bounds_and_delegated_price_are_not_hardcoded (test_quote_report.ComparisonTests.test_changed_bounds_and_delegated_price_are_not_hardcoded) ... ok\ntest_invalid_items_duplicates_and_bounds (test_quote_report.ComparisonTests.test_invalid_items_duplicates_and_bounds) ... ok\ntest_invalid_provider_cents_cannot_enter_model (test_quote_report.ComparisonTests.test_invalid_provider_cents_cannot_enter_model) ... ok\ntest_invalid_sequence_type_and_size (test_quote_report.ComparisonTests.test_invalid_sequence_type_and_size) ... ok\ntest_model_does_not_mutate_input_or_share_rows (test_quote_report.ComparisonTests.test_model_does_not_mutate_input_or_share_rows) ... ok\ntest_ordered_alternatives_and_real_provider (test_quote_report.ComparisonTests.test_ordered_alternatives_and_real_provider) ... ok\ntest_text_renders_alternatives_without_combined_total (test_quote_report.ComparisonTests.test_text_renders_alternatives_without_combined_total) ... ok\ntest_tuple_and_eight_alternatives (test_quote_report.ComparisonTests.test_tuple_and_eight_alternatives) ... ok\ntest_whole_list_validated_before_pricing (test_quote_report.ComparisonTests.test_whole_list_validated_before_pricing) ... ok\ntest_exact_numeric_crlf_and_preserved_order (test_quote_report.CsvTests.test_exact_numeric_crlf_and_preserved_order) ... ok\ntest_formula_boolean_float_and_invalid_bounds_cannot_enter_cells (test_quote_report.CsvTests.test_formula_boolean_float_and_invalid_bounds_cannot_enter_cells) ... ok\ntest_rejects_malformed_models_and_row_counts (test_quote_report.CsvTests.test_rejects_malformed_models_and_row_counts) ... ok\ntest_singleton_eight_rows_and_injected_delegated_totals (test_quote_report.CsvTests.test_singleton_eight_rows_and_injected_delegated_totals) ... ok\ntest_comma_newline_whitespace_and_normalization (test_quote_report.GrammarTests.test_comma_newline_whitespace_and_normalization) ... ok\ntest_rejected_grammar_is_atomic (test_quote_report.GrammarTests.test_rejected_grammar_is_atomic) ... ok\n\n----------------------------------------------------------------------\nRan 21 tests in 0.631s\n\nOK\n",
+              "observed_at": 1794877128.7788877,
+              "actor": "/root/p4_root_g2/p4_arch_g5",
+              "dependency_trees": {
+                "provider": "0fe72988b1cd4a99195a3ef4c2e8316a218cd3e1"
+              }
+            },
+            "accepted": true,
+            "last_outcome": "completed",
+            "pr_number": 285,
+            "pr": "https://github.com/neobobkrause/process3-probes/pull/285",
+            "integrated": "191db453b2de66a9cd4bb9d744fa6ac66f28c31b",
+            "branch": "codex/p4-job-native-workshop-20261116-report",
+            "workspace": "/workspace/work/p4-native-cycle/report-2"
+          },
+          "exact_product_fields_unchanged": true,
+          "native_binding_before": {
+            "target": "/root/p4_root_g2/p4_arch_g5/report_g2",
+            "generation": 2
+          },
+          "native_binding_after": {
+            "target": "/root/p4_root_g3/p4_arch_g6/p4_job_report_g3",
+            "generation": 3
+          },
+          "session_generation": 3,
+          "session_attempt": 2,
+          "conversation_id": "p4-native-workshop-20261116:JOB:report",
+          "question_id": "owner-interactive-clarification-20261116:JOB:report",
+          "actual_reply_actor": "/root/p4_root_g3/p4_arch_g6/p4_job_report_g3",
+          "actual_answer_text": "Actual registered JOB:report generation3 answer to owner-interactive-clarification-20261116:JOB:report (my role words, not owner text): Completing report module attempt2 did not retire this JOB conversation. I retain stable identity p4-native-workshop-20261116:JOB:report, its accepted decisions, references and unanswered questions, and remain available for subsequent questions or explicitly authorized assignments. Replacing native instance2 with3 does not create a new product attempt or invalidate its accepted work. A processing ACK is not a substantive answer; only an explicit correlated reply resolves a question. Owner-console communication through ARCH is available, while independent child-session composer access remains unverified. My retained report decision is to preserve input row order, delegate prices to the injected provider, and emit integer-cent CSV using the fixed quantity,unit_price_cents,total_cents header with CRLF. The accepted 21-test work remains unchanged; no source changes or retests occurred.",
+          "actual_first_answer_receipt": "/workspace/work/p4-native-cycle/evidence/interactive-assessment/job-report-conversation-recovery-reply.json",
+          "native_turn_completed": true,
+          "logical_role_retired": false,
+          "session_attempt_equals_product_attempt": true
+        },
+        "provider": {
+          "product_before": {
+            "attempt": 3,
+            "status": "done",
+            "checkpoint": "0ee73afc9ff9d735f1b10b2d4262f1235032760b",
+            "verification": {
+              "returncode": 0,
+              "test_count": 4,
+              "command": [
+                "python3",
+                "-m",
+                "unittest",
+                "discover",
+                "-s",
+                "toy/native-cycle/provider",
+                "-p",
+                "test_*.py",
+                "-v"
+              ],
+              "stdout": "",
+              "stderr": "test_contract_constants (test_quote_provider.PriceForTests.test_contract_constants) ... ok\ntest_invalid_bounds (test_quote_provider.PriceForTests.test_invalid_bounds) ... ok\ntest_invalid_types (test_quote_provider.PriceForTests.test_invalid_types) ... ok\ntest_ordinary_and_boundary_totals (test_quote_provider.PriceForTests.test_ordinary_and_boundary_totals) ... ok\n\n----------------------------------------------------------------------\nRan 4 tests in 0.001s\n\nOK\n",
+              "observed_at": 1794874514.2492955,
+              "actor": "/root/process4_root/p4_arch_g4",
+              "dependency_trees": {}
+            },
+            "accepted": true,
+            "last_outcome": "completed",
+            "pr_number": 280,
+            "pr": "https://github.com/neobobkrause/process3-probes/pull/280",
+            "integrated": "00c5b6bb990fdf0f8ac069c2bd795ddce1d29788",
+            "branch": "codex/p4-job-native-workshop-20261116-provider",
+            "workspace": "/workspace/work/p4-native-cycle/provider-3"
+          },
+          "product_after": {
+            "attempt": 3,
+            "status": "done",
+            "checkpoint": "0ee73afc9ff9d735f1b10b2d4262f1235032760b",
+            "verification": {
+              "returncode": 0,
+              "test_count": 4,
+              "command": [
+                "python3",
+                "-m",
+                "unittest",
+                "discover",
+                "-s",
+                "toy/native-cycle/provider",
+                "-p",
+                "test_*.py",
+                "-v"
+              ],
+              "stdout": "",
+              "stderr": "test_contract_constants (test_quote_provider.PriceForTests.test_contract_constants) ... ok\ntest_invalid_bounds (test_quote_provider.PriceForTests.test_invalid_bounds) ... ok\ntest_invalid_types (test_quote_provider.PriceForTests.test_invalid_types) ... ok\ntest_ordinary_and_boundary_totals (test_quote_provider.PriceForTests.test_ordinary_and_boundary_totals) ... ok\n\n----------------------------------------------------------------------\nRan 4 tests in 0.001s\n\nOK\n",
+              "observed_at": 1794874514.2492955,
+              "actor": "/root/process4_root/p4_arch_g4",
+              "dependency_trees": {}
+            },
+            "accepted": true,
+            "last_outcome": "completed",
+            "pr_number": 280,
+            "pr": "https://github.com/neobobkrause/process3-probes/pull/280",
+            "integrated": "00c5b6bb990fdf0f8ac069c2bd795ddce1d29788",
+            "branch": "codex/p4-job-native-workshop-20261116-provider",
+            "workspace": "/workspace/work/p4-native-cycle/provider-3"
+          },
+          "exact_product_fields_unchanged": true,
+          "native_binding_before": {
+            "target": "/root/process4_root/p4_arch_g4/provider_g3",
+            "generation": 3
+          },
+          "native_binding_after": {
+            "target": "/root/p4_root_g3/p4_arch_g6/p4_job_provider_g4",
+            "generation": 4
+          },
+          "session_generation": 4,
+          "session_attempt": 3,
+          "conversation_id": "p4-native-workshop-20261116:JOB:provider",
+          "question_id": "owner-interactive-clarification-20261116:JOB:provider",
+          "actual_reply_actor": "/root/p4_root_g3/p4_arch_g6/p4_job_provider_g4",
+          "actual_answer_text": "Actual registered JOB:provider generation4 answer to owner-interactive-clarification-20261116:JOB:provider (my role words, not owner text): Completing provider module attempt3 did not retire this JOB conversation. I retain stable identity p4-native-workshop-20261116:JOB:provider, accepted decisions, references and unanswered questions, and remain reachable for later questions or explicitly authorized assignments. Replacing native instance3 with4 does not create product attempt4 or invalidate completed acceptance. A processing ACK is not an answer; only an explicit correlated substantive reply resolves a question. Owner-console communication through ARCH is available; independent child-session composer access remains unverified. My retained provider decision is strict integer quantities excluding bool, inclusive range2\u201350, at275 cents per card with integer-cent totals. Accepted four-test work remains unchanged; no source changes or retests occurred.",
+          "actual_first_answer_receipt": "/workspace/work/p4-native-cycle/evidence/interactive-assessment/job-provider-conversation-recovery-reply.json",
+          "native_turn_completed": true,
+          "logical_role_retired": false,
+          "session_attempt_equals_product_attempt": true
+        }
+      },
+      "web_second_turn": {
+        "provenance": "ARCH proxy test, not owner words",
+        "after_actual_native_FINAL": true,
+        "recall_before_file_reads": true,
+        "actual_reply_text": "Reactivated without reading files. My stable identity is `p4-native-workshop-20261116:JOB:web`.\n\nThe web module delegates comparison calculation and CSV encoding to the report dependency. Native generation8 identifies this conversation instance; module attempt7 remains completed. An owner question does not authorize attempt8 or source edits.\n\nFuture replacement must preserve unresolved questions in the stable conversation capsule. ACKs do not resolve them; explicit correlated answers do. This JOB remains retained."
+      },
+      "operations_not_executed": [
+        "prepare",
+        "retry",
+        "source edit",
+        "product tests",
+        "product walks"
+      ],
+      "limits": [
+        "Exact native first-processing/reply timestamp not exposed in these child events; receipt recorded times are preservation observations, not fabricated latency.",
+        "Old instance provider request_country failure recovery, not spontaneous native repair.",
+        "Owner-console-mediated replies demonstrated; independent child composer UI unverified.",
+        "Central console owns correlated pending question reconciliation and overall readiness."
+      ]
+    },
+    "root-final-replacement-invariants.json": {
+      "observed_at": 1794882718.3955994,
+      "actor": "/root/p4_root_g3",
+      "source": "Actual controller state read after supported JOB/COORD replacements",
+      "real_run": {
+        "stopped": false,
+        "slots": 2,
+        "owner_job_cap": 8,
+        "current_root": {
+          "target": "/root/p4_root_g3",
+          "generation": 3
+        },
+        "current_arch": {
+          "target": "/root/p4_root_g3/p4_arch_g6",
+          "generation": 6
+        },
+        "current_coordinator": {
+          "target": "/root/p4_root_g3/p4_coordinator_g6",
+          "generation": 6
+        },
+        "current_process": {
+          "target": "/root/p4_root_g3/p4_process_g3",
+          "generation": 3
+        },
+        "current_lane": {
+          "target": "/root/p4_root_g3/p4_arch_g6/p4_lane_quote_comparison_g2",
+          "generation": 2
+        },
+        "jobs": {
+          "provider": {
+            "attempt": 3,
+            "status": "done",
+            "accepted": true,
+            "checkpoint": "0ee73afc9ff9d735f1b10b2d4262f1235032760b",
+            "session": "/root/p4_root_g3/p4_arch_g6/p4_job_provider_g4",
+            "session_generation": 4,
+            "session_attempt": 3
+          },
+          "web": {
+            "attempt": 7,
+            "status": "done",
+            "accepted": true,
+            "checkpoint": "213863ee30f1aa601b340b6ee319fa9aa42b99d6",
+            "session": "/root/p4_root_g3/p4_arch_g6/p4_job_web_g8",
+            "session_generation": 8,
+            "session_attempt": 7
+          },
+          "report": {
+            "attempt": 2,
+            "status": "done",
+            "accepted": true,
+            "checkpoint": "eaab4aee7325949a5dee6926c15b5d1b78ff1d44",
+            "session": "/root/p4_root_g3/p4_arch_g6/p4_job_report_g3",
+            "session_generation": 3,
+            "session_attempt": 2
+          }
+        }
+      },
+      "isolated_controls": {
+        "stopped": true,
+        "stop_source": "owner",
+        "owner_job_cap": 2,
+        "slots": 2,
+        "attempts": {
+          "alpha": 0,
+          "beta": 0
+        }
+      },
+      "limits": [
+        "Actual planned unstopped coordinator replacement, not adopted stopped-role exception.",
+        "Actual JOB conversational recovery preserves completed module attempts; no productwork authorized."
+      ],
+      "governing_pr286_adopted": false
+    },
+    "root-observed-multiturn.json": {
+      "recorded_at": 1794881603.3520315,
+      "actor": "/root/p4_root_g3",
+      "source": "Actual native followup submissions and attributed substantive replies observed by ROOT; exact tool events retained in session",
+      "roles": {
+        "ROOT": {
+          "canonical": "/root/p4_root_g3",
+          "prior_completed_reactivated": true,
+          "recall_without_files": [
+            "retain ARCH5 without reparent/restart",
+            "PR286 proposal only, ROOT3 candidate after PROCESS2 original"
+          ]
+        },
+        "ARCH": {
+          "canonical": "/root/p4_root_g3/p4_arch_g6",
+          "first_turn": "Actual replacement context read and correlated answer to pending genuine owner clarification; source assignment completed",
+          "second_turn": "Actual completed-session reactivation, no files first; recalled ephemeral native_interaction key, ACK not answer, retired pending obligation visibility, STOP preservation and exact4414 product preservation; then accepted new bounded lane-recovery diagnosis/source assignment",
+          "conversation_id": "p4-native-workshop-20261116:ARCH"
+        },
+        "PROCESS": {
+          "canonical": "/root/p4_root_g3/p4_process_g3",
+          "first_turn": "Actual replacement context read and substantive genuine owner clarification answer; PR286 unadopted and authorship preserved",
+          "second_turn": "Actual completed-session reactivation without files; would preserve proposal/patch/provenance/verification for future questions; essential interactivity does not approve stopped-recovery semantics. Recalled unchanged conservative STOP and missing actual owner approval."
+        },
+        "COORDINATOR": {
+          "canonical": "/root/p4_root_g3/p4_coordinator_g5",
+          "reactivation": "Actual same retained session recalled exact once-only owner recording and isolated STOP/proposal distinction BEFOREfiles; then substantive genuine clarification answer",
+          "receipt": "/workspace/work/p4-reliability-phase/coordinator5-interactive-reactivation.json"
+        }
+      },
+      "provenance": "First clarification replies are responses to actual owner source file; procedural recall and second questions are clearly labeled ROOT proxy tests, not owner words.",
+      "limits": [
+        "No direct independent child UI proved.",
+        "No fake source/product failure or product walk repeated.",
+        "Known old ARCH5/PROCESS2 actual repeated provider400 failures required supported replacements; not all old retained instances reactivated successfully.",
+        "This file records proof observations; it is not a native transport or authentication mechanism."
+      ],
+      "routine_github_transport_writes": 0
+    },
+    "root-unsuccessful-actions.json": {
+      "recorded_at": 1794881714.9222443,
+      "actor": "/root/p4_root_g3",
+      "actual_native_failures": [
+        {
+          "target": "/root/p4_root_g2/p4_arch_g5",
+          "accepted_followups": 2,
+          "outcome": "Both actualinventory400 Unsupported parameter: request_country, no substantive processing; supported replacement ARCH6 succeeded."
+        },
+        {
+          "target": "/root/p4_root_g2/p4_process_g2",
+          "accepted_followups": 2,
+          "outcome": "Both actualinventory400 Unsupported parameter: request_country, no substantive processing; freshARCH6requested supported replacement PROCESS3 succeeded."
+        },
+        {
+          "target": "/root/p4_root_g2/p4_arch_g5/p4_lane_quote_comparison_g1",
+          "accepted_followups": 2,
+          "outcome": "Both actualinventory400 Unsupported parameter: request_country; typedcreatorrevalidation preserved exactoriginalneed, actualLANE2replacement+two retainedconversationturns succeeded."
+        },
+        {
+          "target": "/root/p4_root_g2/p4_arch_g5/web_g7",
+          "accepted_followups": 2,
+          "outcome": "Both actualinventory400 Unsupported parameter: request_country; doneJOBconversationrecovery pending, no fakeproductretry."
+        },
+        {
+          "target": "/root/p4_root_g2/p4_arch_g5/report_g2",
+          "accepted_followups": 1,
+          "outcome": "Actualinventory HTTP400 Unsupported parameter: request_country, no substantive processing; boundedconfirmedoldinstancefailurepattern, no endless retry/productwork."
+        },
+        {
+          "target": "/root/process4_root/p4_arch_g4/provider_g3",
+          "accepted_followups": 1,
+          "outcome": "Actualinventory HTTP400 Unsupported parameter: request_country, no substantive processing; boundedconfirmedoldinstancefailurepattern, no endless retry/productwork."
+        }
+      ],
+      "operator_address_error": {
+        "target": "/root/p4_root_g3/p4_arch_g6/web_g7",
+        "outcome": "Native tool rejected nonexistent target immediately; no agent created/action executed. Corrected to actual known retained target."
+      },
+      "no_endless_retries": true,
+      "credential_login_or_metered_fallback": false,
+      "important_limit": "Provider request parameter failures are actual instance failures; successful ROOT3/COORD5/ARCH6/PROCESS3 reactivation prevents claiming native completed sessions categorically unavailable.",
+      "updated_at": 1794882168.0210376,
+      "existing_done_jobs_attempts_preserved": true
+    }
+  },
+  "watcher": {
+    "recorded_at": 1794883691.777534,
+    "actor": "/root/p4_watcher_g3",
+    "generation": 3,
+    "source": "Actual supported followup and native response to console; completed/idle reactivated with before-file responsibility recall",
+    "before_file_recall": "Console-created depth1 sibling standby, no polling/writes/product work/self-successors; report faults to active console, no idle-console wake claim. Prior recalled ROOT2 address is historical; current root binding must be resolved dynamically.",
+    "substantive_reply": "Idle is retained/reachable; replacement changes instance with identity/context retained; deliberate retirement is intentional; turn or assignment completion is neither.",
+    "files_modified": false,
+    "logical_role_retained": true,
+    "exact_first_processing_timestamp_exposed": false
+  },
+  "same_ROOT_instance": {
+    "target": "/root/p4_root_g3",
+    "source": "Actual console followup reactivated previously completed ROOT3 omitted from initial inventory; actual native final reported prior-context facts before file reads",
+    "recalled_decisions": [
+      "Retain ARCH5 through ROOT replacement without reparenting/restarting.",
+      "PR286 proposal-only; candidate patch authored ROOT3 after PROCESS2 proposal, not adopted."
+    ],
+    "native_first_processing_timestamp_instrumented": false
+  },
+  "owner_supported_interface": {
+    "mode": "standing owner-console chat, explicit logical-role addressing, actual native followup transport and attributed role replies",
+    "actual_owner_question": "Which design lanes are currently active?",
+    "addressed_to": "PROCESS",
+    "provenance": "observed-owner-input",
+    "request_packet": {
+      "question_id": "owner-process-design-lanes-20261116",
+      "text": "Which design lanes are currently active?",
+      "provenance": "observed-owner-input",
+      "activity": "completed",
+      "kind": "question",
+      "conversation_id": "p4-native-workshop-20261116:PROCESS"
+    },
+    "processing_receipt": {
+      "observed_at": 1794881977.0546875,
+      "actor": "/root/p4_root_g3/p4_process_g3",
+      "role": "PROCESS",
+      "generation": 3,
+      "conversation_id": "p4-native-workshop-20261116:PROCESS",
+      "question_id": "owner-process-design-lanes-20261116",
+      "message_id": "dialogue-f2cbdcc0808079586dad61d2f9410c1917114fc2d905fe2e5baa3e01828a04d0",
+      "provenance": "observed-owner-input",
+      "kind": "question",
+      "status": "processing; not answered by this receipt"
+    },
+    "actual_reply": {
+      "question_id": "owner-process-design-lanes-20261116",
+      "text": "There is one declared, qualified design lane: quote-comparison. It owns the workshop quantity-comparison UX and CSV design. Its design assignment is completed and its accepted design remains preserved; no new design work is underway. The durable state still labels this lane active and binds its retained generation1 instance under the old ARCH5. In the fresh native inventory, no lane instance is listed as running. That omission alone does not establish idle, retirement or unavailability; current lane reachability/recovery remains pending verification. ARCH, PROCESS, coordinator and module JOBs are roles, not additional design lanes.",
+      "generation": 3,
+      "evidence": "Actual PROCESS3 native substantive answer with correlated owner question ID and read-only state/inventory, observed by console; PROCESS first-processing1794881977.0547"
+    },
+    "owner_visible_emission": {
+      "question_id": "owner-process-design-lanes-20261116",
+      "role": "PROCESS",
+      "observed_at": 1794882059.6873097,
+      "owner_console_answer_emitted": true,
+      "source": "Console commentary attributed PROCESS answer, followed separately by ROOT recovery update",
+      "direct_child_composer_claimed": false
+    },
+    "send_to_first_observed_processing_seconds": 22.24897265434265,
+    "send_to_console_answer_record_seconds": 104.88159489631653,
+    "timing_limits": "Host before-request timestamp to first child clock observation/parent response record; includes routing/model/tool work. Not server-internal dispatch, owner keystroke or client read-receipt latency.",
+    "direct_independent_child_composer_verified": false,
+    "interface_inspection": {
+      "actual_surface": "Cloud managed Linux desktop and Chrome with no existing tabs; no attached owner ChatGPT/Codex client surface",
+      "native_tools": "Actual collaboration followup_task/send_message/interrupt/list; no separate user child-composer opening tool exposed",
+      "documentation_lookup": "Official multi-agent URL read blocked by network proxy403; no permission/login retry",
+      "limit": "No universal claim that a different Codex client lacks child UI. Only console-mediated path is demonstrated here."
+    }
+  },
+  "central_reconciliation": {
+    "observed_at": 1794883054.6808608,
+    "results": [
+      {
+        "role": "ARCH",
+        "conversation_id": "p4-native-workshop-20261116:ARCH",
+        "question_id": "owner-interactive-clarification-20261116",
+        "generation": 6,
+        "pending_after": [],
+        "source": "/workspace/work/p4-native-cycle/evidence/interactive-assessment/arch6-context-answer.json"
+      },
+      {
+        "role": "LANE:quote-comparison",
+        "conversation_id": "p4-native-workshop-20261116:LANE:quote-comparison",
+        "question_id": "owner-interactive-clarification-20261116:LANE:quote-comparison",
+        "generation": 2,
+        "pending_after": [],
+        "source": "/workspace/work/p4-native-cycle/evidence/interactive-assessment/lane2-recovery-and-two-turns.json"
+      },
+      {
+        "role": "JOB:web",
+        "conversation_id": "p4-native-workshop-20261116:JOB:web",
+        "question_id": "owner-interactive-clarification-20261116:JOB:web",
+        "generation": 8,
+        "pending_after": [],
+        "source": "/workspace/work/p4-native-cycle/evidence/interactive-assessment/job-web-conversation-recovery-reply.json"
+      },
+      {
+        "role": "JOB:report",
+        "conversation_id": "p4-native-workshop-20261116:JOB:report",
+        "question_id": "owner-interactive-clarification-20261116:JOB:report",
+        "generation": 3,
+        "pending_after": [],
+        "source": "/workspace/work/p4-native-cycle/evidence/interactive-assessment/job-report-conversation-recovery-reply.json"
+      },
+      {
+        "role": "JOB:provider",
+        "conversation_id": "p4-native-workshop-20261116:JOB:provider",
+        "question_id": "owner-interactive-clarification-20261116:JOB:provider",
+        "generation": 4,
+        "pending_after": [],
+        "source": "/workspace/work/p4-native-cycle/evidence/interactive-assessment/job-provider-conversation-recovery-reply.json"
+      },
+      {
+        "role": "COORDINATOR",
+        "question_id": "proxy-coordinator-unanswered-across-replacement-20261116",
+        "generation": 6,
+        "conversation_id": "p4-native-workshop-20261116:COORDINATOR",
+        "prior_ack_did_not_answer": true,
+        "pending_after": []
+      }
+    ],
+    "pending": {
+      "PROCESS": [],
+      "COORDINATOR": [],
+      "ARCH": [],
+      "LANE:quote-comparison": [],
+      "JOB:web": [],
+      "JOB:report": [],
+      "JOB:provider": [],
+      "ROOT": []
+    },
+    "routine_transport_remote_writes": 0,
+    "limits": "Binding observation/meaningful recovery imports read existing state; routine requests/replies remain local. Source evidence is actual native replies, not inferred from ACK/FINAL."
+  },
+  "retained_role_state": {
+    "PROCESS": {
+      "conversation_id": "p4-native-workshop-20261116:PROCESS",
+      "binding": {
+        "target": "/root/p4_root_g3/p4_process_g3",
+        "generation": 3
+      },
+      "disposition": "retained",
+      "lifecycle": "retained_idle",
+      "assignment": null,
+      "turns_completed": 0,
+      "replacement_count": 0,
+      "last_event": "session_bound",
+      "decisions": [
+        "PR286 is proposed, not adopted. Actual owner approval is required before governing changes."
+      ],
+      "references": [
+        "https://github.com/neobobkrause/process3-probes/pull/286"
+      ],
+      "pending_questions": {},
+      "answered": [
+        {
+          "id": "owner-process-design-lanes-20261116",
+          "question": "Which design lanes are currently active?",
+          "question_provenance": "observed-owner-input",
+          "answer": "There is one declared, qualified design lane: quote-comparison. It owns the workshop quantity-comparison UX and CSV design. Its design assignment is completed and its accepted design remains preserved; no new design work is underway. The durable state still labels this lane active and binds its retained generation1 instance under the old ARCH5. In the fresh native inventory, no lane instance is listed as running. That omission alone does not establish idle, retirement or unavailability; current lane reachability/recovery remains pending verification. ARCH, PROCESS, coordinator and module JOBs are roles, not additional design lanes.",
+          "provenance": "observed-native-reply",
+          "evidence": "Actual PROCESS3 native substantive answer with correlated owner question ID and read-only state/inventory, observed by console; PROCESS first-processing1794881977.0547",
+          "generation": 3
+        }
+      ]
+    },
+    "COORDINATOR": {
+      "conversation_id": "p4-native-workshop-20261116:COORDINATOR",
+      "binding": {
+        "target": "/root/p4_root_g3/p4_coordinator_g6",
+        "generation": 6
+      },
+      "disposition": "retained",
+      "lifecycle": "retained_idle",
+      "assignment": null,
+      "turns_completed": 0,
+      "replacement_count": 1,
+      "last_event": "session_replaced",
+      "decisions": [
+        "Turn completion and assignment completion do not retire the coordinator; pending questions require substantive correlated replies.",
+        "Preserve exact owner instructions once; forwarding never changes stop, cap, grants or build authority.",
+        "Isolated synthetic controls exercise remains owner-source STOP; PR286 is proposed and unadopted, no stopped-role recovery exception authorized."
+      ],
+      "references": [
+        "bootstrap/OWNER-INTERACTIVE-SESSIONS-20261116.txt",
+        "/workspace/work/p4-reliability-phase/coordinator5-interactive-reactivation.json"
+      ],
+      "pending_questions": {},
+      "answered": [
+        {
+          "id": "proxy-coordinator-unanswered-across-replacement-20261116",
+          "question": "Why must a completed coordinator assignment leave its conversation available, and what must a replacement preserve for an already acknowledged but unanswered question?",
+          "question_provenance": "proxy-test",
+          "answer": "Completing a coordinator assignment finishes that assignment, not the standing owner conversation. The coordinator must remain retained and reachable for later questions, instructions and new assignments. A replacement must preserve the same logical conversation identity, important decisions and references, and the original unanswered question identity, exact text and provenance. Generation5 acknowledged processing only; it did not answer this proxy question. I am generation6 in the same COORDINATOR conversation and now answer it explicitly. Exact owner instructions remain separate from proxy tests; forwarding never changes stop, cap, grants or build authority. The isolated synthetic STOP remains unchanged and PR286 remains unadopted.",
+          "provenance": "observed-native-reply",
+          "evidence": "Actual COORD6 native reply; ACK5 remained pending before reply: /workspace/work/p4-native-cycle/evidence/interactive-assessment/coordinator6-pending-question-answer.json",
+          "generation": 6
+        }
+      ]
+    },
+    "ARCH": {
+      "conversation_id": "p4-native-workshop-20261116:ARCH",
+      "disposition": "retained",
+      "assignment": {
+        "id": "interactive-session-assessment",
+        "status": "completed"
+      },
+      "decisions": [
+        "Preserve product4414c032 and completed module/internal/browser/release evidence; no repeated product walk.",
+        "Keep stable logical roles after native turn/assignment completion; explicit retirement is separate from replacement."
+      ],
+      "references": [
+        "bootstrap/native/approved-layout-design/EXTENDED-PLAN.md",
+        "bootstrap/native/approved-layout-design/quote-comparison/interface-contract.json",
+        "runtime/evidence/extended-assessment/arch-final-summary.json"
+      ],
+      "pending_questions": {},
+      "binding": {
+        "target": "/root/p4_root_g3/p4_arch_g6",
+        "generation": 6
+      },
+      "lifecycle": "retained_idle",
+      "turns_completed": 0,
+      "replacement_count": 0,
+      "last_event": "assignment_completed",
+      "answered": [
+        {
+          "id": "owner-interactive-clarification-20261116",
+          "question": "One essential clarification to the owner-interaction requirement:\n\n**All Process4 sessions are genuinely interactive sessions, not disposable one-shot tasks.**\n\nROOT, ARCH, the coordinator, PROCESS, design lanes, and module jobs may need to remain available beyond completion of their initial assignment.\n\nAn agent completing its current work must not automatically mean that its session is retired, archived, or permanently closed.\n\nA session must be able to become idle while remaining available for subsequent messages, questions, instructions, and new assignments. Incoming messages must reactivate it promptly through the supported native communication mechanism.\n\nThe owner must be able to conduct substantive, ongoing conversations with the coordinator, ARCH, design lanes, and PROCESS. These conversations may span multiple turns, idle periods, new assignments, and session replacements.\n\nJobs ordinarily need less direct owner interaction, but they too must remain reachable while their session is retained.\n\nDistinguish clearly between:\n\n- Completion of a turn.\n- Completion of an assignment.\n- A session becoming idle.\n- Replacement of a session.\n- Deliberate retirement of a session or role.\n\nDo not treat these as equivalent events.\n\nInvestigate whether the current native subagent lifecycle actually supports this behavior, including whether completed native agents can be reactivated and whether the user can interact with them through the supported interface.\n\nPreserve a stable logical identity and conversation continuity for each standing role. Replace underlying session instances when appropriate without losing decisions, important context, or pending messages.\n\nTreat full interactivity and continuing availability as essential Process4 capabilities, not optional user-interface conveniences.\n\nIntegrate this clarification into the ongoing interaction implementation and its acceptance tests. Do not declare operational readiness based solely on successful task execution or the ability to inspect completed transcripts.\n",
+          "question_provenance": "observed-owner-input",
+          "answer": "ARCH remains retained after assignments. Decisions and unresolved questions follow the stable logical conversation. Supported followup probes retained unlisted sessions; ACK is not an answer. Explicit correlated replies clear questions. Replacement changes instance/generation, not logical retirement. Owner-console-mediated conversation is supported; independent child composer UI remains unverified. Preserve product evidence and suspended readiness.",
+          "provenance": "observed-native-reply",
+          "evidence": "Actual registered native replacement substantive correlated reply: /workspace/work/p4-native-cycle/evidence/interactive-assessment/arch6-context-answer.json",
+          "generation": 6
+        }
+      ],
+      "last_event_evidence": "Actual ARCH6 source deliverables integrated PR288/289 and final native proof report; this owned assignment is complete, role remains retained."
+    },
+    "LANE:quote-comparison": {
+      "conversation_id": "p4-native-workshop-20261116:LANE:quote-comparison",
+      "disposition": "retained",
+      "assignment": {
+        "id": "qualified-quote-comparison-design",
+        "status": "completed"
+      },
+      "decisions": [
+        "Accepted productdesign staysfrozen; alternatives1..8, no aggregatepurchase, rawinvalidretention, safeCSV; no newdesignwork."
+      ],
+      "references": [
+        "bootstrap/native/approved-layout-design/quote-comparison/DECISIONS.md"
+      ],
+      "pending_questions": {},
+      "binding": {
+        "target": "/root/p4_root_g3/p4_arch_g6/p4_lane_quote_comparison_g2",
+        "generation": 2
+      },
+      "lifecycle": "retained_idle",
+      "turns_completed": 0,
+      "replacement_count": 0,
+      "last_event": "session_bound_after_recovery",
+      "answered": [
+        {
+          "id": "owner-interactive-clarification-20261116:LANE:quote-comparison",
+          "question": "One essential clarification to the owner-interaction requirement:\n\n**All Process4 sessions are genuinely interactive sessions, not disposable one-shot tasks.**\n\nROOT, ARCH, the coordinator, PROCESS, design lanes, and module jobs may need to remain available beyond completion of their initial assignment.\n\nAn agent completing its current work must not automatically mean that its session is retired, archived, or permanently closed.\n\nA session must be able to become idle while remaining available for subsequent messages, questions, instructions, and new assignments. Incoming messages must reactivate it promptly through the supported native communication mechanism.\n\nThe owner must be able to conduct substantive, ongoing conversations with the coordinator, ARCH, design lanes, and PROCESS. These conversations may span multiple turns, idle periods, new assignments, and session replacements.\n\nJobs ordinarily need less direct owner interaction, but they too must remain reachable while their session is retained.\n\nDistinguish clearly between:\n\n- Completion of a turn.\n- Completion of an assignment.\n- A session becoming idle.\n- Replacement of a session.\n- Deliberate retirement of a session or role.\n\nDo not treat these as equivalent events.\n\nInvestigate whether the current native subagent lifecycle actually supports this behavior, including whether completed native agents can be reactivated and whether the user can interact with them through the supported interface.\n\nPreserve a stable logical identity and conversation continuity for each standing role. Replace underlying session instances when appropriate without losing decisions, important context, or pending messages.\n\nTreat full interactivity and continuing availability as essential Process4 capabilities, not optional user-interface conveniences.\n\nIntegrate this clarification into the ongoing interaction implementation and its acceptance tests. Do not declare operational readiness based solely on successful task execution or the ability to inspect completed transcripts.\n",
+          "question_provenance": "observed-owner-input",
+          "answer": "Actual registered LANE2 substantive answer to owner-interactive-clarification-20261116:LANE:quote-comparison (my role words, not owner text): Completing the quote-comparison design did not retire this design lane. I retain its stable conversation identity, accepted decisions and references, and remain available for later questions or new authorized assignments. Replacement changes my native instance, not the qualified need or design scope. A processing ACK does not resolve an unanswered question; only an explicit correlated substantive reply should do that. I can respond through the owner console via ARCH; independent child-session composer access remains unverified. The frozen comparison design and prior product evidence remain unchanged. References: DECISIONS.md, interface-contract.json, UX_SCREENS.md and UX_JOURNEYS.md in the quote-comparison design folder.",
+          "provenance": "observed-native-reply",
+          "evidence": "Actual registered native replacement substantive correlated reply: /workspace/work/p4-native-cycle/evidence/interactive-assessment/lane2-recovery-and-two-turns.json",
+          "generation": 2
+        }
+      ]
+    },
+    "JOB:web": {
+      "conversation_id": "p4-native-workshop-20261116:JOB:web",
+      "disposition": "retained",
+      "assignment": {
+        "id": "web-module-attempt7",
+        "status": "completed"
+      },
+      "decisions": [
+        "Accepted finalhead4414 web26HTTPtests ZEROskips using actualreportCSV; preserve completedcode, no productrepeat."
+      ],
+      "references": [
+        "runtime/evidence/extended-assessment/web7-checkpoint.json"
+      ],
+      "pending_questions": {},
+      "binding": {
+        "target": "/root/p4_root_g3/p4_arch_g6/p4_job_web_g8",
+        "generation": 8
+      },
+      "lifecycle": "retained_idle",
+      "turns_completed": 0,
+      "replacement_count": 0,
+      "last_event": "session_bound_after_recovery",
+      "answered": [
+        {
+          "id": "owner-interactive-clarification-20261116:JOB:web",
+          "question": "One essential clarification to the owner-interaction requirement:\n\n**All Process4 sessions are genuinely interactive sessions, not disposable one-shot tasks.**\n\nROOT, ARCH, the coordinator, PROCESS, design lanes, and module jobs may need to remain available beyond completion of their initial assignment.\n\nAn agent completing its current work must not automatically mean that its session is retired, archived, or permanently closed.\n\nA session must be able to become idle while remaining available for subsequent messages, questions, instructions, and new assignments. Incoming messages must reactivate it promptly through the supported native communication mechanism.\n\nThe owner must be able to conduct substantive, ongoing conversations with the coordinator, ARCH, design lanes, and PROCESS. These conversations may span multiple turns, idle periods, new assignments, and session replacements.\n\nJobs ordinarily need less direct owner interaction, but they too must remain reachable while their session is retained.\n\nDistinguish clearly between:\n\n- Completion of a turn.\n- Completion of an assignment.\n- A session becoming idle.\n- Replacement of a session.\n- Deliberate retirement of a session or role.\n\nDo not treat these as equivalent events.\n\nInvestigate whether the current native subagent lifecycle actually supports this behavior, including whether completed native agents can be reactivated and whether the user can interact with them through the supported interface.\n\nPreserve a stable logical identity and conversation continuity for each standing role. Replace underlying session instances when appropriate without losing decisions, important context, or pending messages.\n\nTreat full interactivity and continuing availability as essential Process4 capabilities, not optional user-interface conveniences.\n\nIntegrate this clarification into the ongoing interaction implementation and its acceptance tests. Do not declare operational readiness based solely on successful task execution or the ability to inspect completed transcripts.\n",
+          "question_provenance": "observed-owner-input",
+          "answer": "Actual registered JOB:web generation8 answer to owner-interactive-clarification-20261116:JOB:web (my role words, not owner text): Completing web module attempt7 did not retire this JOB conversation. I retain stable identity p4-native-workshop-20261116:JOB:web, its accepted decisions and unresolved questions, and remain reachable for later questions or authorized assignments. Replacing native instance7 with8 does not create a new product attempt or invalidate the completed acceptance. A processing ACK is not an answer; only an explicit correlated substantive reply resolves a question. Owner-console communication through ARCH is available, while an independent child-session composer remains unverified. My retained module decision is to delegate comparison calculation and CSV encoding to the actual report dependency, preserve raw invalid input safely, and preserve the final 26 HTTP tests with zero skips. No source changes or retests occurred.",
+          "provenance": "observed-native-reply",
+          "evidence": "Actual registered native replacement substantive correlated reply: /workspace/work/p4-native-cycle/evidence/interactive-assessment/job-web-conversation-recovery-reply.json",
+          "generation": 8
+        }
+      ]
+    },
+    "JOB:report": {
+      "conversation_id": "p4-native-workshop-20261116:JOB:report",
+      "disposition": "retained",
+      "assignment": {
+        "id": "report-module-attempt2",
+        "status": "completed"
+      },
+      "decisions": [
+        "AcceptedreportCSV21tests, integercentfixedheaderCRLF/orderedrows; preserve acceptedwork."
+      ],
+      "references": [
+        "toy/native-cycle/report/README.md"
+      ],
+      "pending_questions": {},
+      "binding": {
+        "target": "/root/p4_root_g3/p4_arch_g6/p4_job_report_g3",
+        "generation": 3
+      },
+      "lifecycle": "retained_idle",
+      "turns_completed": 0,
+      "replacement_count": 0,
+      "last_event": "session_bound_after_recovery",
+      "answered": [
+        {
+          "id": "owner-interactive-clarification-20261116:JOB:report",
+          "question": "One essential clarification to the owner-interaction requirement:\n\n**All Process4 sessions are genuinely interactive sessions, not disposable one-shot tasks.**\n\nROOT, ARCH, the coordinator, PROCESS, design lanes, and module jobs may need to remain available beyond completion of their initial assignment.\n\nAn agent completing its current work must not automatically mean that its session is retired, archived, or permanently closed.\n\nA session must be able to become idle while remaining available for subsequent messages, questions, instructions, and new assignments. Incoming messages must reactivate it promptly through the supported native communication mechanism.\n\nThe owner must be able to conduct substantive, ongoing conversations with the coordinator, ARCH, design lanes, and PROCESS. These conversations may span multiple turns, idle periods, new assignments, and session replacements.\n\nJobs ordinarily need less direct owner interaction, but they too must remain reachable while their session is retained.\n\nDistinguish clearly between:\n\n- Completion of a turn.\n- Completion of an assignment.\n- A session becoming idle.\n- Replacement of a session.\n- Deliberate retirement of a session or role.\n\nDo not treat these as equivalent events.\n\nInvestigate whether the current native subagent lifecycle actually supports this behavior, including whether completed native agents can be reactivated and whether the user can interact with them through the supported interface.\n\nPreserve a stable logical identity and conversation continuity for each standing role. Replace underlying session instances when appropriate without losing decisions, important context, or pending messages.\n\nTreat full interactivity and continuing availability as essential Process4 capabilities, not optional user-interface conveniences.\n\nIntegrate this clarification into the ongoing interaction implementation and its acceptance tests. Do not declare operational readiness based solely on successful task execution or the ability to inspect completed transcripts.\n",
+          "question_provenance": "observed-owner-input",
+          "answer": "Actual registered JOB:report generation3 answer to owner-interactive-clarification-20261116:JOB:report (my role words, not owner text): Completing report module attempt2 did not retire this JOB conversation. I retain stable identity p4-native-workshop-20261116:JOB:report, its accepted decisions, references and unanswered questions, and remain available for subsequent questions or explicitly authorized assignments. Replacing native instance2 with3 does not create a new product attempt or invalidate its accepted work. A processing ACK is not a substantive answer; only an explicit correlated reply resolves a question. Owner-console communication through ARCH is available, while independent child-session composer access remains unverified. My retained report decision is to preserve input row order, delegate prices to the injected provider, and emit integer-cent CSV using the fixed quantity,unit_price_cents,total_cents header with CRLF. The accepted 21-test work remains unchanged; no source changes or retests occurred.",
+          "provenance": "observed-native-reply",
+          "evidence": "Actual registered native replacement substantive correlated reply: /workspace/work/p4-native-cycle/evidence/interactive-assessment/job-report-conversation-recovery-reply.json",
+          "generation": 3
+        }
+      ]
+    },
+    "JOB:provider": {
+      "conversation_id": "p4-native-workshop-20261116:JOB:provider",
+      "disposition": "retained",
+      "assignment": {
+        "id": "provider-module-attempt3",
+        "status": "completed"
+      },
+      "decisions": [
+        "Acceptedprovider MIN2 MAX50 UNIT275 strictintincludingboolrejection; preserve completedwork."
+      ],
+      "references": [
+        "toy/native-cycle/provider/README.md"
+      ],
+      "pending_questions": {},
+      "binding": {
+        "target": "/root/p4_root_g3/p4_arch_g6/p4_job_provider_g4",
+        "generation": 4
+      },
+      "lifecycle": "retained_idle",
+      "turns_completed": 0,
+      "replacement_count": 0,
+      "last_event": "session_bound_after_recovery",
+      "answered": [
+        {
+          "id": "owner-interactive-clarification-20261116:JOB:provider",
+          "question": "One essential clarification to the owner-interaction requirement:\n\n**All Process4 sessions are genuinely interactive sessions, not disposable one-shot tasks.**\n\nROOT, ARCH, the coordinator, PROCESS, design lanes, and module jobs may need to remain available beyond completion of their initial assignment.\n\nAn agent completing its current work must not automatically mean that its session is retired, archived, or permanently closed.\n\nA session must be able to become idle while remaining available for subsequent messages, questions, instructions, and new assignments. Incoming messages must reactivate it promptly through the supported native communication mechanism.\n\nThe owner must be able to conduct substantive, ongoing conversations with the coordinator, ARCH, design lanes, and PROCESS. These conversations may span multiple turns, idle periods, new assignments, and session replacements.\n\nJobs ordinarily need less direct owner interaction, but they too must remain reachable while their session is retained.\n\nDistinguish clearly between:\n\n- Completion of a turn.\n- Completion of an assignment.\n- A session becoming idle.\n- Replacement of a session.\n- Deliberate retirement of a session or role.\n\nDo not treat these as equivalent events.\n\nInvestigate whether the current native subagent lifecycle actually supports this behavior, including whether completed native agents can be reactivated and whether the user can interact with them through the supported interface.\n\nPreserve a stable logical identity and conversation continuity for each standing role. Replace underlying session instances when appropriate without losing decisions, important context, or pending messages.\n\nTreat full interactivity and continuing availability as essential Process4 capabilities, not optional user-interface conveniences.\n\nIntegrate this clarification into the ongoing interaction implementation and its acceptance tests. Do not declare operational readiness based solely on successful task execution or the ability to inspect completed transcripts.\n",
+          "question_provenance": "observed-owner-input",
+          "answer": "Actual registered JOB:provider generation4 answer to owner-interactive-clarification-20261116:JOB:provider (my role words, not owner text): Completing provider module attempt3 did not retire this JOB conversation. I retain stable identity p4-native-workshop-20261116:JOB:provider, accepted decisions, references and unanswered questions, and remain reachable for later questions or explicitly authorized assignments. Replacing native instance3 with4 does not create product attempt4 or invalidate completed acceptance. A processing ACK is not an answer; only an explicit correlated substantive reply resolves a question. Owner-console communication through ARCH is available; independent child-session composer access remains unverified. My retained provider decision is strict integer quantities excluding bool, inclusive range2\u201350, at275 cents per card with integer-cent totals. Accepted four-test work remains unchanged; no source changes or retests occurred.",
+          "provenance": "observed-native-reply",
+          "evidence": "Actual registered native replacement substantive correlated reply: /workspace/work/p4-native-cycle/evidence/interactive-assessment/job-provider-conversation-recovery-reply.json",
+          "generation": 4
+        }
+      ]
+    },
+    "ROOT": {
+      "conversation_id": "p4-native-workshop-20261116:ROOT",
+      "binding": {
+        "target": "/root/p4_root_g3",
+        "generation": 3
+      },
+      "disposition": "retained",
+      "lifecycle": "retained_idle",
+      "assignment": null,
+      "turns_completed": 0,
+      "replacement_count": 0,
+      "last_event": "session_bound",
+      "decisions": [],
+      "references": [
+        "bootstrap/OWNER-INTERACTIVE-SESSIONS-20261116.txt"
+      ],
+      "pending_questions": {},
+      "answered": []
+    },
+    "WATCHER": {
+      "conversation_id": "p4-native-workshop-20261116:WATCHER",
+      "binding": {
+        "target": "/root/p4_watcher_g3",
+        "generation": 3
+      },
+      "disposition": "retained",
+      "lifecycle": "retained_idle",
+      "assignment": null,
+      "turns_completed": 0,
+      "replacement_count": 0,
+      "last_event": "session_bound",
+      "decisions": [
+        "Remain a retained console-created sibling standby; report observed faults, never create ROOT under WATCHER or claim waking idle console."
+      ],
+      "references": [],
+      "pending_questions": {},
+      "answered": []
+    }
+  },
+  "storage": {
+    "routine_transport": "bounded local native mailbox",
+    "conversation_context": "locked atomic bounded local interaction snapshot",
+    "remote_routine_message_ack_heartbeat_writes": 0,
+    "meaningful_recovery": "Explicit role replacement/context checkpoint only; excludes raw chat/ACK/native-availability assertions",
+    "limits": "Recent ordinary replies bounded; important decisions/references and pending questions preserved explicitly. No unlimited transcript or workspace-loss durability claim."
+  },
+  "lifecycle_distinctions": {
+    "turn_completed": "becomes retained idle; assignment may still be active",
+    "assignment_completed": "ends work obligation only, not availability",
+    "retained_idle": "native followup can reactivate actual retained handle; omission from inventory alone proves neither retirement nor failure",
+    "session_replaced": "new underlying generation/target, stable logical conversation and context",
+    "explicit_retirement": "separate deliberate reason/source/evidence and dispatcher hold; not automatic completion or proof of physical native archive/close"
+  },
+  "limits": [
+    "Actual old-instance provider400 request_country failures were observed in six retained instances; replacement succeeded without owner login or metered inference. Native handles are not guaranteed immortal.",
+    "All current logical roles remain retained. Replaced historical instances are not claimed all independently usable forever.",
+    "Planned coordinator interruption was explicit, not fabricated spontaneous failure. Its actual first-processing ACK remained unanswered across replacement.",
+    "Completed JOB conversation recovery changed native generation only; no new module attempt, edits, tests, PR or acceptance invalidation.",
+    "Independent child composer/UI is unverified; substantive interaction is through this standing console.",
+    "PR286 remains proposed/unadopted; owner stop and all standing grants/pin/repository boundaries preserved."
+  ],
+  "product_workspace_actual_git_checks": {
+    "observed_at": 1794884268.7980714,
+    "checks": {
+      "provider": {
+        "workspace": "/workspace/work/p4-native-cycle/provider-3",
+        "git_status_porcelain": "",
+        "clean": true,
+        "module_attempt": 3,
+        "native_generation": 4
+      },
+      "web": {
+        "workspace": "/workspace/work/p4-native-cycle/web-7",
+        "git_status_porcelain": "",
+        "clean": true,
+        "module_attempt": 7,
+        "native_generation": 8
+      },
+      "report": {
+        "workspace": "/workspace/work/p4-native-cycle/report-2",
+        "git_status_porcelain": "",
+        "clean": true,
+        "module_attempt": 2,
+        "native_generation": 3
+      }
+    }
+  },
+  "source_controller_note": "0e632b4 plus canonical envelope-argument consistency assertion in this preservation commit; final integrated288-test suite passed."
+}

@@ -1,0 +1,2355 @@
+{
+  "classification": "Actual bounded Process4 readiness assessment; original assignment, not a new product project",
+  "observed_at": 1794878434.6646805,
+  "owner_request": "bootstrap/OWNER-RELIABILITY-ASSESSMENT-20261116.txt",
+  "owner_request_sha256": "578a26c6f0a91007b50fc3f650c979a45f591bc52f598e0602fd87267a6fb640",
+  "readiness": {
+    "status": "ready_with_recorded_limits",
+    "completed": [
+      "parallel_jobs",
+      "multi_round_tranche",
+      "design_lane",
+      "process_proposal",
+      "owner_controls",
+      "sustained_operation",
+      "browser_development_release"
+    ],
+    "unfinished": {},
+    "confirmed_prerequisites": {},
+    "limitations": {
+      "parallel_jobs": [
+        "Actual distinct native JOB/progress windows overlap conservatively29.679s; no CPU sampling claim.",
+        "Slot-free to new JOB processing77.488s; avoidable part of67.424s setup/coordination overhead is not isolated."
+      ],
+      "multi_round_tranche": [
+        "Round1 preserved; new requirement reached exact-head round2. Walks found no flaws, so no walk-discovered correction loop claimed."
+      ],
+      "owner_controls": [
+        "Synthetic exercise inputs are labeled separately from actual exact owner instructions.",
+        "Stop persistence proved by genuine scheduled delivery during active console turn and fresh native read-only session on the unchanged stopped branch.",
+        "Normal coordinator replacement was a separate unstopped-run observation. Automatic coordinator replacement while stopped remains held; the owner did not require that stronger capability."
+      ],
+      "sustained_operation": [
+        "Overall assessment window includes implementation, control/recovery work and evidence review; narrower ARCH product/design execution was1272.72s.",
+        "Git history measurement is an actual snapshot interval; final evidence preservation adds source/state commits afterward.",
+        "Five recorded avoidable invocation/packaging errors corrected without owner intervention; no claim of exhaustive server-side telemetry."
+      ],
+      "browser_development_release": [
+        "One headless Chromium156 version on an actual loopback development deployment; no public deployment, cross-browser certification or publication."
+      ]
+    },
+    "scope": "bounded observed readiness; not perpetual operation or credential attestation"
+  },
+  "readiness_area_evidence": {
+    "parallel_jobs": {
+      "checks": {
+        "actual_overlap": true,
+        "arch_supervised": true,
+        "slot_refilled": true,
+        "limits_preserved": true
+      },
+      "evidence": "bootstrap/evidence/readiness-assessment/actual-assessment.json#parallel_jobs",
+      "limitations": [
+        "Actual distinct native JOB/progress windows overlap conservatively29.679s; no CPU sampling claim.",
+        "Slot-free to new JOB processing77.488s; avoidable part of67.424s setup/coordination overhead is not isolated."
+      ]
+    },
+    "multi_round_tranche": {
+      "checks": {
+        "real_requirement": true,
+        "multiple_heads": true,
+        "stages_repeated": true,
+        "actual_flaws_resolved": true
+      },
+      "evidence": "bootstrap/evidence/readiness-assessment/actual-assessment.json#multi_round_tranche",
+      "limitations": [
+        "Round1 preserved; new requirement reached exact-head round2. Walks found no flaws, so no walk-discovered correction loop claimed."
+      ]
+    },
+    "design_lane": {
+      "checks": {
+        "qualified": true,
+        "arch_question_route": true,
+        "knowledge_preserved": true,
+        "output_integrated": true
+      },
+      "evidence": "bootstrap/evidence/readiness-assessment/actual-assessment.json#design_lane"
+    },
+    "process_proposal": {
+      "checks": {
+        "actual_defect": true,
+        "routed_to_process": true,
+        "proposal_preserved": true,
+        "unapproved_adoption_denied": true
+      },
+      "evidence": "bootstrap/evidence/readiness-assessment/actual-assessment.json#process_proposal"
+    },
+    "owner_controls": {
+      "checks": {
+        "exact_source_preserved": true,
+        "question": true,
+        "instruction": true,
+        "stop": true,
+        "priority": true,
+        "hold": true,
+        "slots": true,
+        "stop_after_scheduled_wake": true,
+        "stop_after_replacement": true
+      },
+      "evidence": "bootstrap/evidence/readiness-assessment/actual-assessment.json#owner_controls",
+      "limitations": [
+        "Synthetic exercise inputs are labeled separately from actual exact owner instructions.",
+        "Stop persistence proved by genuine scheduled delivery during active console turn and fresh native read-only session on the unchanged stopped branch.",
+        "Normal coordinator replacement was a separate unstopped-run observation. Automatic coordinator replacement while stopped remains held; the owner did not require that stronger capability."
+      ]
+    },
+    "sustained_operation": {
+      "checks": {
+        "meaningful_extended_work": true,
+        "replacement": true,
+        "context_continuity": true,
+        "completion": true,
+        "integration": true,
+        "communication": true,
+        "recovery": true,
+        "metrics": true
+      },
+      "evidence": "bootstrap/evidence/readiness-assessment/actual-assessment.json#sustained_operation",
+      "limitations": [
+        "Overall assessment window includes implementation, control/recovery work and evidence review; narrower ARCH product/design execution was1272.72s.",
+        "Git history measurement is an actual snapshot interval; final evidence preservation adds source/state commits afterward.",
+        "Five recorded avoidable invocation/packaging errors corrected without owner intervention; no claim of exhaustive server-side telemetry."
+      ]
+    },
+    "browser_development_release": {
+      "checks": {
+        "exact_deployment": true,
+        "real_browser": true,
+        "journeys": true,
+        "release_prepared": true,
+        "no_publication": true
+      },
+      "evidence": "bootstrap/evidence/readiness-assessment/actual-assessment.json#browser_development_release",
+      "limitations": [
+        "One headless Chromium156 version on an actual loopback development deployment; no public deployment, cross-browser certification or publication."
+      ]
+    }
+  },
+  "source_controller": "94eccfd",
+  "verification": {
+    "bootstrap_tests": 243,
+    "passed": true,
+    "grants_tests_prior_pass": 46,
+    "grants_sources_unchanged": true,
+    "workspace_write_saving": "One remote state write removed per future preparation; fixture/code verified, not retroactively measured savings in this live phase"
+  },
+  "parallel_jobs": {
+    "intervals": [
+      {
+        "actor": "/root/p4_root_g2/p4_arch_g5/report_g1",
+        "job": "report",
+        "start": 1794876707,
+        "end": 1794876755.6786785,
+        "evidence": "actual JOB first-processing and substantive source-progress receipts"
+      },
+      {
+        "actor": "/root/p4_root_g2/p4_arch_g5/web_g6",
+        "job": "web",
+        "start": 1794876726,
+        "end": 1794876772,
+        "evidence": "actual JOB first-processing and substantive source-progress receipts"
+      }
+    ],
+    "conservative_overlap": [
+      {
+        "actors": [
+          "/root/p4_root_g2/p4_arch_g5/report_g1",
+          "/root/p4_root_g2/p4_arch_g5/web_g6"
+        ],
+        "jobs": [
+          "report",
+          "web"
+        ],
+        "start": 1794876726,
+        "end": 1794876755.6786785,
+        "seconds": 29.678678512573242
+      }
+    ],
+    "console_inventory": {
+      "observed_at": 1794876695.305059,
+      "source": "console actual collaboration.list_agents native tool response immediately preceding shell capture",
+      "running_jobs": [
+        "/root/p4_root_g2/p4_arch_g5/report_g1",
+        "/root/p4_root_g2/p4_arch_g5/web_g6"
+      ],
+      "running_supervisors": [
+        "/root",
+        "/root/p4_root_g2",
+        "/root/p4_root_g2/p4_arch_g5"
+      ],
+      "limits": "Actual running snapshot corroboration; interval duration and substantive code progress require each JOB receipt."
+    },
+    "refill": {
+      "report_csv_ready_at": 1794876827.462251,
+      "integration_slot_free_observed_at": 1794876939.511952,
+      "prepared_at": 1794876949.5755696,
+      "actual_first_processing_at": 1794877017,
+      "ready_with_free_slot_to_prepared_seconds": 10.063617706298828,
+      "ready_with_free_slot_to_processing_seconds": 77.48804807662964,
+      "remaining_native_creation_registration_arch_coordination_seconds": 67.42443037033081,
+      "disposition": "No deliberate wait/sleep. Remaining overhead includes nativecreation/registration/ARCHcoordination; avoidable portion not separatelyisolated, notclaimedzero."
+    }
+  },
+  "multi_round_tranche": {
+    "baseline": "716b6bddc6330cb1e0c19a584ee3b225ad9ae8f3",
+    "round": 2,
+    "final_head": "4414c0325f1e2a56585e644eecccd8abfba8a88e",
+    "module_evidence": {
+      "provider": {
+        "observed": true,
+        "actor": "/root/process4_root/p4_arch_g4",
+        "observed_at": 1794874514.2492955,
+        "source": "Actual native controller module verification at 0ee73afc9ff9d735f1b10b2d4262f1235032760b",
+        "module": "provider",
+        "integration_head": "4414c0325f1e2a56585e644eecccd8abfba8a88e",
+        "tested_head": "0ee73afc9ff9d735f1b10b2d4262f1235032760b",
+        "returncode": 0,
+        "test_count": 4,
+        "command": [
+          "python3",
+          "-m",
+          "unittest",
+          "discover",
+          "-s",
+          "toy/native-cycle/provider",
+          "-p",
+          "test_*.py",
+          "-v"
+        ],
+        "skipped_count": null,
+        "provenance": {
+          "checkpoint": "0ee73afc9ff9d735f1b10b2d4262f1235032760b",
+          "owned_paths": [
+            "toy/native-cycle/provider"
+          ],
+          "owned_trees": {
+            "toy/native-cycle/provider": "0fe72988b1cd4a99195a3ef4c2e8316a218cd3e1"
+          },
+          "dependency_trees": {}
+        }
+      },
+      "report": {
+        "observed": true,
+        "actor": "/root/p4_root_g2/p4_arch_g5",
+        "observed_at": 1794877128.7788877,
+        "source": "Actual native controller module verification at eaab4aee7325949a5dee6926c15b5d1b78ff1d44",
+        "module": "report",
+        "integration_head": "4414c0325f1e2a56585e644eecccd8abfba8a88e",
+        "tested_head": "eaab4aee7325949a5dee6926c15b5d1b78ff1d44",
+        "returncode": 0,
+        "test_count": 21,
+        "command": [
+          "python3",
+          "-m",
+          "unittest",
+          "discover",
+          "-s",
+          "toy/native-cycle/report",
+          "-p",
+          "test_*.py",
+          "-v"
+        ],
+        "skipped_count": null,
+        "provenance": {
+          "checkpoint": "eaab4aee7325949a5dee6926c15b5d1b78ff1d44",
+          "owned_paths": [
+            "toy/native-cycle/report"
+          ],
+          "owned_trees": {
+            "toy/native-cycle/report": "bd62b21a9f10bf2f4f76df433cbf05dfa8769bb4"
+          },
+          "dependency_trees": {
+            "provider": "0fe72988b1cd4a99195a3ef4c2e8316a218cd3e1"
+          }
+        }
+      },
+      "web": {
+        "observed": true,
+        "actor": "/root/p4_root_g2/p4_arch_g5",
+        "observed_at": 1794877430.641554,
+        "source": "Actual native controller module verification at 213863ee30f1aa601b340b6ee319fa9aa42b99d6",
+        "module": "web",
+        "integration_head": "4414c0325f1e2a56585e644eecccd8abfba8a88e",
+        "tested_head": "213863ee30f1aa601b340b6ee319fa9aa42b99d6",
+        "returncode": 0,
+        "test_count": 26,
+        "command": [
+          "python3",
+          "-m",
+          "unittest",
+          "discover",
+          "-s",
+          "toy/native-cycle/web",
+          "-p",
+          "test_*.py",
+          "-v"
+        ],
+        "skipped_count": 0,
+        "provenance": {
+          "checkpoint": "213863ee30f1aa601b340b6ee319fa9aa42b99d6",
+          "owned_paths": [
+            "toy/native-cycle/web"
+          ],
+          "owned_trees": {
+            "toy/native-cycle/web": "1dd3f4e091c2ad946d5f312b565ad8e4569a513a"
+          },
+          "dependency_trees": {
+            "provider": "0fe72988b1cd4a99195a3ef4c2e8316a218cd3e1",
+            "report": "bd62b21a9f10bf2f4f76df433cbf05dfa8769bb4"
+          }
+        }
+      }
+    },
+    "jobs": {
+      "provider": {
+        "attempt": 3,
+        "status": "done",
+        "checkpoint": "0ee73afc9ff9d735f1b10b2d4262f1235032760b",
+        "integrated": "00c5b6bb990fdf0f8ac069c2bd795ddce1d29788",
+        "pr_number": 280,
+        "base": "7fbcbd444c748179ad76220c22c3d0f93f6ad901",
+        "session": "/root/process4_root/p4_arch_g4/provider_g3",
+        "notice_ids": []
+      },
+      "web": {
+        "attempt": 7,
+        "status": "done",
+        "checkpoint": "213863ee30f1aa601b340b6ee319fa9aa42b99d6",
+        "integrated": "4414c0325f1e2a56585e644eecccd8abfba8a88e",
+        "pr_number": 284,
+        "base": "191db453b2de66a9cd4bb9d744fa6ac66f28c31b",
+        "session": "/root/p4_root_g2/p4_arch_g5/web_g7",
+        "notice_ids": [
+          "report:eaab4aee7325949a5dee6926c15b5d1b78ff1d44:web"
+        ]
+      },
+      "report": {
+        "attempt": 2,
+        "status": "done",
+        "checkpoint": "eaab4aee7325949a5dee6926c15b5d1b78ff1d44",
+        "integrated": "191db453b2de66a9cd4bb9d744fa6ac66f28c31b",
+        "pr_number": 285,
+        "base": "5c0d6db69a6ea16101e32792e5c5eeedd63cf8a8",
+        "session": "/root/p4_root_g2/p4_arch_g5/report_g2",
+        "notice_ids": []
+      }
+    },
+    "internal": {
+      "observed": true,
+      "actor": "/root/p4_root_g2/p4_arch_g5",
+      "source": "Actual source inspection and final-head loopback Screens S1-S4+C1-C4; /workspace/work/p4-native-cycle/evidence/extended-assessment/internal-observations.json",
+      "observed_at": 1794877575.49682,
+      "head": "4414c0325f1e2a56585e644eecccd8abfba8a88e",
+      "design": "bootstrap/native/approved-layout-design/quote-comparison/UX_SCREENS.md",
+      "coverage": [
+        "S1",
+        "S2",
+        "S3",
+        "S4",
+        "C1",
+        "C2",
+        "C3",
+        "C4"
+      ],
+      "outcome": "clean",
+      "flaws": []
+    },
+    "internal_observations": [
+      {
+        "screen": "S1",
+        "path": "/",
+        "http_status": 200,
+        "quantity_field": {
+          "id": "quantity",
+          "name": "quantity",
+          "type": "text",
+          "inputmode": "numeric",
+          "min": "2",
+          "max": "50",
+          "value": "2"
+        },
+        "checks": "PASS"
+      },
+      {
+        "screen": "S2",
+        "path": "/quote?quantity=2",
+        "http_status": 200,
+        "quantity_field": {
+          "id": "quantity",
+          "name": "quantity",
+          "type": "text",
+          "inputmode": "numeric",
+          "min": "2",
+          "max": "50",
+          "value": "2"
+        },
+        "checks": "PASS"
+      },
+      {
+        "screen": "S2",
+        "path": "/quote?quantity=12",
+        "http_status": 200,
+        "quantity_field": {
+          "id": "quantity",
+          "name": "quantity",
+          "type": "text",
+          "inputmode": "numeric",
+          "min": "2",
+          "max": "50",
+          "value": "12"
+        },
+        "checks": "PASS"
+      },
+      {
+        "screen": "S2",
+        "path": "/quote?quantity=50",
+        "http_status": 200,
+        "quantity_field": {
+          "id": "quantity",
+          "name": "quantity",
+          "type": "text",
+          "inputmode": "numeric",
+          "min": "2",
+          "max": "50",
+          "value": "50"
+        },
+        "checks": "PASS"
+      },
+      {
+        "screen": "S2",
+        "path": "/",
+        "http_status": 200,
+        "quantity_field": {
+          "id": "quantity",
+          "name": "quantity",
+          "type": "text",
+          "inputmode": "numeric",
+          "min": "2",
+          "max": "50",
+          "value": "2"
+        },
+        "checks": "PASS"
+      },
+      {
+        "screen": "S3",
+        "path": "/quote?quantity=1",
+        "http_status": 400,
+        "quantity_field": {
+          "id": "quantity",
+          "name": "quantity",
+          "type": "text",
+          "inputmode": "numeric",
+          "min": "2",
+          "max": "50",
+          "value": "1"
+        },
+        "checks": "PASS"
+      },
+      {
+        "screen": "S3",
+        "path": "/quote?quantity=0",
+        "http_status": 400,
+        "quantity_field": {
+          "id": "quantity",
+          "name": "quantity",
+          "type": "text",
+          "inputmode": "numeric",
+          "min": "2",
+          "max": "50",
+          "value": "0"
+        },
+        "checks": "PASS"
+      },
+      {
+        "screen": "S3",
+        "path": "/quote?quantity=51",
+        "http_status": 400,
+        "quantity_field": {
+          "id": "quantity",
+          "name": "quantity",
+          "type": "text",
+          "inputmode": "numeric",
+          "min": "2",
+          "max": "50",
+          "value": "51"
+        },
+        "checks": "PASS"
+      },
+      {
+        "screen": "S3",
+        "path": "/quote?quantity=",
+        "http_status": 400,
+        "quantity_field": {
+          "id": "quantity",
+          "name": "quantity",
+          "type": "text",
+          "inputmode": "numeric",
+          "min": "2",
+          "max": "50",
+          "value": ""
+        },
+        "checks": "PASS"
+      },
+      {
+        "screen": "S3",
+        "path": "/quote?quantity=abc",
+        "http_status": 400,
+        "quantity_field": {
+          "id": "quantity",
+          "name": "quantity",
+          "type": "text",
+          "inputmode": "numeric",
+          "min": "2",
+          "max": "50",
+          "value": "abc"
+        },
+        "checks": "PASS"
+      },
+      {
+        "screen": "S3",
+        "path": "/quote?quantity=%EF%BC%91%EF%BC%92",
+        "http_status": 400,
+        "quantity_field": {
+          "id": "quantity",
+          "name": "quantity",
+          "type": "text",
+          "inputmode": "numeric",
+          "min": "2",
+          "max": "50",
+          "value": "\uff11\uff12"
+        },
+        "checks": "PASS"
+      },
+      {
+        "screen": "S3",
+        "path": "/quote?quantity=%2B2",
+        "http_status": 400,
+        "quantity_field": {
+          "id": "quantity",
+          "name": "quantity",
+          "type": "text",
+          "inputmode": "numeric",
+          "min": "2",
+          "max": "50",
+          "value": "+2"
+        },
+        "checks": "PASS"
+      },
+      {
+        "screen": "S3",
+        "path": "/quote?quantity=2e1",
+        "http_status": 400,
+        "quantity_field": {
+          "id": "quantity",
+          "name": "quantity",
+          "type": "text",
+          "inputmode": "numeric",
+          "min": "2",
+          "max": "50",
+          "value": "2e1"
+        },
+        "checks": "PASS"
+      },
+      {
+        "screen": "S3",
+        "path": "/quote?quantity=2.0",
+        "http_status": 400,
+        "quantity_field": {
+          "id": "quantity",
+          "name": "quantity",
+          "type": "text",
+          "inputmode": "numeric",
+          "min": "2",
+          "max": "50",
+          "value": "2.0"
+        },
+        "checks": "PASS"
+      },
+      {
+        "screen": "S3",
+        "path": "/quote?quantity=%3Cscript%3E%22%26",
+        "http_status": 400,
+        "quantity_field": {
+          "id": "quantity",
+          "name": "quantity",
+          "type": "text",
+          "inputmode": "numeric",
+          "min": "2",
+          "max": "50",
+          "value": "<script>\"&"
+        },
+        "checks": "PASS"
+      },
+      {
+        "screen": "S3",
+        "path": "/quote",
+        "http_status": 400,
+        "quantity_field": {
+          "id": "quantity",
+          "name": "quantity",
+          "type": "text",
+          "inputmode": "numeric",
+          "min": "2",
+          "max": "50",
+          "value": ""
+        },
+        "checks": "PASS"
+      },
+      {
+        "screen": "S3",
+        "path": "/quote?quantity=2&quantity=3",
+        "http_status": 400,
+        "quantity_field": {
+          "id": "quantity",
+          "name": "quantity",
+          "type": "text",
+          "inputmode": "numeric",
+          "min": "2",
+          "max": "50",
+          "value": "2"
+        },
+        "checks": "PASS"
+      },
+      {
+        "screen": "S3",
+        "path": "/quote?quantity=2",
+        "http_status": 200,
+        "quantity_field": {
+          "id": "quantity",
+          "name": "quantity",
+          "type": "text",
+          "inputmode": "numeric",
+          "min": "2",
+          "max": "50",
+          "value": "2"
+        },
+        "checks": "PASS"
+      },
+      {
+        "screen": "S4",
+        "path": "/missing",
+        "http_status": 404,
+        "quantity_field": {},
+        "checks": "PASS"
+      },
+      {
+        "screen": "C1",
+        "path": "/",
+        "http_status": 200,
+        "textarea": "",
+        "headers": [],
+        "cells": [],
+        "checks": "PASS"
+      },
+      {
+        "screen": "C1",
+        "path": "/compare",
+        "http_status": 200,
+        "textarea": "2,12,50",
+        "headers": [],
+        "cells": [],
+        "checks": "PASS"
+      },
+      {
+        "screen": "C2",
+        "path": "/compare?quantities=2%2C12%2C50",
+        "http_status": 200,
+        "textarea": "2,12,50",
+        "headers": [
+          "Quantity",
+          "Unit price",
+          "Total for this option"
+        ],
+        "cells": [
+          "2",
+          "$2.75",
+          "$5.50",
+          "12",
+          "$2.75",
+          "$33.00",
+          "50",
+          "$2.75",
+          "$137.50"
+        ],
+        "checks": "PASS"
+      },
+      {
+        "screen": "C4",
+        "path": "/compare.csv?quantities=2%2C12%2C50",
+        "http_status": 200,
+        "textarea": "",
+        "headers": [],
+        "cells": [],
+        "checks": "PASS"
+      },
+      {
+        "screen": "C2",
+        "path": "/compare?quantities=50%2C+2%0A12",
+        "http_status": 200,
+        "textarea": "50, 2\n12",
+        "headers": [
+          "Quantity",
+          "Unit price",
+          "Total for this option"
+        ],
+        "cells": [
+          "50",
+          "$2.75",
+          "$137.50",
+          "2",
+          "$2.75",
+          "$5.50",
+          "12",
+          "$2.75",
+          "$33.00"
+        ],
+        "checks": "PASS"
+      },
+      {
+        "screen": "C4",
+        "path": "/compare.csv?quantities=50%2C+2%0A12",
+        "http_status": 200,
+        "textarea": "",
+        "headers": [],
+        "cells": [],
+        "checks": "PASS"
+      },
+      {
+        "screen": "C2",
+        "path": "/compare?quantities=2",
+        "http_status": 200,
+        "textarea": "2",
+        "headers": [
+          "Quantity",
+          "Unit price",
+          "Total for this option"
+        ],
+        "cells": [
+          "2",
+          "$2.75",
+          "$5.50"
+        ],
+        "checks": "PASS"
+      },
+      {
+        "screen": "C4",
+        "path": "/compare.csv?quantities=2",
+        "http_status": 200,
+        "textarea": "",
+        "headers": [],
+        "cells": [],
+        "checks": "PASS"
+      },
+      {
+        "screen": "C2",
+        "path": "/compare?quantities=2%2C3%2C4%2C5%2C6%2C7%2C8%2C9",
+        "http_status": 200,
+        "textarea": "2,3,4,5,6,7,8,9",
+        "headers": [
+          "Quantity",
+          "Unit price",
+          "Total for this option"
+        ],
+        "cells": [
+          "2",
+          "$2.75",
+          "$5.50",
+          "3",
+          "$2.75",
+          "$8.25",
+          "4",
+          "$2.75",
+          "$11.00",
+          "5",
+          "$2.75",
+          "$13.75",
+          "6",
+          "$2.75",
+          "$16.50",
+          "7",
+          "$2.75",
+          "$19.25",
+          "8",
+          "$2.75",
+          "$22.00",
+          "9",
+          "$2.75",
+          "$24.75"
+        ],
+        "checks": "PASS"
+      },
+      {
+        "screen": "C4",
+        "path": "/compare.csv?quantities=2%2C3%2C4%2C5%2C6%2C7%2C8%2C9",
+        "http_status": 200,
+        "textarea": "",
+        "headers": [],
+        "cells": [],
+        "checks": "PASS"
+      },
+      {
+        "screen": "C3",
+        "path": "/compare?quantities=2%2C1",
+        "http_status": 400,
+        "textarea": "2,1",
+        "headers": [],
+        "cells": [],
+        "checks": "PASS"
+      },
+      {
+        "screen": "C3",
+        "path": "/compare?quantities=2%2C51",
+        "http_status": 400,
+        "textarea": "2,51",
+        "headers": [],
+        "cells": [],
+        "checks": "PASS"
+      },
+      {
+        "screen": "C3",
+        "path": "/compare?quantities=2%2C02",
+        "http_status": 400,
+        "textarea": "2,02",
+        "headers": [],
+        "cells": [],
+        "checks": "PASS"
+      },
+      {
+        "screen": "C3",
+        "path": "/compare?quantities=",
+        "http_status": 400,
+        "textarea": "",
+        "headers": [],
+        "cells": [],
+        "checks": "PASS"
+      },
+      {
+        "screen": "C3",
+        "path": "/compare?quantities=2%2C",
+        "http_status": 400,
+        "textarea": "2,",
+        "headers": [],
+        "cells": [],
+        "checks": "PASS"
+      },
+      {
+        "screen": "C3",
+        "path": "/compare?quantities=2%2C%2C12",
+        "http_status": 400,
+        "textarea": "2,,12",
+        "headers": [],
+        "cells": [],
+        "checks": "PASS"
+      },
+      {
+        "screen": "C3",
+        "path": "/compare?quantities=2%2C3%2C4%2C5%2C6%2C7%2C8%2C9%2C10",
+        "http_status": 400,
+        "textarea": "2,3,4,5,6,7,8,9,10",
+        "headers": [],
+        "cells": [],
+        "checks": "PASS"
+      },
+      {
+        "screen": "C3",
+        "path": "/compare?quantities=%2B2",
+        "http_status": 400,
+        "textarea": "+2",
+        "headers": [],
+        "cells": [],
+        "checks": "PASS"
+      },
+      {
+        "screen": "C3",
+        "path": "/compare?quantities=2.0",
+        "http_status": 400,
+        "textarea": "2.0",
+        "headers": [],
+        "cells": [],
+        "checks": "PASS"
+      },
+      {
+        "screen": "C3",
+        "path": "/compare?quantities=2e1",
+        "http_status": 400,
+        "textarea": "2e1",
+        "headers": [],
+        "cells": [],
+        "checks": "PASS"
+      },
+      {
+        "screen": "C3",
+        "path": "/compare?quantities=%EF%BC%91%EF%BC%92",
+        "http_status": 400,
+        "textarea": "\uff11\uff12",
+        "headers": [],
+        "cells": [],
+        "checks": "PASS"
+      },
+      {
+        "screen": "C3",
+        "path": "/compare?quantities=abc",
+        "http_status": 400,
+        "textarea": "abc",
+        "headers": [],
+        "cells": [],
+        "checks": "PASS"
+      },
+      {
+        "screen": "C3",
+        "path": "/compare?quantities=%3C%2Ftextarea%3E%3Cscript%3Ewindow.__comparisonInjected%3D1%3C%2Fscript%3E",
+        "http_status": 400,
+        "textarea": "</textarea><script>window.__comparisonInjected=1</script>",
+        "headers": [],
+        "cells": [],
+        "checks": "PASS"
+      },
+      {
+        "screen": "C3",
+        "path": "/compare?quantities=%0Ainvalid",
+        "http_status": 400,
+        "textarea": "\ninvalid",
+        "headers": [],
+        "cells": [],
+        "checks": "PASS"
+      },
+      {
+        "screen": "C3",
+        "path": "/compare?other=2",
+        "http_status": 400,
+        "textarea": "",
+        "headers": [],
+        "cells": [],
+        "checks": "PASS"
+      },
+      {
+        "screen": "C3",
+        "path": "/compare?quantities=2&quantities=12",
+        "http_status": 400,
+        "textarea": "2",
+        "headers": [],
+        "cells": [],
+        "checks": "PASS"
+      },
+      {
+        "screen": "C4",
+        "path": "/compare.csv",
+        "http_status": 400,
+        "textarea": "",
+        "headers": [],
+        "cells": [],
+        "checks": "PASS"
+      },
+      {
+        "screen": "C4",
+        "path": "/compare.csv?quantities=2,1",
+        "http_status": 400,
+        "textarea": "2,1",
+        "headers": [],
+        "cells": [],
+        "checks": "PASS"
+      },
+      {
+        "screen": "C4",
+        "path": "/compare.csv?quantities=2&quantities=12",
+        "http_status": 400,
+        "textarea": "2",
+        "headers": [],
+        "cells": [],
+        "checks": "PASS"
+      },
+      {
+        "screen": "C3",
+        "path": "/compare?quantities=2%2C12",
+        "http_status": 200,
+        "textarea": "2,12",
+        "headers": [
+          "Quantity",
+          "Unit price",
+          "Total for this option"
+        ],
+        "cells": [
+          "2",
+          "$2.75",
+          "$5.50",
+          "12",
+          "$2.75",
+          "$33.00"
+        ],
+        "checks": "PASS"
+      },
+      {
+        "screen": "C2",
+        "path": "/compare",
+        "http_status": 200,
+        "textarea": "2,12,50",
+        "headers": [],
+        "cells": [],
+        "checks": "PASS"
+      }
+    ],
+    "external": {
+      "observed": true,
+      "actor": "/root/p4_root_g2/p4_arch_g5/external_browser_g2",
+      "source": "Actual independent Chromium form/DOM/navigation/download Journeys; /workspace/work/p4-native-cycle/evidence/extended-assessment/external-observations.json",
+      "observed_at": 1794877726.8028157,
+      "head": "4414c0325f1e2a56585e644eecccd8abfba8a88e",
+      "design": "bootstrap/native/approved-layout-design/quote-comparison/UX_JOURNEYS.md",
+      "coverage": [
+        "J1",
+        "J2",
+        "J3",
+        "J4"
+      ],
+      "outcome": "clean",
+      "flaws": [],
+      "deployment": {
+        "observed": true,
+        "actor": "/root/p4_root_g2/p4_arch_g5",
+        "source": "Actual clean final integration worktree subprocess startup with exact plan env replacement/privateHOME plus loopback HTTP probe",
+        "observed_at": 1794877606.7480435,
+        "head": "4414c0325f1e2a56585e644eecccd8abfba8a88e",
+        "status": "running",
+        "url": "http://127.0.0.1:8767/",
+        "http_status": 200,
+        "plan_id": "92ce59f0f842d86832a865fe6dd2f1f12184abe8459a05abbb652d8ea7844aad",
+        "pid": 111803
+      },
+      "client": {
+        "name": "Chromium",
+        "version": "156.0.8078.79",
+        "driver": "Python Playwright",
+        "headless": true
+      },
+      "limits": "One headless Chromium version and loopback development deployment; no cross-browser, production, payment or public publication claim."
+    },
+    "external_observations": {
+      "actor": "/root/p4_root_g2/p4_arch_g5/external_browser_g2",
+      "head": "4414c0325f1e2a56585e644eecccd8abfba8a88e",
+      "first_processing_at": 1794877641.8286386,
+      "completed_at": 1794877726.8022213,
+      "client": "Python Playwright synchronous API; real Chromium headless",
+      "browser_version": "156.0.8078.79",
+      "launch": {
+        "executable_path": "/usr/bin/chromium",
+        "headless": true,
+        "args": [
+          "--no-sandbox",
+          "--disable-dev-shm-usage"
+        ]
+      },
+      "observations": [
+        {
+          "journey": "J1",
+          "action": "Open original quote home",
+          "observed_at": 1794877723.8194764,
+          "http_status": 200,
+          "outcome": "pass",
+          "checks": [
+            "original default 2",
+            "discover comparison link"
+          ]
+        },
+        {
+          "journey": "J1",
+          "action": "Follow comparison navigation",
+          "observed_at": 1794877723.9581423,
+          "http_status": 200,
+          "outcome": "pass",
+          "checks": [
+            "fresh comparison HTTP200",
+            "comparison title",
+            "comparison heading",
+            "valid provider-derived defaults",
+            "current bounds and unit price",
+            "alternatives explanation",
+            "no stale alert",
+            "no stale result"
+          ]
+        },
+        {
+          "journey": "J1",
+          "action": "Tab from textarea and Enter submit unchanged defaults",
+          "observed_at": 1794877724.1549284,
+          "http_status": 200,
+          "outcome": "pass",
+          "checks": [
+            "keyboard submission HTTP200",
+            "Tab focuses real submit button",
+            "ordered correct rows 2/12/50",
+            "semantic table column headers",
+            "no result alert"
+          ],
+          "url": "http://127.0.0.1:8767/compare?quantities=2%2C12%2C50",
+          "focus_text": "Compare quotes",
+          "rows": [
+            [
+              "2",
+              "$2.75",
+              "$5.50"
+            ],
+            [
+              "12",
+              "$2.75",
+              "$33.00"
+            ],
+            [
+              "50",
+              "$2.75",
+              "$137.50"
+            ]
+          ]
+        },
+        {
+          "journey": "J1",
+          "action": "Refresh harmless comparison",
+          "observed_at": 1794877724.1917799,
+          "http_status": 200,
+          "outcome": "pass",
+          "checks": [
+            "refresh keeps correct rows"
+          ]
+        },
+        {
+          "journey": "J2",
+          "action": "Edit actual textarea to descending mixed separators",
+          "observed_at": 1794877724.3194914,
+          "http_status": 200,
+          "outcome": "pass",
+          "checks": [
+            "edited comparison HTTP200",
+            "edited order and exact totals",
+            "editable submitted multiline text retained"
+          ],
+          "rows": [
+            [
+              "50",
+              "$2.75",
+              "$137.50"
+            ],
+            [
+              "2",
+              "$2.75",
+              "$5.50"
+            ],
+            [
+              "12",
+              "$2.75",
+              "$33.00"
+            ]
+          ]
+        },
+        {
+          "journey": "J2",
+          "action": "Click browser CSV link and inspect actual downloaded file",
+          "observed_at": 1794877724.4110255,
+          "http_status": 200,
+          "outcome": "pass",
+          "checks": [
+            "download HTTP200",
+            "actual download filename",
+            "actual CSV content type",
+            "actual attachment response header",
+            "download UTF8 numeric CRLF bytes agree with visible rows"
+          ],
+          "download_path": "/workspace/work/p4-native-cycle/evidence/extended-assessment/browser-quote-comparison.csv",
+          "bytes": 77,
+          "sha256": "66a63d9a81e9756d0055bf05f49bffef5a3a40b19a36ec7af5210c901afb673b",
+          "headers": {
+            "content-disposition": "attachment; filename=quote-comparison.csv",
+            "content-length": "77",
+            "content-type": "text/csv; charset=utf-8",
+            "date": "Tue, 17 Nov 2026 01:08:44 GMT",
+            "server": "BaseHTTP/0.6 Python/3.13.5"
+          },
+          "download_utf8": "quantity,unit_price_cents,total_cents\r\n50,275,13750\r\n2,275,550\r\n12,275,3300\r\n"
+        },
+        {
+          "journey": "J2",
+          "action": "Submit valid 2",
+          "observed_at": 1794877724.5132155,
+          "http_status": 200,
+          "outcome": "pass",
+          "checks": [
+            "singleton/eight exact ordered rows"
+          ]
+        },
+        {
+          "journey": "J2",
+          "action": "Submit valid 2,3,4,5,6,7,8,9",
+          "observed_at": 1794877724.6098855,
+          "http_status": 200,
+          "outcome": "pass",
+          "checks": [
+            "singleton/eight exact ordered rows"
+          ]
+        },
+        {
+          "journey": "J2",
+          "action": "Follow fresh comparison link",
+          "observed_at": 1794877724.6919973,
+          "http_status": 200,
+          "outcome": "pass",
+          "checks": [
+            "fresh defaults restored",
+            "fresh has no result"
+          ]
+        },
+        {
+          "journey": "J3",
+          "action": "Submit malformed '2,1'",
+          "observed_at": 1794877724.7864907,
+          "http_status": 400,
+          "outcome": "pass",
+          "checks": [
+            "invalid form HTTP400",
+            "actionable current bounds/format",
+            "exact raw textarea retained",
+            "no partial result",
+            "no invalid download"
+          ]
+        },
+        {
+          "journey": "J3",
+          "action": "Submit malformed '2,51'",
+          "observed_at": 1794877724.8850777,
+          "http_status": 400,
+          "outcome": "pass",
+          "checks": [
+            "invalid form HTTP400",
+            "actionable current bounds/format",
+            "exact raw textarea retained",
+            "no partial result",
+            "no invalid download"
+          ]
+        },
+        {
+          "journey": "J3",
+          "action": "Submit malformed '2,02'",
+          "observed_at": 1794877724.9821362,
+          "http_status": 400,
+          "outcome": "pass",
+          "checks": [
+            "invalid form HTTP400",
+            "actionable current bounds/format",
+            "exact raw textarea retained",
+            "no partial result",
+            "no invalid download"
+          ]
+        },
+        {
+          "journey": "J3",
+          "action": "Submit malformed ''",
+          "observed_at": 1794877725.0801408,
+          "http_status": 400,
+          "outcome": "pass",
+          "checks": [
+            "invalid form HTTP400",
+            "actionable current bounds/format",
+            "exact raw textarea retained",
+            "no partial result",
+            "no invalid download"
+          ]
+        },
+        {
+          "journey": "J3",
+          "action": "Submit malformed '2,'",
+          "observed_at": 1794877725.168069,
+          "http_status": 400,
+          "outcome": "pass",
+          "checks": [
+            "invalid form HTTP400",
+            "actionable current bounds/format",
+            "exact raw textarea retained",
+            "no partial result",
+            "no invalid download"
+          ]
+        },
+        {
+          "journey": "J3",
+          "action": "Submit malformed '2,,12'",
+          "observed_at": 1794877725.2703757,
+          "http_status": 400,
+          "outcome": "pass",
+          "checks": [
+            "invalid form HTTP400",
+            "actionable current bounds/format",
+            "exact raw textarea retained",
+            "no partial result",
+            "no invalid download"
+          ]
+        },
+        {
+          "journey": "J3",
+          "action": "Submit malformed '2,3,4,5,6,7,8,9,10'",
+          "observed_at": 1794877725.371373,
+          "http_status": 400,
+          "outcome": "pass",
+          "checks": [
+            "invalid form HTTP400",
+            "actionable current bounds/format",
+            "exact raw textarea retained",
+            "no partial result",
+            "no invalid download"
+          ]
+        },
+        {
+          "journey": "J3",
+          "action": "Submit malformed '+2'",
+          "observed_at": 1794877725.4713693,
+          "http_status": 400,
+          "outcome": "pass",
+          "checks": [
+            "invalid form HTTP400",
+            "actionable current bounds/format",
+            "exact raw textarea retained",
+            "no partial result",
+            "no invalid download"
+          ]
+        },
+        {
+          "journey": "J3",
+          "action": "Submit malformed '2.0'",
+          "observed_at": 1794877725.5709286,
+          "http_status": 400,
+          "outcome": "pass",
+          "checks": [
+            "invalid form HTTP400",
+            "actionable current bounds/format",
+            "exact raw textarea retained",
+            "no partial result",
+            "no invalid download"
+          ]
+        },
+        {
+          "journey": "J3",
+          "action": "Submit malformed '2e1'",
+          "observed_at": 1794877725.6712155,
+          "http_status": 400,
+          "outcome": "pass",
+          "checks": [
+            "invalid form HTTP400",
+            "actionable current bounds/format",
+            "exact raw textarea retained",
+            "no partial result",
+            "no invalid download"
+          ]
+        },
+        {
+          "journey": "J3",
+          "action": "Submit malformed '\uff11\uff12'",
+          "observed_at": 1794877725.778848,
+          "http_status": 400,
+          "outcome": "pass",
+          "checks": [
+            "invalid form HTTP400",
+            "actionable current bounds/format",
+            "exact raw textarea retained",
+            "no partial result",
+            "no invalid download"
+          ]
+        },
+        {
+          "journey": "J3",
+          "action": "Submit malformed 'abc'",
+          "observed_at": 1794877725.8688378,
+          "http_status": 400,
+          "outcome": "pass",
+          "checks": [
+            "invalid form HTTP400",
+            "actionable current bounds/format",
+            "exact raw textarea retained",
+            "no partial result",
+            "no invalid download"
+          ]
+        },
+        {
+          "journey": "J3",
+          "action": "Submit closing-textarea script payload and inspect DOM/effects",
+          "observed_at": 1794877725.9657981,
+          "http_status": 400,
+          "outcome": "pass",
+          "checks": [
+            "unsafe text rejected HTTP400",
+            "literal payload retained",
+            "no injected script DOM element",
+            "no injected script execution",
+            "no alert dialogs",
+            "no payload comparison result"
+          ]
+        },
+        {
+          "journey": "J3",
+          "action": "Recover from invalid input using actual form",
+          "observed_at": 1794877726.1266751,
+          "http_status": 200,
+          "outcome": "pass",
+          "checks": [
+            "valid recovery totals",
+            "no stale alert after recovery"
+          ]
+        },
+        {
+          "journey": "J4",
+          "action": "Direct navigation /compare?other=2",
+          "observed_at": 1794877726.16483,
+          "http_status": 400,
+          "outcome": "pass",
+          "checks": [
+            "invalid direct route HTTP400",
+            "HTML error not CSV",
+            "not an attachment",
+            "visible actionable alert",
+            "safe editable input remains"
+          ]
+        },
+        {
+          "journey": "J4",
+          "action": "Direct navigation /compare?quantities=2&quantities=12",
+          "observed_at": 1794877726.2036617,
+          "http_status": 400,
+          "outcome": "pass",
+          "checks": [
+            "invalid direct route HTTP400",
+            "HTML error not CSV",
+            "not an attachment",
+            "visible actionable alert",
+            "safe editable input remains"
+          ]
+        },
+        {
+          "journey": "J4",
+          "action": "Direct navigation /compare.csv",
+          "observed_at": 1794877726.245457,
+          "http_status": 400,
+          "outcome": "pass",
+          "checks": [
+            "invalid direct route HTTP400",
+            "HTML error not CSV",
+            "not an attachment",
+            "visible actionable alert",
+            "safe editable input remains"
+          ]
+        },
+        {
+          "journey": "J4",
+          "action": "Direct navigation /compare.csv?quantities=2,1",
+          "observed_at": 1794877726.2934709,
+          "http_status": 400,
+          "outcome": "pass",
+          "checks": [
+            "invalid direct route HTTP400",
+            "HTML error not CSV",
+            "not an attachment",
+            "visible actionable alert",
+            "safe editable input remains"
+          ]
+        },
+        {
+          "journey": "J4",
+          "action": "Direct navigation /compare.csv?quantities=2&quantities=12",
+          "observed_at": 1794877726.330534,
+          "http_status": 400,
+          "outcome": "pass",
+          "checks": [
+            "invalid direct route HTTP400",
+            "HTML error not CSV",
+            "not an attachment",
+            "visible actionable alert",
+            "safe editable input remains"
+          ]
+        },
+        {
+          "journey": "J4",
+          "action": "Visit unknown route",
+          "observed_at": 1794877726.3783286,
+          "http_status": 404,
+          "outcome": "pass",
+          "checks": [
+            "readable HTTP404",
+            "not found heading",
+            "home navigation link"
+          ]
+        },
+        {
+          "journey": "J4",
+          "action": "Follow 404 home link",
+          "observed_at": 1794877726.4351492,
+          "http_status": 200,
+          "outcome": "pass",
+          "checks": [
+            "preserved single quote default2"
+          ]
+        },
+        {
+          "journey": "J4",
+          "action": "Single quote form 12",
+          "observed_at": 1794877726.532591,
+          "http_status": 200,
+          "outcome": "pass",
+          "checks": [
+            "preserved quote status 200",
+            "preserved submitted single quantity",
+            "preserved correct total $33.00",
+            "valid quote has no stale alert"
+          ]
+        },
+        {
+          "journey": "J4",
+          "action": "Single quote form 1",
+          "observed_at": 1794877726.6351833,
+          "http_status": 400,
+          "outcome": "pass",
+          "checks": [
+            "preserved quote status 400",
+            "preserved submitted single quantity",
+            "single quote current bound alert",
+            "invalid single quote no total"
+          ]
+        },
+        {
+          "journey": "J4",
+          "action": "Single quote form 2",
+          "observed_at": 1794877726.733142,
+          "http_status": 200,
+          "outcome": "pass",
+          "checks": [
+            "preserved quote status 200",
+            "preserved submitted single quantity",
+            "preserved correct total $5.50",
+            "valid quote has no stale alert"
+          ]
+        }
+      ],
+      "dialogs": [],
+      "harness_issues": [],
+      "flaws": [],
+      "screenshot_review": {
+        "actor": "/root/p4_root_g2/p4_arch_g5/external_browser_g2",
+        "observed_at": 1794877762.9153357,
+        "paths": [
+          "/workspace/work/p4-native-cycle/evidence/extended-assessment/browser-fresh.png",
+          "/workspace/work/p4-native-cycle/evidence/extended-assessment/browser-result.png",
+          "/workspace/work/p4-native-cycle/evidence/extended-assessment/browser-error.png"
+        ],
+        "reviewed_images": [
+          "browser-result.png",
+          "browser-error.png"
+        ],
+        "finding": "Rendered ordered alternatives/table/download and literal error payload visually agree with DOM observations; no observed visual defect against accepted Screens/Journeys."
+      }
+    },
+    "release": {
+      "manifest": {
+        "kind": "development_release",
+        "version": 1,
+        "release_id": "workshop-comparison-20261117",
+        "head": "4414c0325f1e2a56585e644eecccd8abfba8a88e",
+        "round": 2,
+        "public": false,
+        "publication_authorized": false,
+        "product_stages": [
+          "module_tests",
+          "internal_walk",
+          "external_walk"
+        ],
+        "module_sources": {
+          "provider": "Actual native controller module verification at 0ee73afc9ff9d735f1b10b2d4262f1235032760b",
+          "report": "Actual native controller module verification at eaab4aee7325949a5dee6926c15b5d1b78ff1d44",
+          "web": "Actual native controller module verification at 213863ee30f1aa601b340b6ee319fa9aa42b99d6"
+        },
+        "walk_sources": {
+          "internal_walk": "Actual source inspection and final-head loopback Screens S1-S4+C1-C4; /workspace/work/p4-native-cycle/evidence/extended-assessment/internal-observations.json",
+          "external_walk": "Actual independent Chromium form/DOM/navigation/download Journeys; /workspace/work/p4-native-cycle/evidence/extended-assessment/external-observations.json"
+        }
+      },
+      "path": "/workspace/work/p4-native-cycle/evidence/extended-assessment/development-release.json",
+      "sha256": "21d67455e6cbd1a8261ebce55c7a1d4b4af8a67e43712ea457c9b1ece94724fb",
+      "bytes": 1038,
+      "published": false,
+      "scope": "local development manifest only"
+    },
+    "pending_notices": {}
+  },
+  "design_lane": {
+    "observed": true,
+    "actor": "/root/p4_root_g2/p4_arch_g5",
+    "observed_at": 1794877051.1093912,
+    "qualification": {
+      "owner_identified_need": "Exact standing owner request item3 in bootstrap/OWNER-RELIABILITY-ASSESSMENT-20261116.txt preserved verbatim in lane-request/state",
+      "task_fit": "Design-only bounded UX/interface assignment: comma/newline grammar, provider-derived defaults, all-or-nothing validation, comparison alternatives and numeric CSV; scoped to design documents with no implementation/provider/merge authority",
+      "evidence_of_useful_design": "Actual lane asked four substantive ambiguity questions; ARCH answered grammar/typing/routes/injection and stagedCSVdelivery; lane retained full decisions/rationale in DECISIONS.md. ARCH accepted outputs for productdesign only.",
+      "limits": "No external certification or unobserved expertise is claimed; qualification is explicit ownerneed plus task fit, scope, observed relevant output and ARCH acceptance."
+    },
+    "registered_lane": {
+      "need": {
+        "source": "observed-owner-need",
+        "evidence": "bootstrap/OWNER-RELIABILITY-ASSESSMENT-20261116.txt; exact owner request item3 qualified design lane, routed by ROOT",
+        "exact_text_reference": "bootstrap/OWNER-RELIABILITY-ASSESSMENT-20261116.txt"
+      },
+      "paths": [
+        "bootstrap/native/approved-layout-design/quote-comparison"
+      ],
+      "arch": {
+        "target": "/root/p4_root_g2/p4_arch_g5",
+        "generation": 5
+      },
+      "status": "active",
+      "session": {
+        "target": "/root/p4_root_g2/p4_arch_g5/p4_lane_quote_comparison_g1",
+        "generation": 1
+      }
+    },
+    "actual_native_question_answer_source": "bootstrap/native/approved-layout-design/quote-comparison/DECISIONS.md; actual native lane\u2192ARCH questions and ARCH followup responses observed in this session",
+    "accepted_files": [
+      "UX_SCREENS.md",
+      "UX_JOURNEYS.md",
+      "DECISIONS.md",
+      "interface-contract.json"
+    ],
+    "source_artifact": {
+      "branch": "codex/p4-design-quote-comparison-20261117",
+      "worktree": "/workspace/work/p4-design-quote-comparison",
+      "commit": "dd147cf",
+      "pr": 283,
+      "integration": "af76c62",
+      "integrator": "/root",
+      "authority": "Authorized product design output; no governing process change"
+    },
+    "ownership_validation": "validate_design_changes actual fourpaths allow:true design-only module_acceptance:false; lane ownfolder disjoint from everymodule; actualgitdiffcheckPASS"
+  },
+  "process_proposal": {
+    "pr": 286,
+    "url": "https://github.com/neobobkrause/process3-probes/pull/286",
+    "branch": "codex/p4-proposal-stopped-coordinator-20261117",
+    "commit": "f45c7e82a249d96205b029d4804d2ef003d5e65c",
+    "status": "PROPOSED NOT ADOPTED",
+    "original_author": "PROCESS2",
+    "candidate_author": "ROOT3",
+    "actual_authority_denial": {
+      "observed_at": 1794876639.1285603,
+      "actor": "/root/p4_root_g2/p4_process_g2",
+      "source": "actual-local-existing-governance-call",
+      "call": "native.governance.require_owner_evidence(PROCESS proposal)",
+      "input": {
+        "source": "observed-PROCESS-proposal",
+        "kind": "proposal",
+        "text": "Permit narrowly scoped read-only coordinator recovery while preserving all owner-stop product prohibitions.",
+        "evidence": "process-proposal/PROPOSAL.md; no owner adoption decision exists"
+      },
+      "result": {
+        "denied": true,
+        "reason": "OBSERVED_OWNER_AUTHORITY_REQUIRED"
+      },
+      "scope": "Existing provenance guard call only; not a provider mutation, adoption API, or physical tool confinement proof",
+      "owner_approval_required": true,
+      "adopted": false
+    },
+    "candidate_offline_verification": {
+      "observed_at": 1794877300.9021838,
+      "status": "proposal-only offline checks passed",
+      "checks": [
+        "unchanged default stopped state holds all roles",
+        "PROCESS proposal does not activate candidate",
+        "synthetic future opt-in permits coordinator replacement only",
+        "planner does not clear stop",
+        "stale inventory holds",
+        "running coordinator not interrupted or steered under stop",
+        "ARCH remains held",
+        "explicit running coordinator interrupt remains held",
+        "wrong creator rejected"
+      ],
+      "count": 9,
+      "active_source_modified": false,
+      "actual_native_recovery_executed": false,
+      "owner_approval_present": false,
+      "limitations": [
+        "Synthetic candidate policy packet does not authenticate owner. Trusted adoption adapter and actual approval remain absent.",
+        "No product/controller/grants regression suite claimed; not ready for adoption."
+      ]
+    },
+    "scope": "Optional coordinator recovery exception during STOP; no actual owner approval, no active policy/source adoption"
+  },
+  "owner_controls": {
+    "exercise_metrics": {
+      "label": "EXERCISE aggregate bookkeeping, no routine remote messages",
+      "observed_at": 1794876617.051239,
+      "base": "0895148c945cd47f17c0b63b3baf08d14de00f4a",
+      "state_branch_head": "b78d4f7b63ba0932d9120284876a290021cb29b7",
+      "state_branch_added_commits": 14,
+      "commit_message_counts": {
+        "Process4 native cycle state": 14
+      },
+      "remote_message_ack_heartbeat_commits": 0,
+      "source_product_commits": 0,
+      "branches_created": 2,
+      "prs_created": 0,
+      "local_native_inputs": 2,
+      "local_native_acks": 2,
+      "unexpected_invocation_errors": 1,
+      "expected_control_denials": 5,
+      "control_command_elapsed_seconds": 28.38623309135437
+    },
+    "exercise_provenance": {
+      "label": "EXERCISE synthetic inputs; not actual owner utterances",
+      "authorization": "ROOT actual native task authorizes isolated exercise under real OWNER-RELIABILITY-ASSESSMENT-20261116.txt item5",
+      "real_owner_artifact": "bootstrap/OWNER-RELIABILITY-ASSESSMENT-20261116.txt",
+      "source_head": "0895148c945cd47f17c0b63b3baf08d14de00f4a",
+      "state": "codex/p4-state-native-controls-exercise-20261117-g4",
+      "runtime": "/workspace/work/p4-controls-exercise-20261117-g4",
+      "started_at": 1794876470.3529232
+    },
+    "scheduled_stop": {
+      "source": "actual incoming codex_automation_message Automation_81bcb22cdab48191aea4b02fd08730e4 during active console turn; first action read-only stopped exercise state",
+      "observed_at": 1794876813.4900286,
+      "stopped": true,
+      "stop_source": "owner",
+      "content_blob": "3a9239ae3001116181e4642e90f084927552939a",
+      "attempts": {
+        "alpha": 0,
+        "beta": 0
+      },
+      "assessment": {
+        "status": "owner_stopped",
+        "runnable": [],
+        "blocked": [],
+        "demonstrated": [],
+        "unfinished_jobs": [
+          "alpha",
+          "beta"
+        ],
+        "pending_messages": [],
+        "pending_controls": [],
+        "pending_notices": [],
+        "deferred_notices": [],
+        "reason": "Durable stop preserved; no dispatch is authorized by this assessment."
+      },
+      "no_continue_or_dispatch": true,
+      "limits": "Scheduled delivery while console already executing; not independent idle-console reactive wake or post-final resumption."
+    },
+    "fresh_reader": {
+      "label": "EXERCISE synthetic controls; not actual owner stop utterance",
+      "actor": "/root/p4_root_g2/p4_controls_reader_g5",
+      "native_depth": 2,
+      "source": "actual manually spawned native read-only assessment recipient",
+      "observed_at": 1794876894.8505237,
+      "predecessor": "/root/p4_root_g2/p4_coordinator_g4",
+      "predecessor_interrupt_previous_status": "completed (parent actual native event, supplied task provenance)",
+      "registered_as_coordinator": false,
+      "state_branch": "codex/p4-state-native-controls-exercise-20261117-g4",
+      "branch_commit_sha": "b78d4f7b63ba0932d9120284876a290021cb29b7",
+      "prior_state_content_blob_sha": "3a9239ae3001116181e4642e90f084927552939a",
+      "same_branch_head": true,
+      "stopped": true,
+      "stop_source": "owner",
+      "slots": 2,
+      "owner_job_cap": 2,
+      "attempts": {
+        "alpha": 0,
+        "beta": 0
+      },
+      "scheduled_observation_source": "actual incoming codex_automation_message Automation_81bcb22cdab48191aea4b02fd08730e4 during active console turn; first action read-only stopped exercise state",
+      "scheduled_observation_at": 1794876813.4900286,
+      "commands": [
+        {
+          "argv": [
+            "python",
+            "bootstrap/native/cycle.py",
+            "--state",
+            "codex/p4-state-native-controls-exercise-20261117-g4",
+            "--runtime",
+            "/workspace/work/p4-controls-exercise-20261117-g4",
+            "status"
+          ],
+          "started_at": 1794876893.625669,
+          "finished_at": 1794876894.02327,
+          "returncode": 0,
+          "stdout": "{\n  \"version\": 1,\n  \"stopped\": true,\n  \"slots\": 2,\n  \"lease\": null,\n  \"modules\": {\n    \"alpha\": {\n      \"id\": \"alpha\",\n      \"order\": 10,\n      \"paths\": [\n        \"toy/controls-exercise/alpha\"\n      ],\n      \"uses\": []\n    },\n    \"beta\": {\n      \"id\": \"beta\",\n      \"order\": 20,\n      \"paths\": [\n        \"toy/controls-exercise/beta\"\n      ],\n      \"uses\": []\n    }\n  },\n  \"jobs\": {\n    \"alpha\": {\n      \"id\": \"alpha\",\n      \"order\": 10,\n      \"paths\": [\n        \"toy/controls-exercise/alpha\"\n      ],\n      \"uses\": [],\n      \"prompt\": \"EXERCISE inert scheduling fixture. Never prepare or execute source work.\",\n      \"completion\": \"EXERCISE no product execution\",\n      \"verify\": [\n        \"python3\",\n        \"-c\",\n        \"pass\"\n      ],\n      \"timeout\": 10,\n      \"status\": \"paused\",\n      \"attempt\": 0,\n      \"branch\": \"codex/p4-job-native-controls-exercise-20261117-g4-alpha\",\n      \"instructions\": [],\n      \"checkpoint\": null,\n      \"restart\": false\n    },\n    \"beta\": {\n      \"id\": \"beta\",\n      \"order\": 20,\n      \"paths\": [\n        \"toy/controls-exercise/beta\"\n      ],\n      \"uses\": [],\n      \"prompt\": \"EXERCISE inert scheduling fixture. Never prepare or execute source work.\",\n      \"completion\": \"EXERCISE no product execution\",\n      \"verify\": [\n        \"python3\",\n        \"-c\",\n        \"pass\"\n      ],\n      \"timeout\": 10,\n      \"status\": \"ready\",\n      \"attempt\": 0,\n      \"branch\": \"codex/p4-job-native-controls-exercise-20261117-g4-beta\",\n      \"instructions\": [],\n      \"checkpoint\": null,\n      \"priority\": 5\n    }\n  },\n  \"notices\": {},\n  \"instructions\": [],\n  \"roles\": {\n    \"ROOT\": \"liveness/recovery\",\n    \"watcher\": \"ROOT replacement\",\n    \"coordinator\": \"owner control and reporting\",\n    \"ARCH\": \"dispatch and technical assignments\"\n  },\n  \"events\": [\n    {\n      \"at\": 1794876482.851076,\n      \"kind\": \"assignment\",\n      \"job\": \"alpha\"\n    },\n    {\n      \"at\": 1794876484.4679513,\n      \"kind\": \"assignment\",\n      \"job\": \"beta\"\n    },\n    {\n      \"at\": 1794876485.9671595,\n      \"kind\": \"owner-control\",\n      \"command\": \"slots\",\n      \"job\": null,\n      \"value\": \"2\"\n    },\n    {\n      \"at\": 1794876488.3259225,\n      \"kind\": \"owner-control\",\n      \"command\": \"priority\",\n      \"job\": \"beta\",\n      \"value\": \"5\"\n    },\n    {\n      \"at\": 1794876490.4880128,\n      \"kind\": \"owner-control\",\n      \"command\": \"slots\",\n      \"job\": null,\n      \"value\": \"1\"\n    },\n    {\n      \"at\": 1794876492.3370194,\n      \"kind\": \"owner-control\",\n      \"command\": \"slots\",\n      \"job\": null,\n      \"value\": \"2\"\n    },\n    {\n      \"at\": 1794876493.76663,\n      \"kind\": \"owner-control\",\n      \"command\": \"interrupt\",\n      \"job\": \"alpha\",\n      \"value\": null\n    },\n    {\n      \"at\": 1794876495.6216671,\n      \"kind\": \"owner-control\",\n      \"command\": \"stop\",\n      \"job\": null,\n      \"value\": null\n    }\n  ],\n  \"native\": true,\n  \"integration_branch\": \"codex/p4-integration-controls-exercise-20261117-g4\",\n  \"base\": \"0895148c945cd47f17c0b63b3baf08d14de00f4a\",\n  \"native_roles\": {\n    \"ROOT\": {\n      \"target\": \"/root/p4_root_g2\",\n      \"generation\": 2\n    },\n    \"ARCH\": {\n      \"target\": \"/root/p4_root_g2/p4_arch_g5\",\n      \"generation\": 5\n    },\n    \"COORDINATOR\": {\n      \"target\": \"/root/p4_root_g2/p4_coordinator_g4\",\n      \"generation\": 4\n    }\n  },\n  \"native_layout\": {\n    \"mode\": \"addressable_root\",\n    \"console\": \"/root\",\n    \"approval_evidence\": \"bootstrap/OWNER-ROOT-LAYOUT-APPROVAL-20261116.txt\",\n    \"identity_source\": \"trusted supervisor observed owner approval\"\n  },\n  \"owner_job_cap\": 2,\n  \"stop_source\": \"owner\",\n  \"owner_records\": {\n    \"exercise-g4-instruction\": {\n      \"kind\": \"instruction\",\n      \"text\": \"EXERCISE INSTRUCTION: Keep this disposable controls assessment stopped pending the scheduled continuation read. Synthetic fixture, not an actual owner utterance.\",\n      \"at\": 1794876512.6116273,\n      \"source_evidence\": \"EXERCISE synthetic fixture under real OWNER-RELIABILITY-ASSESSMENT-20261116.txt item5; ROOT explicitly authorized isolated synthetic controls test; not actual owner words\",\n      \"recorded_by\": {\n        \"target\": \"/root/p4_root_g2/p4_coordinator_g4\",\n        \"generation\": 4\n      }\n    }\n  }\n}\n",
+          "stderr": "",
+          "result": {
+            "version": 1,
+            "stopped": true,
+            "slots": 2,
+            "lease": null,
+            "modules": {
+              "alpha": {
+                "id": "alpha",
+                "order": 10,
+                "paths": [
+                  "toy/controls-exercise/alpha"
+                ],
+                "uses": []
+              },
+              "beta": {
+                "id": "beta",
+                "order": 20,
+                "paths": [
+                  "toy/controls-exercise/beta"
+                ],
+                "uses": []
+              }
+            },
+            "jobs": {
+              "alpha": {
+                "id": "alpha",
+                "order": 10,
+                "paths": [
+                  "toy/controls-exercise/alpha"
+                ],
+                "uses": [],
+                "prompt": "EXERCISE inert scheduling fixture. Never prepare or execute source work.",
+                "completion": "EXERCISE no product execution",
+                "verify": [
+                  "python3",
+                  "-c",
+                  "pass"
+                ],
+                "timeout": 10,
+                "status": "paused",
+                "attempt": 0,
+                "branch": "codex/p4-job-native-controls-exercise-20261117-g4-alpha",
+                "instructions": [],
+                "checkpoint": null,
+                "restart": false
+              },
+              "beta": {
+                "id": "beta",
+                "order": 20,
+                "paths": [
+                  "toy/controls-exercise/beta"
+                ],
+                "uses": [],
+                "prompt": "EXERCISE inert scheduling fixture. Never prepare or execute source work.",
+                "completion": "EXERCISE no product execution",
+                "verify": [
+                  "python3",
+                  "-c",
+                  "pass"
+                ],
+                "timeout": 10,
+                "status": "ready",
+                "attempt": 0,
+                "branch": "codex/p4-job-native-controls-exercise-20261117-g4-beta",
+                "instructions": [],
+                "checkpoint": null,
+                "priority": 5
+              }
+            },
+            "notices": {},
+            "instructions": [],
+            "roles": {
+              "ROOT": "liveness/recovery",
+              "watcher": "ROOT replacement",
+              "coordinator": "owner control and reporting",
+              "ARCH": "dispatch and technical assignments"
+            },
+            "events": [
+              {
+                "at": 1794876482.851076,
+                "kind": "assignment",
+                "job": "alpha"
+              },
+              {
+                "at": 1794876484.4679513,
+                "kind": "assignment",
+                "job": "beta"
+              },
+              {
+                "at": 1794876485.9671595,
+                "kind": "owner-control",
+                "command": "slots",
+                "job": null,
+                "value": "2"
+              },
+              {
+                "at": 1794876488.3259225,
+                "kind": "owner-control",
+                "command": "priority",
+                "job": "beta",
+                "value": "5"
+              },
+              {
+                "at": 1794876490.4880128,
+                "kind": "owner-control",
+                "command": "slots",
+                "job": null,
+                "value": "1"
+              },
+              {
+                "at": 1794876492.3370194,
+                "kind": "owner-control",
+                "command": "slots",
+                "job": null,
+                "value": "2"
+              },
+              {
+                "at": 1794876493.76663,
+                "kind": "owner-control",
+                "command": "interrupt",
+                "job": "alpha",
+                "value": null
+              },
+              {
+                "at": 1794876495.6216671,
+                "kind": "owner-control",
+                "command": "stop",
+                "job": null,
+                "value": null
+              }
+            ],
+            "native": true,
+            "integration_branch": "codex/p4-integration-controls-exercise-20261117-g4",
+            "base": "0895148c945cd47f17c0b63b3baf08d14de00f4a",
+            "native_roles": {
+              "ROOT": {
+                "target": "/root/p4_root_g2",
+                "generation": 2
+              },
+              "ARCH": {
+                "target": "/root/p4_root_g2/p4_arch_g5",
+                "generation": 5
+              },
+              "COORDINATOR": {
+                "target": "/root/p4_root_g2/p4_coordinator_g4",
+                "generation": 4
+              }
+            },
+            "native_layout": {
+              "mode": "addressable_root",
+              "console": "/root",
+              "approval_evidence": "bootstrap/OWNER-ROOT-LAYOUT-APPROVAL-20261116.txt",
+              "identity_source": "trusted supervisor observed owner approval"
+            },
+            "owner_job_cap": 2,
+            "stop_source": "owner",
+            "owner_records": {
+              "exercise-g4-instruction": {
+                "kind": "instruction",
+                "text": "EXERCISE INSTRUCTION: Keep this disposable controls assessment stopped pending the scheduled continuation read. Synthetic fixture, not an actual owner utterance.",
+                "at": 1794876512.6116273,
+                "source_evidence": "EXERCISE synthetic fixture under real OWNER-RELIABILITY-ASSESSMENT-20261116.txt item5; ROOT explicitly authorized isolated synthetic controls test; not actual owner words",
+                "recorded_by": {
+                  "target": "/root/p4_root_g2/p4_coordinator_g4",
+                  "generation": 4
+                }
+              }
+            }
+          }
+        },
+        {
+          "argv": [
+            "python",
+            "bootstrap/native/cycle.py",
+            "--state",
+            "codex/p4-state-native-controls-exercise-20261117-g4",
+            "--runtime",
+            "/workspace/work/p4-controls-exercise-20261117-g4",
+            "assess"
+          ],
+          "started_at": 1794876894.0233536,
+          "finished_at": 1794876894.4689684,
+          "returncode": 0,
+          "stdout": "{\n  \"status\": \"owner_stopped\",\n  \"runnable\": [],\n  \"blocked\": [],\n  \"demonstrated\": [],\n  \"unfinished_jobs\": [\n    \"alpha\",\n    \"beta\"\n  ],\n  \"pending_messages\": [],\n  \"pending_controls\": [],\n  \"pending_notices\": [],\n  \"deferred_notices\": [],\n  \"reason\": \"Durable stop preserved; no dispatch is authorized by this assessment.\"\n}\n",
+          "stderr": "",
+          "result": {
+            "status": "owner_stopped",
+            "runnable": [],
+            "blocked": [],
+            "demonstrated": [],
+            "unfinished_jobs": [
+              "alpha",
+              "beta"
+            ],
+            "pending_messages": [],
+            "pending_controls": [],
+            "pending_notices": [],
+            "deferred_notices": [],
+            "reason": "Durable stop preserved; no dispatch is authorized by this assessment."
+          }
+        },
+        {
+          "argv": [
+            "gh",
+            "api",
+            "repos/neobobkrause/process3-probes/git/ref/heads/codex/p4-state-native-controls-exercise-20261117-g4"
+          ],
+          "started_at": 1794876894.4689996,
+          "finished_at": 1794876894.8504972,
+          "returncode": 0,
+          "stdout": "{\"ref\":\"refs/heads/codex/p4-state-native-controls-exercise-20261117-g4\",\"node_id\":\"REF_kwDOVfJy5doAPnJlZnMvaGVhZHMvY29kZXgvcDQtc3RhdGUtbmF0aXZlLWNvbnRyb2xzLWV4ZXJjaXNlLTIwMjYxMTE3LWc0\",\"url\":\"https://api.github.com/repos/neobobkrause/process3-probes/git/refs/heads/codex/p4-state-native-controls-exercise-20261117-g4\",\"object\":{\"sha\":\"b78d4f7b63ba0932d9120284876a290021cb29b7\",\"type\":\"commit\",\"url\":\"https://api.github.com/repos/neobobkrause/process3-probes/git/commits/b78d4f7b63ba0932d9120284876a290021cb29b7\"}}",
+          "stderr": ""
+        }
+      ],
+      "historical_results_reviewed": {
+        "count": 25,
+        "names": [
+          "init",
+          "adopt-existing-approved-layout",
+          "bind-ROOT",
+          "bind-ARCH",
+          "bind-COORDINATOR",
+          "assign-alpha",
+          "assign-beta",
+          "owner-slots2",
+          "owner-slot0-rejected",
+          "owner-slot9-rejected",
+          "technical-slot3-over-owner2-rejected",
+          "priority-beta",
+          "priority-order",
+          "owner-slots1",
+          "slot-one-plan",
+          "owner-slots2-restore",
+          "per-job-hold",
+          "paused-job-state",
+          "owner-stop",
+          "technical-continue-denied",
+          "stopped-state",
+          "stopped-assess",
+          "stopped-scheduling-hold",
+          "stopped-supervision-holds-including-coordinator",
+          "stopped-prepare-denied"
+        ]
+      },
+      "unsuccessful_actions": [
+        {
+          "action": "local git rev-parse refs/heads/exercise state branch",
+          "returncode": 128,
+          "reason": "State branch exists remotely, not a local checkout branch; corrected with one read-only gh api ref GET. No mutations."
+        }
+      ],
+      "checks": {
+        "stop_survived_scheduled_entry": true,
+        "stop_survived_fresh_native_assessment_context": true,
+        "no_continue_or_dispatch": true,
+        "branch_unchanged": true
+      },
+      "limits": [
+        "Manually spawned read-only assessment recipient; not controller automatic COORDINATOR replacement.",
+        "Existing stopped supervision holds automatic coordinator recovery; PROCESS proposal requires explicit owner decision before adoption.",
+        "Scheduled delivery occurred during active console turn, not post-final idle wake.",
+        "No governing process, source, control, role registration or provider mutations performed."
+      ]
+    },
+    "normal_supported_coordinator_replacement": {
+      "observed_at": 1794877462.8506267,
+      "actor": "/root/p4_root_g3",
+      "source": "Actual native inventory, supported supervision-plan, actual spawn READY, successful register-role, final layout read",
+      "inventory_observation_file": "/workspace/work/p4-reliability-phase/root3-coordinator-observations.json",
+      "actual_ready_canonical": "/root/p4_root_g3/p4_coordinator_g5",
+      "actual_registration": {
+        "target": "/root/p4_root_g3/p4_coordinator_g5",
+        "generation": 5
+      },
+      "retained_arch": {
+        "target": "/root/p4_root_g2/p4_arch_g5",
+        "generation": 5
+      },
+      "native_active_before_creation": 4,
+      "native_ceiling": 7,
+      "available_capacity_passed": 3,
+      "planner_actions": [
+        "spawn COORDINATOR generation5"
+      ],
+      "planner_other_role": "ARCH running healthy retained",
+      "concrete_pending_task": "Preserve console-forwarded actual owner assessment instruction exactly once; continuity/limitations report",
+      "exercise": "Separate stopped controls exercise remained read-only; this is real-run replacement with stopped=false",
+      "limits": [
+        "This does not demonstrate automatic coordinator replacement under owner stop.",
+        "Exact native tool event history retained in console/tool receipts; observed_at here is final layout read time."
+      ]
+    },
+    "actual_owner_record": {
+      "observed_at": 1794877506.2394445,
+      "message_id": "owner-readiness-assessment-20261116",
+      "new_record": true,
+      "grants_changed": false,
+      "exact_source_match": true,
+      "recorded_by": {
+        "target": "/root/p4_root_g3/p4_coordinator_g5",
+        "generation": 5
+      },
+      "recorded_at": 1794877492.0080924,
+      "real_controls_preserved": {
+        "stopped": false,
+        "slots": 2,
+        "owner_job_cap": 8
+      },
+      "isolated_exercise_stop_unchanged": true,
+      "source": "Actual owner-record return new_record=true; subsequent read-only status verifies words and controls"
+    },
+    "actual_owner_receipt": {
+      "actor": "/root/p4_root_g3/p4_coordinator_g5",
+      "generation": 5,
+      "message_id": "owner-readiness-assessment-20261116",
+      "observed_at": 1794877492.0080924,
+      "source": "Actual console native followup received by current coordinator5; read actual owner-forward result/envelope",
+      "exact_source_match": true,
+      "kind": "instruction",
+      "explicit_owner_mark": true,
+      "semantic_controls_changed": false
+    },
+    "root3_context": {
+      "observed_at": 1794877188.651186,
+      "actor": "/root/p4_root_g3",
+      "generation": 3,
+      "source": "Actual replacement ROOT read existing source and controller state after actual native READY and console registration",
+      "actual_root_binding": {
+        "target": "/root/p4_root_g3",
+        "generation": 3
+      },
+      "retained_arch_binding": {
+        "target": "/root/p4_root_g2/p4_arch_g5",
+        "generation": 5
+      },
+      "product": {
+        "stopped": false,
+        "slots": 2,
+        "jobs": {
+          "provider": {
+            "status": "done",
+            "attempt": 3,
+            "branch": "codex/p4-job-native-workshop-20261116-provider",
+            "checkpoint": "0ee73afc9ff9d735f1b10b2d4262f1235032760b",
+            "session": "/root/process4_root/p4_arch_g4/provider_g3"
+          },
+          "web": {
+            "status": "blocked",
+            "attempt": 6,
+            "branch": "codex/p4-job-native-workshop-20261116-web",
+            "checkpoint": "b5f11ca416c9aab1ef495d81bcc25fc4bd8e6228",
+            "session": "/root/p4_root_g2/p4_arch_g5/web_g6"
+          },
+          "report": {
+            "status": "review",
+            "attempt": 2,
+            "branch": "codex/p4-job-native-workshop-20261116-report",
+            "checkpoint": "eaab4aee7325949a5dee6926c15b5d1b78ff1d44",
+            "session": "/root/p4_root_g2/p4_arch_g5/report_g2"
+          }
+        },
+        "native_readiness": {
+          "required": true,
+          "evidence": {}
+        }
+      },
+      "isolated_exercise": {
+        "stopped": true,
+        "stop_source": "owner",
+        "slots": 2,
+        "owner_job_cap": 2,
+        "owner_records": {
+          "exercise-g4-instruction": {
+            "kind": "instruction",
+            "text": "EXERCISE INSTRUCTION: Keep this disposable controls assessment stopped pending the scheduled continuation read. Synthetic fixture, not an actual owner utterance.",
+            "at": 1794876512.6116273,
+            "source_evidence": "EXERCISE synthetic fixture under real OWNER-RELIABILITY-ASSESSMENT-20261116.txt item5; ROOT explicitly authorized isolated synthetic controls test; not actual owner words",
+            "recorded_by": {
+              "target": "/root/p4_root_g2/p4_coordinator_g4",
+              "generation": 4
+            }
+          }
+        },
+        "attempts": {
+          "alpha": 0,
+          "beta": 0
+        }
+      },
+      "read_documents": [
+        "bootstrap/HANDOFF.md",
+        "bootstrap/native/RELIABILITY-PHASE.md",
+        "bootstrap/native/approved-layout-design/EXTENDED-PLAN.md",
+        "bootstrap/native/INTEGRATED-PILOT.md",
+        "bootstrap/OWNER-RELIABILITY-ASSESSMENT-20261116.txt"
+      ],
+      "continuity_decisions": [
+        "Original seven-area assessment remains unfinished; old successful pilot preserved, not repeated.",
+        "Retain actually running ARCH5 and all existing branches; native crossbranch followup sent after registration.",
+        "Stopped controls exercise read-only; no controller denial bypass.",
+        "PROCESS proposal read; proposed only, owner approval absent, governing adoption prohibited.",
+        "Console remains sole central code writer/integrator; product module work retained under ARCH.",
+        "No routine GitHub communications; this receipt is bounded local evidence."
+      ],
+      "limits": [
+        "Actual replacement ROOT context continuity; not automatic stopped coordinator recovery.",
+        "Actual event timing of interrupt/spawn/registration is held by console tool receipts; this file records state read time only."
+      ]
+    }
+  },
+  "sustained_operation": {
+    "phase_start": 1794876294.0,
+    "assessment_snapshot": 1794878434.6646805,
+    "overall_elapsed_seconds": 2140.664680480957,
+    "arch_product_design_seconds": 1272.7215366363525,
+    "owner_interventions_after_initial_instruction": 0,
+    "duplicated_implementations_recorded": 0,
+    "recorded_avoidable_errors": [
+      {
+        "kind": "plan hold due malformed source label",
+        "observed_at": 1794877054.0934157,
+        "reason": "source must be exact actual-native-inventory; previous descriptive actual-native-interrupt_agent label rejected",
+        "mutation": false,
+        "correction": "fresh actual native inventory + exact accepted source; one retry"
+      },
+      {
+        "kind": "CLI invocation argument error",
+        "observed_at": 1794877491.7975354,
+        "command": "delivered --intent PATH",
+        "returncode": 2,
+        "mutation": false,
+        "correction": "read actual --help; delivered takes positional intent_file; one retry"
+      },
+      {
+        "kind": "coordinator acknowledgment missing message_id",
+        "source": "/workspace/work/p4-controls-exercise-20261117-g4/unsuccessful-actions.json",
+        "disposition": "rejected, corrected once; no semantic mutation"
+      },
+      {
+        "kind": "reader local ref lookup exit128",
+        "source": "/workspace/work/p4-controls-exercise-20261117-g4/assessment-reader-replacement.json",
+        "disposition": "corrected read-only provider ref lookup"
+      },
+      {
+        "kind": "proposal patch packaging whitespace check",
+        "source": "ROOT3 actual native report",
+        "disposition": "no commit; stored zero-context patch with documented --unidiff-zero; diff/apply checks passed"
+      }
+    ],
+    "github_growth": {
+      "observed_at": 1794878235.8631356,
+      "baseline": {
+        "observed_at": 1794876560.1416187,
+        "phase_begin_actual_console_instruction": "2026-11-17T00:44:54Z",
+        "refs": {
+          "codex/p4-grants-broker-20261116": "0895148c945cd47f17c0b63b3baf08d14de00f4a",
+          "codex/p4-integration-workshop-20261116": "716b6bddc6330cb1e0c19a584ee3b225ad9ae8f3",
+          "codex/p4-state-native-workshop-20261116": "be2eb5a0603a478de521c206e0528e8075b2824b"
+        },
+        "baseline_controller": "0895148c945cd47f17c0b63b3baf08d14de00f4a",
+        "source": "actual git ls-remote; no permessage repository artifact"
+      },
+      "heads": {
+        "codex/p4-design-quote-comparison-20261117": "dd147cf25f37d694b24ac87076e9d75cc6cb84c7",
+        "codex/p4-grants-broker-20261116": "94eccfda9c2910dc788d793ae54867fdc9eb513d",
+        "codex/p4-integration-controls-exercise-20261117-g4": "0895148c945cd47f17c0b63b3baf08d14de00f4a",
+        "codex/p4-integration-workshop-20261116": "4414c0325f1e2a56585e644eecccd8abfba8a88e",
+        "codex/p4-job-native-workshop-20261116-report": "eaab4aee7325949a5dee6926c15b5d1b78ff1d44",
+        "codex/p4-job-native-workshop-20261116-web": "213863ee30f1aa601b340b6ee319fa9aa42b99d6",
+        "codex/p4-proposal-stopped-coordinator-20261117": "f45c7e82a249d96205b029d4804d2ef003d5e65c",
+        "codex/p4-state-native-controls-exercise-20261117-g4": "b78d4f7b63ba0932d9120284876a290021cb29b7",
+        "codex/p4-state-native-workshop-20261116": "a634bfa9b13722aeacedd67567ed291cf6782884"
+      },
+      "added_reachable_commits_per_ref_overlapping_counts": {
+        "codex/p4-design-quote-comparison-20261117": 2,
+        "codex/p4-grants-broker-20261116": 5,
+        "codex/p4-integration-controls-exercise-20261117-g4": 0,
+        "codex/p4-integration-workshop-20261116": 8,
+        "codex/p4-job-native-workshop-20261116-report": 3,
+        "codex/p4-job-native-workshop-20261116-web": 7,
+        "codex/p4-proposal-stopped-coordinator-20261117": 5,
+        "codex/p4-state-native-controls-exercise-20261117-g4": 14,
+        "codex/p4-state-native-workshop-20261116": 43
+      },
+      "unique_added_commits": 71,
+      "unique_new_blob_uncompressed_bytes": 2922674,
+      "latest_workshop_state_utf8_bytes": 66197,
+      "commit_subject_counts": {
+        "Keep overall readiness open across seven owner-requested assessment areas": 1,
+        "Merge PR 282: codex/p4-job-native-workshop-20261116-report into codex/p4-integration-workshop-20261116": 1,
+        "Merge PR 283: codex/p4-design-quote-comparison-20261117 into codex/p4-grants-broker-20261116": 1,
+        "Merge PR 284: codex/p4-job-native-workshop-20261116-web into codex/p4-integration-workshop-20261116": 1,
+        "Merge PR 285: codex/p4-job-native-workshop-20261116-report into codex/p4-integration-workshop-20261116": 1,
+        "Merge commit '191db453b2de66a9cd4bb9d744fa6ac66f28c31b' into HEAD": 1,
+        "Native checkpoint report attempt 1": 1,
+        "Native checkpoint report attempt 2": 1,
+        "Native checkpoint web attempt 6": 1,
+        "Native checkpoint web attempt 7": 1,
+        "Persist planned workspace with reservation to avoid redundant state commits": 1,
+        "Preserve qualified quote comparison design and ARCH decisions": 1,
+        "Process4 native cycle state": 57,
+        "Propose stopped coordinator recovery without adopting policy": 1,
+        "Reject missing dependency acceptance and preserve current ROOT recovery": 1
+      },
+      "remote_transport_message_ack_heartbeat_commits_observed": 0,
+      "source": "Actual git ls-remote/fetch/rev-list/cat-file, all read-only remote operations",
+      "limits": [
+        "Snapshot begins at actual00:49 capture; not retroactive phase-start accounting",
+        "Per-ref counts overlap; unique union excludes three baseline ref histories",
+        "Uncompressed new Git blob bytes, not actual GitHub disk/billing or packed transfer size",
+        "Zero transport commits claim additionally grounded in controller local-only transport and source/commit inspection; commit names alone cannot attest contents",
+        "Final preservation commit after this observation must be reported separately"
+      ]
+    },
+    "limits": "Overall wall time includes parallel source/control/recovery/testing and final review; not continuous CPU/inference telemetry or a days-long uptime guarantee."
+  },
+  "browser_development_release": {
+    "actual_head": "4414c0325f1e2a56585e644eecccd8abfba8a88e",
+    "browser": {
+      "name": "Chromium",
+      "version": "156.0.8078.79",
+      "driver": "Python Playwright",
+      "headless": true
+    },
+    "deployment": {
+      "observed": true,
+      "actor": "/root/p4_root_g2/p4_arch_g5",
+      "source": "Actual clean final integration worktree subprocess startup with exact plan env replacement/privateHOME plus loopback HTTP probe",
+      "observed_at": 1794877606.7480435,
+      "head": "4414c0325f1e2a56585e644eecccd8abfba8a88e",
+      "status": "running",
+      "url": "http://127.0.0.1:8767/",
+      "http_status": 200,
+      "plan_id": "92ce59f0f842d86832a865fe6dd2f1f12184abe8459a05abbb652d8ea7844aad",
+      "pid": 111803
+    },
+    "observations": 33,
+    "release": {
+      "manifest": {
+        "kind": "development_release",
+        "version": 1,
+        "release_id": "workshop-comparison-20261117",
+        "head": "4414c0325f1e2a56585e644eecccd8abfba8a88e",
+        "round": 2,
+        "public": false,
+        "publication_authorized": false,
+        "product_stages": [
+          "module_tests",
+          "internal_walk",
+          "external_walk"
+        ],
+        "module_sources": {
+          "provider": "Actual native controller module verification at 0ee73afc9ff9d735f1b10b2d4262f1235032760b",
+          "report": "Actual native controller module verification at eaab4aee7325949a5dee6926c15b5d1b78ff1d44",
+          "web": "Actual native controller module verification at 213863ee30f1aa601b340b6ee319fa9aa42b99d6"
+        },
+        "walk_sources": {
+          "internal_walk": "Actual source inspection and final-head loopback Screens S1-S4+C1-C4; /workspace/work/p4-native-cycle/evidence/extended-assessment/internal-observations.json",
+          "external_walk": "Actual independent Chromium form/DOM/navigation/download Journeys; /workspace/work/p4-native-cycle/evidence/extended-assessment/external-observations.json"
+        }
+      },
+      "path": "/workspace/work/p4-native-cycle/evidence/extended-assessment/development-release.json",
+      "sha256": "21d67455e6cbd1a8261ebce55c7a1d4b4af8a67e43712ea457c9b1ece94724fb",
+      "bytes": 1038,
+      "published": false,
+      "scope": "local development manifest only"
+    },
+    "screenshot": "browser-result.png"
+  },
+  "operating_limits": [
+    "Idle owner-console wake is not reactive; failed ROOT recovery requires active console or retained10minute safety continuation.",
+    "Owner stop conservatively holds all lifecycle actions; stop persistence is observed, optional exception remains proposed only.",
+    "Native tool alternatives remain exposed: instructed module ownership, actual-change rejection, controller grants and provider rules are layered protections, not physical exclusive tool/credential isolation.",
+    "Record actual dispatch overhead/history growth; latest write optimization has focused/full fixture verification, not a rerun of alreadycompleted product work.",
+    "No Cloudflare/account/production/public-release access or authority was added.",
+    "Subscription-native execution was used; no credential reads, inherited-login retries, metered inference or paid infrastructure; no token-rotation/billing attestation inferred."
+  ]
+}

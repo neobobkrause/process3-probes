@@ -1,0 +1,366 @@
+{
+  "version": 1,
+  "stopped": false,
+  "slots": 1,
+  "lease": null,
+  "modules": {
+    "provider": {
+      "id": "provider",
+      "order": 10,
+      "paths": [
+        "toy/native-cycle/provider"
+      ],
+      "uses": []
+    },
+    "web": {
+      "id": "web",
+      "order": 20,
+      "paths": [
+        "toy/native-cycle/web"
+      ],
+      "uses": [
+        "provider"
+      ]
+    },
+    "report": {
+      "id": "report",
+      "order": 30,
+      "paths": [
+        "toy/native-cycle/report"
+      ],
+      "uses": [
+        "provider"
+      ]
+    }
+  },
+  "jobs": {
+    "provider": {
+      "id": "provider",
+      "order": 10,
+      "paths": [
+        "toy/native-cycle/provider"
+      ],
+      "uses": [],
+      "prompt": "Work only within your assigned paths and tests. No bootstrap, process, .process, settings, grants, credentials, network accounts, inference API, git pushes, PRs, merges, or other module edits. Python standard library only. Leave preservation and provider operations to the native controller. Report changed files, test argv/result, and any unfinished work truthfully. Implement quote_provider.py for workshop cards: MIN_QUANTITY=1, MAX_QUANTITY=100, UNIT_PRICE_CENTS=250. price_for accepts only int excluding bool, bounds inclusive, returns integer cents, raises ValueError otherwise. Write unittest module tests covering ordinary/boundary totals and invalid types/bounds. Include a short module README. Later provider revision is separately assigned, not preimplemented.",
+      "completion": "Provider exports the specified constants and validated price_for; own tests pass and invalid inputs are covered.",
+      "verify": [
+        "python3",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "toy/native-cycle/provider",
+        "-p",
+        "test_*.py",
+        "-v"
+      ],
+      "timeout": 180,
+      "status": "done",
+      "attempt": 2,
+      "branch": "codex/p4-job-native-workshop-20261116-provider",
+      "instructions": [],
+      "checkpoint": "d4eaa939c90d614d40fd50eab439632217d83a9b",
+      "base": "a6f613b5461afc4a0996c4bb5016a5668fc4c9f7",
+      "notice_ids": [],
+      "workspace": "/workspace/work/p4-native-cycle/provider-2",
+      "session": "/root/p4_arch_native_cycle/provider_job",
+      "last_outcome": "completed",
+      "verification": {
+        "returncode": 0,
+        "test_count": 4,
+        "stdout": "",
+        "stderr": "test_contract_constants (test_quote_provider.PriceForTests.test_contract_constants) ... ok\ntest_invalid_bounds (test_quote_provider.PriceForTests.test_invalid_bounds) ... ok\ntest_invalid_types (test_quote_provider.PriceForTests.test_invalid_types) ... ok\ntest_ordinary_and_boundary_totals (test_quote_provider.PriceForTests.test_ordinary_and_boundary_totals) ... ok\n\n----------------------------------------------------------------------\nRan 4 tests in 0.000s\n\nOK\n"
+      },
+      "accepted": true,
+      "pr": "https://github.com/neobobkrause/process3-probes/pull/273",
+      "pr_number": 273,
+      "integrated": "253e7fb458f8cb2baf7f696e50c70fac6652f8ed",
+      "restart": true,
+      "original_base": "f98b7002e0fee803fb3e6da6d0cd8be8d1f9751e",
+      "trusted_baseline_merges": []
+    },
+    "web": {
+      "id": "web",
+      "order": 20,
+      "paths": [
+        "toy/native-cycle/web"
+      ],
+      "uses": [
+        "provider"
+      ],
+      "prompt": "Work only within your assigned paths and tests. No bootstrap, process, .process, settings, grants, credentials, network accounts, inference API, git pushes, PRs, merges, or other module edits. Python standard library only. Leave preservation and provider operations to the native controller. Report changed files, test argv/result, and any unfinished work truthfully. Implement the standard-library workshop-card HTTP app per UX_SCREENS S1-S4: CLI --provider-path --host --port; import provider from injected directory; create_server(host, port, provider_path); loopback binding only. GET / form, GET /quote result or 400 validation, unknown 404. Provider constants drive visible unit price/range; integer cents formatting, escaped HTML, labelled input, role=alert. Initial invalid input may reset to 1, explicitly record this known unfinished correction in module README. Own unittest tests run a loopback ephemeral server and make real HTTP requests, covering result, validation/duplicate/missing parameters, unknown routes, escaping and injected revised provider values. Do not implement provider logic or edit provider. No long-running server in final test command.",
+      "completion": "S1-S4 implemented, own tests pass using actual HTTP and injected provider; known rejected-input retention shortcoming recorded for later correction.",
+      "verify": [
+        "python3",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "toy/native-cycle/web",
+        "-p",
+        "test_*.py",
+        "-v"
+      ],
+      "timeout": 180,
+      "status": "done",
+      "attempt": 3,
+      "branch": "codex/p4-job-native-workshop-20261116-web",
+      "instructions": [],
+      "checkpoint": "5ae3d9093e084fcdb6f00e806766a9539e07dc0d",
+      "base": "253e7fb458f8cb2baf7f696e50c70fac6652f8ed",
+      "original_base": "3d4f7dbf624dba0c04af3d67a0b5fcea0b4c2e52",
+      "accepted": true,
+      "notice_ids": [
+        "provider:d4eaa939c90d614d40fd50eab439632217d83a9b:web"
+      ],
+      "workspace": "/workspace/work/p4-native-cycle/web-3",
+      "session": "/root/p4_arch_native_cycle/web_replacement",
+      "last_outcome": "completed",
+      "verification": {
+        "returncode": 0,
+        "test_count": 12,
+        "stdout": "",
+        "stderr": "test_form (test_app.WebTests.test_form) ... ok\ntest_injected_revised_provider_and_escaping (test_app.WebTests.test_injected_revised_provider_and_escaping) ... ok\ntest_loopback_only (test_app.WebTests.test_loopback_only) ... ok\ntest_not_found (test_app.WebTests.test_not_found) ... ok\ntest_provider_upper_bound (test_app.WebTests.test_provider_upper_bound) ... ok\ntest_rejected_html_is_retained_and_escaped (test_app.WebTests.test_rejected_html_is_retained_and_escaped) ... ok\ntest_rejected_text_is_retained (test_app.WebTests.test_rejected_text_is_retained) ... ok\ntest_rejected_whitespace_and_empty_are_retained (test_app.WebTests.test_rejected_whitespace_and_empty_are_retained) ... ok\ntest_result_and_refresh (test_app.WebTests.test_result_and_refresh) ... ok\ntest_text_input_supports_editing_rejected_text (test_app.WebTests.test_text_input_supports_editing_rejected_text) ... ok\ntest_valid_request_clears_validation_error (test_app.WebTests.test_valid_request_clears_validation_error) ... ok\ntest_validation (test_app.WebTests.test_validation) ... ok\n\n----------------------------------------------------------------------\nRan 12 tests in 6.547s\n\nOK\n"
+      },
+      "pr": "https://github.com/neobobkrause/process3-probes/pull/274",
+      "pr_number": 274,
+      "integrated": "7fbcbd444c748179ad76220c22c3d0f93f6ad901",
+      "trusted_baseline_merges": [],
+      "session_generation": 3
+    }
+  },
+  "notices": {
+    "provider:26796e064fb586ca893124bd8ec2414699bedd6c:web": {
+      "provider": "provider",
+      "user": "web",
+      "commit": "26796e064fb586ca893124bd8ec2414699bedd6c",
+      "status": "delivered-and-completed"
+    },
+    "provider:26796e064fb586ca893124bd8ec2414699bedd6c:report": {
+      "provider": "provider",
+      "user": "report",
+      "commit": "26796e064fb586ca893124bd8ec2414699bedd6c",
+      "status": "pending"
+    },
+    "provider:d4eaa939c90d614d40fd50eab439632217d83a9b:web": {
+      "provider": "provider",
+      "user": "web",
+      "commit": "d4eaa939c90d614d40fd50eab439632217d83a9b",
+      "status": "delivered-and-completed"
+    },
+    "provider:d4eaa939c90d614d40fd50eab439632217d83a9b:report": {
+      "provider": "provider",
+      "user": "report",
+      "commit": "d4eaa939c90d614d40fd50eab439632217d83a9b",
+      "status": "pending"
+    }
+  },
+  "instructions": [],
+  "roles": {
+    "ROOT": "liveness/recovery",
+    "watcher": "ROOT replacement",
+    "coordinator": "owner control and reporting",
+    "ARCH": "dispatch and technical assignments"
+  },
+  "events": [
+    {
+      "at": 1794862414.2317126,
+      "kind": "assignment",
+      "job": "provider"
+    },
+    {
+      "at": 1794862415.920997,
+      "kind": "assignment",
+      "job": "web"
+    },
+    {
+      "at": 1794862421.8927934,
+      "kind": "native-reserve",
+      "job": "provider",
+      "attempt": 1
+    },
+    {
+      "at": 1794862498.1373901,
+      "kind": "native-checkpoint",
+      "job": "provider",
+      "checkpoint": "26796e064fb586ca893124bd8ec2414699bedd6c",
+      "status": "review"
+    },
+    {
+      "at": 1794862561.952069,
+      "kind": "native-integrated",
+      "job": "provider",
+      "checkpoint": "26796e064fb586ca893124bd8ec2414699bedd6c",
+      "integration": "3d4f7dbf624dba0c04af3d67a0b5fcea0b4c2e52"
+    },
+    {
+      "at": 1794862570.383266,
+      "kind": "native-reserve",
+      "job": "web",
+      "attempt": 1
+    },
+    {
+      "at": 1794862683.5663593,
+      "kind": "native-checkpoint",
+      "job": "web",
+      "checkpoint": "ac7fe1345580967943ede76a56123ce7d2994021",
+      "status": "review"
+    },
+    {
+      "at": 1794862737.7212896,
+      "kind": "native-integrated",
+      "job": "web",
+      "checkpoint": "ac7fe1345580967943ede76a56123ce7d2994021",
+      "integration": "a6f613b5461afc4a0996c4bb5016a5668fc4c9f7"
+    },
+    {
+      "at": 1794862744.555569,
+      "kind": "owner-control",
+      "command": "retry",
+      "job": "provider",
+      "value": null
+    },
+    {
+      "at": 1794862750.7021186,
+      "kind": "native-reserve",
+      "job": "provider",
+      "attempt": 2
+    },
+    {
+      "at": 1794862754.5248172,
+      "kind": "native-baseline-sync",
+      "job": "provider",
+      "base": "a6f613b5461afc4a0996c4bb5016a5668fc4c9f7",
+      "checkpoint": "a6f613b5461afc4a0996c4bb5016a5668fc4c9f7"
+    },
+    {
+      "at": 1794862799.0452569,
+      "kind": "native-checkpoint",
+      "job": "provider",
+      "checkpoint": "d4eaa939c90d614d40fd50eab439632217d83a9b",
+      "status": "review"
+    },
+    {
+      "at": 1794862855.272773,
+      "kind": "native-integrated",
+      "job": "provider",
+      "checkpoint": "d4eaa939c90d614d40fd50eab439632217d83a9b",
+      "integration": "253e7fb458f8cb2baf7f696e50c70fac6652f8ed"
+    },
+    {
+      "at": 1794862863.8672054,
+      "kind": "native-reserve",
+      "job": "web",
+      "attempt": 2
+    },
+    {
+      "at": 1794862867.7938879,
+      "kind": "native-baseline-sync",
+      "job": "web",
+      "base": "253e7fb458f8cb2baf7f696e50c70fac6652f8ed",
+      "checkpoint": "253e7fb458f8cb2baf7f696e50c70fac6652f8ed"
+    },
+    {
+      "at": 1794862918.6316495,
+      "kind": "native-checkpoint",
+      "job": "web",
+      "checkpoint": "6ae1ca7e5967f400c0e60bb58e575208b4e06ff2",
+      "status": "paused"
+    },
+    {
+      "at": 1794862930.4067855,
+      "kind": "native-reserve",
+      "job": "web",
+      "attempt": 3
+    },
+    {
+      "at": 1794862995.8404975,
+      "kind": "native-rejected",
+      "job": "web",
+      "reason": "outside assigned module: toy/native-cycle/provider/__pycache__/quote_provider.cpython-312.pyc"
+    },
+    {
+      "at": 1794863064.591595,
+      "kind": "native-checkpoint",
+      "job": "web",
+      "checkpoint": "5ae3d9093e084fcdb6f00e806766a9539e07dc0d",
+      "status": "review"
+    },
+    {
+      "at": 1794863130.7992759,
+      "kind": "native-integrated",
+      "job": "web",
+      "checkpoint": "5ae3d9093e084fcdb6f00e806766a9539e07dc0d",
+      "integration": "7fbcbd444c748179ad76220c22c3d0f93f6ad901"
+    }
+  ],
+  "native": true,
+  "integration_branch": "codex/p4-integration-workshop-20261116",
+  "base": "f98b7002e0fee803fb3e6da6d0cd8be8d1f9751e",
+  "native_mailbox": {
+    "recipients": {
+      "JOB:web": {
+        "target": "/root/p4_arch_native_cycle/web_replacement",
+        "generation": 3
+      },
+      "COORDINATOR": {
+        "target": "/root/p4_coordinator",
+        "generation": 1
+      },
+      "ARCH": {
+        "target": "/root/p4_arch_native_cycle",
+        "generation": 1
+      }
+    },
+    "messages": {
+      "provider-notice:provider:d4eaa939c90d614d40fd50eab439632217d83a9b:web": {
+        "sender": "PROVIDER:provider",
+        "recipient": "JOB:web",
+        "text": "Provider changed; begin handling this durable notice and report the message ID, your current native target/generation, and first-processing time to ARCH through the native message tool. First-processing acknowledgement does not complete module work. Keep your assigned paths; ask ARCH for the current attempt workspace before editing after replacement. Notice: {\"commit\": \"d4eaa939c90d614d40fd50eab439632217d83a9b\", \"notice_id\": \"provider:d4eaa939c90d614d40fd50eab439632217d83a9b:web\", \"provider\": \"provider\", \"user\": \"web\"}",
+        "status": "acknowledged",
+        "created_at": 1794862947.0384865,
+        "deliveries": [
+          {
+            "target": "/root/p4_arch_native_cycle/web_replacement",
+            "generation": 3,
+            "tool": "followup_task",
+            "recorded_at": 1794863029.1418333
+          }
+        ],
+        "ack": {
+          "target": "/root/p4_arch_native_cycle/web_replacement",
+          "generation": 3,
+          "processing_started_at": 1794863028.9048054,
+          "recorded_at": 1794863039.8818302,
+          "source": "observed-native-actor-event",
+          "receipt": "RECEIVED provider-notice:provider:d4eaa939c90d614d40fd50eab439632217d83a9b:web target=/root/p4_arch_native_cycle/web_replacement generation=3 started_at=1794863028.9048054"
+        }
+      },
+      "root-coordinator-status-20261116": {
+        "sender": "ROOT",
+        "recipient": "COORDINATOR",
+        "text": "Status query only. At your first observable action record time.time() and monotonic_ns plus this exact message ID in /workspace/work/p4-native-cycle/coordinator-receipt.json, then immediately send ROOT a RECEIVED message with exact ID/generation1/timestamp. Read current native run state using controller status and relay concise owner-facing status: actual integrated work, pending notices, tests/walks, remaining limitation. Do not assign/build/change product or owner instructions; finish this bounded status turn and remain available.",
+        "status": "acknowledged",
+        "created_at": 1794863324.5933478,
+        "deliveries": [
+          {
+            "target": "/root/p4_coordinator",
+            "generation": 1,
+            "tool": "followup_task",
+            "recorded_at": 1794863338.479468
+          }
+        ],
+        "ack": {
+          "target": "/root/p4_coordinator",
+          "generation": 1,
+          "processing_started_at": 1794863336.699012,
+          "recorded_at": 1794863420.3574743,
+          "source": "observed-native-actor-event",
+          "receipt": "RECEIVED root-coordinator-status-20261116 generation 1 timestamp 1794863336.699012 from observed native actor /root/p4_coordinator",
+          "latency_seconds": 12.105664253234863
+        }
+      }
+    },
+    "events": []
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "classification": "Actual supported scheduler response; requested by owner during bootstrapping",
+  "automation_id": "Automation_81bcb22cdab48191aea4b02fd08730e4",
+  "requested_schedule": "FREQ=MINUTELY;INTERVAL=5",
+  "result": {
+    "status": "ERROR",
+    "message": "Task scheduling wasn't completed. Tasks can't run more than 6 times per hour. Try again with a less frequent schedule."
+  },
+  "verified_after_rejection": {
+    "is_enabled": true,
+    "schedule": "FREQ=MINUTELY;INTERVAL=10"
+  },
+  "no_duplicate_or_staggered_timers_created": true
+}

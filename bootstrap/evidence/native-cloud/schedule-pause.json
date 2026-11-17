@@ -1,0 +1,9 @@
+{
+  "classification": "Actual supported automation pause result after confirmed remaining capability blockers",
+  "success": true,
+  "is_enabled": false,
+  "title": "Continue native Process4",
+  "updated_at": "2026-11-16T20:26:03.651493+00:00",
+  "reason": "Two post-turn continuations and bounded ROOT→ARCH→JOB lifecycle observed. Remaining mandatory demonstrations require unsupported whole-ROOT lifecycle controls or missing enforced native role boundaries. Explicit saved prompt instructed pause in this condition.",
+  "completion_claim": false
+}

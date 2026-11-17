@@ -33,8 +33,8 @@ def main():
     p.add_argument('--state',required=True); p.add_argument('--repo',required=True)
     p.add_argument('--runtime',required=True); p.add_argument('--max-restarts',type=int,default=3)
     a=p.parse_args()
-    cmd=[sys.executable,str(Path(__file__).with_name('coordinator.py')),'--state',a.state,
-         'serve','--repo',a.repo,'--runtime',a.runtime,'--seconds','3600']
+    cmd=[sys.executable,str(Path(__file__).with_name('runner.py')),'--state',a.state,
+         '--repo',a.repo,'--runtime',a.runtime]
     return watch(cmd,max_restarts=a.max_restarts)
 
 if __name__=='__main__': sys.exit(main())

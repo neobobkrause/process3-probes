@@ -1,3 +1,38 @@
+# Additional owner guidance: efficient native operation
+
+OWNER-GUIDANCE-COMMUNICATION-20261116.txt is current verbatim authority. GitHub is
+for source/PRs/requirements/meaningful artifacts and minimum recovery state, not
+routine messages, acknowledgements, heartbeats or polling records. Native ephemeral
+event transport is preferred; any local operational storage must be bounded with
+explicit lifecycle/loss semantics. No GitHub webhook message bus is approved.
+
+Investigate actual child notify_parent availability first, then native lifecycle
+arrangements preserving authority/depth, other documented events, bounded fallback.
+Test available candidates; no invented API or periodic-as-reactive claim. Distinguish
+instructed limits, controller enforcement, actual provider restrictions and alternative
+routes. Physical module isolation stays optional. Consequential owner restrictions,
+all-user provider notices and the three product stages remain unchanged.
+
+---
+
+# Owner clarification superseding earlier acceptance assumptions
+
+Read OWNER-CLARIFICATION-20261116.txt verbatim. The effective Claude Remote Process4
+capabilities are the target; do not impose stronger conditions due to Codex design.
+Independent ROOT resurrection after archival/deletion/whole-task loss is NOT required.
+Physical module sandboxing is desirable, NOT required. Explicit module assignments,
+actual-change inspection/rejection before integration, and ordinary compliance
+observation ARE required. Consequential standing grants and prohibitions are unchanged.
+Reactive idle-recipient wake, active delivery/queueing, nonblocking sends and
+replacement routing are essential under the owner's subsequent message; timer
+polling is not an acceptable message-wake substitute.
+
+The previous conclusion that optional isolation or independent resurrection blocks
+all development is superseded. Existing factual evidence stays valid. Continue the
+native controller/ARCH/JOB/coordinator cycle and three prescribed product tests.
+
+---
+
 # Bootstrap operating requirements and authority
 
 Research read from `neobobkrause/process3`, `process4` commit `c11682ccf903dff83f09c7505fc366760481f2ad`. Sources: all owner_words files; sixth draft sections B–P; HANDOFF; roles_root_coordinator evidence; foundations and DECISIONS passages; trial_plan_facts introduction and trials. No authoritative or product writes.
@@ -13,7 +48,7 @@ The folder README and sixth draft explicitly say nothing there is in force. Owne
 - Coordinator: owner's front door; records explicitly marked decisions/instructions exactly and dated, relays them; answers questions without triggering builds; reports ARCH's technical decisions plainly; carries hold, priority, cap, stop and account-switch instructions. No product decisions and no ordinary technical questions for owner. ROOT replaces coordinator, never itself.
 - ARCH: one per product; all product technical/design decisions; ordered module list and file ownership; starts jobs and walkers, coordinates provider notices, merges through process tool, mechanical helpers, development deploy, release preparation and tranche report. Cannot change process, approvals, process pin without prior owner approval, or publish release.
 - Job: one module, one branch/draft PR, own requirements implementation and own tests. Only own module files; cross-module flaw reports to ARCH. No merge, session starts, deploy, process changes. Replacement continues same branch/PR. A blocked job records blocker, pushes and frees slot, becoming ready after provider resolution.
-- Worker: in-session bulk/independent helper, not reviewer of another session's work. Sessions at most three levels deep; none starts its successor.
+- Worker: in-session bulk/independent helper, not reviewer of another session's work. Historical PLT-5 uses zero-indexed depth at most 3 (four nodes, explicitly coordinator→ROOT→BOB→job); none starts its successor. Do not turn this into an invented three-node bound. Current role-identity mapping remains separate from numeric depth.
 - PROCESS: separate lane, owner interacts directly; ROOT starts; process problems travel job→ARCH→coordinator→PROCESS. Process changes and transition require owner approval. No product session may repair/work around process faults or add tests/gates/reviews.
 - Product design lanes in section C are explicitly proposed, not approved whole. Owner identifies need, ARCH opens, designs only, owned design folder, questions through ARCH. Do not silently adopt all lane details.
 
@@ -21,7 +56,7 @@ The folder README and sixth draft explicitly say nothing there is in force. Owne
 
 One total module order, provider uses point earlier. Ready means work and no open job; does not wait for providers. Earliest ready first; only owner's marked instruction overrides priority. Eight job slots account-wide by default, owner changes via coordinator. Slot refilled immediately after completion/merge in v6. Walking sessions consume slots when no jobs open. Shared GitHub state holds role addresses, slots, stop scoped to account, exact instructions, pending notices/flaws and ROOT wake time; role identity must not be hardcoded session address. One writer per file. A stopped account must remain stopped across wakes/restarts. Dead/full job replaced on same branch/PR; ARCH/coordinator successor from durable state; watcher ROOT takeover. After two failed corrections ARCH replaces job; actual prior corrections must be understood. Unfinished assignments remain unfinished and resumable, not closed by process exit or plausible prose.
 
-Durable assignments need module, requested work, acceptance evidence, branch/base, session/attempt, status/blocker, provider-notice inbox and completion records. GitHub must preserve enough to reconstruct without local session files; local CLI resume alone cannot prove host-loss recovery. Tests passing is distinct from ARCH-authorized completion/merge; assignment explicitly forbids experimental merges.
+Durable assignments need module, requested work, acceptance evidence, branch/base, session/attempt, status/blocker, provider-notice inbox and completion records. GitHub must preserve enough to reconstruct without local session files; local CLI resume alone cannot prove host-loss recovery. Tests passing is distinct from ARCH-authorized completion/integration. The latest owner instructions authorize working-branch integration through the existing process tool; main/tranche merges remain prohibited.
 
 ## Tests and completion
 

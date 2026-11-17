@@ -12,6 +12,11 @@ import subprocess
 import time
 import uuid
 
+from grants import host as grant_host
+from grants.grants import Subject
+from execution import Executor
+import github_auth
+
 REPO = 'neobobkrause/process3-probes'
 STATE_PATH = 'bootstrap-state.json'
 IDENT = re.compile(r'^[a-z][a-z0-9-]{0,48}$')
@@ -23,6 +28,8 @@ class StateConflict(RuntimeError):
 
 def run(argv, cwd=None, **kw):
     kw.setdefault('timeout',45)
+    provider_env=github_auth.environment(argv)
+    if provider_env is not None: kw.setdefault('env',provider_env)
     return subprocess.run(argv, cwd=cwd, text=True, capture_output=True, check=True, **kw).stdout.strip()
 
 
@@ -34,6 +41,18 @@ class GitHub:
         self.branch = branch
 
     def api(self, path, method='GET', body=None):
+        if method != 'GET':
+            # There is no generic privileged forwarding interface for agents.
+            if method == 'PUT' and path == f'contents/{STATE_PATH}':
+                if not isinstance(body,dict) or body.get('branch')!=self.branch:
+                    raise PermissionError('state payload branch differs from authorized store')
+                return grant_host.perform(grant_host.state_subject(self.branch),
+                    'github.state.update', {'repo': REPO, 'branch': self.branch},
+                    lambda: self._api(path, method, body), {'state_branch': self.branch})
+            raise PermissionError('raw mutating GitHub API disabled; use a typed broker operation')
+        return self._api(path, method, body)
+
+    def _api(self, path, method='GET', body=None):
         args = ['gh', 'api', f'repos/{REPO}/{path}', '--method', method]
         if body is not None:
             args += ['--input', '-']
@@ -57,7 +76,10 @@ class GitHub:
 
     def init(self, base):
         commit = self.api(f'commits/{base}')['sha']
-        self.api('git/refs', 'POST', {'ref': 'refs/heads/'+self.branch, 'sha': commit})
+        grant_host.perform(grant_host.state_subject(self.branch), 'github.state.update',
+            {'repo': REPO, 'branch': self.branch},
+            lambda: self._api('git/refs', 'POST', {'ref':'refs/heads/'+self.branch,'sha':commit}),
+            {'state_branch':self.branch})
         self.write(empty(), None)
 
     def mutate(self, action):
@@ -84,6 +106,8 @@ def event(s, kind, **data):
 
 
 def add(s, spec):
+    if not isinstance(spec,dict) or not isinstance(spec.get('id'),str):
+        raise ValueError('assignment must contain a string id')
     jid = spec['id']
     if not IDENT.fullmatch(jid) or jid in s['jobs']:
         raise ValueError('invalid or duplicate job id')
@@ -92,7 +116,7 @@ def add(s, spec):
     if not isinstance(spec.get('verify'), list) or not spec['verify'] or not all(isinstance(x,str) for x in spec['verify']):
         raise ValueError('verify must be a nonempty argv array')
     for p in spec['paths']:
-        if Path(p).is_absolute() or '..' in Path(p).parts or p.startswith(('.git', 'bootstrap/', 'process/')):
+        if not isinstance(p,str) or not p or Path(p).is_absolute() or '..' in Path(p).parts or p.startswith(('.git', 'bootstrap/', 'process/')):
             raise ValueError('job paths must be relative module files, outside bootstrap/process')
     if not isinstance(spec.get('order'), int):
         raise ValueError('module order integer required')
@@ -107,6 +131,22 @@ def declare(s, module):
     mid=module['id']
     if not IDENT.fullmatch(mid):
         raise ValueError('invalid module id')
+    paths=module.get('paths',[])
+    if not isinstance(paths,list) or any(not isinstance(p,str) or not p or Path(p).is_absolute() or '..' in Path(p).parts for p in paths):
+        raise ValueError('invalid owned paths')
+    for other_id, other in s['modules'].items():
+        if other_id==mid: continue
+        for left in paths:
+            for right in other.get('paths',[]):
+                a,b=left.rstrip('/'),right.rstrip('/')
+                if a==b or a.startswith(b+'/') or b.startswith(a+'/'):
+                    raise ValueError('module ownership overlaps another module')
+    candidate={**s['modules'],mid:module}
+    for consumer in candidate.values():
+        for provider in consumer.get('uses',[]):
+            source=candidate.get(provider)
+            if source and isinstance(source.get('order'),int) and isinstance(consumer.get('order'),int) and source['order']>=consumer['order']:
+                raise ValueError('providers must precede their users in the total module order')
     s['modules'][mid]=copy.deepcopy(module)
 
 
@@ -130,8 +170,10 @@ def notify(s, provider, commit):
 def control(s, command, job=None, value=None):
     if command=='stop':
         s['stopped'] = True
+        s['stop_source'] = 'owner'
     elif command=='continue':
         s['stopped'] = False
+        s.pop('stop_source', None)
     elif command=='slots':
         if not 1 <= int(value) <= 8:
             raise ValueError('slots must be 1..8 across this probe account scheduler')
@@ -158,6 +200,25 @@ def codex_env():
     env=os.environ.copy()
     for k in ('OPENAI_API_KEY','CODEX_API_KEY','OPENAI_BASE_URL'):
         env.pop(k,None)
+    return env
+
+
+# The coordinator owns GitHub and deployment credentials. Model jobs do not.
+# This removes obvious environment inheritance but is NOT full isolation:
+# the trusted host must also deny credential files, direct provider network
+# routes, Git credential helpers, and unauthorized system calls.
+JOB_SECRET_KEYS = frozenset({
+    'GH_TOKEN', 'GITHUB_TOKEN', 'GH_ENTERPRISE_TOKEN', 'GITHUB_PERSONAL_ACCESS_TOKEN',
+    'CLOUDFLARE_API_TOKEN', 'CLOUDFLARE_ACCOUNT_ID', 'CF_TOKEN', 'CF_ACCT',
+    'AWS_ACCESS_KEY_ID', 'AWS_SECRET_ACCESS_KEY', 'AWS_SESSION_TOKEN',
+    'BIO_RELEASE_SEED', 'BIO_ADMIN_TOKEN', 'BIO_MEMBER_TOKEN',
+    'GIT_ASKPASS', 'SSH_ASKPASS', 'SSH_AUTH_SOCK', 'GIT_SSH_COMMAND'
+})
+
+
+def restricted_job_env(parent):
+    env = {k: v for k, v in parent.items()
+           if k not in JOB_SECRET_KEYS and not k.startswith(('GIT_CONFIG_', 'GH_', 'GITHUB_', 'CLOUDFLARE_', 'AWS_'))}
     return env
 
 
@@ -216,12 +277,18 @@ class Supervisor:
                 f'Previous checkpoint: {j["checkpoint"]}; attempt {j["attempt"]}. '
                 'Read existing work and continue unfinished work; do not claim it done without meeting completion.\n'
                 f'Owner instructions (verbatim): {json.dumps(j["instructions"])}\n'
+                f'ARCH technical instructions: {json.dumps(j.get("technical_instructions",[]))}\n'
                 f'Provider notices: {json.dumps({k:n for k,n in s["notices"].items() if k in j.get("notice_ids",[])})}')
         log=open(self.runtime/f'{j["id"]}-{j["attempt"]}.jsonl','w')
         err=open(self.runtime/f'{j["id"]}-{j["attempt"]}.stderr','w')
-        argv=['codex','exec','--ignore-user-config','--json','-c','forced_login_method="chatgpt"',
-              '-C',str(path),'-s','workspace-write',prompt]
-        p=subprocess.Popen(argv,stdin=subprocess.DEVNULL,stdout=log,stderr=err,env=self.env,start_new_session=True)
+        executor = Executor(self.repo)
+        p=grant_host.perform(Subject('host-arch-dispatch','ARCH',REPO),
+            'session.start',{'repo':REPO,'child_role':'JOB'},
+            lambda: executor.start({'workspace': str(path), 'prompt': prompt, 'role': 'JOB',
+                          'job': j['id'], 'generation': j['attempt'],
+                          'owned_paths': j['paths'], 'auth': 'chatgpt',
+                          'approval_policy': 'never', 'network': 'broker-only', 'timeout':j.get('timeout',180)}, log, err),
+            {'child_slot_available':len(self.live)<s['slots'],'valid_generation':j['status']=='running'})
         self.live[j['id']]=(p,log,err,path,time.monotonic())
 
     def checkpoint(self,j,path):
@@ -232,8 +299,21 @@ class Supervisor:
             run(['git','-c','user.name=Process4 bootstrap','-c','user.email=process4@users.noreply.github.com',
                  'commit','-m',f'Checkpoint {j["id"]} attempt {j["attempt"]}'],path)
         sha=run(['git','rev-parse','HEAD'],path)
-        run(['git','push','origin','HEAD:refs/heads/'+j['branch']],path)
+        changed = run(['git', 'diff', '--name-only', '-z', j['base'], 'HEAD'], path)
+        paths = [p for p in changed.split('\0') if p]
+        # Empty checkpoints still require branch authorization; the evaluator
+        # requires actual changed paths, so do not push an unchanged base.
+        if paths:
+            subject = Subject(f'job:{j["id"]}:{j["attempt"]}', 'JOB', REPO,
+                              j['branch'], j['id'], j['attempt'])
+            grant_host.perform(subject, 'github.branch.update',
+                {'repo': REPO, 'branch': j['branch'], 'paths': paths},
+                lambda: run(['git','push','origin','HEAD:refs/heads/'+j['branch']],path),
+                {'owned_paths': tuple(p.rstrip('/')+'/' if (path/p).is_dir() else p for p in j['paths'])})
         return sha
+
+    def verify(self, job, path):
+        return Executor(self.repo).verify(job, path)
 
     def tick(self, dispatch=True):
         s,sha=self.store.read()
@@ -271,14 +351,24 @@ class Supervisor:
             for line in (self.runtime/f'{jid}-{j["attempt"]}.jsonl').read_text().splitlines():
                 try: events.append(json.loads(line))
                 except ValueError: pass
+            for e in events:
+                if e.get('type')=='host.blocked' and e.get('dependency') in (
+                        'subscription-authorization','subscription-service'):
+                    j['blocker']=e['dependency']
+                    s.setdefault('external_dependencies', {})[jid] = {
+                        'dependency':e['dependency'],'terminal':e.get('terminal') is True,
+                        'source':'isolated-executor','at':time.time()}
             completed=any(e.get('type')=='turn.completed' for e in events)
+            if rc==0 and completed:
+                dependency=s.get('external_dependencies',{}).get(jid,{})
+                if dependency.get('source')=='isolated-executor': dependency['status']='resolved'
             verified=False
             if rc==0 and completed and not interrupted and not timed_out:
                 try:
-                    v=subprocess.run(j['verify'],cwd=path,text=True,capture_output=True,timeout=60)
+                    v=self.verify(j, path)
                     verified=v.returncode==0
                     j['verification']={'returncode':v.returncode,'stdout':v.stdout[-2000:],'stderr':v.stderr[-2000:]}
-                except (subprocess.TimeoutExpired,OSError) as exc:
+                except (subprocess.TimeoutExpired,OSError,RuntimeError) as exc:
                     j['verification']={'error':type(exc).__name__}
             j['status']='done' if verified else ('paused' if interrupted else 'blocked')
             if interrupted and j.pop('restart',False) and not s['stopped']:
@@ -290,6 +380,12 @@ class Supervisor:
                 if any(n['user']==jid and n['status']=='pending' for n in s['notices'].values()):
                     j['status']='ready'
             event(s,'job-result',job=jid,status=j['status'],**j['last_result'])
+            if j['status']=='blocked' and 'ARCH' in s.get('role_sessions',{}):
+                s['role_sessions']['ARCH']['next_wake']=0
+                s.setdefault('role_messages',[]).append(dict(id=str(uuid.uuid4()),at=time.time(),
+                    sender='JOB:'+jid,target='ARCH',text='Unfinished assignment '+jid+
+                    '; inspect durable last_result and verification before correcting/replacing.',
+                    kind='job-blocked',status='pending'))
             finished.append(jid)
         capacity=s['slots']-(len(self.live)-len(finished))
         for j in (ready(s)[:max(0,capacity)] if dispatch else []):
@@ -297,7 +393,10 @@ class Supervisor:
                 j['branch']=f'codex/p4-job-{self.store.branch.removeprefix("codex/p4-state-")}-{j["id"]}'
                 base=run(['git','rev-parse','HEAD'],self.repo)
                 try:
-                    self.store.api('git/refs','POST',{'ref':'refs/heads/'+j['branch'],'sha':base})
+                    grant_host.perform(Subject('host-arch-dispatch','ARCH',REPO),
+                        'github.branch.create',{'repo':REPO,'branch':j['branch'],'base':base},
+                        lambda: self.store._api('git/refs','POST',{'ref':'refs/heads/'+j['branch'],'sha':base}),
+                        {'assigned_branch':j['branch'],'assigned_base':base})
                 except subprocess.CalledProcessError as exc:
                     if '422' not in exc.stderr: raise
                     existing=self.store.api('git/ref/heads/'+j['branch'])['object']['sha']
@@ -323,7 +422,9 @@ class Supervisor:
                 os.killpg(p.pid,signal.SIGKILL); p.wait()
 
     def serve(self,seconds,interval=15):
-        self.env=auth()
+        grant_host.Host.configured()
+        Executor(self.repo) # fail before claiming state or starting any model
+        self.env=None # subscription credentials belong to the isolated executor
         self.claim()
         until=time.monotonic()+seconds
         try:
@@ -342,7 +443,9 @@ class Supervisor:
             if self.live:
                 def pause(s):
                     for jid in self.live:
-                        if s['jobs'][jid]['status']=='running': s['jobs'][jid]['status']='interrupting'
+                        if s['jobs'][jid]['status']=='running':
+                            s['jobs'][jid]['status']='interrupting'
+                            s['jobs'][jid]['restart']=not s['stopped']
                 self.store.mutate(pause)
                 try: self.tick(dispatch=False)
                 except Exception as exc: print('Final checkpoint failed; recover from last GitHub checkpoint:',type(exc).__name__,flush=True)

@@ -1,0 +1,16 @@
+{
+  "classification": "One bounded read-only operational-cost baseline, not periodic telemetry",
+  "state_file": "native-cycle.json",
+  "matching_file_commits_returned": 52,
+  "commit_query_limit": 100,
+  "count_is_lower_bound": false,
+  "current_file_bytes": 24265,
+  "remote_mailbox": {
+    "recipients": 4,
+    "messages": 4,
+    "delivery_records": 4
+  },
+  "remote_event_rows": 21,
+  "remote_notice_rows": 4,
+  "implication": "Updating one state file repeatedly still accumulates Git commits/blobs; local pruning cannot remove historical Git objects. No history rewrite or deletion performed. Baseline includes meaningful assignment transitions as well as old routine messaging; count is not solely message overhead."
+}

@@ -4,6 +4,8 @@ import argparse
 import json
 import subprocess
 import coordinator as c
+from grants import host
+from grants.grants import Subject
 
 BASE='codex/process4-bootstrap-20261116'
 
@@ -27,9 +29,12 @@ def ensure(job):
           'are recorded on the bootstrap state branch. This is isolated proof work, not a '
           'product tranche. Keep draft; do not merge. Replacement continues this same branch/PR.')
     # Feed prose as stdin; no shell interpolation, credential output, or temporary file needed.
-    return c.run(['gh','pr','create','--repo',c.REPO,'--base',BASE,'--head',branch,
+    subject = Subject('job-pr:'+job['id'], 'JOB', c.REPO, branch, job['id'])
+    return host.perform(subject, 'github.pr.open',
+        {'repo': c.REPO, 'head': branch, 'base': BASE},
+        lambda: c.run(['gh','pr','create','--repo',c.REPO,'--base',BASE,'--head',branch,
                   '--draft','--title',f'Process4 bootstrap module: {job["id"]}',
-                  '--body-file','-'],input=body)
+                  '--body-file','-'],input=body))
 
 
 def reconcile(store):

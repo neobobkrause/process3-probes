@@ -1,0 +1,9 @@
+{
+  "classification": "actual protocol initialization only; no login/thread/inference",
+  "result": {
+    "userAgent": "Process4/0.167.0-alpha.4 (Debian 13.0.0; x86_64) unknown (Process4; 0.1.0)",
+    "codexHome": "/workspace/work/p4-protocol-only",
+    "platformFamily": "unix",
+    "platformOs": "linux"
+  }
+}

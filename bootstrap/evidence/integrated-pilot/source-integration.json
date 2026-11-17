@@ -1,0 +1,98 @@
+{
+  "classification": "Actual integration acceptance record; not product-pilot completion",
+  "source_commit": "ffc7b12",
+  "streams": {
+    "A": {
+      "branch": "codex/p4-stream-a-20261116",
+      "prs": [
+        276,
+        277
+      ]
+    },
+    "B": {
+      "branch": "codex/p4-stream-b-20261116",
+      "prs": [
+        275
+      ]
+    },
+    "C": {
+      "branch": "codex/p4-stream-c-20261116",
+      "prs": [
+        279
+      ]
+    },
+    "D": {
+      "branch": "codex/p4-stream-d-20261116",
+      "prs": [
+        278
+      ]
+    }
+  },
+  "actual_prs": [
+    {
+      "headRefOid": "3dda2d9b201697ec4c79e6d42726aac5eb9f0940",
+      "mergeCommit": {
+        "oid": "08e0ab277b4d0d10c34d65bbaa06f92d920b3aff"
+      },
+      "number": 275,
+      "state": "MERGED"
+    },
+    {
+      "headRefOid": "d309fcce939f6b6352c5d2c537b8f1d5994279d3",
+      "mergeCommit": {
+        "oid": "20747297e584c5e869ddb6f1215bba65d212c960"
+      },
+      "number": 276,
+      "state": "MERGED"
+    },
+    {
+      "headRefOid": "07231303f10386b0df5450dda4bde811e0763130",
+      "mergeCommit": {
+        "oid": "fc2958f836148e75b76985fd3d961cc3918581e5"
+      },
+      "number": 277,
+      "state": "MERGED"
+    },
+    {
+      "headRefOid": "48322bff1c8eb2477b164deb36ce1940e96d173c",
+      "mergeCommit": {
+        "oid": "147f712485d57697bc8c88335e9ac4a3bf7178ca"
+      },
+      "number": 278,
+      "state": "MERGED"
+    },
+    {
+      "headRefOid": "1e26fc6ec0b28307c40903b70040e540e8fa07d1",
+      "mergeCommit": {
+        "oid": "be42c238cc7f3d6164904debf9a9d4f0c2f0e9da"
+      },
+      "number": 279,
+      "state": "MERGED"
+    }
+  ],
+  "verification": {
+    "bootstrap": 232,
+    "grants": 46,
+    "passed": true
+  },
+  "ownership": {
+    "exclusive_branch_worktrees": true,
+    "changed_path_conflicts_observed": 0,
+    "central_controller_writer": "/root"
+  },
+  "recovery": {
+    "C_and_D_interrupted": true,
+    "same_sessions_resumed": true,
+    "code_preserved": true,
+    "cause": "not established"
+  },
+  "pilot": {
+    "started": false,
+    "hold_release_next": true
+  },
+  "limits": [
+    "No overall completion from source merges/tests",
+    "No main/tranche/Claude implementation/grant/settings/process-pin changes",
+    "No GitHub routine message bus or metered inference"
+  ]
+}

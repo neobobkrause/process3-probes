@@ -1,0 +1,96 @@
+{
+  "classification": "Actual isolated native ARCH broker-route execution; negative attempts are local denial checks, not protected provider mutations",
+  "native_actor": "/root/native_arch_broker_validation",
+  "start": {
+    "utc_seconds": 1794864996.8037472,
+    "monotonic_ns": 8302422575676
+  },
+  "scope": "One experimental state event; no repository code, grants, settings, main/tranche, credential or inference-subprocess operation",
+  "platform_exclusivity_claim": false,
+  "permitted": {
+    "operation": "github.state.update",
+    "branch": "codex/p4-state-native-workshop-20261116",
+    "before_state_blob": "17344508d090dd1ebba9e693adb42e40ba565afa",
+    "after_state_blob": "97b0342c343876ccf4fe3076f7a4e8ad1fd72b75",
+    "event": {
+      "kind": "native-broker-live-validation",
+      "source": "actual-native-ARCH",
+      "native_actor": "/root/native_arch_broker_validation",
+      "event_id": "d11c767b-7ed9-43c2-89c9-b40434cfb359",
+      "at": 1794864997.3835242
+    },
+    "event_count": 1,
+    "all_non_event_state_unchanged": true,
+    "before_jobs": {
+      "provider": {
+        "status": "done",
+        "attempt": 2,
+        "integrated": "253e7fb458f8cb2baf7f696e50c70fac6652f8ed"
+      },
+      "web": {
+        "status": "done",
+        "attempt": 3,
+        "integrated": "7fbcbd444c748179ad76220c22c3d0f93f6ad901"
+      }
+    },
+    "after_jobs": {
+      "provider": {
+        "status": "done",
+        "attempt": 2,
+        "integrated": "253e7fb458f8cb2baf7f696e50c70fac6652f8ed"
+      },
+      "web": {
+        "status": "done",
+        "attempt": 3,
+        "integrated": "7fbcbd444c748179ad76220c22c3d0f93f6ad901"
+      }
+    },
+    "provider_audit": [
+      {
+        "operation": "github.state.update",
+        "request": {
+          "repo": "neobobkrause/process3-probes",
+          "branch": "codex/p4-state-native-workshop-20261116"
+        },
+        "outcome": "adapter-returned"
+      }
+    ]
+  },
+  "forbidden_typed": {
+    "reason": "NATIVE_OPERATION_SCOPE",
+    "adapter_calls": 0
+  },
+  "forbidden_untyped": {
+    "reason": "TYPED_NATIVE_MUTATION_REQUIRED",
+    "transport_calls": 0
+  },
+  "all_provider_audit": [
+    {
+      "operation": "github.state.update",
+      "request": {
+        "repo": "neobobkrause/process3-probes",
+        "branch": "codex/p4-state-native-workshop-20261116"
+      },
+      "outcome": "adapter-returned"
+    },
+    {
+      "operation": "github.pr.merge_tranche",
+      "request": {
+        "repo": "neobobkrause/process3-probes",
+        "base": "main"
+      },
+      "outcome": "denied",
+      "reason": "NATIVE_OPERATION_SCOPE"
+    },
+    {
+      "operation": "untyped-api",
+      "outcome": "denied",
+      "reason": "TYPED_NATIVE_MUTATION_REQUIRED"
+    }
+  ],
+  "result": "PASS",
+  "end": {
+    "utc_seconds": 1794864999.2060835,
+    "monotonic_ns": 8304824912451
+  }
+}

@@ -1,0 +1,70 @@
+test_documented_restart_and_resume_keeps_same_thread (test_auth.AppServerRenewalTests.test_documented_restart_and_resume_keeps_same_thread) ... ok
+test_private_socket_dispatch_never_exposes_refresh_token (test_auth.CredentialOwnerRpcTests.test_private_socket_dispatch_never_exposes_refresh_token) ... ok
+test_multiprocess_rotation_is_serialized_and_durable (test_auth.CredentialTests.test_multiprocess_rotation_is_serialized_and_durable) ... ok
+test_native_cloud_credential_file_is_rejected (test_auth.CredentialTests.test_native_cloud_credential_file_is_rejected) ... ok
+test_pending_rotation_survives_verification_outage_and_process_restart (test_auth.CredentialTests.test_pending_rotation_survives_verification_outage_and_process_restart) ... ok
+test_provider_is_exact_documented_subscription_route (test_auth.CredentialTests.test_provider_is_exact_documented_subscription_route) ... ok
+test_refresh_identity_switch_is_terminal (test_auth.CredentialTests.test_refresh_identity_switch_is_terminal) ... ok
+test_refresh_uses_issued_client_and_preserves_scope_when_omitted (test_auth.CredentialTests.test_refresh_uses_issued_client_and_preserves_scope_when_omitted) ... ok
+test_terminal_invalidation_is_persisted_and_not_retried (test_auth.CredentialTests.test_terminal_invalidation_is_persisted_and_not_retried) ... ok
+test_transient_transport_failure_preserves_renewable_registration (test_auth.CredentialTests.test_transient_transport_failure_preserves_renewable_registration) ... ok
+test_vm_import_preserves_vm_host_id_and_selected_identity (test_auth.CredentialTests.test_vm_import_preserves_vm_host_id_and_selected_identity) ... ok
+test_signature_nonce_audience_and_subject_are_verified (test_auth.OidcTests.test_signature_nonce_audience_and_subject_are_verified) ... ok
+test_completed_fixture_requires_acceptance (test_coordinator.CompletionTests.test_completed_fixture_requires_acceptance) ... ok
+test_completed_marker_with_failed_acceptance_is_unfinished (test_coordinator.CompletionTests.test_completed_marker_with_failed_acceptance_is_unfinished) ... ok
+test_concurrent_stop_is_preserved_on_result_retry (test_coordinator.CompletionTests.test_concurrent_stop_is_preserved_on_result_retry) ... ok
+test_new_inflight_notice_is_not_acknowledged (test_coordinator.CompletionTests.test_new_inflight_notice_is_not_acknowledged) ... ok
+test_watchdog_restarts_real_failed_process (test_coordinator.CompletionTests.test_watchdog_restarts_real_failed_process) ... Supervisor exited 1; replacement 1 after lease expiry.
+ok
+test_api_auth_refused_and_api_env_removed (test_coordinator.Tests.test_api_auth_refused_and_api_env_removed) ... ok
+test_cas_conflict (test_coordinator.Tests.test_cas_conflict) ... ok
+test_claim_recovers_and_rejects_live_lease (test_coordinator.Tests.test_claim_recovers_and_rejects_live_lease) ... ok
+test_controls_preserve_exact_words (test_coordinator.Tests.test_controls_preserve_exact_words) ... ok
+test_every_declared_user_including_no_job (test_coordinator.Tests.test_every_declared_user_including_no_job) ... ok
+test_finished_user_gets_work_again (test_coordinator.Tests.test_finished_user_gets_work_again) ... ok
+test_fixture_exit_zero_does_not_imply_done (test_coordinator.Tests.test_fixture_exit_zero_does_not_imply_done) ... ok
+test_nonstandard_provider_environment_names (test_coordinator.Tests.test_nonstandard_provider_environment_names) ... ok
+test_order_and_stop (test_coordinator.Tests.test_order_and_stop) ... ok
+test_privileged_tokens_not_inherited_by_job (test_coordinator.Tests.test_privileged_tokens_not_inherited_by_job) ... ok
+test_real_process_interrupt_is_paused (test_coordinator.Tests.test_real_process_interrupt_is_paused) ... ok
+test_expanded_repository_scope_fails_closed (test_github_auth.GitHubIdentityTests.test_expanded_repository_scope_fails_closed) ... ok
+test_renewable_token_scope_is_requested_and_verified (test_github_auth.GitHubIdentityTests.test_renewable_token_scope_is_requested_and_verified) ... ok
+test_only_arch_can_submit_module_assignments (test_host.AssignmentTests.test_only_arch_can_submit_module_assignments) ... ok
+test_overlap_and_reversed_provider_order_rejected (test_host.AssignmentTests.test_overlap_and_reversed_provider_order_rejected) ... ok
+test_arch_pr_no_longer_requires_nonexistent_branch_field (test_host.HostTests.test_arch_pr_no_longer_requires_nonexistent_branch_field) ... ok
+test_clean_role_turn_does_not_end_assignment (test_host.HostTests.test_clean_role_turn_does_not_end_assignment) ... ok
+test_executor_cannot_be_supplied_by_development_repo (test_host.HostTests.test_executor_cannot_be_supplied_by_development_repo) ... ok
+test_generic_stop_is_not_fabricated_owner_instruction (test_host.HostTests.test_generic_stop_is_not_fabricated_owner_instruction) ... ok
+test_missing_policy_refuses_before_state_write (test_host.HostTests.test_missing_policy_refuses_before_state_write) ... ok
+test_no_executor_means_no_verifier_subprocess (test_host.HostTests.test_no_executor_means_no_verifier_subprocess) ... ok
+test_no_raw_github_mutation_escape (test_host.HostTests.test_no_raw_github_mutation_escape) ... ok
+test_state_branch_is_bound_to_host_store (test_host.HostTests.test_state_branch_is_bound_to_host_store) ... ok
+test_stop_and_individual_external_block_survive_runner (test_host.HostTests.test_stop_and_individual_external_block_survive_runner) ... ok
+test_wrong_module_never_reaches_adapter (test_host.HostTests.test_wrong_module_never_reaches_adapter) ... ok
+test_state_adapter_rejects_branch_substitution_before_provider_call (test_host.StatePayloadTests.test_state_adapter_rejects_branch_substitution_before_provider_call) ... ok
+test_arch_cannot_retry_known_invalid_authorization (test_host.TechnicalControlTests.test_arch_cannot_retry_known_invalid_authorization) ... ok
+test_arch_correction_is_not_fabricated_owner_instruction (test_host.TechnicalControlTests.test_arch_correction_is_not_fabricated_owner_instruction) ... ok
+test_closed_or_ready_pr_is_preserved (test_job_pr.DraftPRTests.test_closed_or_ready_pr_is_preserved) ... ok
+test_create_is_draft_and_targets_only_bootstrap (test_job_pr.DraftPRTests.test_create_is_draft_and_targets_only_bootstrap) ... ok
+test_reuses_same_draft_for_replacement (test_job_pr.DraftPRTests.test_reuses_same_draft_for_replacement) ... ok
+test_unfinished_cannot_get_completion_pr (test_job_pr.DraftPRTests.test_unfinished_cannot_get_completion_pr) ... ok
+test_child_success_does_not_authorize_unrestricted_development (test_native_cloud.NativeAdmissionTests.test_child_success_does_not_authorize_unrestricted_development) ... ok
+test_documented_isolation_without_execution_is_insufficient (test_native_cloud.NativeAdmissionTests.test_documented_isolation_without_execution_is_insufficient) ... ok
+test_bounded_child_and_schedule_cannot_prove_root_recreation (test_native_cloud.NativeCapabilityTests.test_bounded_child_and_schedule_cannot_prove_root_recreation) ... ok
+test_documentation_is_not_execution_evidence (test_native_cloud.NativeCapabilityTests.test_documentation_is_not_execution_evidence) ... ok
+test_external_block_does_not_end_independent_implementation (test_native_cloud.NativeCapabilityTests.test_external_block_does_not_end_independent_implementation) ... ok
+test_paid_fallback_cannot_satisfy_owner_runtime_constraint (test_native_cloud.NativeCapabilityTests.test_paid_fallback_cannot_satisfy_owner_runtime_constraint) ... ok
+test_undocumented_http_launch_is_rejected (test_native_cloud.NativeCapabilityTests.test_undocumented_http_launch_is_rejected) ... ok
+test_expired_host_wakes_parent_without_self_replacement (test_roles.RoleTests.test_expired_host_wakes_parent_without_self_replacement) ... ok
+test_failed_subprocess_cannot_launch_children (test_roles.RoleTests.test_failed_subprocess_cannot_launch_children) ... ok
+test_fixture_turn_and_fresh_runtime_reconstruct (test_roles.RoleTests.test_fixture_turn_and_fresh_runtime_reconstruct) ... ok
+test_invalid_packet_rolls_back_all_actions (test_roles.RoleTests.test_invalid_packet_rolls_back_all_actions) ... ok
+test_no_completed_inference_no_packet (test_roles.RoleTests.test_no_completed_inference_no_packet) ... ok
+test_process_request_routing_and_live_replacement_refusal (test_roles.RoleTests.test_process_request_routing_and_live_replacement_refusal) ... ok
+test_root_starts_configures_and_replaces_subordinates (test_roles.RoleTests.test_root_starts_configures_and_replaces_subordinates) ... ok
+test_watcher_takeover_preserves_stop_and_no_self_successor (test_roles.RoleTests.test_watcher_takeover_preserves_stop_and_no_self_successor) ... ok
+
+----------------------------------------------------------------------
+Ran 64 tests in 3.680s
+
+OK

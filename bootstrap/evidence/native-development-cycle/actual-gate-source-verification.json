@@ -1,0 +1,21 @@
+{
+  "classification": "Actual read-only verification using hardened controller gate source/SHA/workflow checks",
+  "heads": {
+    "271": {
+      "sha": "26796e064fb586ca893124bd8ec2414699bedd6c",
+      "authentic_existing_gate_green": true
+    },
+    "272": {
+      "sha": "ac7fe1345580967943ede76a56123ce7d2994021",
+      "authentic_existing_gate_green": true
+    },
+    "273": {
+      "sha": "d4eaa939c90d614d40fd50eab439632217d83a9b",
+      "authentic_existing_gate_green": true
+    },
+    "274": {
+      "sha": "5ae3d9093e084fcdb6f00e806766a9539e07dc0d",
+      "authentic_existing_gate_green": true
+    }
+  }
+}

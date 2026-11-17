@@ -1,0 +1,62 @@
+{
+  "classification": "Actual native coordinator and ARCH generation2 recovery after old sessions disappeared; not ROOT recreation",
+  "receipts": [
+    {
+      "message_id": "role-recovery-coordinator-g2",
+      "generation": 2,
+      "native_actor": "/root/coordinator_recovered",
+      "utc_seconds": 1794865198.4773166,
+      "monotonic_ns": 8504096147211
+    },
+    {
+      "message_id": "role-recovery-arch-g2",
+      "generation": 2,
+      "native_actor": "/root/arch_recovered",
+      "started_at": 1794865205.9136355,
+      "monotonic_ns": 8511532466021
+    }
+  ],
+  "registered_recipients": {
+    "JOB:web": {
+      "target": "/root/p4_arch_native_cycle/web_replacement",
+      "generation": 3
+    },
+    "COORDINATOR": {
+      "target": "/root/coordinator_recovered",
+      "generation": 2
+    },
+    "ARCH": {
+      "target": "/root/arch_recovered",
+      "generation": 2
+    }
+  },
+  "unchanged_controls_jobs_notices": [
+    "stopped",
+    "stop_source",
+    "slots",
+    "owner_job_cap",
+    "instructions",
+    "jobs",
+    "notices"
+  ],
+  "message_statuses": {
+    "role-recovery-coordinator-g2": "acknowledged",
+    "role-recovery-arch-g2": "acknowledged"
+  },
+  "stale_ack_negative_check": {
+    "controller": {
+      "rejected": true,
+      "exception": "Rejected",
+      "reason": "record actual native submission before recording actor receipt"
+    },
+    "generation_validator": {
+      "rejected": true,
+      "exception": "StaleRecipient",
+      "reason": "old recipient cannot acknowledge replacement work",
+      "scope": "local validation of actual live snapshot; no fake old-actor submission persisted"
+    }
+  },
+  "stale_check_state_blob_unchanged": true,
+  "product_action_or_repeat_probe": false,
+  "source_identity": "ROOT observed actual native spawn/followup and actor RECEIVED events; receipt text alone is not authentication"
+}

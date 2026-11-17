@@ -1,0 +1,37 @@
+# Executed extended feature — 2026-11-17
+
+The accepted comparison requirement is integrated at `4414c0325f1e2a56585e644eecccd8abfba8a88e`. Current development round 2 is clean: provider 4, report 21 and web 26 module tests, 50 internal screen observations, and 33 independent Chromium 156 browser observations covering J1–J4. Web's final actual-report test ran with zero skips; stored provider/report dependency trees match final integration. No actual walk flaws occurred, so no walk-discovered correction is claimed.
+
+Report model PR282/checkpoint `1fb981e478a2a68e38abcd11b31fdc8f3ef3e8ee` integrated at `5c0d6db69a6ea16101e32792e5c5eeedd63cf8a8`; queued same-branch CSV phase PR285/checkpoint `eaab4aee7325949a5dee6926c15b5d1b78ff1d44` integrated at `191db453b2de66a9cd4bb9d744fa6ac66f28c31b`. Web6 independently implemented UI/tests, then honestly preserved dependency-blocked partial `b5f11ca416c9aab1ef495d81bcc25fc4bd8e6228` in PR284. Fresh web7 trusted-merged the actual report baseline and passed all 26 HTTP tests, checkpoint `213863ee30f1aa601b340b6ee319fa9aa42b99d6`, before pinned-tool integration at final head.
+
+Qualified lane `/root/p4_root_g2/p4_arch_g5/p4_lane_quote_comparison_g1` asked four actual interface/UX questions through ARCH, retained answers/rationale and produced only its owned design files. Dedicated source branch `codex/p4-design-quote-comparison-20261117`, exact commit `dd147cf`, PR283, was integrated by the console at `af76c62`. This is authorized product design, not governing-process adoption. Qualification means explicit owner need, task fit, restricted ownership, relevant observed output and ARCH acceptance; no external certification is claimed.
+
+The report1 and web6 native JOBs actually overlapped. First-processing/progress work spans conservatively overlap 29.679 seconds, with actual two-session native inventory and independent substantive source/test reports. Report CSV refill took 10.064 seconds from observed integration slot release to completed preparation and 77.488 seconds to actual first processing; remaining native creation/registration/ARCH coordination overhead is candidly recorded. No deliberate idle or padding was used. The measured product/design window was 1272.72 seconds (21.21 minutes), so this record alone does not establish a 30-minute sustained run. ROOT2→ROOT3 replacement retained ARCH/JOBs and existing work; broader assessment timing and controls evidence are console-owned.
+
+Fresh clean worktree `/workspace/work/p4-native-cycle/development-4414c032` runs only at `http://127.0.0.1:8767/`, with exact deployment plan environment replacement/private HOME. Independent walker `/root/p4_root_g2/p4_arch_g5/external_browser_g2` used real Chromium controls, keyboard focus/submission, actual downloaded CSV bytes/headers, screenshots, validation/DOM nonexecution, navigation and preserved quotes. It found no flaws or harness failures. Limits are one headless Chromium version and loopback, not production/cross-browser evidence.
+
+Local manifest `workshop-comparison-20261117`, SHA-256 `21d67455e6cbd1a8261ebce55c7a1d4b4af8a67e43712ea457c9b1ece94724fb`, is prepared only; no publication. Previously deferred report provider obligations were consumed by the real accepted report, and its two report versions were consumed by accepted web7; final pending provider notices are empty.
+
+Evidence lives in `/workspace/work/p4-native-cycle/evidence/extended-assessment/`, starting with `arch-final-summary.json`, `metrics.json`, `github-growth.json`, `final-state.json`, design qualification, checkpoint/provenance, internal/external/deployment receipts, browser screenshots/CSV and local release manifest. The measured state branch grew 44 commits and 24,664 current JSON bytes (2,424,249 total uncompressed JSON snapshot bytes across those commits), including concurrent meaningful ROOT/coordinator milestones. Routine native messages/acks/heartbeats caused zero remote writes.
+
+No independent product correction remains. Overall Process4 assessment stays separate: the console aggregates seven requested areas, including the genuine coordinator-recovery-under-STOP gap, proposed PROCESS correction, explicit owner-approval requirement, stop persistence and bounded sustained-operation limits. A clean round or empty product queue is not overall completion.
+
+---
+
+# Representative continued assessment — quantity comparison
+
+Owner authority: exact request in `bootstrap/OWNER-RELIABILITY-ASSESSMENT-20261116.txt`; original assessment continues. Existing pilot integration `716b6bddc6330cb1e0c19a584ee3b225ad9ae8f3` and its evidence are retained. ROOT and console received this narrow source ownership plan before any new source changes.
+
+A user planning workshop cards can compare 1–8 alternative quantities and download a readable CSV, while retaining the existing single-quote flow. No persistence, accounts, payment, fake discount or total of alternatives. Design lane quote-comparison owns only its sibling design folder and proposes UX/validation/interface decisions through ARCH; its authorized output is product design, not governing process adoption.
+
+| Phase | Exclusive module paths | Existing/new branch | Substantive acceptance |
+| --- | --- | --- | --- |
+| report model | toy/native-cycle/report | codex/p4-job-native-workshop-20261116-report | strict provider-injected comparison model, text/JSON CLI, boundary/type/provider tests |
+| web comparison | toy/native-cycle/web | codex/p4-job-native-workshop-20261116-web | compare form/results/CSV route, raw invalid retention/escaping, safe downloads, real HTTP tests with independent injected report/provider |
+| report CSV, queued after accepted report model | same report paths, next attempt | same report branch/PR | fixed CSV contract/CLI download-format coverage, quoting/line endings/roundtrip and real provider coverage |
+
+Report precedes web in total module order (provider10, report15, web20). Web's declared provider dependencies are provider and report; graph metadata is updated atomically with existing assigned-job metadata so scheduling/provenance remain consistent. Actual source work in the first two phases is independently useful and must overlap when actual native capacity permits. Report CSV is planned substantive refill work, not artificial padding or an omitted-code flaw claim; no broken final product is integrated as walk evidence. Web acceptance is reverified on the actual final provider/report baseline.
+
+Technical JOB slots remain 2, owner default cap 8, actual native ceiling 7 including supervisors. Native ARCH/JOB/LANE depth remains 2/3/3. Record real ready/dispatch/start/completion/checkpoint/integration/refill times and native running snapshots locally. Distinguish gate/capacity/dependency/stop delay from avoidable idle; record failures/retries/duplicates/interventions and meaningful GitHub growth once in final evidence. Aim for sustained meaningful extended work, never sleeps, fake defects or duplicate completed experiments.
+
+Only module tests, internal Screens walk and independent external Journeys browser walk are product stages. Real findings cause owned corrections and new exact-head round/rewalk; clean walks are reported clean. Fresh development worktree, sanitized deployment environment, loopback only and local release preparation remain required. Console owns browser helper, readiness assessment and central bootstrap code. Genuine process defects go to PROCESS proposals and preserve owner approval before adoption.
