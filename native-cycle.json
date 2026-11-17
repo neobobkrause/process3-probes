@@ -430,8 +430,8 @@
       "generation": 3
     },
     "ARCH": {
-      "target": "/root/process4_root/arch",
-      "generation": 3
+      "target": "/root/process4_root/p4_arch_g4",
+      "generation": 4
     },
     "WATCHER": {
       "target": "/root/watcher_native",
