@@ -129,7 +129,10 @@
       "pr_number": 274,
       "integrated": "7fbcbd444c748179ad76220c22c3d0f93f6ad901",
       "trusted_baseline_merges": [],
-      "session_generation": 3
+      "session_generation": 3,
+      "technical_instructions": [
+        "This phase supersedes old completed web instructions. Round1: add/run own injected-provider fresh-default regressions for minimum2 and minimum7, report actual failing INCOMPLETE, do not change app yet; preserve partial work for ARCH interruption/checkpoint. Ownpaths only toy/native-cycle/web. No app edits until later correction-phase instruction. Keep oldtests/source, run actual HTTP regression; report INCOMPLETE and remain available for supported interruption; no provider/gitpush/PR/merge/session/process action."
+      ]
     }
   },
   "notices": {
@@ -274,6 +277,14 @@
       "command": "retry",
       "job": "provider",
       "value": null,
+      "source": "arch"
+    },
+    {
+      "at": 1794874337.2178524,
+      "kind": "native-arch-control",
+      "command": "instruction",
+      "job": "web",
+      "value": "This phase supersedes old completed web instructions. Round1: add/run own injected-provider fresh-default regressions for minimum2 and minimum7, report actual failing INCOMPLETE, do not change app yet; preserve partial work for ARCH interruption/checkpoint. Ownpaths only toy/native-cycle/web. No app edits until later correction-phase instruction. Keep oldtests/source, run actual HTTP regression; report INCOMPLETE and remain available for supported interruption; no provider/gitpush/PR/merge/session/process action.",
       "source": "arch"
     }
   ],
@@ -546,6 +557,11 @@
       "at": 1794874333.9555583,
       "job": "provider",
       "text": "Work only within assigned module paths and own tests/README. No bootstrap/process/.process/settings/grants/credentials/account/inference-API/other-module edits, git push, PR, merge or new sessions. Python standard library only. Leave preservation/provider operations to native controller. Report actual tests and unfinished work truthfully. Later ARCH technical revision supersedes completed initial quantity contract only: raise MIN_QUANTITY from 1 to 2, keep MAX_QUANTITY=50 and UNIT_PRICE_CENTS=275 and signature/type validation. Update bound-aware messages/docs/own tests: 2=550,12=3300,50=13750;1 and51 rejected, bool/nonints rejected. Do not change web. Report consumer-visible effects."
+    },
+    {
+      "at": 1794874337.2178457,
+      "job": "web",
+      "text": "This phase supersedes old completed web instructions. Round1: add/run own injected-provider fresh-default regressions for minimum2 and minimum7, report actual failing INCOMPLETE, do not change app yet; preserve partial work for ARCH interruption/checkpoint. Ownpaths only toy/native-cycle/web. No app edits until later correction-phase instruction. Keep oldtests/source, run actual HTTP regression; report INCOMPLETE and remain available for supported interruption; no provider/gitpush/PR/merge/session/process action."
     }
   ]
 }
