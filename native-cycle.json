@@ -222,8 +222,8 @@
       "accepted": true,
       "notice_ids": [],
       "workspace": "/workspace/work/p4-native-cycle/report-2",
-      "session": "/root/p4_root_g2/p4_arch_g5/report_g2",
-      "session_generation": 2,
+      "session": "/root/p4_root_g3/p4_arch_g6/p4_job_report_g3",
+      "session_generation": 3,
       "last_outcome": "completed",
       "verification": {
         "returncode": 0,
@@ -253,7 +253,8 @@
       "restart": true,
       "trusted_baseline_merges": [],
       "expected_session_generation": 3,
-      "conversation_only_recovery": true
+      "conversation_only_recovery": true,
+      "session_attempt": 2
     }
   },
   "notices": {
@@ -728,8 +729,8 @@
       "generation": 2
     },
     "JOB:report": {
-      "target": "/root/p4_root_g2/p4_arch_g5/report_g2",
-      "generation": 2
+      "target": "/root/p4_root_g3/p4_arch_g6/p4_job_report_g3",
+      "generation": 3
     }
   },
   "native_layout": {
