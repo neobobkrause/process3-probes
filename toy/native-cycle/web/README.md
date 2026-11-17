@@ -53,9 +53,13 @@ usable. The normal deployment must include the accepted report dependency.
 
 Independent web module work is covered by actual HTTP tests with a temporary
 injected report stub, provider bounds/prices, exact CSV bytes, malformed batches,
-escaping, ordered alternatives, recovery and the preserved quote tests. At this
-attempt's baseline, the full suite ran 26 tests successfully with **one explicit
-skip** because the real sibling report has not yet been integrated. This is a
-real dependency block, not final module acceptance. ARCH must preserve this work,
-refresh the trusted baseline after final report integration, and rerun the suite
-with `test_actual_integrated_report_default_path` executing rather than skipped.
+escaping, ordered alternatives, recovery and the preserved quote tests. The earlier
+independent attempt preserved its work with one explicit missing-report skip; it
+was dependency-blocked rather than accepted as final module evidence.
+
+After the controller refreshed the trusted baseline with report CSV integration
+`191db453b2de66a9cd4bb9d744fa6ac66f28c31b`, the full real-HTTP suite passed all 26
+tests with **zero skips**. `test_actual_integrated_report_default_path` executed
+against the actual sibling report, verifying ordered comparison rows and exact
+CSV bytes for 2,12,50 through the default dependency path. This is module evidence;
+final integration, internal Screens and external browser Journeys remain ARCH work.
