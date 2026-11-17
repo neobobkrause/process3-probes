@@ -434,8 +434,8 @@
       "generation": 4
     },
     "WATCHER": {
-      "target": "/root/watcher_native",
-      "generation": 1
+      "target": "/root/p4_watcher_g2",
+      "generation": 2
     },
     "ROOT": {
       "target": "/root/process4_root",
