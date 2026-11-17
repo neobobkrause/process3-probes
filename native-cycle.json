@@ -620,6 +620,11 @@
         "state": "observed",
         "evidence": "Owner-approved adopted addressable ROOT; bootstrap/evidence/reactive-communication/actual-native-timings.json (idle/active/replaced); bootstrap/evidence/parent-notification/actual-supervisory-role-alternative.json (11.139s ancestor,13.542s replacement); actual adopted ROOT ARCH_READY receipt at1794869427.097034; combined pilot provider notice currentweb5 receipt1794875358.",
         "limitation": "Reactive non-root operational roles only. Idle depth0 owner console has no exposed immediate wake; ROOT replacement waits active console/safety continuation. No periodic timer substituted for reactive transport."
+      },
+      "interactive_sessions": {
+        "state": "observed",
+        "evidence": "bootstrap/evidence/interactive-sessions/actual-interactivity.json; native/INTERACTIVE-SESSIONS.md",
+        "limitation": "Console-mediated ongoing role conversation verified; independent child composer unverified; provider failures require supported replacement."
       }
     },
     "dependencies": {
@@ -699,8 +704,8 @@
         "evidence": "bootstrap/native/READINESS-DETERMINATION.md; bootstrap/evidence/readiness-assessment/actual-assessment.json; seven requested areas assessed with bounded operating limits, optional PR286 not adopted."
       },
       "continuing_interactivity": {
-        "status": "running",
-        "evidence": "bootstrap/OWNER-INTERACTIVE-SESSIONS-20261116.txt; prior development proofs retained, full continuing-interactivity assessment essential and unfinished."
+        "status": "done",
+        "evidence": "Actual continuing role conversations/replacement/pending-question proof and genuine owner PROCESS dialogue; native/INTERACTIVE-SESSIONS.md. Assignment completion does not retire roles."
       }
     }
   },
@@ -1174,6 +1179,26 @@
         "evidence": "bootstrap/evidence/readiness-assessment/actual-assessment.json#browser_development_release",
         "limitations": [
           "One headless Chromium156 version on an actual loopback development deployment; no public deployment, cross-browser certification or publication."
+        ]
+      },
+      "interactive_sessions": {
+        "checks": {
+          "turn_assignment_separation": true,
+          "retained_idle_reactivation": true,
+          "multi_turn_conversation": true,
+          "owner_supported_interface": true,
+          "stable_role_identity": true,
+          "replacement_context": true,
+          "pending_questions_preserved": true,
+          "explicit_retirement": true
+        },
+        "evidence": "bootstrap/native/INTERACTIVE-SESSIONS.md; bootstrap/evidence/interactive-sessions/actual-interactivity.json; actual owner PROCESS exchange, retained reactivation, replacement/pending-question/JOB proof.",
+        "limitations": [
+          "Owner interface demonstrated through this standing console and actual native role replies; independent child composer UI remains unverified.",
+          "Six old native instances actually returned provider400 request_country; supported replacements retained logical conversations, not immortal native handles.",
+          "Explicit logical retirement is separately guarded; no physical native archive/close capability is claimed.",
+          "Actual owner PROCESS first-processing22.249s and console response record104.882s include model/tool/relay; no zero-latency or SLA claim.",
+          "Routine conversation is bounded local state; meaningful decisions/pending obligations checkpointed, not unlimited transcript/host-loss durability."
         ]
       }
     }
