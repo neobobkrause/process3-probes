@@ -11,16 +11,18 @@ The app loads pricing and quantity bounds from the explicitly supplied provider 
 
 Correction completed: validation responses retain rejected text for editing and HTML-escape the input value. The quantity field uses `type="text"` with `inputmode="numeric"` so browsers preserve invalid text, while visible provider-derived bounds and server-side ASCII integer validation remain in place. Missing and duplicate quantities return HTTP 400. Regression coverage verifies retention, escaping, and recovery after a valid submission.
 
-## Current pilot characterization — unfinished
+## Current pilot correction — completed module work
 
-The real-HTTP regressions now inject provider minimums 2 and 7 independently of
-provider integration. Both fresh `/` and the `/` destination of Start again render
-quantity `1` rather than the injected minimum. The initial pilot suite reports
-14 tests with four failing subtest assertions (fresh and Start again for each
-minimum). `app.py` is unchanged in this characterization phase; no faulty code was
-introduced to produce those failures. The earlier 12 test methods still pass.
+The preserved characterization added real-HTTP regressions with injected provider
+minimums 2 and 7. It found fresh `/` and the `/` destination of Start again rendered
+quantity `1` instead of the injected minimum, producing four failing subtest
+assertions across 14 test methods without introducing faulty application code.
 
-This is INCOMPLETE module work. A later explicit ARCH correction phase must derive
-the fresh default from the loaded provider, while preserving submitted invalid
-text and existing escaping. The failing tests and unfinished work are left for
-controller preservation and supported interruption/recovery on the same branch/PR.
+After preservation and recovery on the same branch/PR, the correction derives the
+fresh default from the loaded provider's minimum. Explicit submitted values remain
+separate from that default, so rejected `1`, empty input and escaped text are retained.
+The recovered provider contract is minimum 2, maximum 50 and unit price $2.75;
+the existing form and validation assertions now reflect that accepted revision.
+The full real-HTTP suite passes all 14 test methods, including fresh/Start again
+defaults with independently injected minima 2 and 7. This is module evidence only;
+integration and final internal/external walks remain the controller/ARCH's work.

@@ -33,9 +33,11 @@ def create_server(host, port, provider_path):
             self.end_headers()
             self.wfile.write(data)
 
-        def page(self, quantity=1, error=None, total=None):
+        def page(self, quantity=None, error=None, total=None):
             esc = lambda value: html.escape(str(value), quote=True)
             low, high = provider.MIN_QUANTITY, provider.MAX_QUANTITY
+            if quantity is None:
+                quantity = low
             unit = esc(dollars(provider.UNIT_PRICE_CENTS))
             body = ('<!doctype html><html lang="en"><head><meta charset="utf-8">'
                     '<title>Workshop card quote</title></head><body>'

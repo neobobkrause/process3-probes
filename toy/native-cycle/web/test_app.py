@@ -43,7 +43,7 @@ class WebTests(unittest.TestCase):
         self.assertEqual(content_type, "text/html; charset=utf-8")
         for text in ('<title>Workshop card quote</title>', '<h1>Workshop card quote</h1>',
                      '<label for="quantity">Quantity</label>', 'name="quantity"',
-                     'min="1" max="50" value="1"', '$2.75', '1–50',
+                     'min="2" max="50" value="2"', '$2.75', '2–50',
                      'action="/quote" method="get"', '>Get quote</button>'):
             self.assertIn(text, body)
         self.assertNotIn('id="quote-result"', body)
@@ -58,13 +58,13 @@ class WebTests(unittest.TestCase):
             self.assertNotIn('role="alert"', body)
 
     def test_validation(self):
-        for query in ('', 'quantity=0', 'quantity=51', 'quantity=', 'quantity=1&quantity=2',
+        for query in ('', 'quantity=0', 'quantity=1', 'quantity=51', 'quantity=', 'quantity=1&quantity=2',
                       'quantity=1.0', 'quantity=1e1', 'quantity=%2B1', 'quantity=-1',
                       'quantity=' + quote('１２'), 'quantity=' + quote('<script>"&')):
             with self.subTest(query=query):
                 status, _, body = self.get('/quote?' + query)
                 self.assertEqual(status, 400)
-                self.assertIn('role="alert">Enter a whole quantity from 1 to 50.', body)
+                self.assertIn('role="alert">Enter a whole quantity from 2 to 50.', body)
                 self.assertNotIn('id="quote-result"', body)
                 self.assertNotIn('<script>', body)
         self.assertEqual(self.get('/quote?quantity=%2012%20')[0], 200)
@@ -110,7 +110,7 @@ class WebTests(unittest.TestCase):
         self.assertEqual(self.get('/quote?quantity=51')[0], 400)
 
     def test_rejected_whitespace_and_empty_are_retained(self):
-        for rejected in (' abc ', ''):
+        for rejected in (' abc ', '', '1'):
             with self.subTest(rejected=rejected):
                 status, _, body = self.get('/quote?quantity=' + quote(rejected))
                 self.assertEqual(status, 400)
@@ -131,7 +131,7 @@ class WebTests(unittest.TestCase):
 
     @contextmanager
     def injected_minimum(self, minimum):
-        """Serve the unchanged app against an independent provider contract."""
+        """Serve the app against an independent provider contract."""
         with tempfile.TemporaryDirectory() as directory:
             Path(directory, 'quote_provider.py').write_text(
                 f'MIN_QUANTITY = {minimum}\nMAX_QUANTITY = 50\nUNIT_PRICE_CENTS = 275\n'
