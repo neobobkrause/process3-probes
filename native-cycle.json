@@ -967,6 +967,41 @@
         ],
         "outcome": "clean",
         "flaws": []
+      },
+      "external_walk": {
+        "observed": true,
+        "actor": "/root/p4_root_g2/p4_arch_g5/external_browser_g2",
+        "source": "Actual independent Chromium form/DOM/navigation/download Journeys; /workspace/work/p4-native-cycle/evidence/extended-assessment/external-observations.json",
+        "observed_at": 1794877726.8028157,
+        "head": "4414c0325f1e2a56585e644eecccd8abfba8a88e",
+        "design": "bootstrap/native/approved-layout-design/quote-comparison/UX_JOURNEYS.md",
+        "coverage": [
+          "J1",
+          "J2",
+          "J3",
+          "J4"
+        ],
+        "outcome": "clean",
+        "flaws": [],
+        "deployment": {
+          "observed": true,
+          "actor": "/root/p4_root_g2/p4_arch_g5",
+          "source": "Actual clean final integration worktree subprocess startup with exact plan env replacement/privateHOME plus loopback HTTP probe",
+          "observed_at": 1794877606.7480435,
+          "head": "4414c0325f1e2a56585e644eecccd8abfba8a88e",
+          "status": "running",
+          "url": "http://127.0.0.1:8767/",
+          "http_status": 200,
+          "plan_id": "92ce59f0f842d86832a865fe6dd2f1f12184abe8459a05abbb652d8ea7844aad",
+          "pid": 111803
+        },
+        "client": {
+          "name": "Chromium",
+          "version": "156.0.8078.79",
+          "driver": "Python Playwright",
+          "headless": true
+        },
+        "limits": "One headless Chromium version and loopback development deployment; no cross-browser, production, payment or public publication claim."
       }
     },
     "carry_flaws": {}
