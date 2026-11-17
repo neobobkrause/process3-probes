@@ -497,8 +497,8 @@
       "generation": 4
     },
     "COORDINATOR": {
-      "target": "/root/process4_root/coordinator",
-      "generation": 3
+      "target": "/root/p4_root_g2/p4_coordinator_g4",
+      "generation": 4
     },
     "ARCH": {
       "target": "/root/p4_root_g2/p4_arch_g5",
