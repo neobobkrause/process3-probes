@@ -100,6 +100,10 @@ class NativeInstructionScope:
                         raise Rejected('fresh gate/head required')
         except (Rejected,TypeError,KeyError):
             raise Denied('NATIVE_REFERENCE_OR_EVIDENCE') from None
+        # Compose C's assignment restriction with this closed native policy;
+        # neither layer manufactures or replaces an owner-approved policy.
+        from native.governance import check_operation
+        check_operation(subject,operation,request,facts)
 
 
 class Provider:
@@ -487,7 +491,7 @@ def verify(workspace, job):
         output=result.stdout+'\n'+result.stderr
         counts=[int(value) for value in re.findall(r'\bRan\s+(\d+)\s+tests?\b',output)]
         counts += [int(value) for value in re.findall(r'^# tests (\d+)\s*$',output,re.MULTILINE)]
-        return {'returncode':result.returncode,'test_count':sum(counts),
+        return {'returncode':result.returncode,'test_count':sum(counts),'command':list(job['verify']),
                 'stdout':result.stdout[-4000:],'stderr':result.stderr[-4000:]}
 
 
@@ -596,6 +600,103 @@ class Cycle:
             raise Rejected('invalid bootstrap pilot hold')
         return metadata.get('pilot_hold',False)
 
+    def process_request(self,actor,generation,evidence):
+        from native.governance import process_request
+        def record(state):state['native_layout']['process_request']=process_request(state,actor=actor,generation=generation,evidence=evidence)
+        return self.store.mutate(record)['native_layout']['process_request']
+
+    def lane_request(self,name,actor,generation,owner_need,paths):
+        from native.design_lanes import request_lane
+        result={}
+        def record(state):
+            lane=request_lane(state,name,actor=actor,generation=generation,owner_need=owner_need,paths=paths)
+            state.setdefault('design_lanes',{})[name]=lane;result.update(lane)
+        self.store.mutate(record)
+        return result
+
+    def lane_plan(self,name,actor,activity,expected_generation=None):
+        from native.design_lanes import plan_lane
+        state,_=self.store.read();scope=plan_lane(state,name,actor=actor)
+        if scope['action']=='hold':return scope
+        intent=native_layout.plan(state,'LANE:'+name,actor,activity,expected_generation,state_branch=self.store.branch)
+        if intent.get('tool')=='spawn_agent':
+            intent['arguments']['message']+='\nDesign-only lane. Owned design paths: '+json.dumps(scope['owned_paths'])+'. No module building, product decisions, grant changes or subagents. Report actual design work to ARCH.'
+        return {**intent,'design_scope':scope}
+
+    def _integration_head(self,state,expected=None):
+        head=self.provider.head(ref(state['integration_branch'],'codex/p4-integration-'))
+        if not SHA.fullmatch(head) or (expected is not None and expected!=head):
+            raise Rejected('actual integration head changed; refresh round/evidence')
+        return head
+
+    @staticmethod
+    def _tree_fingerprint(repo,head,paths):
+        trees={path:git(repo,'rev-parse',head+':'+path_name(path)).stdout.strip() for path in paths}
+        if not trees or any(not SHA.fullmatch(value) for value in trees.values()):raise Rejected('exact source trees required')
+        if len(trees)==1:return next(iter(trees.values()))
+        # A stable fingerprint of actual Git objects, not a fabricated commit.
+        return hashlib.sha1(json.dumps(trees,sort_keys=True).encode()).hexdigest()
+
+    def round_start(self,actor,expected_head=None):
+        from native.walks import start_round
+        state,_=self.store.read();self._arch_actor(state,actor)
+        if self._pilot_held(state):raise Rejected('combined bootstrap verification pending')
+        head=self._integration_head(state,expected_head)
+        return self.store.mutate(lambda s:start_round(s,head))['native_development']
+
+    def module_evidence(self,jid,actor):
+        from native.walks import record_module_evidence
+        state,_=self.store.read();self._arch_actor(state,actor);head=self._integration_head(state)
+        job=state['jobs'][jid];verification=job.get('verification') or {};tested=job.get('checkpoint')
+        if not job.get('accepted') or not isinstance(tested,str) or not SHA.fullmatch(tested):raise Rejected('latest accepted module checkpoint required')
+        paths=job['paths'];uses=state['modules'][jid].get('uses',[])
+        facts={'accepted':job['accepted'],'checkpoint':tested,'owned_paths':paths,
+               'tested_trees':{p:git(self.repo,'rev-parse',tested+':'+path_name(p)).stdout.strip() for p in paths},
+               'current_trees':{p:git(self.repo,'rev-parse',head+':'+path_name(p)).stdout.strip() for p in paths},
+               'required_dependencies':uses,'tested_dependencies':verification.get('dependency_trees',{}),
+               'current_dependencies':{dep:self._tree_fingerprint(self.repo,head,state['modules'][dep]['paths']) for dep in uses}}
+        evidence={'observed':True,'actor':verification.get('actor','native-controller'),
+                  'observed_at':verification.get('observed_at'),'source':'Actual native controller module verification at '+tested,
+                  'module':jid,'integration_head':head,'tested_head':tested,
+                  'returncode':verification.get('returncode'),'test_count':verification.get('test_count'),
+                  'command':verification.get('command')}
+        result={}
+        def record(s):result.update(record_module_evidence(s,jid,evidence,trusted=facts))
+        self.store.mutate(record)
+        return result
+
+    def walk_record(self,stage,evidence,actor):
+        from native.walks import record_walk
+        state,_=self.store.read();self._arch_actor(state,actor);self._integration_head(state,evidence.get('head'))
+        result={}
+        def record(s):result.update(record_walk(s,stage,evidence))
+        self.store.mutate(record)
+        return result
+
+    def round_assess(self,actor):
+        from native.walks import assess_round
+        state,_=self.store.read();self._arch_actor(state,actor)
+        return assess_round(state,self._integration_head(state))
+
+    def development_plan(self,actor,worktree,entrypoint,provider_path,port=8766):
+        from native.development import plan_deployment
+        state,_=self.store.read();self._arch_actor(state,actor)
+        if self._pilot_held(state) or state.get('stopped'):raise Rejected('development start held')
+        head=self._integration_head(state)
+        if git(worktree,'rev-parse','HEAD').stdout.strip()!=head or git(worktree,'status','--porcelain').stdout:
+            raise Rejected('clean development worktree at actual integration head required')
+        return plan_deployment(head,runtime=str(self.runtime),worktree=worktree,entrypoint=entrypoint,
+                               provider_path=provider_path,observed_head=head,port=port)
+
+    def release_prepare(self,actor,release_id,destination):
+        from native.releases import prepare_development_release,stage_development_release
+        state,_=self.store.read();self._arch_actor(state,actor);head=self._integration_head(state)
+        manifest=prepare_development_release(state,expected_head=head,release_id=release_id)
+        result=stage_development_release(manifest,destination,runtime=str(self.runtime))
+        def record(s):s['native_development']['prepared_release']={'head':head,'release_id':release_id,**result}
+        self.store.mutate(record)
+        return {'manifest':manifest,**result}
+
     def prepare(self, jid):
         state,_=self.store.read(); job=state['jobs'][jid]
         if self._pilot_held(state):raise Rejected('combined bootstrap verification pending; new product jobs held')
@@ -665,7 +766,7 @@ class Cycle:
 
     def register_role(self,role,target,generation,actor=None):
         opted=native_layout.configured(self.store.read()[0]) if role=='ROOT' or actor is not None else False
-        if role not in (('ROOT','ARCH','COORDINATOR','WATCHER','PROCESS') if opted else ('ARCH','COORDINATOR','WATCHER','PROCESS')) and not (
+        if role not in (('ROOT','ARCH','COORDINATOR','WATCHER','PROCESS') if opted else ('ARCH','COORDINATOR','WATCHER','PROCESS')) and not (opted and role.startswith('LANE:')) and not (
                 role.startswith('JOB:') and role.removeprefix('JOB:') in self.store.read()[0]['modules']):
             raise Rejected('register a supported native child role or declared module recipient')
         if not isinstance(target,str) or not target.startswith('/root/'):raise Rejected('current-tree non-root native target required')
@@ -673,6 +774,9 @@ class Cycle:
         communication.register(copy.deepcopy(mailbox),role,target,generation)
         # Role replacement is a meaningful recovery milestone, not a message.
         state,_=self.store.read();new={'target':target,'generation':generation}
+        if role.startswith('LANE:'):
+            from native.design_lanes import validate_lane
+            validate_lane(state,role.removeprefix('LANE:'),current_arch=state.get('native_roles',{}).get(role)!=new)
         if native_layout.configured(state):native_layout.validate_binding(state,role,target,generation,actor)
         if state.get('native_roles',{}).get(role)!=new:
             def record(s):
@@ -680,6 +784,10 @@ class Cycle:
                 previous=s.setdefault('native_roles',{}).get(role)
                 if previous and previous['generation']>=generation and previous!=new:raise communication.StaleRecipient('replacement generation must increase')
                 s['native_roles'][role]=new
+                if role.startswith('LANE:'):
+                    from native.design_lanes import validate_lane
+                    name=role.removeprefix('LANE:');validate_lane(s,name)
+                    s['design_lanes'][name].update(session=copy.deepcopy(new),status='active')
             state=self.store.mutate(record)
         self.mailbox.mutate(lambda m:communication.register(m,role,target,generation))
         self.sync_mailbox(state)
@@ -737,6 +845,13 @@ class Cycle:
         try:
             changes=check_workspace(path,job)
             verification=verify(path,job) if outcome=='completed' else None
+            if verification is not None:
+                binding=state.get('native_roles',{}).get('ARCH',{})
+                verification.update(observed_at=time.time(),actor=binding.get('target','native-controller'),dependency_trees={})
+                for dep in state['modules'][jid].get('uses',[]):
+                    try:verification['dependency_trees'][dep]=self._tree_fingerprint(path,'HEAD',state['modules'][dep]['paths'])
+                    except subprocess.CalledProcessError:
+                        verification.setdefault('missing_dependencies',[]).append(dep)
             # Acceptance may itself create changes; check the actual final candidate.
             check_workspace(path,job)
         except (Rejected,subprocess.TimeoutExpired) as error:
@@ -836,6 +951,15 @@ def main():
         if command=='supervision-plan':p.add_argument('--pending-role',action='append',default=[])
     for command in ('owner-forward','owner-record'):
         p=sub.add_parser(command);p.add_argument('--actor',required=True);p.add_argument('--packet',required=True)
+    p=sub.add_parser('process-request');p.add_argument('--actor',required=True);p.add_argument('--generation',type=int,required=True);p.add_argument('--evidence',required=True)
+    p=sub.add_parser('lane-request');p.add_argument('name');p.add_argument('--actor',required=True);p.add_argument('--packet',required=True)
+    p=sub.add_parser('lane-plan');p.add_argument('name');p.add_argument('--actor',required=True);p.add_argument('--activity',choices=['unavailable','idle','running'],required=True);p.add_argument('--expected-generation',type=int)
+    p=sub.add_parser('round-start');p.add_argument('--actor',required=True);p.add_argument('--expected-head')
+    p=sub.add_parser('module-evidence');p.add_argument('job');p.add_argument('--actor',required=True)
+    p=sub.add_parser('walk-record');p.add_argument('stage',choices=['internal_walk','external_walk']);p.add_argument('--actor',required=True);p.add_argument('--packet',required=True)
+    p=sub.add_parser('round-assess');p.add_argument('--actor',required=True)
+    p=sub.add_parser('development-plan');p.add_argument('--actor',required=True);p.add_argument('--worktree',required=True);p.add_argument('--entrypoint',default='toy/native-cycle/web/app.py');p.add_argument('--provider-path',default='toy/native-cycle/provider');p.add_argument('--port',type=int,default=8766)
+    p=sub.add_parser('release-prepare');p.add_argument('--actor',required=True);p.add_argument('--release-id',required=True);p.add_argument('--destination',required=True)
     p=sub.add_parser('control'); p.add_argument('action',choices=['stop','continue','retry','interrupt','replace','slots','priority','instruction']);p.add_argument('--job');p.add_argument('--value');p.add_argument('--source',choices=['arch','owner'],default='arch')
     p=sub.add_parser('prepare');p.add_argument('job')
     p=sub.add_parser('session');p.add_argument('job');p.add_argument('address');p.add_argument('--actor')
@@ -866,6 +990,15 @@ def main():
         elif args.command=='supervision-plan':result=cycle.supervision_plan(json.loads(Path(args.observations).read_text()),args.actor,args.native_capacity,args.pending_role)
         elif args.command=='owner-forward':result=cycle.owner_input(actor=args.actor,**json.loads(Path(args.packet).read_text()))
         elif args.command=='owner-record':result=cycle.owner_record(actor=args.actor,**json.loads(Path(args.packet).read_text()))
+        elif args.command=='process-request':result=cycle.process_request(args.actor,args.generation,args.evidence)
+        elif args.command=='lane-request':result=cycle.lane_request(args.name,actor=args.actor,**json.loads(Path(args.packet).read_text()))
+        elif args.command=='lane-plan':result=cycle.lane_plan(args.name,args.actor,args.activity,args.expected_generation)
+        elif args.command=='round-start':result=cycle.round_start(args.actor,args.expected_head)
+        elif args.command=='module-evidence':result=cycle.module_evidence(args.job,args.actor)
+        elif args.command=='walk-record':result=cycle.walk_record(args.stage,json.loads(Path(args.packet).read_text()),args.actor)
+        elif args.command=='round-assess':result=cycle.round_assess(args.actor)
+        elif args.command=='development-plan':result=cycle.development_plan(args.actor,args.worktree,args.entrypoint,args.provider_path,args.port)
+        elif args.command=='release-prepare':result=cycle.release_prepare(args.actor,args.release_id,args.destination)
         elif args.command=='session':result=cycle.session(args.job,args.address,args.actor)
         elif args.command=='register-role':result=cycle.register_role(args.role,args.target,args.generation,args.actor)
         elif args.command=='adopt-layout':result=cycle.adopt_layout(args.approval_evidence,args.console)

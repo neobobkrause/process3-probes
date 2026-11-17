@@ -497,6 +497,44 @@ class NativeCycleTests(unittest.TestCase):
         self.assertEqual(len(writes),1)
         self.assertEqual(durable['owner_records']['owner-once']['text'],'Hold the existing scope.')
 
+    def test_combined_governance_requires_arch_process_request_and_owner_design_need(self):
+        self.cycle.adopt_layout('fixture observed approval')
+        self.cycle.register_role('ROOT','/root/supervisor',1,actor='/root')
+        self.cycle.register_role('ARCH','/root/supervisor/arch',1,actor='/root/supervisor')
+        with self.assertRaises(PermissionError):self.cycle.process_request('/root/supervisor',1,'fixture request')
+        self.cycle.process_request('/root/supervisor/arch',1,'fixture observed ARCH request')
+        self.assertEqual(self.cycle.layout_plan('PROCESS','/root/supervisor','unavailable')['tool'],'spawn_agent')
+        approval={'source':'observed-owner-input','kind':'decision','text':'Yes','evidence':'fixture ROOT approval'}
+        with self.assertRaises(PermissionError):self.cycle.lane_request('ux','/root/supervisor/arch',1,approval,['design/ux'])
+        need={'source':'observed-owner-input','kind':'need','text':'Design the error screen','evidence':'fixture actual design need'}
+        self.cycle.lane_request('ux','/root/supervisor/arch',1,need,['design/ux'])
+        plan=self.cycle.lane_plan('ux','/root/supervisor/arch','unavailable')
+        self.assertEqual(plan['required_native_parent'],'/root/supervisor/arch')
+        self.cycle.register_role('LANE:ux','/root/supervisor/arch/ux',1,actor='/root/supervisor/arch')
+        self.assertEqual(self.store.state['design_lanes']['ux']['session']['generation'],1)
+
+    def test_module_round_adapter_derives_real_git_dependency_provenance(self):
+        self.store.state['modules']['upstream']={'id':'upstream','order':0,'paths':['toy/peer'],'uses':[]}
+        self.store.state['modules']['provider'].update(order=1,uses=['upstream'])
+        self.store.state['jobs']['provider'].update(order=1,uses=['upstream'])
+        self.change();result=self.cycle.checkpoint('provider','completed');head=result['checkpoint']
+        self.provider.heads['codex/p4-integration-fixture']=head
+        self.cycle.round_start('/root/arch')
+        receipt=self.cycle.module_evidence('provider','/root/arch')
+        self.assertEqual(receipt['tested_head'],head)
+        self.assertEqual(self.cycle.round_assess('/root/arch')['status'],'internal_walk')
+        (self.repo/'toy/peer/file.txt').write_text('changed dependency after tests\n')
+        n.git(self.repo,'add','toy/peer');n.git(self.repo,'commit','-qm','Fixture changed provider dependency')
+        changed=n.git(self.repo,'rev-parse','HEAD').stdout.strip()
+        self.provider.heads['codex/p4-integration-fixture']=changed
+        self.cycle.round_start('/root/arch')
+        with self.assertRaisesRegex(ValueError,'dependency trees changed'):self.cycle.module_evidence('provider','/root/arch')
+
+    def test_native_policy_composes_shared_consequential_guard_before_adapter(self):
+        subject=n.Subject('native-arch-controller','ARCH',n.REPO,generation=True)
+        with self.assertRaises(n.Denied):
+            n.NativeInstructionScope().authorize(subject,'github.state.update',{'repo':n.REPO,'branch':'codex/p4-state-native-fixture'})
+
     def test_owner_question_forwarding_is_local_and_cannot_create_owner_record(self):
         self.cycle.adopt_layout('fixture observed owner approval')
         self.cycle.register_role('ROOT','/root/supervisor',1,actor='/root')
