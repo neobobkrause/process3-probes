@@ -507,7 +507,8 @@
         "evidence": "PR278 merge147f712; bootstrap/evidence/integrated-pilot/source-integration.json"
       },
       "combined_native_pilot": {
-        "status": "running"
+        "status": "done",
+        "evidence": "bootstrap/evidence/integrated-pilot/actual-combined-pilot.json; actual3stage clean716b6bdd plus localunpublished release manifest; bounded limits explicitly recorded, not universal completion."
       }
     }
   },
