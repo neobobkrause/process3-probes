@@ -675,8 +675,8 @@
       "generation": 5
     },
     "ARCH": {
-      "target": "/root/p4_root_g2/p4_arch_g5",
-      "generation": 5
+      "target": "/root/p4_root_g3/p4_arch_g6",
+      "generation": 6
     },
     "WATCHER": {
       "target": "/root/p4_watcher_g3",
