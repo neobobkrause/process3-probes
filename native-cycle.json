@@ -198,13 +198,19 @@
         "-v"
       ],
       "timeout": 180,
-      "status": "ready",
-      "attempt": 0,
+      "status": "running",
+      "attempt": 1,
       "branch": "codex/p4-job-native-workshop-20261116-report",
       "instructions": [],
       "checkpoint": null,
       "technical_instructions": [
         "Clarification of phase1 CLI grammar: --quantities takes one comma/newline-separated string exactly per frozenwebgrammar; no JSON-input ambiguity. --format text|json only phase1; phase2 adds csv. Text table labels alternatives, integercents formatting, no aggregate/discount. Own tests include provider injection and CLI errors. Preserve reportpendingprovider obligation until real acceptedintegration."
+      ],
+      "base": "716b6bddc6330cb1e0c19a584ee3b225ad9ae8f3",
+      "original_base": "716b6bddc6330cb1e0c19a584ee3b225ad9ae8f3",
+      "accepted": false,
+      "notice_ids": [
+        "provider:0ee73afc9ff9d735f1b10b2d4262f1235032760b:report"
       ]
     }
   },
@@ -406,6 +412,12 @@
       "job": "report",
       "value": "Clarification of phase1 CLI grammar: --quantities takes one comma/newline-separated string exactly per frozenwebgrammar; no JSON-input ambiguity. --format text|json only phase1; phase2 adds csv. Text table labels alternatives, integercents formatting, no aggregate/discount. Own tests include provider injection and CLI errors. Preserve reportpendingprovider obligation until real acceptedintegration.",
       "source": "arch"
+    },
+    {
+      "at": 1794876641.6724896,
+      "kind": "native-reserve",
+      "job": "report",
+      "attempt": 1
     }
   ],
   "native": true,
