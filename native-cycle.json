@@ -120,21 +120,42 @@
         "-v"
       ],
       "timeout": 180,
-      "status": "running",
+      "status": "review",
       "attempt": 5,
       "branch": "codex/p4-job-native-workshop-20261116-web",
       "instructions": [],
-      "checkpoint": "1850787de5bdc631578e5f0e59ca470e5b7bd5a6",
+      "checkpoint": "88b501c607ae64f1173828b15b68d830a78ec7be",
       "base": "00c5b6bb990fdf0f8ac069c2bd795ddce1d29788",
       "original_base": "3d4f7dbf624dba0c04af3d67a0b5fcea0b4c2e52",
-      "accepted": false,
+      "accepted": true,
       "notice_ids": [
         "provider:0ee73afc9ff9d735f1b10b2d4262f1235032760b:web"
       ],
       "workspace": "/workspace/work/p4-native-cycle/web-5",
       "session": "/root/p4_root_g2/p4_arch_g5/web_g5",
-      "last_outcome": "interrupted",
-      "verification": null,
+      "last_outcome": "completed",
+      "verification": {
+        "returncode": 0,
+        "test_count": 14,
+        "command": [
+          "python3",
+          "-m",
+          "unittest",
+          "discover",
+          "-s",
+          "toy/native-cycle/web",
+          "-p",
+          "test_*.py",
+          "-v"
+        ],
+        "stdout": "",
+        "stderr": "test_form (test_app.WebTests.test_form) ... ok\ntest_injected_minimum_is_fresh_form_default (test_app.WebTests.test_injected_minimum_is_fresh_form_default) ... ok\ntest_injected_minimum_is_start_again_default (test_app.WebTests.test_injected_minimum_is_start_again_default) ... ok\ntest_injected_revised_provider_and_escaping (test_app.WebTests.test_injected_revised_provider_and_escaping) ... ok\ntest_loopback_only (test_app.WebTests.test_loopback_only) ... ok\ntest_not_found (test_app.WebTests.test_not_found) ... ok\ntest_provider_upper_bound (test_app.WebTests.test_provider_upper_bound) ... ok\ntest_rejected_html_is_retained_and_escaped (test_app.WebTests.test_rejected_html_is_retained_and_escaped) ... ok\ntest_rejected_text_is_retained (test_app.WebTests.test_rejected_text_is_retained) ... ok\ntest_rejected_whitespace_and_empty_are_retained (test_app.WebTests.test_rejected_whitespace_and_empty_are_retained) ... ok\ntest_result_and_refresh (test_app.WebTests.test_result_and_refresh) ... ok\ntest_text_input_supports_editing_rejected_text (test_app.WebTests.test_text_input_supports_editing_rejected_text) ... ok\ntest_valid_request_clears_validation_error (test_app.WebTests.test_valid_request_clears_validation_error) ... ok\ntest_validation (test_app.WebTests.test_validation) ... ok\n\n----------------------------------------------------------------------\nRan 14 tests in 9.548s\n\nOK\n",
+        "observed_at": 1794875440.2642934,
+        "actor": "/root/p4_root_g2/p4_arch_g5",
+        "dependency_trees": {
+          "provider": "0fe72988b1cd4a99195a3ef4c2e8316a218cd3e1"
+        }
+      },
       "pr": "https://github.com/neobobkrause/process3-probes/pull/281",
       "pr_number": 281,
       "integrated": "7fbcbd444c748179ad76220c22c3d0f93f6ad901",
@@ -228,11 +249,11 @@
       "attempt": 5
     },
     {
-      "at": 1794874550.7821977,
+      "at": 1794875442.1004348,
       "kind": "native-checkpoint",
       "job": "web",
-      "checkpoint": "d707c26bfbdfa52e65b13624d0721f0255471647",
-      "status": "paused"
+      "checkpoint": "88b501c607ae64f1173828b15b68d830a78ec7be",
+      "status": "review"
     },
     {
       "at": 1794863130.7992759,
