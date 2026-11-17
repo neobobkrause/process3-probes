@@ -57,7 +57,7 @@ def _role(state, role, generation=None):
     value = state['roles'][role]
     if generation is not None:
         _generation(generation)
-        if value['binding']['generation'] != generation:
+        if value['binding'] is None or value['binding']['generation'] != generation:
             raise StaleSession('obsolete conversation session generation')
     return value
 
@@ -78,6 +78,10 @@ def bind(state, role, target, generation, conversation_id=None):
             if conversation_id is not None and conversation_id != old['conversation_id']:
                 raise ValueError('logical conversation identity cannot change on replacement')
             if old['binding'] == binding: return old
+            if old['binding'] is None:
+                old['binding'] = binding
+                old['last_event'] = 'session_bound_after_recovery'
+                return old
             if generation <= old['binding']['generation']:
                 raise StaleSession('replacement generation must increase')
             old['binding'] = binding
@@ -208,6 +212,7 @@ def delivery_intent(state, role, activity, message):
     _text(message)
     r = _role(state, role)
     if r['lifecycle'] == 'retired': return {'action': 'hold', 'reason': 'explicitly retired logical role'}
+    if r['binding'] is None: return {'action': 'hold', 'reason': 'recovery capsule has no observed native binding'}
     if activity not in ('idle', 'completed', 'running', 'retained_unlisted'):
         return {'action': 'hold', 'reason': 'resolve retained native instance; absence alone is not retirement'}
     return {'tool': 'followup_task', 'arguments': {'target': r['binding']['target'], 'message': message},
@@ -216,20 +221,73 @@ def delivery_intent(state, role, activity, message):
 
 
 def recovery_snapshot(state):
-    """Explicit meaningful checkpoint only; omit transcripts, answers and ACKs.
+    """Explicit meaningful checkpoint; omit routine transcripts, answers and ACKs."""
+    roles = {}
+    for role, r in state['roles'].items():
+        value = {'conversation_id': r['conversation_id'], 'disposition': r['disposition'],
+                 'assignment': copy.deepcopy(r['assignment']),
+                 'decisions': copy.deepcopy(r['decisions']),
+                 'references': copy.deepcopy(r['references']),
+                 'pending_questions': {
+                     ident: {k: q[k] for k in ('id', 'text', 'provenance')}
+                     for ident, q in r['pending_questions'].items()}}
+        if r['disposition'] == 'retired': value['retirement'] = copy.deepcopy(r['retirement'])
+        roles[role] = value
+    return {'version': 1, 'roles': roles}
 
-    This compact logical capsule is not a native binding/availability assertion.
-    Trusted recovery code must reconcile actual instances before a new binding.
+
+def restore_snapshot(state, snapshot):
+    """Import validated logical context unbound; reconcile actual sessions later.
+
+    Never overwrites a live/local role or treats stored identity as host evidence.
+    Retired logical roles stay retired and cannot be rebound implicitly.
     """
-    return {'version': 1, 'roles': {
-        role: {'conversation_id': r['conversation_id'],
-               'disposition': r['disposition'],
-               'decisions': copy.deepcopy(r['decisions']),
-               'references': copy.deepcopy(r['references']),
-               'pending_questions': {
-                   ident: {k: q[k] for k in ('id', 'text', 'provenance')}
-                   for ident, q in r['pending_questions'].items()}}
-        for role, r in state['roles'].items()}}
+    if (not isinstance(snapshot, dict) or set(snapshot) != {'version', 'roles'}
+            or type(snapshot['version']) is not int or snapshot['version'] != 1
+            or not isinstance(snapshot['roles'], dict) or len(snapshot['roles']) > MAX_ROLES):
+        raise ValueError('bounded recovery snapshot schema required')
+    def apply(s):
+        for role, value in snapshot['roles'].items():
+            _text(role, 'role', 256)
+            if role in s['roles']: raise ValueError('recovery import cannot overwrite existing role context')
+            required = {'conversation_id', 'disposition', 'assignment', 'decisions', 'references', 'pending_questions'}
+            if not isinstance(value, dict) or set(value) not in (required, required | {'retirement'}):
+                raise ValueError('recovery role schema required')
+            _text(value['conversation_id'], 'conversation identity', 256)
+            if value['disposition'] not in ('retained', 'retired'): raise ValueError('explicit recovery disposition required')
+            assignment = value['assignment']
+            if assignment is not None:
+                if (not isinstance(assignment, dict) or set(assignment) != {'id', 'status'}
+                        or assignment['status'] not in ('active', 'completed')):
+                    raise ValueError('recovery assignment schema required')
+                _text(assignment['id'], 'assignment identity', 256)
+            for key, limit in (('decisions', MAX_DECISIONS), ('references', MAX_REFERENCES)):
+                if not isinstance(value[key], list) or len(value[key]) > limit:
+                    raise InteractionFull('recovery knowledge capacity exceeded')
+                for text in value[key]: _text(text)
+                if len(set(value[key])) != len(value[key]): raise ValueError('duplicate recovery knowledge')
+            pending = value['pending_questions']
+            if not isinstance(pending, dict) or len(pending) > MAX_PENDING:
+                raise InteractionFull('recovery pending capacity exceeded')
+            for ident, q in pending.items():
+                _text(ident, 'question identity', 256)
+                if not isinstance(q, dict) or set(q) != {'id', 'text', 'provenance'} or q['id'] != ident:
+                    raise ValueError('correlated recovery question schema required')
+                _text(q['text'])
+                if q['provenance'] not in ('observed-owner-input', 'proxy-test', 'role-question'):
+                    raise ValueError('explicit recovery question provenance required')
+            retirement = value.get('retirement')
+            if value['disposition'] == 'retired':
+                if not isinstance(retirement, dict) or set(retirement) != {'reason', 'source', 'evidence'}:
+                    raise ValueError('explicit retirement context required')
+                for key in retirement: _text(retirement[key], 'retirement ' + key, 256 if key == 'source' else MAX_TEXT_BYTES)
+            elif retirement is not None: raise ValueError('retained role cannot import retirement')
+            r = copy.deepcopy(value)
+            r.update(binding=None, lifecycle='retired' if value['disposition'] == 'retired' else 'retained_idle',
+                     turns_completed=0, replacement_count=0, last_event='recovery_context_imported', answered=[])
+            for q in r['pending_questions'].values(): q['receipts'] = []
+            s['roles'][role] = r
+    return _change(state, apply)
 
 
 class LocalInteraction:

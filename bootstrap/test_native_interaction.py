@@ -88,7 +88,7 @@ class InteractionTests(unittest.TestCase):
         i.ask(s,'ARCH','pending','Still unanswered',provenance='observed-owner-input')
         i.acknowledge(s,'ARCH','pending',generation=5,evidence='ACK only')
         r=i.recovery_snapshot(s)['roles']['ARCH']
-        self.assertEqual(set(r),{'conversation_id','disposition','decisions','references','pending_questions'})
+        self.assertEqual(set(r),{'conversation_id','disposition','assignment','decisions','references','pending_questions'})
         self.assertEqual(set(r['pending_questions']['pending']),{'id','text','provenance'})
         encoded=json.dumps(r);self.assertNotIn('ACK only',encoded);self.assertNotIn('Completed substantive reply',encoded)
         self.assertNotIn('/root/retained/arch',encoded)
@@ -139,6 +139,50 @@ class InteractionTests(unittest.TestCase):
         with self.assertRaises(ValueError):i.event(s,'ARCH','assignment_started',generation=5,assignment_id='b',evidence='replacement task')
         with self.assertRaises(ValueError):i.event(s,'ARCH','session_retired',generation=5,evidence='native completed')
         self.assertEqual(s,before)
+
+    def test_recovery_import_unbound_then_actual_rebind_preserves_pending_assignment(self):
+        s=self.state();i.event(s,'ARCH','assignment_started',generation=5,assignment_id='ongoing',evidence='task')
+        i.ask(s,'ARCH','pending','Please answer after replacement',provenance='proxy-test')
+        i.acknowledge(s,'ARCH','pending',generation=5,evidence='ACK not answer')
+        recovered=i.empty();i.restore_snapshot(recovered,i.recovery_snapshot(s))
+        r=i.capsule(recovered,'ARCH');self.assertIsNone(r['binding'])
+        self.assertEqual(r['assignment'],{'id':'ongoing','status':'active'})
+        self.assertEqual(i.delivery_intent(recovered,'ARCH','retained_unlisted','follow up')['action'],'hold')
+        with self.assertRaises(i.StaleSession):i.acknowledge(recovered,'ARCH','pending',generation=5,evidence='no actual binding')
+        i.bind(recovered,'ARCH','/root/new/arch',6)
+        self.assertEqual(i.capsule(recovered,'ARCH')['conversation_id'],'stable-arch')
+        self.assertIn('pending',i.capsule(recovered,'ARCH')['pending_questions'])
+        i.answer(recovered,'ARCH','pending','Substantive answer from actual new context',generation=6,
+                 provenance='observed-native-reply',evidence='actual reply')
+        self.assertFalse(i.capsule(recovered,'ARCH')['pending_questions'])
+
+    def test_recovery_import_preserves_explicit_retirement(self):
+        s=self.state();i.retire(s,'ARCH',generation=5,reason='deliberate',source='observed decision',evidence='record')
+        recovered=i.empty();i.restore_snapshot(recovered,i.recovery_snapshot(s))
+        self.assertEqual(i.capsule(recovered,'ARCH')['disposition'],'retired')
+        with self.assertRaises(ValueError):i.bind(recovered,'ARCH','/root/new/arch',6)
+        self.assertEqual(i.delivery_intent(recovered,'ARCH','retained_unlisted','message')['action'],'hold')
+
+    def test_recovery_import_schema_capacity_and_collision_fail_atomically(self):
+        snapshot=i.recovery_snapshot(self.state())
+        invalid=[]
+        x=copy.deepcopy(snapshot);x['roles']['ARCH']['binding']={'target':'invented'};invalid.append(x)
+        x=copy.deepcopy(snapshot);x['roles']['ARCH']['disposition']='completed';invalid.append(x)
+        x=copy.deepcopy(snapshot);x['roles']['ARCH']['pending_questions']={'q':{'id':'different','text':'Q','provenance':'proxy-test'}};invalid.append(x)
+        x=copy.deepcopy(snapshot);x['roles']['ARCH']['decisions']=['same','same'];invalid.append(x)
+        x=copy.deepcopy(snapshot);x['roles']['ARCH']['disposition']='retired';invalid.append(x)
+        x=copy.deepcopy(snapshot);x['version']=True;invalid.append(x)
+        for value in invalid:
+            recovered=i.empty();before=copy.deepcopy(recovered)
+            with self.assertRaises((ValueError,i.InteractionFull)):i.restore_snapshot(recovered,value)
+            self.assertEqual(recovered,before)
+        original=self.state();before=copy.deepcopy(original)
+        with self.assertRaises(ValueError):i.restore_snapshot(original,snapshot)
+        self.assertEqual(original,before)
+        with patch.object(i,'MAX_BYTES',1):
+            recovered=i.empty()
+            with self.assertRaises(i.InteractionFull):i.restore_snapshot(recovered,snapshot)
+            self.assertEqual(recovered,i.empty())
 
     def test_local_store_atomic_failure_and_reload_continuity(self):
         with tempfile.TemporaryDirectory() as d:
