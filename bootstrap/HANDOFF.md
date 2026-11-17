@@ -1,3 +1,31 @@
+# Current phase: combined unattended pilot
+
+Four streams merged through pinned process tool into authorized brokerbranch:
+B275/08e0ab2; A276/2074729 plus277/fc2958f; D278/147f712; C279/be42c23.
+Final controller wiring ffc7b12 passed232bootstrap+46grants (278). Logs and actual
+acceptance/ownership refs: evidence/integrated-pilot/. No sourcefile conflicts;
+C/D interrupted, resumed same preservedworktrees and delivered verifiedtips.
+All streambranches preserved. No source integration into main/tranche.
+
+Read native/INTEGRATED-PILOT.md for exact combined CLI/evidence contracts.
+Console is releasing persistent technical pilot_hold and native PILOT_RELEASED
+message to actual ROOT1. Product state had provider2/web3 DONE, slots1, reportpending
+range2 before release; no resets. ARCH may set technicalslots2 within ownerdefault8
+and fresh nativecapacity, then execute retained design. Before JOBs ROOT must inspect
+fresh inventory and restore unavailable ARCH as its own depth2 replacement with
+monotonic generation; oldARCHgen3 address absent in latest consoleinventory. Never
+send edits to stale/unavailable oldJOB. Watcher may need console sibling restoration.
+Owner-approved layout remains settled; no permission question/reapproval.
+
+Pilot is NOT complete. Need actual two-module work/concurrency, partialtestfailure
+preservation+interruption/resumption, fanout everydeclareduser (report staysdeferred),
+automaticcheckpoint/draftPR/pinnedtool experimentalintegration, actualmodule evidence
+with stored testdependencytrees, internalScreens and externalJourneys on loopback,
+corrections/rewalk onlyif genuineflaws, localdevrelease manifest. Do not fake stage
+observations or transplant oldverification. Check actual currentrolebinding IDs.
+If ROOT release message is pending, resolve using local mailbox+actualnativefollowup,
+record delivery then actualsourceack. No Github routine communications.
+
 # Current Codex Process4 bootstrap handoff
 
 ## Authority and approved layout
@@ -13,7 +41,7 @@ gen1 was ROOT-created after actualcurrentARCHrequest. All bindings actualCLIreco
 Consoleidlewake is not reactive. ROOT replacement needs activeconsole/safetywake;
 no selfsuccessors/depthgrowth. No new credential/tool exclusivity claim.
 
-## Four independentlyowned implementation streams — ACTIVE
+## Four independently owned implementation streams — INTEGRATED
 
 Authoritative current ownership/interfaces: PARALLEL-WORKSTREAMS.md.
 Common baseline c901c9f:148bootstrap tests pass, unchangedgrants44.
@@ -44,7 +72,7 @@ without need. First B focusedbehaviorverification passed23tests; finalcounts/SHA
 mustcome fromactualresults, not assumed. Measure meaningfuldeliverables/interference,
 not GitHubheartbeat/telemetry. Reuse activeagents; inspect worktrees before replacing.
 
-## Combined pilot — held until all four deliverables integrated
+## Combined pilot — source verified, releasing to ROOT/ARCH
 
 OperatingROOT/ARCH maintain pilotdesign in native/approved-layout-design/ (ARCHowned).
 Existing run codex/p4-state-native-workshop-20261116, integration
