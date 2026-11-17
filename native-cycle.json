@@ -249,6 +249,13 @@
       "at": 1794868996.9011617,
       "source": "technical",
       "summary": "Layered authority assessment complete; no new physical no-bypass gate; measured ROOT-role alternative awaits explicit identity decision"
+    },
+    {
+      "kind": "native-combined-pilot-release",
+      "at": 1794874155.8718758,
+      "source": "technical",
+      "verification": "232bootstrap+46grants; allfourstreams integrated",
+      "source_commit": "ffc7b12"
     }
   ],
   "native": true,
@@ -392,15 +399,22 @@
         "evidence": "ExactownerYesrecord; actualCLIadopt-layoutandROOT1/ARCH3/COORD3/PROCESS1bindingssourceevents"
       },
       "stream_A": {
-        "status": "running"
+        "status": "done",
+        "evidence": "PR276+277 merge2074729/fc2958f; bootstrap/evidence/integrated-pilot/source-integration.json"
       },
       "stream_B": {
-        "status": "running"
+        "status": "done",
+        "evidence": "PR275 merge08e0ab2; bootstrap/evidence/integrated-pilot/source-integration.json"
       },
       "stream_C": {
-        "status": "running"
+        "status": "done",
+        "evidence": "PR279 mergebe42c23; bootstrap/evidence/integrated-pilot/source-integration.json"
       },
       "stream_D": {
+        "status": "done",
+        "evidence": "PR278 merge147f712; bootstrap/evidence/integrated-pilot/source-integration.json"
+      },
+      "combined_native_pilot": {
         "status": "running"
       }
     }
@@ -453,7 +467,8 @@
       "actor": "/root/approved_layout_implementation",
       "baseline": "c901c9f",
       "ownership_contract": "bootstrap/PARALLEL-WORKSTREAMS.md",
-      "status": "running"
+      "status": "integrated",
+      "integration_evidence": "PR276+277 merge2074729/fc2958f"
     },
     "B": {
       "branch": "codex/p4-stream-b-20261116",
@@ -461,7 +476,8 @@
       "actor": "/root/stream_b_scheduler",
       "baseline": "c901c9f",
       "ownership_contract": "bootstrap/PARALLEL-WORKSTREAMS.md",
-      "status": "running"
+      "status": "integrated",
+      "integration_evidence": "PR275 merge08e0ab2"
     },
     "C": {
       "branch": "codex/p4-stream-c-20261116",
@@ -469,7 +485,8 @@
       "actor": "/root/process4_root/p4_process_g1",
       "baseline": "c901c9f",
       "ownership_contract": "bootstrap/PARALLEL-WORKSTREAMS.md",
-      "status": "running"
+      "status": "integrated",
+      "integration_evidence": "PR279 mergebe42c23"
     },
     "D": {
       "branch": "codex/p4-stream-d-20261116",
@@ -477,14 +494,21 @@
       "actor": "/root/stream_d_walks",
       "baseline": "c901c9f",
       "ownership_contract": "bootstrap/PARALLEL-WORKSTREAMS.md",
-      "status": "running"
+      "status": "integrated",
+      "integration_evidence": "PR278 merge147f712"
     }
   },
   "bootstrap_integrator": {
     "actor": "/root",
     "branch": "codex/p4-grants-broker-20261116",
     "central_source_owner": "bootstrap/native/cycle.py",
-    "pilot_hold": true
+    "pilot_hold": false,
+    "combined_verification": {
+      "source_commit": "ffc7b12",
+      "bootstrap_tests": 232,
+      "grants_tests": 46,
+      "passed": true
+    }
   },
   "owner_records": {
     "owner-root-layout-approved-20261116": {
