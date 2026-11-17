@@ -909,6 +909,42 @@
             "provider": "0fe72988b1cd4a99195a3ef4c2e8316a218cd3e1"
           }
         }
+      },
+      "web": {
+        "observed": true,
+        "actor": "/root/p4_root_g2/p4_arch_g5",
+        "observed_at": 1794877430.641554,
+        "source": "Actual native controller module verification at 213863ee30f1aa601b340b6ee319fa9aa42b99d6",
+        "module": "web",
+        "integration_head": "4414c0325f1e2a56585e644eecccd8abfba8a88e",
+        "tested_head": "213863ee30f1aa601b340b6ee319fa9aa42b99d6",
+        "returncode": 0,
+        "test_count": 26,
+        "command": [
+          "python3",
+          "-m",
+          "unittest",
+          "discover",
+          "-s",
+          "toy/native-cycle/web",
+          "-p",
+          "test_*.py",
+          "-v"
+        ],
+        "skipped_count": 0,
+        "provenance": {
+          "checkpoint": "213863ee30f1aa601b340b6ee319fa9aa42b99d6",
+          "owned_paths": [
+            "toy/native-cycle/web"
+          ],
+          "owned_trees": {
+            "toy/native-cycle/web": "1dd3f4e091c2ad946d5f312b565ad8e4569a513a"
+          },
+          "dependency_trees": {
+            "provider": "0fe72988b1cd4a99195a3ef4c2e8316a218cd3e1",
+            "report": "bd62b21a9f10bf2f4f76df433cbf05dfa8769bb4"
+          }
+        }
       }
     },
     "walks": {},
