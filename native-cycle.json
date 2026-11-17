@@ -116,7 +116,7 @@
       "accepted": false,
       "notice_ids": [],
       "workspace": "/workspace/work/p4-native-cycle/web-4",
-      "session": "/root/p4_arch_native_cycle/web_replacement",
+      "session": "/root/process4_root/p4_arch_g4/web_g4",
       "last_outcome": "completed",
       "verification": {
         "returncode": 0,
@@ -128,7 +128,7 @@
       "pr_number": 274,
       "integrated": "7fbcbd444c748179ad76220c22c3d0f93f6ad901",
       "trusted_baseline_merges": [],
-      "session_generation": 3,
+      "session_generation": 4,
       "technical_instructions": [
         "This phase supersedes old completed web instructions. Round1: add/run own injected-provider fresh-default regressions for minimum2 and minimum7, report actual failing INCOMPLETE, do not change app yet; preserve partial work for ARCH interruption/checkpoint. Ownpaths only toy/native-cycle/web. No app edits until later correction-phase instruction. Keep oldtests/source, run actual HTTP regression; report INCOMPLETE and remain available for supported interruption; no provider/gitpush/PR/merge/session/process action."
       ],
@@ -468,8 +468,8 @@
   "operational_storage_version": 1,
   "native_roles": {
     "JOB:web": {
-      "target": "/root/p4_arch_native_cycle/web_replacement",
-      "generation": 3
+      "target": "/root/process4_root/p4_arch_g4/web_g4",
+      "generation": 4
     },
     "COORDINATOR": {
       "target": "/root/process4_root/coordinator",
