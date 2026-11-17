@@ -88,6 +88,33 @@ def request_lane(state, name, *, actor, generation, owner_need, paths):
     return validate_lane(state, name, lane)
 
 
+def revalidate_lane(state, name, *, actor, generation, expected_generation, evidence):
+    """Rebind creator provenance after actual failure, never invent a new need.
+
+    Return a new declaration only. The trusted host supplies actual failure or
+    explicit replacement evidence; text labels do not authenticate that event.
+    Keep the old native binding until an actual replacement is created/registered.
+    """
+    arch = current_role(state, 'ARCH')
+    if type(generation) is not int or arch != {'target': actor, 'generation': generation}:
+        raise Denied('CURRENT_ARCH_REQUEST_REQUIRED')
+    if state.get('stopped') is True:
+        raise Denied('DURABLE_STOP_PRESERVED')
+    if not isinstance(evidence, str) or not evidence.strip():
+        raise Denied('ACTUAL_LANE_FAILURE_EVIDENCE_REQUIRED')
+    lane = validate_lane(state, name, current_arch=False)
+    binding = current_role(state, 'LANE:' + name)
+    if (type(expected_generation) is not int or expected_generation != binding['generation']
+            or not re.fullmatch(r'/root/[a-z0-9_]+/[a-z0-9_]+/[a-z0-9_]+', binding['target'])):
+        raise Denied('CURRENT_DESIGN_LANE_GENERATION_REQUIRED')
+    if 'session' in lane and lane['session'] != binding:
+        raise Denied('STALE_DESIGN_LANE_SESSION')
+    lane['arch'] = copy.deepcopy(arch)
+    lane['status'] = 'requested'
+    lane.pop('session', None)
+    return validate_lane(state, name, lane)
+
+
 def plan_lane(state, name, *, actor):
     declared = state.get('design_lanes', {}).get(name)
     # A previously observed native session need not be reparented when ARCH

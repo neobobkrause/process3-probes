@@ -103,6 +103,70 @@ class DesignLaneTests(unittest.TestCase):
         with self.assertRaisesRegex(Denied, 'STALE_DESIGN_ARCH'):
             d.plan_lane(s, 'ux', actor='/root/root/new_arch')
 
+    def recovery_state(self):
+        s=state();lane=requested(s)
+        lane['session']={'target':'/root/root/arch/ux','generation':1}
+        lane['status']='active'
+        s['native_roles']['LANE:ux']=copy.deepcopy(lane['session'])
+        s['native_roles']['ARCH']={'target':'/root/root/new_arch','generation':4}
+        s['native_interaction']={'opaque':'untouched local overlay fixture'}
+        return s
+
+    def test_revalidate_preserves_exact_need_paths_and_old_binding_without_mutation(self):
+        s=self.recovery_state();before=copy.deepcopy(s)
+        lane=d.revalidate_lane(s,'ux',actor='/root/root/new_arch',generation=4,
+                               expected_generation=1,evidence='fixture actual repeated native provider failure')
+        self.assertEqual(s,before)
+        self.assertEqual(lane['need'],before['design_lanes']['ux']['need'])
+        self.assertEqual(lane['paths'],before['design_lanes']['ux']['paths'])
+        self.assertEqual(lane['arch'],s['native_roles']['ARCH'])
+        self.assertEqual(lane['status'],'requested');self.assertNotIn('session',lane)
+        self.assertEqual(s['native_roles']['LANE:ux'],before['native_roles']['LANE:ux'])
+        lane['need']['text']='Cannot mutate original need';lane['paths'].append('other')
+        self.assertEqual(s,before)
+
+    def test_revalidate_enables_fresh_creation_under_current_arch_only(self):
+        s=self.recovery_state();before=copy.deepcopy(s)
+        lane=d.revalidate_lane(s,'ux',actor='/root/root/new_arch',generation=4,
+                               expected_generation=1,evidence='fixture actual replacement diagnosis')
+        self.assertEqual(s,before)
+        s['design_lanes']['ux']=lane
+        plan=d.plan_lane(s,'ux',actor='/root/root/new_arch')
+        self.assertEqual(plan['action'],'create');self.assertEqual(plan['creator'],'/root/root/new_arch')
+        self.assertEqual(s['native_roles']['LANE:ux']['generation'],1)
+
+    def test_revalidate_requires_current_integer_arch_and_lane_generations_and_evidence(self):
+        s=self.recovery_state();before=copy.deepcopy(s)
+        values=[{'actor':'/root/root/arch'}, {'generation':3}, {'generation':True},
+                {'expected_generation':2}, {'expected_generation':True}, {'expected_generation':None},
+                {'evidence':''}, {'evidence':'   '}, {'evidence':None}]
+        for changes in values:
+            kwargs={'actor':'/root/root/new_arch','generation':4,'expected_generation':1,'evidence':'fixture actual failure'}
+            kwargs.update(changes)
+            with self.subTest(changes=changes),self.assertRaises(Denied):d.revalidate_lane(s,'ux',**kwargs)
+            self.assertEqual(s,before)
+
+    def test_revalidate_still_validates_old_need_paths_and_native_session(self):
+        changes=[lambda s:s['design_lanes']['ux']['need'].update(source='proposal'),
+                 lambda s:s['design_lanes']['ux'].update(paths=['toy/provider']),
+                 lambda s:s['design_lanes']['ux']['session'].update(generation=2),
+                 lambda s:s['native_roles'].pop('LANE:ux')]
+        for change in changes:
+            s=self.recovery_state();change(s);before=copy.deepcopy(s)
+            with self.assertRaises(Denied):d.revalidate_lane(s,'ux',actor='/root/root/new_arch',generation=4,
+                                                            expected_generation=1,evidence='fixture actual failure')
+            self.assertEqual(s,before)
+
+    def test_revalidate_cannot_bypass_stop_or_redeclare_owner_need(self):
+        s=self.recovery_state();s['stopped']=True;before=copy.deepcopy(s)
+        with self.assertRaisesRegex(Denied,'DURABLE_STOP_PRESERVED'):
+            d.revalidate_lane(s,'ux',actor='/root/root/new_arch',generation=4,
+                              expected_generation=1,evidence='fixture actual failure')
+        self.assertEqual(s,before)
+        with self.assertRaisesRegex(Denied,'DESIGN_LANE_ALREADY_DECLARED'):
+            d.request_lane(s,'ux',actor='/root/root/new_arch',generation=4,
+                           owner_need=owner_need(),paths=['design/new'])
+
     def test_session_receipt_has_native_parent_and_generation_not_created_by_plan(self):
         s = state();lane = requested(s)
         lane['session'] = {'target': '/root/root/arch/ux', 'generation': 1}
