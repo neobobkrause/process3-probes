@@ -251,7 +251,9 @@
       "pr_number": 285,
       "integrated": "191db453b2de66a9cd4bb9d744fa6ac66f28c31b",
       "restart": true,
-      "trusted_baseline_merges": []
+      "trusted_baseline_merges": [],
+      "expected_session_generation": 3,
+      "conversation_only_recovery": true
     }
   },
   "notices": {
@@ -511,6 +513,13 @@
       "kind": "native-job-conversation-recovery",
       "job": "web",
       "generation": 8,
+      "evidence": "/workspace/work/p4-native-cycle/evidence/interactive-assessment/root-unsuccessful-actions.json"
+    },
+    {
+      "at": 1794882537.5037951,
+      "kind": "native-job-conversation-recovery",
+      "job": "report",
+      "generation": 3,
       "evidence": "/workspace/work/p4-native-cycle/evidence/interactive-assessment/root-unsuccessful-actions.json"
     }
   ],
