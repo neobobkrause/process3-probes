@@ -1,3 +1,34 @@
+# Executed pilot status — 2026-11-17
+
+The retained minimum 1→2 revision reached a clean, SHA-bound three-stage development round and local development-release preparation at experimental integration `716b6bddc6330cb1e0c19a584ee3b225ad9ae8f3`. This is the proof-app pilot result; it is not public publication, main/tranche adoption, browser-rendering proof, or overall Process4 completion.
+
+Actual recovered actors were ROOT `/root/p4_root_g2` generation 2, ARCH `/root/p4_root_g2/p4_arch_g5` generation 5, web JOB `/root/p4_root_g2/p4_arch_g5/web_g5` attempt 5, and independent external walker `/root/p4_root_g2/p4_arch_g5/external_walk_g1` at native depth 3. Current logical bindings remain authoritative through `layout-status`; historical design addresses below are not dispatch targets. Stop remained false, technical slots 2, owner cap default 8 and combined-bootstrap hold false.
+
+## Accepted module and preservation evidence
+
+- Provider attempt 3 checkpoint `0ee73afc9ff9d735f1b10b2d4262f1235032760b`, existing PR 280, integrated through the typed controller/pinned process tool at `00c5b6bb990fdf0f8ac069c2bd795ddce1d29788`. Its actual four module tests were recorded by prior ARCH generation 4. Final owned provider tree `0fe72988b1cd4a99195a3ef4c2e8316a218cd3e1` is unchanged from that tested checkpoint.
+- Web attempt 4's real incomplete regression checkpoint `d707c26bfbdfa52e65b13624d0721f0255471647` and PR 281 were preserved after interruption. ARCH generation 5 independently re-observed this clean preserved checkpoint: 14 test methods, exit 1, four failing fresh/Start-again assertions at injected minima 2 and 7. No app defect was inserted. The raw command/output is `preserved-web4-failure.json` in the runtime evidence directory.
+- Web replacement attempt 5 retained the same branch/PR and partial tests. Controller baseline merge `1850787de5bdc631578e5f0e59ca470e5b7bd5a6` incorporated accepted provider integration. The JOB changed only web source/tests/README, using `None` to distinguish a fresh default from explicit rejected text, then deriving the default from the injected provider minimum. Host checkpoint `88b501c607ae64f1173828b15b68d830a78ec7be` passed all 14 real HTTP module tests and integrated through PR 281 at final `716b6bdd…`.
+- Current-round module evidence verifies exact owned trees. Web's stored tested provider dependency tree is `0fe72988b1cd4a99195a3ef4c2e8316a218cd3e1`, equal to the final provider tree; current values were not substituted for missing historical provenance.
+
+Provider fanout covers both declared users. The fresh web generation received the exact provider notice through native followup, then reported first processing at Unix 1794875358; local acknowledgement was receipt only. Accepted web integration consumed its assigned business obligation. Unassigned report remains durably pending with change count 3 and first unconsumed provider checkpoint `26796e064fb586ca893124bd8ec2414699bedd6c`. No report session or awakened consumer is claimed.
+
+## Actual walks and local release preparation
+
+At exact final head, ARCH inspected source and 19 actual ephemeral-loopback HTTP screen observations for S1–S4; the internal walk was clean. A fresh, clean worktree `/workspace/work/p4-native-cycle/development-716b6bdd` was used for controller development plan `4a047f42535bd4165c8dd97e56d4f75f7a23ea7f6d2a46cb54ec3353a5ff6cba`. The service actually started at `http://127.0.0.1:8766/` with the plan's environment replacement and private HOME/CODEX directories, then returned HTTP 200.
+
+The independent ARCH child walked Journeys 1–4 with 17 actual HTTP requests and parsed HTML, finding no flaws. It attempted available Chromium controls; Browser Use requirements and native AT-SPI errors prevented app browser interaction. Evidence therefore does not establish rendered layout, keyboard/focus behavior or JavaScript execution. The approved contract permits this independent HTTP client, and the external receipt states the limit. Both walk receipts were accepted at final head; `round-assess` returned clean=true for round 1 with exactly module_tests/internal_walk/external_walk.
+
+No walk-discovered correction was observed. The real module regression → interruption/preservation → replacement/correction loop was exercised; neither a failed module checkpoint nor that loop is relabeled as an integrated clean walk round. The replacement ARCH observed serial recovery after takeover and does not infer earlier native concurrency merely from durable running statuses; any earlier overlap claim requires the earlier actual native observation and substantive reports.
+
+`release-prepare` staged local-only manifest `workshop-minimum2-20261117`, SHA-256 `b69dc624b20ed5d018fe73a506981f76d42c67b4ae3ddea06ec7dadf9407c325`. Publication is false and unauthorized. Evidence artifacts reside under `/workspace/work/p4-native-cycle/evidence/current-pilot/`: `module-and-recovery-summary.json`, `preserved-web4-failure.json`, `internal-receipt.json`, `internal-observations.json`, `development-plan.json`, `deployment-receipt.json`, `external-receipt.json`, `external-observations.json`, `development-release.json`, and `final-state.json`. Routine message history remains bounded local operational state, not a GitHub log.
+
+---
+
+# Historical approved design and preflight (retained)
+
+The following is the preserved pre-execution plan. Status/address statements here are historical; the execution record above and current controller state supersede them.
+
 # Final pilot coordination — approved addressable ROOT mode
 
 Status: design and preflight only. No pilot JOB has been created and no product source/provider mutation has been performed by this ARCH. ROOT's current technical instruction holds product work until four independently owned bootstrap streams are combined by the console integrator.

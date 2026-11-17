@@ -1,3 +1,31 @@
+# Combined pilot executed — 2026-11-17
+
+Final experimental product head716b6bddc6330cb1e0c19a584ee3b225ad9ae8f3.
+PR280 provider3 and PR281 web5 integrated through controller/pinned tool.
+Actual provider4/web14 module tests, ScreensS1–S4 (19HTTP observations), independent
+Journeys1–4 (17HTTP requests) passed. Current-head round clean; local development
+manifest workshop-minimum2-20261117 prepared, unpublished. One aggregate record:
+evidence/integrated-pilot/actual-combined-pilot.json. No routine message log added.
+
+ROOT2 recovered ARCH5/coordinator4; console restored siblingWATCHER3. Genuine web4
+partial failures were preserved and resumed as web5 on samebranch/PR. Alluser fanout
+retains unassignedreport three-change obligation. Controller233bootstrap tests pass;
+unchangedgrants46 previouslypassed. Sourcefix45017e2 enforces review/interrupting slots.
+
+Bounded limitations: externalclient HTTP/parsedHTML only (browser tooling failed);
+walks were clean so no live walk-discovered flaw correction was exercised. No actual
+simultaneous-running JOB snapshot is claimed. Native idle child/ancestor wake proven;
+idle depth0console wake remains unsupported and recovery depends activeconsole or
+10minute safety. No credentialrotation/VMreplacement/perpetual operation claim.
+Physical agenttool exclusivity is not provided; ownership/controller/provider layers
+remain explicit. Bootstrap continuation81bcb22cdab48191aea4b02fd08730e4 paused after actual no-runnable
+assessment and final pilot preservation; schedule retained10min, disabled. No pending
+product correction exists; further product work needs a
+concrete authorized assignment. Do not repeat completed pilot or passing probes.
+
+Historical phase notes below preserve chronology; current execution above supersedes
+their pending/hold statements. Resolve role generations dynamically before dispatch.
+
 # Live pilot recovery — 2026-11-17
 
 Console observed old operating ROOT interrupted in actual native inventory. It
