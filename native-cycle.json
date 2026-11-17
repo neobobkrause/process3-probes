@@ -200,12 +200,12 @@
       "attempt": 2,
       "branch": "codex/p4-job-native-workshop-20261116-report",
       "instructions": [],
-      "checkpoint": "1fb981e478a2a68e38abcd11b31fdc8f3ef3e8ee",
+      "checkpoint": "5c0d6db69a6ea16101e32792e5c5eeedd63cf8a8",
       "technical_instructions": [
         "Clarification of phase1 CLI grammar: --quantities takes one comma/newline-separated string exactly per frozenwebgrammar; no JSON-input ambiguity. --format text|json only phase1; phase2 adds csv. Text table labels alternatives, integercents formatting, no aggregate/discount. Own tests include provider injection and CLI errors. Preserve reportpendingprovider obligation until real acceptedintegration.",
         "Phase2 queuedCSVexport nowdispatch: preserve phase1model/textJSON source/tests/samebranch/PRhistory. Add to_csv(comparison)->str exactfrozen fixedheader quantity,unit_price_cents,total_cents CRLF, numericrows sameorder and UTF8. CLI --format csv writes exactbytes no extraCR or blankline; retaintext/json. Validatemalformedmodels cannot produceformula/nonintcells; ownmodelpubliccontract stays. Thoroughownunittests csv.readerroundtrip/lineendings/order/singleton/eightrows/injectedprovider/CLI actualbytesinvalidnooutput; allphase1testsremainpass. Docsaccuratefullfeature. OwnONLY toy/native-cycle/report; noothermodule/git/provider/process/session/credentials/accounts/paid/public/metered. Actualbaseline5c0d6db69a6ea16101e32792e5c5eeedd63cf8a8 providerunchangedmin2. Leaveforhostcheckpoint, reportactualtests."
       ],
-      "base": "716b6bddc6330cb1e0c19a584ee3b225ad9ae8f3",
+      "base": "5c0d6db69a6ea16101e32792e5c5eeedd63cf8a8",
       "original_base": "716b6bddc6330cb1e0c19a584ee3b225ad9ae8f3",
       "accepted": false,
       "notice_ids": [],
@@ -238,7 +238,8 @@
       "pr": "https://github.com/neobobkrause/process3-probes/pull/282",
       "pr_number": 282,
       "integrated": "5c0d6db69a6ea16101e32792e5c5eeedd63cf8a8",
-      "restart": true
+      "restart": true,
+      "trusted_baseline_merges": []
     }
   },
   "notices": {
@@ -475,6 +476,13 @@
       "job": "report",
       "value": null,
       "source": "arch"
+    },
+    {
+      "at": 1794876946.671048,
+      "kind": "native-baseline-sync",
+      "job": "report",
+      "base": "5c0d6db69a6ea16101e32792e5c5eeedd63cf8a8",
+      "checkpoint": "5c0d6db69a6ea16101e32792e5c5eeedd63cf8a8"
     }
   ],
   "native": true,
