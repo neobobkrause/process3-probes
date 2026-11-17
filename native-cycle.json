@@ -734,6 +734,35 @@
         ],
         "outcome": "clean",
         "flaws": []
+      },
+      "external_walk": {
+        "observed": true,
+        "actor": "/root/p4_root_g2/p4_arch_g5/external_walk_g1",
+        "source": "Actual independent deployed HTTP client journeys; /workspace/work/p4-native-cycle/evidence/current-pilot/external-observations.json",
+        "observed_at": 1794875647.3157988,
+        "head": "716b6bddc6330cb1e0c19a584ee3b225ad9ae8f3",
+        "design": "bootstrap/native/approved-layout-design/UX_JOURNEYS.md",
+        "coverage": [
+          "1",
+          "2",
+          "3",
+          "4"
+        ],
+        "outcome": "clean",
+        "flaws": [],
+        "deployment": {
+          "observed": true,
+          "actor": "/root/p4_root_g2/p4_arch_g5",
+          "source": "Actual subprocess startup using exact development plan environment replacement and HTTP probe",
+          "observed_at": 1794875587.4310994,
+          "head": "716b6bddc6330cb1e0c19a584ee3b225ad9ae8f3",
+          "status": "running",
+          "url": "http://127.0.0.1:8766/",
+          "http_status": 200,
+          "plan_id": "4a047f42535bd4165c8dd97e56d4f75f7a23ea7f6d2a46cb54ec3353a5ff6cba",
+          "pid": 96907
+        },
+        "limits": "Independent standard-library HTTP/HTML client. Browser attempt encountered Browser Use could not read requirements and native Chromium AT-SPI unavailable; no app browser rendering, keyboard/focus interaction or JavaScript execution proof."
       }
     },
     "carry_flaws": {}
