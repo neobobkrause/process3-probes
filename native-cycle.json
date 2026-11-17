@@ -201,7 +201,10 @@
       "attempt": 0,
       "branch": "codex/p4-job-native-workshop-20261116-report",
       "instructions": [],
-      "checkpoint": null
+      "checkpoint": null,
+      "technical_instructions": [
+        "Clarification of phase1 CLI grammar: --quantities takes one comma/newline-separated string exactly per frozenwebgrammar; no JSON-input ambiguity. --format text|json only phase1; phase2 adds csv. Text table labels alternatives, integercents formatting, no aggregate/discount. Own tests include provider injection and CLI errors. Preserve reportpendingprovider obligation until real acceptedintegration."
+      ]
     }
   },
   "notices": {
@@ -394,6 +397,14 @@
         "web"
       ],
       "source": "Owner-authorized extended functional requirement; nonoverlapping ownership and frozen design"
+    },
+    {
+      "at": 1794876600.6278796,
+      "kind": "native-arch-control",
+      "command": "instruction",
+      "job": "report",
+      "value": "Clarification of phase1 CLI grammar: --quantities takes one comma/newline-separated string exactly per frozenwebgrammar; no JSON-input ambiguity. --format text|json only phase1; phase2 adds csv. Text table labels alternatives, integercents formatting, no aggregate/discount. Own tests include provider injection and CLI errors. Preserve reportpendingprovider obligation until real acceptedintegration.",
+      "source": "arch"
     }
   ],
   "native": true,
@@ -684,6 +695,11 @@
       "at": 1794875314.4870386,
       "job": "web",
       "text": "Correction phase supersedes round1 test-only limitation: preserve existing real failing HTTP regressions and same branch/PR. Implement fresh GET / and Start again default derived dynamically from injected provider.MIN_QUANTITY, never literal2. Preserve submitted invalid text including empty/1 and safe escaping, existing validation and loopback controls. Update own README from unfinished to actual correction. Ownpaths only toy/native-cycle/web; do not edit provider/process/bootstrap or commit/push/PR/merge/start sessions. Run full own HTTP unittest suite and report actual result. Provider minimum2 accepted integration00c5b6bb990fdf0f8ac069c2bd795ddce1d29788; prepared trustedbaseline incorporates it. Notice acknowledgement is receipt only."
+    },
+    {
+      "at": 1794876600.6276898,
+      "job": "report",
+      "text": "Clarification of phase1 CLI grammar: --quantities takes one comma/newline-separated string exactly per frozenwebgrammar; no JSON-input ambiguity. --format text|json only phase1; phase2 adds csv. Text table labels alternatives, integercents formatting, no aggregate/discount. Own tests include provider injection and CLI errors. Preserve reportpendingprovider obligation until real acceptedintegration."
     }
   ],
   "native_development": {
