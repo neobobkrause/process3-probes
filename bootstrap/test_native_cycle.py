@@ -236,6 +236,29 @@ class NativeCycleTests(unittest.TestCase):
         self.assertEqual(sum(call[0]=='process-merge' for call in self.provider.calls),1)
         self.assertEqual(self.store.state['jobs']['provider']['status'],'done')
 
+    def test_prepare_persists_planned_workspace_in_single_reservation_write(self):
+        self.store.state['jobs']['provider']['status']='paused'
+        real=n.git
+        def local_fetch(repo,*args,**kwargs):
+            if args[:2]==('fetch','origin'):return subprocess.CompletedProcess(args,0,'','')
+            if args[:2]==('worktree','add'):args=(*args[:-1],self.base)
+            return real(repo,*args,**kwargs)
+        before=self.store.version
+        with patch.object(n,'git',side_effect=local_fetch):result=self.cycle.prepare('provider')
+        self.assertEqual(self.store.version-before,1)
+        self.assertEqual(self.store.state['jobs']['provider']['workspace'],result['workspace'])
+        self.assertTrue(Path(result['workspace']).is_dir())
+
+    def test_failed_prepare_retains_planned_workspace_without_claiming_execution(self):
+        self.store.state['jobs']['provider']['status']='paused'
+        with patch.object(n,'git',side_effect=RuntimeError('fixture fetch unavailable')):
+            with self.assertRaises(RuntimeError):self.cycle.prepare('provider')
+        job=self.store.state['jobs']['provider']
+        self.assertEqual(job['attempt'],2)
+        self.assertEqual(job['status'],'running')
+        self.assertFalse(Path(job['workspace']).exists())
+        self.assertEqual(job['workspace'],str(self.cycle.runtime/'provider-2'))
+
     def test_replacement_refreshes_provider_baseline_and_preserves_partial_work(self):
         self.change();first=self.cycle.checkpoint('provider','interrupted')
         upstream=self.root/'integration-edit'

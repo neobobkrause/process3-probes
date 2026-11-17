@@ -727,6 +727,9 @@ class Cycle:
             if sum(x['status'] in ACTIVE for x in s['jobs'].values())>=min(s['slots'],s.get('owner_job_cap',8)): raise Rejected('native job slot cap reached')
             j.setdefault('base',base); j.setdefault('original_base',base)
             j['attempt']+=1; j['status']='running'; j['accepted']=False
+            # Planned workspace is deterministic recovery metadata, not proof of execution.
+            # Persist it with the reservation rather than a second remote commit.
+            j['workspace']=str(self.runtime/(jid+'-'+str(j['attempt'])))
             j['notice_ids']=[key for key,n in s['notices'].items() if n['user']==jid and n['status']=='pending']
             c.event(s,'native-reserve',job=jid,attempt=j['attempt'])
         state=self.store.mutate(reserve); job=state['jobs'][jid]
@@ -764,7 +767,6 @@ class Cycle:
                 '\nARCH technical instructions (not owner words): '+json.dumps(job.get('technical_instructions',[]))+
                 '\nProvider notices: '+json.dumps({k:state['notices'][k] for k in job['notice_ids']})+
                 '\nLeave files for controller checkpointing; report actual work and tests, not overall Process4 completion.')
-        self.store.mutate(lambda s:s['jobs'][jid].update(workspace=str(path)))
         return {'job':jid,'attempt':job['attempt'],'workspace':str(path),'prompt':prompt,'branch':job['branch']}
 
     def session(self,jid,address,actor=None):
