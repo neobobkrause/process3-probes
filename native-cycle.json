@@ -578,6 +578,10 @@
       "combined_native_pilot": {
         "status": "done",
         "evidence": "bootstrap/evidence/integrated-pilot/actual-combined-pilot.json; actual3stage clean716b6bdd plus localunpublished release manifest; bounded limits explicitly recorded, not universal completion."
+      },
+      "readiness_assessment": {
+        "status": "running",
+        "evidence": "bootstrap/OWNER-RELIABILITY-ASSESSMENT-20261116.txt; native/RELIABILITY-PHASE.md; priorpilot not overall completion."
       }
     }
   },
@@ -880,5 +884,9 @@
         "generation": 1
       }
     }
+  },
+  "native_readiness": {
+    "required": true,
+    "evidence": {}
   }
 }
