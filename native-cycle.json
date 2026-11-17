@@ -120,7 +120,7 @@
         "-v"
       ],
       "timeout": 180,
-      "status": "running",
+      "status": "interrupting",
       "attempt": 4,
       "branch": "codex/p4-job-native-workshop-20261116-web",
       "instructions": [],
@@ -146,7 +146,7 @@
       "technical_instructions": [
         "This phase supersedes old completed web instructions. Round1: add/run own injected-provider fresh-default regressions for minimum2 and minimum7, report actual failing INCOMPLETE, do not change app yet; preserve partial work for ARCH interruption/checkpoint. Ownpaths only toy/native-cycle/web. No app edits until later correction-phase instruction. Keep oldtests/source, run actual HTTP regression; report INCOMPLETE and remain available for supported interruption; no provider/gitpush/PR/merge/session/process action."
       ],
-      "restart": true
+      "restart": false
     }
   },
   "notices": {
@@ -323,6 +323,14 @@
       "command": "slots",
       "job": null,
       "value": "2",
+      "source": "arch"
+    },
+    {
+      "at": 1794874546.890082,
+      "kind": "native-arch-control",
+      "command": "interrupt",
+      "job": "web",
+      "value": null,
       "source": "arch"
     }
   ],
