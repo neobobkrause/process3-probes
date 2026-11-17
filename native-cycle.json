@@ -122,21 +122,44 @@
         "-v"
       ],
       "timeout": 180,
-      "status": "running",
+      "status": "review",
       "attempt": 7,
       "branch": "codex/p4-job-native-workshop-20261116-web",
       "instructions": [],
-      "checkpoint": "a660e4f8018e2e5a5de91040c46cd0a01ab1303b",
+      "checkpoint": "213863ee30f1aa601b340b6ee319fa9aa42b99d6",
       "base": "191db453b2de66a9cd4bb9d744fa6ac66f28c31b",
       "original_base": "3d4f7dbf624dba0c04af3d67a0b5fcea0b4c2e52",
-      "accepted": false,
+      "accepted": true,
       "notice_ids": [
         "report:eaab4aee7325949a5dee6926c15b5d1b78ff1d44:web"
       ],
       "workspace": "/workspace/work/p4-native-cycle/web-7",
       "session": "/root/p4_root_g2/p4_arch_g5/web_g7",
-      "last_outcome": "blocked",
-      "verification": null,
+      "last_outcome": "completed",
+      "verification": {
+        "returncode": 0,
+        "test_count": 26,
+        "command": [
+          "python3",
+          "-m",
+          "unittest",
+          "discover",
+          "-s",
+          "toy/native-cycle/web",
+          "-p",
+          "test_*.py",
+          "-v"
+        ],
+        "skipped_count": 0,
+        "stdout": "",
+        "stderr": "test_form (test_app.WebTests.test_form) ... ok\ntest_injected_minimum_is_fresh_form_default (test_app.WebTests.test_injected_minimum_is_fresh_form_default) ... ok\ntest_injected_minimum_is_start_again_default (test_app.WebTests.test_injected_minimum_is_start_again_default) ... ok\ntest_injected_revised_provider_and_escaping (test_app.WebTests.test_injected_revised_provider_and_escaping) ... ok\ntest_loopback_only (test_app.WebTests.test_loopback_only) ... ok\ntest_not_found (test_app.WebTests.test_not_found) ... ok\ntest_provider_upper_bound (test_app.WebTests.test_provider_upper_bound) ... ok\ntest_rejected_html_is_retained_and_escaped (test_app.WebTests.test_rejected_html_is_retained_and_escaped) ... ok\ntest_rejected_text_is_retained (test_app.WebTests.test_rejected_text_is_retained) ... ok\ntest_rejected_whitespace_and_empty_are_retained (test_app.WebTests.test_rejected_whitespace_and_empty_are_retained) ... ok\ntest_result_and_refresh (test_app.WebTests.test_result_and_refresh) ... ok\ntest_text_input_supports_editing_rejected_text (test_app.WebTests.test_text_input_supports_editing_rejected_text) ... ok\ntest_valid_request_clears_validation_error (test_app.WebTests.test_valid_request_clears_validation_error) ... ok\ntest_validation (test_app.WebTests.test_validation) ... ok\ntest_actual_integrated_report_default_path (test_comparison.ComparisonTests.test_actual_integrated_report_default_path) ... ok\ntest_changed_provider_bounds_defaults_prices_and_report_injection (test_comparison.ComparisonTests.test_changed_provider_bounds_defaults_prices_and_report_injection) ... ok\ntest_csv_exact_bytes_headers_order_and_roundtrip (test_comparison.ComparisonTests.test_csv_exact_bytes_headers_order_and_roundtrip) ... ok\ntest_html_payload_is_literal_text_not_markup (test_comparison.ComparisonTests.test_html_payload_is_literal_text_not_markup) ... ok\ntest_invalid_batches_are_atomic_retained_and_actionable (test_comparison.ComparisonTests.test_invalid_batches_are_atomic_retained_and_actionable) ... ok\ntest_invalid_csv_is_html_and_no_attachment (test_comparison.ComparisonTests.test_invalid_csv_is_html_and_no_attachment) ... ok\ntest_missing_and_duplicate_parameters (test_comparison.ComparisonTests.test_missing_and_duplicate_parameters) ... ok\ntest_missing_report_does_not_break_single_quote (test_comparison.ComparisonTests.test_missing_report_does_not_break_single_quote) ... ok\ntest_navigation_and_fresh_comparison (test_comparison.ComparisonTests.test_navigation_and_fresh_comparison) ... ok\ntest_ordered_rows_download_link_and_refresh (test_comparison.ComparisonTests.test_ordered_rows_download_link_and_refresh) ... ok\ntest_singleton_eight_options_and_normalized_leading_zeros (test_comparison.ComparisonTests.test_singleton_eight_options_and_normalized_leading_zeros) ... ok\ntest_valid_recovery_and_single_quote_preserved (test_comparison.ComparisonTests.test_valid_recovery_and_single_quote_preserved) ... ok\n\n----------------------------------------------------------------------\nRan 26 tests in 12.624s\n\nOK\n",
+        "observed_at": 1794877430.641554,
+        "actor": "/root/p4_root_g2/p4_arch_g5",
+        "dependency_trees": {
+          "provider": "0fe72988b1cd4a99195a3ef4c2e8316a218cd3e1",
+          "report": "bd62b21a9f10bf2f4f76df433cbf05dfa8769bb4"
+        }
+      },
       "pr": "https://github.com/neobobkrause/process3-probes/pull/284",
       "pr_number": 284,
       "integrated": "716b6bddc6330cb1e0c19a584ee3b225ad9ae8f3",
@@ -309,11 +332,11 @@
       "attempt": 7
     },
     {
-      "at": 1794877020.0071905,
+      "at": 1794877432.2615664,
       "kind": "native-checkpoint",
       "job": "web",
-      "checkpoint": "b5f11ca416c9aab1ef495d81bcc25fc4bd8e6228",
-      "status": "blocked"
+      "checkpoint": "213863ee30f1aa601b340b6ee319fa9aa42b99d6",
+      "status": "review"
     },
     {
       "at": 1794875526.8852262,
