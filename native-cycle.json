@@ -492,6 +492,16 @@
       "job": "report",
       "base": "5c0d6db69a6ea16101e32792e5c5eeedd63cf8a8",
       "checkpoint": "5c0d6db69a6ea16101e32792e5c5eeedd63cf8a8"
+    },
+    {
+      "at": 1794882029.0699477,
+      "kind": "native-lane-recovery",
+      "job": "LANE:quote-comparison",
+      "previous_binding": {
+        "target": "/root/p4_root_g2/p4_arch_g5/p4_lane_quote_comparison_g1",
+        "generation": 1
+      },
+      "evidence": "/workspace/work/p4-native-cycle/evidence/interactive-assessment/root-unsuccessful-actions.json"
     }
   ],
   "native": true,
@@ -1030,14 +1040,10 @@
         "bootstrap/native/approved-layout-design/quote-comparison"
       ],
       "arch": {
-        "target": "/root/p4_root_g2/p4_arch_g5",
-        "generation": 5
+        "target": "/root/p4_root_g3/p4_arch_g6",
+        "generation": 6
       },
-      "status": "active",
-      "session": {
-        "target": "/root/p4_root_g2/p4_arch_g5/p4_lane_quote_comparison_g1",
-        "generation": 1
-      }
+      "status": "requested"
     }
   },
   "native_readiness": {
