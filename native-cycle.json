@@ -841,7 +841,41 @@
         "toy/native-cycle/report"
       ]
     },
-    "module_evidence": {},
+    "module_evidence": {
+      "provider": {
+        "observed": true,
+        "actor": "/root/process4_root/p4_arch_g4",
+        "observed_at": 1794874514.2492955,
+        "source": "Actual native controller module verification at 0ee73afc9ff9d735f1b10b2d4262f1235032760b",
+        "module": "provider",
+        "integration_head": "4414c0325f1e2a56585e644eecccd8abfba8a88e",
+        "tested_head": "0ee73afc9ff9d735f1b10b2d4262f1235032760b",
+        "returncode": 0,
+        "test_count": 4,
+        "command": [
+          "python3",
+          "-m",
+          "unittest",
+          "discover",
+          "-s",
+          "toy/native-cycle/provider",
+          "-p",
+          "test_*.py",
+          "-v"
+        ],
+        "skipped_count": null,
+        "provenance": {
+          "checkpoint": "0ee73afc9ff9d735f1b10b2d4262f1235032760b",
+          "owned_paths": [
+            "toy/native-cycle/provider"
+          ],
+          "owned_trees": {
+            "toy/native-cycle/provider": "0fe72988b1cd4a99195a3ef4c2e8316a218cd3e1"
+          },
+          "dependency_trees": {}
+        }
+      }
+    },
     "walks": {},
     "carry_flaws": {}
   },
