@@ -1,0 +1,21 @@
+{
+  "version": 1,
+  "stopped": false,
+  "slots": 1,
+  "lease": null,
+  "modules": {},
+  "jobs": {},
+  "notices": {},
+  "instructions": [],
+  "roles": {
+    "ROOT": "liveness/recovery",
+    "watcher": "ROOT replacement",
+    "coordinator": "owner control and reporting",
+    "ARCH": "dispatch and technical assignments"
+  },
+  "events": [],
+  "native": true,
+  "integration_branch": "codex/p4-integration-controls-exercise-20261117-g4",
+  "base": "0895148c945cd47f17c0b63b3baf08d14de00f4a",
+  "native_roles": {}
+}
