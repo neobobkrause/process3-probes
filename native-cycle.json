@@ -196,23 +196,46 @@
         "-v"
       ],
       "timeout": 180,
-      "status": "running",
+      "status": "review",
       "attempt": 1,
       "branch": "codex/p4-job-native-workshop-20261116-report",
       "instructions": [],
-      "checkpoint": null,
+      "checkpoint": "1fb981e478a2a68e38abcd11b31fdc8f3ef3e8ee",
       "technical_instructions": [
         "Clarification of phase1 CLI grammar: --quantities takes one comma/newline-separated string exactly per frozenwebgrammar; no JSON-input ambiguity. --format text|json only phase1; phase2 adds csv. Text table labels alternatives, integercents formatting, no aggregate/discount. Own tests include provider injection and CLI errors. Preserve reportpendingprovider obligation until real acceptedintegration."
       ],
       "base": "716b6bddc6330cb1e0c19a584ee3b225ad9ae8f3",
       "original_base": "716b6bddc6330cb1e0c19a584ee3b225ad9ae8f3",
-      "accepted": false,
+      "accepted": true,
       "notice_ids": [
         "provider:0ee73afc9ff9d735f1b10b2d4262f1235032760b:report"
       ],
       "workspace": "/workspace/work/p4-native-cycle/report-1",
       "session": "/root/p4_root_g2/p4_arch_g5/report_g1",
-      "session_generation": 1
+      "session_generation": 1,
+      "last_outcome": "completed",
+      "verification": {
+        "returncode": 0,
+        "test_count": 15,
+        "command": [
+          "python3",
+          "-m",
+          "unittest",
+          "discover",
+          "-s",
+          "toy/native-cycle/report",
+          "-p",
+          "test_*.py",
+          "-v"
+        ],
+        "stdout": "",
+        "stderr": "test_actual_provider_text_and_json (test_quote_report.CliTests.test_actual_provider_text_and_json) ... ok\ntest_injected_provider_and_no_bytecode_write (test_quote_report.CliTests.test_injected_provider_and_no_bytecode_write) ... ok\ntest_invalid_inputs_exit_two_without_partial_output_or_traceback (test_quote_report.CliTests.test_invalid_inputs_exit_two_without_partial_output_or_traceback) ... ok\ntest_missing_provider_and_required_arguments_are_readable (test_quote_report.CliTests.test_missing_provider_and_required_arguments_are_readable) ... ok\ntest_changed_bounds_and_delegated_price_are_not_hardcoded (test_quote_report.ComparisonTests.test_changed_bounds_and_delegated_price_are_not_hardcoded) ... ok\ntest_invalid_items_duplicates_and_bounds (test_quote_report.ComparisonTests.test_invalid_items_duplicates_and_bounds) ... ok\ntest_invalid_provider_cents_cannot_enter_model (test_quote_report.ComparisonTests.test_invalid_provider_cents_cannot_enter_model) ... ok\ntest_invalid_sequence_type_and_size (test_quote_report.ComparisonTests.test_invalid_sequence_type_and_size) ... ok\ntest_model_does_not_mutate_input_or_share_rows (test_quote_report.ComparisonTests.test_model_does_not_mutate_input_or_share_rows) ... ok\ntest_ordered_alternatives_and_real_provider (test_quote_report.ComparisonTests.test_ordered_alternatives_and_real_provider) ... ok\ntest_text_renders_alternatives_without_combined_total (test_quote_report.ComparisonTests.test_text_renders_alternatives_without_combined_total) ... ok\ntest_tuple_and_eight_alternatives (test_quote_report.ComparisonTests.test_tuple_and_eight_alternatives) ... ok\ntest_whole_list_validated_before_pricing (test_quote_report.ComparisonTests.test_whole_list_validated_before_pricing) ... ok\ntest_comma_newline_whitespace_and_normalization (test_quote_report.GrammarTests.test_comma_newline_whitespace_and_normalization) ... ok\ntest_rejected_grammar_is_atomic (test_quote_report.GrammarTests.test_rejected_grammar_is_atomic) ... ok\n\n----------------------------------------------------------------------\nRan 15 tests in 0.377s\n\nOK\n",
+        "observed_at": 1794876827.462251,
+        "actor": "/root/p4_root_g2/p4_arch_g5",
+        "dependency_trees": {
+          "provider": "0fe72988b1cd4a99195a3ef4c2e8316a218cd3e1"
+        }
+      }
     }
   },
   "notices": {
@@ -229,6 +252,14 @@
       "status": "pending",
       "first_unconsumed_commit": "26796e064fb586ca893124bd8ec2414699bedd6c",
       "change_count": 3
+    },
+    "report:1fb981e478a2a68e38abcd11b31fdc8f3ef3e8ee:web": {
+      "provider": "report",
+      "user": "web",
+      "commit": "1fb981e478a2a68e38abcd11b31fdc8f3ef3e8ee",
+      "status": "pending",
+      "first_unconsumed_commit": "1fb981e478a2a68e38abcd11b31fdc8f3ef3e8ee",
+      "change_count": 1
     }
   },
   "instructions": [],
@@ -419,6 +450,13 @@
       "kind": "native-reserve",
       "job": "report",
       "attempt": 1
+    },
+    {
+      "at": 1794876829.1183367,
+      "kind": "native-checkpoint",
+      "job": "report",
+      "checkpoint": "1fb981e478a2a68e38abcd11b31fdc8f3ef3e8ee",
+      "status": "review"
     }
   ],
   "native": true,
