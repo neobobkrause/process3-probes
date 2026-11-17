@@ -1,0 +1,19 @@
+{
+  "observed_at": 1794877265.5767243,
+  "author": "replacement ROOT3 at console request",
+  "status": "PROPOSED NOT ADOPTED",
+  "source_modified": false,
+  "active_policy_changed": false,
+  "verification": "9 isolated offline candidate assertions passed; see candidate-offline-verification.json. No active controller/native approved recovery verified.",
+  "required_before_adoption": [
+    "actual owner semantic decision",
+    "trusted adoption adapter preserving exact approval; none implemented",
+    "review all governing guards",
+    "candidate tests and actual native replacement with stop retained"
+  ],
+  "scope": "planner candidate only, intentionally no CLI/adoption writer; field names are proposed interfaces, not existing owner authorization",
+  "authorship": {
+    "original_proposal": "PROCESS generation2 /root/p4_root_g2/p4_process_g2",
+    "candidate_patch_and_offline_assertions": "ROOT generation3 /root/p4_root_g3, subsequently requested by console; not PROCESS-authored"
+  }
+}

@@ -1,0 +1,91 @@
+{
+  "source_results": "/workspace/work/p4-controls-exercise-20261117-g4/results.json",
+  "selected_actual_results": [
+    {
+      "name": "technical-continue-denied",
+      "argv": [
+        "python",
+        "bootstrap/native/cycle.py",
+        "--state",
+        "codex/p4-state-native-controls-exercise-20261117-g4",
+        "--runtime",
+        "/workspace/work/p4-controls-exercise-20261117-g4",
+        "control",
+        "continue",
+        "--source",
+        "arch"
+      ],
+      "started_at": 1794876496.795361,
+      "finished_at": 1794876497.2513208,
+      "returncode": 1,
+      "stdout": "",
+      "stderr": "Traceback (most recent call last):\n  File \"/workspace/process3-probes/bootstrap/native/cycle.py\", line 1019, in <module>\n    if __name__=='__main__':main()\n                            ^^^^^^\n  File \"/workspace/process3-probes/bootstrap/native/cycle.py\", line 985, in main\n    elif args.command=='control':result=store.mutate(lambda s:control(s,args.action,args.job,args.value,args.source))\n                                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/workspace/process3-probes/bootstrap/native/cycle.py\", line 287, in mutate\n    state,sha=self.read();before=copy.deepcopy(state);action(state)\n                                                      ^^^^^^^^^^^^^\n  File \"/workspace/process3-probes/bootstrap/native/cycle.py\", line 985, in <lambda>\n    elif args.command=='control':result=store.mutate(lambda s:control(s,args.action,args.job,args.value,args.source))\n                                                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/workspace/process3-probes/bootstrap/native/cycle.py\", line 346, in control\n    raise Rejected('technical control cannot clear an actual owner stop')\nRejected: technical control cannot clear an actual owner stop\n",
+      "expected_success": false
+    },
+    {
+      "name": "stopped-state",
+      "argv": [
+        "python",
+        "bootstrap/native/cycle.py",
+        "--state",
+        "codex/p4-state-native-controls-exercise-20261117-g4",
+        "--runtime",
+        "/workspace/work/p4-controls-exercise-20261117-g4",
+        "status"
+      ],
+      "started_at": 1794876497.2519536,
+      "finished_at": 1794876497.5283256,
+      "returncode": 0,
+      "stdout": "{\n  \"version\": 1,\n  \"stopped\": true,\n  \"slots\": 2,\n  \"lease\": null,\n  \"modules\": {\n    \"alpha\": {\n      \"id\": \"alpha\",\n      \"order\": 10,\n      \"paths\": [\n        \"toy/controls-exercise/alpha\"\n      ],\n      \"uses\": []\n    },\n    \"beta\": {\n      \"id\": \"beta\",\n      \"order\": 20,\n      \"paths\": [\n        \"toy/controls-exercise/beta\"\n      ],\n      \"uses\": []\n    }\n  },\n  \"jobs\": {\n    \"alpha\": {\n      \"id\": \"alpha\",\n      \"order\": 10,\n      \"paths\": [\n        \"toy/controls-exercise/alpha\"\n      ],\n      \"uses\": [],\n      \"prompt\": \"EXERCISE inert scheduling fixture. Never prepare or execute source work.\",\n      \"completion\": \"EXERCISE no product execution\",\n      \"verify\": [\n        \"python3\",\n        \"-c\",\n        \"pass\"\n      ],\n      \"timeout\": 10,\n      \"status\": \"paused\",\n      \"attempt\": 0,\n      \"branch\": \"codex/p4-job-native-controls-exercise-20261117-g4-alpha\",\n      \"instructions\": [],\n      \"checkpoint\": null,\n      \"restart\": false\n    },\n    \"beta\": {\n      \"id\": \"beta\",\n      \"order\": 20,\n      \"paths\": [\n        \"toy/controls-exercise/beta\"\n      ],\n      \"uses\": [],\n      \"prompt\": \"EXERCISE inert scheduling fixture. Never prepare or execute source work.\",\n      \"completion\": \"EXERCISE no product execution\",\n      \"verify\": [\n        \"python3\",\n        \"-c\",\n        \"pass\"\n      ],\n      \"timeout\": 10,\n      \"status\": \"ready\",\n      \"attempt\": 0,\n      \"branch\": \"codex/p4-job-native-controls-exercise-20261117-g4-beta\",\n      \"instructions\": [],\n      \"checkpoint\": null,\n      \"priority\": 5\n    }\n  },\n  \"notices\": {},\n  \"instructions\": [],\n  \"roles\": {\n    \"ROOT\": \"liveness/recovery\",\n    \"watcher\": \"ROOT replacement\",\n    \"coordinator\": \"owner control and reporting\",\n    \"ARCH\": \"dispatch and technical assignments\"\n  },\n  \"events\": [\n    {\n      \"at\": 1794876482.851076,\n      \"kind\": \"assignment\",\n      \"job\": \"alpha\"\n    },\n    {\n      \"at\": 1794876484.4679513,\n      \"kind\": \"assignment\",\n      \"job\": \"beta\"\n    },\n    {\n      \"at\": 1794876485.9671595,\n      \"kind\": \"owner-control\",\n      \"command\": \"slots\",\n      \"job\": null,\n      \"value\": \"2\"\n    },\n    {\n      \"at\": 1794876488.3259225,\n      \"kind\": \"owner-control\",\n      \"command\": \"priority\",\n      \"job\": \"beta\",\n      \"value\": \"5\"\n    },\n    {\n      \"at\": 1794876490.4880128,\n      \"kind\": \"owner-control\",\n      \"command\": \"slots\",\n      \"job\": null,\n      \"value\": \"1\"\n    },\n    {\n      \"at\": 1794876492.3370194,\n      \"kind\": \"owner-control\",\n      \"command\": \"slots\",\n      \"job\": null,\n      \"value\": \"2\"\n    },\n    {\n      \"at\": 1794876493.76663,\n      \"kind\": \"owner-control\",\n      \"command\": \"interrupt\",\n      \"job\": \"alpha\",\n      \"value\": null\n    },\n    {\n      \"at\": 1794876495.6216671,\n      \"kind\": \"owner-control\",\n      \"command\": \"stop\",\n      \"job\": null,\n      \"value\": null\n    }\n  ],\n  \"native\": true,\n  \"integration_branch\": \"codex/p4-integration-controls-exercise-20261117-g4\",\n  \"base\": \"0895148c945cd47f17c0b63b3baf08d14de00f4a\",\n  \"native_roles\": {\n    \"ROOT\": {\n      \"target\": \"/root/p4_root_g2\",\n      \"generation\": 2\n    },\n    \"ARCH\": {\n      \"target\": \"/root/p4_root_g2/p4_arch_g5\",\n      \"generation\": 5\n    },\n    \"COORDINATOR\": {\n      \"target\": \"/root/p4_root_g2/p4_coordinator_g4\",\n      \"generation\": 4\n    }\n  },\n  \"native_layout\": {\n    \"mode\": \"addressable_root\",\n    \"console\": \"/root\",\n    \"approval_evidence\": \"bootstrap/OWNER-ROOT-LAYOUT-APPROVAL-20261116.txt\",\n    \"identity_source\": \"trusted supervisor observed owner approval\"\n  },\n  \"owner_job_cap\": 2,\n  \"stop_source\": \"owner\"\n}\n",
+      "stderr": "",
+      "expected_success": true
+    },
+    {
+      "name": "stopped-supervision-holds-including-coordinator",
+      "argv": [
+        "python",
+        "bootstrap/native/cycle.py",
+        "--state",
+        "codex/p4-state-native-controls-exercise-20261117-g4",
+        "--runtime",
+        "/workspace/work/p4-controls-exercise-20261117-g4",
+        "supervision-plan",
+        "--actor",
+        "/root/p4_root_g2",
+        "--observations",
+        "/workspace/work/p4-controls-exercise-20261117-g4/supervision-observations.json",
+        "--native-capacity",
+        "1",
+        "--pending-role",
+        "COORDINATOR"
+      ],
+      "started_at": 1794876498.1503336,
+      "finished_at": 1794876498.4505599,
+      "returncode": 0,
+      "stdout": "{\n  \"actor\": \"/root/p4_root_g2\",\n  \"actions\": [],\n  \"holds\": [\n    {\n      \"role\": \"ARCH\",\n      \"reason\": \"durable stop preserved\",\n      \"stop_source\": \"owner\"\n    },\n    {\n      \"role\": \"COORDINATOR\",\n      \"reason\": \"durable stop preserved\",\n      \"stop_source\": \"owner\"\n    }\n  ],\n  \"healthy\": [],\n  \"owner_job_cap\": 2,\n  \"technical_slots\": 2,\n  \"native_capacity\": 1,\n  \"execution_required\": \"actual native tool calls; no action receipt generated\"\n}\n",
+      "stderr": "",
+      "expected_success": true
+    },
+    {
+      "name": "stopped-prepare-denied",
+      "argv": [
+        "python",
+        "bootstrap/native/cycle.py",
+        "--state",
+        "codex/p4-state-native-controls-exercise-20261117-g4",
+        "--runtime",
+        "/workspace/work/p4-controls-exercise-20261117-g4",
+        "prepare",
+        "beta"
+      ],
+      "started_at": 1794876498.4512699,
+      "finished_at": 1794876498.7393715,
+      "returncode": 1,
+      "stdout": "",
+      "stderr": "Traceback (most recent call last):\n  File \"/workspace/process3-probes/bootstrap/native/cycle.py\", line 1019, in <module>\n    if __name__=='__main__':main()\n                            ^^^^^^\n  File \"/workspace/process3-probes/bootstrap/native/cycle.py\", line 988, in main\n    if args.command=='prepare':result=cycle.prepare(args.job)\n                                      ^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/workspace/process3-probes/bootstrap/native/cycle.py\", line 703, in prepare\n    if state['stopped'] or job['status'] not in ('ready','paused','blocked'): raise Rejected('job not dispatchable or run stopped')\n                                                                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nRejected: job not dispatchable or run stopped\n",
+      "expected_success": false
+    }
+  ],
+  "exercise_only": true,
+  "real_owner_stop_issued": false
+}

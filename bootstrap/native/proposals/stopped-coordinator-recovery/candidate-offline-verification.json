@@ -1,0 +1,23 @@
+{
+  "observed_at": 1794877300.9021838,
+  "status": "proposal-only offline checks passed",
+  "checks": [
+    "unchanged default stopped state holds all roles",
+    "PROCESS proposal does not activate candidate",
+    "synthetic future opt-in permits coordinator replacement only",
+    "planner does not clear stop",
+    "stale inventory holds",
+    "running coordinator not interrupted or steered under stop",
+    "ARCH remains held",
+    "explicit running coordinator interrupt remains held",
+    "wrong creator rejected"
+  ],
+  "count": 9,
+  "active_source_modified": false,
+  "actual_native_recovery_executed": false,
+  "owner_approval_present": false,
+  "limitations": [
+    "Synthetic candidate policy packet does not authenticate owner. Trusted adoption adapter and actual approval remain absent.",
+    "No product/controller/grants regression suite claimed; not ready for adoption."
+  ]
+}
