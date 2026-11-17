@@ -63,7 +63,7 @@
       "base": "7fbcbd444c748179ad76220c22c3d0f93f6ad901",
       "notice_ids": [],
       "workspace": "/workspace/work/p4-native-cycle/provider-3",
-      "session": "/root/p4_arch_native_cycle/provider_job",
+      "session": "/root/process4_root/p4_arch_g4/provider_g3",
       "last_outcome": "completed",
       "verification": {
         "returncode": 0,
@@ -80,7 +80,8 @@
       "trusted_baseline_merges": [],
       "technical_instructions": [
         "Work only within assigned module paths and own tests/README. No bootstrap/process/.process/settings/grants/credentials/account/inference-API/other-module edits, git push, PR, merge or new sessions. Python standard library only. Leave preservation/provider operations to native controller. Report actual tests and unfinished work truthfully. Later ARCH technical revision supersedes completed initial quantity contract only: raise MIN_QUANTITY from 1 to 2, keep MAX_QUANTITY=50 and UNIT_PRICE_CENTS=275 and signature/type validation. Update bound-aware messages/docs/own tests: 2=550,12=3300,50=13750;1 and51 rejected, bool/nonints rejected. Do not change web. Report consumer-visible effects."
-      ]
+      ],
+      "session_generation": 3
     },
     "web": {
       "id": "web",
@@ -489,6 +490,10 @@
     "PROCESS": {
       "target": "/root/process4_root/p4_process_g1",
       "generation": 1
+    },
+    "JOB:provider": {
+      "target": "/root/process4_root/p4_arch_g4/provider_g3",
+      "generation": 3
     }
   },
   "native_layout": {
