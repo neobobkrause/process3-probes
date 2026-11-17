@@ -1004,7 +1004,16 @@
         "limits": "One headless Chromium version and loopback development deployment; no cross-browser, production, payment or public publication claim."
       }
     },
-    "carry_flaws": {}
+    "carry_flaws": {},
+    "prepared_release": {
+      "head": "4414c0325f1e2a56585e644eecccd8abfba8a88e",
+      "release_id": "workshop-comparison-20261117",
+      "path": "/workspace/work/p4-native-cycle/evidence/extended-assessment/development-release.json",
+      "sha256": "21d67455e6cbd1a8261ebce55c7a1d4b4af8a67e43712ea457c9b1ece94724fb",
+      "bytes": 1038,
+      "published": false,
+      "scope": "local development manifest only"
+    }
   },
   "design_lanes": {
     "quote-comparison": {
