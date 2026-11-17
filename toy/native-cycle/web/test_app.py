@@ -1,5 +1,7 @@
 """Real HTTP coverage of the workshop-card screens and provider injection."""
 import http.client
+from contextlib import contextmanager
+from html.parser import HTMLParser
 from pathlib import Path
 import tempfile
 import sys
@@ -41,7 +43,7 @@ class WebTests(unittest.TestCase):
         self.assertEqual(content_type, "text/html; charset=utf-8")
         for text in ('<title>Workshop card quote</title>', '<h1>Workshop card quote</h1>',
                      '<label for="quantity">Quantity</label>', 'name="quantity"',
-                     'min="1" max="50" value="1"', '$2.75', '1–50',
+                     'min="2" max="50" value="2"', '$2.75', '2–50',
                      'action="/quote" method="get"', '>Get quote</button>'):
             self.assertIn(text, body)
         self.assertNotIn('id="quote-result"', body)
@@ -56,13 +58,13 @@ class WebTests(unittest.TestCase):
             self.assertNotIn('role="alert"', body)
 
     def test_validation(self):
-        for query in ('', 'quantity=0', 'quantity=51', 'quantity=', 'quantity=1&quantity=2',
+        for query in ('', 'quantity=0', 'quantity=1', 'quantity=51', 'quantity=', 'quantity=1&quantity=2',
                       'quantity=1.0', 'quantity=1e1', 'quantity=%2B1', 'quantity=-1',
                       'quantity=' + quote('１２'), 'quantity=' + quote('<script>"&')):
             with self.subTest(query=query):
                 status, _, body = self.get('/quote?' + query)
                 self.assertEqual(status, 400)
-                self.assertIn('role="alert">Enter a whole quantity from 1 to 50.', body)
+                self.assertIn('role="alert">Enter a whole quantity from 2 to 50.', body)
                 self.assertNotIn('id="quote-result"', body)
                 self.assertNotIn('<script>', body)
         self.assertEqual(self.get('/quote?quantity=%2012%20')[0], 200)
@@ -108,7 +110,7 @@ class WebTests(unittest.TestCase):
         self.assertEqual(self.get('/quote?quantity=51')[0], 400)
 
     def test_rejected_whitespace_and_empty_are_retained(self):
-        for rejected in (' abc ', ''):
+        for rejected in (' abc ', '', '1'):
             with self.subTest(rejected=rejected):
                 status, _, body = self.get('/quote?quantity=' + quote(rejected))
                 self.assertEqual(status, 400)
@@ -126,6 +128,63 @@ class WebTests(unittest.TestCase):
         for host in ('0.0.0.0', 'example.com', '192.168.1.1'):
             with self.assertRaises(ValueError):
                 app.create_server(host, 0, '.')
+
+    @contextmanager
+    def injected_minimum(self, minimum):
+        """Serve the app against an independent provider contract."""
+        with tempfile.TemporaryDirectory() as directory:
+            Path(directory, 'quote_provider.py').write_text(
+                f'MIN_QUANTITY = {minimum}\nMAX_QUANTITY = 50\nUNIT_PRICE_CENTS = 275\n'
+                'def price_for(quantity):\n'
+                '    if type(quantity) is not int or not MIN_QUANTITY <= quantity <= MAX_QUANTITY: raise ValueError()\n'
+                '    return quantity * UNIT_PRICE_CENTS\n', encoding='utf-8')
+            other = app.create_server('127.0.0.1', 0, directory)
+            thread = threading.Thread(target=other.serve_forever)
+            thread.start()
+            original = self.server
+            self.server = other
+            try:
+                yield
+            finally:
+                self.server = original
+                other.shutdown()
+                other.server_close()
+                thread.join()
+
+    def quantity_field(self, body):
+        class FormParser(HTMLParser):
+            def __init__(self):
+                super().__init__()
+                self.quantity = []
+            def handle_starttag(self, tag, attrs):
+                attrs = dict(attrs)
+                if tag == 'input' and attrs.get('name') == 'quantity':
+                    self.quantity.append(attrs)
+        parser = FormParser()
+        parser.feed(body)
+        self.assertEqual(len(parser.quantity), 1)
+        return parser.quantity[0]
+
+    def test_injected_minimum_is_fresh_form_default(self):
+        for minimum in (2, 7):
+            with self.subTest(minimum=minimum), self.injected_minimum(minimum):
+                status, _, body = self.get('/')
+                self.assertEqual(status, 200)
+                field = self.quantity_field(body)
+                self.assertEqual(field['min'], str(minimum))
+                self.assertEqual(field['value'], str(minimum))
+                self.assertNotIn('role="alert"', body)
+
+    def test_injected_minimum_is_start_again_default(self):
+        for minimum in (2, 7):
+            with self.subTest(minimum=minimum), self.injected_minimum(minimum):
+                status, _, quote_body = self.get('/quote?quantity=' + str(minimum))
+                self.assertEqual(status, 200)
+                self.assertIn('href="/">Start again', quote_body)
+                status, _, fresh_body = self.get('/')
+                self.assertEqual(status, 200)
+                self.assertEqual(self.quantity_field(fresh_body)['value'], str(minimum))
+                self.assertNotIn('id="quote-result"', fresh_body)
 
     def test_injected_revised_provider_and_escaping(self):
         with tempfile.TemporaryDirectory() as directory:
