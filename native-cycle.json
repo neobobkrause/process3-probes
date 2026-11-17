@@ -25,6 +25,10 @@
     "ARCH": {
       "target": "/root/p4_root_g2/p4_arch_g5",
       "generation": 5
+    },
+    "COORDINATOR": {
+      "target": "/root/p4_root_g2/p4_coordinator_g4",
+      "generation": 4
     }
   },
   "native_layout": {
