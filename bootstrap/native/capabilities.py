@@ -11,7 +11,7 @@ from typing import Mapping
 REQUIRED=(
     'managed_execution','native_child_start','native_child_message',
     'native_child_interrupt','native_child_replacement','hosted_wake_delivery',
-    'standing_root','coordinator','arch_job_management','reactive_inter_session','job_ownership_instructions',
+    'standing_root','coordinator','arch_job_management','reactive_inter_session','interactive_sessions','job_ownership_instructions',
     'ownership_integration_control','automated_preservation_pr',
     'authorized_working_integration','all_user_notifications','unfinished_recovery',
     'module_tests','internal_walk','external_walk','consequential_restrictions',

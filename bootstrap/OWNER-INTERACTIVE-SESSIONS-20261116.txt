@@ -1,0 +1,31 @@
+One essential clarification to the owner-interaction requirement:
+
+**All Process4 sessions are genuinely interactive sessions, not disposable one-shot tasks.**
+
+ROOT, ARCH, the coordinator, PROCESS, design lanes, and module jobs may need to remain available beyond completion of their initial assignment.
+
+An agent completing its current work must not automatically mean that its session is retired, archived, or permanently closed.
+
+A session must be able to become idle while remaining available for subsequent messages, questions, instructions, and new assignments. Incoming messages must reactivate it promptly through the supported native communication mechanism.
+
+The owner must be able to conduct substantive, ongoing conversations with the coordinator, ARCH, design lanes, and PROCESS. These conversations may span multiple turns, idle periods, new assignments, and session replacements.
+
+Jobs ordinarily need less direct owner interaction, but they too must remain reachable while their session is retained.
+
+Distinguish clearly between:
+
+- Completion of a turn.
+- Completion of an assignment.
+- A session becoming idle.
+- Replacement of a session.
+- Deliberate retirement of a session or role.
+
+Do not treat these as equivalent events.
+
+Investigate whether the current native subagent lifecycle actually supports this behavior, including whether completed native agents can be reactivated and whether the user can interact with them through the supported interface.
+
+Preserve a stable logical identity and conversation continuity for each standing role. Replace underlying session instances when appropriate without losing decisions, important context, or pending messages.
+
+Treat full interactivity and continuing availability as essential Process4 capabilities, not optional user-interface conveniences.
+
+Integrate this clarification into the ongoing interaction implementation and its acceptance tests. Do not declare operational readiness based solely on successful task execution or the ability to inspect completed transcripts.

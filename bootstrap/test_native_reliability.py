@@ -8,6 +8,17 @@ class ReliabilityTests(unittest.TestCase):
         self.assertEqual(result['status'], 'assessment_incomplete')
         self.assertEqual(set(result['unfinished']), set(CHECKS))
 
+    def test_completed_development_does_not_substitute_for_interactive_sessions(self):
+        rows = {key: {'checks': dict.fromkeys(checks, True), 'evidence': 'historical-development-artifact'}
+                for key, checks in CHECKS.items() if key != 'interactive_sessions'}
+        result = assess(rows)
+        self.assertEqual(result['status'], 'assessment_incomplete')
+        self.assertIn('interactive_sessions', result['unfinished'])
+        rows['interactive_sessions'] = {'checks': dict.fromkeys(CHECKS['interactive_sessions'], True),
+            'evidence': 'completed-transcript-only'}
+        rows['interactive_sessions']['checks']['owner_supported_interface'] = False
+        self.assertEqual(assess(rows)['status'], 'assessment_incomplete')
+
     def test_confirmed_stop_recovery_block_remains_not_ready_with_other_areas_done(self):
         rows = {key: {'checks': dict.fromkeys(checks, True), 'evidence': 'actual-artifact'}
                 for key, checks in CHECKS.items()}

@@ -9,6 +9,9 @@ from collections.abc import Mapping
 import math
 
 CHECKS = {
+    'interactive_sessions': ('turn_assignment_separation', 'retained_idle_reactivation', 'multi_turn_conversation',
+                             'owner_supported_interface', 'stable_role_identity', 'replacement_context',
+                             'pending_questions_preserved', 'explicit_retirement'),
     'parallel_jobs': ('actual_overlap', 'arch_supervised', 'slot_refilled', 'limits_preserved'),
     'multi_round_tranche': ('real_requirement', 'multiple_heads', 'stages_repeated', 'actual_flaws_resolved'),
     'design_lane': ('qualified', 'arch_question_route', 'knowledge_preserved', 'output_integrated'),
