@@ -3,8 +3,39 @@
   "stopped": false,
   "slots": 1,
   "lease": null,
-  "modules": {},
-  "jobs": {},
+  "modules": {
+    "alpha": {
+      "id": "alpha",
+      "order": 10,
+      "paths": [
+        "toy/controls-exercise/alpha"
+      ],
+      "uses": []
+    }
+  },
+  "jobs": {
+    "alpha": {
+      "id": "alpha",
+      "order": 10,
+      "paths": [
+        "toy/controls-exercise/alpha"
+      ],
+      "uses": [],
+      "prompt": "EXERCISE inert scheduling fixture. Never prepare or execute source work.",
+      "completion": "EXERCISE no product execution",
+      "verify": [
+        "python3",
+        "-c",
+        "pass"
+      ],
+      "timeout": 10,
+      "status": "ready",
+      "attempt": 0,
+      "branch": "codex/p4-job-native-controls-exercise-20261117-g4-alpha",
+      "instructions": [],
+      "checkpoint": null
+    }
+  },
   "notices": {},
   "instructions": [],
   "roles": {
@@ -13,7 +44,13 @@
     "coordinator": "owner control and reporting",
     "ARCH": "dispatch and technical assignments"
   },
-  "events": [],
+  "events": [
+    {
+      "at": 1794876482.851076,
+      "kind": "assignment",
+      "job": "alpha"
+    }
+  ],
   "native": true,
   "integration_branch": "codex/p4-integration-controls-exercise-20261117-g4",
   "base": "0895148c945cd47f17c0b63b3baf08d14de00f4a",
