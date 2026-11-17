@@ -506,8 +506,8 @@
       "generation": 5
     },
     "WATCHER": {
-      "target": "/root/p4_watcher_g2",
-      "generation": 2
+      "target": "/root/p4_watcher_g3",
+      "generation": 3
     },
     "ROOT": {
       "target": "/root/p4_root_g2",
