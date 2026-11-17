@@ -1,3 +1,18 @@
+# Live pilot recovery — 2026-11-17
+
+Console observed old operating ROOT interrupted in actual native inventory. It
+executed the supported supervision plan, created sibling /root/p4_root_g2 and
+registered ROOT generation2 after actual READY. No branches or jobs reset.
+Current roles must always be resolved from layout-status and fresh inventory;
+addresses in historical sections below are historical, not dispatch targets.
+Provider attempt3 PR280 is review; web attempt4 PR281 is paused with its real
+partial regression checkpoint. Replacement ROOT is recovering ARCH and continuing
+the combined pilot. Pilot remains incomplete until current module/internal/external
+results and development-release preparation are actually observed.
+
+Controller reservation now counts running, interrupting and review jobs against
+technical slots and owner cap, matching the integrated scheduling planner.
+
 # Current phase: combined unattended pilot
 
 Four streams merged through pinned process tool into authorized brokerbranch:

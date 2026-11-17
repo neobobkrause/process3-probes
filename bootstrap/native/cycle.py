@@ -707,7 +707,8 @@ class Cycle:
         def reserve(s):
             j=s['jobs'][jid]
             if s['stopped'] or j['status'] not in ('ready','paused','blocked'): raise Rejected('job changed before reservation')
-            if sum(x['status']=='running' for x in s['jobs'].values())>=s['slots']: raise Rejected('native job slot cap reached')
+            from native.scheduling import ACTIVE
+            if sum(x['status'] in ACTIVE for x in s['jobs'].values())>=min(s['slots'],s.get('owner_job_cap',8)): raise Rejected('native job slot cap reached')
             j.setdefault('base',base); j.setdefault('original_base',base)
             j['attempt']+=1; j['status']='running'; j['accepted']=False
             j['notice_ids']=[key for key,n in s['notices'].items() if n['user']==jid and n['status']=='pending']

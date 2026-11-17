@@ -479,6 +479,16 @@ class NativeCycleTests(unittest.TestCase):
         with self.assertRaisesRegex(n.Rejected,'verification pending'):self.cycle.prepare('provider')
         self.assertEqual(self.store.state,before);self.assertEqual(self.provider.calls,[])
 
+    def test_reservation_counts_review_and_interrupting_against_slot_cap(self):
+        for status in ('review','interrupting','running'):
+            with self.subTest(status=status):
+                self.store.state['jobs']['provider']['status']='ready'
+                self.store.state['jobs']['peer']={'status':status}
+                before=copy.deepcopy(self.store.state)
+                with self.assertRaisesRegex(n.Rejected,'slot cap'):
+                    self.cycle.prepare('provider')
+                self.assertEqual(self.store.state,before)
+
     def test_repeated_owner_record_milestone_does_not_write_an_empty_remote_commit(self):
         self.cycle.adopt_layout('fixture observed approval')
         self.cycle.register_role('ROOT','/root/supervisor',1,actor='/root')
