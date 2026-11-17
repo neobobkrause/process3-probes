@@ -135,8 +135,8 @@
       "session": "/root/p4_root_g2/p4_arch_g5/web_g6",
       "last_outcome": "blocked",
       "verification": null,
-      "pr": "https://github.com/neobobkrause/process3-probes/pull/281",
-      "pr_number": 281,
+      "pr": "https://github.com/neobobkrause/process3-probes/pull/284",
+      "pr_number": 284,
       "integrated": "716b6bddc6330cb1e0c19a584ee3b225ad9ae8f3",
       "trusted_baseline_merges": [
         {
