@@ -1,0 +1,35 @@
+{
+  "schema": 1,
+  "status": "ARCH-accepted product design",
+  "arch": "/root/p4_root_g2/p4_arch_g5",
+  "lane": "/root/p4_root_g2/p4_arch_g5/p4_lane_quote_comparison_g1",
+  "owner_need_evidence": "bootstrap/OWNER-RELIABILITY-ASSESSMENT-20261116.txt, item 3",
+  "scope": "Quantity alternatives and CSV export for the disposable workshop-card proof app; not a governing process change",
+  "module": "toy/native-cycle/report/quote_report.py",
+  "build_comparison": {
+    "signature": "build_comparison(provider, quantities)",
+    "input": "A list or tuple of 1 through 8 distinct integers, excluding bool; each within provider MIN_QUANTITY..MAX_QUANTITY. Reject strings, mappings, generators, empty/oversize sequences, duplicate normalized quantities, nonintegers and out-of-bounds values with ValueError.",
+    "result": {"min_quantity": "provider.MIN_QUANTITY", "max_quantity": "provider.MAX_QUANTITY", "unit_price_cents": "provider.UNIT_PRICE_CENTS", "rows": [{"quantity": "input integer, preserved order", "total_cents": "provider.price_for(quantity), integer cents"}]},
+    "semantics": "Rows are alternatives, never a combined order. No aggregate total, fabricated discount or changed provider pricing. Provider values are injected, never hardcoded."
+  },
+  "to_csv": {
+    "signature": "to_csv(comparison)",
+    "result": "str",
+    "header": ["quantity", "unit_price_cents", "total_cents"],
+    "line_ending": "CRLF",
+    "rows": "Same order as comparison.rows; integer values only, one row per alternative. No currency symbols or floats."
+  },
+  "web": {
+    "routes": {"/compare": "Fresh form when no query string; otherwise validate exactly one quantities parameter and render comparison or HTML 400", "/compare.csv": "Validate exactly one quantities parameter, emit valid CSV attachment or HTML 400"},
+    "input_name": "quantities",
+    "input_control": "Labelled textarea; raw submitted text retained and HTML escaped on validation errors",
+    "grammar": "Comma or newline separators; strip surrounding token whitespace; each token nonempty ASCII unsigned decimal digits only. Reject empty tokens, including trailing separators; signs, exponent, decimal, non-ASCII digits, duplicate normalized quantities, and fewer than 1 or more than 8 alternatives. All-or-nothing validation.",
+    "query_validation": "Missing/empty quantities on a submitted query and duplicate quantities parameters return 400. Unknown unrelated parameters do not substitute for quantities.",
+    "fresh_defaults": "Use 2,12,50 at the current provider contract. With changed provider bounds, derive valid unique alternatives by clamping these examples into the provider range and removing duplicates in order; no invalid fresh default.",
+    "model_consumption": "Call the injected report module, never duplicate pricing logic. Show provider-driven bounds/unit price, a comparison table and a CSV download link. Preserve every existing single-quote route/behavior; include navigation between flows.",
+    "injection": "Optional report_path argument to create_server and optional CLI --report-path; default sibling report directory so existing development-plan argv remains valid.",
+    "csv_response": {"status": 200, "content_type": "text/csv; charset=utf-8", "content_disposition": "attachment; filename=quote-comparison.csv", "encoding": "UTF-8"}
+  },
+  "delivery_sequence": ["Report JOB 1 implements comparison model plus CLI text/JSON output", "Independent web JOB builds complete UI against an injected report stub", "Report JOB 2 adds CSV export plus CLI CSV format, preserving the frozen API", "Web final module verification uses actual integrated report dependency before acceptance"],
+  "product_stages": ["module tests", "internal Screens walk", "external Journeys browser walk"]
+}
