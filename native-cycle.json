@@ -718,7 +718,24 @@
         }
       }
     },
-    "walks": {},
+    "walks": {
+      "internal_walk": {
+        "observed": true,
+        "actor": "/root/p4_root_g2/p4_arch_g5",
+        "source": "Actual final source inspection and ephemeral loopback HTTP screen walk; /workspace/work/p4-native-cycle/evidence/current-pilot/internal-observations.json",
+        "observed_at": 1794875566.049664,
+        "head": "716b6bddc6330cb1e0c19a584ee3b225ad9ae8f3",
+        "design": "bootstrap/native/approved-layout-design/UX_SCREENS.md",
+        "coverage": [
+          "S1",
+          "S2",
+          "S3",
+          "S4"
+        ],
+        "outcome": "clean",
+        "flaws": []
+      }
+    },
     "carry_flaws": {}
   }
 }
