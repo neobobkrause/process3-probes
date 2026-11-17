@@ -634,5 +634,24 @@
       "job": "web",
       "text": "Correction phase supersedes round1 test-only limitation: preserve existing real failing HTTP regressions and same branch/PR. Implement fresh GET / and Start again default derived dynamically from injected provider.MIN_QUANTITY, never literal2. Preserve submitted invalid text including empty/1 and safe escaping, existing validation and loopback controls. Update own README from unfinished to actual correction. Ownpaths only toy/native-cycle/web; do not edit provider/process/bootstrap or commit/push/PR/merge/start sessions. Run full own HTTP unittest suite and report actual result. Provider minimum2 accepted integration00c5b6bb990fdf0f8ac069c2bd795ddce1d29788; prepared trustedbaseline incorporates it. Notice acknowledgement is receipt only."
     }
-  ]
+  ],
+  "native_development": {
+    "round": 1,
+    "head": "716b6bddc6330cb1e0c19a584ee3b225ad9ae8f3",
+    "required_modules": [
+      "provider",
+      "web"
+    ],
+    "required_owned_paths": {
+      "provider": [
+        "toy/native-cycle/provider"
+      ],
+      "web": [
+        "toy/native-cycle/web"
+      ]
+    },
+    "module_evidence": {},
+    "walks": {},
+    "carry_flaws": {}
+  }
 }
