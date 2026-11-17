@@ -175,7 +175,7 @@
         "-v"
       ],
       "timeout": 180,
-      "status": "review",
+      "status": "done",
       "attempt": 2,
       "branch": "codex/p4-job-native-workshop-20261116-report",
       "instructions": [],
@@ -216,7 +216,7 @@
       },
       "pr": "https://github.com/neobobkrause/process3-probes/pull/285",
       "pr_number": 285,
-      "integrated": "5c0d6db69a6ea16101e32792e5c5eeedd63cf8a8",
+      "integrated": "191db453b2de66a9cd4bb9d744fa6ac66f28c31b",
       "restart": true,
       "trusted_baseline_merges": []
     }
@@ -442,11 +442,11 @@
       "status": "review"
     },
     {
-      "at": 1794876903.917134,
+      "at": 1794877224.0510201,
       "kind": "native-integrated",
       "job": "report",
-      "checkpoint": "1fb981e478a2a68e38abcd11b31fdc8f3ef3e8ee",
-      "integration": "5c0d6db69a6ea16101e32792e5c5eeedd63cf8a8"
+      "checkpoint": "eaab4aee7325949a5dee6926c15b5d1b78ff1d44",
+      "integration": "191db453b2de66a9cd4bb9d744fa6ac66f28c31b"
     },
     {
       "at": 1794876939.9175024,
