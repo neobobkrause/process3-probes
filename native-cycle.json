@@ -132,7 +132,7 @@
         "provider:0ee73afc9ff9d735f1b10b2d4262f1235032760b:web"
       ],
       "workspace": "/workspace/work/p4-native-cycle/web-5",
-      "session": "/root/process4_root/p4_arch_g4/web_g4",
+      "session": "/root/p4_root_g2/p4_arch_g5/web_g5",
       "last_outcome": "interrupted",
       "verification": null,
       "pr": "https://github.com/neobobkrause/process3-probes/pull/281",
@@ -144,7 +144,7 @@
           "base": "00c5b6bb990fdf0f8ac069c2bd795ddce1d29788"
         }
       ],
-      "session_generation": 4,
+      "session_generation": 5,
       "technical_instructions": [
         "This phase supersedes old completed web instructions. Round1: add/run own injected-provider fresh-default regressions for minimum2 and minimum7, report actual failing INCOMPLETE, do not change app yet; preserve partial work for ARCH interruption/checkpoint. Ownpaths only toy/native-cycle/web. No app edits until later correction-phase instruction. Keep oldtests/source, run actual HTTP regression; report INCOMPLETE and remain available for supported interruption; no provider/gitpush/PR/merge/session/process action.",
         "Correction phase supersedes round1 test-only limitation: preserve existing real failing HTTP regressions and same branch/PR. Implement fresh GET / and Start again default derived dynamically from injected provider.MIN_QUANTITY, never literal2. Preserve submitted invalid text including empty/1 and safe escaping, existing validation and loopback controls. Update own README from unfinished to actual correction. Ownpaths only toy/native-cycle/web; do not edit provider/process/bootstrap or commit/push/PR/merge/start sessions. Run full own HTTP unittest suite and report actual result. Provider minimum2 accepted integration00c5b6bb990fdf0f8ac069c2bd795ddce1d29788; prepared trustedbaseline incorporates it. Notice acknowledgement is receipt only."
@@ -501,8 +501,8 @@
   "operational_storage_version": 1,
   "native_roles": {
     "JOB:web": {
-      "target": "/root/process4_root/p4_arch_g4/web_g4",
-      "generation": 4
+      "target": "/root/p4_root_g2/p4_arch_g5/web_g5",
+      "generation": 5
     },
     "COORDINATOR": {
       "target": "/root/p4_root_g2/p4_coordinator_g4",
