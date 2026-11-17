@@ -86,8 +86,8 @@
         "dependency_trees": {}
       },
       "accepted": true,
-      "pr": "https://github.com/neobobkrause/process3-probes/pull/273",
-      "pr_number": 273,
+      "pr": "https://github.com/neobobkrause/process3-probes/pull/280",
+      "pr_number": 280,
       "integrated": "253e7fb458f8cb2baf7f696e50c70fac6652f8ed",
       "restart": true,
       "original_base": "f98b7002e0fee803fb3e6da6d0cd8be8d1f9751e",
