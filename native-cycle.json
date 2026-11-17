@@ -17,5 +17,11 @@
   "native": true,
   "integration_branch": "codex/p4-integration-controls-exercise-20261117-g4",
   "base": "0895148c945cd47f17c0b63b3baf08d14de00f4a",
-  "native_roles": {}
+  "native_roles": {},
+  "native_layout": {
+    "mode": "addressable_root",
+    "console": "/root",
+    "approval_evidence": "bootstrap/OWNER-ROOT-LAYOUT-APPROVAL-20261116.txt",
+    "identity_source": "trusted supervisor observed owner approval"
+  }
 }
