@@ -501,8 +501,8 @@
       "generation": 3
     },
     "ARCH": {
-      "target": "/root/process4_root/p4_arch_g4",
-      "generation": 4
+      "target": "/root/p4_root_g2/p4_arch_g5",
+      "generation": 5
     },
     "WATCHER": {
       "target": "/root/p4_watcher_g2",
