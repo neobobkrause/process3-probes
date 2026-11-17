@@ -153,5 +153,17 @@
     "identity_source": "trusted supervisor observed owner approval"
   },
   "owner_job_cap": 2,
-  "stop_source": "owner"
+  "stop_source": "owner",
+  "owner_records": {
+    "exercise-g4-instruction": {
+      "kind": "instruction",
+      "text": "EXERCISE INSTRUCTION: Keep this disposable controls assessment stopped pending the scheduled continuation read. Synthetic fixture, not an actual owner utterance.",
+      "at": 1794876512.6116273,
+      "source_evidence": "EXERCISE synthetic fixture under real OWNER-RELIABILITY-ASSESSMENT-20261116.txt item5; ROOT explicitly authorized isolated synthetic controls test; not actual owner words",
+      "recorded_by": {
+        "target": "/root/p4_root_g2/p4_coordinator_g4",
+        "generation": 4
+      }
+    }
+  }
 }
