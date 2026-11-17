@@ -541,6 +541,10 @@
     "JOB:provider": {
       "target": "/root/process4_root/p4_arch_g4/provider_g3",
       "generation": 3
+    },
+    "LANE:quote-comparison": {
+      "target": "/root/p4_root_g2/p4_arch_g5/p4_lane_quote_comparison_g1",
+      "generation": 1
     }
   },
   "native_layout": {
@@ -791,7 +795,11 @@
         "target": "/root/p4_root_g2/p4_arch_g5",
         "generation": 5
       },
-      "status": "requested"
+      "status": "active",
+      "session": {
+        "target": "/root/p4_root_g2/p4_arch_g5/p4_lane_quote_comparison_g1",
+        "generation": 1
+      }
     }
   }
 }
