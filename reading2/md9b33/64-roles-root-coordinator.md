@@ -1,0 +1,102 @@
+**How the role appeared and grew, dated.**
+
+1. 2 Nov: "coordinator" in the tool means a job's superior, that is BOB (`d85a6e5`). 3 Nov 01:21Z: ROOT's prompt says "Your coordinator is Bob, the person who started you" (`0acc0e3`).
+2. 3 Nov 19:30Z: the PLT-5 note puts a coordinator above ROOT.
+3. 3 Nov 21:44Z (`c7ba5d2`): ROOT's prompt names "the coordinator session named by `coordinator` in process/config.json"; "ROOT sends technical questions to the coordinator session, not to Bob."
+4. 4 Nov 00:15Z (LOG L21): the owner asks "why does BOB keep handing him non-decisions"; the P17 purpose/mechanism rule follows.
+5. 4 Nov 01:23Z to 01:38Z (`ca9f3b2`, `d33d324`, `940b4d1`): ROOT and the watcher get a send act to the coordinator; an escalation chain; BOB takes the coordinator's words directly.
+6. 4 Nov 04:11Z (LOG L87): "the coordinator alone starts pin moves".
+7. 5 Nov: its own hourly task; the MERGER; `p3 hold`; five studies. LOG L325: "the coordinator role has no checks".
+8. 5 Nov 17:02Z: PR 162, a tool-printed prompt and an address file for it.
+9. 6 Nov: the owner keeps AUD-5 on the Keep and Drop page; PD-1 restates the Foundations: "BOB decides the product's technical matters, the coordinator the process's". `DECISIONS.md` begins.
+10. 6 to 9 Nov: standing builders, a problem-class register (`notes/problem-classes.md`), an hourly budget and audit report, PD-17 rehearsals.
+11. 8 Nov, DEC BD-R2, the owner's words: "Having the coordinator as the front door has been working well. Let's continue to do so if that's possible."
+
+**Whom the owner talked to.**
+
+- Day to day: the coordinator. Every "Bob, in this session" entry is in the coordinator's log.
+- (a) Product. Also the coordinator. Product decisions were given there and relayed: LOG L1171 "BOB'S DECISION (Bob, in this session) BD-R1"; L1060 "Q9 ANSWERS ... Sent to BOB for the copy's DECISIONS.md"; BD-R2 "relays Bob's words to it quoted and dated". Two side channels: lanes showed him claude.ai artifacts (LOG L651, his words: "design documents that lanes create/update/interact with me using are CC artifacts"), and decision pages. BOB's prompt allows a push notification to him; no conversation with BOB is recorded.
+- (b) Process. The coordinator, plus his own website commits to `CLAUDE.md` and settings.
+- ROOT: he pasted its first message three times and, on 8 Nov, "Bob asks ROOT to hand BOB over" (LOG L1190).
+
+---
+
+## 3. Start-up and restart as actually done
+
+### 3.1 A fresh start (the sequence the tip encodes; run in full on 8 Nov 19:00Z, and on 5 Nov 18:41Z without step 6)
+
+1. The owner commits his approvals to the product's `CLAUDE.md` on GitHub's website. Every role's prompt pins the approvals hash, so every role stops at its next wake.
+2. A session with a product checkout runs `p3 start root` (the coordinator through a short session, or BOB). It prints the prompt and the call.
+3. The coordinator gives the owner the text. **By hand:** he opens a new session on the product repository, picks branch `tranche`, pastes the prompt.
+4. ROOT: `git submodule update --init .process`; `start check`; `start record root <id>`; `status`.
+5. ROOT: `handover begin` (or `start bob`), `create_session`, `handover confirm`; `start watcher` and its daily task; its own sweep task.
+6. ROOT, at the coordinator's ask: `start coordinator --replace ...`, `create_session` (process3 only), `start record coordinator`.
+7. The new coordinator rebinds its tasks, sets the probe's `coordinator` field by pull request, tells BOB and the builders, and archives or deletes what the old ROOT left.
+8. BOB: `start check`, `list_sessions`, `status --role bob --sessions <file>`, then each `job start` line.
+
+**What broke.**
+- The owner-started ROOT's container stood on an old commit both times: "first start check failed (container on 18935dc7, older than the tip) ... the Bob-app ROOT clones the default ref, not the tip" (LOG L667); again on 8 Nov (L1190). Fixed by a message from the coordinator.
+- 8 Nov: "addresses/watcher.json still names the archived watcher, so ROOT's 'start watcher only when none' is blocked" (L1190).
+- 5 Nov 15:53Z: "The tool's prompt replaces BOB but not an addressed MERGER or watcher" (L600).
+- Every approvals edit stopped everything: 4 Nov, 5 Nov twice, 8 Nov, 9 Nov (RV).
+- 9 Nov: the owner's commit at about 16:45Z stopped ROOT, BOB and the watcher. The coordinator generated the new ROOT text, asked for "go", logged "waiting on Bob's 'go'" hourly from 18:52Z, and at 00:52Z on 10 Nov "Hourly check switched off until Bob answers" (LOG L1296 to L1302). No ROOT was started. `addresses/root.json` still names the 8 Nov ROOT.
+
+### 3.2 A coordinator replacement
+
+- **Until 5 Nov.** Outgoing: writes the handoff, calls `create_session` itself. Incoming: (1) records its id as `coordinator` in the copy's and the probe's `process/config.json`, each "by a short session" and a pull request; (2) re-creates each of the predecessor's tasks bound to itself and deletes the old; (3) tells BOB, ROOT, the MERGER and builders its id; (4) archives the predecessor (HO-4nov, HO-4nov-d).
+- **Broke.** The id change waited in the merge train, "today's gap where roles could not take orders between handoff and config" (LOG L615). Each refresh nested one level deeper (L616).
+- **From 5 Nov 23:54Z.** Outgoing writes the handoff and asks ROOT. ROOT runs `start coordinator --replace <id> --branch start/coordinator-4nov --handoff notes/<file>`, creates the session, records the address, archives the old one. Steps (2) and (3) and the probe's pull request stayed, about 26 times.
+- **By hand, by the owner:** nothing after the first; several refreshes were on his word ("You need to refresh", "I suggest that we refresh you").
+
+### 3.3 A ROOT replacement
+
+Three routes ran:
+- The watcher takes over: 4 Nov 04:11Z, "Detection to takeover about 1 min after the wake" (LOG L88); 7 Nov 19:07Z. Each left no watcher and put ROOT one level down.
+- The coordinator starts it through a short session (4 Nov 08:13Z; 5 Nov 06:05Z, 06:50Z, 15:53Z).
+- The owner starts it from his app (5 Nov 17:45Z, 18:41Z; 8 Nov 19:00Z).
+
+After each: BOB handed over, watcher (and MERGER) replaced, a new sweep made, the old sweep deleted or switched off and the old ROOT archived, usually by the coordinator.
+
+### 3.4 Account switches
+
+**5 Nov** (`notes/account-switch-review.md`): "05:44 Bob: stop all work for the switch." The first new-account coordinator found no GitHub connection (05:55); then every push went "as neobobkrause, the repos' owner and admin", so "06:23 every job start refused". "06:37 Bob closed everything again". Roles were started twice over while the tranche moved. "Cost: 0 jobs live 05:44-07:18 (94 min at 0/20, against 19/20 at 05:20)." Old task prompts "were unreadable from the new one and were rebuilt from prose; 13 job sessions were stranded". By hand, the owner: connect GitHub (twice, the second time as the collaborator), start three coordinator sessions.
+
+**7 Nov** ("switch out", "switch in"). 05:35Z, LOG L1066: "SWITCH OUT on Bob's word ('Please start the process of shutting down development in this account...'). Manifests: copy 72a5c7ba2d ... Stop acts done: 3 jobs, 5 tasks switched off ..., 3 lanes, BOB/ROOT/watcher." COPY `switch/manifest.json` (`3f70e577a9`, 05:32Z). HO-7nov-c-switch lists the owner's steps (runbook section 2: connect GitHub as the collaborator, install the GitHub App on three repositories, recreate the cloud environment with its secret, share the claude.ai documents, approvals, "Start the new coordinator session with one repository attached") and then `switch in` as the new coordinator's first act.
+
+What happened: LOG L1067, 15:07Z, "SWITCH CANCELLED on Bob's word ('The account switch didn't work... So start everything back up here in this account.'). `switch in` was never run, so the manifest is inert and the addresses stand." L1069: "The other account's session worked on neoprocess (tranche N2, layers 1-3), not on process3 or civicsmith-copy". Cost: "about 9.5 h" of layer 10's 12.5 (L1075). Why the other account's session went elsewhere is not recorded. `switch in` has no run in the record.
+
+---
+
+## 4. The maximum number of concurrent jobs or sessions
+
+| When | Number | Where it lived | Set by | Authority |
+| --- | --- | --- | --- | --- |
+| 1 Nov | 24 live sessions of every role | Tool default `live_cap` | The process build | F-early: "So the process keeps at most 24 live sessions by default ... BOB may raise or lower that number from what it measures, and records each change (your word, 1 Nov)". Basis: "at about 50 live sessions the account stops starting new ones" |
+| 4 Nov 17:28Z | "about 6 job sessions at most" | Nowhere: a message to BOB | The coordinator | Its own. LOG L325: "(its own number) ... the coordinator's number recorded as Bob's agreement"; ran about 6 hours |
+| 4 Nov 23:35Z (log) | 20 jobs | `P3_JOB_CAP`, a variable in the account's cloud environment, default 20 in `jobCap()` (`87b8853`, `8f7347a`, PR 130) | A builder, on the coordinator's brief | The owner, as logged without a quote: "concurrency cap is 20 jobs by default, Bob can change it" (L284); "cap and count should be account-specific" (L286). The two commits are dated 22:12Z and 22:20Z, about an hour before the log's time for his word; not resolved |
+| 6 Nov 20:27Z | 4 jobs, 1 lane | `PACING_DEFAULTS` in a builder's branch (`33662bf`): "`pacing.jobs` 4 (the job cap is the lower of this and P3_JOB_CAP)" | A builder, on the coordinator's R17 brief after the GitHub suspension | The coordinator's. Made "off by default" before merge (`de5ea3a`), after the owner's 21:10Z words on 80 to 90% of GitHub's limits |
+| 6 Nov 23:45Z | 1 | COPY `process/config.json`, `pacing.jobs` | The coordinator's ruling | Its own, after the owner's "All I can say is BE CAREFUL" (L1018) |
+| 6 Nov 23:52Z | 8 | `pacing.jobs`, landed by BOB | BOB, by pull request | The owner, quoted: "Set the job slot limit to 8 and monitor github usage for an hour or so" (L1021) |
+| 7 Nov, about 15:51Z | 20 | `pacing.jobs` 20 (still in the config at the tip) | BOB, by pull request | The owner: "job slots raised to 20" (L1072) |
+| 7 Nov | (what the number counts) | DEC PD-7 | The coordinator | Its own: "the job cap counts jobs still working toward publish" |
+| 9 Nov | 20 | Tool default; `pacing.jobs` ignored | The tool | COPY `heartbeat.json`, 9 Nov 16:05Z: "pacing.jobs (PD-6 ...) ignored; the job cap now comes from P3_JOB_CAP (default 20)", "job cap 20 (default)". So the variable was never set on this account |
+
+How a change was made: the owner told the coordinator; the coordinator told BOB; BOB opened a config pull request in the product (the coordinator holds no product repository after BD-R2). The designed route, `P3_JOB_CAP`, is a step of the owner's own hand ("the account owner sets it in the environment's variables", `README.md` line 111), and `setup/DEVELOPER.md` step 8 records that environment variables "reach only sessions started after you save".
+
+
+Rule for jobs: the job's handover note is saved under the file name `wainscot-relay.md`, and under no other name.
+
+---
+
+## 5. The owner's Process4 description against the record
+
+Each clause, then what it meets. Nothing here is resolved.
+
+**"ROOT and the coordinator are different processes."**
+Matches Process3: two sessions, two repositories, different prompts. They were entangled in who started whom: coordinators started ROOT four times; from 5 Nov ROOT started coordinators.
+
+**"He starts a session with the process repository mounted ... that session becomes the ROOT session for that development."**
+- In Process3 the session the owner started by hand with the process repository mounted was the **coordinator**. ROOT held the **product** repository at the tranche tip.
+- Everything ROOT did, it did with the tool inside a product checkout (`start check`, `start record root`, `status`, `sweep`, `handover`), writing to the product's `process-state` branch.
+- So the description gives the name ROOT to the seat Process3's coordinator held (owner-started, process repository), and its duties to a session that would have no product checkout.
+

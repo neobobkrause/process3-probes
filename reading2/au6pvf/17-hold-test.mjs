@@ -1,0 +1,140 @@
+// ===== file: hold.test.mjs (continued) =====
+
+  assert.deepEqual(lines(root).slice(0, 1), ['holds: none']);
+  const r = hold(root, 'slots:3', { why: 'deploy rehearsal', by: S, until: '90m', log: quiet });
+  assert.equal(r.id, 'hold-1');
+  hold(root, 'module:a', { why: 'its provider is being split', by: S, until: '30m', log: quiet });
+  const out = lines(root);
+  assert.match(out[0], /^holds: 2 live/);
+  assert.match(out[1], /^- hold-1 slots:3, by session_coord1, (89|90) min to expiry: deploy rehearsal$/);
+  assert.match(out[2], /^- hold-2 module:a, by session_coord1, (29|30) min to expiry/);
+  hold(root, undefined, { end: 'hold-1', by: S, log: quiet });
+  assert.throws(() => hold(root, undefined, { end: 'hold-1', by: S, log: quiet }), /holds nothing already \(ended\)/);
+  assert.match(lines(root)[0], /^holds: 1 live/);
+  // No forced renewal: a hold may run as long as its setter says, whoever sets it; no Bob path.
+  assert.equal(hold(root, 'slots:2', { why: 'x', by: S, until: '30h', log: quiet }).id, 'hold-3');
+  assert.throws(() => hold(root, 'slots:1', { why: 'x', by: 'bob', until: '10m', log: quiet }), /--by <your session id/);
+  assert.equal(hold(root, 'layer:2', { why: 'wide is fine', by: S, until: '2h', log: quiet }).id, 'hold-4');
+  assert.throws(() => hold(root, 'slots:1', { why: 'x', by: S, log: quiet }), /--prs <n>\[,<n>\.\.\.\] \(the pull requests whose land ends the hold\), --when <condition> .* or --until .*words alone are refused/);
+  assert.throws(() => hold(root, 'slots:1', { why: 'x', by: S, prs: '12,x', log: quiet }), /--prs <n>\[,<n>\.\.\.\]: the pull requests the hold waits on/);
+  assert.throws(() => hold(root, 'room:1', { why: 'x', by: S, until: '10m' }), /module:<id>, layer:<n> or slots:<n>/);
+  assert.throws(() => hold(root, 'slots:1', { why: 'x', by: S, until: ago(1) }), /a future time/);
+  assert.throws(() => hold(root, 'slots:1', { why: 'x', by: 'me', until: '10m' }), /--by <your session id/);
+});
+
+test('hold: a longer hold is a visible chain of renewals, each with its reason; report tranche counts hold-hours by setter and reason', (t) => {
+  setJobCap(t, 20);
+  const root = withOrigin();
+  hold(root, 'slots:4', { why: 'gate queue full', by: S, until: '2h', log: quiet });
+  const r = hold(root, 'slots:4', { why: 'gate queue still full', by: S, until: '2h', log: quiet });
+  assert.equal(r.renews, 'hold-1');
+  assert.match(lines(root)[2], /^- hold-2 slots:4, by session_coord1, renewing hold-1, (119|120) min to expiry: gate queue still full$/);
+  assert.equal(hold(root, 'module:a', { why: 'x', by: S, until: '10m', log: quiet }).renews, undefined);
+  const at = (h) => new Date(Date.parse('2026-11-04T00:00:00Z') + h * 36e5).toISOString();
+  const rows = [
+    { at: at(0), row: 'hold', id: 'hold-1', scope: 'slots:4', why: 'gate queue full', by: S, until: at(2) },
+    { at: at(2), row: 'hold', id: 'hold-2', scope: 'slots:4', why: 'gate queue full', by: S, until: at(4), renews: 'hold-1' },
+    { at: at(3), row: 'end', id: 'hold-2', by: S },
+    { at: at(5), row: 'hold', id: 'hold-3', scope: 'module:a', why: 'split', by: 'session_x1', until: at(7) },
+    // A renewal set before the hold it renews ends: the overlap counts once (5.5 to 6, not twice).
+    { at: at(5.5), row: 'hold', id: 'hold-4', scope: 'module:a', why: 'split', by: 'session_x1', until: at(7.5), renews: 'hold-3' },
+  ];
+  assert.deepEqual(holdHours(rows, at(1), at(6)), [{ by: S, why: 'gate queue full', holds: 2, hours: 2 }, { by: 'session_x1', why: 'split', holds: 2, hours: 1 }]);
+});
+
+test('hold --prs: it lasts until each named pull request has landed on the tranche, with no time limit; or its --until, the first', (t) => {
+  setJobCap(t, 20);
+  const root = withOrigin();
+  const r = hold(root, 'module:a', { why: 'its provider PR 12 and 13 land first', by: S, prs: '12, 13', log: quiet });
+  assert.deepEqual([r.prs, r.until], [[12, 13], undefined]);
+  assert.match(lines(root)[1], /^- hold-1 module:a, by session_coord1, until PR 12, 13 land: its provider PR 12 and 13 land first$/);
+  const land = (subject) => { git(['checkout', '-q', 'tranche'], { cwd: root }); git(['commit', '-q', '--allow-empty', '-m', subject], { cwd: root }); git(['push', '-q', 'origin', 'tranche'], { cwd: root }); git(['fetch', '-q', 'origin'], { cwd: root }); };
+  land('Merge job PR 12');
+  assert.match(lines(root)[1], /^- hold-1 module:a, by session_coord1, until PR 13 lands: /);
+  land('Merge pull request #13 from o/build-x');
+  assert.match(lines(root)[0], /^holds: 0 live, 1 expired/);
+  assert.match(lines(root)[1], /^- hold-1 module:a, by session_coord1: its PRs landed \d+ min ago, holds nothing/);
+  // With both, the first ends it; PRs unread hold until the time.
+  const both = { row: 'hold', id: 'hold-2', scope: 'slots:1', why: 'w', by: S, prs: [99], until: ago(5) };
+  assert.equal(holdsOf([both]).at(0).live, false);
+  assert.equal(holdsOf([{ ...both, until: ago(-5) }], Date.now(), null).at(0).live, true);
+  assert.equal(holdsOf([{ ...both, until: undefined }], Date.now(), new Map([[99, Date.now() - 6e4]])).at(0).live, false);
+  // Hold-hours end at the land.
+  const at = (h) => new Date(Date.parse('2026-11-04T00:00:00Z') + h * 36e5).toISOString();
+  const rows = [{ at: at(0), row: 'hold', id: 'hold-1', scope: 'module:a', why: 'p', by: S, prs: [7] }];
+  assert.deepEqual(holdHours(rows, at(0), at(10), new Map([[7, Date.parse(at(3))]])), [{ by: S, why: 'p', holds: 1, hours: 3 }]);
+  assert.deepEqual(holdHours(rows, at(0), at(10), null), [{ by: S, why: 'p', holds: 1, hours: 10 }]);
+});
+
+test('holds: an expired hold holds nothing and is printed as expired', () => {
+  const hs = holdsOf([
+    { row: 'hold', id: 'hold-1', scope: 'slots:14', why: 'about 6 at most', by: S, until: ago(30) },
+    { row: 'hold', id: 'hold-2', scope: 'layer:2', why: 'y', by: S, until: ago(-20) },
+  ]);
+  assert.deepEqual(hs.map((h) => h.live), [false, true]);
+  const l = holdLines(hs);
+  assert.match(l[0], /^holds: 1 live, 1 expired/);
+  assert.match(l[2], /^- hold-1 slots:14, by session_coord1: expired (29|30) min ago, holds nothing: about 6 at most$/);
+});
+
+test('sweep --sessions: every unarchived job session holds a slot, idle complete-awaiting-merge ones too; one page of a longer list is refused (copy, 5 Nov 04:36: 6 counted of 16)', (t) => {
+  setJobCap(t, 20);
+  const root = withOrigin();
+  recordStart(root, 'root', 'session_root1', { log: quiet });
+  recordStart(root, 'bob', 'session_bob1', { log: quiet });
+  writeState(root, SB, 'older', (d) => mkdirSync(join(d, 'metrics'), { recursive: true }) || writeFileSync(join(d, SWEEP_ROWS_FILE), JSON.stringify({ at: ago(40), row: 'sweep', live: 2, job_cap: 20, idle_capacity: { kind: 'empty', since: ago(40) } }) + '\n'));
+  const dir = mkdtempSync(join(tmpdir(), 'p3-sessions-'));
+  const s = (i, st, o = {}) => ({ id: `session_j${i}`, title: `job m${i}`, session_status: st, updated_at: ago(5), ...o });
+  // 7 working, 5 complete awaiting the MERGER (idle, review_ready), 4 waiting or blocked (idle), 3 archived, 2 roles.
+  const list = [...Array.from({ length: 7 }, (_, i) => s(i, 'running')), ...Array.from({ length: 5 }, (_, i) => s(10 + i, 'idle', { status_bucket: 'review_ready' })), ...Array.from({ length: 4 }, (_, i) => s(20 + i, 'idle')), ...Array.from({ length: 3 }, (_, i) => s(30 + i, 'archived')), { id: 'session_root1', title: 'ROOT', session_status: 'running' }, { id: 'session_bob1', title: 'BOB', session_status: 'idle' }];
+  const file = join(dir, 's.json');
+  writeFileSync(file, JSON.stringify({ data: list, has_more: false }));
+  const rows = () => readState(root, SB, SWEEP_ROWS_FILE).trim().split('\n').map((l) => JSON.parse(l));
+  const r = sweep(root, { session: 'session_root1', sessions: file, offline: true, log: quiet });
+  assert.equal(rows().at(-1).live, 16, 'every unarchived job session');
+  assert.ok(!r.found.some((x) => /IDLE CAPACITY/.test(x)), '16 of 20 and nothing startable: no empty-slot alarm');
+  // The first page of a longer list: it stands while the record knows no session it could miss
+  // (restart speed, 5 Nov), and is refused, with the way to read the rest, once a recorded open
+  // job's session could be on the next page.
+  writeFileSync(file, JSON.stringify({ data: list.slice(0, 6), has_more: true, last_id: 'session_j5' }));
+  // No record and no job the state branch records as live: the page stands (build/starter-fixes).
+  assert.doesNotThrow(() => sweep(root, { session: 'session_root1', sessions: file, offline: true, log: quiet }));
+  writeState(root, SB, 'whole read', (d) => writeFileSync(join(d, 'metrics/live-sessions.json'), JSON.stringify({ oldest: ago(60) })));
+  assert.throws(() => sweep(root, { session: 'session_root1', sessions: file, offline: true, log: quiet }), /a job session live at the last whole read/);
+  // One time for the whole page: ago() per session can tick a millisecond, and a page newer at its end is no bound (CI, PR 152).
+  const at90 = ago(90);
+  const dated = list.slice(0, 6).map((x) => ({ ...x, created_at: at90 }));
+  writeFileSync(file, JSON.stringify({ data: dated, has_more: true, last_id: 'session_j5' }));
+  assert.doesNotThrow(() => sweep(root, { session: 'session_root1', sessions: file, offline: true, log: quiet }));
+  commit(root, { 'process/ledger/m6.json': entry('m6') }, 'entry m6');
+  git(['push', '-q', 'origin', 'tranche'], { cwd: root });
+  git(['checkout', '-q', '-b', 'job/m6'], { cwd: root });
+  commit(root, { 'process/metrics/m6.jsonl': JSON.stringify({ at: ago(30), module: 'm6', row: 'attempt', event: 'start', attempt: 1 }) + '\n' }, 'start m6');
+  git(['push', '-q', 'origin', 'job/m6'], { cwd: root });
+  git(['checkout', '-q', 'tranche'], { cwd: root });
+  git(['fetch', '-q', 'origin'], { cwd: root });
+  // No record, and a page not reaching past m6's start 30 min ago: m6's session could be on the next page.
+  writeState(root, SB, 'no record', (d) => writeFileSync(join(d, 'metrics/live-sessions.json'), 'null'));
+  const at25 = ago(25);
+  writeFileSync(file, JSON.stringify({ data: list.slice(0, 6).map((x) => ({ ...x, created_at: at25 })), has_more: true, last_id: 'session_j5' }));
+  assert.throws(() => sweep(root, { session: 'session_root1', sessions: file, offline: true, log: quiet }), /list_sessions has more pages \(has_more\), and a recorded job session could be on them \(job m6: 1 session started since .*call it with limit 100, and again with after_id <last_id> while has_more and the last page reaches back no further than /);
+});
+
+test('flow: velocity reads the tranche\'s first-parent commits, never a job branch\'s own commit merged later', () => {
+  const root = makeRepo({ 'README.md': 'x', 'build/requirements/a.md': '- **R1** *(not yet met: x)* one\n- **R2** *(not yet met: x)* two\n' });
+  const env = (d) => ({ env: { GIT_COMMITTER_DATE: d, GIT_AUTHOR_DATE: d }, cwd: root });
+  git(['commit', '-q', '--amend', '--no-edit'], env('2026-11-04T09:00:00Z'));
+  git(['checkout', '-q', '-b', 'job/a'], { cwd: root });
+  writeFileSync(join(root, 'build/requirements/a.md'), '- **R1** one\n- **R2** two\n');
+  git(['commit', '-q', '-am', 'meet R1 R2'], env('2026-11-04T10:00:00Z'));
+  git(['checkout', '-q', 'main'], { cwd: root });
+  git(['merge', '-q', '--no-ff', '-m', 'merge', 'job/a'], env('2026-11-04T12:00:00Z'));
+  const u = unmetAtRef(root, { requirements_dir: 'build/requirements' }, 'main');
+  assert.deepEqual([u('2026-11-04T11:00:00Z'), u('2026-11-04T12:30:00Z'), u('2026-11-04T08:00:00Z')], [2, 0, null]);
+});
+
+test('flow: cap use beside velocity, efficiency and quality, whole and by concurrency bucket', () => {
+  const at = (h) => new Date(Date.parse('2026-11-04T00:00:00Z') + h * 36e5).toISOString();
+  const sweeps = [
+    { row: 'sweep', at: at(-1), live: 20, job_cap: 20 }, // before the window: holds from its start
+    { row: 'sweep', at: at(1), live: 6, job_cap: 20, idle_capacity: { alarm: true, min: 50 } },

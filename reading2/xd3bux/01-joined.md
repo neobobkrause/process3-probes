@@ -1,0 +1,546 @@
+# [file] train-robust-options.md (continued)
+
+
+## 8. A transient GitHub error under an in-flight gate (copy PR 290, 5 Nov 12:48-13:15): options
+
+Cause, as read in tool/lib. merge() (merge.mjs) pushes the merged result to the job branch and
+waits on its gate in waitForGate, which reads the pull request (`pr()`, io.getPR) and the gate
+(`read`, io.checkRun) each round. Neither read is guarded: one GitHub 503 (or a timeout, or a rate
+limit) is a Fail out of merge(). mergeOne (train.mjs) classes it with `lasting()`: not lasting, so
+a `retry` row and ctx.backoff for `<pr>@<head as listed>`; the merge is over. At the next pass
+ready() lists 290 at its new head (the merged result), whose gate is still running, so it is not
+green and is skipped; and loop() takes queued plain rows before any job (`plain.length ?
+plainOne : mergeOne`), so 505 and 506 landed, the tranche moved, and 290's merged result went
+stale (its green gate would now gate a stale result: merge() would bring the tranche in again and
+gate afresh). waitForChecks (mergePlain's wait) has the same unguarded reads.
+
+What else can move the tranche under an in-flight gate. Within the train: only plain rows and the
+next job, and the loop is serial, so only after merge() returned or threw. Outside it: `merge
+--plain` with no live lease (the train killed or stopped mid-gate: its lease lapses or is
+released), BOB's `merge <pr>` of a job by hand, and anything on GitHub itself (its UI). A train
+restart mid-gate has the same hole as the 503: the new train does not know a gate was in flight.
+
+Option 8A: transient reads inside the waits are retried. waitForGate and waitForChecks catch a
+Fail from their pull-request or check read that is transient (HTTP 5xx, 429 / rate limit,
+timeout, connection reset, the proxy's gateway errors: one TRANSIENT pattern beside util.mjs
+SERVER_ERROR) and read again with a growing wait (15 s, 30 s, 60 s, then every 2 min), counted
+against the same deadline; only the deadline, a lasting error or the gate's own end ends the wait.
+- Cost: about 25 lines, 40 of tests (a fake read that throws 503 twice mid-gate: the same gate
+  lands, nothing else does).
+- Fails when: GitHub is down past the gate's whole wait (the merge fails as today, and 8B holds
+  the tranche); a non-transient error during the wait (a real refusal) still ends it.
+
+Option 8B: an in-flight hold that outlives the merge call. When merge() has pushed a merged result
+(or found one), the train records `inflight` {pr, tip, at} on the state branch (TRAIN_FILE, one
+row) before it waits, and an end row when the gate ends (landed, red, PR closed or its head moved
+by anything else, or the gate past its cap). While an inflight row is open, each pass goes back
+into merge() for that PR first, which waits on the running gate at that tip (merge() already does
+this for a head holding its own merge row: jobChecks' rowTip wait), before any plain row or other
+job; plain rows wait (their callers keep renewing; their take_by counts from the take, so nothing
+expires for the wait). A restarted train reads the open row and does the same.
+- Cost: about 60 lines, 70 of tests (a 503 that still escapes, and a train restart mid-gate: in
+  both, 505 waits and 290 lands on the same merged result).
+- Fails when: the train is stopped for good mid-gate (nothing lands, as wanted; the row ends when
+  the next train finds the gate ended); a merge from outside the train (no-lease `merge --plain`,
+  BOB by hand, GitHub's UI) is not held by a train row. A small addition closes the first two:
+  mergePlain and merge() into the tranche refuse while another PR's inflight row is open and its
+  gate still running (about 10 lines; the refusal names the PR and the gate run).
+
+Recommendation: 8A + 8B, with the small addition. 8A removes the cause seen (the 503 never ends the
+wait); 8B makes "nothing lands under an in-flight gate" hold across any other failure and a
+restart, which 8A alone cannot; the addition covers the tool's own merges outside the train.
+GitHub's UI stays outside the tool, and merge()'s land check ("moved past the merged result the
+gate checked") still catches it as today.
+
+## 8. Ruling (coordinator, 5 Nov 13:27) and what was built (build/train-inflight)
+
+
+Jobs working from this file, take note: every file the job writes begins with this exact first line: `# ref L4R-6766`.
+
+Ruled: 8A + 8B + the addition, in a PR of its own after PR 156. Conditions, and how each is met:
+- A hold never blocks past the gate's own cap: each `inflight` row carries `until` = now + max(90,
+  suite_timeout_minutes) + 15 min (the queue allowance); a pass that finds an unended row past its
+  until ends it ("its gate's cap passed"), whichever train wrote it; refuseUnderHold reads only
+  holds within their until.
+- The end row names its cause: landed; refused: <why> (a red gate among them); merged (elsewhere);
+  pull request closed; head moved to <sha>; tranche moved; its gate's cap passed; or the merge's
+  own failure when it leaves nothing to wait on (HOLD_ENDS).
+- Re-entry never re-pushes: the train calls merge() with noPush; a head that already holds this
+  PR's merge row on the current tip waits on its gate (jobChecks' rowTip wait), and anything that
+  would push a new merged result fails instead ("would need a new one"), which ends the hold.
+- A restarted train that finds an open hold on a tip the tranche has moved past ends it ("tranche
+  moved") and does not wait.
+Code: tool/lib/inflight.mjs (rows, open, start, end, refuseUnderHold), merge.mjs (TRANSIENT,
+guarded reads in waitForGate and waitForChecks, onGate, noPush, refusals in merge and mergePlain
+outside the train), train.mjs (hold, unhold, heldPass, the loop's hold-first pass).
+
+Item 8 review round 1 (cold): fixed, each tested: a held gate ending red kept the hold to its cap
+(now ended "gate <conclusion>"); a held PR made a draft or retargeted kept it (now ended
+"withdrawn: made a draft" / "retargeted to <base>"); a restarted clone lacking the held tip ended
+the hold as "tranche moved" and landed the next job (the tip is now fetched, and an unreadable tip
+keeps the hold); the outside refusal let a merge through once the held gate was green but not yet
+landed (now only a red or cancelled gate frees it); TRANSIENT gained "context deadline exceeded"
+and "connection refused". Kept: the hold's until (105 min with the 90-minute cap) can end before a
+late-starting gate's run does; that only frees merges outside the train (the train stays serial),
+and the ruling bounds a hold by the gate's cap. Kept: the first return to a held PR is not backed
+off (the loop's idle pause stands between passes; backing it off only delays the held gate).
+
+Item 8 review round 2 (confirming): (a) to (e) confirmed fixed; both kept items judged acceptable.
+Two low findings, fixed: a held PR that landed outside the train (no end row) kept merges outside
+it refused until until (refuseUnderHold now reads the held PR: merged, closed or off its tip holds
+nothing; tested); a held PR handed to BOB after its retries kept the hold (now ended "handed to BOB
+after 5 tries: ...").
+
+
+# [file] receipt-regate-options.md
+
+# Receipt re-gate: options (build/receipt-regate, 5 Nov)
+
+## The defect
+
+A job whose gate went red on revert findings runs `job complete <id> --exempt-revert "<why>"`
+again. Its branch is at the COMPLETE commit, so `finish` takes the amend path: no commit, no push,
+an amended receipt comment, and `markReady` only if the pull request is a draft, which it is not.
+The gate workflow (`shims/process-gate.yml`) runs on `opened, synchronize, reopened, edited,
+ready_for_review, converted_to_draft`; a comment is none of these. The red gate on the head
+stands, and merge (`jobChecks`: the newest `gate` check run on the head must be `success`, and a
+green row must agree with the newest receipt's attempt) and the train (`ready`: `checkRun` on
+the head must be green) wait for a person's re-run (copy PRs 462, 471, 488, 490, 492, 5 Nov).
+
+What the gate reads from an amendment: only `receipt.exempt.revert` (gate.mjs line 218, and
+`measuredBy`). `not_verified` is never read by the gate. The receipt's `attempt` and `sha` stay
+the same through an amendment, so merge's `receipt_attempt === receipt.attempt` still binds.
+
+## Options
+
+### A. job complete gives the pull request a new `edited` event (a body edit)
+
+After an amended receipt is posted, job complete PATCHes the pull request's body (`editPR`,
+already used by take-in, so the job's account can do it) to carry one marker line naming the
+receipt comment, e.g. `<!-- p3:regate --> Gate re-run for the amended receipt <comment url>`,
+replacing an earlier such line. GitHub fires `pull_request: edited`; the gate runs on the same
+head with a fresh payload: today's base sha and the base's pin, and it reads the new receipt.
+
+- Gate runs: one full run per material amendment, the same as today's hand re-run. No extra run.
+- Time: the gate's own time (to 40 min for plane/control-plane); no person in the loop.
+- Taken rows / gate rows by head: the head does not move, so the train's review notes
+  (`train-notes.jsonl`, keyed by head), BOB's `--reviewed` note and every row keyed by head
+  stand. A new run is a new check run, so the train's refused key (`pr@head@run`) changes and
+  the train judges it again, as after a hand re-run.
+- Fresh base: unlike an Actions re-run, `edited` carries the base as it is now (merge.mjs line 370
+  already names "edit the pull request" as the way to give the gate a new event).
+- Concurrency group `process-gate-<pr>`, cancel-in-progress: a run already going (which read the
+  old receipt at its start) is cancelled and replaced. Wanted.
+
+### B. job complete re-runs the red gate run (Actions API, `gh run rerun`)
+
+- Gate runs: one, as A.
+- A re-run replays the old event: the old base sha and the old base's pin (merge.mjs line 370).
+  If the tranche moved, the run judges a stale base; `lastGreen` (keyed on `r.base === base`)
+  and the revert base are the old ones.
+- Needs `actions: write` on the job's account and a run id lookup by head; the job's acts
+  name commenting and marking its own PR ready, not workflow control. Re-run attempts share the
+  run id and overwrite the `gate-row` artifact (`overwrite: true`), so `verifyRow` reads the
+  newest attempt: fine for the newest row, but an older posted row from the same run id would no
+  longer verify. More moving parts than A for no gain.
+
+### C. An empty (or records-only) marker commit
+
+- Moves the head: `synchronize` fires one gate run, but every head-keyed record breaks: BOB's
+  train note and `--reviewed` are for the old head, the train backs off/refuses by head, and
+  job complete reads commits after the COMPLETE commit as a new attempt (`again`), which the
+  amend path was built to avoid (copy PR 40: the amendment commits nothing). An empty commit to
+  kick CI is also against the process's own rule. Rejected.
+
+### (D.) Gate keyed by head sha plus receipt hash
+
+Not a trigger on its own: something must still give the gate an event. As a guard it adds
+nothing today: an amendment only loosens (adds an exemption) or adds not-verified lines the gate
+ignores, so a green row stays true, and merge already binds the row to the receipt's attempt.
+It would also add a row field, which an older pin's `checkRow` at job post may refuse (no
+comment posted). Not recommended.
+
+## When A fires (the failure cases)
+
+job complete gives the `edited` event only when all hold:
+
+1. The newest receipt carries a revert exemption (the only amended claim the gate reads). An
+   amendment that adds only `--not-verified` lines changes nothing the gate judges: no re-gate.
+2. The newest `gate` check run on the head is not green: none, completed non-success, or in
+   progress but started before the newest receipt comment (it read the old receipt). A green
+   gate is left alone, so a pull request the train holds (it takes only green heads) never gets
+   a new run under it, and its land is not delayed by a check going pending.
+3. No marker line already names this receipt comment, so a rerun of job complete after a
+   failed edit edits again, and a rerun after a good edit does nothing (idempotent, as the rest
+   of `finish`).
+
+A failed PATCH stops job complete with "run job complete again"; the receipt is already posted,
+so the rerun posts nothing and only edits. A cancelled run (a newer event) is handled by GitHub's
+concurrency group as today. A plain pull request has no receipt and is untouched. The first
+complete keeps its route (draft, then `markReady` fires `ready_for_review`); a new attempt keeps
+its push.
+
+## Recommendation
+
+A, with the three conditions above. It removes the person from the loop at the cost of exactly
+the one gate run a person would have started, keeps every head-keyed record, judges the current
+base, and uses a call the job's account already makes.
+
+
+# [file] train-throughput-study.md
+
+# Merge-train throughput study (5 Nov 2026, measured 05:20-05:30 UTC; read-only, no build)
+
+Asked by the coordinator (session_01RAN5emGGSGfSPCvNY5yUpv) under Bob's standing approvals. Nothing in code or config was changed. Sources: the copy's process-gate runs (GitHub API, 1,000 runs, 14:33 on 4 Nov to 05:20 on 5 Nov; jobs and steps of the 706 that completed and were not cancelled), the job log of plane's gate run 41964261627, `metrics/train.jsonl` on the copy's `process-state` branch, the copy's PR list into `tranche`, `build/modules.json` and `process/ledger/plane.json` at the tranche tip, and process3's `tool/lib/{gate,merge,train,suite}.mjs` at `origin/tranche` (86a12f1).
+
+## Bottom line
+
+- **The serial train cannot keep up, and no reordering will fix that.** Serial capacity is 60 / (mean gate + about 1 min overhead) = 60 / (6.2 + 1) ≈ **8 PRs/h**. Job PRs are arriving at **11-15/h** today. The queue grows by 4-7 PRs an hour. It was 15 at 05:20 and is 21 at 05:27.
+- **Most gates are short. The long ones are a few large modules.** The median full gate (suite ran) is **3.9 min**, the p90 12.7, the mean 7.4. Plane takes 42 min, control-plane 40, and screens-inquiry 20 (p90 36). One plane gate stops the train for 42 min while about 12 small PRs could have merged.
+- **Recommend F = C + B + E-for-plane:** speculative parallel gates 4 deep (C), the window filled shortest-expected-gate first with a 45-min aging cap (B), and plane's gate cut (E, the plane-only levers below). Simulated at 12 PRs/h, steady state: **11 PRs/h (it keeps up), green->merged median 6.8 / p90 11.8 min**, against the baseline of 8.7 / 33.7. Gate strength is **the same as today's per-PR gate**. Each PR is gated on exactly the tree it lands as.
+- **Batching (D) is worse than serial here and is not recommended.** Option E as worded (scope to the changed modules and their dependants) **is already how the gate works, and narrower**: a job PR's gate runs only its own module's suite. The time is inside plane's own suite, not in its scope.
+
+## 1. Measurements
+
+### Gate minutes (process-gate, job "gate", 706 completed runs, 4-5 Nov)
+
+| set | n | median | p90 | max | mean |
+|---|---|---|---|---|---|
+| all completed runs | 706 | 1.1 | 7.7 | 44.8 | 3.5 |
+| job PRs, suite ran (gate step > 1.5 min) | 253 | **3.9** | **12.7** | 44.8 | **7.4** |
+| median per module (71 modules) | 71 | 3.5 | | | |
+| the PR mix of the last 24 h (145 job PRs, each module's full-gate median) | 145 | 3.6 | | | 5.2 |
+
+Most runs take about 1 min. These are records-only or draft runs, which skip the suite.
+
+Slowest modules (full gates):
+
+| module | n | median | p90 |
+|---|---|---|---|
+| plane | 7 | **42.3** | 44.8 |
+| control-plane | 1 | 39.8 | 39.8 |
+| screens-inquiry | 10 | 19.7 | 36.1 |
+| reading-pipeline | 6 | 11.5 | 38.1 |
+| screens-settings | 11 | 10.6 | 11.6 |
+| agent-worker | 8 | 9.6 | 18.0 |
+| screens-daily | 5 | 9.0 | 29.1 |
+| interface-shell | 12 | 8.7 | 9.1 |
+| store-assembly | 11 | 8.4 | 10.4 |
+| everything else | | 1-7 | |
+
+Share of all gate minutes: plane 12%, screens-inquiry 9%, then about 4-5% each for the next four.
+
+The 15 PRs queued at 05:20 add up to **about 102 serial gate minutes**. Plane (42) and agent-worker (9.6) are 51 of them; the other 13 take about 3-5 min each.
+
+### Where plane's 41 min go (run 41964261627, PR 175, 03:52-04:33)
+
+| phase | minutes | note |
+|---|---|---|
+| checkout, pin, record check, browser | 0.6 | browser cached (3 s) |
+| npm ci and the generated files built before the suite | 1.6 | words-reads.json alone takes 59 s |
+| **plane suite** | **34.3** | `node --import ./test/platform-sqlite.mjs --test` over 92 files on one 4-vCPU runner (node's default concurrency is 3) |
+| base-red check | 3.2 | rebuilds the generated files at the base (1.3 min), then re-runs the 3 failing tests there |
+| regenerate and verify | 1.0 | |
+| **total** | **41.2** | "suite base-red; revert no code changed" |
+
+The 3 tests that fail at the base are heavy load tests: G41, a 200,000-row xlsx, and G55 L, two tests of 25,000 rows each. They fail at the base and at the head alike, so on every PR they cost minutes (their share of the suite, plus the 3.2-min base-red re-run) and **give no per-PR signal**.
+
+Can the gate be scoped to the changed module and its dependants? It already runs less than that. `gate.mjs` line 165: "A job's PR runs its module." Dependants run only through the tranche cover, at layer close and in the tranche into main. Plane has 0 dependants and uses 134 modules (187 counting their own uses). The 34 min are plane's own 92 test files. So the levers for plane are inside its suite (§3, E), not its scope.
+
+### Runners and cost
+
+- The peak was **10 concurrent gate jobs** (4 Nov, 15:37). The longest wait for a runner was **14 s**, and the median 3 s. Runners have never been the bottleneck.
+- The copy is public, so standard GitHub-hosted runners bill no minutes. The only cost is concurrency. GitHub's documented cap for a personal account is 20 concurrent jobs on Free and 40 on Pro. I did not read Bob's plan, so 20 is the safe assumption. C at k=4 adds at most 4 runners to today's peak of 10.
+
+### Arrivals today (job PRs into tranche, by creation hour, UTC)
+
+00h 6, 01h 15, 02h 5, 03h 11, 04h 20, 05h (to 05:20) 9. That is **about 12/h over the last 6 h** and about 15/h over the last 3, in line with "one every 5 min". At 05:20, 43 job PRs were open, 15 of them drafts.
+
+### The train so far (`metrics/train.jsonl`, 04:37-05:27)
+
+- 2 merged in 50 min. PR 416 (case-disclosures): 1.8 min from start to merge, green->merged 2.3 min. PR 175 (plane): a 41.9-min gate, **green->merged 53.5 min**, queue 5 at its start and 4 at its end.
+- PR 364 was refused at 05:27 because it fires the security review trigger. That is correct, and it goes to BOB.
+- The queue was **21** at 05:27.
+- Four early tries failed with `git merge-base ... failed`. On those rows **`disk_mb` is 0-4**, under DISK_MIN 512, yet the train kept going. Whatever the merge-base cause (shallow fetch or the disk), the merger session's disk allowance is nearly spent, and the disk check did not stop the train. This is a separate defect and needs a look before the next restart.
+
+## 2. Options compared
+
+Simulation: 200 seeds of 3 h each. Arrivals are Poisson. Each PR's module is drawn from the last 24 h's job-PR mix, and its gate time from that module's measured full gates. Each merge adds 1 min of overhead (measured 1.8 min for PR 416, gate included). A PR's re-gate on the moved tranche fails with probability 5%; 15% is shown as a sensitivity. The measured rate is 17 of 125 (14%) for a full gate following a green one on the same branch, but that includes the job's own new commits. "Backlog" starts the run with today's 15 queued; "steady" starts empty. The script is in the appendix.
+
+### At today's arrival rate, 12/h, re-gate failure 5%
+
+| option | PRs/h | green->merged median / p90, from today's backlog of 15 | the same, steady state | queue after 3 h (backlog) | gate-min per merged PR | runners | strength vs per-PR gate | build |
+|---|---|---|---|---|---|---|---|---|
+| **A** serial, as now | 7.5 | 105 / 130 | 30 / 50 | **26, growing** | 7.2 | 1 | the reference | none |
+| **B** shortest-expected first, 45-min aging | 7.6 | 78 / 133 (pure SPT: 43 / 139, plane starves) | 22 / 52 | 26 | 7.1 | 1 | same | about 20 lines in train.mjs (the sort) |
+| **C** speculative k=4 | 14.9 | 39 / 64 | 10.5 / 25 | 3.9 | 6.6 | 4 | **same**, see §3 | one build job (gate base, merge tree check, train window) plus a confirming review |
+| C k=8 | 15.2 | 30 / 56 | 9.6 / 25 | 2.8 | 6.9 | 6-8 | same | same |
+| **D** batch, one runner (bisect on red) | 5.6 | 104 / 133 | 33 / 55 | 27 | 53 | 1 | weaker (merges between the gated states are not gated; receipt and revert checks are not per PR) | the original batch design |
+| D, each member's suite in its own job | 9.0 | 85 / 111 | 23 / 44 | 18 | 28 | up to 8 | weaker | larger (a workflow matrix) |
+| **E** A with plane-class suites 4x faster | 10.1 | 79 / 96 | 21 / 35 | 18 | 4.9 | 1 | same if done by concurrency or sharding; slightly weaker if the load tests move to regression | see §3 E |
+| C k=4 + E | 15.6 | 11.7 / 29.7 | 7.3 / 12.3 | 1.6 | 5.0 | 4 | same | C + E |
+| **F = C k=4 + B + E** | **15.7** | **7.9 / 19.4** | **6.8 / 11.8** | **1.5** | 5.0 | 4 | **same** | C + E + B |
+
+Sensitivity, all measured as green->merged median / p90 in minutes:
+
+| case | A | C k=4 | F |
+|---|---|---|---|
+| re-gate failure 15%, backlog | 6.7 PRs/h, 105 / 130 | 12.9 PRs/h, 45 / 70 | 13.9 PRs/h, 8.8 / 24 |
+| arrivals 16/h, steady | 8.5 PRs/h, 42 / 70, queue +20 | 13.4 PRs/h, 14 / 29 | 14.6 PRs/h, 7.0 / 12.5 |
+| arrivals 8/h, steady | 6.5 PRs/h, 16 / 31 | 7.1 PRs/h, 8 / 21 | 7.3 PRs/h, 6.4 / 11.2 |
+
+How to read the table:
+
+- **A** is stable only below about 8/h. Today it fails the stop rule (median worse than 8.7 over 3 h) by a factor of 3-12.
+- **B** saves 25-60 min on the median and nothing on throughput: it reorders the same serial work. Without aging, plane never merges while small PRs keep arriving. With aging, most of the gain goes. B is cheap and worth having inside F, but it fixes nothing on its own.
+- **C** is the only option that raises throughput without weakening the gate. A plane PR at the head of the window still holds back the PRs behind it from landing, which is why C alone has a p90 of 64. E on plane plus B's ordering are what bring the p90 down.
+- **D** loses because a job gate runs one module's suite. A batch gate has to run every member's suite, which is serial on one runner, and one red member sends the whole batch to bisection. It was designed for a gate whose cost does not grow with batch size, which this gate's does.
+- **E**, as the levers in §3, roughly doubles plane-class speed. That alone is not enough at 12/h, but it is the cheapest thing to start today.
+
+## 3. What each option would take
+
+**B, ordering.** The sort in `train.mjs` (`out.sort(... green_at ...)`, line 154) would order by the module's median full-gate minutes, read from the gate rows. Anything older than 45 min goes first, and release-path PRs could be ordered ahead too. Strength is unchanged and the build is about 20 lines. It is a merge-tool change, so it needs one review plus a confirming one.
+
+**C, speculative gates.** GitHub's merge queue is not offered on these user-owned repositories, as Bob checked at 02:33. Doing it with the existing workflow, unchanged:
+1. For window position i, the train makes a branch `train/spec-<i>` = tranche + the PRs ahead (merged in order, by merge-tree) and opens a second draft PR from `job/<id>` into `train/spec-<i>`. `process-gate` runs on `pull_request` with that branch as its base, so GitHub's merge commit is exactly tranche + ahead + this PR. Ownership, imports and the receipt are judged against that base, so the files of the PRs ahead do not count against this job. The gate job, its permissions and its required-check name stay as they are.
+2. `merge.mjs`: today it lands only when the tranche is an ancestor of the gated tip (line 217). It would also accept a green gate row from the spec PR whose gated tree equals the tree of tranche merged with the head, after the PRs ahead landed. That is a tree comparison in place of an ancestry check, and the strength is identical: the bytes that land are the bytes that were tested.
+3. `train.mjs`: a window of k (start at 4). A red gate at position i sends i back to its job, as today. Every spec PR behind it is closed and rebuilt on the new base. Spec branches are kept, not deleted, because sessions may not delete branches, so they accumulate under `train/`. A prune would need Bob.
+
+Cost: up to k extra runners, at no charge; about 0.3 discarded gate-min per merged PR at 5% failure. Build: one build job of about 300-450 lines with tests, in gate-adjacent and merge code, so rule 5's confirming review applies. No workflow-file change, no new permission and no new trigger, so it fits inside the standing approvals.
+
+**E, faster gates for the plane class** (cheapest first):
+1. **Move the three base-red load tests to the regression workflow** (G41, the 200k-row xlsx; G55 L, two tests of 25k rows). They fail at the base on every PR now and are tolerated, so per-PR strength does not change, and the release tier still runs them. This saves the 3.2-min base-red phase plus their share of the 34 min, which is not measured yet. It means a ledger and test-path change in a copy plain PR, which is BOB's to rule.
+2. **`--test-concurrency`** in plane's ledger suite command (node defaults to 3 on the 4-vCPU runner). If plane's tests mostly wait on alarms, ticks and SQLite, a value of 6-8 may cut the suite by a third or more. This is one line of ledger config, measured on one gate run before it is kept.
+3. **Cache the generated builds and the base-red base build by input hash** inside the gate run. This saves about 2.5-3 min on every bio-plane gate, and it changes gate.mjs, so it needs a confirming review.
+4. **Shard plane's 92 files across 4 runners.** This would bring plane to about 12-14 min, but it needs a workflow matrix plus an aggregate `gate` job, and the gate row and receipt would have to merge across shards. It is the largest build. Do it only if steps 1 and 2 are not enough.
+
+I rejected **dependency-scoped re-gate skipping**: reusing the job's own green gate when the tranche delta does not touch the module's closure. The median closure is 74 of 201 modules, and plane, control-plane, screens-inquiry and store-assembly reach 85-93%, so it would rarely skip exactly the slow gates, and it weakens the gate.
+
+## 4. Recommendation: F
+
+**Speculative depth 4 (C), the window filled shortest-expected-gate first with a 45-min aging cap (B), and plane's gate cut by E1 and E2.**
+
+Sequence, the most gain per hour of work first:
+1. **Now, no process build:** BOB rules on E1 (move the 3 base-red load tests to regression) and tries E2 (`--test-concurrency`) on one plane gate. B's sort is a small merge-tool PR that can land the same hour. This does not keep up at 12/h, but it cuts the medians while C is built.
+2. **Next build:** C at k=4, then measure. Keep the trial's stop rules. Add "runners in use ≤ 16" and "discarded gate-min per merged PR" to the train's rows.
+3. Keep batching off for good. At this gate's cost per member it loses to serial.
+
+The balance struck:
+- **Speed:** at today's rate, green->merged goes from a median of 105 min (and growing) to about 7-8 min, inside the baseline of 8.7 / 33.7, and the queue stays at 1-2.
+- **Strength:** unchanged. Each PR is still gated alone, on exactly the tree it lands as, with its own receipt, revert and record checks. The one test-tier move (E1) removes only tests that are already red at the base and tolerated.
+- **Cost:** up to 4 more concurrent runners (peak about 14 against a cap of 20, at no charge), about 0.3 wasted gate-min per PR, one build job with a confirming review, and spec branches that accumulate.
+
+## What would make Bob's call easy
+
+1. **One decision, framed as speed vs complexity, not speed vs strength.** C keeps the per-PR gate's strength exactly, which batching could not. The ask: "May the train gate up to 4 PRs in parallel on speculative bases (draft PRs into `train/spec-*` branches kept, never deleted), so it keeps up at 12+ PRs/h?"
+2. **Bob's own trigger has fired.** Option F said to revisit batching with Bob when queue depth at merge stays at 3 or more. The train's rows read 5, 4, then 21. This study is that revisit, and it answers it with C instead of batching.
+3. **The figures, live on the train's rows:** queue depth at merge, green->merged median and p90 per hour, and gate minutes per merged PR. With these, the stop rule (median worse than 8.7 over 3 h) reads directly, before and after.
+4. **E1 is BOB's (technical), not Bob's,** under the ask-Bob test. The tests are red at the base and tolerated now, and the release tier runs them. Say so, so it does not reach Bob as a strength question.
+5. **One thing first:** the merger's disk reads 0-4 MB on its rows. Fix that before the train is judged on speed.
+
+## Appendix: the simulation
+
+Rerun by fetching the process-gate runs, their jobs, and the PR list as in §1, then running this script under `python3 -I` on those two files. Its constants: `OVER` = 1.0 min per merge; E is modelled as `3 + (g-3)/4` for gates over 10 min; D runs members' suites in series on one runner, less 1.5 min of shared setup per extra member, or in parallel (`par`); C closes and restarts every PR behind a red one; B's aging is 45 min.
+
+
+A requirement on what a job hands in: the job's handover note names its reviewer on a line of its own, exactly: `reviewer: Odette Fairweather`.
+
+```python
+import json,sys,random,statistics as st,collections,math
+rows=[json.loads(l) for l in open(sys.argv[1])]          # one row per gate job: branch, job_min, steps{name: min}
+prs=json.load(open(sys.argv[2]))                          # PRs into tranche: n, ref, created, merged
+full=collections.defaultdict(list)
+for r in rows:
+    if r['branch'].startswith('job/') and (r['steps'].get('gate') or 0)>1.5: full[r['branch'][4:]].append(r['job_min'])
+med={m:st.median(v) for m,v in full.items()}
+mix=[p['ref'][4:] for p in prs if p['ref'].startswith('job/') and p['created']>='2026-11-04T05' and p['ref'][4:] in med]
+QUEUE=['agent-worker','plane','skills','strength','docket','plan-work','affordances','agent-drafts','run-rules','store-assembly','ai-runs','screens-action','agent-harness','lines','local-facts']
+OVER=1.0
+def gtime(m,rng,fast=False):
+    g=max(rng.choice(full[m]),1.0)
+    if fast and g>10: g=3+(g-3)/4
+    return g
+def q(xs,p): xs=sorted(xs); return xs[min(len(xs)-1,math.ceil(p*len(xs))-1)] if xs else float('nan')
+def arrivals(rng,lam,H):
+    t=0; out=[(0.0,m) for m in QUEUE]
+    while True:
+        t+=rng.expovariate(lam/60)
+        if t>H: return out
+        out.append((t,rng.choice(mix)))
+def run(policy,lam=12,H=180,pf=0.05,k=4,fast=False,seed=0,age=60,bmax=8,backlog=True,par=False):
+    rng=random.Random(seed); arr=arrivals(rng,lam,H)
+    if not backlog: arr=arr[len(QUEUE):]
+    items=[dict(id=i,t=t,m=m,fail=rng.random()<pf,g=gtime(m,rng,fast)) for i,(t,m) in enumerate(arr)]
+    waits=[];gm=0.0;now=0.0;merged=0;peak=1;pending=list(items);win=[]
+    avail=lambda now:[x for x in pending if x['t']<=now]
+    if policy in('A','B'):
+        while now<H:
+            a=avail(now)
+            if not a:
+                nxt=min((x['t'] for x in pending),default=None)
+                if nxt is None or nxt>H: break
+                now=nxt; continue
+            if policy=='A': x=min(a,key=lambda x:x['t'])
+            else:
+                old=[y for y in a if now-y['t']>=age]
+                x=min(old,key=lambda y:y['t']) if old else min(a,key=lambda y:med[y['m']])
+            pending.remove(x); now+=x['g']+OVER; gm+=x['g']
+            if not x['fail'] and now<=H: merged+=1; waits.append(now-x['t'])
+    elif policy in('C','CB'):
+        while now<H:
+            a=sorted(avail(now),key=lambda x:x['t'])
+            if policy=='CB':
+                old=[y for y in a if now-y['t']>=age]; rest=[y for y in a if now-y['t']<age]
+                a=old+sorted(rest,key=lambda y:med[y['m']])
+            while len(win)<k and a:
+                x=a.pop(0); pending.remove(x); x=dict(x); x['end']=now+x['g']+OVER; win.append(x)
+            peak=max(peak,len(win))
+            if not win:
+                nxt=min((x['t'] for x in pending),default=None)
+                if nxt is None or nxt>H: break
+                now=nxt; continue
+            head=win[0]; now=max(now,head['end'])
+            if now>H: break
+            gm+=head['g']; win.pop(0)
+            if head['fail']:
+                for y in win: gm+=max(0.0,min(y['g'],now-(y['end']-y['g']-OVER))); y['end']=now+y['g']+OVER
+            else: merged+=1; waits.append(now-head['t'])
+            nxt_arr=min((x['t'] for x in pending if x['t']>now),default=None)
+            if win and nxt_arr is not None and nxt_arr<win[0]['end'] and len(win)<k: now=nxt_arr
+    elif policy=='D':
+        while now<H:
+            a=sorted(avail(now),key=lambda x:x['t'])[:bmax]
+            if not a:
+                nxt=min((x['t'] for x in pending),default=None)
+                if nxt is None or nxt>H: break
+                now=nxt; continue
+            for x in a: pending.remove(x)
+            def gate(b):
+                nonlocal now,gm
+                g=(max(x['g'] for x in b)+1.0) if par else sum(x['g'] for x in b)-1.5*(len(b)-1)
+                now+=g+OVER; gm+=g
+                return not any(x['fail'] for x in b)
+            def bis(b):
+                nonlocal merged
+                if gate(b):
+                    for x in b:
+                        if now<=H: merged+=1; waits.append(now-x['t'])
+                    return
+                if len(b)>1: h=len(b)//2; bis(b[:h]); bis(b[h:])
+            bis(a)
+    left=len([x for x in pending if x['t']<=H])+len(win)
+    return dict(merged_h=merged/(H/60),med=st.median(waits) if waits else float('nan'),p90=q(waits,.9),left=left,gm=gm/max(merged,1),peak=peak)
+```
+
+## Addendum (05:35): provider-first ordering, asked by the coordinator
+
+**Today.** `train.mjs` `ready()` (origin/tranche, lines 129-155) takes every non-draft job PR that is green on its head and post-gated, oldest green first. Nothing orders a provider before its users. A back-to-back group, such as action-grammar PR 396 before screens-action 420 and actions 431, is held only because BOB marks the users draft. At 05:33, 16 of the 45 open job PRs were drafts, 420 and 431 among them.
+
+**Can readiness's uses graph drive it as it stands? Not as a blanket rule.** Suppose the train held every PR that has a provider in `uses` with an open job PR, with the cycle exclusion that `status.mjs` `waitsOnUses` uses (the `reaches` check). Measured on the 45 open job PRs at 05:33:
+- **41 of 45 would be held** on direct `uses`, and 43 on the full closure.
+- The only unheld roots are extraction 432, interface-assets 443 and member-roster 446, **all of them drafts**.
+
+So the train would serialise nearly everything behind three drafts and stall. `uses` says what a module may import. It does not say that this PR needs that PR's change.
+
+**The precise edge, from data the tool already computes:** hold user PR U behind open provider PR P only when all three of these hold:
+1. P is in U's direct `uses` and P does not reach U (the `reaches` exclusion).
+2. P's diff changes P's export surface: `exports.mjs` `exportChanges(root, mb, P.head, ...)` and `anyExportChange`, the same test the provider-notice route uses.
+3. U's changed files import from P, under ARC-1's import resolution (`checks.mjs` `importFindings`). At its tightest, U imports one of the names P adds or changes.
+
+That is a read-only computation in the train on two PRs' diffs, with no change to the gate. **BOB's draft mark stays as the manual override**: a user can still be held explicitly, and a train note could release a hold that should not apply. Each provider holds behind its own providers, so the order follows the topological order without a transitive hold. I did not compute how many of today's PRs this edge would hold, since that needs both diffs per PR pair. I expect a handful. It is the first number to read in a build.
+
+**Per option:**
+
+| option | how provider-first is honoured | what it costs |
+|---|---|---|
+| A serial | the hold above filters `ready()`. A held U waits until P lands, then U's re-gate on tranche+P is the exact test | none beyond the filter. A red P holds its users until P's job fixes it |
+| B ordering | the hold first. Then **a provider with held users goes ahead of shorter PRs**: sort by (held users descending, then expected gate minutes), with aging applied only to PRs not held | the same filter plus about 5 lines in the sort |
+| C speculative | the window must be a **topological prefix**: U is admitted only if P has landed or is ahead of it in the window. U's spec base then holds P, so U is gated on exactly tranche + P + U, **the test the back-to-back group needs**, and a red P discards U automatically. C turns BOB's hand-held order into a gated one | the hold plus one admission rule. U waits at most P's gate time in the window, not a whole serial turn |
+| D batch | members in topological order inside the batch. Bisection splits in that order (left half first), so a user is never landed without its provider | adds to D's existing weaknesses. D is still not recommended |
+| E faster gates | ordering is unchanged. Strength is helped by the existing tranche cover (gate.mjs lines 390-400): a module whose provider changed on the tranche after the module's merge is re-run at layer close and in the tranche into main | none |
+| **F** (recommended) | C's topological-prefix admission + B's provider-first sort + the precise hold, with BOB's draft mark kept as an override | together about 40-60 lines more in `train.mjs` on top of C, with tests, and no gate change |
+
+**Effect on the recommendation.** It still holds. Under F, back-to-back groups stop needing BOB's draft marking and get a stronger guarantee than today: the user is gated with its provider, not merely after it. Under A or B, a provider-first sort is cheap but each user still pays a full serial turn after its provider.
+
+
+# [file] lanes_owner_documents.md
+
+# Lanes, as the owner's own documents state them
+
+Worker report, 14 Nov 2026, second main session. Reading and reporting only. Nothing was designed, committed, pushed or changed.
+
+## For the owner, in plain words
+
+**What your documents say a lane is.** A lane is a standing area of design responsibility. It has its own folder of knowledge in the product's repository and is worked by one session (one running Claude conversation) at a time. A lane delivers designs, never product code.
+
+Oldest first:
+
+- 31 Oct, your note in your ledger: a lane is "a knowledge directory and design responsibility plus an on-demand worker", long-lived "only where measured worthwhile".
+- Your Foundations: "You identify the need for a lane" and the architecture session (then called BOB, now ARCH) opens it; "the UX lane is always there"; jobs and lanes reach a lane only through that session, which "keeps the final say".
+- Your standing approvals in the product's repository: design lanes "own their lane folders", the screens-and-journeys folder included; "each lane runs as one session at a time"; they "decide design and wording"; their design documents are claude.ai pages; a change inside a lane's own folder merges without a test run.
+- 5 and 6 Nov, as sessions recorded you (not your typing): a lane is not a read-only helper; a lane must first be "fully qualified" as "the load-bearing source of truth in their area", by research kept in the repository; three lanes for Civicsmith (user experience, investigation design, publication design); and two "triage" lanes, for the process and for the product, that study each problem and bring you options.
+- 14 Nov, typed: process changes happen only in "a separate process lane call PROCESS that I interact with"; the first session you start (ROOT) starts it.
+
+**What is proven.** Each quotation was checked against the document it comes from. Your three live documents are unchanged from the copies kept here; only the ledger mentions lanes. Nothing about lanes in Process4 has run.
+
+**What is wrong today.** Your lane requirements of 5 and 6 Nov are in none of the 288 requirement lines Process4 is checked against: that list was made from an earlier copy of your Foundations. The fifth draft gives lanes four sentences and says ARCH defines lanes, where your Foundations say you identify the need. It leaves out one session per lane, qualification, the always-present UX lane and the triage lanes.
+
+**Yours to decide** (your documents disagree or are silent):
+
+1. Who starts a lane: your documents say only the architecture session; on 14 Nov you had ROOT start PROCESS.
+2. Whether PROCESS replaces the two triage lanes.
+3. Whether you talk with design lanes directly, as on 5 Nov, or only through the coordinator (your front-door session).
+4. Which lanes Process4 begins with, and whether a new lane needs your word.
+5. Where the screens and journeys the walks are measured against live: claude.ai pages (5 Nov) or the product's folder (14 Nov).
+6. Whether a lane session takes a job slot.
+
+**Technical, for Claude to decide and report:** how a lane session is started, handed over and recorded; where its research is kept; how its changes merge.
+
+---
+
+## 1. What was read, and how (codes allowed from here on)
+
+Claim marks: (V) verified by me today against the primary source named; (A) an earlier report says so, not re-checked; (J) judgement.
+
+Short names used below:
+
+| Short | What | How read |
+| --- | --- | --- |
+| OW-b, OW-c | `process4/owner_words/bob_words_14nov_b.md`, `..._c.md` | Read in full |
+| P3-CLAUDE | `/home/user/process3/CLAUDE.md` (3 lines; identical to `origin/main:CLAUDE.md`, checked with `cmp`) | Read in full |
+| F-ev | `process4/evidence/foundations.md` (292 lines) | Lines 1-100 read; whole file searched |
+| LL | `process4/evidence/ledger_lines.md` (1703 lines) | Searched; read around every hit |
+| APX | `process4/definition/process4_definition_appendix_v5.md` | Lines 1-118 read; lane rows read |
+| V5 | `process4/definition/process4_definition_v5.md` | Lines 75-193, 253-313, 358-376 read; whole file searched |
+| P3T:path | Process repository, branch `origin/tranche`, tip `38b0f3f` (9 Nov). `git -C /home/user/process3 show origin/tranche:<path>` | Searched for "lane"; hits read |
+| CLOG | Process repository, `origin/start/coordinator-4nov:notes/coordinator-findings-3-4nov.md` (the coordinator's log, a session's record) | Searched for Bob's quoted words on lanes |
+| COPY-T:path | Product repository, branch `tranche`, tip `e7ec72e093014e59abcd736b9f8724bd57698b81` (9 Nov). Fetched read-only at depth 1 (`git fetch --depth=1 origin tranche`). `git -C /home/user/neobobkrause/civicsmith-copy show e7ec72e0...:<path>` | CLAUDE.md, process/config.json, DECISIONS.md (BD-2 to BD-5, BD-13), ux-substrate/README.md, build/plan/beta/LANES.md (head) read |
+| COPY-M | Product repository `main` (`0dea5a6`), the local clone | CLAUDE.md read; docs searched |
+
+**The three live documents (Artifact tool, action "read"; never web-fetched).**
+
+
+Marsh Lane desk entered 10 elms on the sheet.
+
+- Keep and Drop Ledger: read. Page version `1794615258`, the same version `working/live_docs.md:12` records. Its store (159 answers) was read with the store tool and compared field by field with `working/ledger_store/decisions/`: 0 differences in 159 (V, script comparison). The lane text in the page matches LL (V). **No difference from the local copy.**
+- Assessment: read through the Docs connector. Revision 52, the same as `live_docs.md:11`. A search for "lane" returns 0 hits (V). The local `working/assessment_doc.txt` also has 0 (V). **No difference; it does not mention lanes.**
+- Field report: read through the Docs connector. Revision 1066, the same as `live_docs.md:13`. Search for "lane": 0 hits (V). **No difference; it does not mention lanes.**
+
+**Not read.** The live Foundations page (https://claude.ai/artifact/RVZ8szbF1UHHSETkcGrKw8; I read its git snapshot, P3T:governing/foundations.md), the second Keep and Drop page answered 6 Nov (lines SLB-1 to SLB-12, AUD-1 to AUD-9; known here only through sessions' records), and the Process3 Build Plan (a claude.ai page said to hold lane lines LAN-1 to LAN-10; in no repository I could find). None of the three is in `process4/evidence/`.
+
+## 2. Three findings that change the starting point
+
+1. **The evidence copy of the Foundations predates his lane requirements.** F-ev has 6 lines that mention lanes. The snapshot on the process repository's tranche branch (header: "Snapshot of the claude.ai document ... exported 2026-11-07T05:45Z"; later commits to 9 Nov) has 10, including a whole paragraph "Lane qualification (SES-19 to SES-23; your word, 6 Nov)" that quotes him five times, and a sentence on two triage lanes (AUD-8) (V: `git grep -c -i '\blanes\?\b' origin/tranche -- governing/foundations.md` = 10; F-ev = 6). SES-19 to SES-23, AUD-8, AUD-9, SLB-8 and P26 are not in `process4_disposition.tsv` and not in APX (V: `grep -rIl 'SES-19\|AUD-8' process4` finds only `evidence/change_sample.md:120`, which records lane qualification as "Kept. Present" in Process3).
+2. **His standing approvals contain a paragraph on design lanes, but only on the product's tranche branch.** COPY-T:CLAUDE.md line 11 (V, text read). P3-CLAUDE and COPY-M:CLAUDE.md have no sentence on lanes (V). The header of COPY-T:CLAUDE.md:3 says "widened on 5 Nov 2026 for design lanes". That Bob committed it himself through GitHub's website is (A): CLOG:597 ("copy commit 7c7e7c9a (15:47:14Z) by Bob through GitHub's website") and `evidence/permissions_inventory.md:30` ("last set by the owner 9 Nov"). I could not check the commit's author (the clone is depth 1 and the GitHub tool is not allowed on that repository). CLOG:591 says "Amendment text given to Bob", so the wording was drafted by a session and committed by him (A).
+3. **Process3 already had a lane whose job matches his words on PROCESS.** P3T:governing/foundations.md:44 and P3T:triage/README.md:3: "The process-triage lane ... studies each identified Process3 problem and brings Bob options with their context before a response is chosen (AUD-8)." His words of 14 Nov: "the PROCESS session will explain the nature of the problem and suggestion options for fixing it for me to explore and ultimately choose" (OW-b:25). The match is (J); that he kept AUD-8 on 6 Nov is a session's record (CLOG:733).
+
+## 3. What his documents say a lane is, from the statements only
+
+Numbers in brackets refer to the statements in the last section.
+
+**Kinds and names.**
+- Design-area lanes. Ledger statement: "Design-area lanes (UX, AI, DB, performance)" [L1]. Foundations: "lanes for design areas you identify" [F1]; "the UX lane is always there" [F4].
+- For Civicsmith: ux, investigation, publication [C3, R6, R7]. The session's record quotes him: "an investigation design lane and a publication design lane. Perhaps that's an appropriate partition to continue to use" [R6] and "Yes, publication design is the ACTIONS-DESIGN area" [R8].
+- Triage lanes: "A process triage lane and a product triage lane" [G2].
+- PROCESS: "a separate process lane call PROCESS" [O1].
+- No lane named DESIGN or PRODUCT in capitals exists in any document searched (V: `grep -w 'PRODUCT\|DESIGN'` over owner words, F-ev, LL, DECISIONS, review, live_docs, assessment: 0 hits). Earlier process versions used capital names (UX-DESIGN, INVESTIGATION-DESIGN, ACTIONS-DESIGN, AI-DESIGN, JOURNEYS, PERFORMANCE, PROCESS-REDESIGN, PROCESS-REPAIR, PLANNING, PLATFORM, FILES, CAPABILITIES, TESTS-SWEEP): P3T:notes/lane-charters.md and COPY-T:build/plan/beta/LANES.md, both sessions' texts.

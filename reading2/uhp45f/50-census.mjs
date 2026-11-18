@@ -1,0 +1,173 @@
+// The consistency census and the preflight (R15; Bob, 6 Nov, about 18:15Z: "It seems to me that we
+// keep hitting items when checks are refusing modules with no ledger entry. Can we anticipate those
+// conditions arising so that we can handle them either preemptively or more efficiently when
+// they're identified?"). On 6 Nov each of these surfaced only when a command refused: layer 8's
+// case-carriage, publish-schedule, project-stage and case-account (entries only on the tranche),
+// op-capabilities' requirements with no entry, lane modules with no entry, action-holds and
+// action-replies, setup-words and translations.
+//
+// census: every module named by the modules file, the requirements directory, the layer map, the
+// lanes config and the ledger has what the others need, at one ref (the tranche):
+//   no-entry           a module that will need a job (its layer is open or still to come, or its
+//                      requirements file has an unmet mark) has no ledger entry; where the entry
+//                      needs no judgment (a modules row with paths and tests, a requirements file,
+//                      a suite read from its neighbours) its file is printed ready;
+//   no-requirements    a module with an entry, or of an open or later layer, has no requirements file;
+//   no-modules-row     an entry, a requirements file, a layer-map module or a lane's module with no
+//                      row in the modules file;
+//   not-in-layer-map   a modules row no layer-map line names (no layer's jobs list it);
+//   layer-mismatch     the modules row's layer is not the layer map's;
+//   entry-requirements its entry names a requirements file the ref does not hold;
+//   not-on-layer       an open layer's branch lacks a module's entry the tranche holds (job start
+//                      carries it, and the layer's own reads do not see it until then).
+// Each gap names exactly what BOB writes. preflight: for a layer's modules, what `job start` would
+// refuse on (no entry, an invalid one, its state, a live hold, a lane seat, the plan) with the fix.
+import { entryFile, validate } from './ledger.mjs';
+import { readModules } from './notice.mjs';
+import { layersAt } from './layerbase.mjs';
+import { DEFAULTS, LEDGER_DIR, exists, git, run, unmetIds } from './util.mjs';
+
+const ls = (root, ref, dir) => {
+  const r = git(['ls-tree', '-r', '--name-only', ref, '--', dir], { cwd: root, allowFail: true });
+  return r.code === 0 ? r.stdout.split('\n').filter(Boolean) : [];
+};
+const show = (root, ref, p) => { const r = git(['show', `${ref}:${p}`], { cwd: root, allowFail: true }); return r.code === 0 ? r.stdout : null; };
+
+// Every file under dirs at ref, path to text, read in two git calls (cold review of R15: a census of
+// a 220-module product took about 700 git spawns, once per file). Its paths as ls-tree prints them
+// without -z (a quoted name never matches an entry or a requirements file), as it always has.
+function blobs(root, ref, dirs) {
+  const t = git(['ls-tree', '-r', ref, '--', ...dirs], { cwd: root, allowFail: true });
+  if (t.code !== 0) return new Map();
+  const list = t.stdout.split('\n').map((l) => l.match(/^\d+ blob ([0-9a-f]+)\t(.+)$/)).filter(Boolean).map((m) => [m[1], m[2]]);
+  if (!list.length) return new Map();
+  const r = run('git', ['cat-file', '--batch'], { cwd: root, input: list.map(([sha]) => sha).join('\n') + '\n', encoding: 'buffer', maxBuffer: 1 << 30 });
+  const out = new Map();
+  if (r.code !== 0) return out;
+  const buf = Buffer.isBuffer(r.stdout) ? r.stdout : Buffer.from(r.stdout);
+  let at = 0;
+  for (const [, path] of list) {
+    const nl = buf.indexOf(10, at);
+    if (nl < 0) break;
+    const head = buf.subarray(at, nl).toString('utf8').split(' ');
+    const size = Number(head[2]);
+    if (head[1] !== 'blob' || !Number.isFinite(size)) break;
+    out.set(path, buf.subarray(nl + 1, nl + 1 + size).toString('utf8'));
+    at = nl + 1 + size + 1;
+  }
+  return out;
+}
+
+// The suite of a module's neighbours: the one most entries use whose tests share its first test
+// path's top directory; null when none (the suite is then BOB's to name).
+function neighbourSuite(entries, tests) {
+  const top = String(tests?.[0] || '').split('/')[0];
+  if (!top) return null;
+  const counts = new Map();
+  for (const e of entries.values()) {
+    if (!e?.suite || !(e.tests || []).some((t) => String(t).split('/')[0] === top)) continue;
+    const k = JSON.stringify(e.suite);
+    counts.set(k, (counts.get(k) || 0) + 1);
+  }
+  const best = [...counts].sort((a, b) => b[1] - a[1])[0];
+  return best ? JSON.parse(best[0]) : null;
+}
+
+// The census at ref. open: the open layers' numbers (their branches on origin, not merged); the
+// lowest is "the open layer", and every layer at or after it is still to come. Returns
+// { gaps: [{ id, kind, layer, fix, file?, content? }], skipped? }.
+// The job situation every proposed entry reads (C41): situations_dir's job.md at ref, where the
+// product keeps it (build/situations by default, process/situations once moved); null when absent.
+export function situationFile(root, cfg, ref) {
+  const f = `${String(cfg.situations_dir || DEFAULTS.situations_dir).replace(/\/+$/, '')}/job.md`;
+  return exists(root, ref, f) ? f : null;
+}
+
+export function census(root, cfg, { ref, open = [], now = new Date().toISOString() } = {}) {
+  const rows = readModules(root, cfg, ref);
+  if (rows === null) return { gaps: [], skipped: `no ${cfg.modules_file || 'modules file'} at ${ref}` };
+  const row = new Map(rows.filter((m) => m?.id).map((m) => [m.id, m]));
+  const dir = String(cfg.requirements_dir || DEFAULTS.requirements_dir).replace(/\/$/, '');
+  const files = blobs(root, ref, [LEDGER_DIR, dir]);
+  // A file at ref: from the batch when it is under those directories, else one read.
+  const text = (p) => (files.has(p) ? files.get(p) : p.startsWith(`${LEDGER_DIR}/`) || p.startsWith(`${dir}/`) ? null : show(root, ref, p));
+  const entries = new Map();
+  for (const f of [...files.keys()].filter((x) => /^process\/ledger\/[^/]+\.json$/.test(x))) {
+    const id = f.replace(/^.*\//, '').replace(/\.json$/, '');
+    let e = null;
+    try { e = JSON.parse(files.get(f)); } catch { e = null; }
+    entries.set(id, e);
+  }
+  const reqs = new Map([...files.keys()].filter((f) => f.endsWith('.md') && f.slice(dir.length + 1).indexOf('/') < 0 && !/^README\.md$/i.test(f.slice(dir.length + 1))).map((f) => [f.slice(dir.length + 1, -3), f]));
+  const map = layersAt(root, cfg, ref);
+  // The map's own layers: a completion layer reopens modules whose layer is the map's (C33).
+  const mapLayer = new Map(map.filter((L) => !L.completion).flatMap((L) => L.mods.map((m) => [m, L.n])));
+  const lanes = (Array.isArray(cfg.lanes) ? cfg.lanes : []).filter((l) => l?.module).map((l) => l.module);
+  const first = open.length ? Math.min(...open) : null;
+  const layerOf = (id) => mapLayer.get(id) ?? (Number.isInteger(row.get(id)?.layer) ? row.get(id).layer : null);
+  const ahead = (id) => first !== null && layerOf(id) !== null && layerOf(id) >= first;
+  // A module's requirements file: the one its entry names, else <dir>/<id>.md; null when the ref
+  // holds neither.
+  const reqPath = new Map();
+  const reqOf = (id) => {
+    if (!reqPath.has(id)) {
+      const named = entries.get(id)?.requirements ? String(entries.get(id).requirements).replace(/^\.\//, '') : null;
+      reqPath.set(id, named && text(named) !== null ? named : reqs.get(id) || null);
+    }
+    return reqPath.get(id);
+  };
+  const reqText = new Map();
+  const unmet = (id) => {
+    const f = reqOf(id);
+    if (!f) return [];
+    if (!reqText.has(id)) reqText.set(id, text(f) || '');
+    return unmetIds(reqText.get(id));
+  };
+  const all = new Set([...row.keys(), ...entries.keys(), ...reqs.keys(), ...mapLayer.keys(), ...lanes]);
+  const gaps = [];
+  const gap = (id, kind, fix, extra = {}) => gaps.push({ id, kind, layer: layerOf(id), fix, ...extra });
+  // Whether a path is on ref, files and folders, from one ls-tree of the whole tree when first asked
+  // (C50: a rev-parse per path of each module built before the ledger); a path ls-tree cannot
+  // answer for (empty, ./, .., a leading or trailing /) is asked of git as before.
+  let tree;
+  const onRef = (p) => {
+    if (!p || /^\.{0,2}\/|(^|\/)\.{1,2}(\/|$)|\/\/|\/$/.test(p)) return exists(root, ref, p);
+    if (tree === undefined) { const t = git(['ls-tree', '-r', '-t', '--name-only', '-z', ref], { cwd: root, allowFail: true }); tree = t.code === 0 ? new Set(t.stdout.split('\0').filter(Boolean)) : null; }
+    return tree ? tree.has(p) : exists(root, ref, p);
+  };
+  const readme = exists(root, ref, `${dir}/README.md`) ? `${dir}/README.md` : null;
+  const situation = situationFile(root, cfg, ref);
+  for (const id of [...all].sort()) {
+    const r = row.get(id);
+    const e = entries.get(id);
+    const marks = unmet(id);
+    const lane = lanes.includes(id);
+    // Whether the module still needs a job: its entry OPEN, BLOCKED or WORKING, an unmet mark, or
+    // no entry and its layer open or to come. A modules row off the layer map is a gap whatever
+    // its state: a COMPLETE one's later found mark or --reopen would never show in layer jobs (the
+    // copy, 6 Nov: BOB found 8 COMPLETE ones by hand). A lane's module never is: no layer lists it.
+    const needs = (e && ['OPEN', 'BLOCKED', 'WORKING'].includes(e.status?.state)) || marks.length > 0 || (!e && ahead(id));
+    if (!r) gap(id, 'no-modules-row', `add ${id}'s row to ${cfg.modules_file} (its paths, tests, uses and layer): it is named by ${[entries.has(id) && 'its ledger entry', reqs.has(id) && reqs.get(id), mapLayer.has(id) && cfg.layers_file, lane && 'the lanes config'].filter(Boolean).join(', ')}`);
+    if (r && !mapLayer.has(id) && map.length && !lane) gap(id, 'not-in-layer-map', `name ${id} on its layer's line in ${cfg.layers_file}${Number.isInteger(r.layer) ? ` (its modules row says layer ${r.layer})` : ''}${needs ? '' : ' (a finding: nothing waits on it, PD-4)'}: no layer's jobs list it`, { needs: !!needs });
+    if (r && mapLayer.has(id) && Number.isInteger(r.layer) && r.layer !== mapLayer.get(id) && needs) gap(id, 'layer-mismatch', `${cfg.modules_file} says layer ${r.layer}, ${cfg.layers_file} says ${mapLayer.get(id)}: make them one`);
+    if (e && e.requirements && text(String(e.requirements).replace(/^\.\//, '')) === null) gap(id, 'entry-requirements', `its entry names ${e.requirements}, which ${ref} does not hold: write it, or name the right file in ${entryFile(id)}`);
+    // A modules row with no entry, its layer past and nothing unmet: a module built before the
+    // ledger (C16, the copy 7 Nov: 49 of them; layer jobs read every module that uses one as not
+    // early, blocking early starts with no word why). Its entry records it COMPLETE.
+    if (!entries.has(id) && r && !(ahead(id) || marks.length || lane)) {
+      const n = layerOf(id);
+      const req = reqOf(id);
+      // Past only when a layer is open and this one is before it; with none open, which modules
+      // were built is BOB's to say: flagged, never written ready.
+      const past = first !== null && n !== null && n < first;
+      // Ready only when what it claims is there: every path and test of its row on the ref (cold
+      // review: a layer skipped, or a module dropped from a closed one, has a past layer number too).
+      const missing = [...(r.paths || []), ...(r.tests || [])].filter((p) => !onRef(String(p).replace(/\/$/, '')));
+      const why = !past ? 'no layer is open, so whether it was built is not known'
+        : !(r.paths || []).length ? 'its modules row has no paths' : !(r.tests || []).length ? 'its modules row has no tests'
+          : missing.length ? `${missing.slice(0, 2).join(', ')} not on ${ref}: whether it was built is BOB's to say`
+            : !req ? `no requirements file ${dir}/${id}.md` : !neighbourSuite(entries, r.tests) ? `no neighbour's suite to copy (its tests: ${r.tests.join(', ')})` : null;
+      const content = why ? null : {
+        id, title: `${id}: built before the ledger`, ...(n !== null ? { layer: n } : {}),
+        paths: [...new Set([...(r.paths || []), ...(req ? [req] : [])])], tests: r.tests, ...(req ? { requirements: req } : {}), uses: r.uses || [],
+        ...(neighbourSuite(entries, r.tests) ? { suite: neighbourSuite(entries, r.tests) } : {}),

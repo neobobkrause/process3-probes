@@ -1,0 +1,131 @@
+// ===== file: pin.mjs (continued) =====
+
+  L.push(`1. \`git fetch origin ${tranche} --depth 1\`, then \`git checkout -q -b p3-pin-work FETCH_HEAD\`, then \`git update-ref refs/p3/pin-base HEAD\``);
+  L.push('2. `git submodule update --init .process`');
+  L.push(`3. \`git -C .process fetch origin ${pin}\` (no --depth: the merge tool reads the pin's ancestry), then \`git -C .process checkout -q --detach ${pin}\``);
+  L.push(`4. \`git add .process\`, then \`git commit -q -m "process: pin ${short}"\``);
+  // Review of PR 72: one rule for every gap would copy the process lines over CLAUDE.md and its approvals block.
+  L.push(`5. \`${P3} setup check --at HEAD\`. For each gap, as it names: a workflow differing from or lacking the pin's shim, copy \`.process/shims/<f>\` to \`.github/workflows/<f>\`; CLAUDE.md lacking the process lines, replace the old process lines below the approvals block with those of \`.process/shims/CLAUDE.process.md\` ({tranche} as ${tranche}), changing nothing in the approvals block. Commit, and run it again. A gap in \`.claude/settings.json\` (the owner's file), or any other gap: send it to \`${report}\` and end.`);
+  // 4 Nov: a pin move cut from an older tranche tip conflicted on the gitlink; branch from the tip as it is now.
+  L.push(`6. \`git fetch origin ${tranche} --depth 1\`, then \`git checkout -q -b ${branch} FETCH_HEAD\`, then \`git cherry-pick refs/p3/pin-base..p3-pin-work\`. If the cherry-pick stops (a conflict, or nothing left to pick: the tip already carries the pin), \`git cherry-pick --abort\`, send \`${report}\` what it said and end.`);
+  L.push(`7. \`${P3} setup check --at HEAD\` again: a gap, as in step 5.`);
+  L.push(`8. \`${P3} pin check ${slug}\` (a pin move must not run beside another): if it refuses, send its exact words to \`${report}\` and end.`);
+  L.push(`9. \`${P3} github push origin ${branch} --set-upstream\``);
+  L.push(`10. create_pull_request {"owner":"${owner}","repo":"${repo}","head":"${branch}","base":"${tranche}","title":"process: pin ${short}","body":"Moves the process pin to process3 ${pin}. ${why.replace(/["\\]/g, '')}"}`);
+  L.push(`11. \`${P3} merge <that pull request> --plain --as pin --no-review "a process pin move; the fix was reviewed in process3"\` (a pull request that conflicts with ${tranche} is refused at once: send the refusal and end)`);
+  // PD-23 (Bob, 9 Nov: "An open layer may need to keep the old process version - if the process update would affect the proper completion of the layer. If it wouldn't then ... we should change the process without resetting the layer."): the pin move reaches every open layer itself.
+  L.push(`12. \`${P3} layer pin --open\` (PD-23): each open layer takes the new pin in place, a pin-only pull request the merge tool lands on a green gate, when the pin diff changes nothing that judges the layer; with no layer open it says so. Where it prints that a layer's choice is the coordinator's (apply, hold or reset), send its exact lines to \`${report}\` and go on to step 13: the coordinator runs \`${P3} layer pin <n> --layers <choice>\`. Any other refusal: send its exact words to \`${report}\` and end.`);
+  L.push(`13. The merge printed the wake of BOB: run that send as printed, then send_message to the address it prints, then \`${P3} send delivered <n> --from pin\`. If it says no BOB is addressed, there is no wake: send nothing.`);
+  L.push(`14. Send \`${report}\` one message with send_message: the pull request, the merge commit, each layer's pin (moved, with its pull request, or the coordinator's choice owed), and the wake's number (or "no BOB"). Then end.`);
+  return L.join('\n') + '\n';
+}
+
+// The product's open pin moves: its open pull requests from p3/pin-* heads, into any base.
+export const PIN_HEAD = /^p3\/pin-/;
+const listOpen = (slug) => {
+  const pages = gh(['api', '--paginate', '--slurp', `repos/${slug}/pulls?state=open&per_page=100`], { allowFail: true });
+  return Array.isArray(pages) ? pages.flat() : null;
+};
+export const PIN_IO = { list: listOpen, comments, comment: addComment, close: (slug, n) => editPR(slug, n, { state: 'closed' }) };
+export const UNLISTED = (slug) => `could not list ${slug}'s open pull requests, so whether a pin move is open is unknown`;
+// null: unread, when `unread` allows it (pin move); pin check, the guard, always refuses then.
+export function openPinMoves(slug, { list = PIN_IO.list } = {}, { unread = false } = {}) {
+  const prs = list(slug);
+  if (!Array.isArray(prs)) { if (unread) return null; fail(UNLISTED(slug)); }
+  return prs.filter((p) => PIN_HEAD.test(p.head?.ref || ''));
+}
+const named = (open) => open.map((p) => `PR ${p.number} (${p.head.ref})`).join(', ');
+const refuseOpen = (open) => { if (open.length) fail(`a pin move is open: ${named(open)}; wait for it or close it`); };
+
+// pin check <slug>: the printed session's check right before it pushes.
+export function pinCheck(slug, { io = PIN_IO, log = console.log } = {}) {
+  if (!SLUG.test(String(slug ?? ''))) fail(`pin check <owner/repo>, the product's slug, not ${JSON.stringify(slug ?? '')}`);
+  refuseOpen(openPinMoves(slug, io));
+  log(`no pin move is open on ${slug}`);
+  return { open: [] };
+}
+
+// pin: required, a commit on process3's tranche or main, read from the repo this tool runs from (copy, 4 Nov: with no --pin it
+// took the product's own tranche tip, and a positional sha was ignored). supersedes: the number of
+// the one open pin move this one replaces, closed (comment, then close; the branch kept) first.
+export function pinMove(root, slug, { pin, rest = [], tranche = 'tranche', report, why, supersedes, processRoot = TOOL_ROOT, io = PIN_IO, log = console.log } = {}) {
+  if (!SLUG.test(String(slug ?? ''))) fail(`pin move <owner/repo>, the product's slug, not ${JSON.stringify(slug ?? '')}`);
+  if (rest.length) fail(`pin move takes only the slug; ${/^[0-9a-f]{7,40}$/.test(String(rest[0])) ? `give the commit as --pin ${rest[0]}` : `not ${JSON.stringify(rest[0])}`}`);
+
+// Binding on all jobs: the reviewer for jobs has changed. Handover notes now carry the line
+// `reviewer: Odette Fairweather`, and the name Tamsin Polkinghorne is no longer written anywhere in
+// a handover note.
+
+  if (!SESSION.test(String(report ?? ''))) fail('pin move needs --report <session id>: the session the pin move reports to (your own, from get_session)');
+  if (typeof why !== 'string' || !why.trim()) fail('pin move needs --why "<what the fix unblocks>"');
+  if (typeof tranche !== 'string' || !/^[\w./-]+$/.test(tranche)) fail(`--tranche <the product's tranche branch>, not ${JSON.stringify(tranche)}`);
+  if (!/^[0-9a-f]{40}$/.test(String(pin))) fail(`pin move needs --pin <a process3 commit, 40 hex>${pin === undefined ? '' : `, not ${JSON.stringify(pin)}`}`);
+  // The merge tool's own test (merge.mjs pinChange), before --supersedes closes anything; a tag's id is not a commit's.
+  if (!processRepo(processRoot).released(pin) || git(['cat-file', '-t', pin], { cwd: processRoot, allowFail: true }).stdout?.trim() !== 'commit') fail(`--pin ${pin} is not a commit on process3's tranche or main`);
+  // From a session that cannot list the product's pull requests (a process3-only one, 5 Nov), the
+  // call is printed all the same: the printed session runs pin check, which refuses then, before it pushes.
+  const open = openPinMoves(slug, io, { unread: supersedes === undefined });
+  if (open === null) log(`note: ${UNLISTED(slug)} from here; the pin-move session's own \`${P3} pin check ${slug}\` (step 8, before it pushes) guards it`);
+  else if (supersedes !== undefined) {
+    const n = Number(supersedes);
+    if (typeof supersedes === 'boolean' || Array.isArray(supersedes) || !Number.isInteger(n) || n < 1) fail(`--supersedes <the open pin move's pull request number>, once; not ${JSON.stringify(supersedes)}`);
+    const old = open.find((p) => p.number === n);
+    if (!old) fail(`--supersedes ${n}: pull request ${n} is not an open pin move on ${slug}${open.length ? ` (open: ${named(open)})` : ''}`);
+    if (old.head.ref === `p3/pin-${pin.slice(0, 10)}`) fail(`pull request ${n} already moves the pin to ${pin.slice(0, 10)}; wait for it`);
+    refuseOpen(open.filter((p) => p !== old));
+    // A rerun after a refused close (R17d) finds its comment there already: it is not posted twice.
+    const note = `Superseded by a newer pin move, to process3 ${pin}. Closed by \`pin move --supersedes ${n}\`; the branch ${old.head.ref} is kept.`;
+    if (!(io.comments?.(slug, n) || []).some((c) => c?.body === note)) io.comment(slug, n, note);
+    io.close(slug, n);
+    log(`closed pull request ${n} (${old.head.ref}) as superseded; its branch is kept`);
+  } else refuseOpen(open);
+  const prompt = pinMoveText({ slug, pin, tranche, report, why: why.trim().replace(/\s+/g, ' ') });
+  // From the product's tranche by name: the session's first command fetches the tip and checks it out.
+  const call = sessionCall({ slug, revision: tranche, title: `pin move ${pin.slice(0, 10)}`, prompt, clone: { clone_depth: 1 } });
+  log(prompt);
+  log(`next act: start the pin move with create_session:\n${JSON.stringify(call, null, 2)}`);
+  return { prompt, call, pin };
+}
+
+// ===== file: stale-generated.test.mjs =====
+
+// A committed generated file left stale (coordinator, 6 Nov: modules.json gained 7 rows and
+// member-roster's order.mjs was never regenerated; the gate passed and the tranche held 9 failures).
+// A pull request that is not a job's has the rows regenerated even when it touches no module; a file
+// the regenerate changes is a finding, unless the base was stale the same way (a notice, as base-red).
+import assert from 'node:assert/strict';
+import { test } from 'node:test';
+import { gate } from '../lib/gate.mjs';
+import { git } from '../lib/util.mjs';
+import { commit, entry, makeRepo } from './helpers.mjs';
+
+const W = (out = 'src/alpha/order.mjs') => "require('fs').writeFileSync('" + out + "', 'export const order = ' + JSON.stringify(require('./build/modules.json').modules.map((m) => m.id)) + ';\\n')";
+const MOD = (ids) => ({ modules: ids.map((id) => ({ id, paths: [`src/${id}/`], tests: [`test/${id}/`], uses: [] })), not_product: [] });
+const order = (ids) => `export const order = ${JSON.stringify(ids)};\n`;
+const io = { comments: () => [], getPR: () => ({ user: { login: 'u' }, draft: false }), addComment: () => ({}), verify: () => false };
+
+// The tranche with modules (ids) and order.mjs as committed (written); a plain branch with files.
+function run(ids, written, files, { out = 'src/alpha/order.mjs', branch = 'plain/x' } = {}) {
+  const root = makeRepo({
+    'process/config.json': { modules_file: 'build/modules.json', generated: [{ paths: [out], regenerate: ['node', '-e', W(out)], verify: ['node', '-e', '0'] }] },
+    'build/modules.json': MOD(ids),
+    ...Object.fromEntries(ids.map((id) => [`process/ledger/${id}.json`, entry(id, { status: { state: 'COMPLETE' } })])),
+    [out]: order(written),
+    'test/alpha/a.test.mjs': "import test from 'node:test'; test('ok', () => {});\n",
+    'docs/notes.md': 'notes\n',
+  });
+  git(['branch', 'tranche'], { cwd: root });
+  const base = git(['rev-parse', 'HEAD'], { cwd: root });
+  git(['checkout', '-q', '-b', branch === 'tranche' ? 'tranche-head' : branch], { cwd: root });
+  const head = commit(root, files);
+  const lines = [];
+  const r = gate(root, { base, head, branch, pr: 5, slug: 'o/r', io, log: (l) => lines.push(l) });
+  return { ...r, lines, gen: r.findings.filter((f) => f.check === 'generated') };
+}
+
+test('a plain pull request that adds a modules row and leaves order.mjs stale is refused, naming the file and its regenerate', () => {
+  const r = run(['alpha'], ['alpha'], { 'build/modules.json': MOD(['alpha', 'beta']), 'process/ledger/beta.json': entry('beta', { status: { state: 'COMPLETE' } }) });
+  assert.equal(r.gen.length, 1, JSON.stringify(r.findings));
+  assert.match(r.gen[0].message, /^src\/alpha\/order\.mjs is stale at this commit: run node -e .* and commit it in this PR$/);
+  assert.equal(r.run.stale_base, undefined);
+  // The copy's exact case, ruling (A): modules.json and order.mjs regenerated together pass, the
