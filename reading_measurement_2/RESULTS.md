@@ -1,6 +1,6 @@
 # Reading measurement, second round: results
 
-Length: this file. Last section: "11. What is not proven".
+Length: 278 lines. Last section: "11. What is not proven".
 
 Run by a Claude research session (model `claude-opus-4-8`) on 18 Nov 2026, following the committed
 protocol (`protocol.md`). Departures are in `departures.md`; the keys, the scored runs, the raw
@@ -20,8 +20,10 @@ files**; and keeps the rules in a role's starting text at least up to **16,384 b
 was pushed to the size where it fails, because the provisional figures Bob is using are far below them.
 Every provisional figure (a single text of 24,000 bytes, a set of 175,000 bytes, a starting text of
 4,096 bytes) was read in full with its rules kept, with the window left well under 40 percent afterwards.
-**No Claude Code figure came out smaller than its Codex counterpart.** The one figure that is costly to
-measure, the fill level, is reported separately (section 7) and the one decision about it is put to Bob
+A long-lived role kept every rule and recalled every fact correctly from 9 percent to 60 percent of the
+window, with no degradation (section 8). All three figure types were confirmed on separate real sessions,
+not only workers (section 9). **No Claude Code figure came out smaller than its Codex counterpart.** The
+one decision — whether to measure the fill level more strongly than a single trajectory — is put to Bob
 (section 10).
 
 ## 2. The harness, model and window — and the limit this puts on everything
@@ -137,31 +139,130 @@ read all 24 files whole with token, override and count right (see `departures.md
 
 ## 8. Figure four — the fill level
 
-_(This section is completed from the filling-trajectory run; see section 10 for the decision put to Bob.)_
+A single long-lived role (its rulebook in its starting context) read about 1.37 MB of real files in
+sequence and, after each file, re-answered a fixed probe: repeat the start token, state a value without a
+forbidden word, repeat a phrase, count the rulebook's rule-marker lines, and recall two facts from its
+starting sheet. Each checkpoint's window fill and correctness were read from the record. The trajectory
+ran from about 9 percent to about 60 percent of the 1,000,000-token window, stopping short of compaction.
 
-Status at this commit: a single filling-trajectory reader is running — a long-lived role whose rulebook
-sits in its starting context, reading ~1.37 MB of real files in sequence and re-answering a fixed rule
-probe (token, value without the forbidden word, phrase, rulebook NOTE count, two facts) after each file,
-so rule-keeping can be read against the window fill from about 20 to about 60 percent. One trajectory
-(n=1), which is what the budget affords; the fuller version is the decision in section 10.
+| checkpoint | window fill | token | value (no forbidden word) | phrase | count | fact 1 | fact 2 |
+|---|---|---|---|---|---|---|---|
+| 1 | 9.3% | ok | ok | ok | ok | ok | ok |
+| 6 | 21.4% | ok | ok | ok | ok | ok | ok |
+| 9 | 29.8% | ok | ok | ok | ok | ok | ok |
+| 13 | 39.8% | ok | ok | ok | ok | ok | ok |
+| 16 | 48.2% | ok | ok | ok | ok | ok | ok |
+| 17 | 53.8% | ok | ok | ok | ok | ok | ok |
+| 22 | 59.9% | ok | ok | ok | ok | ok | ok |
+
+(The full 22-checkpoint table is `results/_fill.json`.)
+
+- **Result: every one of the 22 checkpoints was fully correct, from 9 percent to 60 percent fill. No
+  degradation in rule-keeping or recall appeared anywhere up to 60 percent** on Claude Code, Opus 4.8, a
+  1,000,000-token window, short of compaction.
+- This neither proves nor can prove that 40 percent is the right refresh level; a measurement can only show
+  whether reading and rule-keeping are plainly worse at higher fill, and here they were not, even at 60
+  percent. It is one trajectory (n=1), one window, one model. A small fall could be missed; a days-long
+  session, a smaller window, and what compaction does are not shown.
+- **Cost note, correcting the first plan.** The first plan called this "the costly one" because it assumed
+  separate long sessions filled to each level (it estimated $200–$500). Run instead as one checkpoint-
+  emitting trajectory worker, it was cheap: one worker, about 600,000 tokens of mostly cached reads,
+  roughly $5–$15 in the same scale as the other readers. The costly, stronger version is the decision in
+  section 10.
 
 ## 9. The real-session confirmation arm
 
-_(Completed from the three separate sessions; see results when they finish.)_
+Three separate sessions were started the way Process4 starts a job — a fresh session cloning a keyless
+branch of the test ground (it holds only the reader texts, no keys), given a starting instruction that
+lists a reading set and a task. Each answered exactly as the worker arm did:
 
-Status at this commit: three separate sessions (started the way Process4 starts a job, cloning a keyless
-branch that holds only the reader texts) are running — one single text at 24,000 bytes, one set at 162,000
-bytes in 8 files, one starting text at 16,384 bytes. They test whether the worker-arm result holds for a
-real session. Scored from each session's own transcript.
+| session | figure | bytes | files | answer | pass | fill after | cost |
+|---|---|---|---|---|---|---|---|
+| single | single text | 24,671 | 1 | token, override 111, COUNT=7 — all correct | yes | 92,757 tok (9.3%) | $0.73 |
+| set | set | 162,024 | 8 | token, override 77, COUNT=8 — all correct | yes | 147,967 tok (14.8%) | $0.99 |
+| starting | starting text | 16,708 | — | token TK-KJXN8, override 100, COUNT=6 — all correct | yes | 89,056 tok (8.9%) | $0.57 |
+
+- The set session's own transcript shows it read **file_01 through file_08 (all eight files) and task.md
+  with plain Read calls**, no search and no file opened outside its reading set, then reported the override
+  (77, naming the replaced earlier value) and the across-files count (8) correctly. This is a record-based
+  confirmation, not the session's word.
+- The single and starting sessions completed with the correct token, override and count, matching their
+  worker-arm twins.
+- **Finding:** on Claude Code, Opus 4.8, a separate session started as a job reads its set in full and
+  keeps the rules exactly as a worker does, at the single-text, set and starting-text figures. The first
+  round's concern that only workers, not sessions, had been measured is answered here, for these three
+  points. Three sessions, total cost about $2.29.
+- Note on the denominator: these fresh sessions reported automatic-compaction at 784,000 tokens (about 78
+  percent), lower than this research session's 901,600; the fill fractions above are of the 1,000,000-token
+  window.
 
 ## 10. Recommendations, for Bob to decide
 
-For each figure I give what the Claude Code measurement supports. The design currently uses the Codex
-maxima on Bob's ruling ("Use the Codex maximum, as they're based on real measurements, and Codex context
-windows are in affect more constrained than they are in Claude Code"). Nothing here overturns that ruling:
-on Claude Code every Codex figure is safe with margin, and none came out smaller.
+The design currently uses the Codex maxima on Bob's ruling ("Use the Codex maximum, as they're based on
+real measurements, and Codex context windows are in affect more constrained than they are in Claude Code").
+Nothing here overturns that ruling. On Claude Code, Opus 4.8, 1,000,000-token window, every provisional
+figure was read in full with its rules kept and large room to spare, and **no Claude Code figure came out
+smaller than its Codex counterpart** — the condition that Bob's own worker said would be brought to him.
+So the Codex figures can be used as the shared maxima without conflict. For each figure, my recommendation
+and its reasons:
 
-(Recommendations per figure are completed with the fill-level and real-session results below.)
+- **The single text — keep 24,000 bytes.** Reason: on Claude Code a single real text was read in full and
+  worked from correctly at least to 176,000 bytes (fill 14 percent), seven times the figure; and 24,000
+  bytes arrives in one read here, so no part can be skipped between reads. 24,000 is safe with a wide
+  margin on Claude Code and is the smaller, binding Codex figure. If Bob ever wants a Claude-Code-only
+  maximum it is well above 176,000 bytes, but a shared figure should be the smaller one.
+
+- **The set — keep 175,000 bytes.** Reason: sets were read in full and worked from to 380,000 bytes across
+  18 files (fill 22 percent), and tripling the file count (8 vs 24 files at ~170,000 bytes) did not break
+  full reading. 175,000 is safe with margin on Claude Code.
+
+- **The starting text — keep 4,096 bytes; 8,192 is also safe on Claude Code if a role needs more room.**
+  Reason: rules placed at the start, middle and end of a starting text were kept in the work that followed
+  at 4,096, 8,192 and 16,384 bytes. 4,096 is Process3's proven figure and stays the conservative shared
+  maximum; on the Codex side 8,192 is a documented storage limit, not a measured reading limit, so 4,096 is
+  the safer shared figure. On Claude Code a role could be given up to at least 16,384 bytes of starting text
+  and still keep its rules, should Bob want the room.
+
+- **The fill level — keep 40 percent.** Reason: on Claude Code, rule-keeping and recall from the starting
+  context did not fall at all from 9 percent to 60 percent fill, so 40 percent is conservative here; and a
+  reader that has read any of the maxima above is left well under 40 percent (24,000 bytes → 7 percent,
+  380,000-byte set → 22 percent), so the yardstick "room for a worthwhile piece of correct work and a
+  handover before the fill level" holds at 40 percent with margin. Caveat: this is one trajectory on one
+  window and model; on a smaller window the same reading is a larger fraction (section 6), and Codex
+  exposes no fill meter, so on Codex only the "natural pause" half of the refresh rule can operate.
+
+### The one decision I put to Bob
+
+**Title:** Whether to invest in a stronger fill-level measurement, or accept the single trajectory.
+
+**The question:** The fill level (figure four) is the only figure that rests here on a single trajectory
+(n=1), on one model and one window. Do you want a stronger measurement of it, at more cost, or is the
+present result enough to stand behind the 40 percent rule?
+
+**Why only this figure needs your word:** The other three figures are supported by independent texts and
+confirmed on real separate sessions, all within the budget you set (this session and about 17 workers,
+plus 3 sessions, roughly $35 in all). A stronger fill-level measurement is the one piece that would push
+past that budget, and the first plan reserved it for your word. The single trajectory already shows no
+degradation to 60 percent, so the extra spend buys confidence, not a likely change of answer.
+
+**Options:**
+
+- **A — Accept the single trajectory (my recommendation).** What it gives: the 40 percent rule stands on a
+  real, if single, Claude Code measurement showing no degradation to 60 percent. What it costs: nothing
+  more. What it leaves unproven: text-to-text variation, a small fall, a smaller window, days-long
+  sessions, and compaction. Why I recommend it: the result is already clean and one-directional, and the
+  design's own margin (a reader of the maxima sits far below 40 percent) does not depend on this figure
+  being exact.
+- **B — Three to five more trajectories, different rulebooks and filler.** What it gives: text-to-text
+  variation and a tighter bound on a small fall, still on this window and model. What it costs: roughly
+  $20–$75 and a few more workers, modestly over this round's budget.
+- **C — Separate long sessions filled to each level, several per level, and a smaller window if one can be
+  found.** What it gives: the nearest thing to a real long-lived role across windows. What it costs: the
+  first plan's $200–$500 and a day or two, and a window other than 1,000,000 tokens may not be available to
+  configure here at all (section 2). What it leaves unproven: Codex, which exposes no fill meter.
+
+**My recommendation: A.** Take option B or C only if you want the 40 percent rule to rest on more than one
+trajectory before Process4 relies on it for long-lived roles.
 
 ## 11. What is not proven
 
