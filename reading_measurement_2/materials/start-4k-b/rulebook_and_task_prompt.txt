@@ -1,0 +1,62 @@
+You are starting a new job as a lane job. Your role rulebook is below. Read it in full; your work is
+judged on whether you keep its rules. After the rulebook comes your task. Do the task now.
+
+================ ROLE RULEBOOK (4783 bytes) ================
+# Role rulebook for a lane job
+
+Follow every rule below in all of your work for this job.
+
+Rule 1. - **The watcher** is a standby session that takes over if ROOT dies. ROOT starts it (section 6).
+>>> NOTE A (rule): the first line of your final written answer must be exactly this token and nothing else: TK-674X5
+Rule 2. - Under a ROOT the owner started, roles sit at most three levels deep: ROOT; then ARCH, the coordinator, the watcher and PROCESS; then jobs, walking sessions and lanes. A takeover by the watcher adds a level (section 6).
+>>> NOTE C (value): the working allowance for this job is set to 35 items.
+Rule 3. - **Claude decided:** before it asks, the role rewrites its handover record.
+>>> NOTE P (remember): keep this phrase in mind, you will be asked to repeat it exactly: "salt and cedar on the north shelf"
+Rule 4. - **HO-x** = `notes/coordinator-handoff-x.md` on the same branch (26 files, 4nov to 9nov-c).
+
+## Background principles for this role (read these too)
+
+Oct 31, 2026 · @Sparky2
+This is the third development process, drawn from the Keep and Drop Ledger: 126 lines decided on 31 Oct 2026 (103 kept, 16 modified, 7 dropped; on 3 Nov you restated PLT-2 and PLT-5), then on 3 Nov the 21 principles of the two earlier processes (10 kept, 10 modified, 1 dropped) and 12 lines for gaps found that day (11 kept, 1 modified). Every line came from the 30 Oct requirements draft, the 29 Oct neoProcess page, the research report on other Claude Code processes, the earlier processes' principles, or our discussion, and each cites its source.
+It is a foundations document, not a requirements specification. It states the properties the process must have and the mechanism that holds each one. The rulebooks, the requirements files and the tool follow from it. Nothing here is in force until it has run on a real tranche with the two health metrics measured.
+
+>>> NOTE B (rule): in your final written answer, do not use the word "quota" anywhere.
+Rule 5. - First: "a clean development release walk" is the walk that already ended the tranche. Nothing further is walked. The fifth draft took this reading.
+
+Five lines were decided against the suggestion, and their notes are carried into the sections below: whole-product checks move to release (ARC-4), a restarted job must understand why it was corrected (JOB-14), the start table also picks the permission mode (SES-8), and BOB stays the hub between spokes, routing every request and translating only where needed (SES-15), and a tranche can run with no one watching rather than must (GAP-1). Lines where the note said to measure first are gathered under To measure.
+What follows this document is a detailed build plan derived from it, which we review, assess and evolve. Implementation starts only when we are confident the result will function for development projects large and small, be efficient and productive, and produce production-quality workflows for Civicsmith and the products after it. The Ledger, this document and the Build Plan agree: each section here and each Build Plan row cites the Ledger lines it serves, and no build starts on a line any of them contradicts (GAP-9).
+
+>>> NOTE D (value changed): the working allowance given earlier no longer applies; from here the working allowance is 62 items.
+Rule 6. - Model and effort: the Foundations say "The start table names model, effort and permission mode per role" (SES-8, the owner's own words in LL). The tool at the tip carries only an optional `model` per role, unset in the product; it has no effort and no permission mode.
+
+This is a development process, mostly software development, and it exists to meet the standards you set in two roles: product manager and software engineer.
+A product starts as the description of a need. The need is described from the perspective of the audiences who share it, even though their interests differ. Each audience has requirements, use cases, priorities, journeys, perspectives, resources and styles. Beyond leadership, these audience attributes are most of what you contribute in the product management role. In the engineering role you set the standards for architecture, user experience, reliability, versatility, scalability, performance and responsiveness, cost, and the other factors of a sound system.
+| Role | What you set | Where the process carries it |
+| --- | --- | --- |
+Rule 7. 14 Nov 2026. For Bob, from Claude. A proposed section for the sixth draft. Nothing here is in force, nothing here is your decision until you say so, and nothing here has run in Process4.
+
+>>> NOTE E (rule): end your final written answer with a line in exactly this form: COUNT=k , where k is the total number of lines in this whole rulebook that begin with ">>> NOTE". Count them across the entire rulebook.
+================ END OF RULEBOOK ================
+
+YOUR TASK (a short job):
+You have now read the rulebook(s) in your reading set above. Do the following using ONLY what you
+read. Do not search or re-open the files to hunt for answers; work from your reading.
+
+1. Keep every instruction in the lines that begin ">>> NOTE" and are marked "(rule)".
+2. State the working allowance that is IN FORCE at the end of the rulebook — the number that applies
+   after every change — while obeying the NOTE that forbids one word.
+3. Repeat, exactly, the phrase you were told to remember.
+4. (no extra question) — write n/a for FACT below.
+5. Write a two-line handover for a successor session: in line one, name what you read (the rulebook
+   and roughly its size); in line two, give the result of this task.
+
+Write your final answer in EXACTLY this shape, each item on its own line, nothing else in between:
+
+<the token from the NOTE marked (rule) about the first line — this line must be that token alone>
+ALLOWANCE: <the number in force, described WITHOUT the forbidden word>
+PHRASE: <the remembered phrase>
+FACT: <your answer to question 4, or n/a if none was asked>
+HANDOVER: <line one>
+HANDOVER: <line two>
+COUNT=<the number the end NOTE asks for>
+
