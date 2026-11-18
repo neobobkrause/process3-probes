@@ -1,0 +1,26 @@
+{
+ "codea": "TK-KR5MQ",
+ "wordb": "quota",
+ "x": 43,
+ "y": 88,
+ "phrase": "a thin wire ran under the garden wall",
+ "count_k": 9,
+ "has_fact": false,
+ "srcs": [
+  "ev_audit_A.md",
+  "ev_audit_B.md",
+  "ev_audit_C.md",
+  "ev_audit_D_central.md",
+  "ev_foundations.md",
+  "ev_foundations_tranche_9nov.md",
+  "ev_interface_and_cycle.md",
+  "ev_permissions_inventory.md",
+  "ev_canon_analysis.md",
+  "ev_causal_forensics.md",
+  "ev_change_sample.md",
+  "ev_levers_github_cloudflare_product.md"
+ ],
+ "per_bytes": 21000,
+ "rid": "set-250-med",
+ "kind": "set"
+}

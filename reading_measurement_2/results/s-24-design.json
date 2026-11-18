@@ -1,0 +1,69 @@
+{
+ "rid": "s-24-design",
+ "kind": "design",
+ "model": "claude-opus-4-8",
+ "context_tokens_at_end": 72318,
+ "calls": [
+  {
+   "tool": "Read",
+   "base": "prompt.txt",
+   "chars": 730,
+   "offset": null,
+   "limit": null,
+   "allow_large": null
+  },
+  {
+   "tool": "Read",
+   "base": "document.md",
+   "chars": 25399,
+   "offset": null,
+   "limit": null,
+   "allow_large": null
+  },
+  {
+   "tool": "Read",
+   "base": "document.md",
+   "chars": 4,
+   "offset": 209,
+   "limit": null,
+   "allow_large": null
+  },
+  {
+   "tool": "Read",
+   "base": "task.md",
+   "chars": 1219,
+   "offset": null,
+   "limit": null,
+   "allow_large": null
+  }
+ ],
+ "n_reads": 4,
+ "coverage": {
+  "document.md": {
+   "total_nonblank": 146,
+   "received": 146,
+   "covered": true
+  }
+ },
+ "covered_all": true,
+ "read_state": "read_whole",
+ "searched_on_text": [],
+ "cut_notices": 0,
+ "out_of_set": [],
+ "rule_a_token": true,
+ "token_first_line": true,
+ "rule_b_forbidden_word": true,
+ "rule_e_count": true,
+ "count_reported": 7,
+ "count_expected": 7,
+ "override_ok": true,
+ "reported_x_only": false,
+ "label_collision": false,
+ "reported_allowance_line": "ALLOWANCE: 111 items",
+ "phrase_ok": true,
+ "handover_ok": true,
+ "rules_kept": 3,
+ "set_aside": false,
+ "passed": true,
+ "answer": "TK-UJKEQ\nALLOWANCE: 111 items\nPHRASE: three lanterns burned in the empty hall\nFACT: n/a\nHANDOVER: I read the document \"Process4: definition, sixth draft\" (document.md), a single-document reading set of about 208 lines.\nHANDOVER: Result — in-force allowance is 111 items; remembered phrase repeated; token placed on the first line and the forbidden word avoided throughout.\nCOUNT=7"
+}

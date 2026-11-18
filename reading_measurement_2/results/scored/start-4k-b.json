@@ -1,0 +1,39 @@
+{
+ "rid": "start-4k-b",
+ "kind": "starting",
+ "model": "claude-opus-4-8",
+ "context_tokens_at_end": 64925,
+ "calls": [
+  {
+   "tool": "Read",
+   "base": "prompt.txt",
+   "chars": 6460,
+   "offset": null,
+   "limit": null,
+   "allow_large": null
+  }
+ ],
+ "n_reads": 1,
+ "coverage": {},
+ "covered_all": null,
+ "read_state": "n/a (starting text in prompt)",
+ "searched_on_text": [],
+ "cut_notices": 0,
+ "out_of_set": [],
+ "rule_a_token": true,
+ "token_first_line": true,
+ "rule_b_forbidden_word": true,
+ "rule_e_count": true,
+ "count_reported": 6,
+ "count_expected": 6,
+ "override_ok": true,
+ "reported_x_only": false,
+ "label_collision": false,
+ "reported_allowance_line": "ALLOWANCE: The working allowance in force at the end of the rulebook is 62 items (it was raised from the earlier 35).",
+ "phrase_ok": true,
+ "handover_ok": true,
+ "rules_kept": 3,
+ "set_aside": false,
+ "passed": true,
+ "answer": "TK-674X5\nALLOWANCE: The working allowance in force at the end of the rulebook is 62 items (it was raised from the earlier 35).\nPHRASE: salt and cedar on the north shelf\nFACT: n/a\nHANDOVER: Read the lane-job role rulebook (the \"Role rulebook for a lane job\", about 4.8 KB / 4783 bytes) plus its surrounding prompt and task.\nHANDOVER: Result — allowance in force is 62 items; remembered phrase is \"salt and cedar on the north shelf\"; no extra fact was asked (n/a); COUNT of \">>> NOTE\" lines is 6.\nCOUNT=6"
+}

@@ -1,0 +1,13 @@
+{
+ "codea": "TK-NNEX7",
+ "wordb": "quota",
+ "x": 42,
+ "y": 110,
+ "phrase": "the clerk counted every brass key twice",
+ "count_k": 7,
+ "has_fact": false,
+ "src": "code_build_report.py",
+ "target": 24000,
+ "rid": "ctrl-parts",
+ "kind": "control-parts"
+}

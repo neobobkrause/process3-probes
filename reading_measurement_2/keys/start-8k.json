@@ -1,0 +1,13 @@
+{
+ "codea": "TK-VD4NM",
+ "wordb": "cap",
+ "x": 51,
+ "y": 89,
+ "phrase": "salt and cedar on the north shelf",
+ "count_k": 6,
+ "has_fact": false,
+ "target": 8192,
+ "nbytes": 8725,
+ "rid": "start-8k",
+ "kind": "starting"
+}

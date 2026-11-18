@@ -1,0 +1,13 @@
+{
+ "codea": "TK-BQL4N",
+ "wordb": "cap",
+ "x": 27,
+ "y": 74,
+ "phrase": "a cold river keeps no secrets for long",
+ "count_k": 6,
+ "has_fact": false,
+ "src": "log_coord.md",
+ "target": 175000,
+ "rid": "s-175-log",
+ "kind": "log"
+}

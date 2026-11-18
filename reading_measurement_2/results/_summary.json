@@ -1,0 +1,1734 @@
+[
+ {
+  "rid": "ctrl-notext",
+  "kind": "control-notext",
+  "model": "claude-opus-4-8",
+  "context_tokens_at_end": 63210,
+  "calls": [
+   {
+    "tool": "Read",
+    "base": "prompt.txt",
+    "chars": 1528,
+    "offset": null,
+    "limit": null,
+    "allow_large": null
+   }
+  ],
+  "n_reads": 1,
+  "coverage": {},
+  "covered_all": null,
+  "read_state": "read_in_part",
+  "searched_on_text": [],
+  "cut_notices": 0,
+  "out_of_set": [],
+  "rule_a_token": false,
+  "token_first_line": false,
+  "rule_b_forbidden_word": true,
+  "rule_e_count": false,
+  "count_reported": null,
+  "count_expected": 7,
+  "override_ok": false,
+  "reported_x_only": false,
+  "label_collision": false,
+  "reported_allowance_line": "ALLOWANCE: UNKNOWN",
+  "phrase_ok": false,
+  "handover_ok": true,
+  "rules_kept": 1,
+  "set_aside": false,
+  "passed": null,
+  "answer": "UNKNOWN\nALLOWANCE: UNKNOWN\nPHRASE: UNKNOWN\nFACT: n/a\nHANDOVER: Line one \u2014 I read no document; there was no reading set in this run (control condition, zero bytes).\nHANDOVER: Line two \u2014 Result: all document-derived values are UNKNOWN; FACT is n/a.\nCOUNT=UNKNOWN"
+ },
+ {
+  "rid": "ctrl-parts",
+  "kind": "control-parts",
+  "model": "claude-opus-4-8",
+  "context_tokens_at_end": 72223,
+  "calls": [
+   {
+    "tool": "Read",
+    "base": "prompt.txt",
+    "chars": 27098,
+    "offset": null,
+    "limit": null,
+    "allow_large": null
+   }
+  ],
+  "n_reads": 1,
+  "coverage": {},
+  "covered_all": null,
+  "read_state": "read_in_part",
+  "searched_on_text": [],
+  "cut_notices": 0,
+  "out_of_set": [],
+  "rule_a_token": true,
+  "token_first_line": true,
+  "rule_b_forbidden_word": true,
+  "rule_e_count": true,
+  "count_reported": 7,
+  "count_expected": 7,
+  "override_ok": true,
+  "reported_x_only": false,
+  "label_collision": false,
+  "reported_allowance_line": "ALLOWANCE: 110 items (the later value in force, replacing the earlier 42)",
+  "phrase_ok": true,
+  "handover_ok": true,
+  "rules_kept": 3,
+  "set_aside": false,
+  "passed": null,
+  "answer": "TK-NNEX7\nALLOWANCE: 110 items (the later value in force, replacing the earlier 42)\nPHRASE: the clerk counted every brass key twice\nFACT: n/a\nHANDOVER: Read the Process4 research report \"Context management and canon fidelity in native Codex\" (embedded HTML-in-Python source, split into 7 parts, ~130 lines).\nHANDOVER: Task done: in-force allowance is 110 items, remembered phrase recovered, 7 lines begin with \">>> NOTE\".\nCOUNT=7"
+ },
+ {
+  "rid": "s-175-log",
+  "kind": "log",
+  "model": "claude-opus-4-8",
+  "context_tokens_at_end": 138988,
+  "calls": [
+   {
+    "tool": "Read",
+    "base": "prompt.txt",
+    "chars": 724,
+    "offset": null,
+    "limit": null,
+    "allow_large": null
+   },
+   {
+    "tool": "Read",
+    "base": "document.md",
+    "chars": 45271,
+    "offset": null,
+    "limit": null,
+    "allow_large": null
+   },
+   {
+    "tool": "Read",
+    "base": "document.md",
+    "chars": 59118,
+    "offset": 110,
+    "limit": 135,
+    "allow_large": null
+   },
+   {
+    "tool": "Read",
+    "base": "document.md",
+    "chars": 378,
+    "offset": 245,
+    "limit": 132,
+    "allow_large": null
+   },
+   {
+    "tool": "Read",
+    "base": "document.md",
+    "chars": 35888,
+    "offset": 245,
+    "limit": 70,
+    "allow_large": null
+   },
+   {
+    "tool": "Read",
+    "base": "document.md",
+    "chars": 37111,
+    "offset": 315,
+    "limit": 62,
+    "allow_large": null
+   },
+   {
+    "tool": "Read",
+    "base": "task.md",
+    "chars": 1219,
+    "offset": null,
+    "limit": null,
+    "allow_large": null
+   }
+  ],
+  "n_reads": 7,
+  "coverage": {
+   "document.md": {
+    "total_nonblank": 362,
+    "received": 362,
+    "covered": true
+   }
+  },
+  "covered_all": true,
+  "read_state": "read_whole",
+  "searched_on_text": [],
+  "cut_notices": 1,
+  "out_of_set": [],
+  "rule_a_token": true,
+  "token_first_line": true,
+  "rule_b_forbidden_word": true,
+  "rule_e_count": true,
+  "count_reported": 6,
+  "count_expected": 6,
+  "override_ok": true,
+  "reported_x_only": false,
+  "label_collision": false,
+  "reported_allowance_line": "ALLOWANCE: 74 items (the working-allowance figure that applies after the final change)",
+  "phrase_ok": true,
+  "handover_ok": true,
+  "rules_kept": 3,
+  "set_aside": false,
+  "passed": true,
+  "answer": "TK-BQL4N\nALLOWANCE: 74 items (the working-allowance figure that applies after the final change)\nPHRASE: a cold river keeps no secrets for long\nFACT: n/a\nHANDOVER: Read document.md, the Process3 coordinator findings log (3-5 Nov), about 376 lines / ~73k tokens, in this reader folder.\nHANDOVER: Task done; allowance in force 74, phrase repeated, and the \">>> NOTE\" lines counted at 6.\nCOUNT=6"
+ },
+ {
+  "rid": "s-24-code",
+  "kind": "code",
+  "model": "claude-opus-4-8",
+  "context_tokens_at_end": 76856,
+  "calls": [
+   {
+    "tool": "Read",
+    "base": "document.md",
+    "chars": 25398,
+    "offset": null,
+    "limit": null,
+    "allow_large": null
+   },
+   {
+    "tool": "Read",
+    "base": "task.md",
+    "chars": 1219,
+    "offset": null,
+    "limit": null,
+    "allow_large": null
+   }
+  ],
+  "n_reads": 2,
+  "coverage": {
+   "document.md": {
+    "total_nonblank": 95,
+    "received": 95,
+    "covered": true
+   }
+  },
+  "covered_all": true,
+  "read_state": "read_whole",
+  "searched_on_text": [],
+  "cut_notices": 0,
+  "out_of_set": [],
+  "rule_a_token": true,
+  "token_first_line": false,
+  "rule_b_forbidden_word": true,
+  "rule_e_count": true,
+  "count_reported": 7,
+  "count_expected": 7,
+  "override_ok": true,
+  "reported_x_only": false,
+  "label_collision": false,
+  "reported_allowance_line": "ALLOWANCE: 110 items",
+  "phrase_ok": true,
+  "handover_ok": true,
+  "rules_kept": 3,
+  "set_aside": false,
+  "passed": true,
+  "answer": "Completed the reading-measurement task using only the two files in the assigned folder (document.md read whole, then task.md).\n\nFinal answer in the exact required shape:\n\nTK-NNEX7\nALLOWANCE: 110 items\nPHRASE: the clerk counted every brass key twice\nFACT: n/a\nHANDOVER: Read document.md in full \u2014 the Process4 Codex \"Context management and canon fidelity\" research report, ~115 lines / ~15 KB.\nHANDOVER: Allowance in force is 110 items; remembered phrase returned; 7 lines begin \">>> NOTE\".\nCOUNT=7\n\nRule-NOTE compliance:\n- NOTE A (rule): first line is the bare token TK-NNEX7.\n- NOTE B (rule): the forbidden word is not used anywhere in the answer; the allowance is described as \"110 items\".\n- NOTE E (rule): COUNT=7 \u2014 counted lines beginning \">>> NOTE\" at document lines 6, 13, 23, 40, 62, 95, 109.\n\nReasoning notes:\n- Working allowance was 42 (NOTE C, line 23) then changed to 110 (NOTE D, line 95); 110 is the value in force at the document's end.\n- Remembered phrase from NOTE P (line 13).\n- Question 4 asked nothing extra, so FACT is n/a.\n\nFile path read: /tmp/claude-0/-home-user-process3/9758b265-a851-50c7-b362-91a3a2622341/scratchpad/rm2/readers/s-24-code/document.md"
+ },
+ {
+  "rid": "s-24-design",
+  "kind": "design",
+  "model": "claude-opus-4-8",
+  "context_tokens_at_end": 72318,
+  "calls": [
+   {
+    "tool": "Read",
+    "base": "prompt.txt",
+    "chars": 730,
+    "offset": null,
+    "limit": null,
+    "allow_large": null
+   },
+   {
+    "tool": "Read",
+    "base": "document.md",
+    "chars": 25399,
+    "offset": null,
+    "limit": null,
+    "allow_large": null
+   },
+   {
+    "tool": "Read",
+    "base": "document.md",
+    "chars": 4,
+    "offset": 209,
+    "limit": null,
+    "allow_large": null
+   },
+   {
+    "tool": "Read",
+    "base": "task.md",
+    "chars": 1219,
+    "offset": null,
+    "limit": null,
+    "allow_large": null
+   }
+  ],
+  "n_reads": 4,
+  "coverage": {
+   "document.md": {
+    "total_nonblank": 146,
+    "received": 146,
+    "covered": true
+   }
+  },
+  "covered_all": true,
+  "read_state": "read_whole",
+  "searched_on_text": [],
+  "cut_notices": 0,
+  "out_of_set": [],
+  "rule_a_token": true,
+  "token_first_line": true,
+  "rule_b_forbidden_word": true,
+  "rule_e_count": true,
+  "count_reported": 7,
+  "count_expected": 7,
+  "override_ok": true,
+  "reported_x_only": false,
+  "label_collision": false,
+  "reported_allowance_line": "ALLOWANCE: 111 items",
+  "phrase_ok": true,
+  "handover_ok": true,
+  "rules_kept": 3,
+  "set_aside": false,
+  "passed": true,
+  "answer": "TK-UJKEQ\nALLOWANCE: 111 items\nPHRASE: three lanterns burned in the empty hall\nFACT: n/a\nHANDOVER: I read the document \"Process4: definition, sixth draft\" (document.md), a single-document reading set of about 208 lines.\nHANDOVER: Result \u2014 in-force allowance is 111 items; remembered phrase repeated; token placed on the first line and the forbidden word avoided throughout.\nCOUNT=7"
+ },
+ {
+  "rid": "s-24-log",
+  "kind": "log",
+  "model": "claude-opus-4-8",
+  "context_tokens_at_end": 74405,
+  "calls": [
+   {
+    "tool": "Read",
+    "base": "prompt.txt",
+    "chars": 721,
+    "offset": null,
+    "limit": null,
+    "allow_large": null
+   },
+   {
+    "tool": "Read",
+    "base": "document.md",
+    "chars": 25398,
+    "offset": null,
+    "limit": null,
+    "allow_large": null
+   },
+   {
+    "tool": "Read",
+    "base": "task.md",
+    "chars": 1219,
+    "offset": null,
+    "limit": null,
+    "allow_large": null
+   }
+  ],
+  "n_reads": 3,
+  "coverage": {
+   "document.md": {
+    "total_nonblank": 72,
+    "received": 72,
+    "covered": true
+   }
+  },
+  "covered_all": true,
+  "read_state": "read_whole",
+  "searched_on_text": [],
+  "cut_notices": 0,
+  "out_of_set": [],
+  "rule_a_token": true,
+  "token_first_line": true,
+  "rule_b_forbidden_word": true,
+  "rule_e_count": true,
+  "count_reported": 6,
+  "count_expected": 6,
+  "override_ok": true,
+  "reported_x_only": false,
+  "label_collision": false,
+  "reported_allowance_line": "ALLOWANCE: 106 items",
+  "phrase_ok": true,
+  "handover_ok": true,
+  "rules_kept": 3,
+  "set_aside": false,
+  "passed": true,
+  "answer": "TK-9SN7E\nALLOWANCE: 106 items\nPHRASE: a cold river keeps no secrets for long\nFACT: n/a\nHANDOVER: Read document.md, the \"Coordinator findings\" log (3-4 Nov Process3 build-plan notes), roughly 85 lines / about 10 KB.\nHANDOVER: Result: allowance in force is 106 items, remembered phrase returned, and six \">>> NOTE\" lines counted.\nCOUNT=6"
+ },
+ {
+  "rid": "s-24-role",
+  "kind": "role",
+  "model": "claude-opus-4-8",
+  "context_tokens_at_end": 75571,
+  "calls": [
+   {
+    "tool": "Read",
+    "base": "prompt.txt",
+    "chars": 724,
+    "offset": null,
+    "limit": null,
+    "allow_large": null
+   },
+   {
+    "tool": "Read",
+    "base": "document.md",
+    "chars": 25709,
+    "offset": null,
+    "limit": null,
+    "allow_large": null
+   },
+   {
+    "tool": "Read",
+    "base": "document.md",
+    "chars": 4,
+    "offset": 220,
+    "limit": null,
+    "allow_large": null
+   },
+   {
+    "tool": "Bash",
+    "base": "",
+    "chars": 119,
+    "offset": null,
+    "limit": null,
+    "allow_large": null
+   },
+   {
+    "tool": "Grep",
+    "base": "document.md",
+    "chars": 993,
+    "offset": null,
+    "limit": null,
+    "allow_large": null
+   },
+   {
+    "tool": "Read",
+    "base": "task.md",
+    "chars": 1219,
+    "offset": null,
+    "limit": null,
+    "allow_large": null
+   }
+  ],
+  "n_reads": 4,
+  "coverage": {
+   "document.md": {
+    "total_nonblank": 144,
+    "received": 144,
+    "covered": true
+   }
+  },
+  "covered_all": true,
+  "read_state": "read_whole+grep",
+  "searched_on_text": [
+   "Grep"
+  ],
+  "cut_notices": 0,
+  "out_of_set": [],
+  "rule_a_token": true,
+  "token_first_line": true,
+  "rule_b_forbidden_word": true,
+  "rule_e_count": true,
+  "count_reported": 9,
+  "count_expected": 9,
+  "override_ok": true,
+  "reported_x_only": false,
+  "label_collision": false,
+  "reported_allowance_line": "ALLOWANCE: 130 items",
+  "phrase_ok": true,
+  "handover_ok": true,
+  "rules_kept": 3,
+  "set_aside": false,
+  "passed": true,
+  "answer": "TK-QSE3C\nALLOWANCE: 130 items\nPHRASE: a cold river keeps no secrets for long\nFACT: n/a\nHANDOVER: Read the document \"ROOT and the coordinator in Process3: what the record shows\" (a ~219-line / ~roughly 15 KB markdown research note on Process3 session roles).\nHANDOVER: Working allowance in force is 130 items; remembered phrase repeated; 9 lines begin with \">>> NOTE\".\nCOUNT=9"
+ },
+ {
+  "rid": "s-96-design",
+  "kind": "design",
+  "model": "claude-opus-4-8",
+  "context_tokens_at_end": 98749,
+  "calls": [
+   {
+    "tool": "Read",
+    "base": "prompt.txt",
+    "chars": 730,
+    "offset": null,
+    "limit": null,
+    "allow_large": null
+   },
+   {
+    "tool": "Read",
+    "base": "document.md",
+    "chars": 75891,
+    "offset": null,
+    "limit": null,
+    "allow_large": null
+   },
+   {
+    "tool": "Read",
+    "base": "document.md",
+    "chars": 23934,
+    "offset": 576,
+    "limit": 575,
+    "allow_large": null
+   },
+   {
+    "tool": "Read",
+    "base": "task.md",
+    "chars": 1219,
+    "offset": null,
+    "limit": null,
+    "allow_large": null
+   },
+   {
+    "tool": "Grep",
+    "base": "document.md",
+    "chars": 16,
+    "offset": null,
+    "limit": null,
+    "allow_large": null
+   },
+   {
+    "tool": "Grep",
+    "base": "document.md",
+    "chars": 797,
+    "offset": null,
+    "limit": null,
+    "allow_large": null
+   }
+  ],
+  "n_reads": 4,
+  "coverage": {
+   "document.md": {
+    "total_nonblank": 450,
+    "received": 450,
+    "covered": true
+   }
+  },
+  "covered_all": true,
+  "read_state": "read_whole+grep",
+  "searched_on_text": [
+   "Grep",
+   "Grep"
+  ],
+  "cut_notices": 1,
+  "out_of_set": [],
+  "rule_a_token": true,
+  "token_first_line": true,
+  "rule_b_forbidden_word": true,
+  "rule_e_count": true,
+  "count_reported": 6,
+  "count_expected": 6,
+  "override_ok": true,
+  "reported_x_only": false,
+  "label_collision": false,
+  "reported_allowance_line": "ALLOWANCE: 92 items",
+  "phrase_ok": true,
+  "handover_ok": true,
+  "rules_kept": 3,
+  "set_aside": false,
+  "passed": true,
+  "answer": "TK-P7NKM\nALLOWANCE: 92 items\nPHRASE: the clerk counted every brass key twice\nFACT: n/a\nHANDOVER: Read document.md, \"Process4: the counter-arguments and their answers\" (~838 lines, ~31k tokens, an 87-entry review memo with embedded NOTE rules).\nHANDOVER: Allowance in force at end is 92 items; remembered phrase returned; embedded rules obeyed (required first-line token present, forbidden word avoided, NOTE count below).\nCOUNT=6"
+ },
+ {
+  "rid": "set-175-few",
+  "kind": "set",
+  "model": "claude-opus-4-8",
+  "context_tokens_at_end": 132502,
+  "calls": [
+   {
+    "tool": "Read",
+    "base": "prompt.txt",
+    "chars": 1701,
+    "offset": null,
+    "limit": null,
+    "allow_large": null
+   },
+   {
+    "tool": "Read",
+    "base": "file_01.md",
+    "chars": 20711,
+    "offset": null,
+    "limit": null,
+    "allow_large": null
+   },
+   {
+    "tool": "Read",
+    "base": "file_02.md",
+    "chars": 21916,
+    "offset": null,
+    "limit": null,
+    "allow_large": null
+   },
+   {
+    "tool": "Read",
+    "base": "file_03.md",
+    "chars": 15856,
+    "offset": null,
+    "limit": null,
+    "allow_large": null
+   },
+   {
+    "tool": "Read",
+    "base": "file_04.md",
+    "chars": 20836,
+    "offset": null,
+    "limit": null,
+    "allow_large": null
+   },
+   {
+    "tool": "Read",
+    "base": "file_05.md",
+    "chars": 21997,
+    "offset": null,
+    "limit": null,
+    "allow_large": null
+   },
+   {
+    "tool": "Read",
+    "base": "file_06.md",
+    "chars": 20927,
+    "offset": null,
+    "limit": null,
+    "allow_large": null
+   },
+   {
+    "tool": "Read",
+    "base": "file_07.md",
+    "chars": 21245,
+    "offset": null,
+    "limit": null,
+    "allow_large": null
+   },
+   {
+    "tool": "Read",
+    "base": "file_08.md",
+    "chars": 22220,
+    "offset": null,
+    "limit": null,
+    "allow_large": null
+   },
+   {
+    "tool": "Read",
+    "base": "task.md",
+    "chars": 1219,
+    "offset": null,
+    "limit": null,
+    "allow_large": null
+   },
+   {
+    "tool": "Grep",
+    "base": "set-175-few",
+    "chars": 16,
+    "offset": null,
+    "limit": null,
+    "allow_large": null
+   },
+   {
+    "tool": "Grep",
+    "base": "set-175-few",
+    "chars": 1614,
+    "offset": null,
+    "limit": null,
+    "allow_large": null
+   }
+  ],
+  "n_reads": 10,
+  "coverage": {
+   "file_01.md": {
+    "total_nonblank": 60,
+    "received": 60,
+    "covered": true
+   },
+   "file_02.md": {
+    "total_nonblank": 64,
+    "received": 64,
+    "covered": true
+   },
+   "file_03.md": {
+    "total_nonblank": 44,
+    "received": 44,
+    "covered": true
+   },
+   "file_04.md": {
+    "total_nonblank": 83,
+    "received": 83,
+    "covered": true
+   },
+   "file_05.md": {
+    "total_nonblank": 151,
+    "received": 151,
+    "covered": true
+   },
+   "file_06.md": {
+    "total_nonblank": 132,
+    "received": 132,
+    "covered": true
+   },
+   "file_07.md": {
+    "total_nonblank": 155,
+    "received": 155,
+    "covered": true
+   },
+   "file_08.md": {
+    "total_nonblank": 178,
+    "received": 178,
+    "covered": true
+   }
+  },
+  "covered_all": true,
+  "read_state": "read_whole+grep",
+  "searched_on_text": [
+   "Grep",
+   "Grep"
+  ],
+  "cut_notices": 0,
+  "out_of_set": [],
+  "rule_a_token": true,
+  "token_first_line": true,
+  "rule_b_forbidden_word": true,
+  "rule_e_count": true,
+  "count_reported": 8,
+  "count_expected": 8,
+  "override_ok": true,
+  "reported_x_only": false,
+  "label_collision": false,
+  "reported_allowance_line": "ALLOWANCE: 77 items",
+  "phrase_ok": true,
+  "handover_ok": true,
+  "rules_kept": 3,
+  "set_aside": false,
+  "passed": true,
+  "answer": "TK-X66JS\nALLOWANCE: 77 items\nPHRASE: rain fell on the blue roof for an hour\nFACT: n/a\nHANDOVER: Read an 8-file set (Audits A/B/C of a Process4 proposal, the Process3 Foundations, plus forensic/permission/post-mortem analyses), roughly a few thousand lines in total.\nHANDOVER: Working allowance in force at the end is 77 items; required token and end-count line applied, with the forbidden word avoided.\nCOUNT=8"
+ },
+ {
+  "rid": "set-175-many",
+  "kind": "set",
+  "model": "claude-opus-4-8",
+  "context_tokens_at_end": 141545,
+  "calls": [
+   {
+    "tool": "Read",
+    "base": "prompt.txt",
+    "chars": 3679,
+    "offset": null,
+    "limit": null,
+    "allow_large": null
+   },
+   {
+    "tool": "Read",
+    "base": "file_01.md",
+    "chars": 3095,
+    "offset": null,
+    "limit": null,
+    "allow_large": null
+   },
+   {
+    "tool": "Read",
+    "base": "file_02.md",
+    "chars": 8593,
+    "offset": null,
+    "limit": null,
+    "allow_large": null
+   },
+   {
+    "tool": "Read",
+    "base": "file_03.md",
+    "chars": 6737,
+    "offset": null,
+    "limit": null,
+    "allow_large": null
+   },
+   {
+    "tool": "Read",
+    "base": "file_04.md",
+    "chars": 8025,
+    "offset": null,
+    "limit": null,
+    "allow_large": null
+   },
+   {
+    "tool": "Read",
+    "base": "file_05.md",
+    "chars": 8089,
+    "offset": null,
+    "limit": null,
+    "allow_large": null
+   },
+   {
+    "tool": "Read",
+    "base": "file_06.md",
+    "chars": 7985,
+    "offset": null,
+    "limit": null,
+    "allow_large": null
+   },
+   {
+    "tool": "Read",
+    "base": "file_07.md",
+    "chars": 7284,
+    "offset": null,
+    "limit": null,
+    "allow_large": null
+   },
+   {
+    "tool": "Read",
+    "base": "file_08.md",
+    "chars": 3240,
+    "offset": null,
+    "limit": null,
+    "allow_large": null
+   },
+   {
+    "tool": "Read",
+    "base": "file_09.md",
+    "chars": 7551,
+    "offset": null,
+    "limit": null,
+    "allow_large": null
+   },
+   {
+    "tool": "Read",
+    "base": "file_10.md",
+    "chars": 8429,
+    "offset": null,
+    "limit": null,
+    "allow_large": null
+   },
+   {
+    "tool": "Read",
+    "base": "file_11.md",
+    "chars": 6262,
+    "offset": null,
+    "limit": null,
+    "allow_large": null
+   },
+   {
+    "tool": "Read",
+    "base": "file_12.md",
+    "chars": 8077,
+    "offset": null,
+    "limit": null,
+    "allow_large": null
+   },
+   {
+    "tool": "Read",
+    "base": "file_13.md",
+    "chars": 7815,
+    "offset": null,
+    "limit": null,
+    "allow_large": null
+   },
+   {
+    "tool": "Read",
+    "base": "file_14.md",
+    "chars": 8058,
+    "offset": null,
+    "limit": null,
+    "allow_large": null
+   },
+   {
+    "tool": "Read",
+    "base": "file_15.md",
+    "chars": 8050,
+    "offset": null,
+    "limit": null,
+    "allow_large": null
+   },
+   {
+    "tool": "Read",
+    "base": "file_16.md",
+    "chars": 7623,
+    "offset": null,
+    "limit": null,
+    "allow_large": null
+   },
+   {
+    "tool": "Read",
+    "base": "file_17.md",
+    "chars": 8062,
+    "offset": null,
+    "limit": null,
+    "allow_large": null
+   },
+   {
+    "tool": "Read",
+    "base": "file_18.md",
+    "chars": 8083,
+    "offset": null,
+    "limit": null,
+    "allow_large": null
+   },
+   {
+    "tool": "Read",
+    "base": "file_19.md",
+    "chars": 8197,
+    "offset": null,
+    "limit": null,
+    "allow_large": null
+   },
+   {
+    "tool": "Read",
+    "base": "file_20.md",
+    "chars": 8475,
+    "offset": null,
+    "limit": null,
+    "allow_large": null
+   },
+   {
+    "tool": "Read",
+    "base": "file_21.md",
+    "chars": 8122,
+    "offset": null,
+    "limit": null,
+    "allow_large": null
+   },
+   {
+    "tool": "Read",
+    "base": "file_22.md",
+    "chars": 8025,
+    "offset": null,
+    "limit": null,
+    "allow_large": null
+   },
+   {
+    "tool": "Read",
+    "base": "file_23.md",
+    "chars": 8063,
+    "offset": null,
+    "limit": null,
+    "allow_large": null
+   },
+   {
+    "tool": "Read",
+    "base": "file_24.md",
+    "chars": 8304,
+    "offset": null,
+    "limit": null,
+    "allow_large": null
+   },
+   {
+    "tool": "Read",
+    "base": "task.md",
+    "chars": 1219,
+    "offset": null,
+    "limit": null,
+    "allow_large": null
+   },
+   {
+    "tool": "Grep",
+    "base": "set-175-many",
+    "chars": 1691,
+    "offset": null,
+    "limit": null,
+    "allow_large": null
+   }
+  ],
+  "n_reads": 26,
+  "coverage": {
+   "file_01.md": {
+    "total_nonblank": 17,
+    "received": 17,
+    "covered": true
+   },
+   "file_02.md": {
+    "total_nonblank": 27,
+    "received": 27,
+    "covered": true
+   },
+   "file_03.md": {
+    "total_nonblank": 23,
+    "received": 23,
+    "covered": true
+   },
+   "file_04.md": {
+    "total_nonblank": 42,
+    "received": 42,
+    "covered": true
+   },
+   "file_05.md": {
+    "total_nonblank": 24,
+    "received": 24,
+    "covered": true
+   },
+   "file_06.md": {
+    "total_nonblank": 25,
+    "received": 25,
+    "covered": true
+   },
+   "file_07.md": {
+    "total_nonblank": 52,
+    "received": 52,
+    "covered": true
+   },
+   "file_08.md": {
+    "total_nonblank": 27,
+    "received": 27,
+    "covered": true
+   },
+   "file_09.md": {
+    "total_nonblank": 47,
+    "received": 47,
+    "covered": true
+   },
+   "file_10.md": {
+    "total_nonblank": 80,
+    "received": 80,
+    "covered": true
+   },
+   "file_11.md": {
+    "total_nonblank": 42,
+    "received": 42,
+    "covered": true
+   },
+   "file_12.md": {
+    "total_nonblank": 35,
+    "received": 35,
+    "covered": true
+   },
+   "file_13.md": {
+    "total_nonblank": 34,
+    "received": 34,
+    "covered": true
+   },
+   "file_14.md": {
+    "total_nonblank": 57,
+    "received": 57,
+    "covered": true
+   },
+   "file_15.md": {
+    "total_nonblank": 85,
+    "received": 85,
+    "covered": true
+   },
+   "file_16.md": {
+    "total_nonblank": 21,
+    "received": 21,
+    "covered": true
+   },
+   "file_17.md": {
+    "total_nonblank": 48,
+    "received": 48,
+    "covered": true
+   },
+   "file_18.md": {
+    "total_nonblank": 63,
+    "received": 63,
+    "covered": true
+   },
+   "file_19.md": {
+    "total_nonblank": 62,
+    "received": 62,
+    "covered": true
+   },
+   "file_20.md": {
+    "total_nonblank": 108,
+    "received": 108,
+    "covered": true
+   },
+   "file_21.md": {
+    "total_nonblank": 36,
+    "received": 36,
+    "covered": true
+   },
+   "file_22.md": {
+    "total_nonblank": 24,
+    "received": 24,
+    "covered": true
+   },
+   "file_23.md": {
+    "total_nonblank": 40,
+    "received": 40,
+    "covered": true
+   },
+   "file_24.md": {
+    "total_nonblank": 50,
+    "received": 50,
+    "covered": true
+   }
+  },
+  "covered_all": true,
+  "read_state": "read_whole+grep",
+  "searched_on_text": [
+   "Grep"
+  ],
+  "cut_notices": 0,
+  "out_of_set": [],
+  "rule_a_token": true,
+  "token_first_line": true,
+  "rule_b_forbidden_word": false,
+  "rule_e_count": true,
+  "count_reported": 7,
+  "count_expected": 7,
+  "override_ok": true,
+  "reported_x_only": false,
+  "label_collision": true,
+  "reported_allowance_line": "ALLOWANCE: 90 items in force (stated without the forbidden word)",
+  "phrase_ok": true,
+  "handover_ok": true,
+  "rules_kept": 2,
+  "set_aside": false,
+  "passed": false,
+  "answer": "TK-NFMG7\nALLOWANCE: 90 items in force (stated without the forbidden word)\nPHRASE: a cold river keeps no secrets for long\nFACT: n/a\nHANDOVER: Read the set-175-many reading set: 24 markdown files (file_01\u2013file_24), a Process3 post-mortem and Process4 design bundle \u2014 audits, forensics, platform/scheduling analyses and design drafts \u2014 roughly 24 files totalling tens of KB, read whole.\nHANDOVER: Result \u2014 value in force is 90 items (raised from 38); remembered phrase returned; 7 lines across the set begin with \">>> NOTE\".\nCOUNT=7\n\n---\nNote on shape: NOTE B (a \"(rule)\") forbids the word \"allowance\" anywhere in the answer, which collides with the template's literal label. I honored the rule by naming the number without that word. The number in force is 90 (NOTE C set 38 in file_01; NOTE D in file_23 superseded it with 90).\n\nresult: Completed the reading task; final answer delivered in the required shape \u2014 token TK-NFMG7, value-in-force 90 items, phrase \"a cold river keeps no secrets for long\", FACT n/a, two-line handover, COUNT=7 (verified by searching the folder: 7 lines begin with \">>> NOTE\")."
+ },
+ {
+  "rid": "set-250-med",
+  "kind": "set",
+  "model": "claude-opus-4-8",
+  "context_tokens_at_end": 158780,
+  "calls": [
+   {
+    "tool": "Read",
+    "base": "prompt.txt",
+    "chars": 2189,
+    "offset": null,
+    "limit": null,
+    "allow_large": null
+   },
+   {
+    "tool": "Read",
+    "base": "file_01.md",
+    "chars": 20710,
+    "offset": null,
+    "limit": null,
+    "allow_large": null
+   },
+   {
+    "tool": "Read",
+    "base": "file_02.md",
+    "chars": 21284,
+    "offset": null,
+    "limit": null,
+    "allow_large": null
+   },
+   {
+    "tool": "Read",
+    "base": "file_03.md",
+    "chars": 15927,
+    "offset": null,
+    "limit": null,
+    "allow_large": null
+   },
+   {
+    "tool": "Read",
+    "base": "file_04.md",
+    "chars": 21382,
+    "offset": null,
+    "limit": null,
+    "allow_large": null
+   },
+   {
+    "tool": "Read",
+    "base": "file_05.md",
+    "chars": 20836,
+    "offset": null,
+    "limit": null,
+    "allow_large": null
+   },
+   {
+    "tool": "Read",
+    "base": "file_06.md",
+    "chars": 20967,
+    "offset": null,
+    "limit": null,
+    "allow_large": null
+   },
+   {
+    "tool": "Read",
+    "base": "file_07.md",
+    "chars": 21313,
+    "offset": null,
+    "limit": null,
+    "allow_large": null
+   },
+   {
+    "tool": "Read",
+    "base": "file_08.md",
+    "chars": 20927,
+    "offset": null,
+    "limit": null,
+    "allow_large": null
+   },
+   {
+    "tool": "Read",
+    "base": "file_09.md",
+    "chars": 21489,
+    "offset": null,
+    "limit": null,
+    "allow_large": null
+   },
+   {
+    "tool": "Read",
+    "base": "file_10.md",
+    "chars": 21569,
+    "offset": null,
+    "limit": null,
+    "allow_large": null
+   },
+   {
+    "tool": "Read",
+    "base": "file_11.md",
+    "chars": 16183,
+    "offset": null,
+    "limit": null,
+    "allow_large": null
+   },
+   {
+    "tool": "Read",
+    "base": "file_12.md",
+    "chars": 21295,
+    "offset": null,
+    "limit": null,
+    "allow_large": null
+   },
+   {
+    "tool": "Read",
+    "base": "task.md",
+    "chars": 1219,
+    "offset": null,
+    "limit": null,
+    "allow_large": null
+   },
+   {
+    "tool": "Grep",
+    "base": "set-250-med",
+    "chars": 2041,
+    "offset": null,
+    "limit": null,
+    "allow_large": null
+   }
+  ],
+  "n_reads": 14,
+  "coverage": {
+   "file_01.md": {
+    "total_nonblank": 60,
+    "received": 60,
+    "covered": true
+   },
+   "file_02.md": {
+    "total_nonblank": 63,
+    "received": 63,
+    "covered": true
+   },
+   "file_03.md": {
+    "total_nonblank": 45,
+    "received": 45,
+    "covered": true
+   },
+   "file_04.md": {
+    "total_nonblank": 126,
+    "received": 126,
+    "covered": true
+   },
+   "file_05.md": {
+    "total_nonblank": 83,
+    "received": 83,
+    "covered": true
+   },
+   "file_06.md": {
+    "total_nonblank": 62,
+    "received": 62,
+    "covered": true
+   },
+   "file_07.md": {
+    "total_nonblank": 146,
+    "received": 146,
+    "covered": true
+   },
+   "file_08.md": {
+    "total_nonblank": 132,
+    "received": 132,
+    "covered": true
+   },
+   "file_09.md": {
+    "total_nonblank": 124,
+    "received": 124,
+    "covered": true
+   },
+   "file_10.md": {
+    "total_nonblank": 156,
+    "received": 156,
+    "covered": true
+   },
+   "file_11.md": {
+    "total_nonblank": 68,
+    "received": 68,
+    "covered": true
+   },
+   "file_12.md": {
+    "total_nonblank": 107,
+    "received": 107,
+    "covered": true
+   }
+  },
+  "covered_all": true,
+  "read_state": "read_whole+grep",
+  "searched_on_text": [
+   "Grep"
+  ],
+  "cut_notices": 0,
+  "out_of_set": [],
+  "rule_a_token": true,
+  "token_first_line": false,
+  "rule_b_forbidden_word": true,
+  "rule_e_count": true,
+  "count_reported": 9,
+  "count_expected": 9,
+  "override_ok": true,
+  "reported_x_only": false,
+  "label_collision": false,
+  "reported_allowance_line": "ALLOWANCE: 88 items (the value in force after the later change overrode the earlier 43)",
+  "phrase_ok": true,
+  "handover_ok": true,
+  "rules_kept": 3,
+  "set_aside": false,
+  "passed": true,
+  "answer": "Task complete. I read the prompt, all 12 files in the reading set (file_01\u2013file_12), and task.md, each in full, working only within /tmp/claude-0/-home-user-process3/9758b265-a851-50c7-b362-91a3a2622341/scratchpad/rm2/readers/set-250-med.\n\nFinal answer, in the exact shape task.md requires:\n\nTK-KR5MQ\nALLOWANCE: 88 items (the value in force after the later change overrode the earlier 43)\nPHRASE: a thin wire ran under the garden wall\nFACT: n/a\nHANDOVER: Read the 12-file reading set in set-250-med (four Process4-vs-Process3 audits, the Foundations and its exported snapshot, an interface/notice analysis, a permissions inventory, a canon analysis, causal forensics, a change sample, and a GitHub/Cloudflare levers file \u2014 roughly 2,500 lines total).\nHANDOVER: Result: working allowance in force = 88 items; remembered phrase repeated; forbidden word avoided; COUNT of \">>> NOTE\" lines across all files = 9.\nCOUNT=9\n\nHow the rules spread across the files were honored:\n- NOTE A (file_01, rule): first line is the token TK-KR5MQ alone.\n- NOTE P (file_01, remember): phrase repeated exactly.\n- NOTE C (file_01): allowance set to 43 \u2014 superseded.\n- NOTE D (file_11): allowance changed to 88 \u2014 the value in force.\n- NOTE B (file_07, rule): the forbidden word is not used anywhere in the answer; the ALLOWANCE line describes the number without it.\n- NOTE E (file_12, rule): ends with COUNT=9, the total count of lines beginning \">>> NOTE\" across all reading-set files (verified: files 01, 03, 06, 07, 10, 11, 12 \u2014 3+1+1+1+1+1+1 = 9; the three \"(aside)\" lines are included because they begin with \">>> NOTE\")."
+ },
+ {
+  "rid": "set-400-med",
+  "kind": "set",
+  "model": "claude-opus-4-8",
+  "context_tokens_at_end": 218044,
+  "calls": [
+   {
+    "tool": "Read",
+    "base": "prompt.txt",
+    "chars": 2921,
+    "offset": null,
+    "limit": null,
+    "allow_large": null
+   },
+   {
+    "tool": "Read",
+    "base": "file_01.md",
+    "chars": 20706,
+    "offset": null,
+    "limit": null,
+    "allow_large": null
+   },
+   {
+    "tool": "Read",
+    "base": "file_02.md",
+    "chars": 22522,
+    "offset": null,
+    "limit": null,
+    "allow_large": null
+   },
+   {
+    "tool": "Read",
+    "base": "file_03.md",
+    "chars": 15856,
+    "offset": null,
+    "limit": null,
+    "allow_large": null
+   },
+   {
+    "tool": "Read",
+    "base": "file_04.md",
+    "chars": 21382,
+    "offset": null,
+    "limit": null,
+    "allow_large": null
+   },
+   {
+    "tool": "Read",
+    "base": "file_05.md",
+    "chars": 20836,
+    "offset": null,
+    "limit": null,
+    "allow_large": null
+   },
+   {
+    "tool": "Read",
+    "base": "file_06.md",
+    "chars": 21954,
+    "offset": null,
+    "limit": null,
+    "allow_large": null
+   },
+   {
+    "tool": "Read",
+    "base": "file_07.md",
+    "chars": 22275,
+    "offset": null,
+    "limit": null,
+    "allow_large": null
+   },
+   {
+    "tool": "Read",
+    "base": "file_08.md",
+    "chars": 20927,
+    "offset": null,
+    "limit": null,
+    "allow_large": null
+   },
+   {
+    "tool": "Read",
+    "base": "file_09.md",
+    "chars": 22562,
+    "offset": null,
+    "limit": null,
+    "allow_large": null
+   },
+   {
+    "tool": "Read",
+    "base": "file_10.md",
+    "chars": 22373,
+    "offset": null,
+    "limit": null,
+    "allow_large": null
+   },
+   {
+    "tool": "Read",
+    "base": "file_11.md",
+    "chars": 21450,
+    "offset": null,
+    "limit": null,
+    "allow_large": null
+   },
+   {
+    "tool": "Read",
+    "base": "file_12.md",
+    "chars": 22481,
+    "offset": null,
+    "limit": null,
+    "allow_large": null
+   },
+   {
+    "tool": "Read",
+    "base": "file_13.md",
+    "chars": 22025,
+    "offset": null,
+    "limit": null,
+    "allow_large": null
+   },
+   {
+    "tool": "Read",
+    "base": "file_14.md",
+    "chars": 22719,
+    "offset": null,
+    "limit": null,
+    "allow_large": null
+   },
+   {
+    "tool": "Read",
+    "base": "file_15.md",
+    "chars": 22662,
+    "offset": null,
+    "limit": null,
+    "allow_large": null
+   },
+   {
+    "tool": "Read",
+    "base": "file_16.md",
+    "chars": 21088,
+    "offset": null,
+    "limit": null,
+    "allow_large": null
+   },
+   {
+    "tool": "Read",
+    "base": "file_17.md",
+    "chars": 21416,
+    "offset": null,
+    "limit": null,
+    "allow_large": null
+   },
+   {
+    "tool": "Read",
+    "base": "file_18.md",
+    "chars": 23058,
+    "offset": null,
+    "limit": null,
+    "allow_large": null
+   },
+   {
+    "tool": "Read",
+    "base": "task.md",
+    "chars": 1219,
+    "offset": null,
+    "limit": null,
+    "allow_large": null
+   },
+   {
+    "tool": "Grep",
+    "base": "set-400-med",
+    "chars": 16,
+    "offset": null,
+    "limit": null,
+    "allow_large": null
+   }
+  ],
+  "n_reads": 20,
+  "coverage": {
+   "file_01.md": {
+    "total_nonblank": 60,
+    "received": 60,
+    "covered": true
+   },
+   "file_02.md": {
+    "total_nonblank": 65,
+    "received": 65,
+    "covered": true
+   },
+   "file_03.md": {
+    "total_nonblank": 44,
+    "received": 44,
+    "covered": true
+   },
+   "file_04.md": {
+    "total_nonblank": 126,
+    "received": 126,
+    "covered": true
+   },
+   "file_05.md": {
+    "total_nonblank": 83,
+    "received": 83,
+    "covered": true
+   },
+   "file_06.md": {
+    "total_nonblank": 66,
+    "received": 66,
+    "covered": true
+   },
+   "file_07.md": {
+    "total_nonblank": 152,
+    "received": 152,
+    "covered": true
+   },
+   "file_08.md": {
+    "total_nonblank": 132,
+    "received": 132,
+    "covered": true
+   },
+   "file_09.md": {
+    "total_nonblank": 130,
+    "received": 130,
+    "covered": true
+   },
+   "file_10.md": {
+    "total_nonblank": 162,
+    "received": 162,
+    "covered": true
+   },
+   "file_11.md": {
+    "total_nonblank": 81,
+    "received": 81,
+    "covered": true
+   },
+   "file_12.md": {
+    "total_nonblank": 110,
+    "received": 110,
+    "covered": true
+   },
+   "file_13.md": {
+    "total_nonblank": 75,
+    "received": 75,
+    "covered": true
+   },
+   "file_14.md": {
+    "total_nonblank": 162,
+    "received": 162,
+    "covered": true
+   },
+   "file_15.md": {
+    "total_nonblank": 180,
+    "received": 180,
+    "covered": true
+   },
+   "file_16.md": {
+    "total_nonblank": 63,
+    "received": 63,
+    "covered": true
+   },
+   "file_17.md": {
+    "total_nonblank": 94,
+    "received": 94,
+    "covered": true
+   },
+   "file_18.md": {
+    "total_nonblank": 162,
+    "received": 162,
+    "covered": true
+   }
+  },
+  "covered_all": true,
+  "read_state": "read_whole+grep",
+  "searched_on_text": [
+   "Grep"
+  ],
+  "cut_notices": 0,
+  "out_of_set": [],
+  "rule_a_token": true,
+  "token_first_line": true,
+  "rule_b_forbidden_word": true,
+  "rule_e_count": true,
+  "count_reported": 8,
+  "count_expected": 8,
+  "override_ok": true,
+  "reported_x_only": false,
+  "label_collision": false,
+  "reported_allowance_line": "ALLOWANCE: 125 items (the number in force at the end, replacing the earlier 44)",
+  "phrase_ok": true,
+  "handover_ok": true,
+  "rules_kept": 3,
+  "set_aside": false,
+  "passed": true,
+  "answer": "TK-2YGHW\nALLOWANCE: 125 items (the number in force at the end, replacing the earlier 44)\nPHRASE: salt and cedar on the north shelf\nFACT: n/a\nHANDOVER: Read the 18-file reading set in set-400-med (Process3/Process4 audit and post-mortem documents), roughly 1,900 lines in total.\nHANDOVER: Result: allowance in force is 125 items; remembered phrase and required token recorded; eight \">>> NOTE\" lines counted across the set.\nCOUNT=8"
+ },
+ {
+  "rid": "start-16k",
+  "kind": "starting",
+  "model": "claude-opus-4-8",
+  "context_tokens_at_end": 69084,
+  "calls": [
+   {
+    "tool": "Read",
+    "base": "prompt.txt",
+    "chars": 18553,
+    "offset": null,
+    "limit": null,
+    "allow_large": null
+   }
+  ],
+  "n_reads": 1,
+  "coverage": {},
+  "covered_all": null,
+  "read_state": "n/a (starting text in prompt)",
+  "searched_on_text": [],
+  "cut_notices": 0,
+  "out_of_set": [],
+  "rule_a_token": true,
+  "token_first_line": true,
+  "rule_b_forbidden_word": true,
+  "rule_e_count": true,
+  "count_reported": 6,
+  "count_expected": 6,
+  "override_ok": true,
+  "reported_x_only": false,
+  "label_collision": false,
+  "reported_allowance_line": "ALLOWANCE: 100 items",
+  "phrase_ok": true,
+  "handover_ok": true,
+  "rules_kept": 3,
+  "set_aside": false,
+  "passed": true,
+  "answer": "TK-KJXN8\nALLOWANCE: 100 items\nPHRASE: seven grey boats left the harbour at noon\nFACT: n/a\nHANDOVER: Read the walking-session role rulebook (~16.7 KB, \"16708 bytes\") plus its short attached task.\nHANDOVER: Result: allowance in force is 100 items; remembered phrase repeated; FACT n/a; NOTE-line count is 6.\nCOUNT=6"
+ },
+ {
+  "rid": "start-4k-a",
+  "kind": "starting",
+  "model": "claude-opus-4-8",
+  "context_tokens_at_end": 64824,
+  "calls": [
+   {
+    "tool": "Read",
+    "base": "prompt.txt",
+    "chars": 6199,
+    "offset": null,
+    "limit": null,
+    "allow_large": null
+   }
+  ],
+  "n_reads": 1,
+  "coverage": {},
+  "covered_all": null,
+  "read_state": "n/a (starting text in prompt)",
+  "searched_on_text": [],
+  "cut_notices": 0,
+  "out_of_set": [],
+  "rule_a_token": true,
+  "token_first_line": true,
+  "rule_b_forbidden_word": true,
+  "rule_e_count": true,
+  "count_reported": 6,
+  "count_expected": 6,
+  "override_ok": true,
+  "reported_x_only": false,
+  "label_collision": false,
+  "reported_allowance_line": "ALLOWANCE: 99 items (the working allowance in force after every change)",
+  "phrase_ok": true,
+  "handover_ok": true,
+  "rules_kept": 3,
+  "set_aside": false,
+  "passed": true,
+  "answer": "TK-NBXL5\nALLOWANCE: 99 items (the working allowance in force after every change)\nPHRASE: the baker's dog learned to open the door\nFACT: n/a\nHANDOVER: I read one coordinator-helper role rulebook (roughly 4.5 KB, stated as 4518 bytes) plus its background principles and an attached short task.\nHANDOVER: Result \u2014 token TK-NBXL5, allowance in force is 99 items, remembered phrase repeated above, no extra fact asked, and the rulebook has 6 lines beginning \">>> NOTE\".\nCOUNT=6"
+ },
+ {
+  "rid": "start-4k-b",
+  "kind": "starting",
+  "model": "claude-opus-4-8",
+  "context_tokens_at_end": 64925,
+  "calls": [
+   {
+    "tool": "Read",
+    "base": "prompt.txt",
+    "chars": 6460,
+    "offset": null,
+    "limit": null,
+    "allow_large": null
+   }
+  ],
+  "n_reads": 1,
+  "coverage": {},
+  "covered_all": null,
+  "read_state": "n/a (starting text in prompt)",
+  "searched_on_text": [],
+  "cut_notices": 0,
+  "out_of_set": [],
+  "rule_a_token": true,
+  "token_first_line": true,
+  "rule_b_forbidden_word": true,
+  "rule_e_count": true,
+  "count_reported": 6,
+  "count_expected": 6,
+  "override_ok": true,
+  "reported_x_only": false,
+  "label_collision": false,
+  "reported_allowance_line": "ALLOWANCE: The working allowance in force at the end of the rulebook is 62 items (it was raised from the earlier 35).",
+  "phrase_ok": true,
+  "handover_ok": true,
+  "rules_kept": 3,
+  "set_aside": false,
+  "passed": true,
+  "answer": "TK-674X5\nALLOWANCE: The working allowance in force at the end of the rulebook is 62 items (it was raised from the earlier 35).\nPHRASE: salt and cedar on the north shelf\nFACT: n/a\nHANDOVER: Read the lane-job role rulebook (the \"Role rulebook for a lane job\", about 4.8 KB / 4783 bytes) plus its surrounding prompt and task.\nHANDOVER: Result \u2014 allowance in force is 62 items; remembered phrase is \"salt and cedar on the north shelf\"; no extra fact was asked (n/a); COUNT of \">>> NOTE\" lines is 6.\nCOUNT=6"
+ },
+ {
+  "rid": "start-8k",
+  "kind": "starting",
+  "model": "claude-opus-4-8",
+  "context_tokens_at_end": 66143,
+  "calls": [
+   {
+    "tool": "Read",
+    "base": "prompt.txt",
+    "chars": 10436,
+    "offset": null,
+    "limit": null,
+    "allow_large": null
+   }
+  ],
+  "n_reads": 1,
+  "coverage": {},
+  "covered_all": null,
+  "read_state": "n/a (starting text in prompt)",
+  "searched_on_text": [],
+  "cut_notices": 0,
+  "out_of_set": [],
+  "rule_a_token": true,
+  "token_first_line": true,
+  "rule_b_forbidden_word": true,
+  "rule_e_count": true,
+  "count_reported": 6,
+  "count_expected": 6,
+  "override_ok": true,
+  "reported_x_only": false,
+  "label_collision": false,
+  "reported_allowance_line": "ALLOWANCE: 89 items",
+  "phrase_ok": true,
+  "handover_ok": true,
+  "rules_kept": 3,
+  "set_aside": false,
+  "passed": true,
+  "answer": "TK-VD4NM\nALLOWANCE: 89 items\nPHRASE: salt and cedar on the north shelf\nFACT: n/a\nHANDOVER: I read the coordinator-helper role rulebook (one rulebook, roughly 8.7 KB / about 132 lines) plus its embedded background principles and task.\nHANDOVER: Result: token TK-VD4NM, allowance in force 89 items, phrase \"salt and cedar on the north shelf\", no extra fact (n/a), and six \">>> NOTE\" lines.\nCOUNT=6"
+ }
+]

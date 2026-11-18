@@ -1,0 +1,13 @@
+{
+ "codea": "TK-KJXN8",
+ "wordb": "budget",
+ "x": 34,
+ "y": 100,
+ "phrase": "seven grey boats left the harbour at noon",
+ "count_k": 6,
+ "has_fact": false,
+ "target": 16384,
+ "nbytes": 16708,
+ "rid": "start-16k",
+ "kind": "starting"
+}

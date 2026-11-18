@@ -1,0 +1,87 @@
+{
+ "rid": "s-24-role",
+ "kind": "role",
+ "model": "claude-opus-4-8",
+ "context_tokens_at_end": 75571,
+ "calls": [
+  {
+   "tool": "Read",
+   "base": "prompt.txt",
+   "chars": 724,
+   "offset": null,
+   "limit": null,
+   "allow_large": null
+  },
+  {
+   "tool": "Read",
+   "base": "document.md",
+   "chars": 25709,
+   "offset": null,
+   "limit": null,
+   "allow_large": null
+  },
+  {
+   "tool": "Read",
+   "base": "document.md",
+   "chars": 4,
+   "offset": 220,
+   "limit": null,
+   "allow_large": null
+  },
+  {
+   "tool": "Bash",
+   "base": "",
+   "chars": 119,
+   "offset": null,
+   "limit": null,
+   "allow_large": null
+  },
+  {
+   "tool": "Grep",
+   "base": "document.md",
+   "chars": 993,
+   "offset": null,
+   "limit": null,
+   "allow_large": null
+  },
+  {
+   "tool": "Read",
+   "base": "task.md",
+   "chars": 1219,
+   "offset": null,
+   "limit": null,
+   "allow_large": null
+  }
+ ],
+ "n_reads": 4,
+ "coverage": {
+  "document.md": {
+   "total_nonblank": 144,
+   "received": 144,
+   "covered": true
+  }
+ },
+ "covered_all": true,
+ "read_state": "read_whole+grep",
+ "searched_on_text": [
+  "Grep"
+ ],
+ "cut_notices": 0,
+ "out_of_set": [],
+ "rule_a_token": true,
+ "token_first_line": true,
+ "rule_b_forbidden_word": true,
+ "rule_e_count": true,
+ "count_reported": 9,
+ "count_expected": 9,
+ "override_ok": true,
+ "reported_x_only": false,
+ "label_collision": false,
+ "reported_allowance_line": "ALLOWANCE: 130 items",
+ "phrase_ok": true,
+ "handover_ok": true,
+ "rules_kept": 3,
+ "set_aside": false,
+ "passed": true,
+ "answer": "TK-QSE3C\nALLOWANCE: 130 items\nPHRASE: a cold river keeps no secrets for long\nFACT: n/a\nHANDOVER: Read the document \"ROOT and the coordinator in Process3: what the record shows\" (a ~219-line / ~roughly 15 KB markdown research note on Process3 session roles).\nHANDOVER: Working allowance in force is 130 items; remembered phrase repeated; 9 lines begin with \">>> NOTE\".\nCOUNT=9"
+}

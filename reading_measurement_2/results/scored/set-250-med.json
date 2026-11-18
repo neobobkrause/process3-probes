@@ -1,0 +1,214 @@
+{
+ "rid": "set-250-med",
+ "kind": "set",
+ "model": "claude-opus-4-8",
+ "context_tokens_at_end": 158780,
+ "calls": [
+  {
+   "tool": "Read",
+   "base": "prompt.txt",
+   "chars": 2189,
+   "offset": null,
+   "limit": null,
+   "allow_large": null
+  },
+  {
+   "tool": "Read",
+   "base": "file_01.md",
+   "chars": 20710,
+   "offset": null,
+   "limit": null,
+   "allow_large": null
+  },
+  {
+   "tool": "Read",
+   "base": "file_02.md",
+   "chars": 21284,
+   "offset": null,
+   "limit": null,
+   "allow_large": null
+  },
+  {
+   "tool": "Read",
+   "base": "file_03.md",
+   "chars": 15927,
+   "offset": null,
+   "limit": null,
+   "allow_large": null
+  },
+  {
+   "tool": "Read",
+   "base": "file_04.md",
+   "chars": 21382,
+   "offset": null,
+   "limit": null,
+   "allow_large": null
+  },
+  {
+   "tool": "Read",
+   "base": "file_05.md",
+   "chars": 20836,
+   "offset": null,
+   "limit": null,
+   "allow_large": null
+  },
+  {
+   "tool": "Read",
+   "base": "file_06.md",
+   "chars": 20967,
+   "offset": null,
+   "limit": null,
+   "allow_large": null
+  },
+  {
+   "tool": "Read",
+   "base": "file_07.md",
+   "chars": 21313,
+   "offset": null,
+   "limit": null,
+   "allow_large": null
+  },
+  {
+   "tool": "Read",
+   "base": "file_08.md",
+   "chars": 20927,
+   "offset": null,
+   "limit": null,
+   "allow_large": null
+  },
+  {
+   "tool": "Read",
+   "base": "file_09.md",
+   "chars": 21489,
+   "offset": null,
+   "limit": null,
+   "allow_large": null
+  },
+  {
+   "tool": "Read",
+   "base": "file_10.md",
+   "chars": 21569,
+   "offset": null,
+   "limit": null,
+   "allow_large": null
+  },
+  {
+   "tool": "Read",
+   "base": "file_11.md",
+   "chars": 16183,
+   "offset": null,
+   "limit": null,
+   "allow_large": null
+  },
+  {
+   "tool": "Read",
+   "base": "file_12.md",
+   "chars": 21295,
+   "offset": null,
+   "limit": null,
+   "allow_large": null
+  },
+  {
+   "tool": "Read",
+   "base": "task.md",
+   "chars": 1219,
+   "offset": null,
+   "limit": null,
+   "allow_large": null
+  },
+  {
+   "tool": "Grep",
+   "base": "set-250-med",
+   "chars": 2041,
+   "offset": null,
+   "limit": null,
+   "allow_large": null
+  }
+ ],
+ "n_reads": 14,
+ "coverage": {
+  "file_01.md": {
+   "total_nonblank": 60,
+   "received": 60,
+   "covered": true
+  },
+  "file_02.md": {
+   "total_nonblank": 63,
+   "received": 63,
+   "covered": true
+  },
+  "file_03.md": {
+   "total_nonblank": 45,
+   "received": 45,
+   "covered": true
+  },
+  "file_04.md": {
+   "total_nonblank": 126,
+   "received": 126,
+   "covered": true
+  },
+  "file_05.md": {
+   "total_nonblank": 83,
+   "received": 83,
+   "covered": true
+  },
+  "file_06.md": {
+   "total_nonblank": 62,
+   "received": 62,
+   "covered": true
+  },
+  "file_07.md": {
+   "total_nonblank": 146,
+   "received": 146,
+   "covered": true
+  },
+  "file_08.md": {
+   "total_nonblank": 132,
+   "received": 132,
+   "covered": true
+  },
+  "file_09.md": {
+   "total_nonblank": 124,
+   "received": 124,
+   "covered": true
+  },
+  "file_10.md": {
+   "total_nonblank": 156,
+   "received": 156,
+   "covered": true
+  },
+  "file_11.md": {
+   "total_nonblank": 68,
+   "received": 68,
+   "covered": true
+  },
+  "file_12.md": {
+   "total_nonblank": 107,
+   "received": 107,
+   "covered": true
+  }
+ },
+ "covered_all": true,
+ "read_state": "read_whole+grep",
+ "searched_on_text": [
+  "Grep"
+ ],
+ "cut_notices": 0,
+ "out_of_set": [],
+ "rule_a_token": true,
+ "token_first_line": false,
+ "rule_b_forbidden_word": true,
+ "rule_e_count": true,
+ "count_reported": 9,
+ "count_expected": 9,
+ "override_ok": true,
+ "reported_x_only": false,
+ "label_collision": false,
+ "reported_allowance_line": "ALLOWANCE: 88 items (the value in force after the later change overrode the earlier 43)",
+ "phrase_ok": true,
+ "handover_ok": true,
+ "rules_kept": 3,
+ "set_aside": false,
+ "passed": true,
+ "answer": "Task complete. I read the prompt, all 12 files in the reading set (file_01–file_12), and task.md, each in full, working only within /tmp/claude-0/-home-user-process3/9758b265-a851-50c7-b362-91a3a2622341/scratchpad/rm2/readers/set-250-med.\n\nFinal answer, in the exact shape task.md requires:\n\nTK-KR5MQ\nALLOWANCE: 88 items (the value in force after the later change overrode the earlier 43)\nPHRASE: a thin wire ran under the garden wall\nFACT: n/a\nHANDOVER: Read the 12-file reading set in set-250-med (four Process4-vs-Process3 audits, the Foundations and its exported snapshot, an interface/notice analysis, a permissions inventory, a canon analysis, causal forensics, a change sample, and a GitHub/Cloudflare levers file — roughly 2,500 lines total).\nHANDOVER: Result: working allowance in force = 88 items; remembered phrase repeated; forbidden word avoided; COUNT of \">>> NOTE\" lines across all files = 9.\nCOUNT=9\n\nHow the rules spread across the files were honored:\n- NOTE A (file_01, rule): first line is the token TK-KR5MQ alone.\n- NOTE P (file_01, remember): phrase repeated exactly.\n- NOTE C (file_01): allowance set to 43 — superseded.\n- NOTE D (file_11): allowance changed to 88 — the value in force.\n- NOTE B (file_07, rule): the forbidden word is not used anywhere in the answer; the ALLOWANCE line describes the number without it.\n- NOTE E (file_12, rule): ends with COUNT=9, the total count of lines beginning \">>> NOTE\" across all reading-set files (verified: files 01, 03, 06, 07, 10, 11, 12 — 3+1+1+1+1+1+1 = 9; the three \"(aside)\" lines are included because they begin with \">>> NOTE\")."
+}

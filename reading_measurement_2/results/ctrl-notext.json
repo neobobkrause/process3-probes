@@ -1,0 +1,39 @@
+{
+ "rid": "ctrl-notext",
+ "kind": "control-notext",
+ "model": "claude-opus-4-8",
+ "context_tokens_at_end": 63210,
+ "calls": [
+  {
+   "tool": "Read",
+   "base": "prompt.txt",
+   "chars": 1528,
+   "offset": null,
+   "limit": null,
+   "allow_large": null
+  }
+ ],
+ "n_reads": 1,
+ "coverage": {},
+ "covered_all": null,
+ "read_state": "read_in_part",
+ "searched_on_text": [],
+ "cut_notices": 0,
+ "out_of_set": [],
+ "rule_a_token": false,
+ "token_first_line": false,
+ "rule_b_forbidden_word": true,
+ "rule_e_count": false,
+ "count_reported": null,
+ "count_expected": 7,
+ "override_ok": false,
+ "reported_x_only": false,
+ "label_collision": false,
+ "reported_allowance_line": "ALLOWANCE: UNKNOWN",
+ "phrase_ok": false,
+ "handover_ok": true,
+ "rules_kept": 1,
+ "set_aside": false,
+ "passed": null,
+ "answer": "UNKNOWN\nALLOWANCE: UNKNOWN\nPHRASE: UNKNOWN\nFACT: n/a\nHANDOVER: Line one — I read no document; there was no reading set in this run (control condition, zero bytes).\nHANDOVER: Line two — Result: all document-derived values are UNKNOWN; FACT is n/a.\nCOUNT=UNKNOWN"
+}

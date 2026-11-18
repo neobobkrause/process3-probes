@@ -1,0 +1,292 @@
+{
+ "rid": "set-400-med",
+ "kind": "set",
+ "model": "claude-opus-4-8",
+ "context_tokens_at_end": 218044,
+ "calls": [
+  {
+   "tool": "Read",
+   "base": "prompt.txt",
+   "chars": 2921,
+   "offset": null,
+   "limit": null,
+   "allow_large": null
+  },
+  {
+   "tool": "Read",
+   "base": "file_01.md",
+   "chars": 20706,
+   "offset": null,
+   "limit": null,
+   "allow_large": null
+  },
+  {
+   "tool": "Read",
+   "base": "file_02.md",
+   "chars": 22522,
+   "offset": null,
+   "limit": null,
+   "allow_large": null
+  },
+  {
+   "tool": "Read",
+   "base": "file_03.md",
+   "chars": 15856,
+   "offset": null,
+   "limit": null,
+   "allow_large": null
+  },
+  {
+   "tool": "Read",
+   "base": "file_04.md",
+   "chars": 21382,
+   "offset": null,
+   "limit": null,
+   "allow_large": null
+  },
+  {
+   "tool": "Read",
+   "base": "file_05.md",
+   "chars": 20836,
+   "offset": null,
+   "limit": null,
+   "allow_large": null
+  },
+  {
+   "tool": "Read",
+   "base": "file_06.md",
+   "chars": 21954,
+   "offset": null,
+   "limit": null,
+   "allow_large": null
+  },
+  {
+   "tool": "Read",
+   "base": "file_07.md",
+   "chars": 22275,
+   "offset": null,
+   "limit": null,
+   "allow_large": null
+  },
+  {
+   "tool": "Read",
+   "base": "file_08.md",
+   "chars": 20927,
+   "offset": null,
+   "limit": null,
+   "allow_large": null
+  },
+  {
+   "tool": "Read",
+   "base": "file_09.md",
+   "chars": 22562,
+   "offset": null,
+   "limit": null,
+   "allow_large": null
+  },
+  {
+   "tool": "Read",
+   "base": "file_10.md",
+   "chars": 22373,
+   "offset": null,
+   "limit": null,
+   "allow_large": null
+  },
+  {
+   "tool": "Read",
+   "base": "file_11.md",
+   "chars": 21450,
+   "offset": null,
+   "limit": null,
+   "allow_large": null
+  },
+  {
+   "tool": "Read",
+   "base": "file_12.md",
+   "chars": 22481,
+   "offset": null,
+   "limit": null,
+   "allow_large": null
+  },
+  {
+   "tool": "Read",
+   "base": "file_13.md",
+   "chars": 22025,
+   "offset": null,
+   "limit": null,
+   "allow_large": null
+  },
+  {
+   "tool": "Read",
+   "base": "file_14.md",
+   "chars": 22719,
+   "offset": null,
+   "limit": null,
+   "allow_large": null
+  },
+  {
+   "tool": "Read",
+   "base": "file_15.md",
+   "chars": 22662,
+   "offset": null,
+   "limit": null,
+   "allow_large": null
+  },
+  {
+   "tool": "Read",
+   "base": "file_16.md",
+   "chars": 21088,
+   "offset": null,
+   "limit": null,
+   "allow_large": null
+  },
+  {
+   "tool": "Read",
+   "base": "file_17.md",
+   "chars": 21416,
+   "offset": null,
+   "limit": null,
+   "allow_large": null
+  },
+  {
+   "tool": "Read",
+   "base": "file_18.md",
+   "chars": 23058,
+   "offset": null,
+   "limit": null,
+   "allow_large": null
+  },
+  {
+   "tool": "Read",
+   "base": "task.md",
+   "chars": 1219,
+   "offset": null,
+   "limit": null,
+   "allow_large": null
+  },
+  {
+   "tool": "Grep",
+   "base": "set-400-med",
+   "chars": 16,
+   "offset": null,
+   "limit": null,
+   "allow_large": null
+  }
+ ],
+ "n_reads": 20,
+ "coverage": {
+  "file_01.md": {
+   "total_nonblank": 60,
+   "received": 60,
+   "covered": true
+  },
+  "file_02.md": {
+   "total_nonblank": 65,
+   "received": 65,
+   "covered": true
+  },
+  "file_03.md": {
+   "total_nonblank": 44,
+   "received": 44,
+   "covered": true
+  },
+  "file_04.md": {
+   "total_nonblank": 126,
+   "received": 126,
+   "covered": true
+  },
+  "file_05.md": {
+   "total_nonblank": 83,
+   "received": 83,
+   "covered": true
+  },
+  "file_06.md": {
+   "total_nonblank": 66,
+   "received": 66,
+   "covered": true
+  },
+  "file_07.md": {
+   "total_nonblank": 152,
+   "received": 152,
+   "covered": true
+  },
+  "file_08.md": {
+   "total_nonblank": 132,
+   "received": 132,
+   "covered": true
+  },
+  "file_09.md": {
+   "total_nonblank": 130,
+   "received": 130,
+   "covered": true
+  },
+  "file_10.md": {
+   "total_nonblank": 162,
+   "received": 162,
+   "covered": true
+  },
+  "file_11.md": {
+   "total_nonblank": 81,
+   "received": 81,
+   "covered": true
+  },
+  "file_12.md": {
+   "total_nonblank": 110,
+   "received": 110,
+   "covered": true
+  },
+  "file_13.md": {
+   "total_nonblank": 75,
+   "received": 75,
+   "covered": true
+  },
+  "file_14.md": {
+   "total_nonblank": 162,
+   "received": 162,
+   "covered": true
+  },
+  "file_15.md": {
+   "total_nonblank": 180,
+   "received": 180,
+   "covered": true
+  },
+  "file_16.md": {
+   "total_nonblank": 63,
+   "received": 63,
+   "covered": true
+  },
+  "file_17.md": {
+   "total_nonblank": 94,
+   "received": 94,
+   "covered": true
+  },
+  "file_18.md": {
+   "total_nonblank": 162,
+   "received": 162,
+   "covered": true
+  }
+ },
+ "covered_all": true,
+ "read_state": "read_whole+grep",
+ "searched_on_text": [
+  "Grep"
+ ],
+ "cut_notices": 0,
+ "out_of_set": [],
+ "rule_a_token": true,
+ "token_first_line": true,
+ "rule_b_forbidden_word": true,
+ "rule_e_count": true,
+ "count_reported": 8,
+ "count_expected": 8,
+ "override_ok": true,
+ "reported_x_only": false,
+ "label_collision": false,
+ "reported_allowance_line": "ALLOWANCE: 125 items (the number in force at the end, replacing the earlier 44)",
+ "phrase_ok": true,
+ "handover_ok": true,
+ "rules_kept": 3,
+ "set_aside": false,
+ "passed": true,
+ "answer": "TK-2YGHW\nALLOWANCE: 125 items (the number in force at the end, replacing the earlier 44)\nPHRASE: salt and cedar on the north shelf\nFACT: n/a\nHANDOVER: Read the 18-file reading set in set-400-med (Process3/Process4 audit and post-mortem documents), roughly 1,900 lines in total.\nHANDOVER: Result: allowance in force is 125 items; remembered phrase and required token recorded; eight \">>> NOTE\" lines counted across the set.\nCOUNT=8"
+}

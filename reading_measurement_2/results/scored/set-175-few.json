@@ -1,0 +1,171 @@
+{
+ "rid": "set-175-few",
+ "kind": "set",
+ "model": "claude-opus-4-8",
+ "context_tokens_at_end": 132502,
+ "calls": [
+  {
+   "tool": "Read",
+   "base": "prompt.txt",
+   "chars": 1701,
+   "offset": null,
+   "limit": null,
+   "allow_large": null
+  },
+  {
+   "tool": "Read",
+   "base": "file_01.md",
+   "chars": 20711,
+   "offset": null,
+   "limit": null,
+   "allow_large": null
+  },
+  {
+   "tool": "Read",
+   "base": "file_02.md",
+   "chars": 21916,
+   "offset": null,
+   "limit": null,
+   "allow_large": null
+  },
+  {
+   "tool": "Read",
+   "base": "file_03.md",
+   "chars": 15856,
+   "offset": null,
+   "limit": null,
+   "allow_large": null
+  },
+  {
+   "tool": "Read",
+   "base": "file_04.md",
+   "chars": 20836,
+   "offset": null,
+   "limit": null,
+   "allow_large": null
+  },
+  {
+   "tool": "Read",
+   "base": "file_05.md",
+   "chars": 21997,
+   "offset": null,
+   "limit": null,
+   "allow_large": null
+  },
+  {
+   "tool": "Read",
+   "base": "file_06.md",
+   "chars": 20927,
+   "offset": null,
+   "limit": null,
+   "allow_large": null
+  },
+  {
+   "tool": "Read",
+   "base": "file_07.md",
+   "chars": 21245,
+   "offset": null,
+   "limit": null,
+   "allow_large": null
+  },
+  {
+   "tool": "Read",
+   "base": "file_08.md",
+   "chars": 22220,
+   "offset": null,
+   "limit": null,
+   "allow_large": null
+  },
+  {
+   "tool": "Read",
+   "base": "task.md",
+   "chars": 1219,
+   "offset": null,
+   "limit": null,
+   "allow_large": null
+  },
+  {
+   "tool": "Grep",
+   "base": "set-175-few",
+   "chars": 16,
+   "offset": null,
+   "limit": null,
+   "allow_large": null
+  },
+  {
+   "tool": "Grep",
+   "base": "set-175-few",
+   "chars": 1614,
+   "offset": null,
+   "limit": null,
+   "allow_large": null
+  }
+ ],
+ "n_reads": 10,
+ "coverage": {
+  "file_01.md": {
+   "total_nonblank": 60,
+   "received": 60,
+   "covered": true
+  },
+  "file_02.md": {
+   "total_nonblank": 64,
+   "received": 64,
+   "covered": true
+  },
+  "file_03.md": {
+   "total_nonblank": 44,
+   "received": 44,
+   "covered": true
+  },
+  "file_04.md": {
+   "total_nonblank": 83,
+   "received": 83,
+   "covered": true
+  },
+  "file_05.md": {
+   "total_nonblank": 151,
+   "received": 151,
+   "covered": true
+  },
+  "file_06.md": {
+   "total_nonblank": 132,
+   "received": 132,
+   "covered": true
+  },
+  "file_07.md": {
+   "total_nonblank": 155,
+   "received": 155,
+   "covered": true
+  },
+  "file_08.md": {
+   "total_nonblank": 178,
+   "received": 178,
+   "covered": true
+  }
+ },
+ "covered_all": true,
+ "read_state": "read_whole+grep",
+ "searched_on_text": [
+  "Grep",
+  "Grep"
+ ],
+ "cut_notices": 0,
+ "out_of_set": [],
+ "rule_a_token": true,
+ "token_first_line": true,
+ "rule_b_forbidden_word": true,
+ "rule_e_count": true,
+ "count_reported": 8,
+ "count_expected": 8,
+ "override_ok": true,
+ "reported_x_only": false,
+ "label_collision": false,
+ "reported_allowance_line": "ALLOWANCE: 77 items",
+ "phrase_ok": true,
+ "handover_ok": true,
+ "rules_kept": 3,
+ "set_aside": false,
+ "passed": true,
+ "answer": "TK-X66JS\nALLOWANCE: 77 items\nPHRASE: rain fell on the blue roof for an hour\nFACT: n/a\nHANDOVER: Read an 8-file set (Audits A/B/C of a Process4 proposal, the Process3 Foundations, plus forensic/permission/post-mortem analyses), roughly a few thousand lines in total.\nHANDOVER: Working allowance in force at the end is 77 items; required token and end-count line applied, with the forbidden word avoided.\nCOUNT=8"
+}

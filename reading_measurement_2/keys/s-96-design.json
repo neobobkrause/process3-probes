@@ -1,0 +1,13 @@
+{
+ "codea": "TK-P7NKM",
+ "wordb": "cap",
+ "x": 49,
+ "y": 92,
+ "phrase": "the clerk counted every brass key twice",
+ "count_k": 6,
+ "has_fact": false,
+ "src": "design_counterargs.md",
+ "target": 96000,
+ "rid": "s-96-design",
+ "kind": "design"
+}

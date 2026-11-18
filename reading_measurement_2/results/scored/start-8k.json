@@ -1,0 +1,39 @@
+{
+ "rid": "start-8k",
+ "kind": "starting",
+ "model": "claude-opus-4-8",
+ "context_tokens_at_end": 66143,
+ "calls": [
+  {
+   "tool": "Read",
+   "base": "prompt.txt",
+   "chars": 10436,
+   "offset": null,
+   "limit": null,
+   "allow_large": null
+  }
+ ],
+ "n_reads": 1,
+ "coverage": {},
+ "covered_all": null,
+ "read_state": "n/a (starting text in prompt)",
+ "searched_on_text": [],
+ "cut_notices": 0,
+ "out_of_set": [],
+ "rule_a_token": true,
+ "token_first_line": true,
+ "rule_b_forbidden_word": true,
+ "rule_e_count": true,
+ "count_reported": 6,
+ "count_expected": 6,
+ "override_ok": true,
+ "reported_x_only": false,
+ "label_collision": false,
+ "reported_allowance_line": "ALLOWANCE: 89 items",
+ "phrase_ok": true,
+ "handover_ok": true,
+ "rules_kept": 3,
+ "set_aside": false,
+ "passed": true,
+ "answer": "TK-VD4NM\nALLOWANCE: 89 items\nPHRASE: salt and cedar on the north shelf\nFACT: n/a\nHANDOVER: I read the coordinator-helper role rulebook (one rulebook, roughly 8.7 KB / about 132 lines) plus its embedded background principles and task.\nHANDOVER: Result: token TK-VD4NM, allowance in force 89 items, phrase \"salt and cedar on the north shelf\", no extra fact (n/a), and six \">>> NOTE\" lines.\nCOUNT=6"
+}

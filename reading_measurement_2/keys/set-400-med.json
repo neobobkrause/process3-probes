@@ -1,0 +1,32 @@
+{
+ "codea": "TK-2YGHW",
+ "wordb": "cap",
+ "x": 44,
+ "y": 125,
+ "phrase": "salt and cedar on the north shelf",
+ "count_k": 8,
+ "has_fact": false,
+ "srcs": [
+  "ev_audit_A.md",
+  "ev_audit_B.md",
+  "ev_audit_C.md",
+  "ev_audit_D_central.md",
+  "ev_foundations.md",
+  "ev_foundations_tranche_9nov.md",
+  "ev_interface_and_cycle.md",
+  "ev_permissions_inventory.md",
+  "ev_canon_analysis.md",
+  "ev_causal_forensics.md",
+  "ev_change_sample.md",
+  "ev_levers_github_cloudflare_product.md",
+  "ev_DECISIONS.md",
+  "ev_product_side.md",
+  "ev_verify_numbers.md",
+  "ev_redteam_corruption.md",
+  "ev_redteam_feasibility.md",
+  "ev_no_layers_width.md"
+ ],
+ "per_bytes": 22000,
+ "rid": "set-400-med",
+ "kind": "set"
+}

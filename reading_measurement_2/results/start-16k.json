@@ -1,0 +1,39 @@
+{
+ "rid": "start-16k",
+ "kind": "starting",
+ "model": "claude-opus-4-8",
+ "context_tokens_at_end": 69084,
+ "calls": [
+  {
+   "tool": "Read",
+   "base": "prompt.txt",
+   "chars": 18553,
+   "offset": null,
+   "limit": null,
+   "allow_large": null
+  }
+ ],
+ "n_reads": 1,
+ "coverage": {},
+ "covered_all": null,
+ "read_state": "n/a (starting text in prompt)",
+ "searched_on_text": [],
+ "cut_notices": 0,
+ "out_of_set": [],
+ "rule_a_token": true,
+ "token_first_line": true,
+ "rule_b_forbidden_word": true,
+ "rule_e_count": true,
+ "count_reported": 6,
+ "count_expected": 6,
+ "override_ok": true,
+ "reported_x_only": false,
+ "label_collision": false,
+ "reported_allowance_line": "ALLOWANCE: 100 items",
+ "phrase_ok": true,
+ "handover_ok": true,
+ "rules_kept": 3,
+ "set_aside": false,
+ "passed": true,
+ "answer": "TK-KJXN8\nALLOWANCE: 100 items\nPHRASE: seven grey boats left the harbour at noon\nFACT: n/a\nHANDOVER: Read the walking-session role rulebook (~16.7 KB, \"16708 bytes\") plus its short attached task.\nHANDOVER: Result: allowance in force is 100 items; remembered phrase repeated; FACT n/a; NOTE-line count is 6.\nCOUNT=6"
+}

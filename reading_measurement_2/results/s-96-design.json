@@ -1,0 +1,88 @@
+{
+ "rid": "s-96-design",
+ "kind": "design",
+ "model": "claude-opus-4-8",
+ "context_tokens_at_end": 98749,
+ "calls": [
+  {
+   "tool": "Read",
+   "base": "prompt.txt",
+   "chars": 730,
+   "offset": null,
+   "limit": null,
+   "allow_large": null
+  },
+  {
+   "tool": "Read",
+   "base": "document.md",
+   "chars": 75891,
+   "offset": null,
+   "limit": null,
+   "allow_large": null
+  },
+  {
+   "tool": "Read",
+   "base": "document.md",
+   "chars": 23934,
+   "offset": 576,
+   "limit": 575,
+   "allow_large": null
+  },
+  {
+   "tool": "Read",
+   "base": "task.md",
+   "chars": 1219,
+   "offset": null,
+   "limit": null,
+   "allow_large": null
+  },
+  {
+   "tool": "Grep",
+   "base": "document.md",
+   "chars": 16,
+   "offset": null,
+   "limit": null,
+   "allow_large": null
+  },
+  {
+   "tool": "Grep",
+   "base": "document.md",
+   "chars": 797,
+   "offset": null,
+   "limit": null,
+   "allow_large": null
+  }
+ ],
+ "n_reads": 4,
+ "coverage": {
+  "document.md": {
+   "total_nonblank": 450,
+   "received": 450,
+   "covered": true
+  }
+ },
+ "covered_all": true,
+ "read_state": "read_whole+grep",
+ "searched_on_text": [
+  "Grep",
+  "Grep"
+ ],
+ "cut_notices": 1,
+ "out_of_set": [],
+ "rule_a_token": true,
+ "token_first_line": true,
+ "rule_b_forbidden_word": true,
+ "rule_e_count": true,
+ "count_reported": 6,
+ "count_expected": 6,
+ "override_ok": true,
+ "reported_x_only": false,
+ "label_collision": false,
+ "reported_allowance_line": "ALLOWANCE: 92 items",
+ "phrase_ok": true,
+ "handover_ok": true,
+ "rules_kept": 3,
+ "set_aside": false,
+ "passed": true,
+ "answer": "TK-P7NKM\nALLOWANCE: 92 items\nPHRASE: the clerk counted every brass key twice\nFACT: n/a\nHANDOVER: Read document.md, \"Process4: the counter-arguments and their answers\" (~838 lines, ~31k tokens, an 87-entry review memo with embedded NOTE rules).\nHANDOVER: Allowance in force at end is 92 items; remembered phrase returned; embedded rules obeyed (required first-line token present, forbidden word avoided, NOTE count below).\nCOUNT=6"
+}

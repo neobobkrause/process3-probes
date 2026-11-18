@@ -28,3 +28,19 @@ run; every change lives here. No pass rule is changed after results are seen.
    keeps each cut ending on a clean boundary removes relatively more from small cuts. The totals are within
    8 percent and the file count differs threefold, which is the contrast the comparison needs; actual bytes
    are reported for each.
+
+5. **One forbidden word collided with the answer template.** The middle marker rule forbids one everyday
+   word in the answer; the word is drawn at random. For the 24-file set (`set-175-many`) the draw was
+   "allowance", which is also the mandatory label the answer template requires ("ALLOWANCE:"). The reader
+   navigated the contradiction correctly (it reported the value without the word in its prose and said so),
+   but the collision makes that one run's middle-rule score indeterminate. The run still read all 24 files
+   whole and got the token, the override and the count right. The scorer neutralises the mandated label
+   before the middle-rule check and flags the collision. The forbidden word also turned out to be a weak
+   probe generally: for the other runs it was a word the reader had no need to use, so avoiding it was easy;
+   the strong whole-text probes are the start token, the end count, and the early-value/later-override. This
+   is reported as a limitation, not patched by re-running (the worker budget is spent on coverage).
+
+6. **Override scored as "the in-force value is reported", not "the old value is absent".** Several readers
+   correctly reported the later value and also named the earlier one ("88, replacing the earlier 43"). That
+   is correct understanding, so a run keeps the override when the later value is reported; naming the old
+   value too is not a miss. Recorded as `reported_x_only` when a reader gave only the old value.

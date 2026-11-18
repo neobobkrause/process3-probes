@@ -1,0 +1,22 @@
+{
+ "codea": "TK-X66JS",
+ "wordb": "cap",
+ "x": 52,
+ "y": 77,
+ "phrase": "rain fell on the blue roof for an hour",
+ "count_k": 8,
+ "has_fact": false,
+ "srcs": [
+  "ev_audit_A.md",
+  "ev_audit_B.md",
+  "ev_audit_C.md",
+  "ev_foundations.md",
+  "ev_interface_and_cycle.md",
+  "ev_permissions_inventory.md",
+  "ev_product_side.md",
+  "ev_verify_numbers.md"
+ ],
+ "per_bytes": 21200,
+ "rid": "set-175-few",
+ "kind": "set"
+}

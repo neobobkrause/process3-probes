@@ -1,0 +1,13 @@
+{
+ "codea": "TK-QSE3C",
+ "wordb": "ceiling",
+ "x": 57,
+ "y": 130,
+ "phrase": "a cold river keeps no secrets for long",
+ "count_k": 9,
+ "has_fact": false,
+ "src": "role_roots.md",
+ "target": 24000,
+ "rid": "s-24-role",
+ "kind": "role"
+}

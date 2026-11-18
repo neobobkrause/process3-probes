@@ -1,0 +1,93 @@
+{
+ "rid": "s-175-log",
+ "kind": "log",
+ "model": "claude-opus-4-8",
+ "context_tokens_at_end": 138988,
+ "calls": [
+  {
+   "tool": "Read",
+   "base": "prompt.txt",
+   "chars": 724,
+   "offset": null,
+   "limit": null,
+   "allow_large": null
+  },
+  {
+   "tool": "Read",
+   "base": "document.md",
+   "chars": 45271,
+   "offset": null,
+   "limit": null,
+   "allow_large": null
+  },
+  {
+   "tool": "Read",
+   "base": "document.md",
+   "chars": 59118,
+   "offset": 110,
+   "limit": 135,
+   "allow_large": null
+  },
+  {
+   "tool": "Read",
+   "base": "document.md",
+   "chars": 378,
+   "offset": 245,
+   "limit": 132,
+   "allow_large": null
+  },
+  {
+   "tool": "Read",
+   "base": "document.md",
+   "chars": 35888,
+   "offset": 245,
+   "limit": 70,
+   "allow_large": null
+  },
+  {
+   "tool": "Read",
+   "base": "document.md",
+   "chars": 37111,
+   "offset": 315,
+   "limit": 62,
+   "allow_large": null
+  },
+  {
+   "tool": "Read",
+   "base": "task.md",
+   "chars": 1219,
+   "offset": null,
+   "limit": null,
+   "allow_large": null
+  }
+ ],
+ "n_reads": 7,
+ "coverage": {
+  "document.md": {
+   "total_nonblank": 362,
+   "received": 362,
+   "covered": true
+  }
+ },
+ "covered_all": true,
+ "read_state": "read_whole",
+ "searched_on_text": [],
+ "cut_notices": 1,
+ "out_of_set": [],
+ "rule_a_token": true,
+ "token_first_line": true,
+ "rule_b_forbidden_word": true,
+ "rule_e_count": true,
+ "count_reported": 6,
+ "count_expected": 6,
+ "override_ok": true,
+ "reported_x_only": false,
+ "label_collision": false,
+ "reported_allowance_line": "ALLOWANCE: 74 items (the working-allowance figure that applies after the final change)",
+ "phrase_ok": true,
+ "handover_ok": true,
+ "rules_kept": 3,
+ "set_aside": false,
+ "passed": true,
+ "answer": "TK-BQL4N\nALLOWANCE: 74 items (the working-allowance figure that applies after the final change)\nPHRASE: a cold river keeps no secrets for long\nFACT: n/a\nHANDOVER: Read document.md, the Process3 coordinator findings log (3-5 Nov), about 376 lines / ~73k tokens, in this reader folder.\nHANDOVER: Task done; allowance in force 74, phrase repeated, and the \">>> NOTE\" lines counted at 6.\nCOUNT=6"
+}

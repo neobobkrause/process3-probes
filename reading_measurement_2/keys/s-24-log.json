@@ -1,0 +1,13 @@
+{
+ "codea": "TK-9SN7E",
+ "wordb": "budget",
+ "x": 57,
+ "y": 106,
+ "phrase": "a cold river keeps no secrets for long",
+ "count_k": 6,
+ "has_fact": false,
+ "src": "log_coord.md",
+ "target": 24000,
+ "rid": "s-24-log",
+ "kind": "log"
+}

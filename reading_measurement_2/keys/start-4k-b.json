@@ -1,0 +1,13 @@
+{
+ "codea": "TK-674X5",
+ "wordb": "quota",
+ "x": 35,
+ "y": 62,
+ "phrase": "salt and cedar on the north shelf",
+ "count_k": 6,
+ "has_fact": false,
+ "target": 4096,
+ "nbytes": 4783,
+ "rid": "start-4k-b",
+ "kind": "starting"
+}

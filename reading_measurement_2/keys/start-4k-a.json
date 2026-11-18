@@ -1,0 +1,13 @@
+{
+ "codea": "TK-NBXL5",
+ "wordb": "budget",
+ "x": 46,
+ "y": 99,
+ "phrase": "the baker's dog learned to open the door",
+ "count_k": 6,
+ "has_fact": false,
+ "target": 4096,
+ "nbytes": 4518,
+ "rid": "start-4k-a",
+ "kind": "starting"
+}

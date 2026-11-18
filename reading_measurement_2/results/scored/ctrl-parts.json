@@ -1,0 +1,39 @@
+{
+ "rid": "ctrl-parts",
+ "kind": "control-parts",
+ "model": "claude-opus-4-8",
+ "context_tokens_at_end": 72223,
+ "calls": [
+  {
+   "tool": "Read",
+   "base": "prompt.txt",
+   "chars": 27098,
+   "offset": null,
+   "limit": null,
+   "allow_large": null
+  }
+ ],
+ "n_reads": 1,
+ "coverage": {},
+ "covered_all": null,
+ "read_state": "read_in_part",
+ "searched_on_text": [],
+ "cut_notices": 0,
+ "out_of_set": [],
+ "rule_a_token": true,
+ "token_first_line": true,
+ "rule_b_forbidden_word": true,
+ "rule_e_count": true,
+ "count_reported": 7,
+ "count_expected": 7,
+ "override_ok": true,
+ "reported_x_only": false,
+ "label_collision": false,
+ "reported_allowance_line": "ALLOWANCE: 110 items (the later value in force, replacing the earlier 42)",
+ "phrase_ok": true,
+ "handover_ok": true,
+ "rules_kept": 3,
+ "set_aside": false,
+ "passed": null,
+ "answer": "TK-NNEX7\nALLOWANCE: 110 items (the later value in force, replacing the earlier 42)\nPHRASE: the clerk counted every brass key twice\nFACT: n/a\nHANDOVER: Read the Process4 research report \"Context management and canon fidelity in native Codex\" (embedded HTML-in-Python source, split into 7 parts, ~130 lines).\nHANDOVER: Task done: in-force allowance is 110 items, remembered phrase recovered, 7 lines begin with \">>> NOTE\".\nCOUNT=7"
+}
