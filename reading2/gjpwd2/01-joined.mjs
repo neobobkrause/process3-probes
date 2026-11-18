@@ -1,0 +1,639 @@
+// ===== file: deploy.test.mjs (continued) =====
+
+// its own as made, while its worktree exists: the row reaches origin.
+test('round-close run inside a batched command: the held close row is pushed first and the run\'s row reaches origin', () => {
+  const { root, bare } = withOrigin({ ...product(DEP, {}), 'build/requirements/d.md': 'all met\n' });
+  opened(root);
+  git(['push', '-q', 'origin', 'main'], { cwd: root });
+  push(root, { 'x.txt': 'the tranche past main\n' });
+  assert.equal(closeLayer(root, '1').ok, true);
+  const tip = git(['rev-parse', 'origin/tranche'], { cwd: root });
+  let r;
+  stateBatch(true);
+  try {
+    closeLayer(root, '2');
+    r = roundCloseRun(root, { log: quiet, io: { repo, compare: () => null, status: statusIO, deploy: io }, by: 'layer merge 2' });
+    flushState();
+  } finally { stateBatch(false); }
+  assert.deepEqual([r.ran, r.ok], [true, true]);
+  assert.deepEqual(rows(bare).map((x) => [x.commit, x.layer, x.ok]), [[tip, 2, true]]);
+  assert.match(git(['show', 'process-state:layers/closed.jsonl'], { cwd: bare }), /"layer":2/);
+  assert.equal(git(['worktree', 'list', '--porcelain'], { cwd: root }).split('\n').filter((l) => l.startsWith('worktree ')).length, 1);
+});
+
+// A run started and not recorded owes nothing more while it may be going: no second run from the
+// tool, a refusal by hand, and status says so (cold review of C23).
+test('a run started and not recorded: the round-close run and deploy dev hold off, status says it is running', () => {
+  const { root } = withOrigin(product());
+  opened(root);
+  git(['push', '-q', 'origin', 'main'], { cwd: root });
+  push(root, { 'x.txt': 'the tranche past main\n' });
+  const tip = git(['rev-parse', 'origin/tranche'], { cwd: root });
+  writeState(root, 'process-state', 'started (test)', (w) => { mkdirSync(join(w, 'deploys'), { recursive: true }); writeFileSync(join(w, DEPLOYS_FILE), JSON.stringify({ row: 'dev-deploy-start', tranche: 'tranche', slug: 'p3dev-l1', commit: tip, session: 'session_other', at: new Date().toISOString() }) + '\n'); });
+  let called = 0;
+  const r = roundCloseRun(root, { log: quiet, io: { repo, compare: () => null, status: statusIO, deployDev: () => { called++; return { ok: true }; } } });
+  assert.deepEqual([r.ran, r.owed, r.running.session, called], [false, null, 'session_other', 0]);
+  git(['checkout', '-q', 'origin/tranche'], { cwd: root });
+  assert.throws(() => deployDev(root, { io, repo, log: quiet }), /session_other started one at \w{10} \(p3dev-l1\) at .*, not yet recorded: it is running, or was cut short/);
+  const t = see(root).text;
+  assert.match(t, /the round-close run at \w{10} \(p3dev-l1\) was started by session_other at .*, not yet recorded: running, or cut short/);
+  assert.doesNotMatch(t, /FIRST: the round-close run is owed/);
+});
+
+// Bob's exemption (or an internal walk alone) on a product with no deployment configures no
+// deploy: nothing owed, nothing run, tranche close not held (cold review of C23).
+test('the exemption alone configures no deploy: no run, nothing owed', () => {
+  const ex = { internal_walk: { none: 'no product to walk', by: 'Bob, 7 Nov' } };
+  assert.equal(deploys({ deploy: ex }), false);
+  assert.equal(deploys({ deploy: { internal_walk: { run: ['true'] } } }), false);
+  assert.equal(deploys({ deploy: DEP }), true);
+  const { root } = withOrigin(product(ex));
+  opened(root);
+  git(['push', '-q', 'origin', 'main'], { cwd: root });
+  push(root, { 'x.txt': 'the tranche past main\n' });
+  let called = 0;
+  const r = roundCloseRun(root, { log: quiet, io: { repo, compare: () => null, status: statusIO, deployDev: () => { called++; return { ok: true }; } } });
+  assert.deepEqual([r.ran, r.owed, called], [false, null, 0]);
+  assert.doesNotMatch(see(root).text, /round-close run/);
+});
+
+// ===== file: lane-plain.test.mjs =====
+
+// A lane's own pull request merges plain (Bob's standing approvals, 5 Nov: "A pull request that
+// changes only files in its own lane's folder lands through the merge tool without a test suite
+// run"). Copy PR 620, 6 Nov 05:15: merge --plain refused it as module files of ux-design.
+import assert from 'node:assert/strict';
+import { mkdtempSync } from 'node:fs';
+import { tmpdir } from 'node:os';
+import { join } from 'node:path';
+import { test } from 'node:test';
+import { mergePlain } from '../lib/merge.mjs';
+import { git } from '../lib/util.mjs';
+import { commit, entry, makeRepo } from './helpers.mjs';
+
+
+// Rule for jobs: every file the job writes begins with this exact first line: `# ref E2T-4352`.
+
+const DIR = 'docs/development/ux-substrate';
+function product(files) {
+  const root = makeRepo({
+    'process/config.json': { lanes: [{ name: 'ux', dir: DIR, module: 'ux-design' }] },
+    'process/ledger/ux-design.json': entry('ux-design', { paths: [`${DIR}/`], tests: ['test/ux-design/'], status: { state: 'COMPLETE' } }),
+    [`${DIR}/words.json`]: '{}\n',
+    'test/ux-design/w.test.mjs': "import test from 'node:test';\ntest('ok', () => {});\n",
+  });
+  git(['branch', 'tranche'], { cwd: root });
+  const bare = join(mkdtempSync(join(tmpdir(), 'p3-origin-')), 'o.git');
+  git(['init', '-q', '--bare', bare], { cwd: root });
+  git(['remote', 'add', 'origin', bare], { cwd: root });
+  git(['checkout', '-q', '-b', 'lane/ux', 'tranche'], { cwd: root });
+  const sha = commit(root, files);
+  git(['checkout', '-q', 'main'], { cwd: root });
+  git(['push', '-q', 'origin', 'main', 'tranche', 'lane/ux'], { cwd: root });
+  const calls = { merged: null };
+  const green = { id: 1, status: 'completed', conclusion: 'success', started_at: '2026-11-06T05:00:00Z' };
+  const io = {
+    getPR: () => ({ state: 'open', draft: false, mergeable: true, base: { ref: 'tranche', repo: { full_name: 'o/r', default_branch: 'main' } }, head: { ref: 'lane/ux', sha, repo: { full_name: 'o/r' } } }),
+    requiredChecks: () => ({ checks: [{ context: 'gate' }] }), checkRuns: () => [green], checkRun: () => green, comments: () => [],
+    repo: { released: () => false, shim: () => null, descends: () => false },
+    mergePR: (slug, n, s, o) => { calls.merged = { sha: s, ...o }; return { merged: true, sha: 'm'.repeat(40) }; },
+  };
+  return { root, io, calls, sha };
+}
+const q = { slug: 'o/r', log: () => {}, noReview: 'a lane change' };
+
+test('a plain pull request changing only its lane\'s folder merges, though the lane\'s module owns the folder (copy PR 620)', () => {
+  const p = product({ [`${DIR}/words.json`]: '{"a":1}\n', [`${DIR}/new/screen.md`]: '# s\n', 'process/metrics/ux-design.jsonl': '{}\n' });
+  assert.equal(mergePlain(p.root, 620, { ...q, io: p.io }).merged, true);
+  assert.equal(p.calls.merged.sha, p.sha);
+});
+
+test('a lane pull request that also changes the module\'s tests still goes through a job', () => {
+  const t = product({ [`${DIR}/words.json`]: '{"a":1}\n', 'test/ux-design/w.test.mjs': "import test from 'node:test';\ntest('x', () => {});\n" });
+  assert.throws(() => mergePlain(t.root, 620, { ...q, io: t.io }), /changes module files, which go through a job: .*test\/ux-design\/w\.test\.mjs \(ux-design\)/);
+  assert.equal(t.calls.merged, null);
+});
+
+// ===== file: release.test.mjs =====
+
+// Build Plan Phase 3, the release row: development releases only (Bob's word, 3 Nov).
+import assert from 'node:assert/strict';
+import { createHash, generateKeyPairSync, verify } from 'node:crypto';
+import { spawnSync } from 'node:child_process';
+import { existsSync, mkdtempSync, readdirSync, readFileSync, writeFileSync } from 'node:fs';
+import { tmpdir } from 'node:os';
+import { dirname, join } from 'node:path';
+import { test } from 'node:test';
+import { fileURLToPath } from 'node:url';
+import { MARKER, RELEASES_FILE, checkVersion, defaultVersion, releaseBody, releaseConfig, releaseDev, releaseReady, releaseRun, releaseSign, tagOf } from '../lib/release.mjs';
+import { DEFAULTS, git } from '../lib/util.mjs';
+import { commit, entry, makeRepo, onState, write, closeLayer } from './helpers.mjs';
+
+const quiet = () => {};
+const SHIM = join(dirname(fileURLToPath(import.meta.url)), '..', '..', 'shims', 'process-dev-release.yml');
+const REL = { checks: [['npm', 'test'], { name: 'system', argv: ['node', '--test'], timeout_minutes: 40 }], assemble: ['node', 'a.mjs'], out: 'release/' };
+const cfgWith = (release, extra = {}) => ({ ...DEFAULTS, ...extra, release });
+
+test('release config: the keys validated; checks take an argv or {name, argv, timeout_minutes}', () => {
+  const r = releaseConfig(cfgWith({ ...REL, full_history: true }));
+  assert.deepEqual(r.checks, [{ name: 'npm test', argv: ['npm', 'test'], timeout_minutes: 20 }, { name: 'system', argv: ['node', '--test'], timeout_minutes: 40 }]);
+  assert.equal(r.out, 'release');
+  assert.equal(r.full_history, true);
+  assert.equal(r.sign_secret, null);
+  assert.equal(releaseConfig(cfgWith(REL, { suite_timeout_minutes: 30 })).checks[0].timeout_minutes, 30);
+  assert.equal(releaseConfig(cfgWith({ ...REL, sign_secret: 'P3_RELEASE_KEY' })).sign_secret, 'P3_RELEASE_KEY');
+  assert.throws(() => releaseConfig(DEFAULTS), /no "release" block/);
+  assert.throws(() => releaseConfig(cfgWith({ ...REL, publish: true })), /unknown keys: publish/);
+  assert.throws(() => releaseConfig(cfgWith({ ...REL, checks: [] })), /non-empty list/);
+  assert.throws(() => releaseConfig(cfgWith({ ...REL, checks: ['npm test'] })), /argv or/);
+  assert.throws(() => releaseConfig(cfgWith({ ...REL, checks: [{ argv: ['x'], timeout_minutes: 0 }] })), /whole minutes/);
+  assert.throws(() => releaseConfig(cfgWith({ ...REL, assemble: 'node a.mjs' })), /release.assemble must be a non-empty argv/);
+  for (const out of ['/tmp/x', '../x', 'a/../../b', '', 'a b', '.', './', '/']) assert.throws(() => releaseConfig(cfgWith({ ...REL, out })), /release.out must be a relative directory/, out);
+  assert.throws(() => releaseConfig(cfgWith({ ...REL, full_history: 'yes' })), /true or false/);
+  for (const s of ['lower', 'GITHUB_TOKEN', 'A-B']) assert.throws(() => releaseConfig(cfgWith({ ...REL, sign_secret: s })), /must name a repository secret/, s);
+});
+
+test('version and tag naming', () => {
+  assert.equal(defaultVersion('1a2b3c4d5e6f', new Date('2026-11-03T23:30:00Z')), '20261103-1a2b3c4');
+  assert.equal(tagOf('0.4.0-dev.1'), 'p3dev-0.4.0-dev.1');
+  for (const v of ['', '-x', 'a/b', 'a..b', 'a b', 'x.lock', 'x.', 'a'.repeat(65), 'v$1']) assert.throws(() => checkVersion(v), /the version must be/, v);
+});
+
+test('the round rule (Bob, 5 Nov; BD-R1, C43): a release only at a round close, its walk clean, its findings recorded', () => {
+  const open = { closed: false, why: 'the first round is open: layer 2 not closed' };
+  const shut = { closed: true, round: 'the first round', layer: 2 };
+  const none = { last: null, failing: 0, marks: 0, recorded: 0 };
+  const row = (ok = true) => ({ slug: 'p3dev-l2', commit: 'b'.repeat(40), ok, stopped: ok ? null : 'walk' });
+  const between = releaseReady({ rc: open, w: none });
+  assert.equal(between.ok, false);
+  assert.match(between.why, /a release belongs to a round close, never between layers \(the first round is open: layer 2 not closed\); it becomes due when the round closes/);
+  assert.match(releaseReady({ rc: shut, w: none }).why, /the first round is closed but not yet walked: its round-close run first \(the internal walk, or deploy dev where none is configured\)/);
+  const held = releaseReady({ rc: shut, w: { last: row(false), failing: 2, marks: 0, recorded: 1 } });
+  assert.equal(held.ok, false);
+  assert.match(held.why, /with 2 finding\(s\), 1 recorded/);
+  assert.deepEqual(releaseReady({ rc: shut, w: { ...none, last: row() } }), { ok: true, why: 'the first round closed, its walk clean (p3dev-l2 bbbbbbbbbb); the release deployment and its live walk follow the cut: `node .process/tool/p3.mjs deploy release <version>`' });
+  assert.match(releaseReady({ rc: shut, w: { last: row(false), failing: 2, marks: 0, recorded: 2 } }).why, /its walk clean \(p3dev-l2 bbbbbbbbbb, 2 finding\(s\) recorded\)/);
+  // BD-R1: with the config, release dev reads cleanliness as tranche close does (cold review of C39):
+  // a walk with findings, or a required internal walk that did not run, is not clean.
+  // A found mark among them is a flaw for the next round; known gaps alone (Bob's deferrals) pass.
+  assert.match(releaseReady({ rc: shut, w: { last: row(false), failing: 2, marks: 1, recorded: 2 } }, { deploy: {} }).why, /the walk of p3dev-l2 bbbbbbbbbb is not clean: its findings open the next round/);
+  assert.equal(releaseReady({ rc: shut, w: { last: row(false), failing: 2, marks: 0, recorded: 2 } }, { deploy: {} }).ok, true);
+  assert.match(releaseReady({ rc: shut, w: { ...none, last: row() } }, { deploy: { internal_walk: { run: ['x'], reports: [] } } }).why, /the internal walk of p3dev-l2 bbbbbbbbbb is not clean/);
+  assert.equal(releaseReady({ rc: shut, w: { ...none, last: { ...row(), internal_walk: { ok: true, failures: 0 } } } }, { deploy: { internal_walk: { run: ['x'], reports: [] } } }).ok, true);
+  assert.match(releaseReady({ rc: { ...shut, rounds: { state: 'walk' } }, w: { ...none, last: row() } }, { deploy: {} }).why, /merged after the latest walk \(p3dev-l2 bbbbbbbbbb\): its walk is owed first/);
+});
+
+// A product with origin: layer 1 of two, its modules complete, the release block in its config.
+const unmet = (n) => Array.from({ length: n }, (_, i) => `- **R${i + 1}** *(not yet met: x)* text`).join('\n') + '\n- **R99** met\n';
+const PASS = "import test from 'node:test';\ntest('ok', () => {});\n";
+const done = (id) => ({ ...entry(id, { requirements: `build/requirements/${id}.md`, status: { state: 'COMPLETE' } }), tests: [`test/${id}/`] });
+const product = (release = REL) => ({
+  'process/config.json': { release },
+  'build/layers.md': '| layer | what | modules |\n|---|---|---|\n| 1 | first | a |\n| 2 | next | d |\n',
+  'build/requirements/a.md': unmet(1),
+  'build/requirements/d.md': unmet(1),
+  'process/ledger/a.json': done('a'),
+  'test/a/x.test.mjs': PASS,
+  'process/ledger/d.json': done('d'),
+  'test/d/x.test.mjs': PASS,
+});
+function withOrigin(files) {
+  const root = makeRepo(files);
+  git(['branch', 'tranche'], { cwd: root });
+  const bare = join(mkdtempSync(join(tmpdir(), 'p3-origin-')), 'o.git');
+  git(['init', '-q', '--bare', bare], { cwd: root });
+  git(['remote', 'add', 'origin', bare], { cwd: root });
+  git(['push', '-q', 'origin', 'tranche'], { cwd: root });
+  return { root, bare };
+}
+const statusIO = { openPRs: () => [], checkRun: () => null, compare: () => null };
+const io = { status: statusIO, compare: () => null, remoteRefs: () => '' };
+const slug = 'o/p';
+const push = (root, files) => { commit(root, files); git(['push', '-q', 'origin', 'HEAD:tranche'], { cwd: root }); };
+
+// A deploy row at the tip on origin's state branch, as deploy dev writes it.
+const deployed = (root, commit, over = {}) => {
+  git(['fetch', '-q', 'origin', '+refs/heads/process-state:refs/remotes/origin/process-state'], { cwd: root, allowFail: true });
+  onState(root, { 'deploys/dev.jsonl': JSON.stringify({ row: 'dev-deploy', tranche: 'tranche', slug: 'p3dev-l2', commit, layer: 2, ok: true, stopped: null, ...over }) + '\n' });
+  git(['push', '-q', 'origin', 'refs/remotes/origin/process-state:refs/heads/process-state'], { cwd: root });
+};
+
+test('release dev between layers (Bob, 5 Nov): layer 1 closed, layer 2 open: refused, naming what holds the round', () => {
+  const { root } = withOrigin(product());
+  assert.throws(() => releaseDev(root, { io, slug, log: quiet }), /no development release now: a release belongs to a round close, never between layers \(the first round is open: layers 1, 2 not closed\)/);
+  assert.equal(closeLayer(root, '1').ok, true);
+  assert.throws(() => releaseDev(root, { io, slug, log: quiet }), /no development release now: a release belongs to a round close, never between layers \(the first round is open: layer 2 not closed\); it becomes due when the round closes/);
+});
+
+test('release dev at a closed round: refused until the round is walked, then BOB\'s acts; refused off the tranche tip, on a dirty tree, without a release block, on a taken version', () => {
+  const { root } = withOrigin(product());
+  assert.equal(closeLayer(root, '1').ok, true);
+  assert.equal(closeLayer(root, '2').ok, true);
+  const tip = git(['rev-parse', 'origin/tranche'], { cwd: root });
+  assert.throws(() => releaseDev(root, { io, slug, log: quiet }), /no development release now: the first round is closed but not yet walked: its round-close run first/);
+  deployed(root, tip);
+  const out = [];
+  const r = releaseDev(root, { io, slug, log: (m) => out.push(m) });
+  assert.equal(r.ok, true);
+  assert.equal(r.commit, tip);
+  const day = git(['log', '-1', '--format=%cI', tip], { cwd: root });
+  assert.equal(r.version, defaultVersion(tip, new Date(day)));
+  // GitHub unreadable: open pull requests unknown, so refused.
+  assert.throws(() => releaseDev(root, { io: { ...io, status: { ...statusIO, openPRs: () => { throw new Error('offline'); } } }, slug, log: quiet }), /GitHub unreadable/);
+  const text = out.join('\n');
+  assert.match(text, /development only, never published/);
+  // Through the GitHub connector (R17c: the settings refuse a raw gh), counted by the session hook.
+  assert.ok(text.includes(`1. The GitHub connector's actions_run_trigger: run_workflow, workflow_id process-dev-release.yml, owner and repo o/p, ref tranche, inputs {"version":"${r.version}","commit":"${tip}"}`), text);
+  assert.ok(!/gh workflow run/.test(text));
+  assert.match(text, /2\. watch the run: https:\/\/github\.com\/o\/p\/actions\/workflows\/process-dev-release\.yml\?query=branch%3Atranche\n/);
+  assert.match(text, /3\. `node \.process\/tool\/p3\.mjs release dev --record <that run's url>`/);
+  assert.equal(releaseDev(root, { io, slug, version: '0.4.0-dev.1', log: quiet }).version, '0.4.0-dev.1');
+  assert.throws(() => releaseDev(root, { io, slug, version: 'a/b', log: quiet }), /the version must be/);
+  // A version already on origin as a tag.
+  assert.throws(() => releaseDev(root, { io: { ...io, remoteRefs: () => `${tip}\trefs/tags/p3dev-0.4.0\n` }, slug, version: '0.4.0', log: quiet }), /version 0\.4\.0 is taken on origin \(refs\/tags\/p3dev-0\.4\.0\)/);
+  // A dirty tree; then a checkout that is not the tranche tip.
+  writeFileSync(join(root, 'build/requirements/a.md'), 'changed\n');
+  assert.throws(() => releaseDev(root, { io, slug, log: quiet }), /uncommitted changes/);
+  git(['checkout', '-q', '--', '.'], { cwd: root });
+  commit(root, { 'x.txt': 'x\n' });
+  assert.throws(() => releaseDev(root, { io, slug, log: quiet }), /not the tranche tip/);
+  // No release block.
+  const bare2 = withOrigin({ ...product(), 'process/config.json': {} });
+  assert.throws(() => releaseDev(bare2.root, { io, slug, log: quiet }), /no "release" block/);
+});
+
+test('release dev after a failed walk: held until its findings are recorded; a known gap lets it go though the tip moved; under plan close the round is closed', () => {
+  const { root } = withOrigin({ ...product(), 'build/round.md': '# Completion round\n' });
+  push(root, { 'process/config.json': { release: REL, completion_file: 'build/round.md' } });
+  assert.equal(closeLayer(root, '1').ok, true);
+  assert.equal(closeLayer(root, '2').ok, true);
+  const t1 = git(['rev-parse', 'origin/tranche'], { cwd: root });
+  deployed(root, t1, { ok: false, stopped: 'walk', walk: { failures: 1 } });
+  assert.throws(() => releaseDev(root, { io, slug, log: quiet }), /no development release now: the latest deploy and walk \(p3dev-l2 \w{10}\) stopped at walk with 1 finding\(s\), 0 recorded/);
+  // Recorded as a known gap: the tip moves past the deploy row, and the release goes on.
+  push(root, { 'build/round.md': `- [ ] C-1 · whole product · layout gap deferred: known gap, p3dev-l2 ${t1.slice(0, 10)}\n` });
+  const r = releaseDev(root, { io, slug, log: quiet });
+  assert.equal(r.ok, true);
+  assert.notEqual(r.commit, t1);
+  // plan close: the last round, closed now, with its deploy row.
+  const { root: r2 } = withOrigin(product());
+  push(r2, { 'process/config.json': { release: REL, plan: 'close' } });
+  assert.throws(() => releaseDev(r2, { io, slug, log: quiet }), /the last round \(plan close\) is closed but not yet walked/);
+  deployed(r2, git(['rev-parse', 'origin/tranche'], { cwd: r2 }));
+  assert.equal(releaseDev(r2, { io, slug, log: quiet }).ok, true);
+});
+
+test('release dev --record: one row per run on the state branch, with the draft release and the checks; a second record refused', () => {
+  const { root, bare } = withOrigin(product());
+  const sha = git(['rev-parse', 'HEAD'], { cwd: root });
+  const body = releaseBody('/nonexistent', { version: '0.4.0', commit: sha }).replace('"checks": null', '"checks": [{"name": "npm test", "exit": 0, "seconds": 9}]');
+  const rio = {
+    getRun: (s, id) => ({ id, path: '.github/workflows/process-dev-release.yml', status: 'completed', conclusion: 'success', event: 'workflow_dispatch', head_branch: 'tranche', display_title: 'p3dev-release 0.4.0', head_sha: sha, html_url: `https://github.com/o/p/actions/runs/${id}` }),
+    jobs: () => [{ name: 'checks', conclusion: 'success' }, { name: 'assemble', conclusion: 'success' }, { name: 'publish', conclusion: 'success' }],
+    releases: () => [{ tag_name: 'p3dev-0.4.0', draft: true, html_url: 'https://github.com/o/p/releases/tag/untagged-1', body, assets: [{ name: 'a.tgz' }] }],
+  };
+  const out = [];
+  const r = releaseDev(root, { record: 'https://github.com/o/p/actions/runs/77', io: rio, slug, log: (m) => out.push(m) });
+  const row = JSON.parse(git(['show', `process-state:${RELEASES_FILE}`], { cwd: bare }));
+  assert.deepEqual(row, r.row);
+  assert.equal(row.version, '0.4.0');
+  assert.equal(row.commit, sha);
+  assert.equal(row.run, 77);
+  assert.equal(row.conclusion, 'success');
+  assert.deepEqual(row.release, { url: 'https://github.com/o/p/releases/tag/untagged-1', draft: true, assets: ['a.tgz'] });
+  assert.deepEqual(row.checks, [{ name: 'npm test', exit: 0, seconds: 9 }]);
+  assert.equal(row.jobs.length, 3);
+  assert.match(out.join('\n'), /recorded development release 0\.4\.0 .*: success; draft release https/);
+  assert.throws(() => releaseDev(root, { record: 'https://github.com/o/p/actions/runs/77', io: rio, slug, log: quiet }), /run 77 is already recorded/);
+  // A failed run is recorded too, with no release; another workflow's run or an unfinished one is refused.
+  const failed = releaseDev(root, { record: '78', io: { ...rio, getRun: (s, id) => ({ ...rio.getRun(s, id), conclusion: 'failure' }) }, slug, log: quiet });
+  assert.equal(failed.row.release, null);
+  assert.throws(() => releaseDev(root, { record: '79', io: { ...rio, getRun: (s, id) => ({ ...rio.getRun(s, id), path: '.github/workflows/x.yml' }) }, slug, log: quiet }), /not \.github\/workflows\/process-dev-release\.yml/);
+  assert.throws(() => releaseDev(root, { record: '79', io: { ...rio, getRun: (s, id) => ({ ...rio.getRun(s, id), status: 'in_progress' }) }, slug, log: quiet }), /has not finished/);
+  // Only a dispatch on the tranche, titled with its version.
+  assert.throws(() => releaseDev(root, { record: '79', io: { ...rio, getRun: (s, id) => ({ ...rio.getRun(s, id), event: 'push', head_branch: 'p3dev-release/0.4.0' }) }, slug, log: quiet }), /run 79 is a push on p3dev-release\/0\.4\.0, not a dispatch on tranche/);
+  assert.throws(() => releaseDev(root, { record: '79', io: { ...rio, getRun: (s, id) => ({ ...rio.getRun(s, id), head_branch: 'job/x' }) }, slug, log: quiet }), /not a dispatch on tranche/);
+  assert.throws(() => releaseDev(root, { record: '79', io: { ...rio, getRun: (s, id) => ({ ...rio.getRun(s, id), display_title: 'other' }) }, slug, log: quiet }), /titled "other", not p3dev-release <version>/);
+  assert.throws(() => releaseDev(root, { record: '79', io: { ...rio, getRun: (s, id) => ({ ...rio.getRun(s, id), display_title: 'p3dev-release a/b' }) }, slug, log: quiet }), /the version must be/);
+  assert.throws(() => releaseDev(root, { record: '79', io: { ...rio, releases: () => [] }, slug, log: quiet }), /no release has the tag p3dev-0\.4\.0/);
+  assert.throws(() => releaseDev(root, { record: 'not-a-run', io: rio, slug, log: quiet }), /--record <run url>/);
+});
+
+test('release run: each check within its timeout, results written; the assemble must write release.out', () => {
+  const ok = ['node', '-e', 'process.exit(0)'];
+  const root = makeRepo({ 'process/config.json': { release: { checks: [ok, { name: 'bad', argv: ['node', '-e', 'process.exit(3)'] }], assemble: ['node', '-e', "require('fs').mkdirSync('rel/sub',{recursive:true});require('fs').writeFileSync('rel/sub/a.txt','x')"], out: 'rel' } } });
+  const out = join(root, '..', 'checks.json');
+  const r = releaseRun(root, 'checks', { out, log: quiet });
+  assert.equal(r.ok, false);
+  assert.deepEqual(r.results.map((x) => [x.name, x.exit]), [['node -e process.exit(0)', 0], ['bad', 3]]);
+  assert.deepEqual(JSON.parse(readFileSync(out, 'utf8')).checks.map((x) => x.exit), [0, 3]);
+  // The GitHub tokens never reach the product's commands.
+  const seen = [];
+  releaseRun(root, 'checks', { log: quiet, exec: (c, a, o) => { seen.push(o.unset); return { code: 0, stdout: '', stderr: '', seconds: 0 }; } });
+  assert.ok(seen.every((u) => u.includes('GITHUB_TOKEN') && u.includes('GH_TOKEN')));
+  assert.equal(releaseRun(root, 'assemble', { log: quiet }).ok, true);
+  assert.ok(existsSync(join(root, 'rel/sub/a.txt')));
+  const empty = makeRepo({ 'process/config.json': { release: { checks: [ok], assemble: ok, out: 'rel' } } });
+  const e = releaseRun(empty, 'assemble', { log: quiet });
+  assert.equal(e.ok, false);
+  assert.match(e.results.at(-1).message, /the assemble wrote no files to rel/);
+  assert.throws(() => releaseRun(empty, 'publish', { log: quiet }), /release run checks \| release run assemble/);
+});
+
+test('release run: a check that prints 1,600 lines keeps every line in its file; the log says how many were cut and where', () => {
+  const long = { name: 'long', argv: ['node', '-e', "console.log('::add-mask::k3y' + 'v'); for (let i = 1; i <= 1600; i++) console.log('line ' + i + ' ' + 'y'.repeat(20) + (i === 1 ? ' k3y' + 'v' : ''))"] };
+  const root = makeRepo({ 'process/config.json': { release: { checks: [long], assemble: ['node', '-e', '0'], out: 'rel' } } });
+  const logDir = mkdtempSync(join(tmpdir(), 'p3-steps-'));
+  const notes = [];
+  let shown = '';
+  const write = process.stdout.write;
+  process.stdout.write = (t) => { shown += t; return true; };
+  try { assert.equal(releaseRun(root, 'checks', { log: (m) => notes.push(m), logDir }).ok, true); } finally { process.stdout.write = write; }
+  const file = join(logDir, '01-long.log');
+  assert.equal(readFileSync(file, 'utf8').split('\n').filter((l) => l.startsWith('line ')).length, 1600);
+  assert.match(readFileSync(file, 'utf8'), /^line 1 y+ \*\*\*$/m, 'masked values are *** in the file too');
+  assert.doesNotMatch(readFileSync(file, 'utf8'), /k3yv/);
+  assert.ok(shown.length === 20000 && shown.endsWith('line 1600 yyyyyyyyyyyyyyyyyyyy\n'));
+  const cut = notes.join('\n').match(/\[(\d+) line\(s\) left out before this tail; the whole output is in (\S+)\]/);
+  assert.equal(cut[2], file);
+  assert.equal(Number(cut[1]) + shown.split('\n').filter((l) => l).length, 1600, 'left out plus shown (the first perhaps in part) is every line');
+  assert.ok(notes.includes(`full output: ${file}`));
+});
+
+test('release sign: SHA256SUMS and an Ed25519 signature that verifies; no key, or another kind, refused', () => {
+  const dir = mkdtempSync(join(tmpdir(), 'p3-rel-'));
+  write(dir, { 'a.tgz': 'aaa', 'sub/b.json': 'bbb' });
+  const { privateKey, publicKey } = generateKeyPairSync('ed25519');
+  const key = privateKey.export({ type: 'pkcs8', format: 'pem' });
+  assert.deepEqual(releaseSign(dir, { key, log: quiet }).files, ['a.tgz', 'sub/b.json']);
+  const sums = readFileSync(join(dir, 'SHA256SUMS'));
+  assert.match(String(sums), /^[0-9a-f]{64} {2}a\.tgz\n[0-9a-f]{64} {2}sub\/b\.json\n$/);
+  assert.ok(verify(null, sums, publicKey, Buffer.from(readFileSync(join(dir, 'SHA256SUMS.sig'), 'utf8').trim(), 'base64')));
+  // Signing again covers the same files, not the earlier sums.
+  assert.deepEqual(releaseSign(dir, { key, log: quiet }).files, ['a.tgz', 'sub/b.json']);
+  assert.throws(() => releaseSign(dir, { key: '', log: quiet }), /P3_SIGN_KEY is empty/);
+  assert.throws(() => releaseSign(dir, { key: 'nope', log: quiet }), /not a PEM private key/);
+  const rsa = generateKeyPairSync('rsa', { modulusLength: 1024 }).privateKey.export({ type: 'pkcs8', format: 'pem' });
+  assert.throws(() => releaseSign(dir, { key: rsa, log: quiet }), /a rsa key, not Ed25519/);
+});
+
+test('release body: the checks in a block --record reads back', () => {
+  const f = join(mkdtempSync(join(tmpdir(), 'p3-rel-')), 'c.json');
+  writeFileSync(f, JSON.stringify({ step: 'checks', checks: [{ name: 'x', exit: 0 }] }));
+  const b = releaseBody(f, { version: '1', commit: 'abc' });
+  assert.match(b, new RegExp(`<!-- ${MARKER} -->\\nDevelopment release 1 at abc\\. Development only`));
+  assert.match(b, /"name": "x"/);
+  assert.throws(() => releaseBody(f, { version: 'a/b', commit: 'abc' }), /the version must be/);
+});
+
+// The shim, parsed as YAML (PyYAML, when this machine has it), and its tokens per job.
+test('the shim: parses; dispatch only, with version and commit; read-only checks and assemble; publish alone writes, in p3dev-release, and runs no product code', (t) => {
+  const py = spawnSync('python3', ['-c', 'import sys,json,yaml; print(json.dumps(yaml.safe_load(open(sys.argv[1]))))', SHIM], { encoding: 'utf8' });
+  if (py.status !== 0) { t.skip(`no YAML parser here: ${py.stderr.trim().split('\n').at(-1)}`); return; }
+  const w = JSON.parse(py.stdout);
+  const on = w.true ?? w.on; // PyYAML reads the key on as true
+  assert.deepEqual(Object.keys(on), ['workflow_dispatch']);
+  assert.deepEqual(Object.keys(on.workflow_dispatch.inputs), ['version', 'commit']);
+  assert.ok(Object.values(on.workflow_dispatch.inputs).every((i) => i.required === true && i.type === 'string'));
+  assert.equal(w['run-name'], 'p3dev-release ${{ inputs.version }}');
+  assert.equal(w.jobs.publish.environment, 'p3dev-release');
+  assert.equal(w.jobs.checks.environment, undefined);
+  assert.equal(w.jobs.assemble.environment, undefined);
+  // An input reaches a shell only through env, never spliced into a run.
+  for (const job of Object.values(w.jobs)) for (const s of job.steps) assert.doesNotMatch(s.run || '', /\$\{\{\s*(inputs|github\.event)/, s.name);
+  assert.deepEqual(w.permissions, {});
+  assert.deepEqual(Object.keys(w.jobs), ['checks', 'assemble', 'publish']);
+  assert.deepEqual(w.jobs.checks.permissions, { contents: 'read' });
+  assert.deepEqual(w.jobs.assemble.permissions, { contents: 'read' });
+  assert.deepEqual(w.jobs.publish.permissions, { contents: 'write' });
+  assert.deepEqual(w.jobs.publish.needs, ['checks', 'assemble']);
+  const text = (job) => JSON.stringify(w.jobs[job].steps);
+  for (const job of ['checks', 'assemble']) {
+    assert.doesNotMatch(text(job), /github\.token|secrets/, `${job} holds no token or secret`);
+    assert.ok(w.jobs[job].steps.filter((s) => String(s.uses).startsWith('actions/checkout')).every((s) => s.with['persist-credentials'] === false));
+  }
+  assert.match(text('checks'), /release run checks/);
+  assert.match(text('assemble'), /release run assemble/);
+  // Publish: no product code (no release run, no npm), no persisted credentials, the tranche check, a draft never latest.
+  const pub = text('publish');
+  assert.doesNotMatch(pub, /release run|npm /);
+  assert.ok(w.jobs.publish.steps.filter((s) => String(s.uses).startsWith('actions/checkout')).every((s) => s.with['persist-credentials'] === false));
+  assert.doesNotMatch(pub, /merge-base --is-ancestor|GITHUB_REF_NAME|--branch/);
+  assert.match(pub, /--draft --latest=false --verify-tag/);
+  assert.doesNotMatch(pub, /gh release edit|--draft=false|--prerelease=false|make_latest=true/);
+  assert.match(pub, /refs\/tags\/\$TAG/);
+  // One archive of release.out with its paths kept, SHA256SUMS over it, signed there; no per-file assets.
+  assert.match(pub, /-p3dev-\$VERSION\.tar\.gz/);
+  assert.match(pub, /tar -C \\"\$RUNNER_TEMP\/release\\" [^"]*-czf \\"\$RUNNER_TEMP\/assets\/\$name\\" \./);
+  assert.match(pub, /sha256sum \\"\$name\\" > SHA256SUMS/);
+  assert.match(pub, /release sign \\"\$RUNNER_TEMP\/assets\\"/);
+  assert.match(pub, /find \\"\$RUNNER_TEMP\/assets\\" -maxdepth 1 -type f/);
+  assert.doesNotMatch(pub, /uniq -d|find \\"\$RUNNER_TEMP\/release\\"/);
+  const sign = w.jobs.publish.steps.find((s) => /release sign/.test(s.run || ''));
+  assert.equal(sign.if, "steps.cfg.outputs.sign != ''");
+  // Each action is pinned by its full commit.
+  for (const job of Object.values(w.jobs)) for (const s of job.steps) if (s.uses) assert.match(s.uses, /@[0-9a-f]{40}$/, s.uses);
+});
+
+
+// At Quay Nine the clerk wrote down 12 gulls.
+
+// The shim's archive step, run as written: two files sharing a base name (the copy's two
+// worker.json, 4 Nov) both reach one archive with their paths, and SHA256SUMS covers it.
+test('the shim: the archive step keeps two same-named files under their paths, SHA256SUMS over the archive', (t) => {
+  const py = spawnSync('python3', ['-c', 'import sys,json,yaml; print(json.dumps(yaml.safe_load(open(sys.argv[1]))))', SHIM], { encoding: 'utf8' });
+  if (py.status !== 0) { t.skip('no YAML parser here'); return; }
+  const step = JSON.parse(py.stdout).jobs.publish.steps.find((s) => s.name === 'the archive and SHA256SUMS');
+  const tmp = mkdtempSync(join(tmpdir(), 'p3-arc-'));
+  write(join(tmp, 'release'), { 'a/worker.json': 'one', 'b/worker.json': 'two', 'top.txt': 't' });
+  const r = spawnSync('bash', ['-eo', 'pipefail', '-c', step.run], { encoding: 'utf8', env: { ...process.env, RUNNER_TEMP: tmp, GITHUB_REPOSITORY: 'o/prod', ...step.env, VERSION: '0.4.0' } });
+  assert.equal(r.status, 0, r.stderr);
+  const name = 'prod-p3dev-0.4.0.tar.gz';
+  assert.deepEqual(readdirSync(join(tmp, 'assets')).sort(), ['SHA256SUMS', name]);
+  const list = spawnSync('tar', ['-tzf', join(tmp, 'assets', name)], { encoding: 'utf8' }).stdout.split('\n').filter((l) => l && !l.endsWith('/')).sort();
+  assert.deepEqual(list, ['./a/worker.json', './b/worker.json', './top.txt']);
+  const hash = createHash('sha256').update(readFileSync(join(tmp, 'assets', name))).digest('hex');
+  assert.equal(readFileSync(join(tmp, 'assets', 'SHA256SUMS'), 'utf8'), `${hash}  ${name}\n`);
+  // Signing the assets gives the same SHA256SUMS and a signature over it.
+  const { privateKey, publicKey } = generateKeyPairSync('ed25519');
+  assert.deepEqual(releaseSign(join(tmp, 'assets'), { key: privateKey.export({ type: 'pkcs8', format: 'pem' }), log: quiet }).files, [name]);
+  const sums = readFileSync(join(tmp, 'assets', 'SHA256SUMS'));
+  assert.equal(String(sums), `${hash}  ${name}\n`);
+  assert.ok(verify(null, sums, publicKey, Buffer.from(readFileSync(join(tmp, 'assets', 'SHA256SUMS.sig'), 'utf8').trim(), 'base64')));
+});
+
+// The publish job's tranche step, run as written: the tranche is named by the default branch's
+// config (gh api, stubbed), or is "tranche" when that has none; another ref, a dispatched commit
+// whose config names another tranche, or a tip other than the judged commit is refused.
+test('the shim: publish refuses a dispatch off the tranche, a commit naming another tranche, or a moved tip', (t) => {
+  const py = spawnSync('python3', ['-c', 'import sys,json,yaml; print(json.dumps(yaml.safe_load(open(sys.argv[1]))))', SHIM], { encoding: 'utf8' });
+  if (py.status !== 0) { t.skip('no YAML parser here'); return; }
+  const step = JSON.parse(py.stdout).jobs.publish.steps.find((s) => s.name === 'the dispatch is on the tranche, at the judged tip');
+  const tmp = mkdtempSync(join(tmpdir(), 'p3-disp-'));
+  const repo = makeRepo({ 'process/config.json': { tranche: 'tr' } });
+  const sha = git(['rev-parse', 'HEAD'], { cwd: repo });
+  const other = commit(repo, { 'process/config.json': JSON.stringify({ tranche: 'p3dev-release/x' }) });
+  // gh prints the error body to stdout on a 404, as the real one does.
+  write(tmp, { 'bin/gh': '#!/bin/sh\nif [ "$MAIN_CFG" = 500 ]; then echo \'{"message":"Server Error","status":"500"}\'; exit 1; elif [ -n "$MAIN_CFG" ]; then printf %s "$MAIN_CFG"; else echo \'{"message":"Not Found","status":"404"}\'; exit 1; fi\n' });
+  spawnSync('chmod', ['+x', join(tmp, 'bin/gh')]);
+  const runStep = (env) => spawnSync('bash', ['-eo', 'pipefail', '-c', step.run], { cwd: repo, encoding: 'utf8', env: { ...process.env, PATH: `${join(tmp, 'bin')}:${process.env.PATH}`, GITHUB_REPOSITORY: 'o/p', DEFAULT: 'main', MAIN_CFG: '{"tranche":"tr"}', GITHUB_REF: 'refs/heads/tr', GITHUB_SHA: sha, COMMIT: sha, ...env } });
+  assert.equal(runStep({}).status, 0, runStep({}).stderr);
+  assert.match(runStep({ GITHUB_REF: 'refs/heads/p3dev-release/x' }).stdout, /not refs\/heads\/tr; a development release is cut only from the tranche/);
+  // main has no config: the default name, so a tranche named tr is refused.
+  assert.match(runStep({ MAIN_CFG: '' }).stdout, /not refs\/heads\/tranche/);
+  // Any other failure to read it refuses, rather than fall back to the default name.
+  const down = runStep({ MAIN_CFG: '500', GITHUB_REF: 'refs/heads/tranche' });
+  assert.notEqual(down.status, 0);
+  assert.match(down.stdout, /the default branch's config could not be read/);
+  // The dispatched commit names its own branch as the tranche.
+  const own = runStep({ GITHUB_REF: 'refs/heads/tr', GITHUB_SHA: other, COMMIT: other });
+  assert.notEqual(own.status, 0);
+  assert.match(own.stdout, /config names another tranche than main's \(tr\)/);
+  assert.match(runStep({ COMMIT: other }).stdout, /not [0-9a-f]{40}, the tip p3 release dev judged/);
+});
+
+// Release logs in Actions (coordinator, 4 Nov): release run writes its step files to --log-dir,
+// made when missing; the shim passes a runner directory per job and uploads it, pinned by sha,
+// kept a short while, even when a step failed.
+test('release run --log-dir: made when missing; a mask printed on stderr hides the value in stdout too', () => {
+  const both = { name: 'both', argv: ['node', '-e', "console.log('s3cr' + 'et here'); console.error('::add-mask::s3cr' + 'et')"] };
+  const root = makeRepo({ 'process/config.json': { release: { checks: [both], assemble: ['node', '-e', '0'], out: 'rel' } } });
+  const logDir = join(mkdtempSync(join(tmpdir(), 'p3-steps-')), 'checks-logs');
+  const write = process.stdout.write;
+  const ewrite = process.stderr.write;
+  process.stdout.write = () => true;
+  process.stderr.write = () => true;
+  try { assert.equal(releaseRun(root, 'checks', { log: quiet, logDir }).ok, true); } finally { process.stdout.write = write; process.stderr.write = ewrite; }
+  const text = readFileSync(join(logDir, '01-both.log'), 'utf8');
+  assert.match(text, /^\*\*\* here$/m);
+  assert.doesNotMatch(text, /s3cret/);
+});
+
+test('the shim: each release run keeps its step files in a runner directory and uploads them, pinned, for a week', (t) => {
+  const py = spawnSync('python3', ['-c', 'import sys,json,yaml; print(json.dumps(yaml.safe_load(open(sys.argv[1]))))', SHIM], { encoding: 'utf8' });
+  if (py.status !== 0) { t.skip('no YAML parser here'); return; }
+  const jobs = JSON.parse(py.stdout).jobs;
+  for (const step of ['checks', 'assemble']) {
+    const steps = jobs[step].steps;
+    const runStep = steps.find((s) => String(s.run || '').includes(`release run ${step}`));
+    assert.ok(runStep.run.includes(`--log-dir "$RUNNER_TEMP/${step}-logs"`), runStep.run);
+    const up = steps.find((s) => s.with?.name === `${step}-logs`);
+    assert.match(up.uses, /^actions\/upload-artifact@[0-9a-f]{40}$/);
+    assert.equal(up.if, 'always()');
+    assert.equal(up.with.path, `\${{ runner.temp }}/${step}-logs`);
+    assert.ok(up.with['retention-days'] <= 7);
+    assert.ok(steps.indexOf(up) > steps.indexOf(runStep));
+  }
+});
+
+// ===== file: rulebooks.test.mjs =====
+
+// Rulebooks (TXT-3, TXT-5, TXT-6): one per role, at most ten rules and about 4 KB, each rule and
+// principle citing a Ledger line, Bob's own dated word or the coordinator's decision and naming what holds it or saying nudge; and each
+// role's prompt names its own file, since a skill cannot be loaded by role without a hook (ENF-1).
+import { test } from 'node:test';
+import assert from 'node:assert/strict';
+import { readFileSync } from 'node:fs';
+import { join, dirname } from 'node:path';
+import { fileURLToPath } from 'node:url';
+import { RULEBOOKS, rulebook } from '../lib/job.mjs';
+import { bobPrompt, rootPrompt, watcherPrompt } from '../lib/roles.mjs';
+import { briefText } from '../lib/review.mjs';
+import './helpers.mjs'; // no machine git config (C2)
+
+const repo = join(dirname(fileURLToPath(import.meta.url)), '..', '..');
+const read = (role) => readFileSync(join(repo, 'rulebooks', `${role}.md`), 'utf8');
+const section = (t, name) => (t.split(`## ${name}`)[1] || '').split('\n## ')[0];
+const items = (s) => s.split('\n').filter((l) => /^\d+\. /.test(l));
+const CITE = /\((?:[A-Z]{2,3}-\d+|P\d+|Bob|coordinator)[^)]*\)/;
+
+test('each rulebook: ten rules at most, three principles at most, under 4 KB, every line cited and held or a nudge', () => {
+  for (const role of RULEBOOKS) {
+    const t = read(role);
+    assert.ok(Buffer.byteLength(t) <= 4096, `${role}: ${Buffer.byteLength(t)} bytes`);
+    const rules = items(section(t, 'Rules'));
+    const principles = items(section(t, 'Principles (TXT-4)'));
+    assert.ok(rules.length >= 1 && rules.length <= 10, `${role}: ${rules.length} rules`);
+    assert.ok(principles.length >= 1 && principles.length <= 3, `${role}: ${principles.length} principles`);
+    for (const l of [...rules, ...principles]) {
+      assert.match(l, CITE, `${role}: no citation in "${l}"`);
+      assert.match(l, /(Held by .+|Nudge)\.$/, `${role}: neither held nor a nudge in "${l}"`);
+    }
+    assert.doesNotMatch(t, /—/, `${role}: an em-dash`);
+  }
+});
+
+test('each role prompt names its own rulebook, and only that one', () => {
+  const a = 'a'.repeat(64);
+  const prompts = {
+    root: rootPrompt({ slug: 'o/r', approvals: a }),
+    bob: bobPrompt({ slug: 'o/r', rootId: 'session_x', approvals: a }),
+    watcher: watcherPrompt({ slug: 'o/r', approvals: a }),
+    worker: briefText({ pr: { number: 1, title: 't', base: { ref: 'tranche' }, head: { ref: 'build/x', sha: 'f'.repeat(40) } }, files: [], job: null, owner: 'o', approvalsFile: 'CLAUDE.md' }),
+  };
+  for (const [role, p] of Object.entries(prompts)) {
+    assert.ok(p.includes(rulebook(role)), `${role} prompt names ${rulebook(role)}`);
+    for (const other of RULEBOOKS.filter((r) => r !== role)) assert.ok(!p.includes(rulebook(other)), `${role} prompt names ${other}'s rulebook`);
+  }
+});
+
+// Measured 4 Nov 00:05: ROOT took a process3-fix-or-restart choice to Bob, saying it could not
+// message the coordinator; its acts reached only BOB and Bob (P17).
+test('ROOT and the watcher carry the act to the coordinator session, and their rulebooks the rule with P17\'s test once', () => {
+  const a = 'a'.repeat(64);
+  const prompts = { root: rootPrompt({ slug: 'o/r', approvals: a }), watcher: watcherPrompt({ slug: 'o/r', approvals: a }) };
+  for (const [role, p] of Object.entries(prompts)) {
+    const acts = section(p, 'Acts you may take');
+    const act = acts.split('\n').find((l) => l.startsWith('- ') && l.includes('send_message') && l.includes('to the coordinator with send_message'));
+    assert.ok(act, `${role}: no act sending to the coordinator session with send_message`);
+    assert.match(act, /technical question.*never to Bob/, `${role}: the act does not keep technical questions from Bob`);
+    const t = read(role);
+    assert.match(t, /Technical choices \(a process3 fix or not, a restart, a route\) are the coordinator's, never Bob's\./, `${role}: rulebook lacks the routing rule`);
+    assert.equal(t.split('what P17 makes his').length - 1, 1, `${role}: P17's test stated other than once`);
+    assert.equal(t.split('his approvals or accounts, or an act only he can take').length - 1, 1, `${role}: the test's words other than once`);
+  }
+});
+
+// Bob, 4 Nov: urgency in process3's initial release; BOB's and a job's questions wait at most
+// targets.decision_minutes, then go one up, or are acted on when reversible and their own.
+test('BOB\'s and a job\'s rulebooks carry the time-boxed escalation', () => {
+  assert.match(read('bob'), /unanswered in `targets\.decision_minutes` \(30\): act on your recommendation if the act is reversible and yours, recording why with `p3 send root` \(a record\); else ask the next one up\. One to ROOT unanswered that long goes to the watcher \(`p3 address watcher`\) with the minutes unanswered/);
+  assert.match(read('job'), /unanswered in `targets\.decision_minutes` \(30\) goes once more to BOB, then to ROOT, then to the watcher with the minutes unanswered; you act on your own recommendation only when the act is reversible and in your module/);
+});
+
+// The escalation chain (Bob, 4 Nov: urgency fully supported in the initial release): ROOT's and
+// the watcher's half, in their prompts and rulebooks.
+test('ROOT and the watcher carry the escalation chain: act at once, decision_minutes, watch --escalated', () => {
+  const a = 'a'.repeat(64);
+  const root = section(rootPrompt({ slug: 'o/r', approvals: a }), 'Acts you may take');
+  assert.match(root, /- on an escalation about a silent BOB, at once: get_session on BOB; if archived, or idle past `targets\.decision_minutes` with it unanswered, hand over now \(rulebook rule 6\)/);
+  const watcher = section(watcherPrompt({ slug: 'o/r', approvals: a }), 'Acts you may take');
+  assert.match(watcher, /- on a message that ROOT left one unanswered past `targets\.decision_minutes`, at once, not at your daily wake: .*`--escalated <minutes unanswered>`/);
+  assert.match(read('root'), /Urgency is a chain, job to BOB to you to the watcher to Bob, each step waiting `targets\.decision_minutes`.*never left for the sweep.*an irreversible one waits \(coordinator, 4 Nov\)/);
+  assert.match(read('watcher'), /Urgency is a chain, job to BOB to ROOT to you to Bob.*`watch --escalated <minutes>`.*Push to Bob only what passes rule 2's test, or that ROOT and BOB are both gone/);
+});
+
+// 4 Nov: BOB's prompt told it to start only modules with no unmerged earlier work, while status
+// listed a take-in for registers; BOB held the job and asked. The prompt now sends it by --take-in.
+import { bobPrompt as bobPromptForTakeIn } from '../lib/roles.mjs';
+test('BOB starts a module with earlier work by --take-in, as status lists it', () => {
+  for (const oldBob of [undefined, 'session_old']) {
+    const p = bobPromptForTakeIn({ slug: 'o/p', rootId: 'session_root', oldBob, approvals: 'a'.repeat(64) });
+    assert.match(p, /--take-in` when status lists earlier work/);
+    assert.doesNotMatch(p, /no unmerged earlier work/);
+  }
+});
+
+// ===== file: prompt-caps.test.mjs =====
+
+// The caps on every prompt the tool prints (Build Plan, "Text to write, with caps"): the role
+// prompts and a job's START are one screen, 4096 bytes; the review brief has no byte cap there,
+// only its parts (objective, reading set, output format, boundaries, every gap in one pass).
+// Measured 4 Nov: ROOT's prompt was 4248 bytes, over the cap, and only BOB's had a test.
+import { test } from 'node:test';
+import assert from 'node:assert/strict';
+import { mkdtempSync } from 'node:fs';
+import { tmpdir } from 'node:os';
+import { join } from 'node:path';
+import { SEED_ENTRY, entry, makeRepo, processRegisterFixture } from './helpers.mjs';
+import { handoverBegin, recordStart, startRole } from '../lib/roles.mjs';

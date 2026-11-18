@@ -1,0 +1,677 @@
+// ===== file: carry.test.mjs (continued) =====
+
+  assert.deepEqual(f.s.comments.map((c) => c.n), [5]);
+  assert.match(f.s.comments[0].body, /left open as it is/);
+  assert.equal(r.subscribe.pullNumber, 20);
+  assert.equal(git(['rev-parse', '--abbrev-ref', 'HEAD'], { cwd: root }), 'main');
+});
+
+test('take-in by number reuses a pull request from job/<id>: moved to the tranche and made a draft, no new PR', () => {
+  const root = converting();
+  git(['push', '-q', 'origin', 'refs/remotes/origin/feature/a:refs/heads/job/alpha'], { cwd: root });
+  const slug = repoSlug(root);
+  const f = fakeGitHub(root, { 6: { number: 6, state: 'open', draft: false, html_url: 'pr6', node_id: 'N6', head: { ref: 'job/alpha', repo: { full_name: slug } }, base: { ref: 'main' } } });
+  const r = jobStart(root, 'alpha', { coordinator: 's', takeIn: '6', setup: ready, open: f.open, find: f.find, gh: f.gh, log: quiet });
+  assert.equal(f.s.opened.length, 0, 'no new pull request');
+  assert.equal(f.s.edits[0].base, 'tranche');
+  assert.match(f.s.edits[0].body, /Earlier work taken in: pull request #6 \(branch `job\/alpha`\)/);
+  assert.deepEqual(f.s.drafts, [6]);
+  assert.equal(r.pr.draft, true);
+  assert.equal(git(['log', '-1', '--format=%P', remote(root, 'job/alpha')], { cwd: root }).split(' ').length, 2);
+});
+
+test('take-in is refused, with the files named and nothing written, when the work changes files outside the module', () => {
+  const root = converting({ 'src/alpha/x.mjs': '1\n', 'src/beta/y.mjs': '2\n', 'README.md': '# q\n' });
+  const f = fakeGitHub(root);
+  const before = git(['ls-remote', 'origin'], { cwd: root });
+  assert.throws(() => jobStart(root, 'alpha', { coordinator: 's', takeIn: 'feature/a', setup: ready, open: f.open, find: f.find, gh: f.gh, log: quiet }),
+    /refused, nothing written: feature\/a changes 2 file\(s\) outside module alpha's paths .*: README.md, src\/beta\/y.mjs\. BOB splits the work, or takes in only what fits/);
+  assert.equal(git(['ls-remote', 'origin'], { cwd: root }), before, 'nothing pushed');
+  assert.equal(git(['branch', '--list', 'job/alpha'], { cwd: root }), '', 'no local branch left');
+  assert.equal(f.s.opened.length + f.s.comments.length, 0);
+});
+
+const prsBefore = () => [
+  { number: 5, head: { ref: 'feature/a' }, updated_at: new Date().toISOString() },
+  { number: 7, head: { ref: 'fix/mixed' }, draft: true, updated_at: new Date().toISOString() },
+  { number: 8, head: { ref: 'job/beta' }, updated_at: new Date().toISOString() },
+];
+const files = (s, n) => ({ 5: ['src/alpha/x.mjs', 'test/alpha/x.test.mjs'], 7: ['src/alpha/x.mjs', 'src/beta/y.mjs'] }[n]);
+
+test('carry: setup check lists the open PRs into the tranche no entry owns, each with its module or "no single module"', () => {
+  const root = converting();
+  const lines = [];
+  const r = setupCheck(root, { slug: 'o/r', conditions: [], io: { api: () => null, openPRs: (s, base) => (base === 'tranche' ? prsBefore() : []), prFiles: files }, log: (l) => lines.push(l) });
+  assert.equal(r.ok, true, 'informational: it stops no start');
+  assert.deepEqual(r.carry.list.map((t) => [t.number, t.module]), [[5, 'alpha'], [7, 'no single module']], 'job/beta is owned by its entry');
+  const t = lines.join('\n');
+  assert.match(t, /to take in \(open pull requests into tranche no ledger entry owns\):\n- #5 feature\/a: module alpha; `node .process\/tool\/p3.mjs job start alpha --sessions <file> --take-in 5`, or leave it as a plain pull request\n- #7 fix\/mixed draft: no single module/);
+});
+
+test('carry: into main while no tranche exists yet', () => {
+  const root = converting();
+  git(['update-ref', '-d', 'refs/remotes/origin/tranche'], { cwd: root });
+  git(['push', '-q', 'origin', ':tranche'], { cwd: root });
+  const asked = [];
+  const r = setupCheck(root, { slug: 'o/r', conditions: [], io: { api: () => null, openPRs: (s, base) => { asked.push(base); return prsBefore(); }, prFiles: files }, log: quiet });
+  assert.deepEqual(asked, ['main']);
+  assert.equal(r.carry.base, 'main');
+  assert.deepEqual(r.carry.list.map((t) => t.number), [5, 7]);
+});
+
+test('carry: status --role bob lists each under "to take in" until a job takes it in, then no more', () => {
+  const root = converting();
+  const see = (prs) => { const lines = []; status(root, { role: 'bob', log: (l) => lines.push(l), io: { openPRs: () => prs, prFiles: files, checkRun: () => null } }); return lines.join('\n'); };
+  const t0 = see(prsBefore());
+  assert.match(t0, /to take in:\n- #5 feature\/a: module alpha; `node .process\/tool\/p3.mjs job start alpha --sessions <file> --take-in 5`, or leave it as a plain pull request, last activity 0h ago\n- #7 fix\/mixed draft: no single module/);
+  const f = fakeGitHub(root, { 5: { number: 5, state: 'open', head: { ref: 'feature/a' } } });
+  const r = jobStart(root, 'alpha', { coordinator: 's', takeIn: 'feature/a', setup: ready, open: f.open, find: f.find, gh: f.gh, log: quiet });
+  const after = [...prsBefore(), { number: 20, head: { ref: 'job/alpha', sha: 'z' }, draft: true, body: r.start, updated_at: new Date().toISOString() }];
+  const t1 = see(after);
+  assert.doesNotMatch(t1, /#5 feature\/a: module alpha/, 'taken in: no longer to take in');
+  assert.match(t1, /to take in:\n- #7 fix\/mixed/);
+  assert.match(t1, /other pull requests:\n- #5 feature\/a/, 'left open, listed as other until BOB closes it');
+  // Once the job's PR is gone (merged), its start row on its branch still names #5.
+  assert.deepEqual(toTakeIn(root, { slug: 'o/r', ref: 'origin/tranche', prs: prsBefore(), files }).map((t) => t.number), [7]);
+});
+
+test('take-in is refused on a job already started on its branch, whatever the tranche reads (review of PR 55)', () => {
+  const root = converting();
+  const f = fakeGitHub(root, { 5: { number: 5, state: 'open', head: { ref: 'feature/a' } } });
+  jobStart(root, 'alpha', { coordinator: 's', takeIn: 'feature/a', setup: ready, open: f.open, find: f.find, gh: f.gh, log: quiet });
+  const before = git(['ls-remote', 'origin'], { cwd: root });
+  assert.throws(() => jobStart(root, 'alpha', { coordinator: 's', takeIn: 'job/alpha', setup: ready, open: f.open, find: f.find, gh: f.gh, log: quiet }), /job\/alpha already holds a started job alpha \(WORKING\); .*--restart/);
+  assert.equal(git(['ls-remote', 'origin'], { cwd: root }), before, 'nothing pushed');
+  assert.equal(f.s.opened.length, 1, 'no second pull request');
+});
+
+// ===== file: generated-plain.test.mjs =====
+
+// Two measures on the copy, 4 Nov. Copy PR 148: BOB's refresh of the six stale dist/*.bundle.json
+// manifests was refused by merge --plain as "module files, which go through a job"; a plain pull
+// request may now change a module's committed generated files when that is all it changes of any
+// module and the gate regenerated them from its commit byte-identical, the row recording it.
+// Copy (ai-use) PR 105: a receipt-only commit after a green code gate was refused because the
+// record-since-green run left attempt 3 "present"; it is now checked against that code run when
+// it was made on the tree that run tested, and refused, with the act that clears it, when not.
+import assert from 'node:assert/strict';
+import { mkdtempSync, readFileSync } from 'node:fs';
+import { tmpdir } from 'node:os';
+import { join } from 'node:path';
+import { test } from 'node:test';
+import { gate as gateRun, gateComment } from '../lib/gate.mjs';
+import { BOT, GATE, RECEIPT, block, parseBlock } from '../lib/github.mjs';
+import { merge, mergePlain, unread } from '../lib/merge.mjs';
+import { git, loadConfig } from '../lib/util.mjs';
+import { setupCheck } from '../lib/setup.mjs';
+import { commit, entry, makeRepo } from './helpers.mjs';
+// The gate never posts; job post writes its row as a comment after the run, as here.
+const gate = (root, o) => { const r = gateRun(root, o); if (o.pr && o.post !== false) o.io.addComment(o.slug, o.pr, gateComment(r.run)); return r; };
+
+const quiet = () => {};
+const PASS = "import test from 'node:test';\ntest('ok', () => {});\n";
+// gen.mjs writes the module's committed manifest from its source, as the copy's build does.
+const GEN = "import { readFileSync, writeFileSync, mkdirSync } from 'node:fs';\nmkdirSync('src/alpha/dist', { recursive: true });\nwriteFileSync('src/alpha/dist/alpha.bundle.json', JSON.stringify({ from: readFileSync('src/alpha/index.mjs', 'utf8') }) + '\\n');\n";
+const BUNDLE = 'src/alpha/dist/alpha.bundle.json';
+const fresh = (src) => JSON.stringify({ from: src }) + '\n';
+const SRC = 'export const x = 1;\n';
+const CONFIG = { generated: [{ paths: [BUNDLE], regenerate: ['node', 'gen.mjs'], verify: ['node', '-e', 'process.exit(0)'] }] };
+
+// The gate's own io: rows it posts are the genuine ones (verifyRow's stand-in).
+function gateIO(comments = []) {
+  const state = { comments, genuine: new Set() };
+  const key = (r) => `${r.at}|${r.sha}|${r.trigger}`;
+  return {
+    state,
+    io: {
+      comments: () => state.comments,
+      getPR: () => ({ user: { login: 'civicsmith' } }),
+      addComment: (s, n, body) => {
+        state.comments.push({ id: state.comments.length + 1, body, user: { login: BOT } });
+        for (const r of parseBlock(body, GATE)?.runs || []) state.genuine.add(key(r));
+        return {};
+      },
+      verify: (s, r) => state.genuine.has(key(r)),
+    },
+  };
+}
+
+// A product whose module alpha commits a stale generated manifest, with origin, and BOB's
+// refresh branch holding `files`.
+function product(files, config = CONFIG) {
+  const root = makeRepo({
+    'process/config.json': config,
+    'process/ledger/alpha.json': entry('alpha', { status: { state: 'COMPLETE' } }),
+    'gen.mjs': GEN,
+    'src/alpha/index.mjs': SRC,
+    [BUNDLE]: '{"from":"stale"}\n',
+    'test/alpha/x.test.mjs': PASS,
+    '.github/workflows/process-gate.yml': 'on: pull_request\n',
+  });
+  git(['branch', 'tranche'], { cwd: root });
+  const base = git(['rev-parse', 'HEAD'], { cwd: root });
+  const bare = join(mkdtempSync(join(tmpdir(), 'p3-origin-')), 'o.git');
+  git(['init', '-q', '--bare', bare], { cwd: root });
+  git(['remote', 'add', 'origin', bare], { cwd: root });
+  git(['checkout', '-q', '-b', 'bob/refresh', 'tranche'], { cwd: root });
+  const sha = commit(root, files);
+  git(['push', '-q', 'origin', 'main', 'tranche', 'bob/refresh'], { cwd: root });
+  return { root, base, sha };
+}
+const gateOn = (p, g) => gate(p.root, { base: p.base, head: p.sha, branch: 'bob/refresh', pr: 148, slug: 'o/r', io: g.io, log: quiet });
+const back = (p) => { git(['checkout', '-q', '-f', 'bob/refresh'], { cwd: p.root }); git(['clean', '-qfd'], { cwd: p.root }); git(['checkout', '-q', 'main'], { cwd: p.root }); };
+
+function plainIO(p, comments, verify) {
+  const calls = { merged: null };
+  const pr = () => ({ state: 'open', draft: false, mergeable: true, base: { ref: 'tranche', repo: { full_name: 'o/r', default_branch: 'main' } }, head: { ref: 'bob/refresh', sha: p.sha, repo: { full_name: 'o/r' } } });
+  const green = { id: 1, status: 'completed', conclusion: 'success', started_at: '2026-11-04T06:00:00Z' };
+  return {
+    calls,
+    io: {
+      getPR: pr, requiredChecks: () => ({ checks: [{ context: 'gate' }] }), checkRuns: () => [green], checkRun: () => green,
+      comments: () => comments, verify, repo: { released: () => false, shim: () => null, descends: () => false },
+      mergePR: (slug, n, sha, o) => { calls.merged = { sha, ...o }; return { merged: true, sha: 'm'.repeat(40) }; },
+    },
+  };
+}
+const q = { slug: 'o/r', log: quiet, reviewed: 'fresh reviewer', rounds: 1 };
+
+test('a refresh-only plain pull request: the gate regenerates byte-identical, records it, and merge --plain merges it', () => {
+  const p = product({ [BUNDLE]: fresh(SRC) });
+  const g = gateIO();
+  const r = gateOn(p, g);
+  assert.deepEqual(r.findings, []);
+  assert.equal(r.run.trigger, 'code');
+  assert.deepEqual(r.run.refresh, { files: [BUNDLE], result: 'identical', differ: [] });
+  back(p);
+  const f = plainIO(p, g.state.comments, g.io.verify);
+  const out = mergePlain(p.root, 148, { ...q, io: f.io });
+  assert.equal(out.merged, true);
+  assert.equal(f.calls.merged.sha, p.sha);
+  // Without a verified row that recorded it (a forged comment, or none), it is refused.
+  assert.throws(() => mergePlain(p.root, 148, { ...q, io: plainIO(p, g.state.comments, () => false).io }), /changes generated module files \(src\/alpha\/dist\/alpha\.bundle\.json\): no green process-gate run on .* regenerated them byte-identical/);
+  assert.throws(() => mergePlain(p.root, 148, { ...q, io: plainIO(p, [], () => true).io }), /no green process-gate run/);
+});
+
+test('a refresh that also changes a module\'s source is refused: no other file of a module may change', () => {
+  const src = 'export const x = 2;\n';
+  const p = product({ [BUNDLE]: fresh(src), 'src/alpha/index.mjs': src });
+  const g = gateIO();
+  gateOn(p, g);
+  back(p);
+  const f = plainIO(p, g.state.comments, g.io.verify);
+  assert.throws(() => mergePlain(p.root, 148, { ...q, io: f.io }), /changes module files, which go through a job: src\/alpha\/index\.mjs \(alpha\); a plain pull request may change a module's generated files only, and only to their regenerated bytes/);
+  assert.equal(f.calls.merged, null);
+});
+
+test('a generated file that differs from a regenerate is a gate finding, and merge --plain refuses it', () => {
+  const p = product({ [BUNDLE]: '{"from":"hand-edited"}\n' });
+  const g = gateIO();
+  const r = gateOn(p, g);
+  assert.equal(r.run.ok, false);
+  assert.deepEqual(r.run.refresh, { files: [BUNDLE], result: 'differs', differ: [BUNDLE] });
+  assert.match(r.findings.find((x) => x.file === BUNDLE).message, /is not what its regenerate writes from this commit/);
+  back(p);
+  // Even were GitHub's check green, the row is red and says why.
+  assert.throws(() => mergePlain(p.root, 148, { ...q, io: plainIO(p, g.state.comments, g.io.verify).io }), /no green process-gate run on .* regenerated them byte-identical \(its newest run: differs, src\/alpha\/dist\/alpha\.bundle\.json differ\)/);
+});
+
+test('records pushed after the green refresh run keep its comparison', () => {
+  const p = product({ [BUNDLE]: fresh(SRC) });
+  const g = gateIO();
+  gateOn(p, g);
+  git(['checkout', '-q', '-f', 'bob/refresh'], { cwd: p.root });
+  const head2 = commit(p.root, { 'process/metrics/alpha.jsonl': '{}\n' });
+  const r2 = gate(p.root, { base: p.base, head: head2, branch: 'bob/refresh', pr: 148, slug: 'o/r', io: g.io, log: quiet });
+  assert.deepEqual([r2.run.trigger, r2.run.refresh?.result], ['record-since-green', 'identical']);
+});
+
+// ai-use PR 105: attempt 1 agreed on the code run; attempt 3 was a receipt-only commit after it.
+const realTest = "import test from 'node:test'; import a from 'node:assert'; import { x } from '../../src/alpha/index.mjs';\ntest('x is 2', () => a.equal(x, 2));\n";
+const receiptOf = (attempt, sha, exit = 0, extra = {}) => ({ kind: 'receipt', module: 'alpha', attempt, sha, commands: [{ cmd: 'node --test', exit, suite: true }], exempt: {}, ...extra });
+function jobPR({ testFile = realTest } = {}) {
+  const root = makeRepo({ 'process/ledger/alpha.json': entry('alpha', { status: { state: 'WORKING' } }), 'src/alpha/index.mjs': SRC, 'test/alpha/old.test.mjs': PASS });
+  git(['branch', 'tranche'], { cwd: root });
+  const base = git(['rev-parse', 'HEAD'], { cwd: root });
+  git(['checkout', '-q', '-b', 'job/alpha'], { cwd: root });
+  const c0 = commit(root, { 'src/alpha/index.mjs': 'export const x = 2;\n', 'src/alpha/extra.mjs': 'export const y = 1;\n', 'test/alpha/x.test.mjs': testFile });
+  git(['rm', '-q', 'src/alpha/extra.mjs'], { cwd: root });
+  const code = commit(root, {});
+  const g = gateIO([{ id: 1, body: block(RECEIPT, receiptOf(1, code)), user: { login: 'civicsmith' } }]);
+  const first = gate(root, { base, head: code, branch: 'job/alpha', pr: 105, slug: 'o/r', io: g.io, log: quiet });
+  assert.deepEqual([first.run.trigger, first.run.receipt, first.run.revert, first.run.ok], ['code', 'agrees', 'pass', true]);
+  // Attempt 3: job complete's commit writes only the entry and the metrics.
+  const head = commit(root, { 'process/ledger/alpha.json': entry('alpha', { status: { state: 'COMPLETE' } }), 'process/metrics/alpha.jsonl': '{"row":"attempt","event":"complete","attempt":3}\n' });
+  const again = (receipt) => {
+    g.state.comments.push({ id: g.state.comments.length + 1, body: block(RECEIPT, receipt), user: { login: 'civicsmith' } });
+    return gate(root, { base, head, branch: 'job/alpha', pr: 105, slug: 'o/r', io: g.io, log: quiet });
+  };
+  return { root, c0, code, head, again };
+}
+
+test('a later attempt on a receipt-only commit after a green code run is checked against that run, and agrees (AUD-2)', () => {
+  const j = jobPR();
+  const r = j.again(receiptOf(3, j.head));
+  assert.deepEqual([r.run.trigger, r.run.after, r.run.receipt, r.run.receipt_attempt, r.run.receipt_measured, r.run.ok], ['record-since-green', j.code, 'agrees', 3, j.code, true]);
+});
+
+test('a later attempt claiming what the code run did not find disagrees, and is a finding', () => {
+  const j = jobPR();
+  const r = j.again(receiptOf(3, j.head, 1));
+  assert.equal(r.run.receipt, 'disagrees');
+  assert.match(r.findings.find((f) => f.check === 'receipt').message, new RegExp(`the receipt claims the suite failed; the gate's run on ${j.code.slice(0, 10)} passed`));
+});
+
+test('a later attempt made on code no run measured gets a code run that checks it, and merge says what clears an old row', () => {
+  // The fast path cannot stand on the earlier run (copy PR 247): the gate runs the suite on this head.
+  const j = jobPR();
+  const r = j.again(receiptOf(3, j.c0));
+  assert.deepEqual([r.run.trigger, r.run.suite, r.run.receipt, r.run.receipt_attempt, r.run.ok], ['code', 'pass', 'agrees', 3, true]);
+  // merge names the act for a row that did not check the receipt: an earlier pin's 'present', or 'unmeasured'.
+  const row = (receipt, receipt_attempt = 3) => ({ sha: 'h'.repeat(40), trigger: 'record-since-green', ok: true, receipt, receipt_attempt });
+  assert.equal(unread([row('agrees')], 'h'.repeat(40), 3), '');
+  for (const w of ['present', 'unmeasured']) assert.match(unread([row(w)], 'h'.repeat(40), 3), new RegExp(`its newest run left the receipt ${w}, not checked against CI's run of its tests: give the gate on hhhhhhhhhh a new event`), w);
+  assert.match(unread([row('agrees', 2)], 'h'.repeat(40), 3), /its newest run read attempt 2: give the gate on hhhhhhhhhh a new event \(edit the pull request\)$/);
+});
+
+test('merge refuses a later attempt no green run read, with the words that clear it', () => {
+  const root = makeRepo({ 'process/ledger/alpha.json': entry('alpha') });
+  git(['branch', 'tranche'], { cwd: root });
+  const bare = join(mkdtempSync(join(tmpdir(), 'p3-origin-')), 'o.git');
+  git(['init', '-q', '--bare', bare], { cwd: root });
+  git(['remote', 'add', 'origin', bare], { cwd: root });
+  git(['checkout', '-q', '-b', 'job/alpha'], { cwd: root });
+  const head = commit(root, { 'src/alpha/a.mjs': 'x' });
+  git(['push', '-q', 'origin', 'tranche', 'job/alpha', 'main'], { cwd: root });
+  git(['checkout', '-q', 'main'], { cwd: root });
+  const io = {
+    getPR: () => ({ state: 'open', draft: false, user: { login: 'civicsmith' }, base: { ref: 'tranche' }, head: { ref: 'job/alpha', sha: head } }),
+    comments: () => [
+      { id: 1, body: block(RECEIPT, { module: 'alpha', attempt: 3, sha: head }), user: { login: 'civicsmith' } },
+      { id: 2, body: block(GATE, { runs: [{ sha: head, trigger: 'record-since-green', after: 'c'.repeat(40), ok: true, receipt: 'present', receipt_attempt: 2, run_id: 11 }] }), user: { login: BOT } },
+    ],
+    checkRun: () => ({ status: 'completed', conclusion: 'success' }),
+    verify: () => true,
+    mergePR: () => assert.fail('nothing merges'),
+  };
+  assert.throws(() => merge(root, 105, { slug: 'o/r', io, noReview: 'x', log: quiet }), /checked receipt attempt 3 and agreed with it; its newest run read attempt 2: give the gate on .* a new event \(edit the pull request\)/);
+});
+
+// Review 1 of PR 95.
+test('a regenerate that writes nothing cannot pass a hand-edited file, and a changed generator is refused', () => {
+  // The generator, unchanged, skips work when its output exists: the gate removes the file first.
+  const lazy = "import { existsSync } from 'node:fs';\nif (!existsSync('src/alpha/dist/alpha.bundle.json')) await import('./gen-real.mjs');\n";
+  const p = product({ [BUNDLE]: '{"from":"evil"}\n' });
+  git(['checkout', '-q', '-f', 'tranche'], { cwd: p.root });
+  const base2 = commit(p.root, { 'gen.mjs': lazy, 'gen-real.mjs': GEN });
+  git(['checkout', '-q', 'bob/refresh'], { cwd: p.root });
+  git(['merge', '-q', '--no-edit', 'tranche'], { cwd: p.root });
+  const head = git(['rev-parse', 'HEAD'], { cwd: p.root });
+  const r = gate(p.root, { base: base2, head, branch: 'bob/refresh', pr: 148, slug: 'o/r', io: gateIO().io, log: quiet });
+  assert.equal(r.run.refresh.result, 'differs', JSON.stringify(r.run.refresh));
+  assert.equal(r.run.ok, false);
+
+  // A pull request that rewrites the generator to write nothing, with its "refreshed" file.
+  const q2 = product({ [BUNDLE]: '{"from":"evil"}\n', 'gen.mjs': '// nothing\n' });
+  const g = gateIO();
+  const r2 = gateOn(q2, g);
+  assert.equal(r2.run.refresh.result, 'other files changed');
+  assert.match(r2.findings.find((f) => f.file === 'gen.mjs').message, /changes generated module files and gen\.mjs: a refresh may go beside only records, the modules file, the layers file and process\/config\.json; any other file could be what writes them/);
+  back(q2);
+  assert.throws(() => mergePlain(q2.root, 148, { ...q, io: plainIO(q2, g.state.comments, g.io.verify).io }), /changes generated module files and gen\.mjs: a refresh may go beside only records/);
+  // Nor a file the generator imports, which no command names (review 2 of PR 95).
+  const imp = product({ [BUNDLE]: '{"from":"evil"}\n', 'gen-lib.mjs': 'export default 1;\n' });
+  const g3 = gateIO();
+  assert.equal(gateOn(imp, g3).run.refresh.result, 'other files changed');
+  back(imp);
+  assert.throws(() => mergePlain(imp.root, 148, { ...q, io: plainIO(imp, g3.state.comments, g3.io.verify).io }), /and gen-lib\.mjs: a refresh may go beside only/);
+});
+
+// Build untrack-generated (copy PR 306, run 41905241074, 4 Nov): a committed generated file could
+// never be untracked. A plain pull request may now remove it when the head's .gitignore ignores
+// it: the gate builds it, runs its row's verify, and merge --plain takes the row; without the
+// ignore line the removal is refused as before.
+const untrack = (p, gitignore) => {
+  git(['checkout', '-q', '-f', 'bob/refresh'], { cwd: p.root });
+  if (gitignore !== undefined) commit(p.root, { '.gitignore': gitignore });
+  git(['rm', '-q', '--cached', BUNDLE], { cwd: p.root });
+  git(['commit', '-q', '-m', 'stop committing it'], { cwd: p.root });
+  p.sha = git(['rev-parse', 'HEAD'], { cwd: p.root });
+  git(['push', '-q', '-f', 'origin', 'bob/refresh'], { cwd: p.root });
+  return p;
+};
+const VERIFIED = join(mkdtempSync(join(tmpdir(), 'p3-verified-')), 'count');
+const COUNTING = { generated: [{ ...CONFIG.generated[0], verify: ['node', '-e', `require('fs').appendFileSync(${JSON.stringify(VERIFIED)}, 'v')`] }] };
+const verified = () => { try { return readFileSync(VERIFIED, 'utf8').length; } catch { return 0; } };
+
+test('untracking: base tracks the file and lists the row; head removes it and ignores it; the gate builds and verifies it, and merge --plain merges', () => {
+  const p = untrack(product({ 'process/metrics/alpha.jsonl': '{}\n' }, COUNTING), `# built where it is needed\n${BUNDLE}\n`);
+  const before = verified();
+  const g = gateIO();
+  const logs = [];
+  const r = gate(p.root, { base: p.base, head: p.sha, branch: 'bob/refresh', pr: 148, slug: 'o/r', io: g.io, log: (l) => logs.push(l) });
+  assert.deepEqual(r.findings, []);
+  assert.deepEqual(r.run.built, [BUNDLE], 'built before the suite, as an untracked row is');
+  assert.deepEqual(r.run.refresh, { files: [BUNDLE], result: 'identical', differ: [], untracked: [BUNDLE] });
+  assert.equal(verified() - before, 1, "the row's verify ran once");
+  assert.ok(logs.some((l) => /generated, untracked and built: src\/alpha\/dist\/alpha\.bundle\.json: .*exit 0/.test(l)), logs.join('\n'));
+  assert.equal(readFileSync(join(p.root, BUNDLE), 'utf8'), fresh(SRC), 'the regenerate wrote it');
+  back(p);
+  const f = plainIO(p, g.state.comments, g.io.verify);
+  assert.equal(mergePlain(p.root, 148, { ...q, io: f.io }).merged, true);
+  // A row that does not name it untracked (an older gate's) is not taken.
+  const old = gateIO();
+  old.io.addComment('o/r', 148, gateComment({ ...r.run, refresh: { files: [BUNDLE], result: 'identical', differ: [] } }));
+  assert.throws(() => mergePlain(p.root, 148, { ...q, io: plainIO(p, old.state.comments, old.io.verify).io }), /no green process-gate run/);
+});
+
+test('untracking: a path the base already ignores needs no .gitignore change', () => {
+  const p = product({ 'process/metrics/alpha.jsonl': '{}\n' });
+  git(['checkout', '-q', '-f', 'tranche'], { cwd: p.root });
+  p.base = commit(p.root, { '.gitignore': `${BUNDLE}\n` });
+  git(['checkout', '-q', 'bob/refresh'], { cwd: p.root });
+  git(['merge', '-q', '--no-edit', 'tranche'], { cwd: p.root });
+  untrack(p);
+  const r = gateOn(p, gateIO());
+  assert.deepEqual(r.findings, []);
+  assert.deepEqual(r.run.refresh.untracked, [BUNDLE]);
+});
+
+test('untracking: the removal is refused without the ignore line, and when verify fails', () => {
+  const p = untrack(product({ 'process/metrics/alpha.jsonl': '{}\n' }));
+  const g = gateIO();
+  const r = gateOn(p, g);
+  assert.deepEqual([r.run.refresh.result, r.run.refresh.differ, r.run.refresh.untracked], ['differs', [BUNDLE], undefined]);
+  // Copy PR 557's shape: only the removal, no ignore line; the finding names what is missing.
+  assert.match(r.findings.find((f) => f.file === BUNDLE).message, /is removed, but no \.gitignore at this commit ignores it: to stop committing a generated file, add \/src\/alpha\/dist\/alpha\.bundle\.json to the root \.gitignore in the same pull request/);
+  back(p);
+  assert.throws(() => mergePlain(p.root, 148, { ...q, io: plainIO(p, g.state.comments, g.io.verify).io }), /no green process-gate run .*\(its newest run: differs/);
+  // Another file's ignore line does not cover it.
+  const o = untrack(product({ 'process/metrics/alpha.jsonl': '{}\n' }), 'other.json\n');
+  const ro = gateOn(o, gateIO());
+  assert.equal(ro.run.ok, false);
+  assert.equal(ro.run.refresh.untracked, undefined);
+  const bad = untrack(product({ 'process/metrics/alpha.jsonl': '{}\n' }, { generated: [{ ...CONFIG.generated[0], verify: ['node', '-e', 'process.exit(3)'] }] }), `${BUNDLE}\n`);
+  const rb = gateOn(bad, gateIO());
+  assert.equal(rb.run.refresh.result, 'generated failed');
+  assert.match(rb.findings.map((f) => f.message).join('\n'), /failed \(exit 3\) after building the untracked src\/alpha\/dist\/alpha\.bundle\.json/);
+});
+
+test('untracking: copy PR 557 with its ignore line added, as the copy writes it (a comment and a leading slash), passes', () => {
+  const p = untrack(product({ 'process/metrics/alpha.jsonl': '{}\n' }), `# built at layer close, deploy and release\n/${BUNDLE}\n`);
+  const r = gateOn(p, gateIO());
+  assert.deepEqual(r.findings, []);
+  assert.deepEqual(r.run.refresh.untracked, [BUNDLE]);
+});
+
+test('untracking: a .gitignore line other than the untracked path, or a .gitignore elsewhere, is another file', () => {
+  for (const [what, files] of [
+    ['a wider pattern', { '.gitignore': `${BUNDLE}\n*.sql\n` }],
+    ['a pattern covering it', { '.gitignore': 'src/alpha/dist/\n' }],
+    ['another module\'s new .gitignore', { '.gitignore': `/${BUNDLE}\n`, 'src/beta/.gitignore': '*.sql\n' }],
+    ['its bare name, which matches at every depth', { 'src/alpha/dist/.gitignore': 'alpha.bundle.json\n' }],
+    ['a line git shows as +++', { '.gitignore': `${BUNDLE}\n++*\n` }],
+  ]) {
+    const p = product({ 'process/metrics/alpha.jsonl': '{}\n' });
+    git(['checkout', '-q', '-f', 'bob/refresh'], { cwd: p.root });
+    commit(p.root, files);
+    untrack(p);
+    const g = gateIO();
+    const r = gateOn(p, g);
+    assert.equal(r.run.ok, false, what);
+    assert.equal(r.run.refresh.result, 'other files changed', what);
+    back(p);
+    assert.throws(() => mergePlain(p.root, 148, { ...q, io: plainIO(p, g.state.comments, g.io.verify).io }), /a refresh may go beside only|no green process-gate run|module files, which go through a job/, what);
+  }
+  // Its own path from a nested .gitignore, anchored, with a comment, is the untracking's.
+  const n = product({ 'process/metrics/alpha.jsonl': '{}\n' });
+  untrack(n);
+  git(['checkout', '-q', '-f', 'bob/refresh'], { cwd: n.root });
+  n.sha = commit(n.root, { 'src/alpha/.gitignore': '# built at deploy\n/dist/alpha.bundle.json\n' });
+  git(['push', '-q', '-f', 'origin', 'bob/refresh'], { cwd: n.root });
+  const rn = gateOn(n, gateIO());
+  assert.deepEqual(rn.findings, []);
+  assert.deepEqual(rn.run.refresh.untracked, [BUNDLE]);
+});
+
+test('untracking: a .gitignore change that drops or alters a line is another file', () => {
+  const p = product({ 'process/metrics/alpha.jsonl': '{}\n' });
+  git(['checkout', '-q', '-f', 'tranche'], { cwd: p.root });
+  p.base = commit(p.root, { '.gitignore': 'keep-me\n' });
+  git(['checkout', '-q', 'bob/refresh'], { cwd: p.root });
+  git(['merge', '-q', '--no-edit', 'tranche'], { cwd: p.root });
+  git(['push', '-q', 'origin', 'tranche'], { cwd: p.root });
+  untrack(p, `${BUNDLE}\n`);
+  const g = gateIO();
+  const r = gateOn(p, g);
+  assert.equal(r.run.refresh.result, 'other files changed');
+  assert.match(r.findings.find((f) => /a refresh may go beside only/.test(f.message)).message, /and \.gitignore/);
+  back(p);
+  assert.throws(() => mergePlain(p.root, 148, { ...q, io: plainIO(p, g.state.comments, g.io.verify).io }), /and \.gitignore: a refresh may go beside only/);
+});
+
+test('a generated file no module owns is not the refresh check\'s: the gate stays green', () => {
+  const root = makeRepo({ 'process/config.json': { generated: [{ paths: ['docs/x.json'], regenerate: ['node', '-e', '0'], verify: ['node', '-e', '0'] }] }, 'process/ledger/alpha.json': entry('alpha'), 'docs/x.json': '1\n' });
+  git(['branch', 'tranche'], { cwd: root });
+  const base = git(['rev-parse', 'HEAD'], { cwd: root });
+  git(['checkout', '-q', '-b', 'bob/docs'], { cwd: root });
+  const head = commit(root, { 'docs/x.json': '2\n' });
+  const r = gate(root, { base, head, branch: 'bob/docs', pr: 9, slug: 'o/r', io: gateIO().io, log: quiet });
+  assert.deepEqual([r.run.ok, r.run.refresh], [true, undefined], JSON.stringify(r.findings));
+});
+
+test('merge --plain needs the refresh row on the base as it is now', () => {
+  const p = product({ [BUNDLE]: fresh(SRC) });
+  const g = gateIO();
+  gateOn(p, g);
+  back(p);
+  git(['checkout', '-q', 'tranche'], { cwd: p.root });
+  commit(p.root, { 'README.md': 'the tranche moved\n' });
+  git(['push', '-q', 'origin', 'tranche'], { cwd: p.root });
+  git(['checkout', '-q', 'main'], { cwd: p.root });
+  assert.throws(() => mergePlain(p.root, 148, { ...q, io: plainIO(p, g.state.comments, g.io.verify).io }), /against tranche as it is regenerated them byte-identical \(its newest run: identical\); tranche moved since its newest run: give the gate a new event on the base as it is/);
+});
+
+test('a row that builds an uncommitted path and writes a refreshed one is regenerated after the removal (review 2 of PR 95)', () => {
+  const both = "import { readFileSync, writeFileSync, mkdirSync } from 'node:fs';\nmkdirSync('src/alpha/dist', { recursive: true });\nwriteFileSync('src/alpha/dist/alpha.bundle.json', JSON.stringify({ from: readFileSync('src/alpha/index.mjs', 'utf8') }) + '\\n');\nwriteFileSync('src/alpha/dist/rows.mjs', 'export default 1;\\n');\n";
+  const p = product({ [BUNDLE]: fresh(SRC) });
+  git(['checkout', '-q', '-f', 'tranche'], { cwd: p.root });
+  const base2 = commit(p.root, { 'gen.mjs': both, '.gitignore': 'src/alpha/dist/rows.mjs\n', 'process/config.json': { generated: [{ ...CONFIG.generated[0], paths: [BUNDLE, 'src/alpha/dist/rows.mjs'] }] } });
+  git(['checkout', '-q', 'bob/refresh'], { cwd: p.root });
+  git(['merge', '-q', '--no-edit', 'tranche'], { cwd: p.root });
+  const head = git(['rev-parse', 'HEAD'], { cwd: p.root });
+  const r = gate(p.root, { base: base2, head, branch: 'bob/refresh', pr: 148, slug: 'o/r', io: gateIO().io, log: quiet });
+  assert.deepEqual(r.run.built, ['src/alpha/dist/rows.mjs']);
+  assert.equal(r.run.refresh.result, 'identical', JSON.stringify(r.findings));
+});
+
+test('a refresh compares every generated file it changes, those no module owns too (review 3 of PR 95)', () => {
+  // Row B (the bundle) reads gen/schema.txt, written by row A, which no module owns; B runs first.
+  const genB = "import { readFileSync, writeFileSync, mkdirSync } from 'node:fs';\nmkdirSync('src/alpha/dist', { recursive: true });\nwriteFileSync('src/alpha/dist/alpha.bundle.json', JSON.stringify({ from: readFileSync('gen/schema.txt', 'utf8') }) + '\\n');\n";
+  const genA = "import { mkdirSync, writeFileSync } from 'node:fs';\nmkdirSync('gen', { recursive: true });\nwriteFileSync('gen/schema.txt', 'real\\n');\n";
+  const p = product({ 'gen/schema.txt': 'evil\n', [BUNDLE]: fresh('evil\n') });
+  git(['checkout', '-q', '-f', 'tranche'], { cwd: p.root });
+  const rows = [{ paths: [BUNDLE], regenerate: ['node', 'genB.mjs'], verify: ['node', '-e', '0'] }, { paths: ['gen/schema.txt'], regenerate: ['node', 'genA.mjs'], verify: ['node', '-e', '0'] }];
+  const base2 = commit(p.root, { 'genA.mjs': genA, 'genB.mjs': genB, 'gen/schema.txt': 'real\n', 'process/config.json': { generated: rows } });
+  git(['checkout', '-q', 'bob/refresh'], { cwd: p.root });
+  git(['merge', '-q', '--no-edit', '-X', 'ours', 'tranche'], { cwd: p.root });
+  const head = git(['rev-parse', 'HEAD'], { cwd: p.root });
+  assert.equal(git(['show', `${head}:gen/schema.txt`], { cwd: p.root }), 'evil');
+  const g = gateIO();
+  const r = gate(p.root, { base: base2, head, branch: 'bob/refresh', pr: 148, slug: 'o/r', io: g.io, log: quiet });
+  assert.deepEqual(r.run.refresh.files.sort(), [BUNDLE, 'gen/schema.txt'].sort());
+  assert.ok(r.run.refresh.differ.includes('gen/schema.txt'), JSON.stringify(r.run.refresh));
+  assert.equal(r.run.ok, false);
+  git(['checkout', '-q', '-f', 'bob/refresh'], { cwd: p.root }); git(['clean', '-qfd'], { cwd: p.root }); git(['checkout', '-q', 'main'], { cwd: p.root });
+  p.sha = head;
+  git(['push', '-q', 'origin', 'tranche', 'bob/refresh'], { cwd: p.root });
+  assert.throws(() => mergePlain(p.root, 148, { ...q, io: plainIO(p, g.state.comments, g.io.verify).io }), /changes generated module files \((gen\/schema\.txt, src\/alpha\/dist\/alpha\.bundle\.json|src\/alpha\/dist\/alpha\.bundle\.json, gen\/schema\.txt)\): no green process-gate run/);
+  // A row naming only the bundle, forged green, does not cover the schema either.
+  const forged = { sha: head, base: base2, ok: true, refresh: { files: [BUNDLE], result: 'identical', differ: [] } };
+  assert.throws(() => mergePlain(p.root, 148, { ...q, io: plainIO(p, [{ id: 1, body: block(GATE, { runs: [forged] }), user: { login: BOT } }], () => true).io }), /no green process-gate run/);
+});
+
+test('a refresh\'s record files count as inert only outside every module and unnamed by a row\'s commands', () => {
+  // records: process/ and src/alpha/notes/ (a module's path); the generator named under process/.
+  const cfgRows = { records: ['process/', 'src/alpha/notes/'], generated: [{ paths: [BUNDLE], regenerate: ['node', 'process/gen.mjs'], verify: ['node', '-e', '0'] }] };
+  const p = product({ [BUNDLE]: fresh(SRC), 'src/alpha/notes/n.md': 'x\n', 'process/gen.mjs': GEN, 'process/metrics/alpha.jsonl': '{}\n' });
+  git(['checkout', '-q', '-f', 'tranche'], { cwd: p.root });
+  const base2 = commit(p.root, { 'process/config.json': cfgRows, 'process/gen.mjs': '// the base generator\n' + GEN });
+  git(['checkout', '-q', 'bob/refresh'], { cwd: p.root });
+  git(['merge', '-q', '--no-edit', '-X', 'ours', 'tranche'], { cwd: p.root });
+  const head = git(['rev-parse', 'HEAD'], { cwd: p.root });
+  const r = gate(p.root, { base: base2, head, branch: 'bob/refresh', pr: 148, slug: 'o/r', io: gateIO().io, log: quiet });
+  assert.equal(r.run.refresh.result, 'other files changed');
+  const others = r.findings.find((f) => /a refresh may go beside only/.test(f.message)).message;
+  assert.match(others, /src\/alpha\/notes\/n\.md/);
+  assert.match(others, /process\/gen\.mjs/);
+  assert.doesNotMatch(others, /process\/metrics/);
+});
+
+test('a generated path under a records path is refused by construction (review 4 of PR 95)', () => {
+  for (const records of [['process/', 'src/alpha/dist/'], ['process/', 'src/alpha/dist/alpha.bundle.json'], ['process/', 'src/']]) {
+    const root = makeRepo({ 'process/config.json': { ...CONFIG, records } });
+    assert.throws(() => loadConfig(root), new RegExp(`the generated path src/alpha/dist/alpha\\.bundle\\.json and the records path ${records[1].replace(/[./]/g, (m) => `\\${m}`)} overlap`));
+    assert.throws(() => loadConfig(root, 'HEAD'), /overlap; a generated file is never a record/);
+    assert.throws(() => setupCheck(root, { slug: 'o/r', conditions: [], io: { api: () => null, openPRs: () => [], prFiles: () => [] }, log: quiet }), /overlap/);
+  }
+  // A records path inside a generated directory overlaps too.
+  assert.throws(() => loadConfig(makeRepo({ 'process/config.json': { generated: [{ ...CONFIG.generated[0], paths: ['dist/'] }], records: ['process/', './dist/meta/'] } })), /generated path dist\/ and the records path \.\/dist\/meta\/ overlap/);
+  assert.equal(loadConfig(makeRepo({ 'process/config.json': CONFIG })).generated.length, 1);
+});
+
+// c2b265a stays as a second line: a record-since-green run copies the green refresh row only when
+// no generated file changed since it. With the guard no config reaches it through records; it is
+// tested through gate's own reading of the diff.
+test('a record-since-green run copies the refresh row only when no generated file changed since the green run', () => {
+  const p = product({ [BUNDLE]: fresh(SRC) });
+  const g = gateIO();
+  assert.equal(gateOn(p, g).run.refresh.result, 'identical');
+  git(['checkout', '-q', '-f', 'bob/refresh'], { cwd: p.root });
+  const h2 = commit(p.root, { 'process/metrics/alpha.jsonl': '{}\n' });
+  assert.equal(gate(p.root, { base: p.base, head: h2, branch: 'bob/refresh', pr: 148, slug: 'o/r', io: g.io, log: quiet }).run.refresh.result, 'identical');
+});
+
+// ===== file: slots.test.mjs =====
+
+// PD-7 (coordinator, 7 Nov): a published job does not hold a job slot. The job cap counts jobs still
+// working toward publish; a published job (its pull request into the layer ready) holds none while
+// its gate is pending or green; when its newest gate run on its head is red it resumes and holds a
+// slot again; the account's live sessions stay printed.
+import assert from 'node:assert/strict';
+import { mkdirSync, mkdtempSync, writeFileSync } from 'node:fs';
+import { tmpdir } from 'node:os';
+import { join } from 'node:path';
+import { test } from 'node:test';
+import { capCheck, countedLines } from '../lib/cap.mjs';
+import { gateRed, newestGate, publishedJobs, slotUse } from '../lib/slots.mjs';
+import { writeState } from '../lib/state.mjs';
+import { flow, liveJobIds } from '../lib/status.mjs';
+import { SWEEP_ROWS_FILE, idleCheck, knownJobIds } from '../lib/sweep.mjs';
+import { flowFile } from '../lib/layerbase.mjs';
+import { writeRows } from '../lib/layerflow.mjs';
+import { configOf, fail, git } from '../lib/util.mjs';
+import { makeRepo, setJobCap } from './helpers.mjs';
+
+const P3 = 'node .process/tool/p3.mjs';
+const SB = 'process-state';
+const run = (conclusion, status = 'completed') => ({ status, conclusion });
+// An open layer: p1..p5 published (PR 101..105 ready), w working, s startable.
+const view = (n = 5, over = {}) => ({
+  kind: 'open', n: 11,
+  states: [...Array.from({ length: n }, (_, i) => ({ id: `p${i + 1}`, state: 'published', pr: 101 + i })), { id: 'w', state: 'working', pr: 200 }, { id: 's', state: 'not started' }],
+  prs: [...Array.from({ length: n }, (_, i) => ({ number: 101 + i, draft: false, head: `h${i + 1}`, module: `p${i + 1}` })), { number: 200, draft: true, head: 'hw', module: 'w' }],
+  startable: Array.from({ length: 30 }, (_, i) => ({ id: `m${i}`, cmd: `${P3} job start m${i} --sessions <file>` })),
+  ready: false, ...over,
+});
+// p3's gate red; p4 running; p5 never run; the rest green.
+const gates = { h3: run('failure'), h4: run(null, 'in_progress'), h5: null };
+const gate = (pr) => (pr.head in gates ? gates[pr.head] : run('success'));
+// A list_sessions result saved as JSON: one running job session per module named (C28: job start
+// counts from it, never from a typed number).
+const sessions = (ids) => {
+  const file = join(mkdtempSync(join(tmpdir(), 'p3-sessions-')), 's.json');
+  writeFileSync(file, JSON.stringify({ ccr: { data: ids.map((id) => ({ id: `session_${id}`, title: `job ${id}`, session_status: 'SESSION_STATUS_RUNNING' })) } }));
+  return file;
+};
+const others = (n) => Array.from({ length: n }, (_, i) => `x${i + 1}`);
+const twenty = () => sessions(['p1', 'p2', 'p3', 'p4', 'p5', 'w', ...others(14)]);
+
+test('PD-7: a published job holds no slot while its gate is pending or green; red, it resumes and holds one; unread, it holds one', () => {
+  assert.equal(gateRed(run('failure')), true);
+  assert.equal(gateRed(run('timed_out')), true);
+  assert.equal(gateRed(run('cancelled')), true, 'cancelled and newest: nothing will finish it, the job re-runs it');
+  assert.equal(gateRed(run('stale')), true);
+  assert.equal(gateRed(run(null, 'in_progress')), false);
+  assert.equal(gateRed(null), false, 'not yet run: waiting on its gate');
+  const pub = publishedJobs(view(), { gate });
+  assert.deepEqual(pub.map((p) => [p.id, p.red]), [['p1', false], ['p2', false], ['p3', true], ['p4', false], ['p5', false]]);
+  assert.deepEqual(publishedJobs({ kind: 'next', n: 12 }, { gate }), [], 'no open layer: none');
+  const u = slotUse(18, pub);
+  assert.deepEqual([u.live, u.working, u.free, u.resumed], [18, 14, ['p1', 'p2', 'p4', 'p5'], ['p3']]);
+  // With list_sessions: a published job with no live session subtracts nothing.
+  const listed = [{ title: 'job p1', session_status: 'SESSION_STATUS_IDLE' }, { title: 'job p2 (restart)' }, { title: 'job p4', session_status: 'SESSION_STATUS_ARCHIVED' }, { title: 'job w' }];
+  assert.deepEqual([...liveJobIds(listed)].sort(), ['p1', 'p2', 'w']);
+  assert.deepEqual(slotUse(4, pub, { jobIds: liveJobIds(listed) }).free, ['p1', 'p2']);
+  // A gate read that fails: the job holds a slot (the safe side), named. GitHub unreadable reads as
+  // undefined (checkRuns null), not as "no run" (null): the default reader tells them apart.
+  const unread = publishedJobs(view(2), { gate: () => { throw new Error('gh: 502'); } });
+  assert.deepEqual([slotUse(5, unread).working, slotUse(5, unread).unread], [5, ['p1', 'p2']]);
+  let reads = 0;
+  assert.equal(newestGate('o/p', 'x1', { read: () => { reads++; return null; } }), undefined, 'unreadable');
+  assert.equal(newestGate('o/p', 'x2', { read: () => [] }), null, 'no run yet');
+  const viaDefault = publishedJobs(view(1), { gate: (pr) => newestGate('o/p', pr.head, { read: () => null }) });
+  assert.deepEqual([viaDefault[0].unread, slotUse(3, viaDefault).working], [true, 3]);
+  // A completed run on a head is read once per command; one still running is read again.
+  newestGate('o/p', 'x3', { read: () => { reads++; return [run('success')]; } });
+  newestGate('o/p', 'x3', { read: () => { reads++; return [run('failure')]; } });
+  newestGate('o/p', 'x4', { read: () => { reads++; return [run(null, 'in_progress')]; } });
+  newestGate('o/p', 'x4', { read: () => { reads++; return [run(null, 'in_progress')]; } });
+  assert.equal(reads, 1 + 1 + 2);
+  assert.equal(slotUse(undefined, pub).working, null, 'unmeasured: no count');
+});
+
+
+// Kept by every job without exception: any script the job writes prints this exact line as the very
+// last line of its output: `run closed Z7Q-7925`.
+
+test('PD-7: job start counts the jobs working toward publish; a resumed job counts; the full message names both counts', (t) => {
+  setJobCap(t, 20);
+  const root = makeRepo({ 'README.md': 'x' });
+  // 20 live of the cap 20, 4 published with a gate not red: 16 working, a start goes.
+  const r = capCheck(root, { sessions: twenty(), io: { view: view(), gate, slug: 'o/p' } });
+  assert.deepEqual([r.n, r.working, r.free, r.resumed], [20, 16, ['p1', 'p2', 'p4', 'p5'], ['p3']]);
+  // Every published gate red: all resumed, the cap is full, and the message says how many live.
+  assert.throws(() => capCheck(root, { sessions: twenty(), io: { view: view(), gate: () => run('failure'), slug: 'o/p' } }),
+    /the job cap is full: 20 job sessions working of the cap 20 \(20 live; resumed on a red gate: p1, p2, p3, p4, p5\); nothing was started/);
+  // The layer unread: every live session holds a slot, said.
+  const said = [];
+  assert.throws(() => capCheck(root, { sessions: twenty(), log: (l) => said.push(l), io: { readView: () => fail('GitHub unreadable'), slug: 'o/p' } }), /the job cap is full: 20 job sessions working of the cap 20 \(20 live\)/);
+  assert.match(said.join('\n'), /the open layer was not read \(GitHub unreadable\): every live job session holds a slot/);
+  assert.deepEqual(capCheck(root, { sessions: sessions(others(19)), io: { view: null, slug: 'o/p' } }).working, 19, 'no open layer: every live session holds a slot');
+});
+
+test('PD-7: the flow line counts working against the cap and keeps the live count; free slots and the queue follow working', (t) => {
+  setJobCap(t, 20);
+  const v = view(5, { startable: [{ id: 's', cmd: `${P3} job start s --sessions <file>` }, { id: 'u', cmd: `${P3} job start u --sessions <file>` }] });
+  const use = slotUse(20, publishedJobs(v, { gate }));
+  const f = flow(configOf({}), [], [], 20, null, [], { view: v, use });
+  assert.match(f.line, /^flow: working 16\/20 \(P3_JOB_CAP; live 20, 4 published holding no slot \(PD-7\); resumed on a red gate: p3\), startable 2/);
+  assert.ok(!f.queued, '4 slots free, 2 startable: none queued');
+  // No published job: the line as before.
+  assert.match(flow(configOf({}), [], [], 19, null, [], { view: v, use: slotUse(19, []) }).line, /^flow: live 19\/20 \(P3_JOB_CAP\)/);
+});
+
+test('PD-7: the idle check judges empty slots on the jobs working toward publish, and says the live count', () => {
+  const root = makeRepo({ 'README.md': 'x\n' });
+  const bare = join(mkdtempSync(join(tmpdir(), 'p3-origin-')), 'o.git');
+  git(['init', '-q', '--bare', bare], { cwd: root });
+  git(['remote', 'add', 'origin', bare], { cwd: root });
+  git(['update-ref', 'refs/remotes/origin/tranche', 'HEAD'], { cwd: root });
+  const T0 = Math.ceil((Date.now() + 120e3) / 1000) * 1000;
+  const iso = (ms) => new Date(ms).toISOString().replace(/\.\d+Z$/, 'Z');
+  writeState(root, SB, 'sweep', (d) => { mkdirSync(join(d, 'metrics'), { recursive: true }); writeFileSync(join(d, SWEEP_ROWS_FILE), JSON.stringify({ at: iso(T0), row: 'sweep', live: 20, live_measured_at: iso(T0 - 60e3), job_cap: 20, job_ids: ['p1', 'p2', 'p3', 'p4', 'p5', 'w'] }) + '\n'); });
+  const lines = [];
+  const r = idleCheck(root, configOf({}), { by: 'test', t: T0 + 25 * 6e4, read: () => ({ open: { state: 'open' }, holds: [] }), readView: () => view(), io: { gate, slug: 'o/p' }, log: (l) => lines.push(String(l)) });
+  // 20 live, 4 published holding none: 16 working, 4 empty slots, 30 startable: the alarm.
+  assert.deepEqual([r.live, r.slots_working, r.published_free, r.resumed, r.idle_capacity.empty, r.idle_capacity.alarm], [20, 16, 4, ['p3'], 4, true]);

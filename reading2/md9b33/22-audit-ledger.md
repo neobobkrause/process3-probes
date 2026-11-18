@@ -1,0 +1,62 @@
+4. Evidence: MEASURED: Foundations line 102: "Nothing starts its own successor: the watcher already exists, was started beside ROOT rather than by it". From 5 Nov ROOT started it (`roles_root_coordinator.md` line 28). Each takeover "put ROOT one level down" (same file, line 244) and "a takeover is a bridge only" (line 343), so an ARCH started after a takeover, and its jobs, sit a level deeper than B allows. That file's own conclusion left the watcher out of the Process4 set.
+5. How bad: stops a restart after the first takeover (depth), or adds an owner act.
+6. Proposed correction: K technical point 4 must say one of: "ROOT starts the standby. This departs from your ledger note, which has it started by whoever starts ROOT; Claude decided, so that it is not an act of yours. After a takeover jobs sit one level deeper, which is unproven (section J)." or "There is no standby. If ROOT dies you start a new ROOT (the act already on your list)." The second removes a mechanism and matches the B table.
+
+### Finding 10. Three measurements you asked for are neither kept nor ended (SES-16, TXT-4, part of SES-15)
+
+1. Counter-argument: Three times you wrote "I'm skeptical, but let's measure" or "let's try". The definition settles each matter without the measurement and without saying so.
+2. Lines: SES-16 (modified; "I'm skeptical, but let's" is Bob's): "I'm skeptical, but let's measure on the first tranche, comparing tokens per wake against the handoff cost already paid." TXT-4 (modified; "I'm skeptical, but let's try to" is Bob's): "let's try to apply TXT-2 to the principles too; most roles need two or three of them." SES-15 (note re-saved 14 Nov): "Routing share measured after the first layer."
+3. Main text: K technical point 4 decides how ARCH is replaced; I 8 ends the per-line test that TXT-4 was to apply; nothing mentions the three measurements.
+4. Evidence: PLATFORM: "A task's fresh session cannot start sessions or send messages", 0 of 3, 2 Nov (disposition §6 row 19), which rules out the stateless form. MEASURED: neither measurement was ever taken (`ledger_map.md`, SES-16 Gap).
+5. How bad: minor in effect; misleads Bob by silence.
+6. Proposed correction: add to section I one item: "Three measurements your ledger asked for. A stateless architecture session against a handed-over one: cannot run, because a session started by an alarm cannot start sessions (0 of 3). Trimming the principles each role loads by the per-line test: the test ends at item 8. The share of ARCH's work that is routing: never taken. *Claude decided:* all three end unmeasured."
+
+### Finding 11. The tranche report loses three things your lines put in it (GAP-12, PLN-6, parts silently dropped)
+
+1. Counter-argument: The report in the definition leaves out the architecture session's idle time, the deferrals with their reasons and the work left, and gains a new item nobody asked for (addition A3).
+2. Lines: GAP-12 (kept): "A tranche's report also states BOB's idle time while work was ready and the minutes of Bob's it took." PLN-6 (kept): "elapsed time, work finished, deferrals with reasons, work left, cost, and the share of cost that was process overhead."
+3. Main text: G: "A tranche report: time, work done, cost, overhead, and the minutes it took of yours."
+4. Evidence: MEASURED: "GAP-12 is the only stated measure of D1 and D2" (disposition §5E). MEASURED against the Process3 mechanism: "the idle alarm misfired for 2 h 22 min" (disposition row P19).
+5. How bad: misleads Bob (the one number that shows whether the slots were kept full is gone).
+6. Proposed correction: G: "A tranche report: time, work done, work left, anything deferred and why, cost, overhead, the time ARCH stood idle while work was ready, and the minutes it took of yours. Where a figure cannot be read it says 'unmeasured'." Or declare: "Claude decided: idle time is not reported, because the alarm that measured it misfired."
+
+### Finding 12. Your own option to call for whole-product checks ends without being named (ARC-4, GAT-7, P11)
+
+1. Counter-argument: In your own words the whole-product checks run "before a release or when I ask for one". The definition tells you two of your powers stay and does not tell you this third one ends.
+2. Lines: ARC-4 (Bob's own words, 31 Oct): "... and over the whole product before a release or when I ask for one." GAT-7 (kept): "The full product regression runs only at a release or on your word". P11 (kept): "the full regression runs only at release or on Bob's word."
+3. Main text: H: "**The full regression and whole-product checks before a release** (three lines, two of which also asked for layer checks). *Why:* the internal walk replaces them." Opening: "Two of your powers that the first draft proposed to end now stay."
+4. From where: the session's record of 13 Nov ("No other test is necessary, ever. The internal walk replaces the full regression."). So it is a (c) by Bob's decision as recorded; the fault is that the ended power is not named.
+5. How bad: misleads Bob.
+6. Proposed correction: add to that bullet in H: "This also ends your own option, in your words of 31 Oct, to have them run "when I ask for one". If you meant to keep the option, say so."
+
+### Finding 13. Design lanes are named once and defined nowhere (SES-14, P21, parts silently dropped); section F puts a second question to you
+
+1. Counter-argument: Lanes are in your approvals and in two of your lines, in part in your own words. The definition gives them nine words in a list and no place among the sessions, yet your approvals let a lane's pull request merge with no tests run.
+2. Lines: SES-14 (modified; "and design responsibility" and the last sentence are Bob's): "a lane is a knowledge directory and design responsibility plus an on-demand worker BOB starts with that directory as its reading set; a long-lived lane only where measured worthwhile. The lifecycle of a lane includes refreshes that BOB manages to keep the session depth consistant." P21: "A lane has one area of focus, reads it whole and delivers designs, never product code; jobs and lanes reach a lane only through BOB; BOB defines lanes without Bob's approval."
+3. Main text: G: "Design lanes, with user experience always there." F: "one clause lets a design lane's pull request merge with no tests run, which is yours to keep or drop." Section B lists ROOT, coordinator, ARCH, job, worker and says "Sessions are at most three levels deep". The opening says "One question is still yours, in section K."
+4. Evidence: MEASURED: the approvals' lanes paragraph ("lane-only pull request lands without a suite run", `permissions_inventory.md` section 1a). REASONING: a lane pull request is a merge that is not a job's and that test one does not cover.
+5. How bad: costs Bob time; a second way to merge outside C steps 1 to 8.
+6. Proposed correction: add to B: "**A design lane** is a folder of design knowledge and a design responsibility. ARCH starts a helper or a session for it when a design is needed, and manages its refreshes so that depth stays the same. It delivers designs, never product code, and is reached only through ARCH. User experience is always there." Move F's "yours to keep or drop" into section K as a second question, or change the opening to "Two questions are still yours".
+
+### Finding 14. Smaller attribution faults
+
+| # | Main-text sentence | What the source shows | Proposed wording |
+| --- | --- | --- | --- |
+| 14a | J: "By your own rule, nothing here is in force until it has run on a real tranche." | Foundations line 9 (a session-drafted document): "Nothing here is in force until it has run on a real tranche with the two health metrics measured." Claude retired those two metrics at K point 5. The rule is quoted without the half Claude ended. | "By the rule in your Foundations, nothing is in force until it has run on a real tranche "with the two health metrics measured". Claude has retired those two (section K, point 5), so that half is not met." |
+| 14b | D: "One module already has an upgrade test among its own tests, which you kept on 8 Nov" | `DECISIONS.md` BD-R4, a session's record quoting Bob: "migrate-released need only look at perhaps the last 2 or 3 versions just to make sure that the migration process actually works." He narrowed it. "Kept" is Claude's reading. | "which a decision record of 8 Nov quotes you as narrowing to the last two or three releases" |
+| 14c | I 2: "end the every-job form, as you began to on 9 Nov" | `DECISIONS.md` PD-21, headed "(Bob, 9 Nov)", item 4 "The setup check runs once per pin". The record quotes Bob only in general: "Is this needed at all? If so, it must be done efficiently. If not, then cut it." No words of his name this check. | "as a decision record of 9 Nov began to, on your general instruction to cut what is not needed" |
+| 14d | I 7: "checks were added in 41% of merges both before and after you told sessions to stop" | Bob's words as sessions quote them, 5 Nov: "We only add additional checks when we can confirm from factual study and data." His own typed sentence in the field report: he "told CC repeatedly not to add checks that reduced development velocity without evidence of an absolute necessity". He set a condition; he did not say stop. | "after you told sessions to add a check only on evidence" |
+| 14e | I 11: "Your decision to preserve permission management covers it." | Session's record of 13 Nov: "Process3's permission management is preserved." That it covers this particular check is Claude's reading; the session's own withdrawn proposal had recommended removing the check (`live_docs.md` B, item 11). | "Claude reads the session's record of your decision to preserve permission management as covering it." |
+| 14f | F: "design lanes (your standing design areas, such as user experience)" | P21 (kept by Bob): "BOB defines lanes without Bob's approval." Foundations: "You identify the need for a lane and BOB opens it". | "design lanes (design areas you point out and ARCH sets up, such as user experience)" |
+| 14g | I 6: "You asked for it to be tried with an open mind." | Bob's own typed words (ledger note, REC-9): "Try this, but measure the experience with an open mind as to whether it's work or not." The open mind is on the measuring. The item then says honestly that the measurement was never taken. | "You wrote: "Try this, but measure the experience with an open mind"." |
+
+Correctly attributed, for the record: I 1 "Process3's decision record quotes you on 9 Nov" (it does, `DECISIONS.md` line 160); H "A session's record of 14 Nov gives the reason as your word"; the "Notes in your ledger" paragraph in K, which is more careful than the session's own record (that record says "you rewrote all six notes yourself"; the store has no author field); "your word adds or reorders work" (Foundations line 127); "as your documents say" at C, K point 4, and K technical points 1, 3, 10 and 14 (each rests on a stored ledger decision). Sources by kind for every "you" sentence are in section 5.
+
+### Finding 15. Model, effort and mode: two clauses of your sentence are lost (SES-8, way changed by Claude; parts from nowhere)
+
+1. Line: SES-8 (modified; "permissions mode" added twice by Bob): "Models, effort, and permissions mode come from one table, picked by the start command; always a model and effort sufficient for quality, and a permissions mode appropriate for the task at hand."
+2. Main text: K technical point 12: "*Decided:* ROOT passes your suggestion to every session it starts." B: "It may suggest a model and effort". F: "Every session runs in Auto mode, the only mode the platform allows here."
+3. What is lost: "always a model and effort sufficient for quality" (nothing says what is used when you suggest nothing); jobs are started by ARCH, not ROOT, so "every session it starts" does not reach them; your own clause on permissions mode cannot be met, and the text does not say so.
+4. Evidence: PLATFORM: "No locked-down (dontAsk) session can exist on the account", 1 Nov (disposition §6 row 9).
+5. How bad: minor; a job on a weak model costs a round.
+6. Proposed correction: K technical point 12: "*Decided:* your suggestion is passed to every session, by ROOT and by ARCH to each job. Where you suggest none, a model and effort sufficient for quality, as your ledger says. Your words "a permissions mode appropriate for the task" cannot be met: the platform allows only Auto mode here (section F)."

@@ -1,0 +1,61 @@
+
+**Your approvals cover every act of the process** (your word, 2 Nov). Consent quoted in a session's starting text does not count: in sessions another session started, the session's own model declined every merge asked of it (11 of 11), while with your consent typed in the acting session the judge refused none (0 of 21; both 2 Nov). So your committed CLAUDE.md is the one channel that reaches sessions you do not start, and the tranche-open check tries its acts at their real depth.
+
+**Running unattended: six conditions.** A tranche can run without you watching (GAP-1) while all six hold.
+
+1. Every session's START or starting prompt carries its authority: what it may do, and who its coordinator is, through the address file in git. Your approvals, committed in the repository's CLAUDE.md, cover what no START foresaw: with them a session acted on its coordinator's unforeseen ask 10 of 10 times, without them 0 of 10.
+2. Nothing needed for correctness depends on an act the judge has refused under your committed approvals; archiving sessions and switching off or deleting tasks stay housekeeping (PLT-2 as restated).
+3. The sweep runs on its schedule and catches a session stopped by three refusals in a row. Its parent may try one interrupt and message, but replaces it when it stays stopped: a job from its branch and pull request (JOB-6), BOB by handover, ROOT by the watcher. The acts it was refused are recorded and raised to you, and the replacement's START does not name them, so a refused act is never rerouted; a replacement at REFRESH after 10 refusals carries the same rule. The docs say a session paused by the classifier waits for a person's approval and do not say an interrupt or a message resumes it (read 3 Nov), so nothing depends on that.
+4. The live count stays at 24 or fewer, and every new session is checked to have started.
+5. The gate runs on every pull request, and records reach a protected branch only through a pull request.
+6. The sweep catches lack of progress, not only silence: a looping session pushes, and one ran four review rounds over two hours and $26 before you asked (2 Nov). Status reads each attempt's elapsed time and cost from the session record (readable, measured 2 Nov) against its role's median, and the sweep wakes BOB on one far over it: an alarm, not a cap. Review rounds stay bounded by INT-7's one complete pass and one confirming run, and repeats by JOB-14.
+
+**Hooks (ENF-1, modified).** At most a handful of command hooks, each for a rule with zero exceptions, each with a legitimate blocked exit (ENF-7); none that hold a turn, record an act or judge text. No model judge sits between a session and you (ENF-2). Nothing holds a turn, and stop means stop in that turn (ENF-3). There is no /goal: its check is a separate model reading the conversation, which ENF-6 rules out. A job that stops early shows in status as WORKING with nothing pushed, and the hourly sweep lists it for BOB (ENF-6, JOB-9; your word, 1 Nov).
+
+**One act per command.** A judged act chained with another command gives the judge one blob to decide (measured 2 Nov: the only judge refusal in rounds 2 to 4 fell on a chained merge). It is a nudge in every START and the tool's guidance; the per-session refusal count shows its cost, and a hook comes back only if that count calls for one (ENF-1).
+
+**Messages.** Git carries the state and a message only wakes; the record is pushed before the message is sent, in one command, and messages are numbered so a duplicate is ignored (MSG-1, MSG-3). A message from BOB's address, read from git, is an instruction; every other message is data; your words are instructions to every session (MSG-2). A message to you is one per turn, plain, with a link, and a numbered list only for an act of yours (MSG-4). A flaw report travels by the product's state branch and the reply by main of the process repository (MSG-5). An undelivered message is recorded and listed by status (MSG-6).
+
+## Setup: the conditions the work stands on
+
+Every account, setting and branch rule the process depends on is part of the design: listed, checked before each job starts, and set by the developer through the fewest steps, each with its reason and tested to work the first time (your word, 2 Nov). In Phase 1 every setting you changed was found only when something hit it.
+
+- The setup list in the process repository names each condition: what it is, why, its value, and who sets it. It is reviewed like code.
+- `setup check` reads every condition it can, at onboarding and before every job start; a missing one stops the start, so no job meets it as a refusal or a failure. It only reads.
+- One document, the developer's steps, kept in the process repository and evolved through the build, lists only the acts the developer must take, each with why; each product gets it as one onboarding page with its own names filled in, and BOB does every other part of onboarding. What the check cannot read (secrets, Actions settings, collaborators, the cloud environment) is confirmed there once.
+- Accounts. Sessions act on GitHub as a collaborator that can push and merge but cannot change settings (civicsmith); you act as the owner (decision 13). GitHub itself then keeps sessions out of settings and branch rules.
+- What GitHub enforces, it holds: every branch refuses deletion and force-push; main and the tranche take changes only by pull request, merge commits only, with the gate (or ci) and record required. The deny list holds the rest: settings files, file writes through GitHub's interface, and the plain merge routes.
+- A session reads the deny list only when it holds one repository and starts from a branch that carries it. So the coordinator is started with the product repository only, and every session starts from the tranche.
+
+**Deploy tokens.** The process deploys so walkers can run, so a project runs unattended only if it can deploy (your word, 2 Nov). Onboarding adds the product's deploy tokens to the cloud environment as environment variables, the one route both the deploy tools and setup check were measured to read (2 Nov), and setup check confirms each by name, never by value. Jobs share that environment, but deploying, releasing and acting on a live site are BOB's acts, not a job's (decision 14).
+
+**What the checks defend against.** The tool's checks hold against mistakes (a session that edits a settings file, touches another module, resolves a merge with an old copy, merges something red or stale, or moves the pin somewhere unreleased) and against outsiders' fork pull requests. A session that sets out to defeat them is held by walls GitHub enforces and no session can change: settings and branch rules, undeletable branches, pull requests with required checks into main and the tranche, and your approval for production. A reviewer's finding that needs a deliberate attack is a known limit, not code, so the tool does not grow without end.
+
+**Moving accounts.** Because nothing durable lives in a session, development can stop under one Claude account and restart under another on one plain request (your word, 2 Nov; GAP-8): the process retires and recreates sessions and tasks, the developer recreates the cloud environment and Claude's GitHub connection from a page the process writes, and each open job restarts from its branch and pull request (JOB-6). The procedure and its rehearsal live in the Build Plan.
+
+## Maintenance, certification and the two health metrics
+
+The process is pinned per tranche, changed only by a recorded act, and judged by two numbers neither earlier process measured.
+
+**Versions.** A tranche names the process commit it runs on; every session starts at the tranche's tip by its commit and, BOB, ROOT and the watcher, at each later wake, first move to the tip and compare its approvals with those loaded at start (a job stays on its own branch); its first command then verifies the pin, HEAD and the approvals block against the tip; if not, it acts on nothing, reports both SHAs and ends, and its starter starts a fresh one. Approvals load only at a session's start, so a change to them is taken up by replacing the long-lived sessions (MNT-4; a start by branch name landed on an old copy, 2 and 3 Nov, and a start by commit landed fresh, 1 of 1, process3 PR 36). Development under the process is development of the product, not of the process: a process flaw serious enough pauses the product's development, the process is fixed separately, and the product resumes on the fixed version (P3); during Process3's own first build, changes are expected. A blocking flaw is fixed and adopted by one recorded act that moves the pin, and no job restarts (MNT-5). A non-blocking flaw waits for the next release and the product's next tranche (MNT-6). A flaw report is one command from any session, answered on main, never fixed in place (MNT-7). A change to the process is built with the last released version (MNT-3).
+
+**The process under itself (MNT-1, modified).** The process repository has its own ledger, requirements, jobs on branches with tests and review, and tranches. It is governed by this thin process, not by a twelve-module architecture of its own.
+
+**Certification (MNT-8, modified).** Certification means ready for general use and is a long-term goal, in your words. The road there: a shadow run of one representative slice of the product, then the live first tranche as the certification, with the overhead and health metrics measured. Flaws found in the shadow are fixed before release and the run repeats from the step that found them (MNT-9). Each release names the platform rows and product sizes it ran at, and onboarding measures a new product against them (MNT-10, SHM-3). Nothing is declared in force on the day it is written.
+
+**Re-test per model (MNT-11).** At each model release and each Claude Code version change (reported refusal rates moved several-fold between versions), components are removed one at a time and the result observed; what the model no longer needs is retired. The approval test reruns too: the tranche-open check, and an act a START does not name, asked by its coordinator, with and without your CLAUDE.md.
+
+**Measurement.** Per tranche the process reports commits by purpose, sessions per job, gate runs per merged job, restarts and tokens by role (SES-11), and the tranche report states elapsed time, work done, deferrals, cost, the overhead share, BOB's idle time while work was ready, and the minutes it took of yours (PLN-6, GAP-12). Usage is read by an allowed route or named unmeasured (SES-9). The two health metrics from the first tranche (SES-12):
+
+- False-done rate: the share of COMPLETE claims refuted by the gate's re-run and revert check.
+- Cost per surviving pull request: tokens or dollars per PR still in place after a two-week revert window.
+
+**What a product receives (SHM-1 to SHM-5).** The short CLAUDE.md, one skill, a settings file with the permission lists and no hooks today (ENF-1 allows a handful), the gate workflow, and the prune workflow, with a drift check. Shims regenerate on GitHub's runner and merge by PR. A mid-tranche product converts by one command. Session setup is the product's own script, run by the first command.
+
+**Where the process stops.** The process owns everything that can be proven in git and CI, and nothing that happens on a live site. Civicsmith is a release, an installer and a site update, and those have three owners.
+
+| What | Owner | Why |
+| --- | --- | --- |
+| Installer and updater as code | The process | Modules of the product with requirements, tests and an owner; built by jobs and proven by the gate like any other module |
+| Release packaging | The process, as the Release workflow | Building the installer artifact and update manifest, signing them and publishing them as draft releases is deterministic CI work, the last thing the process can verify |
+| Rollout and operations | The product's own procedures and tools | Promoting an update to installed sites, staged rollout, monitoring, rollback and support act on live systems whose state is not in git; those acts are yours, given through the protected GitHub environment that names you as required reviewer, or a written procedure's run on that approval |

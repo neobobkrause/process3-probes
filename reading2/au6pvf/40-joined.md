@@ -1,0 +1,137 @@
+# [file] coordinator-handoff-7nov-c-switch.md (continued)
+
+- Stop acts sent, in order:
+  - jobs ai-catalogue, op-capabilities and inquiry;
+  - tasks switched off, never deleted: Phase 1/2 survival reads, coordinator hourly, ROOT sweep, watcher. Bob's alpha-pipeline-runner is not the process and was left as it is;
+  - lanes investigation, publication and ux;
+  - BOB, ROOT and the watcher.
+- Copy pin move to f6a9846: my STOP arrived after its push. Copy PR 761 (p3/pin-f6a9846db1, e4bbb2fe62) is OPEN and unmerged; no wake was sent. The new account reuses it or closes it in favour of a pin carrying C19/C20/R17g. The copy is still pinned at 19fe9dd.
+- Lanes: ux pushed (lane/ux cb138ca4b7, draft PR 762, open-work list in docs/development/ux-substrate-research/open-work-2026-11-07.md). Investigation's handoff 17908ea60 (open-asks A1–A10) was held by the old 120 ceiling; I told it to push with the tranche config. Check lane/investigation for it. If it's missing, the asks are in the artifacts THTtouNJzkhmHqyR4Pfa4g and UgRF58WWCfuDu88ztaKNbL. Publication pushed (lane/publication b82aa884, PR 764 lane-only: open-asks.md). BOB reported switch-out complete at 05:38Z. Job op-capabilities pushed at 3a67501a07. The probes are at f6a9846 (PR 239).
+- Builders ef7TXuV (C19/C20, append-only-state) and ef1pxNY (R17g, C18) were told to push and write notes/builder-handoff-ef7.md / -ef1.md on their branches. Heads are below once they report.
+- Builder ef7TXuV (handoff notes/builder-handoff-ef7.md on build/settings-credit 1ef83293):
+  - append-only-state is PR 232 (2ad2a86b, 1117/1117, cold-reviewed): merge it.
+  - R17g is on build/limits-only-github e55bcd4c. ef7 started it before the reassignment; the full suite and the cold audit were unfinished and there is no PR. The brake table is in the handoff. Reconcile it with ef1pxNY's R17g branch, if that builder pushed one.
+  - C19 and C20 are not started; next steps are in the note.
+- Investigation lane: pushed. lane/investigation is at 17908ea60a, with draft PR 763. Its open asks A1–A10 are safe.
+
+## State at shutdown
+- process3 tranche: 372438c (C17 PR 230, C16 PR 229, PD-5/PD-6 PR 231 merged).
+- Copy: layer 10 complete (4/4 landed). Layer PR 759 blocked by the record-check settings finding: C19 credits a settings change that a merge carries from an owner's commit already on tranche. PR 752 op-capabilities is parked for layer 11. Config PR 760 merged (pushes_per_hour 1000000, coordinator = the old coordinator's id, to be reset).
+- Bob's holds and decisions:
+  - No layer 11 open until Bob says (account switch).
+  - Q9 recorded as BD-14 (copy PR 758). Q9.1 fallback "rules-out marks only"; UX check "Q9.1 only".
+  - Walkthrough https://claude.ai/artifact/WCzdua7ccBB95KbtwGvatt is waiting on Bob's B-vs-fallback call.
+  - IV-9 contrary-recall bar is owed by Bob (the lane recommends 0.8 / gap ≤0.1).
+- PD-6 (Bob: "baseless overcaution NEVER"): only GitHub's published limits (at 85%) or GitHub's actual refusals brake. Pushes are counted, never refused. R17g implements it (builder ef1pxNY). Until it is pinned, configs set pushes_per_hour 1000000. Process3 clones still default to 120: merge R17g first.
+
+## New account: first acts, in order
+1. Bob's section 2: connect GitHub as the collaborator, install the GitHub App on the three repos, recreate environment BioDefault with its Cloudflare secret, share the claude.ai documents, approvals if their wording needs it.
+2. `switch in --sessions <file> --by <new id>` on the copy and the probes (section 3). Then its acts (a)–(h), EXCEPT that layer 11 stays shut until Bob lifts his hold.
+3. Builders: restart from their handoff notes. Priority: C19 (unblocks layer merge 10), C20, R17g, then append-only-state, then C18.
+4. One pin move (copy + probes) carrying C17, C19, C20 and R17g. Then BOB re-runs the PR 759 gate and `layer merge 10`.
+5. Recreate the coordinator's tasks: hourly (:51, with the PD-3 line replaced by PD-6), Phase 1 survival read (16 Nov 17:00Z), Phase 2 (18 Nov 17:00Z).
+6. Bob archives the old account's sessions and deletes its switched-off tasks once the new ones run.
+
+## R17g cold audit (build/limits-only-github e55bcd4c), relayed by ef7TXuV at 05:36Z
+Full suite 1114/1114 at e55bcd4c (finished after shutdown). Core is correct: pace.test 20/20; 524 pushes an hour pass with no wait; budgetGate admits at any push count; published limits and GitHub's pause and stop still brake. Fix before merging:
+1. Med: limitSignal misses a bare `gh: HTTP 429` (no message or URL). Treat any 429 from gh as GitHub's unless it names a proxy, and add a test.
+2. Med, pre-existing: git push `RPC failed; HTTP 429` matches SERVER_ERROR (util.mjs ~610), so pushRetry and ghshare's ledger write retry at 1/2/4/8 s inside GitHub's refusal. Route push stderr through limitSignal to a pause, and take 429/403 out of SERVER_ERROR.
+3. Low: an old config's poll_most_s 300 brings the 5-min back-off back; retire it. merge.mjs transientPause's TRANSIENT pattern matches proxy 429s and "rate limit".
+4. Low: reword POLL_FLOOR_S and `--every >= 30` (p3.mjs ~146) as poll cadence, not GitHub pacing.
+5. Low: stale text (merge.mjs:70, layerflow.mjs ~962, p3.mjs:144/530, pace.mjs:86/344, notes/github-pacing.md:44,48). Dead code: lane.mjs laneCap (~393-399), util.mjs lower/from (~470).
+6. Info: `gh api graphql -F query=@file` holding a mutation is counted as a read. Notes are not spaced (GitHub's 1-s write guidance).
+
+## Builder ef1pxNY at shutdown (05:45Z)
+- Handoff notes/builder-handoff-ef1.md on build/github-no-overcaution 796b2b60 (brief only). R17g itself is ef7's build/limits-only-github e55bcd4c, above: use that one.
+
+Note for jobs, in force until withdrawn: the reviewer for jobs has changed. Handover notes now carry the line `reviewer: Kwabena Asantewaa`, and the name Maren Oduya is no longer written anywhere in a handover note.
+
+- C18 is on build/read-no-push 08105d31. DO NOT MERGE AS IS: the cold review found 6 bugs (double push after replay or concurrency, a lost waiting record on an unlocked rewrite, an unlocked state-ref move, idle-check alarms from every session, usage shares no longer reaching other clones). Fixes are in notes/builder-handoff-ef1.md on build/github-no-overcaution d16ea49c. The caching half is sound. `status --role bob` warm: 21 requests (from 357), 144 s (from 399).
+- C16 is merged (PR 229). C15's build/sweep-permission 0be0b850 is an old branch (C15 merged as PR 219); drop it unless its handoff says otherwise.
+- New PRs carrying the claude.ai documents into git: process3 233 (governing/: Foundations and Ledger map), copy 765 (Q9 paper and BD-14 requirements), copy 766 (Q9.1 walkthrough HTML). Merge any still open.
+
+
+# [file] 04-reads.txt
+
+### ANCHOR: /** R72: a provider's refusal for a spent limit (Anthropic's 429
+/**
+ * A lens manifest's bundles as `bias` lists them or as the opener handed them; each entry's kind is `bias`' to fix
+ * (the open records `{bundle_id, revision}` for each).
+ * @typedef {unknown[]} LensBundles
+ */
+/**
+ * R20: the lens in force when the run opened, as the open recorded it. Three forms: recorded and readable
+ * (`recorded: true` with the lens fields); recorded and unreadable (`recorded: true, unreadable: true, stated`); not
+ * recorded, a run opened before the open recorded it (`recorded: false, stated: "not recorded"`).
+ * @typedef {object} LensAtOpen
+ * @property {boolean} recorded
+ * @property {boolean} [unreadable]  True only in the unreadable form.
+ * @property {string} [stated]  The sentence of the two forms that carry no lens.
+ * @property {boolean} [in_force]  Whether any lens was in force at the open.
+ * @property {string|null} [statements_sha]  The hash of the statements in force at the open; null when none was.
+ * @property {string|null} [scope]
+ * @property {string|null} [scope_id]
+ * @property {LensBundles} [bundles]
+ * @property {string|null} [at]  The open's instant.
+ */
+/**
+ * R20: the lens block of a run.
+ * @typedef {object} RunBiasBlock
+ * @property {boolean} in_force  Whether a readable manifest was handed at the open.
+ * @property {string|null} stated  The sentence when none was handed or the handed one is unreadable; null otherwise.
+ * @property {{scope: string|null, scope_id: string|null, statements_sha: string|null, bundles: LensBundles}|null} manifest
+ *  The handed manifest as recorded, never recomputed; null when none was handed or it is unreadable.
+ * @property {{in_force: boolean, statements_sha: string|null, bundles: LensBundles}|null} now  The lens in force now for the run's
+ *  context; null when no manifest is readable and the open recorded no lens.
+ * @property {boolean|null} moved  Whether the lens has moved: the open's against now where the open is recorded, else the handed
+ *  one against now; null when either side is undetermined.
+ * @property {"at_open"|"handed"|null} moved_basis  Which of the two comparisons `moved` is.
+ * @property {LensAtOpen} at_open
+ * @property {"in_force"|"stale"|null} hand  Whether the handed lens was the one in force at the open; null where the open
+ *  recorded none or the handed manifest is unreadable.
+ */
+/**
+ * R21, R86: the bar of a run. Never filled in.
+ * @typedef {object} RunStandard
+ * @property {boolean} in_force  True exactly when `basis` is `recorded`.
+ * @property {StandardBasis} basis
+ * @property {string} stated  The basis' sentence (run-rules' `STANDARD_BASIS`).
+ * @property {{capture: string|null, connection: string|null}|null} pair  Only when `basis` is `recorded`; each axis trimmed, null
+ *  when the pair names none for it.
+ */
+/**
+ * R19: a run as `read` and `listInContext` answer it. (The requirements name `principal.ai` where this code answers
+ * `principal.claude`: R19 as amended at T53, not yet met.)
+ * @typedef {object} RunSession
+ * @property {string} id  The run's id.
+ * @property {string|null} label
+ * @property {string|null} mode  A `RunMode` for every run `open` wrote; the column itself is nullable.
+ * @property {string} status  A `RunStatus` for every run this module wrote.
+ * @property {number} ticks  [bound ticks: a whole number of one or more]
+ * @property {IsoSecond} created
+ * @property {IsoSecond} updated
+ * @property {IsoSecond} expires
+ * @property {{type: string, id: string, questions?: string[]}} context  `type` is a `RunContextType` for every run `open` wrote.
+ *  `questions` only for a project run: the questions the project confirmed-cites that the viewer sees, sorted.
+ * @property {{plane: string, claude: string, ref: string|null, skill: string|null}} principal  `plane`: the plane principal;
+ *  `claude`: the paying owner (`member:<id>`, `project:<id>` or `group`); `ref`: the member whose act the run is (`member:<id>`);
+ *  `skill`: the skill version.
+ * @property {BudgetRow[]} budget  In bound-name order.
+ * @property {{kind: string, detail: string, bound: string, at: string|null}|null} condition  For an ended run: `kind` the queue
+ *  condition named at its ending (empty when none), `detail` the stopping bound's or ending's sentence, `bound`, `at`. Null while it runs.
+ * @property {RunBiasBlock} bias
+ * @property {RunStandard} standard
+ * @property {unknown} state  The run's resumable scratch as its last tick wrote it, parsed; null when it cannot be read back.
+ * @property {string|null} rerun_of  The run this run re-runs, when the viewer can see that run; else null.
+ * @property {UntestedLabel|null} untested  R78.
+ * @property {string|null} project  R89.
+ * @property {string} [step]  R73: present only on a run that works a step.
+ * @property {string} [origin]  Present only when the origin is not `member`.
+ * @property {RunCost} [cost]  R76: present only for an owner of the paying account.
+ * @property {string|null} [plan]  R46: present only on a run in mode `plan`.
+ * @property {string|null} [response]  R77: present only on a re-examination run.
+ */
+/**
+ * What `read` hands back (R19): an absent run and one the viewer cannot see answer alike.
+ * @typedef {{run: string|null, found: false, session: null} | {run: string, found: true, session: RunSession}} ReadAnswer
+ */

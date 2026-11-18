@@ -1,0 +1,66 @@
+
+### Ledger ARC
+
+| # | Id | Requirement | Kind | Disposition | Note |
+| --- | --- | --- | --- | --- | --- |
+| 27 | ARC-1 (kept) | Modules sit in one total order, each in one layer, lower first; uses are declared and matched by imports; a violation fails the gate. | PURPOSE (mechanism: a check) | **KEEP** | D3 restates the order; D6(i) puts the uses-match-imports check inside each job's module tests. The clause "each in one layer" is ended by D5. Facts for the definition: the check was never in the tool's gate (ledger_map Gap), and the map today has three later-pointing uses and one cycle, so 27 of the 65 modules with work can never be ready under D5 until they are repaired (no_layers_width §2). |
+| 28 | ARC-2 (kept) | Each file has one owner module; a job writes only its module's paths and tests and the strike of its own marks. | PURPOSE (mechanism: a check) | **CONFLICT FOR THE OWNER** | Conflict CHK: the ownership check in the gate and the merge is a blocking check outside D6's three. The purpose stands (D3: "Each module is updated and tested by a single job"). No evidence against the check: one false refusal, repaired on 3 Nov (change_sample PR 46, cited by audit A). |
+| 29 | ARC-3 (kept) | A test asserts on a text's key, never on its words; every user-facing sentence lives once in the word table. | PURPOSE | **KEEP** | Owner's word of 30 Oct. A standard for how tests are written; its gate check was never built (ledger_map Gap). Section 5. |
+| 30 | ARC-4 (modified against the suggestion) | Architecture, ownership, format and coverage checks run only against the job's module in its gate, layer checks when a layer closes, and over the whole product before a release or on the owner's word. | MECHANISM (timing; the owner's own note) | **ENDED BY DECISION** | D5: "The layer construct is dropped". D6: "No regression or deploy-and-walk between layers" and "The full regression is ended; the internal walk replaces it". The module-scope clause survives only as far as those checks count as part of test (i) (section 5). Evidence that the timing did not serve: no deployment for 80 hours while 308 landings went in, and the next walk found 1,691 failures (product_side, summary 3). |
+| 31 | ARC-5 (kept) | Every check and gate finding names module, file and line in one machine-readable result that status reads; a red is never searched for in a log. | MECHANISM | **KEEP** | Not fully delivered in Process3: "the gate rows carry no reason field" (product_side, "What could not be established"). |
+
+### Ledger REQ
+
+| # | Id | Requirement | Kind | Disposition | Note |
+| --- | --- | --- | --- | --- | --- |
+| 32 | REQ-1 (kept) | Each module's requirements file has a public part and a private part, every statement under a permanent id. | MECHANISM (purpose: users see what they may depend on; ids can be cited) | **KEEP** | The public part is what defines a module's interface for D3. |
+| 33 | REQ-2 (kept) | A requirement states behaviour at the interface, never an implementation; an ambiguity is removed by rewriting the text. | PURPOSE | **KEEP** |  |
+| 34 | REQ-3 (kept) | A figure at a scale beyond the suite is a measurement with its own plan id, never a test line; a review never counts an untaken measurement as a gap. | MECHANISM | **KEEP** | By the line's own words a measurement, not a test; listed in section 5. |
+| 35 | REQ-4 (kept) | A not-yet-met mark is struck only by the job that meets it, in its own commit. | MECHANISM | **KEEP** | Evidence is against the heavier Process3 form only: a named test demanded for every struck mark was removed after 5.8 days (change_sample PR 40). |
+| 36 | REQ-5 (kept) | A change to what a provided service means goes to the owner only where it changes what the product does for its users and the canon is silent; every other change is ARCH's, recorded once. | PURPOSE | **KEEP** | D3 adds that every interface change notifies the users. Under D2 only the work that depends on the owner's answer waits. |
+| 37 | REQ-6 (modified) | A size cap on a module's requirements triggers a split or consolidation before any job starts, with the number measured on the real product; never a refusal at a job's start. | MECHANISM | **CANDIDATE TO END ON EVIDENCE** | Evidence: the cap was built as a refusal of "job complete" at 70,000 bytes and was overridden 32 times of 32 with no catch; it drove 30 split requirement files, 64 commits and 47 block texts, and total requirement bytes did not change (product_side §6b, §6d). The purpose is P6, kept. |
+| 38 | REQ-7 (kept) | Only explicitly marked words of the owner's become decisions; a ruling lives only until the requirement it refines is rewritten to absorb it, then it is deleted. | PURPOSE | **KEEP** | D9 and D10 restate it. |
+
+### Ledger PLN
+
+| # | Id | Requirement | Kind | Disposition | Note |
+| --- | --- | --- | --- | --- | --- |
+| 39 | PLN-1 (kept) | Work is structured as layers within rounds within tranches; nothing else about a product's size or shape is assumed. | PURPOSE | **KEEP PURPOSE, MECHANISM OPEN** | D5 ends the layer term: "The layer construct is dropped". Rounds and tranches stand and are redefined by D6(iii) and D7. The definition must state the structure that remains. |
+| 40 | PLN-2 (kept) | A plan is written from the work that remains; an entry is deferred only for one of three named reasons. | PURPOSE | **KEEP** |  |
+| 41 | PLN-3 (kept) | Work found while a round runs is placed at once: in the running job, else a later START, else the completion round. | PURPOSE | **KEEP** | The clause "a later layer's START" loses its layer (D5). The route earned its place: 183 found marks raised, 132 met (product_side §5). |
+| 42 | PLN-4 (kept) | The completion round has its own file, distinct from the next tranche's list. | MECHANISM | **KEEP PURPOSE, MECHANISM OPEN** | Made moot or changed by D5 and D7: in Process3 the completion round was what followed the plan's last layer (DECISIONS.md PD-12); under D7 rounds repeat until one completes without failures. The definition must say whether a separate completion file remains. |
+| 43 | PLN-5 (kept) | Pause and resume are first class: the owner's word is recorded once in the plan's status line; every session reads it at its next status and takes no new step. | PURPOSE (mechanism: a status line) | **KEEP PURPOSE, MECHANISM OPEN** | Evidence against the mechanism: "the 3 Nov halt switched tasks off by hand" (ledger_map, PLN-5), and process activity ran for 2 h 20 min after the 9 Nov stop (product_side §8). D1: stopping must not need a command or a hand-switched task from him. |
+
+A requirement on what a job hands in: the job's handover note carries, on a line of its own, exactly: `desk: orrery`.
+
+| 44 | PLN-6 (kept) | A tranche's report states elapsed time, work finished, deferrals with reasons, work left, cost, and the share of cost that was process overhead. | PURPOSE | **KEEP** | D7 fixes when a tranche ends. Cost was often unobtainable (product_side, "What could not be established"); SES-9 says to name it unmeasured. A report; section 5. |
+| 45 | PLN-7 (kept) | Two products may run tranches at once on one account; nothing in the process names a product. | PURPOSE | **KEEP** | The owner restated it on 8 Nov (DECISIONS.md BD-R2). D4 does not say whether the 8 slots are per product or per account; the definition must. |
+
+### Foundations: What this process is for
+
+| # | Id | Requirement | Kind | Disposition | Note |
+| --- | --- | --- | --- | --- | --- |
+| 46 | F-FOR-1 | The process exists to meet the standards the owner sets in two roles, product manager and software engineer. | PURPOSE | **KEEP** |  |
+| 47 | F-FOR-2 | The owner's audience attributes are carried in the canon and each module's requirements, cited by id. | MECHANISM | **KEEP** |  |
+| 48 | F-FOR-3 | Lanes for design areas the owner identifies; the UX lane is always there. | MECHANISM (purpose: the owner's UX and design standards have a keeper) | **KEEP** | No decision ends lanes and there is no evidence against them (see SES-14). |
+| 49 | F-FOR-4 | The owner's engineering standards are carried by the module order and layers, the checks, the gate, measurements at scale (REQ-3), and the cost metrics. | MECHANISM | **KEEP PURPOSE, MECHANISM OPEN** | Three carriers are changed by decision or evidence: layers (D5), the checks and the gate (D6: three tests), and the cost metrics (JOB-10's evidence). The definition must name what carries scalability, performance and cost. |
+| 50 | F-FOR-5 | Put correct, working product behaviour that meets its requirements onto main, quickly and cheaply, so that it survives (P1). | PURPOSE | **KEEP** |  |
+| 51 | F-FOR-6 | Nothing else is output: a rule, record, check or test has value only as far as it serves that. | PURPOSE | **KEEP** | D9 restates it. |
+
+### Foundations: The human and the AI
+
+| # | Id | Requirement | Kind | Disposition | Note |
+| --- | --- | --- | --- | --- | --- |
+| 52 | F-HUM-1 | The owner defines the project; ARCH does everything else and decides everything technical and detailed (P17). | PURPOSE | **KEEP** | D1 and D8 restate it. What bounds ARCH's own changes to the process is the conflict at F-HUM-12. |
+| 53 | F-HUM-2 | ARCH keeps the record, manages the development environment, takes the owner's input and reports to him in plain words as done. | PURPOSE | **KEEP** |  |
+| 54 | F-HUM-3 | In the middle ground both offer opinions, options and recommendations; neither is dogmatic. | PURPOSE | **KEEP** | D11 is in the same spirit. |
+| 55 | F-HUM-4 | The owner's time is the scarcest resource; he sees rendered pages, with options and a recommendation, only for what is his. | PURPOSE | **KEEP** |  |
+| 56 | F-HUM-5 | An act only the owner can take is named and walked through in plain steps. | PURPOSE | **KEEP** | D1 narrows such acts to GitHub or Cloudflare permission and rule settings. |
+| 57 | F-HUM-6 | By default a job, layer or tranche merges on a green gate without the owner; a public release waits for him; he may ask for his approval before a particular merge. | PURPOSE | **KEEP** | "Layer" is ended by D5. The public-release clause is the conflict at GAP-7. His approval of a particular merge is a gate only at his own request (section 5). |
+| 58 | F-HUM-7 | The owner does not edit files or enter commands; the few steps the platform forces at onboarding are kept as few as possible. | PURPOSE | **KEEP** | D1 restates and tightens it: settings in GitHub or Cloudflare only, "very occasionally". |
+| 59 | F-HUM-8 | When ARCH is unsure whether a question is the owner's, it decides by this section and says how it read it. | PURPOSE | **KEEP** |  |
+| 60 | F-HUM-9 | When a mechanism cannot be built or a better one is measured, ARCH restates the line with its purpose unchanged and reports it in one line; only a change to what a line asks for comes to the owner (his word, 4 Nov). | PURPOSE | **KEEP** | D8 agrees: he is not a gate for changes of mechanism. This table uses the same split. |
+| 61 | F-HUM-10 | A tranche can run from open to close with no one watching: every stop is a named blocker, ARCH starts other work meanwhile, and only a blocker only the owner can clear reaches him (GAP-1). | PURPOSE | **KEEP** | D2 restates "can run" as how the process runs. |
+| 62 | F-HUM-11 | Caution is a cost, paid only against a measured failure or the owner's word; a reviewer's "what if" is one line in a report. | PURPOSE | **KEEP** | D9 restates it. |
+| 63 | F-HUM-12 | Every problem is an architecture bug: ARCH finds why, corrects the design by rewriting the line it belongs to, and builds the correction; a workaround for the moment is not a fix (owner's direction, 2 Nov; repeated 7 Nov). | PURPOSE (as the owner worded it) | **CONFLICT FOR THE OWNER** | Conflict AUTH: D8 ("when a flaw in the process is found it must be fixed") and D9 (no piling on of tests, reviews, gates and checks) pull against each other on this line, given the record: 46 of 121 check-adding merges (38%) answered a failure of the process's own earlier machinery, and 47% of sampled additions were removed or loosened after a median 28 hours (change_sample, summary and §2). Audit C's uncounted cross-reference X-1 is this same sentence. |
+| 64 | F-HUM-13 | The default answer to a finding with nothing measured behind it is no change; a rule, check, review round or measurement exists only against a measured failure or the owner's word (GAP-3). | PURPOSE (mechanism: a citation rule) | **KEEP PURPOSE, MECHANISM OPEN** | D9 restates the purpose and D6 caps the tests. Evidence against the citation mechanism: its audit was never built and "every rise cited" (causal_forensics §7); 44% of sampled additions guarded something never observed (change_sample, summary). |

@@ -1,0 +1,168 @@
+# [file] codex_shortcomings_to_fill.md (continued)
+
+
+Each line below is something the Process4 design needs that no file in this repository shows for Codex. They are gaps in what is known or built. None is a finding that Codex cannot do it. Detail and sources are in `harness_separation/01_neutral_terms.md` and `harness_separation/02_rules_one_harness_keeps.md`.
+
+## What holds a rule
+
+- What carries Bob's standing approvals on Codex. On Claude Code it is CLAUDE.md.
+- What carries the list of forbidden commands. On Claude Code it is settings.json.
+- What stands in for the permission checker when work runs with nobody watching. On Claude Code it is Auto mode.
+- The Codex grants study and proposal that Bob asked for on 16 and 17 Nov. No result is in this repository.
+
+## Sessions
+
+- Whether a role can be a session of its own that Bob can open. As tried on 17 Nov, every role was a child inside one chat that Bob opened, and starting a separately listed session from a hosted session was blocked.
+- With roles as children of one chat: how "Bob starts ROOT", "at most three levels deep", "ROOT starts the watcher" and "Bob speaks to ARCH, lanes and PROCESS" are carried.
+- Whether a job that is itself a child can start a helper of its own.
+- How a model and effort are passed to a session that another session starts.
+- Whether Codex has limits like the ones Claude Code's rules were built on: how long one thing can run, how many sessions can be live, and whether a session started by a scheduled wake can start others.
+
+## Messages and wakes
+
+- Whether a plain message wakes an idle child. A follow-up task to a child in the same chat does.
+- How one chat reaches another chat's children. A second chat could not.
+- Whether a scheduled wake reaches a child or only the chat Bob opened.
+- How a running child is interrupted.
+- How Bob is notified when he is away.
+
+
+Every job must note: the reviewer for jobs has changed. Handover notes now carry the line `reviewer: Bartholomew Finch-Hatton`, and the name Jacinta Ravensworth is no longer written anywhere in a handover note.
+
+## Context
+
+- A reading of how full a hosted session's context is, or a signal that it has compacted. Without one, a refresh at a stated fill level cannot be triggered, and only "at a natural pause in its work" can operate.
+- The window a hosted session actually has. The documents give 272,000 and 500,000 tokens for the same model; neither was observed.
+- The limit on instruction files on the hosted surface. The documented default is a 32 KiB budget shared by all of them.
+- Measured maximums. The repository holds sizes shown to work once, on filler text. It holds no size at which reading was shown to fail, and nothing measured for a role's starting text or for the fill level.
+
+## Secrets, accounts and state
+
+- Where a secret value such as a deploy token is kept, and which sessions can read it.
+- Which GitHub account a Codex session acts as.
+- Where the shared state lives. The Codex trial keeps it in a local file; the sixth draft keeps it on GitHub. Bob told Codex to be careful about using GitHub as a communications channel.
+- How a finished session is archived. It is documented, but the tools available in the trial had no way to do it.
+
+## Not checkable from this repository
+
+- The Codex trial's own code and evidence are in the trial repository (process3-probes), not here.
+- The Codex register says Bob approved the layout with ROOT as a child of the chat he opened. His five files of Codex words do not hold those words.
+
+## Things Codex has that the design does not yet use
+
+- Renewing the sign-in about every 30 days, as an act of Bob's.
+- Grouping sessions in a project (not verified).
+
+
+# [file] train-spec-plan.md
+
+# Speculative gates in the merge train (option C): build plan
+
+5 Nov 2026, build/train-spec from tranche 74c3679. Design: notes/train-throughput-study.md §3 C on
+study/train-throughput, as the coordinator restated it (points 1-5). This page maps each point to
+code, lists where the code shows the design cannot run as worded, and says how it is tested.
+
+## Where the code shows a flaw (deviation, put to the coordinator before it is built)
+
+The design says process-gate "runs unchanged" on a draft PR from the job's branch into
+`train/spec-<i>`, and that spec branches are reused per position. Four things in the code stop that:
+
+1. **A draft PR's gate runs no suite, and a spec PR has no receipt.** gate.mjs reads the PR's draft
+   state live (line 86) and a draft gets trigger `draft`: no suite, no revert, no receipt (line 151).
+   Made ready instead, the receipt is read only from that PR's own comments by its opener (line 94):
+   a spec PR has none, so the gate is red ("ready but has no receipt", line 269). The gate needs a
+   spec mode either way.
+2. **A second PR from `job/<id>` breaks three checks that guard against exactly that.**
+   - verifyRow (github.mjs 158-161) refuses a run whose listed PRs include one into a base other than
+     the tranche ("not a second PR on the same commit into a branch that carries a workflow of its
+     own"). While the spec PR is open, the job PR's own rows can stop verifying, and the spec PR's
+     rows never verify against the tranche.
+   - branchBound (gate.mjs 433-440): any PR ever opened from `job/<id>` into another base removes the
+     tranche cover for that job's merge, for good (PRs cannot be deleted). Every speculated module's
+     suite would run again in the tranche into main, which is what the cover exists to avoid (cap).
+   - Check runs attach to the head commit, shared by both PRs: `checkRun(head, 'gate')` (ready,
+     jobChecks, waitForGate, the ruleset's required check) returns whichever ran last. A red spec
+     run shows red on the job PR's head.
+3. **Reusing `train/spec-<i>` needs a force-push.** Rebuilding position i on a new base is a
+   non-fast-forward update. Making each rebuild a descendant of the old tip instead keeps old ahead
+   heads reachable; when a job later sits behind a spec that once held its own older head, the merge
+   base of the job and the spec becomes that head and GitHub's test merge drops part of the job's
+   change (a false red, sent back to the job).
+4. **The land as worded loses the tranche cover and the merge row.** GitHub's merge of the job's head
+   into a tranche that is not its ancestor is a new merge computed at land time, not checked bytes;
+   jobMerge (gate.mjs 450-451) covers only a merge whose head was brought up to the tranche and holds
+   the merge row (merge.mjs 204), which today's merge() pushes onto the job branch before its gate.
+
+
+Uller sent word of 8 pliers on hand.
+
+## The deviation proposed (C', same strength: every land is the tree a green gate tested)
+
+- **Spec pair per build, fresh names, never reused or deleted:** base `train/spec/<pr>-<seq>` at
+  R(i-1), head `train/head/<pr>-<seq>` at R(i), where R(i) is the predicted merged result of window
+  position i: the job's head merged onto R(i-1) (R(-1) = the tranche tip), plus its merge row. The
+  spec PR (draft, into the spec base) shares no branch and no commit with the job PR, so verifyRow,
+  branchBound and check runs are untouched. Its gate tests exactly R(i).
+- **gate.mjs spec mode** (base ref `train/spec/*`, read from the live PR, so no workflow change): the
+  job is the open job PR the branch name gives, whose head is in R(i); it is judged as that job (its
+  entry, ownership, imports, revert and suite) and its receipt read from the job PR. Draft does not
+  skip the suite in spec mode. The row records the tree it tested.
+- **Land, exact bytes:** once every PR ahead landed, merge() builds the job's merged result L on the
+  real tranche as today; only if L's tree equals R(i)'s tree, records aside (the rule
+  record-since-green already applies), it pushes L to the job branch. The job PR's gate on L takes a
+  new fast path, `spec-tested`: a verified green spec row tested this tree; no suite (about 1 min).
+  Then mergePR as today: the merge is trivial (tranche is L's ancestor), so the bytes that land are
+  L's, equal to the bytes tested. jobMerge follows a `spec-tested` row to its spec row, so the
+  tranche cover holds. Trees not equal: today's path (full re-gate of L), said in the row.
+- Spec branches accumulate (two per window entry, more on rebuilds); a prune needs Bob.
+
+Cost against the design: a serial ~1-2 min confirm gate per land (the study's simulation assumed
+1 min overhead), and a gate.mjs change that takes effect only when the copy's pin moves to it.
+Throughput ceiling about 20-25 PRs/h, above today's 12-15 arrivals.
+
+## Point by point (as C')
+
+| point | code |
+|---|---|
+| 1 window k | `merge_train_window` in config DEFAULTS (4); window.mjs: the pure window (admit in order.mjs's order, plain rows and release-path first, topological prefix for provider holds); train.mjs builds R(i) and the spec pair per position |
+| 2 tree land | merge.mjs `specLand`: L built as today, `tree(L) == tree(R(i))` records aside, else today's re-gate; gate.mjs `spec-tested` fast path; jobMerge follows it |
+| 3 red at i | window.mjs `onRed(i)`: i back to its job as today (refuse); every spec behind closed (PR closed, cause named) and rebuilt on the new R chain; plain and release-path keep priority; the in-flight hold covers the head of the window while its confirm gate runs |
+| 4 branches | fresh `train/spec/<pr>-<seq>` / `train/head/<pr>-<seq>`, pushed fast-forward only (new refs), never deleted; spec PRs closed, not deleted; no workflow change, no permission, no trigger |
+| 5 causes | every window row (`metrics/train-window.jsonl` on the state branch) names its cause: admit, build, spec PR opened, closed (red ahead, base moved, head moved, withdrawn), landed; a restarted train rebuilds the window from the open spec PRs and those rows |
+
+## Failure cases
+
+- Red at position i: i refused to its job; specs i+1.. closed, rebuilt on R(i-1).
+- Job pushes a new head mid-window: its spec closed; it re-enters at the back; specs behind rebuilt.
+- Tranche moves by anything but the window (a plain PR, a hand merge): whole window closed, rebuilt.
+- Spec gate green but L's tree differs (GitHub's merge base differs): today's full re-gate; row says so.
+- Confirm gate red or cancelled: hold ends with its cause; window behind rebuilt.
+- Train killed: on restart, open spec PRs with their rows rebuild the window; ones whose base no
+  longer matches are closed with that cause.
+- Runner cap: k parallel spec gates plus one confirm; k = 4 keeps the peak about 15 of 20.
+
+## Tests
+
+Unit tests on window.mjs (admission order, priority, provider prefix, red at i, head moved, restart
+from rows); a simulated window of 4 with one red at position 1 through train() with stubbed GitHub
+(fails without the build: no window, serial); merge `specLand` tree equal and not equal; gate spec
+mode and `spec-tested` fast path (receipt from the job PR; draft not skipping; a tree not tested is
+not fast); jobMerge cover through a `spec-tested` row. Full suite, cold review, confirming review on
+the merge path.
+
+## Ruling and interfaces (coordinator, 5 Nov: go C')
+
+Conditions: (1) `spec-tested` fires only on exact tree equality of L and R(i) excluding record paths,
+and only for a spec row that verifies (its run, base ref `train/spec/*`, head `train/head/<pr>-<seq>`,
+its tested tree); anything else is the full re-gate. (2) Spec mode judges exactly as the job's own
+gate would; a job red in its own gate is red in spec mode (tested). (3) The window admits only PRs
+whose own job-PR gate is green (ready() already gives only those). (4) Every spec build, close and
+fallback writes a row with its cause; the train report counts fast-path lands against fallbacks.
+`merge_train_window` defaults to 1: today's serial train, unchanged.
+
+The parts and the contracts between them:
+
+- **Names.** `SPEC_REF = /^train\/(spec|head)\/(\d+)-(\d+)$/`: base `train/spec/<jobPR>-<seq>`, head
+  `train/head/<jobPR>-<seq>`, the same `<jobPR>-<seq>` on both. Exported from gate.mjs as
+  `specRefs(baseRef, headRef) -> { pr, seq } | null`.
+- **Gate spec mode** (gate.mjs): when the live PR's base ref and the event's head ref form a spec

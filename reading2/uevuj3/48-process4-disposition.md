@@ -1,0 +1,61 @@
+# Process4: disposition of the 288 Process3 requirement rows under the owner's decisions of 13 Nov 2026
+
+One row for every requirement the three audits drew from the Keep and Drop Ledger, the Foundations and the Ledger map. Each row carries one disposition under decisions D1 to D11. Nothing here is a design, and no requirement is added.
+
+## How to read this
+
+- **Rows.** The row list and ids are those of audits A, B and C, in their order: 151 Ledger lines and 137 Foundations requirements. Audit C's cross-reference X-1 is uncounted there and here; it is the same sentence as F-HUM-12.
+- **Requirement.** One line in the documents' terms. Under D10 the architecture role is written ARCH and the person is written "the owner"; text inside quotation marks is unchanged.
+- **Kind.** PURPOSE is what the owner wants to be true; MECHANISM is one way of getting it. The audits' labels are kept, shortened. Audit C gave no kind to the Dropped, To-measure and Open-tension rows; those are assigned here.
+- **Dispositions.** KEEP; KEEP PURPOSE, MECHANISM OPEN; ENDED BY DECISION; CANDIDATE TO END ON EVIDENCE; CONFLICT FOR THE OWNER.
+- **Order of tests applied to a row.** (1) A decision ends or reverses it in words that can be quoted: ENDED. (2) A real conflict the decisions do not resolve: CONFLICT (for a check, only where evidence does not already make it a candidate). (3) Its purpose stands but a decision or evidence rules out or moots the Process3 mechanism: KEEP PURPOSE, MECHANISM OPEN. (4) It is a mechanism, no decision ends it, and the post-mortem shows it did not earn its place: CANDIDATE. (5) Otherwise KEEP.
+- **Rows with one ended clause.** Where a row is kept and only a subordinate clause is ended (most often the word "layer"), the row stays KEEP and the note names the clause. All such clauses are gathered after section 2.
+- **Checks.** A row that is itself a blocking check or review and is not one of D6's three tests is CONFLICT (group CHK) unless D6 names it or evidence makes it a candidate. A measurement or alarm that stops nothing keeps its own disposition. Section 5 lists all of them with both readings.
+- **One reading was needed for D1.** D1 is read as limiting the owner's operational acts (commands, file edits, clicks in a system). His words, answers and decisions are not counted as such acts, because D2 speaks of "user input" and D10 of "words the owner himself wrote". If he means D1 to cover his answers too, F-HUM-15, F-HUM-16, REQ-5, REQ-7, PLN-5 and MSG-2 become conflicts.
+- **Evidence.** Figures are quoted from the post-mortem files named. Those re-read for this table: change_sample, product_side, causal_forensics, verify_numbers, no_layers_width, DECISIONS.md. The one bob_naming figure was checked by line search; the one redteam_feasibility figure is taken from audit C and marked so. No figure was re-derived from the repositories.
+
+The decisions, short: D1 no commands or source edits by the owner, only occasional GitHub or Cloudflare permission and rule settings. D2 unattended. D3 total order, one job per module, earlier first, interface changes notify users. D4 parallel jobs, a user-changeable bound, default 8 slots, actively filled. D5 no layers; strict order. D6 exactly three tests. D7 a failure-free round ends a tranche; optional deploy-and-external-walk after it. D8 the process runs under Claude; the owner is not a merge gate for process changes. D9 no interruption by refusals, stopping short, handoff scanning, utterances becoming rules, or piled-up caution. D10 the role is ARCH; only words the owner wrote are his word. D11 other requirements may change on evidence.
+
+## The table
+
+
+### Ledger PLT
+
+| # | Id | Requirement | Kind | Disposition | Note |
+| --- | --- | --- | --- | --- | --- |
+| 1 | PLT-1 (kept) | One dated table of measured platform constraints, each with its evidence and workaround; nothing depends on a behaviour that is not a row. | MECHANISM (purpose: stand only on measured behaviour) | **KEEP** | No evidence against it (audit A). A record of measurements; listed in section 5. |
+| 2 | PLT-2 (modified against the suggestion) | Depend only on acts the committed approvals cover and that were measured to pass; archiving sessions and switching off or deleting tasks are housekeeping, never needed for correctness. | PURPOSE | **KEEP** | D9 names permission refusals first among the interruptions. The modifying note was written in by the coordinator as the owner's chat word (D10; see the provenance note after section 4). |
+| 3 | PLT-3 (kept) | Hard permission rules live in allow and deny lists, which run before the classifier; the classifier is never the policy. | MECHANISM | **KEEP** | Replaced in the Ledger by GAP-6 on 3 Nov; the deny-list half stands (F-PLAT-5). Measured 1 Nov: an allow rule does not take session and task acts out of the classifier. |
+| 4 | PLT-4 (kept) | No step runs longer than the in-session background limit of about thirty minutes; anything longer is a CI workflow. | MECHANISM (platform fact) | **KEEP** | Bears on the walks of D6(iii) and D7: the two late deploy-and-walk runs took 60 and 64 minutes (product_side §6, CI time). |
+| 5 | PLT-5 (modified against the suggestion) | No session starts its own successor; depth stays at most 3. | PURPOSE | **KEEP** | Platform fact: sessions are created only from depth 0 to 2. The modifying note was written in by the coordinator as the owner's chat word (D10; provenance note). |
+| 6 | PLT-6 (kept) | A scheduled task is never required for correctness; a wake is a convenience and the record is read at every wake regardless. | PURPOSE | **KEEP** | D2 and D4 ("slots are actively filled") lean the same way: ready work does not wait on a timer. |
+| 7 | PLT-7 (kept) | A session works on one repository, the product's; the process is a read-only clone at a pinned commit. | MECHANISM | **KEEP** | Platform fact behind it: a session reads the deny list only when it holds one repository. The cost of moving the pin is at MNT-5. |
+| 8 | PLT-8 (kept) | GitHub acts a session cannot take run on GitHub's runner, by workflows with the owner's tokens as secrets. | MECHANISM | **KEEP** | Under D1 the owner's part is a GitHub setting (the secrets). |
+| 9 | PLT-9 (kept) | Every credential is gathered once and checked at every tranche open; a missing grant stops a tranche from opening, never a step midway. | PURPOSE (mechanism: a check at tranche open) | **CONFLICT FOR THE OWNER** | Conflict CHK: the tranche-open check is a blocking check that is not one of D6's three tests. The purpose (no step fails midway for a missing grant) stands either way. The evidence against a grant check concerns its every-job-start form only (F-SET-3). |
+| 10 | PLT-10 (kept) | A session's platform status is never read as its work state; the record is. | PURPOSE | **KEEP** |  |
+
+### Ledger ENF
+
+| # | Id | Requirement | Kind | Disposition | Note |
+| --- | --- | --- | --- | --- | --- |
+| 11 | ENF-1 (modified) | At most a handful of command hooks, each for a zero-exception rule, each with a legitimate blocked exit; none that hold a turn or judge text. | MECHANISM (restraint) | **KEEP** | D9 leans the same way. Today there are none. |
+| 12 | ENF-2 (kept) | No model judge sits between a session's message and the owner. | PURPOSE | **KEEP** |  |
+| 13 | ENF-3 (kept) | Nothing holds a turn; when the owner says stop, the session stops in that turn. | PURPOSE | **KEEP** | The owner's own P19 note keeps this beside "never idles": the mechanism for urgency is "never anything that holds a turn". |
+| 14 | ENF-6 (modified) | No /goal and no model judging the transcript; a job that stops early is caught by status and the sweep. | MECHANISM | **KEEP** | D9 ("Claude stopping short of work it could do") bears on it: status and the sweep detect, they do not continue the work. Note recorded by the coordinator from the owner's "Yes, as recommended" (D10; provenance note). |
+| 15 | ENF-7 (kept) | Every gate or hard rule offers the model a legitimate exit, "blocked", recorded and visible to ARCH. | PURPOSE | **KEEP** | Used 165 times in the week; in 72 the job said the work was done and "job complete" refused (product_side §6d). That is evidence about the gates, not against the exit. |
+
+### Ledger REC
+
+| # | Id | Requirement | Kind | Disposition | Note |
+| --- | --- | --- | --- | --- | --- |
+| 16 | REC-1 (modified) | Keep the durable and transient split, but move coordination traffic to pull-request bodies, comments and issues, or to a separate bookkeeping repository. | MECHANISM | **KEEP PURPOSE, MECHANISM OPEN** | Evidence against the home Process3 built (an orphan state branch): 12,881 commits, 70% of all commits from 3 to 9 Nov (product_side §3). The line itself names the alternatives; the definition must say which holds transient state. |
+| 17 | REC-2 (kept) | One writer per file. | MECHANISM | **KEEP** | Held as a nudge (ledger_map). |
+| 18 | REC-3 (kept) | One status command reads the whole state a role needs from git and prints it with sizes; a successor of any role starts from it alone. | MECHANISM (purpose: any session can be replaced from the record) | **KEEP** | Leans with D9 (no handoff scanning): a successor starts from status alone. |
+| 19 | REC-4 (kept) | Record writes by the architecture session never cost a job a gate run or a completion. | PURPOSE | **KEEP** | Missed in Process3: 294 of 789 gate runs were started by record changes (product_side §4). That is evidence the purpose was not met, not evidence against it. |
+| 20 | REC-5 (kept) | A remote act is recorded as done only from the tool call's result, never from its request. | PURPOSE | **KEEP** |  |
+| 21 | REC-6 (kept) | An address is read from git at the moment of sending, and an address change is on the branch before it is announced. | MECHANISM | **KEEP** | Stands as long as addresses and messages remain. |
+| 22 | REC-7 (kept) | The record of a halted build is complete: a fresh session's status tells everything open, idle, merged, unmerged and owed, with no transcript. | PURPOSE | **KEEP** |  |
+| 23 | REC-8 (modified) | Keep a reading audit that judges reading by what a session can cite from the end of a document, and shrink documents so the question rarely arises; the start command prints the reading set with sizes. | MECHANISM | **CANDIDATE TO END ON EVIDENCE** | Evidence: the audit was never built in nine days (ledger_map: REC-8 "no audit", Gap, later gate), and the one reading restraint that held was a byte cap (causal_forensics, headline). The reading rule itself is P20, kept. Also an audit outside D6's three (section 5). |
+| 24 | REC-9 (kept) | The build ledger is a schema-constrained JSON file with one mutable field per entry, not free-form markdown. | MECHANISM | **CANDIDATE TO END ON EVIDENCE** | Owner's note: "Try this, but measure the experience with an open mind as to whether it's work or not." Evidence: 105 of 508 landings changed nothing but process/ledger and process/metrics (product_side §2); the census built on the ledger was loosened after 7.3 hours (change_sample PR 204). The measure the Foundations set for it (corruption, bypass) is in no post-mortem file. |
+| 25 | REC-10 (kept) | A CI check fails any commit that adds a file over a set size or under a transient path; a scheduled prune removes finished transients. | MECHANISM (purpose: P23) | **CANDIDATE TO END ON EVIDENCE** | Evidence: 947 findings on its first run (5 min 23 s) and false-positive repairs in seven later merges (change_sample PR 1); 495 runs in eight and a half hours, 403 on branches where "nothing reads it" (change_sample removal 116). The purpose is P23, kept. |
+| 26 | REC-11 (kept) | Decisions go to short decision records the moment they are made, each in its own file, never as a line in a long plan. | MECHANISM (purpose: a decision has a visible home a requirement can cite) | **KEEP PURPOSE, MECHANISM OPEN** | D9 ("every user utterance being turned into a new rule until the rules overflow") bears on the mechanism. Evidence: DECISIONS.md went from nothing to 49 KB and 31 headings in four days, in one file (verify_numbers §7, §8). D10: a record is the owner's only if he wrote the words (23 of the 26 PD records are headed "coordinator"). |
