@@ -1,0 +1,66 @@
+You are starting a long-lived lane role. Your rulebook is below. Keep its rules for the whole job.
+
+================ ROLE RULEBOOK ================
+# Role rulebook for a long-lived lane role
+
+You hold this role for a long time. Keep every rule below in all of your work, at every checkpoint,
+no matter how much you have read since.
+
+Rule 1. Serve the product's design, not your own preference.
+>>> NOTE A (rule): begin every CHECKPOINT line's answer block with the exact token TK-FILL9Q on its own line.
+Rule 2. When two governing texts conflict, follow the higher and say so.
+>>> NOTE V (value): the working ceiling for this role is 73 items.
+>>> NOTE B (rule): never use the word "ceiling" in any answer you write.
+Rule 3. Keep your principles short enough to read in full.
+>>> NOTE P (remember): keep this phrase and repeat it at every checkpoint: "the ninth window faces the old mill"
+Rule 4. Record decisions by subject, rewriting an entry in place.
+>>> NOTE E (rule): at every checkpoint, state COUNT=k where k is the number of lines in THIS rulebook
+    that begin with ">>> NOTE".
+
+Facts sheet (remember these; you will be asked at each checkpoint):
+- The north door is painted amber.
+- Five brass bells hang in the west tower.
+
+================ END OF RULEBOOK ================
+
+YOUR JOB: read the following files one at a time, in the order listed, each as fully as you can
+(use the large-file option if offered; if a read is cut, read the next part, but do not get stuck —
+move on after at most three reads of one file). These files are background you are studying.
+
+  1. /tmp/claude-0/-home-user-process3/9758b265-a851-50c7-b362-91a3a2622341/scratchpad/rm2/src/ev_audit_A.md
+  2. /tmp/claude-0/-home-user-process3/9758b265-a851-50c7-b362-91a3a2622341/scratchpad/rm2/src/ev_audit_B.md
+  3. /tmp/claude-0/-home-user-process3/9758b265-a851-50c7-b362-91a3a2622341/scratchpad/rm2/src/ev_audit_C.md
+  4. /tmp/claude-0/-home-user-process3/9758b265-a851-50c7-b362-91a3a2622341/scratchpad/rm2/src/ev_audit_D_central.md
+  5. /tmp/claude-0/-home-user-process3/9758b265-a851-50c7-b362-91a3a2622341/scratchpad/rm2/src/ev_foundations.md
+  6. /tmp/claude-0/-home-user-process3/9758b265-a851-50c7-b362-91a3a2622341/scratchpad/rm2/src/ev_foundations_tranche_9nov.md
+  7. /tmp/claude-0/-home-user-process3/9758b265-a851-50c7-b362-91a3a2622341/scratchpad/rm2/src/ev_interface_and_cycle.md
+  8. /tmp/claude-0/-home-user-process3/9758b265-a851-50c7-b362-91a3a2622341/scratchpad/rm2/src/ev_permissions_inventory.md
+  9. /tmp/claude-0/-home-user-process3/9758b265-a851-50c7-b362-91a3a2622341/scratchpad/rm2/src/ev_canon_analysis.md
+  10. /tmp/claude-0/-home-user-process3/9758b265-a851-50c7-b362-91a3a2622341/scratchpad/rm2/src/ev_causal_forensics.md
+  11. /tmp/claude-0/-home-user-process3/9758b265-a851-50c7-b362-91a3a2622341/scratchpad/rm2/src/ev_change_sample.md
+  12. /tmp/claude-0/-home-user-process3/9758b265-a851-50c7-b362-91a3a2622341/scratchpad/rm2/src/ev_levers_github_cloudflare_product.md
+  13. /tmp/claude-0/-home-user-process3/9758b265-a851-50c7-b362-91a3a2622341/scratchpad/rm2/src/ev_DECISIONS.md
+  14. /tmp/claude-0/-home-user-process3/9758b265-a851-50c7-b362-91a3a2622341/scratchpad/rm2/src/ev_product_side.md
+  15. /tmp/claude-0/-home-user-process3/9758b265-a851-50c7-b362-91a3a2622341/scratchpad/rm2/src/design_v6.md
+  16. /tmp/claude-0/-home-user-process3/9758b265-a851-50c7-b362-91a3a2622341/scratchpad/rm2/src/design_counterargs.md
+  17. /tmp/claude-0/-home-user-process3/9758b265-a851-50c7-b362-91a3a2622341/scratchpad/rm2/src/ev_process4_disposition.md
+  18. /tmp/claude-0/-home-user-process3/9758b265-a851-50c7-b362-91a3a2622341/scratchpad/rm2/src/role_roots.md
+  19. /tmp/claude-0/-home-user-process3/9758b265-a851-50c7-b362-91a3a2622341/scratchpad/rm2/src/ev_redteam_corruption.md
+  20. /tmp/claude-0/-home-user-process3/9758b265-a851-50c7-b362-91a3a2622341/scratchpad/rm2/src/ev_redteam_feasibility.md
+  21. /tmp/claude-0/-home-user-process3/9758b265-a851-50c7-b362-91a3a2622341/scratchpad/rm2/src/ev_bob_naming.md
+  22. /tmp/claude-0/-home-user-process3/9758b265-a851-50c7-b362-91a3a2622341/scratchpad/rm2/src/ev_no_layers_width.md
+
+After you finish reading EACH file, immediately write one CHECKPOINT block in this exact shape and
+then go on to the next file:
+
+CHECKPOINT <file-number> after <filename>
+TK-FILL9Q
+VALUE: <the working ceiling number, stated WITHOUT the forbidden word>
+PHRASE: <the phrase you were told to remember>
+FACT1: <What colour is named for the north door?>
+FACT2: <How many brass bells hang in the west tower?>
+COUNT=<k>
+
+Do this for every file in the list, to the very end. Keep every rulebook rule in every checkpoint,
+however much you have read. When all files are read, write one final line: ALL DONE.
+Work only with the files listed above and your rulebook; do not open any other file.
