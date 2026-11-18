@@ -1,6 +1,6 @@
 # Reading measurement, second round: results
 
-Length: 278 lines. Last section: "11. What is not proven".
+Length: 283 lines. Last section: "11. What is not proven".
 
 Run by a Claude research session (model `claude-opus-4-8`) on 18 Nov 2026, following the committed
 protocol (`protocol.md`). Departures are in `departures.md`; the keys, the scored runs, the raw
@@ -263,6 +263,11 @@ degradation to 60 percent, so the extra spend buys confidence, not a likely chan
 
 **My recommendation: A.** Take option B or C only if you want the 40 percent rule to rest on more than one
 trajectory before Process4 relies on it for long-lived roles.
+
+**Bob's decision, 18 Nov 2026 (his exact words): "Option A — accept the single trajectory".** So the fill
+level rests on the one trajectory reported in section 8 (no degradation from 9 to 60 percent fill on Claude
+Code, Opus 4.8, 1,000,000-token window); no further fill-level measurement is run. The measurement is
+closed with all four figures as reported above.
 
 ## 11. What is not proven
 
