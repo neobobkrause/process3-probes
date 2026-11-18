@@ -1,0 +1,111 @@
+You are starting a new job as a walking session. Your role rulebook is below. Read it in full; your work is
+judged on whether you keep its rules. After the rulebook comes your task. Do the task now.
+
+================ ROLE RULEBOOK (16708 bytes) ================
+# Role rulebook for a walking session
+
+Follow every rule below in all of your work for this job.
+
+Rule 1. - A job that fills up or dies is replaced by ARCH with a new session that continues from the same branch and pull request.
+>>> NOTE A (rule): the first line of your final written answer must be exactly this token and nothing else: TK-KJXN8
+Rule 2. | MERGER | Ran the merge train in its own session | ROOT (`start merger`) | Product repository, full clone | 8 address records, 5 Nov 04:35Z to 22:05Z; role removed 6 Nov | ROOT; then deleted with the train |
+>>> NOTE C (value): the working allowance for this job is set to 34 items.
+Rule 3. > "PRIORITIES. Process3 development is the priority; civicsmith-copy is throwaway and exists to test process3."
+>>> NOTE P (remember): keep this phrase in mind, you will be asked to repeat it exactly: "seven grey boats left the harbour at noon"
+Rule 4. Matches practice (section 4). The number then lived in the product's config (changed by BOB's pull request) or in an environment variable only he can set.
+
+## Background principles for this role (read these too)
+
+Oct 31, 2026 · @Sparky2
+This is the third development process, drawn from the Keep and Drop Ledger: 126 lines decided on 31 Oct 2026 (103 kept, 16 modified, 7 dropped; on 3 Nov you restated PLT-2 and PLT-5), then on 3 Nov the 21 principles of the two earlier processes (10 kept, 10 modified, 1 dropped) and 12 lines for gaps found that day (11 kept, 1 modified). Every line came from the 30 Oct requirements draft, the 29 Oct neoProcess page, the research report on other Claude Code processes, the earlier processes' principles, or our discussion, and each cites its source.
+It is a foundations document, not a requirements specification. It states the properties the process must have and the mechanism that holds each one. The rulebooks, the requirements files and the tool follow from it. Nothing here is in force until it has run on a real tranche with the two health metrics measured.
+Five lines were decided against the suggestion, and their notes are carried into the sections below: whole-product checks move to release (ARC-4), a restarted job must understand why it was corrected (JOB-14), the start table also picks the permission mode (SES-8), and BOB stays the hub between spokes, routing every request and translating only where needed (SES-15), and a tranche can run with no one watching rather than must (GAP-1). Lines where the note said to measure first are gathered under To measure.
+What follows this document is a detailed build plan derived from it, which we review, assess and evolve. Implementation starts only when we are confident the result will function for development projects large and small, be efficient and productive, and produce production-quality workflows for Civicsmith and the products after it. The Ledger, this document and the Build Plan agree: each section here and each Build Plan row cites the Ledger lines it serves, and no build starts on a line any of them contradicts (GAP-9).
+This is a development process, mostly software development, and it exists to meet the standards you set in two roles: product manager and software engineer.
+A product starts as the description of a need. The need is described from the perspective of the audiences who share it, even though their interests differ. Each audience has requirements, use cases, priorities, journeys, perspectives, resources and styles. Beyond leadership, these audience attributes are most of what you contribute in the product management role. In the engineering role you set the standards for architecture, user experience, reliability, versatility, scalability, performance and responsiveness, cost, and the other factors of a sound system.
+| Role | What you set | Where the process carries it |
+| --- | --- | --- |
+| Product manager | Audiences and their requirements, use cases, priorities, journeys, perspectives, resources and styles | The canon and each module's requirements, cited by id; lanes for design areas you identify |
+| Software engineer | Architecture, user experience, reliability, versatility, scalability, performance and responsiveness, cost | The module order and layers, the checks, the gate, measurements at scale (REQ-3), and the cost metrics |
+The process exists to put correct, working product behaviour that meets its requirements onto main, quickly and cheaply, so that it survives, with your time spent only where it is yours (P1). Nothing else is output: a rule, a record, a check or a test has value only as far as it serves that, and one that does not is wrong. Everything below is machinery for it.
+You are human; the sessions are AI; the process uses the strengths of each.
+You define the project: its values and policies, mission and purposes, audiences and use cases, requirements, principles, high-level architecture, UX and doctrine. BOB does everything else: it keeps the record, manages the development environment, makes the most of what the AI can do, takes your input, decides everything technical and detailed, and reports it to you in plain words as done (P17).
+In the middle ground both offer opinions, explanations, options and recommendations, and each values the other's; neither is dogmatic; the truth rises to the top.
+Your time is the scarcest resource. You see rendered pages, with options and a recommendation, only for what is yours. When an act only you can take is needed, it is named and walked through in plain steps, in words you understand. Approving a merge is such an act only when you ask for it: by default a job, layer or tranche merges on a green gate without you, while a public release waits for your approval (GAP-7), and you ask for your approval before a particular merge when a design is hard enough to warrant it (GAP-10). You do not edit files or enter commands; the few steps of yours the platform forces at onboarding are kept as few as possible and each is walked through (P17). When BOB is unsure whether a question is yours, it decides by this section and says how it read it. A Ledger line has a purpose (what it asks for, yours) and a mechanism (how, by which tool, file or platform feature, BOB's): when a mechanism cannot be built or a better one is measured, BOB restates the line with its purpose unchanged, records why and where, and reports it in one line; only a change to what a line asks for comes to you (your word, 4 Nov, after TXT-5 was brought to you though it was BOB's). A tranche can run from open to close with no one watching: every stop is a named blocker in the record, BOB starts other work meanwhile, and only a blocker that only you can clear reaches you (GAP-1).
+How problems are handled (your direction, 2 Nov; its reading corrected 3 Nov). The process exists to merge product behaviour that survives, quickly and cheaply; caution is a cost, paid only against a measured failure or your word. A problem is a failure that happened, or your word; a reviewer's "what if" is not a problem, and is one line in a report. Every problem is an architecture bug: BOB finds why, corrects the design by rewriting the line it belongs to, never by appending, and builds the correction; a workaround for the moment is not a fix. The default answer to a finding with nothing measured behind it is no change, and a rule, check, review round, measurement run or owed task exists only against a measured failure or your word (GAP-3). When in doubt, run the product and let it show what matters. A question that is yours becomes your decision, and a design, before anything is built on it (P21). Questions that are yours are asked in one place, the walk-through, numbered, with a column for your word; a word you give in chat is written there by BOB, and a decided question is never asked again.
+Git and GitHub carry all state; messages only wake. One architecture session per product (BOB) plans from the product's build state and routes; short job sessions each build one module as one draft pull request, every ready module of the open layer at once; in-session workers do bulk reading, review and parallel sub-tasks. Nothing the model says is evidence: a job's claim is a receipt, the gate is CI, the revert check proves tests are real, and branch protection is the last word, with your approval only where you ask for it. Rules are few, each cites a failure, and each names the tool that enforces it or is labelled a nudge. Text that must be read is kept short by splitting and consolidating, never by refusing. No step depends on an act the permission classifier judges, no session spawns its successor, no hook holds a turn, and no model judges another model's words. The process is pinned per tranche, fixed only by a recorded act, measured by its false-done rate and its cost per surviving pull request, and re-tested one component at a time at each model release.
+Twelve properties. Each names what holds it. A property held only by text is a nudge and is marked so; the record exposes a violated nudge at the next status.
+| Property | Held by | Ledger |
+| --- | --- | --- |
+| Every claim about work is verifiable from git or GitHub, never from a session's words | Receipts in PR comments; CI re-runs them; status reads GitHub | JOB-7, REC-5, PLT-10 |
+| Done means merged; main never moves while a tranche runs | Branch protection; the tool merges only green, current tips | INT-1, GAT-8, P12 |
+| A job's tests must fail when its change is reverted | Revert check in the gate workflow | JOB-12 |
+| No step depends on an act the classifier judges | Platform table; deny lists in the repository's settings file; dependence only on acts measured to pass reliably | PLT-2, GAP-6, SES-8 |
+| No session starts its own successor; depth never exceeds 3 (coordinator, ROOT, BOB, job) | Creation only by you, ROOT or a scheduled task | PLT-5, SES-1 |
+| Nothing holds a turn; stop means stop in that turn | No Stop hooks; no model judge on messages | ENF-3, ENF-2 |
+
+>>> NOTE B (rule): in your final written answer, do not use the word "budget" anywhere.
+Rule 5. | A long-lived role or a job | Its own workers |
+
+| Every hard rule offers a legitimate blocked exit | A blocked state in the ledger, read by status | ENF-7 |
+| Work is never lost or left waiting: no session ends a turn while work it can do remains, and everything is pushed before any turn ends | Nudge, exposed by status as WORKING with nothing pushed, or as work ready while BOB is idle | JOB-9, SES-17, P19 |
+| Git carries state; a message only wakes, after the push | One push-then-send command; numbered messages | MSG-1, MSG-3 |
+| Text that must be read is short; overrun triggers consolidation, never refusal | Size alarms in the tool; per-line test on instruction files; ten rules per area | REQ-6, SES-6, TXT-2, TXT-3 |
+| Every rule, check, review round and measurement cites a measured failure or your marked decision | Audit of citations; rulings deleted once absorbed | TXT-6, GAP-3, REQ-7 |
+| The process is pinned per tranche and changed only by a recorded act | Pin in the plan, verified once at start; one act moves it | MNT-4, MNT-5 |
+&#91;embedded content: roles and who starts whom · 6 boxes, depth 0 to 2\]
+ROOT is the only creator of BOB, and the scheduled tasks only wake ROOT and watch its heartbeat; BOB is the only creator of jobs and lanes; nothing creates its own successor. The record, git and GitHub, sits beside every box and is the only thing any of them trusts. A session that outlives its parent is ordinary and costs nothing idle; no step counts on a parent being alive (SES-13).
+| Role | Started by | Permission mode (SES-8) | Refresh |
+| --- | --- | --- | --- |
+| ROOT | You | Auto; its starting prompt lists every act it and its sweep may take | Replaced by the watcher when full or silent, or by you if the watcher declines |
+| BOB | ROOT (SES-1); the hourly sweep is ROOT's backstop | Auto; its starting prompt names its acts | Two-phase handover below; threshold printed by status (SES-4) |
+| Job | BOB | Auto; the START names its acts (JOB-2) | Never for a process reason (JOB-4); a dead session is replaced on the same branch (JOB-6) |
+| Lane | BOB, when you identify the need; some stay open, UX always (SES-14) | Inherits BOB's; tool-restricted | A long-lived lane refreshes under BOB's management so depth stays consistent |
+| In-session worker | BOB or a job (SES-18) | Inherits its parent's; tool-restricted by the harness | None; runs in the background, reads exactly what its brief names, returns a machine-readable receipt and ends (SES-10) |
+**Handover (SES-2).** ROOT creates the new BOB and repoints the address in git. The new BOB verifies the pin, runs status, reads its one-screen handoff (SES-3), reports running, and drains messages queued during startup. The old BOB waits for its workers, forwards anything it receives, reports ready, and ROOT archives it. The archive is housekeeping; nothing waits on it, because the classifier may refuse it.
+**BOB routes, and explains to you (SES-15).** Requests between jobs and lanes pass through BOB, which routes them; it does not translate every exchange. Spokes never see each other. When BOB needs a decision from you, it describes and explains that decision with enough context, in words you understand, with options and a recommendation. The cost of routing in BOB's context is one of the first-tranche measurements.
+**Lanes (SES-14).** Lanes are ad hoc. You identify the need for a lane and BOB opens it; some stay open for extended periods; the UX lane is always there, as a directory and a design responsibility; whether any lane runs as a long-lived session is measured (SES-14). A lane carries a design responsibility and a directory of design knowledge in the repository. Lanes work because BOB knows how to delegate: it recognises a design question, passes it to the lane with enough context to decide, waits for the lane's decision, and keeps the final say. Whether a given lane runs as a long-lived session or as a worker started with its directory is BOB's call, judged by cost; a long-lived lane refreshes under BOB's management so depth stays consistent.
+
+>>> NOTE D (value changed): the working allowance given earlier no longer applies; from here the working allowance is 100 items.
+Rule 6. 2. 3 Nov 19:30Z: the PLT-5 note puts a coordinator above ROOT.
+
+**Scheduled tasks around ROOT (PLT-6, SES-1).** ROOT is a session and the only creator of BOB. Two scheduled tasks stand beside it, each created once and never edited, because editing a task is what the classifier refused. Neither is required for correctness; each bounds how long a silent failure goes unnoticed.
+| Task | Fires | Into | Created by | Does |
+| --- | --- | --- | --- | --- |
+| Sweep | Hourly | ROOT's own session, resuming it | ROOT, in its first turn | Runs status; wakes BOB with one message when status lists acts for it while it is idle, or a session stalled or blocked; starts a BOB successor only when one is flagged REFRESH or has written nothing to the record in the two hours since a sweep woke it; writes a heartbeat line; ends |
+| Watcher | Daily | A standing watcher session holding the product repository, started from the tranche, resumed by the task bound to it (measured 2 Nov: 3 of 3; a task's fresh session cannot start sessions or send messages, 0 of 3) | Whoever starts the first ROOT (you, or the coordinator), so it sits at ROOT's depth; later ROOTs check it exists | Reads the heartbeat; if ROOT is full or its heartbeat is older than four hours, takes over as ROOT and tells you; otherwise ends |
+The sweep's prompt, as it lands in ROOT's conversation:
+```
+Sweep. Run status first and act only on what it shows.
+0. If the ROOT address in git is not this session, end the turn and do nothing else.
+1. If the plan's status line reads pause or stop, write the heartbeat and end.
+2. If a BOB is flagged REFRESH, or the addressed BOB has written nothing to the record in the two hours since a sweep woke it, start its successor by the handover and repoint the address.
+3. If any job reads WORKING with nothing pushed for over two hours, any attempt reads far over its role's time or cost median, any session reads blocked, or status lists acts for an idle BOB, append it to the owed list and wake BOB with one message.
+4. Write the heartbeat line with the time and what you did. End the turn.
+Rule 7. - A lane ends when the owner or ARCH says its area needs no further design. Its folder and research stay.
+
+>>> NOTE E (rule): end your final written answer with a line in exactly this form: COUNT=k , where k is the total number of lines in this whole rulebook that begin with ">>> NOTE". Count them across the entire rulebook.
+================ END OF RULEBOOK ================
+
+YOUR TASK (a short job):
+You have now read the rulebook(s) in your reading set above. Do the following using ONLY what you
+read. Do not search or re-open the files to hunt for answers; work from your reading.
+
+1. Keep every instruction in the lines that begin ">>> NOTE" and are marked "(rule)".
+2. State the working allowance that is IN FORCE at the end of the rulebook — the number that applies
+   after every change — while obeying the NOTE that forbids one word.
+3. Repeat, exactly, the phrase you were told to remember.
+4. (no extra question) — write n/a for FACT below.
+5. Write a two-line handover for a successor session: in line one, name what you read (the rulebook
+   and roughly its size); in line two, give the result of this task.
+
+Write your final answer in EXACTLY this shape, each item on its own line, nothing else in between:
+
+<the token from the NOTE marked (rule) about the first line — this line must be that token alone>
+ALLOWANCE: <the number in force, described WITHOUT the forbidden word>
+PHRASE: <the remembered phrase>
+FACT: <your answer to question 4, or n/a if none was asked>
+HANDOVER: <line one>
+HANDOVER: <line two>
+COUNT=<the number the end NOTE asks for>
+

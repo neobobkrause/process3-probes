@@ -1,0 +1,33 @@
+# Audit C: Process4 proposal against the Process3 requirements
+
+Part audited: Ledger families TXT, MNT, SHM, the principles, GAP-1 to GAP-12, and the Foundations sections "How this was decided", "Setup", "Maintenance, certification and the two health metrics", "Dropped, and why", "To measure on the first tranche" and "Open tensions to settle".
+
+Read in full: `foundations.md`, `process4_doc.md`, `ledger_map.md`, and every line of the five assigned families in `ledger_lines.md`. Consulted for evidence: `product_side.md` (in full), `change_sample.md`, `causal_forensics.md`, `canon_analysis.md` section 5, `redteam_feasibility.md`, `redteam_corruption.md`, `levers_github_cloudflare_product.md`, `DECISIONS.md` (the product's decision record, for the owner's later words).
+
+## How to read the rows
+
+- **Result** is graded on the worst-met clause of the line. Where one clause is met and another is not, the row says which.
+- **MET DIFFERENTLY** means what the line asks for is still obtained, by another mechanism, at no cost to another requirement in this part.
+- **CONTRADICTED** means the proposal's own words oppose what the line asks for. The words are quoted.
+- **Central** names which of the owner's four requirements of 13 Nov the line serves: (1) no commands, no file edits, settings only; (2) unattended, waits only when completely blocked; (3) total order, one job per module, earlier first, interface changes notify users; (4) parallel jobs under a number he can change.
+- **Kind** follows the documents' own rule (Foundations, "The human and the AI"): a line has a purpose, which is the owner's, and a mechanism, which is BOB's; "only a change to what a line asks for comes to you".
+- Proposal items are cited by their own labels (G, C, M, F, P, N, R). To avoid a clash with the principles, the proposal's Lever 5 items are written "lever P1" to "lever P5", and "WA n" is item n of the working agreement.
+
+Two corrections to the brief. The Ledger holds 21 principle lines, of which 20 are kept or modified and one (P16) is dropped; there is no P14 or P15. So this part has 54 kept or modified Ledger lines: TXT 7, MNT 10, SHM 5, principles 20, GAP 12.
+
+## 1. Ledger lines
+
+### TXT: instruction files and rules
+
+| Id | Requirement (owner's note where he wrote one) | Kind | Process4 result | Central | If not met |
+| --- | --- | --- | --- | --- | --- |
+| TXT-1 | Product's CLAUDE.md under thirty lines, hand-written, naming the pinned process commit and the command that fetches it. Modified against the suggestion, owner's word 1 Nov: BOB writes and keeps it line by line, "with no approval needed and each change listed in the tranche report; the approvals block stays Bob's own" | Mechanism (thirty lines, who writes); purpose (changes do not need him) | **CONTRADICTED.** G2 makes `CLAUDE.md` and the process pin the owner's paths: "A ruleset on main and the integration branch requires your review for those paths". M1 replaces thirty lines with a 4,096-byte cap. There is no tranche report | (1), (2) | Two parts. Byte cap for line cap: candidate for the owner to change; the file ended at 22 lines and 8,664 bytes, all growth from 16 owner patches (product_side §6a). Owner review of every non-approval line and of the pin: proposal must change, or the owner must be asked to withdraw his 1 Nov word; the proposal does not say it reverses it |
+| TXT-2 | Every line in an instruction file is failure-backed, non-inferable from the code, or tool-enforceable; failing lines are deleted. The Ledger's reason: "The per-line test replaces a byte cap" | Mechanism | **MET DIFFERENTLY.** M1 goes back to a byte cap held by a required test; M3 sets how prompts are written. The per-line test is not mentioned | none | Candidate for the owner to change. The map held TXT-2 as a nudge; the one byte cap that existed (role prompts, 4,096) moved 12 bytes in five days while the README grew from 8 KB to 134 KB (process4_doc "What did hold"; causal_forensics §1) |
+| TXT-3 | One rulebook per area, at most ten rules on one screen, rewritten in place, never appended; "when you raise a problem, a rule is rewritten and no ruling is added" | Mechanism | **MET DIFFERENTLY.** The working agreement (seven items) "replaces the rulebooks"; three pinned texts of 4,096 bytes; M2. The clause on a problem the owner raises changes: a rewrite needs a fork pull request and his merge between runs, and M4 says a chat remark "lapses at the end of the run unless you put it in writing" | (1) lightly | Proposal should say that the owner raising a problem no longer rewrites a rule, so he can accept or refuse that |
+| TXT-4 | Apply the per-line test to the principles; most roles load two or three. Owner: "I'm skeptical, but let's try". Foundations: "tried and measured" | Mechanism, on trial | **WEAKENED.** M2: one charter page of 25 purposes replaces the principles as reading. The measurement that was the condition of his sceptical assent (drift traceable to a missing principle, decided at tranche close) is not carried. The 25 purposes were "extracted from the canon by one worker", not decided by him | none | Proposal must change: say how a misjudgment traceable to a missing principle would be seen, or ask the owner to drop the trial. He has not seen the charter text |
+| TXT-5 | Each role's starting prompt names its own rulebook in the pinned process; product rules load by path | Mechanism | **MET** (C2, C5: the one-line prompt names the pinned ARCH or START text). Product rules by path are not mentioned | none | |
+| TXT-6 | Every rule cites the measured failure or the owner's decision that justified it; a rule with neither is removed | Mechanism for a purpose (rules do not accrete) | **MET DIFFERENTLY**, though the proposal says the line ends ("the citation rule as the brake (GAP-3, TXT-6)"). What replaces it: condition 2 ("A check earns its place by running the product or by a recorded catch"), budgets, and the owner's merge. The owner's merge is itself the owner's word in the strictest sense, so the line's test is still applied, by him | (1) through the replacement | Candidate for the owner to change the mechanism: the citation audit was never built and every growth was cited (causal_forensics §7: "Tool 4,543+ lines; every rise cited"); check-adding stayed at 41% of merges before and after his 5 Nov instruction (change_sample). The replacement mechanism is the one the proposal's first section says conflicts with (1) |
+| TXT-7 | Every text names its audience and speaks plainly | Purpose | **MET** (M3, R25). "Names its audience" is not stated for each text | none | |
+
+### MNT: maintenance and certification
+
