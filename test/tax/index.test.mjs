@@ -105,7 +105,9 @@ test('R2, R3: a bad amount is refused at the reduced rate too', () => {
 
 test('R3: any other rate asked for is refused with a RangeError naming it', () => {
   const bad = [
-    ['zero', '"zero"'],
+    ['Zero', '"Zero"'],
+    ['zero ', '"zero "'],
+    [0, '0'],
     ['Reduced', '"Reduced"'],
     ['', '""'],
     ['toString', '"toString"'],
@@ -124,4 +126,16 @@ test('R3: any other rate asked for is refused with a RangeError naming it', () =
     );
   }
   assert.throws(() => taxOn(100, {}), RangeError);
+});
+
+test('R4: the zero rate, asked for by name, gives a tax of 0 pence on any amount', () => {
+  for (const a of [0, 1, 4, 5, 10, 19, 20, 100, 12345, Number.MAX_SAFE_INTEGER]) {
+    assert.equal(taxOn(a, 'zero'), 0, `amount ${a}`);
+  }
+});
+
+test('R2, R4: a bad amount is refused at the zero rate too', () => {
+  assert.throws(() => taxOn(-1, 'zero'), (e) => e instanceof RangeError && /-1\b/.test(e.message));
+  assert.throws(() => taxOn(0.5, 'zero'), (e) => e instanceof RangeError && e.message.includes('0.5'));
+  assert.throws(() => taxOn(NaN, 'zero'), (e) => e instanceof RangeError && e.message.includes('NaN'));
 });
