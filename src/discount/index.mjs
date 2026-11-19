@@ -7,14 +7,15 @@
  * whole numbers, so no fraction of a penny is lost to floating point.
  *
  * The percentage may also be text: a number written in decimal digits, with an optional sign and
- * an optional fraction after a point, then optional spaces, then a percent sign ("15%", "12.5 %").
- * Its number is taken exactly as written and judged as a percentage given as a number is.
+ * an optional fraction after a point or a comma, then optional spaces, then a percent sign ("15%",
+ * "12.5 %", "12,5%"). Its number is taken exactly as written, a comma read as the point, and judged
+ * as a percentage given as a number is.
  *
  * @param {number} amount the amount, in whole pence
- * @param {number | string} percentage the percentage, from 0 to 100; it need not be whole; or text such as "15%"
+ * @param {number | string} percentage the percentage, from 0 to 100; it need not be whole; or text such as "15%" or "12,5%"
  * @returns {number} the discount, in whole pence
  * @bound amount: whole number of pence, zero or more
- * @bound percentage: finite number from 0 to 100 inclusive; fractions allowed; or text of the form digits, optional point and digits, optional spaces, then "%", whose number is from 0 to 100 inclusive
+ * @bound percentage: finite number from 0 to 100 inclusive; fractions allowed; or text of the form digits, optional point or comma and digits, optional spaces, then "%", whose number is from 0 to 100 inclusive
  * @bound returns: whole number of pence, from zero up to the amount
  * @throws {RangeError} when the amount is negative or not a whole number of pence, or the percentage is not a finite number or is outside 0 to 100, or is text of any other form; the message names the bad amount or percentage, and quotes text
  */
@@ -45,7 +46,8 @@ function percentageAsFraction(percentage) {
     return asDecimalFraction(percentage);
   }
   if (typeof percentage !== 'string') throw refuse();
-  const match = /^([+-]?)(\d+)(?:\.(\d+))? *%$/.exec(percentage);
+  // One point or one comma, never both and never two, may stand before the fraction.
+  const match = /^([+-]?)(\d+)(?:[.,](\d+))? *%$/.exec(percentage);
   if (!match) throw refuse();
   const [, sign, whole, fraction = ''] = match;
   const numerator = BigInt(whole + fraction);
