@@ -1,7 +1,7 @@
 // tax: the tax on an amount of money held in whole pence.
 
 /**
- * The rates a caller may ask for, by name.
+ * The rates by name, as the tax module names them back. A caller may ask for one in any letter case.
  * @typedef {'standard' | 'reduced' | 'zero'} Rate
  */
 
@@ -18,21 +18,18 @@ const RATES = {
  * Worked in whole numbers, so no fraction of a penny is ever lost to floating point.
  *
  * @param {number} amount the amount, in whole pence
- * @param {Rate} [rate] the rate asked for; absent is 'standard'
+ * @param {string} [rate] the rate asked for, a Rate's name in any letter case; absent is 'standard'
  * @returns {number} the tax, in whole pence
  * @bound amount: whole number of pence, zero or more
- * @bound rate: 'standard' (20 percent), 'reduced' (5 percent) or 'zero' (0 percent); absent is 'standard'
+ * @bound rate: 'standard' (20 percent), 'reduced' (5 percent) or 'zero' (0 percent), in any letter case; absent is 'standard'
  * @bound returns: whole number of pence, zero or more
- * @throws {RangeError} when the amount is negative or not a whole number of pence, or the rate is not 'standard', 'reduced' or 'zero'; the message names the bad amount or rate
+ * @throws {RangeError} when the amount is negative or not a whole number of pence, or the rate is not 'standard', 'reduced' or 'zero' in any letter case; the message names the bad amount or rate
  */
 export function taxOn(amount, rate = 'standard') {
   if (!Number.isInteger(amount) || amount < 0) {
     throw new RangeError(`tax: the amount must be a whole number of pence, zero or more; got ${describe(amount)}`);
   }
-  if (typeof rate !== 'string' || !Object.hasOwn(RATES, rate)) {
-    throw new RangeError(`tax: the rate must be 'standard', 'reduced' or 'zero'; got ${describe(rate)}`);
-  }
-  const { numerator, denominator } = RATES[rate];
+  const { numerator, denominator } = RATES[rateNamed(rate)];
   // amount * num / den, rounded half up: floor((2 * amount * num + den) / (2 * den)).
   const twice = 2n * BigInt(amount) * numerator;
   return Number((twice + denominator) / (2n * denominator));
@@ -52,17 +49,31 @@ export function taxOn(amount, rate = 'standard') {
  * whole percent. It takes what taxOn takes and refuses what taxOn refuses, with the same RangeError.
  *
  * @param {number} amount the amount, in whole pence
- * @param {Rate} [rate] the rate asked for; absent is 'standard'
+ * @param {string} [rate] the rate asked for, a Rate's name in any letter case; absent is 'standard'
  * @returns {TaxDetail}
  * @bound amount: whole number of pence, zero or more
- * @bound rate: 'standard' (20 percent), 'reduced' (5 percent) or 'zero' (0 percent); absent is 'standard'
- * @throws {RangeError} when the amount is negative or not a whole number of pence, or the rate is not 'standard', 'reduced' or 'zero'; the message names the bad amount or rate
+ * @bound rate: 'standard' (20 percent), 'reduced' (5 percent) or 'zero' (0 percent), in any letter case; absent is 'standard'
+ * @throws {RangeError} when the amount is negative or not a whole number of pence, or the rate is not 'standard', 'reduced' or 'zero' in any letter case; the message names the bad amount or rate
  */
 export function taxDetail(amount, rate = 'standard') {
   const tax = taxOn(amount, rate);
+  const name = rateNamed(rate);
   /** @type {TaxDetail} builds a TaxDetail */
-  const detail = { tax, rate, percent: RATES[rate].percent };
+  const detail = { tax, rate: name, percent: RATES[name].percent };
   return detail;
+}
+
+/**
+ * The rate a caller asked for, in any letter case, as its Rate name; anything else is refused.
+ * @param {unknown} rate
+ * @returns {Rate}
+ */
+function rateNamed(rate) {
+  const name = typeof rate === 'string' ? rate.toLowerCase() : undefined;
+  if (name === undefined || !Object.hasOwn(RATES, name)) {
+    throw new RangeError(`tax: the rate must be 'standard', 'reduced' or 'zero', in any letter case; got ${describe(rate)}`);
+  }
+  return /** @type {Rate} */ (name);
 }
 
 function describe(value) {
