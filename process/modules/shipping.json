@@ -1,0 +1,7 @@
+{
+  "name": "shipping",
+  "files": ["src/shipping/"],
+  "tests": ["test/shipping/"],
+  "public": ["src/shipping/index.mjs"],
+  "uses": ["units"]
+}
