@@ -59,3 +59,8 @@ Decided: 19 Nov 2026.
 Decision: discountOn's percent may also be text: a number, optional spaces, and a percent sign, such as "15%" or "12.5 %"; it is read as that number and judged as before. Text of any other form is refused with a RangeError that quotes it.
 Why: accepting more tells no user; invoice passes the percent on as it is given.
 Decided: 19 Nov 2026.
+
+## Milligrams
+Decision: units accepts the unit 'mg', 0.001 grams each, in a Weight and in weight text, with the full names milligram and milligrams in any letter case; toGrams still gives back whole grams, rounded to the nearest gram.
+Why: accepting more keeps every caller working; the wording of the weight bound changes with it, so the tool's notice is expected to tell shipping, which uses toGrams, and this round is to try that notice.
+Decided: 19 Nov 2026.
