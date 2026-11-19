@@ -1,8 +1,8 @@
-Length: 13 lines. Last section: "Requirements".
+Length: 14 lines. Last section: "Requirements".
 
 # invoice: requirements
 
-Next number: 6
+Next number: 7
 
 ## Requirements
 
@@ -11,3 +11,4 @@ Next number: 6
 - **R3** [met] An invoice may ask for express shipping; its shipping cost is then the express cost from the shipping module, and the tax and total follow from it as R1 says.
 - **R4** [met] An invoice may ask for a discount as a percentage from the discount module; the discount is taken off the goods before tax, the tax is the standard-rate tax on goods less discount plus shipping, the total follows, and a refusal by the discount module is passed on unchanged as R2 says.
 - **R5** [met] An invoice shows its goods, discount, shipping, tax and total also as pounds text from the money module, and may ask for the far shipping zone, whose cost comes from the shipping module.
+- **R6** [not yet met] An invoice also says which tax rate it charged: the rate's name and its whole percent, from the tax module.
