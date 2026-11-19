@@ -14,3 +14,8 @@ Decided: 19 Nov 2026.
 Decision: taxOn takes an optional second argument naming the rate, 'standard' or 'reduced'; left out, it is the standard rate.
 Why: invoice calls taxOn(amount) at the standard rate, and must keep working when the reduced rate is added.
 Decided: 19 Nov 2026.
+
+## Limits no requirement names
+Decision: a module refuses only what a requirement names; invoice keeps no limit of its own on very large totals.
+Why: invoice's first job added a refusal for totals past exact whole numbers, which no requirement asked for, and a test exists only to prove a requirement.
+Decided: 19 Nov 2026.
