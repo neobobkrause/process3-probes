@@ -43,3 +43,22 @@ test('money R2: a value that is not a number is refused, naming it', () => {
     assert.throws(() => formatPence(bad), (e) => e instanceof RangeError && e.message.includes(named));
   }
 });
+
+test('money R3: without the pound sign, the text is R1 less the sign', () => {
+  for (const [pence, text] of [[1234, '12.34'], [5, '0.05'], [0, '0.00'], [100000, '1,000.00'], [123456789, '1,234,567.89']]) {
+    assert.equal(formatPence(pence, { sign: false }), text);
+    assert.equal(formatPence(pence), `£${text}`);
+  }
+});
+
+test('money R3: the sign is shown when asked for or when the option is absent', () => {
+  assert.equal(formatPence(1234, { sign: true }), '£12.34');
+  assert.equal(formatPence(1234, {}), '£12.34');
+  assert.equal(formatPence(1234, undefined), '£12.34');
+});
+
+test('money R2 with R3: a bad amount is refused whether or not the sign is asked for', () => {
+  for (const bad of [-1, 0.5, NaN]) {
+    assert.throws(() => formatPence(bad, { sign: false }), (e) => e instanceof RangeError && e.message.includes(String(bad)));
+  }
+});
