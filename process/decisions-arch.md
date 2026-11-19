@@ -59,3 +59,8 @@ Decided: 19 Nov 2026.
 Decision: discountOn's percent may also be text: a number, optional spaces, and a percent sign, such as "15%" or "12.5 %"; it is read as that number and judged as before. Text of any other form is refused with a RangeError that quotes it.
 Why: accepting more tells no user; invoice passes the percent on as it is given.
 Decided: 19 Nov 2026.
+
+## The rate's label
+Decision: what taxDetail gives back gains label, text "VAT " followed by the rate's whole percent and a percent sign ("VAT 20%", "VAT 5%", "VAT 0%"); taxOn is unchanged.
+Why: a caller showing the rate gets its words from the module that chose it; the change is to what taxDetail hands back, so the tool's notice is expected to tell invoice, its user, and this round is to try that notice. invoice can keep working unchanged, since it reads only the fields it already reads.
+Decided: 19 Nov 2026.
