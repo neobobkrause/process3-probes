@@ -2,6 +2,11 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { taxOn, taxDetail } from '../../src/tax/index.mjs';
 
+/** Bad values handed in on purpose, to prove the refusals R2 and R3 name. @type {(amount?: any, rate?: any) => number} */
+const taxOnBad = taxOn;
+/** @type {(amount?: any, rate?: any) => import('../../src/tax/index.mjs').TaxDetail} */
+const taxDetailBad = taxDetail;
+
 test('R1: tax is the amount times 0.2 where that is a whole penny', () => {
   assert.equal(taxOn(0), 0);
   assert.equal(taxOn(5), 1);
@@ -55,13 +60,13 @@ test('R2: an amount that is not a whole number of pence is refused with a RangeE
   ];
   for (const [amount, named] of bad) {
     assert.throws(
-      () => taxOn(amount),
+      () => taxOnBad(amount),
       (e) => e instanceof RangeError && e.message.includes(named),
       `amount ${named}`,
     );
   }
   assert.throws(() => taxOn(Object.create(null)), RangeError);
-  assert.throws(() => taxOn(), RangeError);
+  assert.throws(() => taxOnBad(), RangeError);
 });
 
 test('R1: asking for the standard rate by name, or passing no rate, gives the same tax', () => {
@@ -122,12 +127,12 @@ test('R3: any other rate asked for is refused with a RangeError naming it', () =
   ];
   for (const [rate, named] of bad) {
     assert.throws(
-      () => taxOn(100, rate),
+      () => taxOnBad(100, rate),
       (e) => e instanceof RangeError && e.message.includes(named),
       `rate ${named}`,
     );
   }
-  assert.throws(() => taxOn(100, {}), RangeError);
+  assert.throws(() => taxOnBad(100, {}), RangeError);
 });
 
 test('R4: the zero rate, asked for by name, gives a tax of 0 pence on any amount', () => {
@@ -161,9 +166,9 @@ test('R5: the tax in the detail is the tax R1, R3 and R4 give, rounding included
 test('R5, R2, R3: the detail refuses what the tax refuses, with the same RangeError', () => {
   for (const [amount, rate] of [[-1, 'standard'], [0.5, undefined], [NaN, 'zero'], [100, 'Reduced '], [100, 20], [100, null]]) {
     let expected;
-    try { taxOn(amount, rate); } catch (e) { expected = e; }
+    try { taxOnBad(amount, rate); } catch (e) { expected = e; }
     assert.throws(
-      () => taxDetail(amount, rate),
+      () => taxDetailBad(amount, rate),
       (e) => e instanceof RangeError && e.message === expected.message,
       `amount ${amount}, rate ${rate}`,
     );
