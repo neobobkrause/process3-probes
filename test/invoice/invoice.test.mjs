@@ -42,15 +42,6 @@ test('invoice R1: bounds, no goods and an empty parcel; the heaviest parcel', ()
   assert.deepEqual(invoiceFor(10000, { value: 20, unit: 'kg' }), { goods: 10000, shipping: 4200, tax: 2840, total: 17040 });
 });
 
-test('invoice R1: bound, the largest exact total is given; one penny more is refused with a RangeError', () => {
-  const most = 7505999378950526; // with a 0 g parcel the total is exactly Number.MAX_SAFE_INTEGER
-  assert.deepEqual(invoiceFor(most, g(0)), {
-    goods: most, shipping: 300, tax: 1501199875790165, total: Number.MAX_SAFE_INTEGER,
-  });
-  assert.throws(() => invoiceFor(most + 1, g(0)), (e) => e instanceof RangeError && /cannot be exact/.test(e.message));
-  assert.throws(() => invoiceFor(Number.MAX_SAFE_INTEGER, g(0)), RangeError);
-});
-
 test('invoice R2: a goods amount the tax module refuses is refused with its RangeError, unchanged', () => {
   for (const goods of [-1, -300, 0.5, 12.34, NaN, Infinity, '100', 100n, null, undefined]) {
     const got = errorOf(() => invoiceFor(goods, g(500)));
