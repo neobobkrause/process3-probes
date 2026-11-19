@@ -12,4 +12,4 @@ Next number: 8
 - **R4** [met] A weight may also be given as text such as "2.5 kg" or "12oz": a number, optional spaces, and one of the units R1 and R3 name; it converts as R1 says, and text of any other form is refused with a RangeError that quotes it.
 - **R5** [met] A weight given in tonnes (unit 't', 1,000,000 grams each), as a weight or as text such as "0.01 t", is converted to whole grams as in R1, and is not refused by R2.
 - **R6** [met] Weight text may name its unit in full, singular or plural, in any letter case: gram, kilogram, ounce, pound, stone or tonne, such as "2 Kilograms" or "1 pound"; it converts as R4 says.
-- **R7** [not yet met] A weight given in milligrams (unit 'mg', 0.001 grams each), as a weight or as text such as "2500 mg" or "2500 milligrams", is converted to whole grams as in R1, and is not refused by R2.
+- **R7** [met] A weight given in milligrams (unit 'mg', 0.001 grams each), as a weight or as text such as "2500 mg" or "2500 milligrams", is converted to whole grams as in R1, and is not refused by R2.
