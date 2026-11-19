@@ -81,3 +81,34 @@ test('units R3: R2 still refuses a bad weight given in stones, naming the value'
   assert.throws(() => g(Infinity, 'st'), { name: 'RangeError', message: /Infinity/ });
   assert.throws(() => g(1, 'ST'), { name: 'RangeError', message: /"ST"/ });
 });
+
+test('units R4: text of a number, optional spaces and a unit converts as R1 says', () => {
+  assert.equal(toGrams('2.5 kg'), 2500);
+  assert.equal(toGrams('12oz'), 340); // 340.19427750
+  assert.equal(toGrams('750 g'), 750);
+  assert.equal(toGrams('1lb'), 454);
+  assert.equal(toGrams('2   st'), 12701); // 12700.58636, R3's unit
+  assert.equal(toGrams('0.5g'), 1); // a half rounds up
+  assert.equal(toGrams('.5 kg'), 500);
+  assert.equal(toGrams('3. lb'), 1361); // 1360.77711
+  assert.equal(toGrams('+2 kg'), 2000);
+  for (const u of WEIGHT_UNITS) assert.equal(toGrams(`3.3 ${u}`), g(3.3, u), u);
+});
+
+test('units R4: bounds — zero text gives 0, large text converts', () => {
+  assert.equal(toGrams('0 kg'), 0);
+  assert.ok(Object.is(toGrams('-0 g'), 0));
+  assert.equal(toGrams('1000000 kg'), 1e9);
+});
+
+test('units R4: text of any other form is refused with a RangeError quoting it', () => {
+  for (const text of ['', 'kg', '2.5', '2.5 KG', '2.5 stone', ' 2 kg', '2 kg ', '2\tkg', '2,5 kg',
+    '1e3 g', 'Infinity kg', 'NaN g', '2 kg 3 g', '1.2.3 g', '- 2 kg', 'two kg', '.kg', '0x10 g']) {
+    assert.throws(() => toGrams(text), { name: 'RangeError', message: new RegExp(JSON.stringify(text).replace(/[.*+?^${}()|[\]\\]/g, '\\$&')) }, text);
+  }
+});
+
+test('units R4, R2: text with a negative or overlarge number is refused, naming the value', () => {
+  assert.throws(() => toGrams('-2 kg'), { name: 'RangeError', message: /-2/ });
+  assert.throws(() => toGrams(`${'9'.repeat(400)} g`), { name: 'RangeError', message: /Infinity/ });
+});

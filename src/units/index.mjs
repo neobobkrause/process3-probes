@@ -1,4 +1,4 @@
-// units: converts a weight in a named unit to whole grams.
+// units: converts a weight in a named unit, or written as text, to whole grams.
 
 /**
  * @typedef {'g' | 'kg' | 'oz' | 'lb' | 'st'} WeightUnit
@@ -21,18 +21,28 @@ export const WEIGHT_UNITS = Object.freeze(['g', 'kg', 'oz', 'lb', 'st']);
 /** @type {Readonly<Record<WeightUnit, number>>} grams in one of each unit */
 const GRAMS_PER = Object.freeze({ g: 1, kg: 1000, oz: 28.349523125, lb: 453.59237, st: 6350.29318 });
 
+/** Text of a weight: a number, optional spaces, then one of WEIGHT_UNITS. */
+const WEIGHT_TEXT = /^([+-]?(?:\d+(?:\.\d*)?|\.\d+)) *(g|kg|oz|lb|st)$/;
+
 /** @param {unknown} v */
 const show = (v) => (typeof v === 'number' ? String(v) : JSON.stringify(v) ?? String(v));
 
 /**
  * Converts a weight to whole grams, rounded to the nearest gram (a half rounds up).
- * @param {Weight} weight
+ * A weight may be given as text such as "2.5 kg" or "12oz".
+ * @param {Weight | string} weight
  * @returns {number}
+ * @bound weight: as text, a number (digits with an optional decimal point and sign), optional spaces, then one of WEIGHT_UNITS, nothing else
  * @bound returns: whole number of grams, zero or more
- * @throws {RangeError} when the weight is not an object, its value is negative or not a finite number, or its unit is not one of WEIGHT_UNITS; the message names the bad value or unit
+ * @throws {RangeError} when the weight is text of any other form (the message quotes it), is neither text nor an object, its value is negative or not a finite number, or its unit is not one of WEIGHT_UNITS; the message names the bad value or unit
  */
 export function toGrams(weight) {
-  if (typeof weight !== 'object' || weight === null) throw new RangeError(`weight is not an object with a value and a unit: ${show(weight)}`);
+  if (typeof weight === 'string') {
+    const m = WEIGHT_TEXT.exec(weight);
+    if (m === null) throw new RangeError(`weight text is not a number and a unit: ${JSON.stringify(weight)}`);
+    return toGrams({ value: Number(m[1]), unit: /** @type {WeightUnit} */ (m[2]) });
+  }
+  if (typeof weight !== 'object' || weight === null) throw new RangeError(`weight is not text or an object with a value and a unit: ${show(weight)}`);
   /** @type {Weight} checks a Weight */
   const { value, unit } = weight;
   if (typeof unit !== 'string' || !Object.hasOwn(GRAMS_PER, unit)) {
