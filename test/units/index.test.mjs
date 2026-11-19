@@ -102,7 +102,7 @@ test('units R4: bounds — zero text gives 0, large text converts', () => {
 });
 
 test('units R4: text of any other form is refused with a RangeError quoting it', () => {
-  for (const text of ['', 'kg', '2.5', '2.5 KG', '2.5 stone', ' 2 kg', '2 kg ', '2\tkg', '2,5 kg',
+  for (const text of ['', 'kg', '2.5', '2.5 KG', '2.5 stonez', ' 2 kg', '2 kg ', '2\tkg', '2,5 kg',
     '1e3 g', 'Infinity kg', 'NaN g', '2 kg 3 g', '1.2.3 g', '- 2 kg', 'two kg', '.kg', '0x10 g']) {
     assert.throws(() => toGrams(text), { name: 'RangeError', message: new RegExp(JSON.stringify(text).replace(/[.*+?^${}()|[\]\\]/g, '\\$&')) }, text);
   }
@@ -145,7 +145,52 @@ test('units R5, R2: a bad weight in tonnes is still refused, naming the value or
   assert.throws(() => g(1, 'T'), { name: 'RangeError', message: /"T"/ });
   assert.throws(() => g(1, 'tonne'), { name: 'RangeError', message: /"tonne"/ });
   assert.throws(() => toGrams('-1 t'), { name: 'RangeError', message: /-1/ });
-  for (const text of ['1 T', '1 tonne', '1 tt', 't', '1 t ', '1 s t']) {
+  for (const text of ['1 T', '1 tonnee', '1 tt', 't', '1 t ', '1 s t']) {
     assert.throws(() => toGrams(text), { name: 'RangeError', message: new RegExp(JSON.stringify(text)) }, text);
   }
+});
+
+test('units R6: each unit named in full, singular or plural, converts as R4 says', () => {
+  const names = { g: ['gram', 'grams'], kg: ['kilogram', 'kilograms'], oz: ['ounce', 'ounces'],
+    lb: ['pound', 'pounds'], st: ['stone', 'stones'], t: ['tonne', 'tonnes'] };
+  assert.deepEqual(Object.keys(names).sort(), [...WEIGHT_UNITS].sort());
+  for (const [u, words] of Object.entries(names)) {
+    for (const w of words) assert.equal(toGrams(`3.3 ${w}`), toGrams(`3.3 ${u}`), w);
+  }
+  assert.equal(toGrams('2 Kilograms'), 2000);
+  assert.equal(toGrams('1 pound'), 454);
+  assert.equal(toGrams('12ounces'), 340);
+  assert.equal(toGrams('2.5   stone'), 15876);
+  assert.equal(toGrams('0.01 tonne'), 10000);
+  assert.equal(toGrams('0.5 gram'), 1); // a half rounds up
+});
+
+test('units R6: a full name may be in any letter case', () => {
+  for (const w of ['KILOGRAMS', 'kilograms', 'Kilograms', 'kIlOgRaM', 'KiloGram']) assert.equal(toGrams(`2 ${w}`), 2000, w);
+  for (const w of ['POUND', 'Pounds', 'OUNCE', 'Stones', 'TONNE', 'Gram']) assert.ok(Number.isInteger(toGrams(`1 ${w}`)), w);
+  assert.equal(toGrams('1 STONE'), toGrams('14 Pounds'));
+  assert.equal(toGrams('1 Tonne'), toGrams('1000 KILOGRAMS'));
+});
+
+test('units R6: bounds — zero and large weights named in full convert', () => {
+  assert.equal(toGrams('0 Tonnes'), 0);
+  assert.ok(Object.is(toGrams('-0 grams'), 0));
+  assert.equal(toGrams('1000000 kilograms'), 1e9);
+});
+
+test('units R6, R4: other words, and symbols in another letter case, are still refused, quoting the text', () => {
+  for (const text of ['2 kilo', '2 kilos', '2 lbs', '2 ozs', '2 KG', '2 Oz', '1 T', '1 tons', '1 ton', '1 tonnes ',
+    ' 1 tonne', '1 kilo gram', '1 metres', '1 constructor', '1 toString', '1 __proto__', '2 gramss', 'kilograms', '1 Kilogramß']) {
+    assert.throws(() => toGrams(text), { name: 'RangeError', message: new RegExp(JSON.stringify(text).replace(/[.*+?^${}()|[\]\\]/g, '\\$&')) }, text);
+  }
+});
+
+test('units R6, R2: a negative or overlarge weight named in full is refused, naming the value', () => {
+  assert.throws(() => toGrams('-2 Kilograms'), { name: 'RangeError', message: /-2/ });
+  assert.throws(() => toGrams(`${'9'.repeat(400)} pounds`), { name: 'RangeError', message: /Infinity/ });
+});
+
+test('units R6, R2: a full name given as a unit outside text is still refused, naming the unit', () => {
+  assert.throws(() => g(1, 'kilogram'), { name: 'RangeError', message: /"kilogram"/ });
+  assert.throws(() => g(1, 'Pounds'), { name: 'RangeError', message: /"Pounds"/ });
 });
