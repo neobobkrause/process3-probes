@@ -66,3 +66,49 @@ test('invoice R2: when both are refused, the refusal is one of the two modules\'
   assert.ok(got instanceof RangeError);
   assert.ok(either.includes(got.message));
 });
+
+test('invoice R3: express shipping takes the express cost from the shipping module, and tax and total follow from it', () => {
+  assert.deepEqual(invoiceFor(1000, g(500), { express: true }), { goods: 1000, shipping: 600, tax: 320, total: 1920 });
+  assert.deepEqual(invoiceFor(1, g(501), { express: true }), { goods: 1, shipping: 800, tax: 160, total: 961 }); // tax on 801 = 160.2
+  assert.deepEqual(invoiceFor(3, g(0), { express: true }), { goods: 3, shipping: 600, tax: 121, total: 724 }); // 120.6
+});
+
+test('invoice R3: express amounts agree with the shipping and tax modules, all whole pence', () => {
+  for (const [goods, parcel] of [[0, g(0)], [99, g(1999)], [12345, { value: 3, unit: 'lb' }], [777, { value: 20, unit: 'kg' }]]) {
+    const inv = invoiceFor(goods, parcel, { express: true });
+    const shipping = shippingCost(parcel, { express: true });
+    const tax = taxOn(goods + shipping);
+    assert.deepEqual(inv, { goods, shipping, tax, total: goods + shipping + tax });
+    for (const v of Object.values(inv)) assert.ok(Number.isSafeInteger(v) && v >= 0);
+  }
+});
+
+test('invoice R3: bounds, the heaviest express parcel', () => {
+  assert.deepEqual(invoiceFor(10000, { value: 20, unit: 'kg' }, { express: true }), { goods: 10000, shipping: 8400, tax: 3680, total: 22080 });
+});
+
+test('invoice R3: not asking for express, or asking for it as false, gives the standard invoice of R1', () => {
+  const standard = { goods: 1000, shipping: 300, tax: 260, total: 1560 };
+  assert.deepEqual(invoiceFor(1000, g(500), undefined), standard);
+  assert.deepEqual(invoiceFor(1000, g(500), {}), standard);
+  assert.deepEqual(invoiceFor(1000, g(500), { express: false }), standard);
+});
+
+test('invoice R3: shipping options the shipping module refuses are refused with its error, unchanged', () => {
+  for (const options of [null, 'express', 1, true, { express: 'yes' }, { express: 1 }, { express: null }]) {
+    const got = errorOf(() => invoiceFor(1000, g(500), options));
+    const expected = errorOf(() => shippingCost(g(500), options));
+    assert.equal(got.constructor, expected.constructor, `options ${JSON.stringify(options)}`);
+    assert.equal(got.message, expected.message, `options ${JSON.stringify(options)}`);
+  }
+});
+
+test('invoice R3 with R2: an express invoice refuses a goods amount or parcel with the module\'s RangeError, unchanged', () => {
+  const express = { express: true };
+  const byGoods = errorOf(() => invoiceFor(-1, g(500), express));
+  assert.ok(byGoods instanceof RangeError);
+  assert.equal(byGoods.message, errorOf(() => taxOn(-1)).message);
+  const byParcel = errorOf(() => invoiceFor(1000, g(20001), express));
+  assert.ok(byParcel instanceof RangeError);
+  assert.equal(byParcel.message, errorOf(() => shippingCost(g(20001), express)).message);
+});
