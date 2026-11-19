@@ -64,3 +64,8 @@ Decided: 19 Nov 2026.
 Decision: units accepts the unit 'mg', 0.001 grams each, in a Weight and in weight text, with the full names milligram and milligrams in any letter case; toGrams still gives back whole grams, rounded to the nearest gram.
 Why: accepting more keeps every caller working; the wording of the weight bound changes with it, so the tool's notice is expected to tell shipping, which uses toGrams, and this round is to try that notice.
 Decided: 19 Nov 2026.
+
+## The rate's label
+Decision: what taxDetail gives back gains label, text "VAT " followed by the rate's whole percent and a percent sign ("VAT 20%", "VAT 5%", "VAT 0%"); taxOn is unchanged.
+Why: a caller showing the rate gets its words from the module that chose it; the change is to what taxDetail hands back, so the tool's notice is expected to tell invoice, its user, and this round is to try that notice. invoice can keep working unchanged, since it reads only the fields it already reads.
+Decided: 19 Nov 2026.
