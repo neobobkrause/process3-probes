@@ -168,7 +168,7 @@ test('R3: text percentages outside 0 to 100 are refused with a RangeError quotin
 
 test('R3: text of any other form is refused with a RangeError quoting it', () => {
   const bad = [
-    '', '%', '15', '15 percent', ' 15%', '15% ', '15%%', '% 15', '1 5%', '15.%', '.5%', '1,5%',
+    '', '%', '15', '15 percent', ' 15%', '15% ', '15%%', '% 15', '1 5%', '15.%', '.5%',
     '1e1%', '0x10%', 'Infinity%', 'NaN%', '15\t%', '15\n%', 'ten%', '15 % off', '١٥%',
   ];
   for (const text of bad) {
@@ -183,4 +183,47 @@ test('R3: text of any other form is refused with a RangeError quoting it', () =>
 test('R3: a bad amount is still refused, naming the amount, when the percentage is text', () => {
   assert.throws(() => discountOn(-7, '50%'), (e) => e instanceof RangeError && /amount/.test(e.message) && /-7\b/.test(e.message));
   assert.throws(() => discountOn(1.5, '50%'), (e) => e instanceof RangeError && /1\.5/.test(e.message));
+});
+
+test('R4: percentage text with a comma before its fraction is judged as the same text with a point', () => {
+  assert.equal(discountOn(1000, '12,5%'), 125);
+  assert.equal(discountOn(1000, '7,25 %'), 73); // 72.5 rounds half up
+  assert.equal(discountOn(1000, '12,5   %'), 125);
+  assert.equal(discountOn(500, '0,3%'), 2); // 1.5
+  assert.equal(discountOn(499, '0,1%'), 0); // 0.499
+  assert.equal(discountOn(1000, '100,000%'), 1000);
+  assert.equal(discountOn(1000, '+10,0%'), 100);
+  assert.equal(discountOn(1000, '-0,0%'), 0);
+  assert.equal(discountOn(100, '0,49999999999999999999%'), 0);
+  assert.equal(discountOn(100, '0,50000000000000000000%'), 1);
+  for (const p of ['0.5', '1.25', '12.5', '33.3', '99.99', '50.0']) {
+    for (const a of [0, 1, 3, 15, 199, 12345]) {
+      const comma = p.replace('.', ',');
+      assert.equal(discountOn(a, `${comma}%`), discountOn(a, `${p}%`), `amount ${a} at "${comma}%"`);
+    }
+  }
+});
+
+test('R4: comma text outside 0 to 100 is refused with a RangeError quoting the text', () => {
+  for (const text of ['-0,01%', '100,01%', '100,0000000000000000001%']) {
+    assert.throws(
+      () => discountOn(1000, text),
+      (e) => e instanceof RangeError && e.message.includes(JSON.stringify(text)),
+      text,
+    );
+  }
+});
+
+test('R4: text with both a point and a comma, or more than one of either, is refused quoting it', () => {
+  const bad = [
+    '1.2,5%', '1,2.5%', '1,2,5%', '1.2.5%', '1,000.5%', '1.000,5%', '12,,5%', '12..5%',
+    '12,%', ',5%', '12, 5%', '12 ,5%', '12,5', '12,5 percent',
+  ];
+  for (const text of bad) {
+    assert.throws(
+      () => discountOn(1000, text),
+      (e) => e instanceof RangeError && e.message.includes(JSON.stringify(text)),
+      JSON.stringify(text),
+    );
+  }
 });
