@@ -9,3 +9,8 @@ Decided: 19 Nov 2026.
 Decision: shippingCost takes an optional second argument { express }, so every caller written before express keeps working unchanged.
 Why: invoice was being written against shipping at the same time; a provider first accepts the new form beside the old.
 Decided: 19 Nov 2026.
+
+## The tax rate
+Decision: taxOn takes an optional second argument naming the rate, 'standard' or 'reduced'; left out, it is the standard rate.
+Why: invoice calls taxOn(amount) at the standard rate, and must keep working when the reduced rate is added.
+Decided: 19 Nov 2026.
