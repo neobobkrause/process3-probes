@@ -63,3 +63,65 @@ test('R2: an amount that is not a whole number of pence is refused with a RangeE
   assert.throws(() => taxOn(Object.create(null)), RangeError);
   assert.throws(() => taxOn(), RangeError);
 });
+
+test('R1: asking for the standard rate by name, or passing no rate, gives the same tax', () => {
+  for (const a of [0, 1, 3, 7, 8, 100, 12345]) {
+    assert.equal(taxOn(a, 'standard'), taxOn(a));
+    assert.equal(taxOn(a, undefined), taxOn(a));
+  }
+});
+
+test('R3: tax at the reduced rate is the amount times 0.05 where that is a whole penny', () => {
+  assert.equal(taxOn(0, 'reduced'), 0);
+  assert.equal(taxOn(20, 'reduced'), 1);
+  assert.equal(taxOn(100, 'reduced'), 5);
+  assert.equal(taxOn(12340, 'reduced'), 617);
+});
+
+test('R3: tax at the reduced rate is rounded half up to a whole penny', () => {
+  assert.equal(taxOn(9, 'reduced'), 0); // 0.45
+  assert.equal(taxOn(10, 'reduced'), 1); // 0.5, exactly half, rounds up
+  assert.equal(taxOn(29, 'reduced'), 1); // 1.45
+  assert.equal(taxOn(30, 'reduced'), 2); // 1.5
+  assert.equal(taxOn(31, 'reduced'), 2); // 1.55
+});
+
+test('R3: every amount from 0 to 1000 pence at the reduced rate matches the rule exactly', () => {
+  for (let a = 0; a <= 1000; a++) {
+    const twentieths = a % 20; // tax = (a - twentieths) / 20 + twentieths / 20
+    const expected = (a - twentieths) / 20 + (twentieths >= 10 ? 1 : 0);
+    assert.equal(taxOn(a, 'reduced'), expected, `amount ${a}`);
+  }
+});
+
+test('R3: large amounts at the reduced rate are exact at the top of the safe whole-number range', () => {
+  assert.equal(taxOn(Number.MAX_SAFE_INTEGER, 'reduced'), 450359962737050); // ...991 * 0.05 = ...049.55
+});
+
+test('R2, R3: a bad amount is refused at the reduced rate too', () => {
+  assert.throws(() => taxOn(-1, 'reduced'), (e) => e instanceof RangeError && /-1\b/.test(e.message));
+  assert.throws(() => taxOn(0.5, 'reduced'), (e) => e instanceof RangeError && e.message.includes('0.5'));
+});
+
+test('R3: any other rate asked for is refused with a RangeError naming it', () => {
+  const bad = [
+    ['zero', '"zero"'],
+    ['Reduced', '"Reduced"'],
+    ['', '""'],
+    ['toString', '"toString"'],
+    ['__proto__', '"__proto__"'],
+    [5, '5'],
+    [0.05, '0.05'],
+    [20, '20'],
+    [null, 'null'],
+    [false, 'false'],
+  ];
+  for (const [rate, named] of bad) {
+    assert.throws(
+      () => taxOn(100, rate),
+      (e) => e instanceof RangeError && e.message.includes(named),
+      `rate ${named}`,
+    );
+  }
+  assert.throws(() => taxOn(100, {}), RangeError);
+});
