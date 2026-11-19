@@ -1,12 +1,12 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { shippingCost, MAX_GRAMS } from '../../src/shipping/index.mjs';
+import { shippingCost, MAX_GRAMS, SMALL_GRAMS } from '../../src/shipping/index.mjs';
 
 const g = (value) => ({ value, unit: 'g' });
 
-test('R1: up to the first 500 grams costs 300 pence', () => {
-  assert.equal(shippingCost(g(0)), 300);
-  assert.equal(shippingCost(g(1)), 300);
+test('R1: up to the first 500 grams, above the R5 small parcel, costs 300 pence', () => {
+  assert.equal(shippingCost(g(101)), 300);
+  assert.equal(shippingCost(g(250)), 300);
   assert.equal(shippingCost(g(500)), 300);
 });
 
@@ -22,6 +22,16 @@ test('R1: the weight may be given in any unit units accepts', () => {
   assert.equal(shippingCost({ value: 2, unit: 'lb' }), 400); // 907 g
   assert.equal(shippingCost({ value: 16, unit: 'oz' }), 300); // 454 g
   assert.equal(shippingCost({ value: 20, unit: 'kg' }), 4200);
+});
+
+test('R1: the weight may be given as text, with a unit symbol or its full name', () => {
+  assert.equal(shippingCost('1.2 kg'), 500);
+  assert.equal(shippingCost('2 Kilograms'), 600);
+  assert.equal(shippingCost('1 pound'), 300); // 454 g
+  assert.equal(shippingCost('3 oz'), 150); // 85 g, a small parcel
+  assert.equal(shippingCost('20 kilograms', { express: true, zone: 'far' }), 12600);
+  assert.throws(() => shippingCost('21 kilograms'), (e) => e instanceof RangeError && /over the limit/.test(e.message));
+  assert.throws(() => shippingCost('2 bags'), RangeError);
 });
 
 test('R1: bound, the heaviest parcel accepted costs 4200 pence', () => {
@@ -43,7 +53,7 @@ test('R1: a weight units refuses is refused with its RangeError', () => {
 const express = { express: true };
 
 test('R3: an express parcel costs twice what R1 gives for its weight', () => {
-  for (const [w, standard] of [[g(0), 300], [g(500), 300], [g(501), 400], [g(2750), 800], [{ value: 1.2, unit: 'kg' }, 500]]) {
+  for (const [w, standard] of [[g(0), 150], [g(101), 300], [g(500), 300], [g(501), 400], [g(2750), 800], [{ value: 1.2, unit: 'kg' }, 500]]) {
     assert.equal(shippingCost(w), standard);
     assert.equal(shippingCost(w, express), 2 * standard);
   }
@@ -79,14 +89,14 @@ test('R3: an express marking that is not true or false is refused with a TypeErr
 const far = { zone: 'far' };
 
 test('R4: a parcel sent to the far zone costs half as much again as at home', () => {
-  for (const [w, home] of [[g(0), 300], [g(500), 300], [g(501), 400], [g(2750), 800], [{ value: 1.2, unit: 'kg' }, 500]]) {
+  for (const [w, home] of [[g(0), 150], [g(101), 300], [g(500), 300], [g(501), 400], [g(2750), 800], [{ value: 1.2, unit: 'kg' }, 500]]) {
     assert.equal(shippingCost(w, { zone: 'home' }), home);
     assert.equal(shippingCost(w, far), home * 1.5);
   }
 });
 
 test('R4: an express parcel sent to the far zone costs half as much again as express at home', () => {
-  for (const [w, home] of [[g(0), 600], [g(1001), 1000], [{ value: 2, unit: 'lb' }, 800]]) {
+  for (const [w, home] of [[g(0), 300], [g(101), 600], [g(1001), 1000], [{ value: 2, unit: 'lb' }, 800]]) {
     assert.equal(shippingCost(w, { express: true, zone: 'home' }), home);
     assert.equal(shippingCost(w, { express: true, zone: 'far' }), home * 1.5);
   }
@@ -114,4 +124,28 @@ test('R4: a zone that is not home or far is refused with a TypeError naming it',
   for (const [zone, named] of [['near', '"near"'], ['Far', '"Far"'], ['', '""'], [null, 'null'], [2, '2']]) {
     assert.throws(() => shippingCost(g(100), { zone }), (e) => e instanceof TypeError && e.message.includes(named));
   }
+});
+
+test('R5: a parcel of 100 grams or less costs 150 pence', () => {
+  for (const w of [g(0), g(1), g(50), g(SMALL_GRAMS), { value: 0.1, unit: 'kg' }, { value: 3, unit: 'oz' }]) {
+    assert.equal(shippingCost(w), 150);
+  }
+});
+
+test('R5: bound, just over 100 grams costs R1\'s 300 pence', () => {
+  assert.equal(shippingCost(g(SMALL_GRAMS + 1)), 300);
+  assert.equal(shippingCost({ value: 100.5, unit: 'g' }), 300); // units rounds to 101 g
+  assert.equal(shippingCost({ value: 100.4, unit: 'g' }), 150); // units rounds to 100 g
+});
+
+test('R5: express and the far zone apply to a small parcel as R3 and R4 say', () => {
+  assert.equal(shippingCost(g(SMALL_GRAMS), { express: true }), 300);
+  assert.equal(shippingCost(g(SMALL_GRAMS), { zone: 'far' }), 225);
+  assert.equal(shippingCost(g(SMALL_GRAMS), { express: true, zone: 'far' }), 450);
+  assert.equal(shippingCost(g(0), { express: false, zone: 'home' }), 150);
+});
+
+test('R5: a small parcel is still refused a bad zone or express marking', () => {
+  assert.throws(() => shippingCost(g(50), { zone: 'near' }), TypeError);
+  assert.throws(() => shippingCost(g(50), { express: 'yes' }), TypeError);
 });
