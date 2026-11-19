@@ -49,3 +49,8 @@ Decided: 19 Nov 2026.
 Decision: formatPence takes an optional second argument { symbol }, true by default; with symbol false the text is the same without the pound sign (1234 gives "12.34"). A symbol given that is not true or false is refused with a TypeError that names it.
 Why: the provider accepts the new option beside the old form, so invoice keeps working unchanged.
 Decided: 19 Nov 2026.
+
+## A discount written as text
+Decision: discountOn's percent may also be text: a number, optional spaces, and a percent sign, such as "15%" or "12.5 %"; it is read as that number and judged as before. Text of any other form is refused with a RangeError that quotes it.
+Why: accepting more tells no user; invoice passes the percent on as it is given.
+Decided: 19 Nov 2026.
