@@ -1,14 +1,14 @@
 // units: converts a weight in a named unit to whole grams.
 
 /**
- * @typedef {'g' | 'kg' | 'oz' | 'lb'} WeightUnit
- * grams, kilograms, ounces (avoirdupois) or pounds (avoirdupois)
+ * @typedef {'g' | 'kg' | 'oz' | 'lb' | 'st'} WeightUnit
+ * grams, kilograms, ounces (avoirdupois), pounds (avoirdupois) or stones (14 pounds)
  */
 
 /**
  * @typedef {Object} Weight
  * @property {number} value the weight in its unit
- * @property {'g' | 'kg' | 'oz' | 'lb'} unit
+ * @property {'g' | 'kg' | 'oz' | 'lb' | 'st'} unit
  * @bound value: a finite number, zero or more
  */
 
@@ -16,10 +16,10 @@
  * The units a weight may be given in.
  * @type {readonly WeightUnit[]}
  */
-export const WEIGHT_UNITS = Object.freeze(['g', 'kg', 'oz', 'lb']);
+export const WEIGHT_UNITS = Object.freeze(['g', 'kg', 'oz', 'lb', 'st']);
 
 /** @type {Readonly<Record<WeightUnit, number>>} grams in one of each unit */
-const GRAMS_PER = Object.freeze({ g: 1, kg: 1000, oz: 28.349523125, lb: 453.59237 });
+const GRAMS_PER = Object.freeze({ g: 1, kg: 1000, oz: 28.349523125, lb: 453.59237, st: 6350.29318 });
 
 /** @param {unknown} v */
 const show = (v) => (typeof v === 'number' ? String(v) : JSON.stringify(v) ?? String(v));
