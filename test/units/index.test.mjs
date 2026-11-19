@@ -4,8 +4,8 @@ import { toGrams, WEIGHT_UNITS } from '../../src/units/index.mjs';
 
 const g = (value, unit) => toGrams({ value, unit });
 
-test('units R1: the four units are the ones accepted', () => {
-  assert.deepEqual([...WEIGHT_UNITS].sort(), ['g', 'kg', 'lb', 'oz']);
+test('units R1, R3: the four units of R1 and stones are the ones accepted', () => {
+  assert.deepEqual([...WEIGHT_UNITS].sort(), ['g', 'kg', 'lb', 'oz', 'st']);
   assert.ok(Object.isFrozen(WEIGHT_UNITS));
 });
 
@@ -58,4 +58,26 @@ test('units R2: a unit not named in R1 is refused with a RangeError naming the u
   assert.throws(() => g(1, 'toString'), { name: 'RangeError', message: /"toString"/ });
   assert.throws(() => toGrams({ value: 1 }), { name: 'RangeError', message: /undefined/ });
   assert.throws(() => g(1, 1000), { name: 'RangeError', message: /1000/ });
+});
+
+test('units R3: stones convert to whole grams, rounded to the nearest gram', () => {
+  assert.equal(g(1, 'st'), 6350); // 6350.29318
+  assert.equal(g(1, 'st'), g(14, 'lb')); // a stone is fourteen pounds
+  assert.equal(g(2.5, 'st'), 15876); // 15875.73295
+  assert.equal(g(0.1, 'st'), 635); // 635.029318
+  assert.equal(g(3, 'st'), 19051); // 19050.87954
+  assert.ok(Number.isInteger(g(7.77, 'st')));
+});
+
+test('units R3: bounds for stones — zero gives 0, large finite weights convert', () => {
+  assert.equal(g(0, 'st'), 0);
+  assert.ok(Object.is(g(-0, 'st'), 0));
+  assert.equal(g(1e6, 'st'), 6350293180);
+});
+
+test('units R3: R2 still refuses a bad weight given in stones, naming the value', () => {
+  assert.throws(() => g(-1, 'st'), { name: 'RangeError', message: /-1/ });
+  assert.throws(() => g(NaN, 'st'), { name: 'RangeError', message: /NaN/ });
+  assert.throws(() => g(Infinity, 'st'), { name: 'RangeError', message: /Infinity/ });
+  assert.throws(() => g(1, 'ST'), { name: 'RangeError', message: /"ST"/ });
 });
