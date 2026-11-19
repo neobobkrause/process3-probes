@@ -34,3 +34,8 @@ Decided: 19 Nov 2026.
 Decision: shippingCost's options gain zone, 'home' or 'far'; absent is 'home'. A far parcel costs half as much again as the same parcel at home, express or not, after the express doubling; the 20 kilogram limit holds. A zone given that is not 'home' or 'far' is refused with a TypeError that names it, as a bad express is.
 Why: the provider accepts the new option beside the old form, so invoice and every present caller keep working unchanged.
 Decided: 19 Nov 2026.
+
+## Invoice in round 2
+Decision: invoiceFor(goods, parcel, options) keeps its form; its options also take discount, a percent for the discount module, and zone, passed to shipping as it is. The invoice it gives back gains discount, the pence the discount module takes off the goods (0 when none is asked), and text, an object holding goods, discount, shipping, tax and total each as money's pounds text. Tax is the standard-rate tax on goods less discount plus shipping; total is goods less discount plus shipping plus tax. A refusal by discount, like those of tax and shipping, is passed on unchanged. invoice declares uses of shipping, tax, money and discount.
+Why: the owner approved this work on 19 Nov for trial stage 3; fields added to what invoice hands back tell no module, since none uses invoice.
+Decided: 19 Nov 2026.
