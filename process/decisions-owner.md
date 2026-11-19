@@ -24,3 +24,8 @@ Shown to the owner: not yet.
 Rule now: as the owner's words below.
 - 19 Nov 2026: "Instruction: make the slot number 2"
 Shown to the owner: not yet.
+
+## The module put first
+Rule now: as the owner's words below.
+- 19 Nov 2026: "Instruction: do invoice first"
+Shown to the owner: not yet.
