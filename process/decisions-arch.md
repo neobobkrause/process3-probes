@@ -34,3 +34,8 @@ Decided: 19 Nov 2026.
 Decision: shippingCost's options gain zone, 'home' or 'far'; absent is 'home'. A far parcel costs half as much again as the same parcel at home, express or not, after the express doubling; the 20 kilogram limit holds. A zone given that is not 'home' or 'far' is refused with a TypeError that names it, as a bad express is.
 Why: the provider accepts the new option beside the old form, so invoice and every present caller keep working unchanged.
 Decided: 19 Nov 2026.
+
+## The rate the tax module used
+Decision: tax gives a second function, taxDetail(amount, rate), taking what taxOn takes and giving back { tax, rate, percent }: the tax as taxOn gives it, the rate's name, and the rate as a whole percent (20, 5 or 0). taxOn stays as it is.
+Why: a caller that must show which rate was used gets it from the module that chose it; leaving taxOn unchanged tells no present user.
+Decided: 19 Nov 2026.
