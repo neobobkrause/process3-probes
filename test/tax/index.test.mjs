@@ -105,10 +105,12 @@ test('R2, R3: a bad amount is refused at the reduced rate too', () => {
 
 test('R3: any other rate asked for is refused with a RangeError naming it', () => {
   const bad = [
-    ['Zero', '"Zero"'],
     ['zero ', '"zero "'],
+    [' Reduced', '" Reduced"'],
+    ['STANDARD20', '"STANDARD20"'],
+    ['TOSTRING', '"TOSTRING"'],
+    ['__PROTO__', '"__PROTO__"'],
     [0, '0'],
-    ['Reduced', '"Reduced"'],
     ['', '""'],
     ['toString', '"toString"'],
     ['__proto__', '"__proto__"'],
@@ -157,7 +159,7 @@ test('R5: the tax in the detail is the tax R1, R3 and R4 give, rounding included
 });
 
 test('R5, R2, R3: the detail refuses what the tax refuses, with the same RangeError', () => {
-  for (const [amount, rate] of [[-1, 'standard'], [0.5, undefined], [NaN, 'zero'], [100, 'Reduced'], [100, 20], [100, null]]) {
+  for (const [amount, rate] of [[-1, 'standard'], [0.5, undefined], [NaN, 'zero'], [100, 'Reduced '], [100, 20], [100, null]]) {
     let expected;
     try { taxOn(amount, rate); } catch (e) { expected = e; }
     assert.throws(
@@ -166,4 +168,31 @@ test('R5, R2, R3: the detail refuses what the tax refuses, with the same RangeEr
       `amount ${amount}, rate ${rate}`,
     );
   }
+});
+
+test('R6: a rate named in any letter case is the rate R1, R3 or R4 names', () => {
+  const cases = [
+    ['STANDARD', 'standard'], ['Standard', 'standard'], ['sTaNdArD', 'standard'],
+    ['REDUCED', 'reduced'], ['Reduced', 'reduced'], ['rEDUCED', 'reduced'],
+    ['ZERO', 'zero'], ['Zero', 'zero'], ['zErO', 'zero'],
+  ];
+  for (const [asked, rate] of cases) {
+    for (const a of [0, 1, 3, 9, 10, 29, 30, 12345, Number.MAX_SAFE_INTEGER]) {
+      assert.equal(taxOn(a, asked), taxOn(a, rate), `amount ${a} at ${asked}`);
+    }
+  }
+  assert.equal(taxOn(100, 'Reduced'), 5);
+  assert.equal(taxOn(100, 'ZERO'), 0);
+  assert.equal(taxOn(3, 'Standard'), 1);
+});
+
+test('R6, R5: a rate named in any letter case is named back as the rate used, with its percent', () => {
+  assert.deepEqual(taxDetail(100, 'Reduced'), { tax: 5, rate: 'reduced', percent: 5 });
+  assert.deepEqual(taxDetail(100, 'ZERO'), { tax: 0, rate: 'zero', percent: 0 });
+  assert.deepEqual(taxDetail(100, 'StAnDaRd'), { tax: 20, rate: 'standard', percent: 20 });
+});
+
+test('R6, R2: a bad amount is still refused, naming the amount, whatever the letter case of the rate', () => {
+  assert.throws(() => taxOn(-1, 'REDUCED'), (e) => e instanceof RangeError && /-1\b/.test(e.message));
+  assert.throws(() => taxDetail(0.5, 'Zero'), (e) => e instanceof RangeError && e.message.includes('0.5'));
 });
