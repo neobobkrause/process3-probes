@@ -1,0 +1,7 @@
+{
+  "name": "tax",
+  "files": ["src/tax/"],
+  "tests": ["test/tax/"],
+  "public": ["src/tax/index.mjs"],
+  "uses": []
+}
