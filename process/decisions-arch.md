@@ -19,3 +19,8 @@ Decided: 19 Nov 2026.
 Decision: a module refuses only what a requirement names; invoice keeps no limit of its own on very large totals.
 Why: invoice's first job added a refusal for totals past exact whole numbers, which no requirement asked for, and a test exists only to prove a requirement.
 Decided: 19 Nov 2026.
+
+## The money module
+Decision: a new module, money, comes after tax and before invoice in the module order and uses no module. It gives one function, formatPence(pence), taking a whole number of pence, zero or more, and giving back pounds text: a pound sign, the whole pounds with a comma between each group of three digits, a point, and two digits of pence (1234 gives "£12.34", 5 gives "£0.05", 123456789 gives "£1,234,567.89"). Any other value is refused with a RangeError that names it.
+Why: invoice is to show its amounts as pounds text, and showing money is a concern of its own that no present module holds.
+Decided: 19 Nov 2026.
