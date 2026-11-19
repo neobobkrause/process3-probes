@@ -11,7 +11,13 @@
       "Bash(gh api *contents/*)",
       "mcp__github__merge_pull_request",
       "Bash(gh pr merge *)",
-      "Bash(gh api *pulls/*/merge*)"
+      "Bash(gh api *pulls/*/merge*)",
+      "Bash(git push)",
+      "Bash(git push *)",
+      "Bash(gh *)"
+    ],
+    "allow": [
+      "Artifact"
     ]
   }
 }
