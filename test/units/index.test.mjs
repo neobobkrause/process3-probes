@@ -4,8 +4,8 @@ import { toGrams, WEIGHT_UNITS } from '../../src/units/index.mjs';
 
 const g = (value, unit) => toGrams({ value, unit });
 
-test('units R1, R3: the four units of R1 and stones are the ones accepted', () => {
-  assert.deepEqual([...WEIGHT_UNITS].sort(), ['g', 'kg', 'lb', 'oz', 'st']);
+test('units R1, R3, R5: the four units of R1, stones and tonnes are the ones accepted', () => {
+  assert.deepEqual([...WEIGHT_UNITS].sort(), ['g', 'kg', 'lb', 'oz', 'st', 't']);
   assert.ok(Object.isFrozen(WEIGHT_UNITS));
 });
 
@@ -111,4 +111,41 @@ test('units R4: text of any other form is refused with a RangeError quoting it',
 test('units R4, R2: text with a negative or overlarge number is refused, naming the value', () => {
   assert.throws(() => toGrams('-2 kg'), { name: 'RangeError', message: /-2/ });
   assert.throws(() => toGrams(`${'9'.repeat(400)} g`), { name: 'RangeError', message: /Infinity/ });
+});
+
+test('units R5: tonnes convert to whole grams, rounded to the nearest gram', () => {
+  assert.equal(g(1, 't'), 1000000);
+  assert.equal(g(1, 't'), g(1000, 'kg')); // a tonne is a thousand kilograms
+  assert.equal(g(0.01, 't'), 10000);
+  assert.equal(g(2.5, 't'), 2500000);
+  assert.equal(g(0.0000005, 't'), 1); // 0.5 g, a half rounds up
+  assert.equal(g(0.0000004, 't'), 0); // 0.4 g
+  assert.equal(g(1.0000005, 't'), 1000001); // 1000000.5 despite binary noise
+  assert.ok(Number.isInteger(g(3.1415926, 't')));
+});
+
+test('units R5: bounds for tonnes — zero gives 0, large finite weights convert', () => {
+  assert.equal(g(0, 't'), 0);
+  assert.ok(Object.is(g(-0, 't'), 0));
+  assert.equal(g(1e6, 't'), 1e12);
+});
+
+test('units R5: text in tonnes converts as R1 says', () => {
+  assert.equal(toGrams('0.01 t'), 10000);
+  assert.equal(toGrams('2t'), 2000000);
+  assert.equal(toGrams('1.5   t'), 1500000);
+  assert.equal(toGrams('0 t'), 0);
+  assert.equal(toGrams('2 st'), 12701); // stones are still read as stones, not as tonnes
+});
+
+test('units R5, R2: a bad weight in tonnes is still refused, naming the value or text', () => {
+  assert.throws(() => g(-1, 't'), { name: 'RangeError', message: /-1/ });
+  assert.throws(() => g(NaN, 't'), { name: 'RangeError', message: /NaN/ });
+  assert.throws(() => g(Infinity, 't'), { name: 'RangeError', message: /Infinity/ });
+  assert.throws(() => g(1, 'T'), { name: 'RangeError', message: /"T"/ });
+  assert.throws(() => g(1, 'tonne'), { name: 'RangeError', message: /"tonne"/ });
+  assert.throws(() => toGrams('-1 t'), { name: 'RangeError', message: /-1/ });
+  for (const text of ['1 T', '1 tonne', '1 tt', 't', '1 t ', '1 s t']) {
+    assert.throws(() => toGrams(text), { name: 'RangeError', message: new RegExp(JSON.stringify(text)) }, text);
+  }
 });

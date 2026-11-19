@@ -75,3 +75,43 @@ test('R3: an express marking that is not true or false is refused with a TypeErr
     assert.throws(() => shippingCost(g(100), opts), (e) => e instanceof TypeError && e.message.includes(named));
   }
 });
+
+const far = { zone: 'far' };
+
+test('R4: a parcel sent to the far zone costs half as much again as at home', () => {
+  for (const [w, home] of [[g(0), 300], [g(500), 300], [g(501), 400], [g(2750), 800], [{ value: 1.2, unit: 'kg' }, 500]]) {
+    assert.equal(shippingCost(w, { zone: 'home' }), home);
+    assert.equal(shippingCost(w, far), home * 1.5);
+  }
+});
+
+test('R4: an express parcel sent to the far zone costs half as much again as express at home', () => {
+  for (const [w, home] of [[g(0), 600], [g(1001), 1000], [{ value: 2, unit: 'lb' }, 800]]) {
+    assert.equal(shippingCost(w, { express: true, zone: 'home' }), home);
+    assert.equal(shippingCost(w, { express: true, zone: 'far' }), home * 1.5);
+  }
+  assert.equal(shippingCost(g(1001), { express: false, zone: 'far' }), 750);
+});
+
+test('R4: a parcel with no zone costs what it costs at home', () => {
+  assert.equal(shippingCost(g(1001), {}), shippingCost(g(1001), { zone: 'home' }));
+  assert.equal(shippingCost(g(1001), { zone: undefined }), 500);
+  assert.equal(shippingCost(g(1001), express), shippingCost(g(1001), { express: true, zone: 'home' }));
+});
+
+test('R4: bound, the heaviest far parcel costs 6300 pence, 12600 express', () => {
+  assert.equal(shippingCost(g(MAX_GRAMS), far), 6300);
+  assert.equal(shippingCost(g(MAX_GRAMS), { express: true, zone: 'far' }), 12600);
+});
+
+test('R4: the R2 limit holds for a far parcel', () => {
+  for (const opts of [far, { express: true, zone: 'far' }]) {
+    assert.throws(() => shippingCost(g(MAX_GRAMS + 1), opts), (e) => e instanceof RangeError && /over the limit/.test(e.message));
+  }
+});
+
+test('R4: a zone that is not home or far is refused with a TypeError naming it', () => {
+  for (const [zone, named] of [['near', '"near"'], ['Far', '"Far"'], ['', '""'], [null, 'null'], [2, '2']]) {
+    assert.throws(() => shippingCost(g(100), { zone }), (e) => e instanceof TypeError && e.message.includes(named));
+  }
+});
