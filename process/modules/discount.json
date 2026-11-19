@@ -1,0 +1,7 @@
+{
+  "name": "discount",
+  "files": ["src/discount/"],
+  "tests": ["test/discount/"],
+  "public": ["src/discount/index.mjs"],
+  "uses": []
+}
