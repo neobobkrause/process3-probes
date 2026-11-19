@@ -6,6 +6,13 @@
  */
 
 /**
+ * @typedef {Object} Weight
+ * @property {number} value the weight in its unit
+ * @property {'g' | 'kg' | 'oz' | 'lb'} unit
+ * @bound value: a finite number, zero or more
+ */
+
+/**
  * The units a weight may be given in.
  * @type {readonly WeightUnit[]}
  */
@@ -14,24 +21,26 @@ export const WEIGHT_UNITS = Object.freeze(['g', 'kg', 'oz', 'lb']);
 /** @type {Readonly<Record<WeightUnit, number>>} grams in one of each unit */
 const GRAMS_PER = Object.freeze({ g: 1, kg: 1000, oz: 28.349523125, lb: 453.59237 });
 
+/** @param {unknown} v */
+const show = (v) => (typeof v === 'number' ? String(v) : JSON.stringify(v) ?? String(v));
+
 /**
  * Converts a weight to whole grams, rounded to the nearest gram (a half rounds up).
- * @param {number} amount the weight in the given unit
- * @param {WeightUnit} unit
+ * @param {Weight} weight
  * @returns {number}
- * @bound amount: a finite number, zero or more
  * @bound returns: whole number of grams, zero or more
- * @throws {RangeError} when the amount is negative or not a finite number, or the unit is not one of WEIGHT_UNITS; the message names the bad value or unit
+ * @throws {RangeError} when the weight is not an object, its value is negative or not a finite number, or its unit is not one of WEIGHT_UNITS; the message names the bad value or unit
  */
-export function toGrams(amount, unit) {
+export function toGrams(weight) {
+  if (typeof weight !== 'object' || weight === null) throw new RangeError(`weight is not an object with a value and a unit: ${show(weight)}`);
+  /** @type {Weight} checks a Weight */
+  const { value, unit } = weight;
   if (typeof unit !== 'string' || !Object.hasOwn(GRAMS_PER, unit)) {
-    throw new RangeError(`unknown weight unit: ${JSON.stringify(unit) ?? String(unit)}; use one of ${WEIGHT_UNITS.join(', ')}`);
+    throw new RangeError(`unknown weight unit: ${show(unit)}; use one of ${WEIGHT_UNITS.join(', ')}`);
   }
-  if (typeof amount !== 'number' || !Number.isFinite(amount)) {
-    throw new RangeError(`weight is not a finite number: ${typeof amount === 'number' ? amount : JSON.stringify(amount) ?? String(amount)}`);
-  }
-  if (amount < 0) throw new RangeError(`weight is negative: ${amount}`);
+  if (typeof value !== 'number' || !Number.isFinite(value)) throw new RangeError(`weight is not a finite number: ${show(value)}`);
+  if (value < 0) throw new RangeError(`weight is negative: ${value}`);
   // Fifteen significant digits remove binary noise such as 1.0005 * 1000 = 1000.4999999999999.
-  const exact = Number((amount * GRAMS_PER[/** @type {WeightUnit} */ (unit)]).toPrecision(15));
+  const exact = Number((value * GRAMS_PER[unit]).toPrecision(15));
   return Math.round(exact) + 0; // + 0 turns -0 into 0
 }
