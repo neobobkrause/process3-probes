@@ -39,3 +39,8 @@ Decided: 19 Nov 2026.
 Decision: invoiceFor(goods, parcel, options) keeps its form; its options also take discount, a percent for the discount module, and zone, passed to shipping as it is. The invoice it gives back gains discount, the pence the discount module takes off the goods (0 when none is asked), and text, an object holding goods, discount, shipping, tax and total each as money's pounds text. Tax is the standard-rate tax on goods less discount plus shipping; total is goods less discount plus shipping plus tax. A refusal by discount, like those of tax and shipping, is passed on unchanged. invoice declares uses of shipping, tax, money and discount.
 Why: the owner approved this work on 19 Nov for trial stage 3; fields added to what invoice hands back tell no module, since none uses invoice.
 Decided: 19 Nov 2026.
+
+## The rate the tax module used
+Decision: tax gives a second function, taxDetail(amount, rate), taking what taxOn takes and giving back { tax, rate, percent }: the tax as taxOn gives it, the rate's name, and the rate as a whole percent (20, 5 or 0). taxOn stays as it is.
+Why: a caller that must show which rate was used gets it from the module that chose it; leaving taxOn unchanged tells no present user.
+Decided: 19 Nov 2026.
