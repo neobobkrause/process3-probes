@@ -1,9 +1,11 @@
-// invoice: an invoice for goods and one parcel, standard or express, home or far, with an optional discount: goods, discount, shipping, tax and total, in whole pence and as pounds text.
+// invoice: an invoice for goods and one parcel, standard or express, home or far, with an optional discount: goods, discount, shipping, tax and total, in whole pence and as pounds text, and the tax rate charged.
 
 import { shippingCost } from '../shipping/index.mjs';
-import { taxOn } from '../tax/index.mjs';
+import { taxOn, taxDetail } from '../tax/index.mjs';
 import { formatPence } from '../money/index.mjs';
 import { discountOn } from '../discount/index.mjs';
+
+/** @import { Rate } from '../tax/index.mjs' */
 
 /**
  * @typedef {Object} InvoiceText
@@ -15,6 +17,13 @@ import { discountOn } from '../discount/index.mjs';
  */
 
 /**
+ * @typedef {Object} InvoiceRate
+ * @property {Rate} rate the name of the tax rate charged, from the tax module
+ * @property {number} percent the tax rate charged, as a whole percent, from the tax module
+ * @bound percent: whole number, 0 to 100
+ */
+
+/**
  * @typedef {Object} Invoice
  * @property {number} goods the goods, in whole pence, as given
  * @property {number} discount the pence the discount module takes off the goods at the percentage asked; 0 when none is asked
@@ -22,6 +31,7 @@ import { discountOn } from '../discount/index.mjs';
  * @property {number} tax the standard-rate tax on goods less discount plus shipping, from the tax module
  * @property {number} total goods less discount, plus shipping, plus tax
  * @property {InvoiceText} text each of the five amounts as pounds text from the money module
+ * @property {InvoiceRate} taxRate the tax rate charged on goods less discount plus shipping: the standard rate, its name and whole percent from the tax module
  * @bound goods, discount, shipping, tax, total: whole numbers of pence, zero or more; discount is at most goods
  */
 
@@ -59,7 +69,8 @@ export function invoiceFor(goods, parcel, options) {
   const percent = options?.discount;
   const discount = percent === undefined ? 0 : discountOn(goods, percent);
   const net = goods - discount;
-  const tax = taxOn(net + shipping);
+  const charged = taxDetail(net + shipping);
+  const tax = charged.tax;
   const total = net + shipping + tax;
   /** @type {InvoiceText} builds an InvoiceText */
   const text = {
@@ -69,8 +80,10 @@ export function invoiceFor(goods, parcel, options) {
     tax: formatPence(tax),
     total: formatPence(total),
   };
+  /** @type {InvoiceRate} builds an InvoiceRate */
+  const taxRate = { rate: charged.rate, percent: charged.percent };
   /** @type {Invoice} builds an Invoice */
-  const invoice = { goods, discount, shipping, tax, total, text };
+  const invoice = { goods, discount, shipping, tax, total, text, taxRate };
   return invoice;
 }
 

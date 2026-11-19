@@ -2,14 +2,14 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { invoiceFor } from '../../src/invoice/index.mjs';
 import { shippingCost } from '../../src/shipping/index.mjs';
-import { taxOn } from '../../src/tax/index.mjs';
+import { taxOn, taxDetail } from '../../src/tax/index.mjs';
 import { formatPence } from '../../src/money/index.mjs';
 import { discountOn } from '../../src/discount/index.mjs';
 
 const g = (value) => ({ value, unit: 'g' });
 
-/** The invoice's amounts in whole pence, without its pounds text. */
-const pence = ({ text, ...amounts }) => amounts;
+/** The invoice's amounts in whole pence, without its pounds text or its tax rate. */
+const pence = ({ text, taxRate, ...amounts }) => amounts;
 
 /** The error a call throws, or a failure if it throws none. */
 function errorOf(fn) {
@@ -206,4 +206,30 @@ test('invoice R5 with R2: a zone or parcel the shipping module refuses is refuse
   const byParcel = errorOf(() => invoiceFor(1000, g(20001), { zone: 'far' }));
   assert.ok(byParcel instanceof RangeError);
   assert.equal(byParcel.message, errorOf(() => shippingCost(g(20001), { zone: 'far' })).message);
+});
+
+test('invoice R6: the invoice says the tax rate it charged, the standard rate by name and whole percent', () => {
+  assert.deepEqual(invoiceFor(1000, g(500)).taxRate, { rate: 'standard', percent: 20 });
+  assert.deepEqual(invoiceFor(1000, g(500), { express: true, zone: 'far', discount: 25 }).taxRate, { rate: 'standard', percent: 20 });
+  assert.deepEqual(Object.keys(invoiceFor(1, g(1))).sort(), ['discount', 'goods', 'shipping', 'tax', 'taxRate', 'text', 'total']);
+});
+
+test('invoice R6: the rate and the tax agree with the tax module, for every kind of invoice', () => {
+  const cases = [[0, g(0), undefined], [1, g(501), { express: true }], [1005, g(500), { discount: 10 }],
+    [1000, g(500), { discount: 100 }], [12345, { value: 20, unit: 'kg' }, { express: true, zone: 'far', discount: 12.5 }]];
+  for (const [goods, parcel, options] of cases) {
+    const inv = invoiceFor(goods, parcel, options);
+    const detail = taxDetail(inv.goods - inv.discount + inv.shipping);
+    assert.deepEqual(inv.taxRate, { rate: detail.rate, percent: detail.percent }, JSON.stringify(options));
+    assert.equal(inv.tax, detail.tax, JSON.stringify(options));
+    assert.ok(Number.isInteger(inv.taxRate.percent) && inv.taxRate.percent >= 0 && inv.taxRate.percent <= 100);
+  }
+});
+
+test('invoice R6 with R2: asking for the rate changes no refusal; a refused goods amount is the tax module\'s RangeError, unchanged', () => {
+  for (const goods of [-1, 0.5, '100']) {
+    const got = errorOf(() => invoiceFor(goods, g(500)));
+    assert.ok(got instanceof RangeError);
+    assert.equal(got.message, errorOf(() => taxDetail(goods)).message);
+  }
 });
