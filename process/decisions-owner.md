@@ -13,4 +13,9 @@ Shown to the owner: 19 Nov 2026.
 ## Starting PROCESS
 Rule now: as the owner's words below.
 - 19 Nov 2026: "Instruction: Ask ROOT to start PROCESS so that I can use it to update process4"
+Shown to the owner: 19 Nov 2026.
+
+## When to start round 3
+Rule now: as the owner's words below, his answer to ARCH's question "When to start round 3", whose option A is that his instructions come first and ARCH starts round 3's jobs after them.
+- 19 Nov 2026: "instruction: A"
 Shown to the owner: not yet.
