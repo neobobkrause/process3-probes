@@ -44,3 +44,8 @@ Decided: 19 Nov 2026.
 Decision: tax gives a second function, taxDetail(amount, rate), taking what taxOn takes and giving back { tax, rate, percent }: the tax as taxOn gives it, the rate's name, and the rate as a whole percent (20, 5 or 0). taxOn stays as it is.
 Why: a caller that must show which rate was used gets it from the module that chose it; leaving taxOn unchanged tells no present user.
 Decided: 19 Nov 2026.
+
+## Money without the pound sign
+Decision: formatPence takes an optional second argument { symbol }, true by default; with symbol false the text is the same without the pound sign (1234 gives "12.34"). A symbol given that is not true or false is refused with a TypeError that names it.
+Why: the provider accepts the new option beside the old form, so invoice keeps working unchanged.
+Decided: 19 Nov 2026.
