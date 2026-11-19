@@ -1,0 +1,7 @@
+{
+  "name": "units",
+  "files": ["src/units/"],
+  "tests": ["test/units/"],
+  "public": ["src/units/index.mjs"],
+  "uses": []
+}
