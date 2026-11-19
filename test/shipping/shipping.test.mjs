@@ -39,3 +39,39 @@ test('R1: a weight units refuses is refused with its RangeError', () => {
     assert.throws(() => shippingCost(w), RangeError);
   }
 });
+
+const express = { express: true };
+
+test('R3: an express parcel costs twice what R1 gives for its weight', () => {
+  for (const [w, standard] of [[g(0), 300], [g(500), 300], [g(501), 400], [g(2750), 800], [{ value: 1.2, unit: 'kg' }, 500]]) {
+    assert.equal(shippingCost(w), standard);
+    assert.equal(shippingCost(w, express), 2 * standard);
+  }
+});
+
+test('R3: bound, the heaviest express parcel costs 8400 pence', () => {
+  assert.equal(shippingCost(g(MAX_GRAMS), express), 8400);
+  assert.equal(shippingCost({ value: 20, unit: 'kg' }, express), 8400);
+});
+
+test('R3: a parcel not marked express costs what R1 gives', () => {
+  assert.equal(shippingCost(g(1001), { express: false }), 500);
+  assert.equal(shippingCost(g(1001), {}), 500);
+  assert.equal(shippingCost(g(1001), undefined), 500);
+});
+
+test('R3: the R2 limit holds for an express parcel', () => {
+  for (const w of [g(MAX_GRAMS + 1), { value: 45, unit: 'lb' }]) {
+    assert.throws(() => shippingCost(w, express), (e) => e instanceof RangeError && /over the limit/.test(e.message));
+  }
+});
+
+test('R3: a weight units refuses is refused for an express parcel too', () => {
+  assert.throws(() => shippingCost(g(-1), express), RangeError);
+});
+
+test('R3: an express marking that is not true or false is refused with a TypeError naming it', () => {
+  for (const [opts, named] of [[{ express: 'yes' }, '"yes"'], [{ express: 1 }, '1'], [null, 'null'], ['express', '"express"']]) {
+    assert.throws(() => shippingCost(g(100), opts), (e) => e instanceof TypeError && e.message.includes(named));
+  }
+});
