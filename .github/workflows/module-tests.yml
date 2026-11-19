@@ -64,7 +64,10 @@ jobs:
           echo "scope=$(cat "$RUNNER_TEMP/scope.json")" >> "$GITHUB_OUTPUT"
   module-tests:
     needs: scope
-    if: always()
+    # Runs when part one failed, so that a failed part one cannot leave the required check
+    # "skipped"; not when the run was cancelled, as `ready`'s newer run cancels the draft's,
+    # so that a cancelled run leaves no failed line on the head commit.
+    if: ${{ !cancelled() }}
     runs-on: ubuntu-latest
     timeout-minutes: 45
     permissions:
