@@ -1,4 +1,4 @@
-// money: shows an amount of whole pence as pounds text.
+// money: shows an amount of whole pence as pounds text, and reads pounds text back.
 
 /** @param {unknown} v */
 const show = (v) => (typeof v === 'number' || typeof v === 'bigint' ? `${v}${typeof v === 'bigint' ? 'n' : ''}` : JSON.stringify(v) ?? String(v));
@@ -34,4 +34,31 @@ export function formatPence(pence, options) {
   }
   const sign = symbol === false ? '' : '£';
   return `${sign}${pounds}.${rest}`;
+}
+
+// Whole pounds as formatPence writes them, or with every comma left out;
+// the pence are always a point and two digits.
+const POUNDS_TEXT = /^£?(0|[1-9]\d*|[1-9]\d{0,2}(?:,\d{3})+)\.(\d{2})$/;
+
+/**
+ * Reads pounds text back to its whole pence, the reverse of formatPence:
+ * "£1,234,567.89" gives 123456789 and "0.05" gives 5. The pound sign may be
+ * there or not. The commas between groups of three digits may all be left
+ * out ("£1234.56"), but where given they sit as formatPence places them.
+ * The point and two digits of pence are always required.
+ * @param {string} text
+ * @returns {number}
+ * @bound text: pounds text as formatPence gives it, with or without the pound sign; its commas all left out or all where formatPence places them
+ * @throws {RangeError} when text is not of that form; the message quotes it
+ * @throws {TypeError} when text is not text; the message names the bad value
+ */
+export function parsePounds(text) {
+  if (typeof text !== 'string') {
+    throw new TypeError(`money: pounds text must be text; got ${show(text)}`);
+  }
+  const m = POUNDS_TEXT.exec(text);
+  if (m === null) {
+    throw new RangeError(`money: not pounds text: ${JSON.stringify(text)}`);
+  }
+  return Number(BigInt(m[1].replaceAll(',', '')) * 100n + BigInt(m[2]));
 }
