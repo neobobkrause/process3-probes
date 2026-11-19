@@ -18,7 +18,7 @@ import { discountOn } from '../discount/index.mjs';
 
 /**
  * @typedef {Object} InvoiceRate
- * @property {Rate} name the name of the tax rate charged, from the tax module
+ * @property {Rate} rate the name of the tax rate charged, from the tax module
  * @property {number} percent the tax rate charged, as a whole percent, from the tax module
  * @bound percent: whole number, 0 to 100
  */
@@ -31,7 +31,7 @@ import { discountOn } from '../discount/index.mjs';
  * @property {number} tax the standard-rate tax on goods less discount plus shipping, from the tax module
  * @property {number} total goods less discount, plus shipping, plus tax
  * @property {InvoiceText} text each of the five amounts as pounds text from the money module
- * @property {InvoiceRate} rate the tax rate charged on goods less discount plus shipping: the standard rate, its name and whole percent from the tax module
+ * @property {InvoiceRate} taxRate the tax rate charged on goods less discount plus shipping: the standard rate, its name and whole percent from the tax module
  * @bound goods, discount, shipping, tax, total: whole numbers of pence, zero or more; discount is at most goods
  */
 
@@ -81,9 +81,9 @@ export function invoiceFor(goods, parcel, options) {
     total: formatPence(total),
   };
   /** @type {InvoiceRate} builds an InvoiceRate */
-  const rate = { name: charged.rate, percent: charged.percent };
+  const taxRate = { rate: charged.rate, percent: charged.percent };
   /** @type {Invoice} builds an Invoice */
-  const invoice = { goods, discount, shipping, tax, total, text, rate };
+  const invoice = { goods, discount, shipping, tax, total, text, taxRate };
   return invoice;
 }
 

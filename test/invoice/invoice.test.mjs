@@ -9,7 +9,7 @@ import { discountOn } from '../../src/discount/index.mjs';
 const g = (value) => ({ value, unit: 'g' });
 
 /** The invoice's amounts in whole pence, without its pounds text or its tax rate. */
-const pence = ({ text, rate, ...amounts }) => amounts;
+const pence = ({ text, taxRate, ...amounts }) => amounts;
 
 /** The error a call throws, or a failure if it throws none. */
 function errorOf(fn) {
@@ -209,9 +209,9 @@ test('invoice R5 with R2: a zone or parcel the shipping module refuses is refuse
 });
 
 test('invoice R6: the invoice says the tax rate it charged, the standard rate by name and whole percent', () => {
-  assert.deepEqual(invoiceFor(1000, g(500)).rate, { name: 'standard', percent: 20 });
-  assert.deepEqual(invoiceFor(1000, g(500), { express: true, zone: 'far', discount: 25 }).rate, { name: 'standard', percent: 20 });
-  assert.deepEqual(Object.keys(invoiceFor(1, g(1))).sort(), ['discount', 'goods', 'rate', 'shipping', 'tax', 'text', 'total']);
+  assert.deepEqual(invoiceFor(1000, g(500)).taxRate, { rate: 'standard', percent: 20 });
+  assert.deepEqual(invoiceFor(1000, g(500), { express: true, zone: 'far', discount: 25 }).taxRate, { rate: 'standard', percent: 20 });
+  assert.deepEqual(Object.keys(invoiceFor(1, g(1))).sort(), ['discount', 'goods', 'shipping', 'tax', 'taxRate', 'text', 'total']);
 });
 
 test('invoice R6: the rate and the tax agree with the tax module, for every kind of invoice', () => {
@@ -220,9 +220,9 @@ test('invoice R6: the rate and the tax agree with the tax module, for every kind
   for (const [goods, parcel, options] of cases) {
     const inv = invoiceFor(goods, parcel, options);
     const detail = taxDetail(inv.goods - inv.discount + inv.shipping);
-    assert.deepEqual(inv.rate, { name: detail.rate, percent: detail.percent }, JSON.stringify(options));
+    assert.deepEqual(inv.taxRate, { rate: detail.rate, percent: detail.percent }, JSON.stringify(options));
     assert.equal(inv.tax, detail.tax, JSON.stringify(options));
-    assert.ok(Number.isInteger(inv.rate.percent) && inv.rate.percent >= 0 && inv.rate.percent <= 100);
+    assert.ok(Number.isInteger(inv.taxRate.percent) && inv.taxRate.percent >= 0 && inv.taxRate.percent <= 100);
   }
 });
 
