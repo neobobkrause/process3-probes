@@ -5,11 +5,14 @@
  * @typedef {'standard' | 'reduced' | 'zero'} Rate
  */
 
-/** Each rate as a fraction, and as a whole percent: standard 20 percent (1/5), reduced 5 percent (1/20), zero 0 percent (0/1). */
+/**
+ * Each rate as a fraction, as a whole percent, and as its label for an invoice: standard 20 percent (1/5), reduced 5 percent (1/20), zero 0 percent (0/1).
+ * @type {Record<Rate, { numerator: bigint, denominator: bigint, percent: TaxDetail['percent'], label: TaxDetail['label'] }>}
+ */
 const RATES = {
-  standard: { numerator: 1n, denominator: 5n, percent: 20 },
-  reduced: { numerator: 1n, denominator: 20n, percent: 5 },
-  zero: { numerator: 0n, denominator: 1n, percent: 0 },
+  standard: { numerator: 1n, denominator: 5n, percent: 20, label: 'VAT 20%' },
+  reduced: { numerator: 1n, denominator: 20n, percent: 5, label: 'VAT 5%' },
+  zero: { numerator: 0n, denominator: 1n, percent: 0, label: 'VAT 0%' },
 };
 
 /**
@@ -41,12 +44,13 @@ export function taxOn(amount, rate = 'standard') {
  * @property {number} tax the tax, in whole pence, as taxOn gives it
  * @property {Rate} rate the name of the rate used
  * @property {20 | 5 | 0} percent the rate used, as a whole percent
+ * @property {'VAT 20%' | 'VAT 5%' | 'VAT 0%'} label the rate used, for showing on an invoice: "VAT ", its whole percent and a percent sign
  * @bound tax: whole number of pence, zero or more
  */
 
 /**
- * The tax on an amount, as taxOn gives it, together with the rate that was used: its name and its
- * whole percent. It takes what taxOn takes and refuses what taxOn refuses, with the same RangeError.
+ * The tax on an amount, as taxOn gives it, together with the rate that was used: its name, its
+ * whole percent, and its label for an invoice ("VAT 20%", "VAT 5%" or "VAT 0%"). It takes what taxOn takes and refuses what taxOn refuses, with the same RangeError.
  *
  * @param {number} amount the amount, in whole pence
  * @param {string} [rate] the rate asked for, a Rate's name in any letter case; absent is 'standard'
@@ -59,7 +63,7 @@ export function taxDetail(amount, rate = 'standard') {
   const tax = taxOn(amount, rate);
   const name = rateNamed(rate);
   /** @type {TaxDetail} builds a TaxDetail */
-  const detail = { tax, rate: name, percent: RATES[name].percent };
+  const detail = { tax, rate: name, percent: RATES[name].percent, label: RATES[name].label };
   return detail;
 }
 

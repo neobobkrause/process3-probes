@@ -143,11 +143,11 @@ test('R2, R4: a bad amount is refused at the zero rate too', () => {
 });
 
 test('R5: the detail names the rate used and its whole percent, beside the tax', () => {
-  assert.deepEqual(taxDetail(100), { tax: 20, rate: 'standard', percent: 20 });
-  assert.deepEqual(taxDetail(100, 'standard'), { tax: 20, rate: 'standard', percent: 20 });
-  assert.deepEqual(taxDetail(100, undefined), { tax: 20, rate: 'standard', percent: 20 });
-  assert.deepEqual(taxDetail(100, 'reduced'), { tax: 5, rate: 'reduced', percent: 5 });
-  assert.deepEqual(taxDetail(100, 'zero'), { tax: 0, rate: 'zero', percent: 0 });
+  assert.deepEqual(taxDetail(100), { tax: 20, rate: 'standard', percent: 20, label: 'VAT 20%' });
+  assert.deepEqual(taxDetail(100, 'standard'), { tax: 20, rate: 'standard', percent: 20, label: 'VAT 20%' });
+  assert.deepEqual(taxDetail(100, undefined), { tax: 20, rate: 'standard', percent: 20, label: 'VAT 20%' });
+  assert.deepEqual(taxDetail(100, 'reduced'), { tax: 5, rate: 'reduced', percent: 5, label: 'VAT 5%' });
+  assert.deepEqual(taxDetail(100, 'zero'), { tax: 0, rate: 'zero', percent: 0, label: 'VAT 0%' });
 });
 
 test('R5: the tax in the detail is the tax R1, R3 and R4 give, rounding included', () => {
@@ -187,12 +187,30 @@ test('R6: a rate named in any letter case is the rate R1, R3 or R4 names', () =>
 });
 
 test('R6, R5: a rate named in any letter case is named back as the rate used, with its percent', () => {
-  assert.deepEqual(taxDetail(100, 'Reduced'), { tax: 5, rate: 'reduced', percent: 5 });
-  assert.deepEqual(taxDetail(100, 'ZERO'), { tax: 0, rate: 'zero', percent: 0 });
-  assert.deepEqual(taxDetail(100, 'StAnDaRd'), { tax: 20, rate: 'standard', percent: 20 });
+  assert.deepEqual(taxDetail(100, 'Reduced'), { tax: 5, rate: 'reduced', percent: 5, label: 'VAT 5%' });
+  assert.deepEqual(taxDetail(100, 'ZERO'), { tax: 0, rate: 'zero', percent: 0, label: 'VAT 0%' });
+  assert.deepEqual(taxDetail(100, 'StAnDaRd'), { tax: 20, rate: 'standard', percent: 20, label: 'VAT 20%' });
 });
 
 test('R6, R2: a bad amount is still refused, naming the amount, whatever the letter case of the rate', () => {
   assert.throws(() => taxOn(-1, 'REDUCED'), (e) => e instanceof RangeError && /-1\b/.test(e.message));
   assert.throws(() => taxDetail(0.5, 'Zero'), (e) => e instanceof RangeError && e.message.includes('0.5'));
+});
+
+test('R7: the detail gives the label "VAT " followed by the whole percent and a percent sign', () => {
+  assert.equal(taxDetail(100).label, 'VAT 20%');
+  assert.equal(taxDetail(100, 'standard').label, 'VAT 20%');
+  assert.equal(taxDetail(100, 'reduced').label, 'VAT 5%');
+  assert.equal(taxDetail(100, 'zero').label, 'VAT 0%');
+  assert.equal(taxDetail(100, 'REDUCED').label, 'VAT 5%');
+  assert.equal(taxDetail(100, 'Zero').label, 'VAT 0%');
+});
+
+test('R7, R5: the label always agrees with the percent of the rate used, whatever the amount', () => {
+  for (const rate of ['standard', 'reduced', 'zero', 'Standard', 'rEdUcEd', 'ZERO']) {
+    for (const a of [0, 1, 3, 10, 12345, Number.MAX_SAFE_INTEGER]) {
+      const d = taxDetail(a, rate);
+      assert.equal(d.label, `VAT ${d.percent}%`, `amount ${a} at ${rate}`);
+    }
+  }
 });
