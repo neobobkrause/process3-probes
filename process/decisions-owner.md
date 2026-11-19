@@ -5,6 +5,7 @@ Rule now: as the owner's latest words below.
 - 19 Nov 2026: "Decision: move the trial product onto process4 main commit dfaad7952eb56e86ce19910a6f30a92b4b0bab3a"
 - 19 Nov 2026: "Decision: move the trial product onto process4 main"
 - 19 Nov 2026: "Decision: move the trial product onto process4 main commit c6dec02"
+- 19 Nov 2026: "Decision: move the trial product to the latest Process4 version"
 Shown to the owner: 19 Nov 2026.
 
 ## Advancing the trial product
