@@ -42,8 +42,10 @@ test('invoice R1: amounts agree with the shipping and tax modules, all whole pen
   }
 });
 
-test('invoice R1: bounds, no goods and an empty parcel; the heaviest parcel', () => {
-  assert.deepEqual(pence(invoiceFor(0, g(0))), { goods: 0, discount: 0, shipping: 300, tax: 60, total: 360 });
+test('invoice R1: bounds, no goods and an empty parcel; the small-parcel limit; the heaviest parcel', () => {
+  assert.deepEqual(pence(invoiceFor(0, g(0))), { goods: 0, discount: 0, shipping: 150, tax: 30, total: 180 });
+  assert.deepEqual(pence(invoiceFor(0, g(100))), { goods: 0, discount: 0, shipping: 150, tax: 30, total: 180 });
+  assert.deepEqual(pence(invoiceFor(0, g(101))), { goods: 0, discount: 0, shipping: 300, tax: 60, total: 360 });
   assert.deepEqual(pence(invoiceFor(10000, { value: 20, unit: 'kg' })), { goods: 10000, discount: 0, shipping: 4200, tax: 2840, total: 17040 });
 });
 
@@ -75,7 +77,8 @@ test('invoice R2: when both are refused, the refusal is one of the two modules\'
 test('invoice R3: express shipping takes the express cost from the shipping module, and tax and total follow from it', () => {
   assert.deepEqual(pence(invoiceFor(1000, g(500), { express: true })), { goods: 1000, discount: 0, shipping: 600, tax: 320, total: 1920 });
   assert.deepEqual(pence(invoiceFor(1, g(501), { express: true })), { goods: 1, discount: 0, shipping: 800, tax: 160, total: 961 }); // tax on 801 = 160.2
-  assert.deepEqual(pence(invoiceFor(3, g(0), { express: true })), { goods: 3, discount: 0, shipping: 600, tax: 121, total: 724 }); // 120.6
+  assert.deepEqual(pence(invoiceFor(3, g(0), { express: true })), { goods: 3, discount: 0, shipping: 300, tax: 61, total: 364 }); // 60.6
+  assert.deepEqual(pence(invoiceFor(3, g(101), { express: true })), { goods: 3, discount: 0, shipping: 600, tax: 121, total: 724 }); // 120.6
 });
 
 test('invoice R3: express amounts agree with the shipping and tax modules, all whole pence', () => {
@@ -127,7 +130,7 @@ test('invoice R4: a discount is taken off the goods before tax; tax is on goods 
 test('invoice R4: bounds, a discount of 0 gives the invoice of R1, and of 100 takes off all the goods', () => {
   assert.deepEqual(pence(invoiceFor(1000, g(500), { discount: 0 })), { goods: 1000, discount: 0, shipping: 300, tax: 260, total: 1560 });
   assert.deepEqual(pence(invoiceFor(1000, g(500), { discount: 100 })), { goods: 1000, discount: 1000, shipping: 300, tax: 60, total: 360 });
-  assert.deepEqual(pence(invoiceFor(0, g(0), { discount: 50 })), { goods: 0, discount: 0, shipping: 300, tax: 60, total: 360 });
+  assert.deepEqual(pence(invoiceFor(0, g(0), { discount: 50 })), { goods: 0, discount: 0, shipping: 150, tax: 30, total: 180 });
 });
 
 test('invoice R4: amounts agree with the discount, shipping and tax modules, all whole pence', () => {
@@ -165,7 +168,7 @@ test('invoice R4 with R2: with a discount asked, a refused goods amount or parce
 
 test('invoice R5: each amount is also shown as pounds text from the money module', () => {
   assert.deepEqual(invoiceFor(1000, g(500), { discount: 10 }).text, { goods: '£10.00', discount: '£1.00', shipping: '£3.00', tax: '£2.40', total: '£14.40' });
-  assert.deepEqual(invoiceFor(5, g(0)).text, { goods: '£0.05', discount: '£0.00', shipping: '£3.00', tax: '£0.61', total: '£3.66' }); // tax on 305 = 61
+  assert.deepEqual(invoiceFor(5, g(0)).text, { goods: '£0.05', discount: '£0.00', shipping: '£1.50', tax: '£0.31', total: '£1.86' }); // tax on 155 = 31
   const big = invoiceFor(123456789, g(0));
   for (const k of ['goods', 'discount', 'shipping', 'tax', 'total']) assert.equal(big.text[k], formatPence(big[k]), k);
   assert.equal(big.text.goods, '£1,234,567.89');
