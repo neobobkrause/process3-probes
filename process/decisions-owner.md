@@ -33,8 +33,9 @@ Rule now: as the owner's words below.
 Shown to the owner: 19 Nov 2026.
 
 ## Stopping work
-Rule now: as the owner's words below.
+Rule now: as the owner's latest words below; the stop is lifted.
 - 19 Nov 2026: "Instruction: stop all work"
+- 19 Nov 2026: "Instruction: confirm that the trial development process is updated to the newly updated version of process4. If it is, then restart trial development under this updated process"
 Shown to the owner: 19 Nov 2026.
 
 ## The move during the stop
