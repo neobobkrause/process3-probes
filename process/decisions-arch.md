@@ -50,6 +50,11 @@ Decision: formatPence takes an optional second argument { symbol }, true by defa
 Why: the provider accepts the new option beside the old form, so invoice keeps working unchanged.
 Decided: 19 Nov 2026.
 
+## The rate on an invoice
+Decision: the invoice gains taxRate, { rate, percent }, taken from the tax module's taxDetail for the tax the invoice charges.
+Why: a field added to what invoice hands back tells no module, since none uses invoice; the rate comes from the module that chose it.
+Decided: 19 Nov 2026.
+
 ## A discount written as text
 Decision: discountOn's percent may also be text: a number, optional spaces, and a percent sign, such as "15%" or "12.5 %"; it is read as that number and judged as before. Text of any other form is refused with a RangeError that quotes it.
 Why: accepting more tells no user; invoice passes the percent on as it is given.
