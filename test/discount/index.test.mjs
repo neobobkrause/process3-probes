@@ -126,3 +126,61 @@ test('R2: a bad amount is named even when the percentage is good, and the other 
   assert.throws(() => discountOn(-7, 50), (e) => e instanceof RangeError && /amount/.test(e.message) && /-7\b/.test(e.message));
   assert.throws(() => discountOn(700, 250), (e) => e instanceof RangeError && /percentage/.test(e.message) && /250\b/.test(e.message));
 });
+
+test('R3: a percentage given as text with a percent sign is judged as the same number', () => {
+  assert.equal(discountOn(1000, '15%'), 150);
+  assert.equal(discountOn(1000, '12.5 %'), 125);
+  assert.equal(discountOn(1000, '12.5   %'), 125);
+  assert.equal(discountOn(1000, '0%'), 0);
+  assert.equal(discountOn(1000, '100%'), 1000);
+  assert.equal(discountOn(1000, '100.000%'), 1000);
+  assert.equal(discountOn(1000, '+10%'), 100);
+  assert.equal(discountOn(1000, '-0%'), 0);
+  assert.equal(discountOn(1000, '007%'), 70);
+  for (const p of [0, 1, 7, 33, 50, 99, 100]) {
+    for (const a of [0, 1, 3, 15, 199, 12345]) {
+      assert.equal(discountOn(a, `${p}%`), discountOn(a, p), `amount ${a} at "${p}%"`);
+    }
+  }
+});
+
+test('R3: a fraction in text is taken exactly as written and rounded half up', () => {
+  assert.equal(discountOn(500, '0.3%'), 2); // 1.5
+  assert.equal(discountOn(500, '0.1%'), 1); // 0.5
+  assert.equal(discountOn(499, '0.1%'), 0); // 0.499
+  assert.equal(discountOn(15, '33.3%'), 5); // 4.995
+  assert.equal(discountOn(10, '99.99 %'), 10); // 9.999
+  // More digits than a number holds: the text's own value decides the rounding.
+  assert.equal(discountOn(100, '0.49999999999999999999%'), 0); // 0.49999999999999999999
+  assert.equal(discountOn(100, '0.50000000000000000000%'), 1); // 0.5
+  assert.equal(discountOn(Number.MAX_SAFE_INTEGER, '50%'), 4503599627370496);
+});
+
+test('R3: text percentages outside 0 to 100 are refused with a RangeError quoting the text', () => {
+  for (const text of ['-1%', '-0.01%', '100.01%', '101%', '100.0000000000000000001%', '99999999999999999999999%']) {
+    assert.throws(
+      () => discountOn(1000, text),
+      (e) => e instanceof RangeError && e.message.includes(JSON.stringify(text)),
+      text,
+    );
+  }
+});
+
+test('R3: text of any other form is refused with a RangeError quoting it', () => {
+  const bad = [
+    '', '%', '15', '15 percent', ' 15%', '15% ', '15%%', '% 15', '1 5%', '15.%', '.5%', '1,5%',
+    '1e1%', '0x10%', 'Infinity%', 'NaN%', '15\t%', '15\n%', 'ten%', '15 % off', '١٥%',
+  ];
+  for (const text of bad) {
+    assert.throws(
+      () => discountOn(1000, text),
+      (e) => e instanceof RangeError && e.message.includes(JSON.stringify(text)),
+      JSON.stringify(text),
+    );
+  }
+});
+
+test('R3: a bad amount is still refused, naming the amount, when the percentage is text', () => {
+  assert.throws(() => discountOn(-7, '50%'), (e) => e instanceof RangeError && /amount/.test(e.message) && /-7\b/.test(e.message));
+  assert.throws(() => discountOn(1.5, '50%'), (e) => e instanceof RangeError && /1\.5/.test(e.message));
+});
