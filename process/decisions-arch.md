@@ -74,3 +74,8 @@ Decided: 19 Nov 2026.
 Decision: money gives a second function, parsePounds(text), the reverse of formatPence: it takes pounds text as formatPence gives it, with or without the pound sign, and gives back the whole pence (parsePounds("£1,234,567.89") gives 123456789, parsePounds("0.05") gives 5). The commas between groups of three digits may be left out ("£1234.56"), but where given they must sit as formatPence places them; the point and two digits of pence are always required. Text of any other form is refused with a RangeError that quotes it; a value that is not text is refused with a TypeError that names it. formatPence stays as it is.
 Why: a caller that holds pounds text gets the pence from the module that wrote it; a new function tells no present user. Its refusal of a value that is not text is to be proven by tests that pass such values on purpose, which this round is to try against the tool's check.
 Decided: 19 Nov 2026.
+
+## A comma in a discount
+Decision: discountOn's percent text may use a comma in place of the point before its fraction, such as "12,5%" or "7,25 %"; it is read as the same number written with a point and judged as before. Text with both a point and a comma, or more than one of either, is refused as text of any other form is. A percent given as a number is unchanged.
+Why: accepting more keeps every caller working; the wording of the percent's bound changes with it, so the tool's notice is expected to tell invoice, which passes the percent on as it is given, and invoice's told job is expected to find nothing to change and close without naming its pull request's number, which this round is to try.
+Decided: 19 Nov 2026.
