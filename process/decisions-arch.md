@@ -29,3 +29,8 @@ Decided: 19 Nov 2026.
 Decision: a new module, discount, comes after money and before invoice and uses no module. It gives one function, discountOn(amount, percent): the pence taken off an amount of whole pence at a percentage, amount times percent divided by 100, rounded half up to a whole penny. An amount that is negative or not a whole number of pence, and a percent that is not a finite number or is outside 0 to 100, are refused with a RangeError that names the bad value.
 Why: invoice is to take a discount off the goods; the rule for working it out is a concern of its own, and keeping it apart lets invoice's job wait on it, which the trial needs.
 Decided: 19 Nov 2026.
+
+## The far shipping zone
+Decision: shippingCost's options gain zone, 'home' or 'far'; absent is 'home'. A far parcel costs half as much again as the same parcel at home, express or not, after the express doubling; the 20 kilogram limit holds. A zone given that is not 'home' or 'far' is refused with a TypeError that names it, as a bad express is.
+Why: the provider accepts the new option beside the old form, so invoice and every present caller keep working unchanged.
+Decided: 19 Nov 2026.
