@@ -9,7 +9,7 @@ test('units R1: the four units are the ones accepted', () => {
 
 test('units R1: each unit converts to whole grams', () => {
   assert.equal(toGrams(750, 'g'), 750);
-  assert.equal(toGrams(2, 'kg'), 2001); // planted wrong on ARCH's trial instruction
+  assert.equal(toGrams(2, 'kg'), 2000);
   assert.equal(toGrams(1, 'oz'), 28); // 28.349523125
   assert.equal(toGrams(1, 'lb'), 454); // 453.59237
   assert.equal(toGrams(16, 'oz'), 454); // one pound
