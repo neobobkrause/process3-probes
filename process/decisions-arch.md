@@ -69,3 +69,8 @@ Decided: 19 Nov 2026.
 Decision: what taxDetail gives back gains label, text "VAT " followed by the rate's whole percent and a percent sign ("VAT 20%", "VAT 5%", "VAT 0%"); taxOn is unchanged.
 Why: a caller showing the rate gets its words from the module that chose it; the change is to what taxDetail hands back, so the tool's notice is expected to tell invoice, its user, and this round is to try that notice. invoice can keep working unchanged, since it reads only the fields it already reads.
 Decided: 19 Nov 2026.
+
+## Reading pounds text back
+Decision: money gives a second function, parsePounds(text), the reverse of formatPence: it takes pounds text as formatPence gives it, with or without the pound sign, and gives back the whole pence (parsePounds("£1,234,567.89") gives 123456789, parsePounds("0.05") gives 5). The commas between groups of three digits may be left out ("£1234.56"), but where given they must sit as formatPence places them; the point and two digits of pence are always required. Text of any other form is refused with a RangeError that quotes it; a value that is not text is refused with a TypeError that names it. formatPence stays as it is.
+Why: a caller that holds pounds text gets the pence from the module that wrote it; a new function tells no present user. Its refusal of a value that is not text is to be proven by tests that pass such values on purpose, which this round is to try against the tool's check.
+Decided: 19 Nov 2026.
