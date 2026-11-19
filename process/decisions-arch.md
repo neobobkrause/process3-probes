@@ -49,3 +49,8 @@ Decided: 19 Nov 2026.
 Decision: formatPence takes an optional second argument { symbol }, true by default; with symbol false the text is the same without the pound sign (1234 gives "12.34"). A symbol given that is not true or false is refused with a TypeError that names it.
 Why: the provider accepts the new option beside the old form, so invoice keeps working unchanged.
 Decided: 19 Nov 2026.
+
+## The rate on an invoice
+Decision: the invoice gains taxRate, { rate, percent }, taken from the tax module's taxDetail for the tax the invoice charges.
+Why: a field added to what invoice hands back tells no module, since none uses invoice; the rate comes from the module that chose it.
+Decided: 19 Nov 2026.
