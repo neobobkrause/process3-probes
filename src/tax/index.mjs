@@ -5,11 +5,11 @@
  * @typedef {'standard' | 'reduced' | 'zero'} Rate
  */
 
-/** Each rate as a fraction: standard 20 percent (1/5), reduced 5 percent (1/20), zero 0 percent (0/1). */
+/** Each rate as a fraction, and as a whole percent: standard 20 percent (1/5), reduced 5 percent (1/20), zero 0 percent (0/1). */
 const RATES = {
-  standard: { numerator: 1n, denominator: 5n },
-  reduced: { numerator: 1n, denominator: 20n },
-  zero: { numerator: 0n, denominator: 1n },
+  standard: { numerator: 1n, denominator: 5n, percent: 20 },
+  reduced: { numerator: 1n, denominator: 20n, percent: 5 },
+  zero: { numerator: 0n, denominator: 1n, percent: 0 },
 };
 
 /**
@@ -36,6 +36,33 @@ export function taxOn(amount, rate = 'standard') {
   // amount * num / den, rounded half up: floor((2 * amount * num + den) / (2 * den)).
   const twice = 2n * BigInt(amount) * numerator;
   return Number((twice + denominator) / (2n * denominator));
+}
+
+/**
+ * The tax on an amount, with the rate that was used for it.
+ * @typedef {Object} TaxDetail
+ * @property {number} tax the tax, in whole pence, as taxOn gives it
+ * @property {Rate} rate the name of the rate used
+ * @property {20 | 5 | 0} percent the rate used, as a whole percent
+ * @bound tax: whole number of pence, zero or more
+ */
+
+/**
+ * The tax on an amount, as taxOn gives it, together with the rate that was used: its name and its
+ * whole percent. It takes what taxOn takes and refuses what taxOn refuses, with the same RangeError.
+ *
+ * @param {number} amount the amount, in whole pence
+ * @param {Rate} [rate] the rate asked for; absent is 'standard'
+ * @returns {TaxDetail}
+ * @bound amount: whole number of pence, zero or more
+ * @bound rate: 'standard' (20 percent), 'reduced' (5 percent) or 'zero' (0 percent); absent is 'standard'
+ * @throws {RangeError} when the amount is negative or not a whole number of pence, or the rate is not 'standard', 'reduced' or 'zero'; the message names the bad amount or rate
+ */
+export function taxDetail(amount, rate = 'standard') {
+  const tax = taxOn(amount, rate);
+  /** @type {TaxDetail} builds a TaxDetail */
+  const detail = { tax, rate, percent: RATES[rate].percent };
+  return detail;
 }
 
 function describe(value) {

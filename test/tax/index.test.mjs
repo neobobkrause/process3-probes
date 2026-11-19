@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { taxOn } from '../../src/tax/index.mjs';
+import { taxOn, taxDetail } from '../../src/tax/index.mjs';
 
 test('R1: tax is the amount times 0.2 where that is a whole penny', () => {
   assert.equal(taxOn(0), 0);
@@ -138,4 +138,32 @@ test('R2, R4: a bad amount is refused at the zero rate too', () => {
   assert.throws(() => taxOn(-1, 'zero'), (e) => e instanceof RangeError && /-1\b/.test(e.message));
   assert.throws(() => taxOn(0.5, 'zero'), (e) => e instanceof RangeError && e.message.includes('0.5'));
   assert.throws(() => taxOn(NaN, 'zero'), (e) => e instanceof RangeError && e.message.includes('NaN'));
+});
+
+test('R5: the detail names the rate used and its whole percent, beside the tax', () => {
+  assert.deepEqual(taxDetail(100), { tax: 20, rate: 'standard', percent: 20 });
+  assert.deepEqual(taxDetail(100, 'standard'), { tax: 20, rate: 'standard', percent: 20 });
+  assert.deepEqual(taxDetail(100, undefined), { tax: 20, rate: 'standard', percent: 20 });
+  assert.deepEqual(taxDetail(100, 'reduced'), { tax: 5, rate: 'reduced', percent: 5 });
+  assert.deepEqual(taxDetail(100, 'zero'), { tax: 0, rate: 'zero', percent: 0 });
+});
+
+test('R5: the tax in the detail is the tax R1, R3 and R4 give, rounding included', () => {
+  for (const rate of ['standard', 'reduced', 'zero']) {
+    for (const a of [0, 1, 3, 9, 10, 29, 30, 12345, Number.MAX_SAFE_INTEGER]) {
+      assert.equal(taxDetail(a, rate).tax, taxOn(a, rate), `amount ${a} at ${rate}`);
+    }
+  }
+});
+
+test('R5, R2, R3: the detail refuses what the tax refuses, with the same RangeError', () => {
+  for (const [amount, rate] of [[-1, 'standard'], [0.5, undefined], [NaN, 'zero'], [100, 'Reduced'], [100, 20], [100, null]]) {
+    let expected;
+    try { taxOn(amount, rate); } catch (e) { expected = e; }
+    assert.throws(
+      () => taxDetail(amount, rate),
+      (e) => e instanceof RangeError && e.message === expected.message,
+      `amount ${amount}, rate ${rate}`,
+    );
+  }
 });
