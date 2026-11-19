@@ -8,4 +8,9 @@ Shown to the owner: 19 Nov 2026.
 ## Advancing the trial product
 Rule now: as the owner's words below.
 - 19 Nov 2026: "Decision: You have my approval to add do anything you need to do to the trial product to advance the development and testing of process4."
+Shown to the owner: 19 Nov 2026.
+
+## Starting PROCESS
+Rule now: as the owner's words below.
+- 19 Nov 2026: "Instruction: Ask ROOT to start PROCESS so that I can use it to update process4"
 Shown to the owner: not yet.
