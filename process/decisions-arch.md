@@ -79,3 +79,8 @@ Decided: 19 Nov 2026.
 Decision: discountOn's percent text may use a comma in place of the point before its fraction, such as "12,5%" or "7,25 %"; it is read as the same number written with a point and judged as before. Text with both a point and a comma, or more than one of either, is refused as text of any other form is. A percent given as a number is unchanged.
 Why: accepting more keeps every caller working; the wording of the percent's bound changes with it, so the tool's notice is expected to tell invoice, which passes the percent on as it is given, and invoice's told job is expected to find nothing to change and close without naming its pull request's number, which this round is to try.
 Decided: 19 Nov 2026.
+
+## The island shipping zone
+Decision: shippingCost's zone may also be 'island'. An island parcel costs twice as much as the same parcel at home, express or not, after the express doubling; the small-parcel price and the 20 kilogram limit hold as before. A zone that is not 'home', 'far' or 'island' is refused with a TypeError that names it. The highest cost shipping hands back rises from 12600 to 16800 pence.
+Why: the owner's "Decision" restart the build" of 20 Nov starts round 6 on process 7d8e529. The provider accepts the new zone beside the old ones, so every caller keeps working; the range of what it hands back changes, so the tool's notice is expected to tell invoice, which passes the zone on as it is given, and this round is to try that notice on the new version.
+Decided: 20 Nov 2026.
