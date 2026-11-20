@@ -8,6 +8,7 @@ Rule now: as the owner's latest words below.
 - 19 Nov 2026: "Decision: move the trial product to the latest Process4 version"
 - 19 Nov 2026: "Decision: move process3-probes to the latest Process4 version"
 - 20 Nov 2026: "Instruction: move to the latest Process4 version"
+- 20 Nov 2026: "Instruction: move the trial to the latest version"
 Shown to the owner: 20 Nov 2026.
 
 ## Advancing the trial product
