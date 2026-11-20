@@ -6,6 +6,7 @@ const show = (v) => (typeof v === 'number' || typeof v === 'bigint' ? `${v}${typ
 /**
  * @typedef {Object} FormatOptions
  * @property {boolean} [symbol] absent or true shows the pound sign; false leaves it out
+ * @property {boolean} [pence] absent or true always shows the point and pence; false leaves them out of a whole number of pounds
  */
 
 /**
@@ -13,13 +14,15 @@ const show = (v) => (typeof v === 'number' || typeof v === 'bigint' ? `${v}${typ
  * pounds with a comma between each group of three digits, a point, and two
  * digits of pence. 1234 gives "£12.34", 5 gives "£0.05", 123456789 gives
  * "£1,234,567.89". With options.symbol false the text is the same less the
- * pound sign: 1234 gives "12.34".
+ * pound sign: 1234 gives "12.34". With options.pence false an amount that is
+ * a whole number of pounds is shown without the point and pence: 1200 gives
+ * "£12", 123400 gives "£1,234"; any other amount is shown as before.
  * @param {number} pence
  * @param {FormatOptions} [options]
  * @returns {string}
  * @bound pence: whole number, zero or more
  * @throws {RangeError} when pence is negative, not a whole number, or not a number; the message names the bad value
- * @throws {TypeError} when options.symbol is given and is not true or false; the message names the bad value
+ * @throws {TypeError} when options.symbol or options.pence is given and is not true or false; the message names the bad value
  */
 export function formatPence(pence, options) {
   if (typeof pence !== 'number' || !Number.isInteger(pence) || pence < 0) {
@@ -32,7 +35,12 @@ export function formatPence(pence, options) {
   if (symbol !== undefined && typeof symbol !== 'boolean') {
     throw new TypeError(`money: symbol must be true or false; got ${show(symbol)}`);
   }
+  const showPence = options?.pence;
+  if (showPence !== undefined && typeof showPence !== 'boolean') {
+    throw new TypeError(`money: pence option must be true or false; got ${show(showPence)}`);
+  }
   const sign = symbol === false ? '' : '£';
+  if (showPence === false && rest === '00') return `${sign}${pounds}`;
   return `${sign}${pounds}.${rest}`;
 }
 
