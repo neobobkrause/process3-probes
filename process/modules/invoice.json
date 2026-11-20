@@ -1,0 +1,18 @@
+{
+  "name": "invoice",
+  "files": [
+    "src/invoice/"
+  ],
+  "tests": [
+    "test/invoice/"
+  ],
+  "public": [
+    "src/invoice/index.mjs"
+  ],
+  "uses": [
+    "shipping",
+    "tax",
+    "money",
+    "discount"
+  ]
+}

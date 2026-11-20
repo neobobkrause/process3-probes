@@ -1,0 +1,7 @@
+{
+  "name": "money",
+  "files": ["src/money/"],
+  "tests": ["test/money/"],
+  "public": ["src/money/index.mjs"],
+  "uses": []
+}
