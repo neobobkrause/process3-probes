@@ -79,3 +79,8 @@ Decided: 19 Nov 2026.
 Decision: discountOn's percent text may use a comma in place of the point before its fraction, such as "12,5%" or "7,25 %"; it is read as the same number written with a point and judged as before. Text with both a point and a comma, or more than one of either, is refused as text of any other form is. A percent given as a number is unchanged.
 Why: accepting more keeps every caller working; the wording of the percent's bound changes with it, so the tool's notice is expected to tell invoice, which passes the percent on as it is given, and invoice's told job is expected to find nothing to change and close without naming its pull request's number, which this round is to try.
 Decided: 19 Nov 2026.
+
+## Whole pounds without pence
+Decision: formatPence's options gain pence, true by default; with pence false, an amount that is a whole number of pounds is shown without the point and pence (1200 gives "£12", 123400 gives "£1,234", and with symbol false "12"), and any other amount is shown as before (1234 gives "£12.34"). A pence given that is not true or false is refused with a TypeError that names it. parsePounds is unchanged.
+Why: round 6 gives both slots work; the provider accepts the new option beside the old form, so accepting more tells no user and invoice keeps working unchanged.
+Decided: 20 Nov 2026.
