@@ -2,6 +2,10 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { shippingCost, MAX_GRAMS, SMALL_GRAMS } from '../../src/shipping/index.mjs';
 
+/** @import { Weight } from '../../src/units/index.mjs' */
+/** @import { ShippingOptions } from '../../src/shipping/index.mjs' */
+
+/** @type {(value: number) => Weight} a weight in grams */
 const g = (value) => ({ value, unit: 'g' });
 
 test('R1: up to the first 500 grams, above the R5 small parcel, costs 300 pence', () => {
@@ -53,7 +57,7 @@ test('R1: a weight units refuses is refused with its RangeError', () => {
 const express = { express: true };
 
 test('R3: an express parcel costs twice what R1 gives for its weight', () => {
-  for (const [w, standard] of [[g(0), 150], [g(101), 300], [g(500), 300], [g(501), 400], [g(2750), 800], [{ value: 1.2, unit: 'kg' }, 500]]) {
+  for (const [w, standard] of /** @type {Array<[Weight | string, number]>} */ ([[g(0), 150], [g(101), 300], [g(500), 300], [g(501), 400], [g(2750), 800], [{ value: 1.2, unit: 'kg' }, 500]])) {
     assert.equal(shippingCost(w), standard);
     assert.equal(shippingCost(w, express), 2 * standard);
   }
@@ -86,17 +90,18 @@ test('R3: an express marking that is not true or false is refused with a TypeErr
   }
 });
 
+/** @type {ShippingOptions} */
 const far = { zone: 'far' };
 
 test('R4: a parcel sent to the far zone costs half as much again as at home', () => {
-  for (const [w, home] of [[g(0), 150], [g(101), 300], [g(500), 300], [g(501), 400], [g(2750), 800], [{ value: 1.2, unit: 'kg' }, 500]]) {
+  for (const [w, home] of /** @type {Array<[Weight | string, number]>} */ ([[g(0), 150], [g(101), 300], [g(500), 300], [g(501), 400], [g(2750), 800], [{ value: 1.2, unit: 'kg' }, 500]])) {
     assert.equal(shippingCost(w, { zone: 'home' }), home);
     assert.equal(shippingCost(w, far), home * 1.5);
   }
 });
 
 test('R4: an express parcel sent to the far zone costs half as much again as express at home', () => {
-  for (const [w, home] of [[g(0), 300], [g(101), 600], [g(1001), 1000], [{ value: 2, unit: 'lb' }, 800]]) {
+  for (const [w, home] of /** @type {Array<[Weight | string, number]>} */ ([[g(0), 300], [g(101), 600], [g(1001), 1000], [{ value: 2, unit: 'lb' }, 800]])) {
     assert.equal(shippingCost(w, { express: true, zone: 'home' }), home);
     assert.equal(shippingCost(w, { express: true, zone: 'far' }), home * 1.5);
   }
@@ -127,7 +132,7 @@ test('R4: a zone that is not home or far is refused with a TypeError naming it',
 });
 
 test('R5: a parcel of 100 grams or less costs 150 pence', () => {
-  for (const w of [g(0), g(1), g(50), g(SMALL_GRAMS), { value: 0.1, unit: 'kg' }, { value: 3, unit: 'oz' }]) {
+  for (const w of /** @type {Weight[]} */ ([g(0), g(1), g(50), g(SMALL_GRAMS), { value: 0.1, unit: 'kg' }, { value: 3, unit: 'oz' }])) {
     assert.equal(shippingCost(w), 150);
   }
 });
@@ -148,4 +153,40 @@ test('R5: express and the far zone apply to a small parcel as R3 and R4 say', ()
 test('R5: a small parcel is still refused a bad zone or express marking', () => {
   assert.throws(() => shippingCost(g(50), { zone: 'near' }), TypeError);
   assert.throws(() => shippingCost(g(50), { express: 'yes' }), TypeError);
+});
+
+/** @type {ShippingOptions} */
+const island = { zone: 'island' };
+
+test('R6: a parcel sent to the island zone costs twice what it costs at home', () => {
+  for (const [w, home] of /** @type {Array<[Weight | string, number]>} */ ([[g(0), 150], [g(SMALL_GRAMS), 150], [g(101), 300], [g(500), 300], [g(501), 400], [g(2750), 800], [{ value: 1.2, unit: 'kg' }, 500], ['2 kilograms', 600]])) {
+    assert.equal(shippingCost(w, { zone: 'home' }), home);
+    assert.equal(shippingCost(w, island), 2 * home);
+  }
+});
+
+test('R6: an express parcel sent to the island zone costs twice what express costs at home', () => {
+  for (const [w, home] of /** @type {Array<[Weight | string, number]>} */ ([[g(0), 300], [g(101), 600], [g(1001), 1000], [{ value: 2, unit: 'lb' }, 800]])) {
+    assert.equal(shippingCost(w, { express: true, zone: 'home' }), home);
+    assert.equal(shippingCost(w, { express: true, zone: 'island' }), 2 * home);
+  }
+  assert.equal(shippingCost(g(1001), { express: false, zone: 'island' }), 1000);
+});
+
+test('R6: bound, the heaviest island parcel costs 8400 pence, 16800 express', () => {
+  assert.equal(shippingCost(g(MAX_GRAMS), island), 8400);
+  assert.equal(shippingCost(g(MAX_GRAMS), { express: true, zone: 'island' }), 16800);
+  assert.equal(shippingCost('20 kilograms', { express: true, zone: 'island' }), 16800);
+});
+
+test('R6: the R2 limit holds for an island parcel', () => {
+  for (const opts of [island, { express: true, zone: 'island' }]) {
+    assert.throws(() => shippingCost(g(MAX_GRAMS + 1), opts), (e) => e instanceof RangeError && /over the limit/.test(e.message));
+  }
+});
+
+test('R6: a zone that is not home, far or island is refused with a TypeError naming it', () => {
+  for (const [zone, named] of [['Island', '"Island"'], ['islands', '"islands"'], ['near', '"near"'], ['', '""'], [null, 'null'], [2, '2']]) {
+    assert.throws(() => shippingCost(g(100), { zone }), (e) => e instanceof TypeError && e.message.includes(named));
+  }
 });
