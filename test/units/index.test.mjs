@@ -6,8 +6,8 @@ const g = (value, unit) => toGrams({ value, unit });
 /** toGrams called with values outside its stated kind, to show R2 refuses them. @type {(weight?: any) => number} */
 const toGramsOfAnything = toGrams;
 
-test('units R1, R3, R5, R7: the four units of R1, stones, tonnes and milligrams are the ones accepted', () => {
-  assert.deepEqual([...WEIGHT_UNITS].sort(), ['g', 'kg', 'lb', 'mg', 'oz', 'st', 't']);
+test('units R1, R3, R5, R7, R8: the four units of R1, stones, tonnes, milligrams and carats are the ones accepted', () => {
+  assert.deepEqual([...WEIGHT_UNITS].sort(), ['ct', 'g', 'kg', 'lb', 'mg', 'oz', 'st', 't']);
   assert.ok(Object.isFrozen(WEIGHT_UNITS));
 });
 
@@ -152,9 +152,9 @@ test('units R5, R2: a bad weight in tonnes is still refused, naming the value or
   }
 });
 
-test('units R6, R7: each unit named in full, singular or plural, converts as R4 says', () => {
+test('units R6, R7, R8: each unit named in full, singular or plural, converts as R4 says', () => {
   const names = { mg: ['milligram', 'milligrams'], g: ['gram', 'grams'], kg: ['kilogram', 'kilograms'], oz: ['ounce', 'ounces'],
-    lb: ['pound', 'pounds'], st: ['stone', 'stones'], t: ['tonne', 'tonnes'] };
+    lb: ['pound', 'pounds'], st: ['stone', 'stones'], t: ['tonne', 'tonnes'], ct: ['carat', 'carats'] };
   assert.deepEqual(Object.keys(names).sort(), [...WEIGHT_UNITS].sort());
   for (const [u, words] of Object.entries(names)) {
     for (const w of words) assert.equal(toGrams(`3.3 ${w}`), toGrams(`3.3 ${u}`), w);
@@ -234,6 +234,49 @@ test('units R7, R2: a bad weight in milligrams is still refused, naming the valu
   assert.throws(() => g(1, 'milligram'), { name: 'RangeError', message: /"milligram"/ });
   assert.throws(() => toGrams('-2500 mg'), { name: 'RangeError', message: /-2500/ });
   for (const text of ['1 MG', '1 Mg', '1 mgs', '1 milligramme', '1 milli gram', 'mg', '1 mg ']) {
+    assert.throws(() => toGrams(text), { name: 'RangeError', message: new RegExp(JSON.stringify(text)) }, text);
+  }
+});
+
+test('units R8: carats convert to whole grams, rounded to the nearest gram', () => {
+  assert.equal(g(5, 'ct'), 1); // 1 g exactly
+  assert.equal(g(5, 'ct'), g(1, 'g')); // five carats are a gram
+  assert.equal(g(5000, 'ct'), g(1, 'kg')); // five thousand carats are a kilogram
+  assert.equal(g(50, 'ct'), 10); // 10 g
+  assert.equal(g(2, 'ct'), 0); // 0.4 g
+  assert.equal(g(3, 'ct'), 1); // 0.6 g
+  assert.equal(g(2.5, 'ct'), 1); // 0.5 g, a half rounds up
+  assert.equal(g(7.5, 'ct'), 2); // 1.5 g, a half rounds up
+  assert.equal(g(1000, 'ct'), 200);
+  assert.ok(Number.isInteger(g(123.456, 'ct')));
+});
+
+test('units R8: bounds for carats — zero gives 0, small rounds to 0, large finite weights convert', () => {
+  assert.equal(g(0, 'ct'), 0);
+  assert.ok(Object.is(g(-0, 'ct'), 0));
+  assert.ok(Object.is(g(1, 'ct'), 0)); // 0.2 g rounds down to 0
+  assert.equal(g(1e9, 'ct'), 2e8);
+});
+
+test('units R8: text in carats, by symbol or full name, converts as R1 says', () => {
+  assert.equal(toGrams('50 ct'), 10);
+  assert.equal(toGrams('50 carats'), 10);
+  assert.equal(toGrams('5ct'), 1);
+  assert.equal(toGrams('2.5 carat'), 1); // 0.5 g, a half rounds up
+  assert.equal(toGrams('7.5   Carats'), 2); // 1.5 g, any letter case
+  assert.equal(toGrams('1000 CARAT'), 200);
+  assert.equal(toGrams('0 ct'), 0);
+  assert.equal(toGrams('2 g'), 2); // grams are still read as grams
+});
+
+test('units R8, R2: a bad weight in carats is still refused, naming the value or text', () => {
+  assert.throws(() => g(-1, 'ct'), { name: 'RangeError', message: /-1/ });
+  assert.throws(() => g(NaN, 'ct'), { name: 'RangeError', message: /NaN/ });
+  assert.throws(() => g(Infinity, 'ct'), { name: 'RangeError', message: /Infinity/ });
+  assert.throws(() => g(1, 'CT'), { name: 'RangeError', message: /"CT"/ });
+  assert.throws(() => g(1, 'carat'), { name: 'RangeError', message: /"carat"/ });
+  assert.throws(() => toGrams('-50 ct'), { name: 'RangeError', message: /-50/ });
+  for (const text of ['1 CT', '1 Ct', '1 cts', '1 carate', '1 car at', 'ct', '1 ct ']) {
     assert.throws(() => toGrams(text), { name: 'RangeError', message: new RegExp(JSON.stringify(text)) }, text);
   }
 });
