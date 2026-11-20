@@ -1,8 +1,8 @@
-Length: 13 lines. Last section: "Requirements".
+Length: 14 lines. Last section: "Requirements".
 
 # shipping: requirements
 
-Next number: 6
+Next number: 7
 
 ## Requirements
 
@@ -11,3 +11,4 @@ Next number: 6
 - **R3** [met] A parcel marked express costs twice what R1 gives for its weight, and the R2 limit holds as before.
 - **R4** [met] A parcel sent to the far zone costs half as much again as the same parcel sent at home, express or not; a zone that is not home or far is refused with a TypeError that names it, and the R2 limit holds as before.
 - **R5** [met] A parcel of 100 grams or less costs 150 pence in place of R1's cost; express and the far zone apply to it as R3 and R4 say.
+- **R6** [not yet met] A parcel sent to the island zone costs twice what the same parcel costs at home, express or not; a zone that is not home, far or island is refused with a TypeError that names it, and the R2 limit holds as before.
