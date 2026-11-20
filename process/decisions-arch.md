@@ -80,6 +80,10 @@ Decision: discountOn's percent text may use a comma in place of the point before
 Why: accepting more keeps every caller working; the wording of the percent's bound changes with it, so the tool's notice is expected to tell invoice, which passes the percent on as it is given, and invoice's told job is expected to find nothing to change and close without naming its pull request's number, which this round is to try.
 Decided: 19 Nov 2026.
 
+## The island shipping zone
+Decision: shippingCost's zone may also be 'island'. An island parcel costs twice as much as the same parcel at home, express or not, after the express doubling; the small-parcel price and the 20 kilogram limit hold as before. A zone that is not 'home', 'far' or 'island' is refused with a TypeError that names it. The highest cost shipping hands back rises from 12600 to 16800 pence.
+Why: the owner's "Decision" restart the build" of 20 Nov starts round 6 on process 7d8e529. The provider accepts the new zone beside the old ones, so every caller keeps working; the range of what it hands back changes, so the tool's notice is expected to tell invoice, which passes the zone on as it is given, and this round is to try that notice on the new version.
+
 ## Whole pounds without pence
 Decision: formatPence's options gain pence, true by default; with pence false, an amount that is a whole number of pounds is shown without the point and pence (1200 gives "£12", 123400 gives "£1,234", and with symbol false "12"), and any other amount is shown as before (1234 gives "£12.34"). A pence given that is not true or false is refused with a TypeError that names it. parsePounds is unchanged.
 Why: round 6 gives both slots work; the provider accepts the new option beside the old form, so accepting more tells no user and invoice keeps working unchanged.
