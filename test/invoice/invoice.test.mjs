@@ -6,6 +6,9 @@ import { taxOn, taxDetail } from '../../src/tax/index.mjs';
 import { formatPence } from '../../src/money/index.mjs';
 import { discountOn } from '../../src/discount/index.mjs';
 
+/** @typedef {Parameters<typeof shippingCost>[0]} Parcel the parcel's weight, as the shipping module accepts it */
+
+/** @type {(value: number) => Parcel} a weight in grams */
 const g = (value) => ({ value, unit: 'g' });
 
 /** The invoice's amounts in whole pence, without its pounds text or its tax rate. */
@@ -33,7 +36,7 @@ test('invoice R1: the tax is on goods plus shipping together, rounded half up by
 });
 
 test('invoice R1: amounts agree with the shipping and tax modules, all whole pence', () => {
-  for (const [goods, parcel] of [[0, g(0)], [99, g(1999)], [12345, { value: 3, unit: 'lb' }], [777, { value: 20, unit: 'kg' }]]) {
+  for (const [goods, parcel] of /** @type {Array<[number, Parcel]>} */ ([[0, g(0)], [99, g(1999)], [12345, { value: 3, unit: 'lb' }], [777, { value: 20, unit: 'kg' }]])) {
     const inv = invoiceFor(goods, parcel);
     const shipping = shippingCost(parcel);
     const tax = taxOn(goods + shipping);
@@ -50,7 +53,7 @@ test('invoice R1: bounds, no goods and an empty parcel; the small-parcel limit; 
 });
 
 test('invoice R2: a goods amount the tax module refuses is refused with its RangeError, unchanged', () => {
-  for (const goods of [-1, -300, 0.5, 12.34, NaN, Infinity, '100', 100n, null, undefined]) {
+  for (const goods of /** @type {any[]} */ ([-1, -300, 0.5, 12.34, NaN, Infinity, '100', 100n, null, undefined])) {
     const got = errorOf(() => invoiceFor(goods, g(500)));
     const expected = errorOf(() => taxOn(goods));
     assert.ok(got instanceof RangeError, `goods ${String(goods)}`);
@@ -59,7 +62,7 @@ test('invoice R2: a goods amount the tax module refuses is refused with its Rang
 });
 
 test('invoice R2: a parcel the shipping module refuses is refused with its RangeError, unchanged', () => {
-  for (const parcel of [g(20001), { value: 21, unit: 'kg' }, g(-1), g(NaN), { value: 1, unit: 'stone' }, null, undefined]) {
+  for (const parcel of /** @type {any[]} */ ([g(20001), { value: 21, unit: 'kg' }, g(-1), g(NaN), { value: 1, unit: 'stone' }, null, undefined])) {
     const got = errorOf(() => invoiceFor(1000, parcel));
     const expected = errorOf(() => shippingCost(parcel));
     assert.ok(got instanceof RangeError, `parcel ${JSON.stringify(parcel)}`);
@@ -82,7 +85,7 @@ test('invoice R3: express shipping takes the express cost from the shipping modu
 });
 
 test('invoice R3: express amounts agree with the shipping and tax modules, all whole pence', () => {
-  for (const [goods, parcel] of [[0, g(0)], [99, g(1999)], [12345, { value: 3, unit: 'lb' }], [777, { value: 20, unit: 'kg' }]]) {
+  for (const [goods, parcel] of /** @type {Array<[number, Parcel]>} */ ([[0, g(0)], [99, g(1999)], [12345, { value: 3, unit: 'lb' }], [777, { value: 20, unit: 'kg' }]])) {
     const inv = invoiceFor(goods, parcel, { express: true });
     const shipping = shippingCost(parcel, { express: true });
     const tax = taxOn(goods + shipping);
@@ -103,7 +106,7 @@ test('invoice R3: not asking for express, or asking for it as false, gives the s
 });
 
 test('invoice R3: shipping options the shipping module refuses are refused with its error, unchanged', () => {
-  for (const options of [null, 'express', 1, true, { express: 'yes' }, { express: 1 }, { express: null }]) {
+  for (const options of /** @type {any[]} */ ([null, 'express', 1, true, { express: 'yes' }, { express: 1 }, { express: null }])) {
     const got = errorOf(() => invoiceFor(1000, g(500), options));
     const expected = errorOf(() => shippingCost(g(500), options));
     assert.equal(got.constructor, expected.constructor, `options ${JSON.stringify(options)}`);
@@ -134,7 +137,7 @@ test('invoice R4: bounds, a discount of 0 gives the invoice of R1, and of 100 ta
 });
 
 test('invoice R4: amounts agree with the discount, shipping and tax modules, all whole pence', () => {
-  const cases = [[0, g(0), 0], [99, g(1999), 33], [12345, { value: 3, unit: 'lb' }, 12.5], [777, { value: 20, unit: 'kg' }, 100], [1, g(1), 50]];
+  const cases = /** @type {Array<[number, Parcel, number]>} */ ([[0, g(0), 0], [99, g(1999), 33], [12345, { value: 3, unit: 'lb' }, 12.5], [777, { value: 20, unit: 'kg' }, 100], [1, g(1), 50]]);
   for (const [goods, parcel, percent] of cases) {
     for (const express of [false, true]) {
       const inv = invoiceFor(goods, parcel, { express, discount: percent });
@@ -149,7 +152,7 @@ test('invoice R4: amounts agree with the discount, shipping and tax modules, all
 });
 
 test('invoice R4 with R2: a percentage the discount module refuses is refused with its RangeError, unchanged', () => {
-  for (const percent of [-1, 100.5, 101, NaN, Infinity, -Infinity, '10', null, 10n]) {
+  for (const percent of /** @type {any[]} */ ([-1, 100.5, 101, NaN, Infinity, -Infinity, '10', null, 10n])) {
     const got = errorOf(() => invoiceFor(1000, g(500), { discount: percent }));
     const expected = errorOf(() => discountOn(1000, percent));
     assert.ok(got instanceof RangeError, `percent ${String(percent)}`);
@@ -176,7 +179,7 @@ test('invoice R5: each amount is also shown as pounds text from the money module
 
 test('invoice R5: the pounds text agrees with the money module for every amount, with and without a discount, express or far', () => {
   for (const options of [undefined, { discount: 33 }, { express: true, zone: 'far', discount: 12.5 }]) {
-    for (const [goods, parcel] of [[0, g(0)], [99, g(1999)], [100000, { value: 20, unit: 'kg' }]]) {
+    for (const [goods, parcel] of /** @type {Array<[number, Parcel]>} */ ([[0, g(0)], [99, g(1999)], [100000, { value: 20, unit: 'kg' }]])) {
       const inv = invoiceFor(goods, parcel, options);
       assert.deepEqual(Object.keys(inv.text).sort(), ['discount', 'goods', 'shipping', 'tax', 'total']);
       for (const k of Object.keys(inv.text)) assert.equal(inv.text[k], formatPence(inv[k]), `${k} ${JSON.stringify(options)}`);
@@ -188,7 +191,7 @@ test('invoice R5: the far zone takes its cost from the shipping module, standard
   assert.deepEqual(pence(invoiceFor(1000, g(500), { zone: 'far' })), { goods: 1000, discount: 0, shipping: 450, tax: 290, total: 1740 });
   assert.deepEqual(pence(invoiceFor(1000, g(500), { express: true, zone: 'far' })), { goods: 1000, discount: 0, shipping: 900, tax: 380, total: 2280 });
   assert.deepEqual(pence(invoiceFor(1000, g(500), { zone: 'far', discount: 10 })), { goods: 1000, discount: 100, shipping: 450, tax: 270, total: 1620 });
-  for (const [parcel, express] of [[g(0), false], [g(501), true], [{ value: 20, unit: 'kg' }, false], [{ value: 20, unit: 'kg' }, true]]) {
+  for (const [parcel, express] of /** @type {Array<[Parcel, boolean]>} */ ([[g(0), false], [g(501), true], [{ value: 20, unit: 'kg' }, false], [{ value: 20, unit: 'kg' }, true]])) {
     const shipping = shippingCost(parcel, { express, zone: 'far' });
     assert.equal(invoiceFor(10, parcel, { express, zone: 'far' }).shipping, shipping);
   }
@@ -200,7 +203,7 @@ test('invoice R5: the home zone, asked or not, gives the same invoice', () => {
 });
 
 test('invoice R5 with R2: a zone or parcel the shipping module refuses is refused with its error, unchanged', () => {
-  for (const zone of ['near', 'FAR', '', null, 1, true]) {
+  for (const zone of /** @type {any[]} */ (['near', 'FAR', '', null, 1, true])) {
     const got = errorOf(() => invoiceFor(1000, g(500), { zone }));
     const expected = errorOf(() => shippingCost(g(500), { zone }));
     assert.equal(got.constructor, expected.constructor, `zone ${JSON.stringify(zone)}`);
@@ -218,8 +221,8 @@ test('invoice R6: the invoice says the tax rate it charged, the standard rate by
 });
 
 test('invoice R6: the rate and the tax agree with the tax module, for every kind of invoice', () => {
-  const cases = [[0, g(0), undefined], [1, g(501), { express: true }], [1005, g(500), { discount: 10 }],
-    [1000, g(500), { discount: 100 }], [12345, { value: 20, unit: 'kg' }, { express: true, zone: 'far', discount: 12.5 }]];
+  const cases = /** @type {Array<[number, Parcel, import('../../src/invoice/index.mjs').InvoiceOptions | undefined]>} */ ([[0, g(0), undefined], [1, g(501), { express: true }], [1005, g(500), { discount: 10 }],
+    [1000, g(500), { discount: 100 }], [12345, { value: 20, unit: 'kg' }, { express: true, zone: 'far', discount: 12.5 }]]);
   for (const [goods, parcel, options] of cases) {
     const inv = invoiceFor(goods, parcel, options);
     const detail = taxDetail(inv.goods - inv.discount + inv.shipping);
@@ -230,7 +233,7 @@ test('invoice R6: the rate and the tax agree with the tax module, for every kind
 });
 
 test('invoice R6 with R2: asking for the rate changes no refusal; a refused goods amount is the tax module\'s RangeError, unchanged', () => {
-  for (const goods of [-1, 0.5, '100']) {
+  for (const goods of /** @type {any[]} */ ([-1, 0.5, '100'])) {
     const got = errorOf(() => invoiceFor(goods, g(500)));
     assert.ok(got instanceof RangeError);
     assert.equal(got.message, errorOf(() => taxDetail(goods)).message);
