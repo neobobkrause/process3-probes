@@ -89,3 +89,8 @@ Decided: 20 Nov 2026.
 Decision: formatPence's options gain pence, true by default; with pence false, an amount that is a whole number of pounds is shown without the point and pence (1200 gives "£12", 123400 gives "£1,234", and with symbol false "12"), and any other amount is shown as before (1234 gives "£12.34"). A pence given that is not true or false is refused with a TypeError that names it. parsePounds is unchanged.
 Why: round 6 gives both slots work; the provider accepts the new option beside the old form, so accepting more tells no user and invoice keeps working unchanged.
 Decided: 20 Nov 2026.
+
+## The carat unit
+Decision: units accepts the unit 'ct' (carat), 0.2 grams each, in a Weight and in weight text, with the full names carat and carats in any letter case; toGrams still gives back whole grams, rounded to the nearest gram.
+Why: round 7 is the first full round on process 3940d130, the version just adopted; a non-breaking accepts-more addition re-exercises the job, notice, told-job and merge loop end to end on the new version. The provider accepts the new unit beside the old ones, so every caller keeps working; the wording of the accepted-unit bound changes with it, so the tool's notice is expected to tell shipping, which uses toGrams, and shipping's told job is expected to find nothing to change, since toGrams still gives back whole grams.
+Decided: 20 Nov 2026.
