@@ -44,3 +44,8 @@ Shown to the owner: 19 Nov 2026.
 Rule now: as the owner's words below, his answer to the coordinator's question "Letting ARCH make the switch while work is stopped", whose option A is that ARCH makes only the move to the new version while the stop stands. He typed them in the coordinator's session and again in ARCH's session.
 - 19 Nov 2026: "Instruction: ARCH may make the move to the new version while the stop stands"
 Shown to the owner: 19 Nov 2026.
+
+## Restarting the build
+Rule now: as the owner's words below.
+- 20 Nov 2026: "Decision" restart the build"
+Shown to the owner: 20 Nov 2026.
