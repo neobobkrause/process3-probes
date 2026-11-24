@@ -94,3 +94,8 @@ Decided: 20 Nov 2026.
 Decision: units accepts the unit 'ct' (carat), 0.2 grams each, in a Weight and in weight text, with the full names carat and carats in any letter case; toGrams still gives back whole grams, rounded to the nearest gram.
 Why: round 7 is the first full round on process 3940d130, the version just adopted; a non-breaking accepts-more addition re-exercises the job, notice, told-job and merge loop end to end on the new version. The provider accepts the new unit beside the old ones, so every caller keeps working; the wording of the accepted-unit bound changes with it, so the tool's notice is expected to tell shipping, which uses toGrams, and shipping's told job is expected to find nothing to change, since toGrams still gives back whole grams.
 Decided: 20 Nov 2026.
+
+## The tax-exempt flag
+Decision: what taxDetail gives back gains exempt, a boolean: true when the rate's whole percent is 0 (the zero rate), false otherwise. taxOn is unchanged, and taxDetail's existing fields { tax, rate, percent, label } are unchanged.
+Why: round 9 is the owner-approved three-task trial on process 6b47107 (the version just adopted). A field added to what taxDetail hands back changes its range, so the tool's notice is expected to tell invoice, which uses taxDetail. invoice reads only the taxDetail fields it already reads, so its ordinary job, told of this change while still open, is expected to need no invoice change but must re-run its tests. This exercises the ordinary-job and told-while-open paths on the new version.
+Decided: 24 Nov 2026.
