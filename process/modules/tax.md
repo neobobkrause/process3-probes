@@ -13,4 +13,4 @@ Next number: 9
 - **R5** [met] The caller can be told which rate was used for a tax: its name and its whole percent (20, 5 or 0), alongside the tax that R1, R3 or R4 gives.
 - **R6** [met] A rate may be named in any letter case, such as 'Reduced' or 'ZERO', and is then the rate R1, R3 or R4 names.
 - **R7** [met] When the caller is told which rate was used, as R5 says, it is also given a label for showing on an invoice: "VAT " followed by the whole percent and a percent sign, such as "VAT 20%", "VAT 5%" or "VAT 0%".
-- **R8** [not yet met] When the caller is told which rate was used, as R5 says, it is also told whether the rate is tax-exempt: true when the rate's whole percent is 0, and false otherwise.
+- **R8** [met] When the caller is told which rate was used, as R5 says, it is also told whether the rate is tax-exempt: true when the rate's whole percent is 0, and false otherwise.

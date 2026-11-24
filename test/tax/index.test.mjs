@@ -148,11 +148,11 @@ test('R2, R4: a bad amount is refused at the zero rate too', () => {
 });
 
 test('R5: the detail names the rate used and its whole percent, beside the tax', () => {
-  assert.deepEqual(taxDetail(100), { tax: 20, rate: 'standard', percent: 20, label: 'VAT 20%' });
-  assert.deepEqual(taxDetail(100, 'standard'), { tax: 20, rate: 'standard', percent: 20, label: 'VAT 20%' });
-  assert.deepEqual(taxDetail(100, undefined), { tax: 20, rate: 'standard', percent: 20, label: 'VAT 20%' });
-  assert.deepEqual(taxDetail(100, 'reduced'), { tax: 5, rate: 'reduced', percent: 5, label: 'VAT 5%' });
-  assert.deepEqual(taxDetail(100, 'zero'), { tax: 0, rate: 'zero', percent: 0, label: 'VAT 0%' });
+  assert.deepEqual(taxDetail(100), { tax: 20, rate: 'standard', percent: 20, label: 'VAT 20%', exempt: false });
+  assert.deepEqual(taxDetail(100, 'standard'), { tax: 20, rate: 'standard', percent: 20, label: 'VAT 20%', exempt: false });
+  assert.deepEqual(taxDetail(100, undefined), { tax: 20, rate: 'standard', percent: 20, label: 'VAT 20%', exempt: false });
+  assert.deepEqual(taxDetail(100, 'reduced'), { tax: 5, rate: 'reduced', percent: 5, label: 'VAT 5%', exempt: false });
+  assert.deepEqual(taxDetail(100, 'zero'), { tax: 0, rate: 'zero', percent: 0, label: 'VAT 0%', exempt: true });
 });
 
 test('R5: the tax in the detail is the tax R1, R3 and R4 give, rounding included', () => {
@@ -192,9 +192,9 @@ test('R6: a rate named in any letter case is the rate R1, R3 or R4 names', () =>
 });
 
 test('R6, R5: a rate named in any letter case is named back as the rate used, with its percent', () => {
-  assert.deepEqual(taxDetail(100, 'Reduced'), { tax: 5, rate: 'reduced', percent: 5, label: 'VAT 5%' });
-  assert.deepEqual(taxDetail(100, 'ZERO'), { tax: 0, rate: 'zero', percent: 0, label: 'VAT 0%' });
-  assert.deepEqual(taxDetail(100, 'StAnDaRd'), { tax: 20, rate: 'standard', percent: 20, label: 'VAT 20%' });
+  assert.deepEqual(taxDetail(100, 'Reduced'), { tax: 5, rate: 'reduced', percent: 5, label: 'VAT 5%', exempt: false });
+  assert.deepEqual(taxDetail(100, 'ZERO'), { tax: 0, rate: 'zero', percent: 0, label: 'VAT 0%', exempt: true });
+  assert.deepEqual(taxDetail(100, 'StAnDaRd'), { tax: 20, rate: 'standard', percent: 20, label: 'VAT 20%', exempt: false });
 });
 
 test('R6, R2: a bad amount is still refused, naming the amount, whatever the letter case of the rate', () => {
@@ -217,5 +217,41 @@ test('R7, R5: the label always agrees with the percent of the rate used, whateve
       const d = taxDetail(a, rate);
       assert.equal(d.label, `VAT ${d.percent}%`, `amount ${a} at ${rate}`);
     }
+  }
+});
+
+test('R8: the detail tells whether the rate is tax-exempt: true only at the zero rate', () => {
+  assert.equal(taxDetail(100).exempt, false);
+  assert.equal(taxDetail(100, 'standard').exempt, false);
+  assert.equal(taxDetail(100, undefined).exempt, false);
+  assert.equal(taxDetail(100, 'reduced').exempt, false);
+  assert.equal(taxDetail(100, 'zero').exempt, true);
+});
+
+test('R8: exempt is the boolean true or false, not just truthy or falsy', () => {
+  for (const rate of ['standard', 'reduced', 'zero']) {
+    const e = taxDetail(100, rate).exempt;
+    assert.equal(typeof e, 'boolean', `rate ${rate}`);
+  }
+  assert.strictEqual(taxDetail(100, 'zero').exempt, true);
+  assert.strictEqual(taxDetail(100, 'standard').exempt, false);
+});
+
+test('R8: exempt is named in any letter case of the rate, and is true exactly when the percent is 0', () => {
+  for (const rate of ['standard', 'reduced', 'zero', 'Standard', 'rEdUcEd', 'ZERO', 'Zero']) {
+    for (const a of [0, 1, 3, 10, 12345, Number.MAX_SAFE_INTEGER]) {
+      const d = taxDetail(a, rate);
+      assert.equal(d.exempt, d.percent === 0, `amount ${a} at ${rate}`);
+    }
+  }
+  assert.equal(taxDetail(100, 'ZERO').exempt, true);
+  assert.equal(taxDetail(100, 'Reduced').exempt, false);
+});
+
+test('R8, R4: the zero rate is exempt whatever the amount, with a tax of 0', () => {
+  for (const a of [0, 1, 4, 5, 19, 20, 100, 12345, Number.MAX_SAFE_INTEGER]) {
+    const d = taxDetail(a, 'zero');
+    assert.equal(d.exempt, true, `amount ${a}`);
+    assert.equal(d.tax, 0, `amount ${a}`);
   }
 });

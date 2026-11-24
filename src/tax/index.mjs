@@ -45,12 +45,14 @@ export function taxOn(amount, rate = 'standard') {
  * @property {Rate} rate the name of the rate used
  * @property {20 | 5 | 0} percent the rate used, as a whole percent
  * @property {'VAT 20%' | 'VAT 5%' | 'VAT 0%'} label the rate used, for showing on an invoice: "VAT ", its whole percent and a percent sign
+ * @property {boolean} exempt whether the rate is tax-exempt: true when the rate's whole percent is 0, false otherwise
  * @bound tax: whole number of pence, zero or more
  */
 
 /**
  * The tax on an amount, as taxOn gives it, together with the rate that was used: its name, its
- * whole percent, and its label for an invoice ("VAT 20%", "VAT 5%" or "VAT 0%"). It takes what taxOn takes and refuses what taxOn refuses, with the same RangeError.
+ * whole percent, its label for an invoice ("VAT 20%", "VAT 5%" or "VAT 0%"), and whether the rate
+ * is tax-exempt (its whole percent is 0). It takes what taxOn takes and refuses what taxOn refuses, with the same RangeError.
  *
  * @param {number} amount the amount, in whole pence
  * @param {string} [rate] the rate asked for, a Rate's name in any letter case; absent is 'standard'
@@ -63,7 +65,7 @@ export function taxDetail(amount, rate = 'standard') {
   const tax = taxOn(amount, rate);
   const name = rateNamed(rate);
   /** @type {TaxDetail} builds a TaxDetail */
-  const detail = { tax, rate: name, percent: RATES[name].percent, label: RATES[name].label };
+  const detail = { tax, rate: name, percent: RATES[name].percent, label: RATES[name].label, exempt: RATES[name].percent === 0 };
   return detail;
 }
 
