@@ -1,4 +1,4 @@
-// invoice: an invoice for goods and one parcel, standard or express, home or far, with an optional discount: goods, discount, shipping, tax and total, in whole pence and as pounds text, and the tax rate charged.
+// invoice: an invoice for goods and one parcel, standard or express, home or far, with an optional discount: goods, discount, shipping, tax and total, in whole pence and as pounds text, and the tax rate charged with its label.
 
 import { shippingCost } from '../shipping/index.mjs';
 import { taxOn, taxDetail } from '../tax/index.mjs';
@@ -32,6 +32,7 @@ import { discountOn } from '../discount/index.mjs';
  * @property {number} total goods less discount, plus shipping, plus tax
  * @property {InvoiceText} text each of the five amounts as pounds text from the money module
  * @property {InvoiceRate} taxRate the tax rate charged on goods less discount plus shipping: the standard rate, its name and whole percent from the tax module
+ * @property {string} taxLabel the tax rate charged, as a label for showing, taken from the tax module (for example "VAT 20%"), alongside the rate name and whole percent of taxRate
  * @bound goods, discount, shipping, tax, total: whole numbers of pence, zero or more; discount is at most goods
  */
 
@@ -82,8 +83,9 @@ export function invoiceFor(goods, parcel, options) {
   };
   /** @type {InvoiceRate} builds an InvoiceRate */
   const taxRate = { rate: charged.rate, percent: charged.percent };
+  const taxLabel = charged.label;
   /** @type {Invoice} builds an Invoice */
-  const invoice = { goods, discount, shipping, tax, total, text, taxRate };
+  const invoice = { goods, discount, shipping, tax, total, text, taxRate, taxLabel };
   return invoice;
 }
 

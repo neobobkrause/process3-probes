@@ -11,8 +11,8 @@ import { discountOn } from '../../src/discount/index.mjs';
 /** @type {(value: number) => Parcel} a weight in grams */
 const g = (value) => ({ value, unit: 'g' });
 
-/** The invoice's amounts in whole pence, without its pounds text or its tax rate. */
-const pence = ({ text, taxRate, ...amounts }) => amounts;
+/** The invoice's amounts in whole pence, without its pounds text, its tax rate or its tax label. */
+const pence = ({ text, taxRate, taxLabel, ...amounts }) => amounts;
 
 /** The error a call throws, or a failure if it throws none. */
 function errorOf(fn) {
@@ -217,7 +217,7 @@ test('invoice R5 with R2: a zone or parcel the shipping module refuses is refuse
 test('invoice R6: the invoice says the tax rate it charged, the standard rate by name and whole percent', () => {
   assert.deepEqual(invoiceFor(1000, g(500)).taxRate, { rate: 'standard', percent: 20 });
   assert.deepEqual(invoiceFor(1000, g(500), { express: true, zone: 'far', discount: 25 }).taxRate, { rate: 'standard', percent: 20 });
-  assert.deepEqual(Object.keys(invoiceFor(1, g(1))).sort(), ['discount', 'goods', 'shipping', 'tax', 'taxRate', 'text', 'total']);
+  assert.deepEqual(Object.keys(invoiceFor(1, g(1))).sort(), ['discount', 'goods', 'shipping', 'tax', 'taxLabel', 'taxRate', 'text', 'total']);
 });
 
 test('invoice R6: the rate and the tax agree with the tax module, for every kind of invoice', () => {
@@ -237,5 +237,33 @@ test('invoice R6 with R2: asking for the rate changes no refusal; a refused good
     const got = errorOf(() => invoiceFor(goods, g(500)));
     assert.ok(got instanceof RangeError);
     assert.equal(got.message, errorOf(() => taxDetail(goods)).message);
+  }
+});
+
+test('invoice R7: the invoice shows the tax rate\'s label from the tax module, "VAT 20%" for the standard rate, alongside the rate name and percent of R6', () => {
+  const inv = invoiceFor(1000, g(500));
+  assert.equal(inv.taxLabel, 'VAT 20%');
+  assert.deepEqual(inv.taxRate, { rate: 'standard', percent: 20 });
+  assert.equal(invoiceFor(1, g(501), { express: true, zone: 'far', discount: 25 }).taxLabel, 'VAT 20%');
+  assert.equal(invoiceFor(0, g(0)).taxLabel, 'VAT 20%');
+});
+
+test('invoice R7: the label is the tax module\'s own, agreeing with taxDetail and carrying the same whole percent R6 reports, for every kind of invoice', () => {
+  const cases = /** @type {Array<[number, Parcel, import('../../src/invoice/index.mjs').InvoiceOptions | undefined]>} */ ([[0, g(0), undefined], [1, g(501), { express: true }], [1005, g(500), { discount: 10 }],
+    [1000, g(500), { discount: 100 }], [12345, { value: 20, unit: 'kg' }, { express: true, zone: 'far', discount: 12.5 }]]);
+  for (const [goods, parcel, options] of cases) {
+    const inv = invoiceFor(goods, parcel, options);
+    const detail = taxDetail(inv.goods - inv.discount + inv.shipping);
+    assert.equal(inv.taxLabel, detail.label, JSON.stringify(options));
+    assert.equal(typeof inv.taxLabel, 'string', JSON.stringify(options));
+    assert.equal(inv.taxLabel, `VAT ${inv.taxRate.percent}%`, JSON.stringify(options));
+  }
+});
+
+test('invoice R7: showing the label is the only change; a refused goods amount still throws the tax module\'s RangeError, unchanged, with no invoice built', () => {
+  for (const goods of /** @type {any[]} */ ([-1, 0.5, '100', NaN, Infinity])) {
+    const got = errorOf(() => invoiceFor(goods, g(500)));
+    assert.ok(got instanceof RangeError, `goods ${String(goods)}`);
+    assert.equal(got.message, errorOf(() => taxDetail(goods)).message, `goods ${String(goods)}`);
   }
 });
