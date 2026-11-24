@@ -99,3 +99,8 @@ Decided: 20 Nov 2026.
 Decision: what taxDetail gives back gains exempt, a boolean: true when the rate's whole percent is 0 (the zero rate), false otherwise. taxOn is unchanged, and taxDetail's existing fields { tax, rate, percent, label } are unchanged.
 Why: round 9 is the owner-approved three-task trial on process 6b47107 (the version just adopted). A field added to what taxDetail hands back changes its range, so the tool's notice is expected to tell invoice, which uses taxDetail. invoice reads only the taxDetail fields it already reads, so its ordinary job, told of this change while still open, is expected to need no invoice change but must re-run its tests. This exercises the ordinary-job and told-while-open paths on the new version.
 Decided: 24 Nov 2026.
+
+## The tax label on an invoice
+Decision: the invoice also gives taxLabel, the label text from the tax module's taxDetail (for example "VAT 20%"), alongside the rate name and percent R6 gives. invoice reads taxDetail.label; nothing invoice already hands back changes.
+Why: round 9 is the owner-approved three-task trial on process 6b47107. A field added to what invoice hands back tells no module, since none uses invoice; the label comes from the module that chose the rate. This is invoice's own ordinary-job work in the trial, run in the second slot alongside tax's job so that invoice can be ready for merge while tax's job is still open (the merge-waits path) and then be told of tax's change while still open (the told-while-open path).
+Decided: 24 Nov 2026.
