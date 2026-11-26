@@ -1,8 +1,8 @@
-Length: 18 lines. Last section: "Requirements".
+Length: 19 lines. Last section: "Requirements".
 
 # units: requirements
 
-Next number: 11
+Next number: 12
 
 ## Requirements
 
@@ -16,3 +16,4 @@ Next number: 11
 - **R8** [met] A weight given in carats (unit 'ct', 0.2 grams each), as a weight or as text such as "50 ct" or "50 carats", is converted to whole grams as in R1, and is not refused by R2.
 - **R9** [met] units reads weight text through one internal routine that both splits the text into a number and a unit word and maps that word (a symbol or a full name) to its WeightUnit, so the module has a single place that turns a written unit into a WeightUnit. This changes nothing a caller sees: toGrams, WeightUnit, Weight and WEIGHT_UNITS accept and hand back exactly what they did, for every weight and every unit, with the same errors.
 - **R10** [met] toGrams takes an optional second argument, an options object `{ mode }`, where `mode` is 'nearest' (the default), 'up' or 'down'. With 'nearest' it rounds to the nearest gram as R1 says; with 'up' it rounds a part-gram up to the next whole gram; with 'down' it rounds a part-gram down to the whole gram below. Options left out, and a `mode` that is not 'nearest', 'up' or 'down', both give the 'nearest' behaviour, with no new error. toGrams otherwise accepts and hands back exactly what it did — the same whole grams for every weight at the default, and the same errors for a bad weight; weight text, WeightUnit, Weight and WEIGHT_UNITS are unchanged.
+- **R11** [not yet met] At the default rounding — `mode` omitted, 'nearest', or any unrecognized value — toGrams rounds an exact half-gram DOWN to the whole gram below, where before it rounded a half up (so a weight of exactly 2.5 grams, such as 2500 mg or 0.0025 kg, gives 2 grams, not 3). Every other result is unchanged: whole-gram and non-half values, the 'up' and 'down' modes, the errors a bad weight raises, and the return — still a whole number of grams, zero or more. What changes is only which whole gram an exact half-gram gives at the default, which toGrams's stated type (a number) and its return bound (whole grams, zero or more) cannot show, so the change is a change of meaning, declared as one.
