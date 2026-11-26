@@ -68,5 +68,8 @@ export function parsePounds(text) {
   if (m === null) {
     throw new RangeError(`money: not pounds text: ${JSON.stringify(text)}`);
   }
-  return Number(BigInt(m[1].replaceAll(',', '')) * 100n + BigInt(m[2]));
+  // A match always captures both groups; the fallbacks only satisfy the checker.
+  const whole = m[1] ?? '';
+  const frac = m[2] ?? '';
+  return Number(BigInt(whole.replaceAll(',', '')) * 100n + BigInt(frac));
 }
