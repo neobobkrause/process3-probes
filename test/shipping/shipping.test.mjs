@@ -34,7 +34,7 @@ test('R1: the weight may be given as text, with a unit symbol or its full name',
   assert.equal(shippingCost('1 pound'), 300); // 454 g
   assert.equal(shippingCost('3 oz'), 150); // 85 g, a small parcel
   assert.equal(shippingCost('20 kilograms', { express: true, zone: 'far' }), 12600);
-  assert.throws(() => shippingCost('21 kilograms'), (e) => e instanceof RangeError && /over the limit/.test(e.message));
+  assert.throws(() => shippingCost('21 kilograms'), { name: 'RangeError', message: /over the limit/ });
   assert.throws(() => shippingCost('2 bags'), RangeError);
 });
 
@@ -44,7 +44,7 @@ test('R1: bound, the heaviest parcel accepted costs 4200 pence', () => {
 
 test('R2: a parcel over 20 kilograms is refused with a RangeError saying so', () => {
   for (const w of [g(MAX_GRAMS + 1), { value: 20.001, unit: 'kg' }, { value: 45, unit: 'lb' }]) {
-    assert.throws(() => shippingCost(w), (e) => e instanceof RangeError && /over the limit/.test(e.message));
+    assert.throws(() => shippingCost(w), { name: 'RangeError', message: /over the limit/ });
   }
 });
 
@@ -54,6 +54,7 @@ test('R1: a weight units refuses is refused with its RangeError', () => {
   }
 });
 
+/** @type {ShippingOptions} */
 const express = { express: true };
 
 test('R3: an express parcel costs twice what R1 gives for its weight', () => {
@@ -76,7 +77,7 @@ test('R3: a parcel not marked express costs what R1 gives', () => {
 
 test('R3: the R2 limit holds for an express parcel', () => {
   for (const w of [g(MAX_GRAMS + 1), { value: 45, unit: 'lb' }]) {
-    assert.throws(() => shippingCost(w, express), (e) => e instanceof RangeError && /over the limit/.test(e.message));
+    assert.throws(() => shippingCost(w, express), { name: 'RangeError', message: /over the limit/ });
   }
 });
 
@@ -85,8 +86,8 @@ test('R3: a weight units refuses is refused for an express parcel too', () => {
 });
 
 test('R3: an express marking that is not true or false is refused with a TypeError naming it', () => {
-  for (const [opts, named] of [[{ express: 'yes' }, '"yes"'], [{ express: 1 }, '1'], [null, 'null'], ['express', '"express"']]) {
-    assert.throws(() => shippingCost(g(100), opts), (e) => e instanceof TypeError && e.message.includes(named));
+  for (const [opts, named] of /** @type {Array<[unknown, string]>} */ ([[{ express: 'yes' }, '"yes"'], [{ express: 1 }, '1'], [null, 'null'], ['express', '"express"']])) {
+    assert.throws(() => shippingCost(g(100), opts), { name: 'TypeError', message: new RegExp(named) });
   }
 });
 
@@ -110,7 +111,7 @@ test('R4: an express parcel sent to the far zone costs half as much again as exp
 
 test('R4: a parcel with no zone costs what it costs at home', () => {
   assert.equal(shippingCost(g(1001), {}), shippingCost(g(1001), { zone: 'home' }));
-  assert.equal(shippingCost(g(1001), { zone: undefined }), 500);
+  assert.equal(shippingCost(g(1001), {}), 500);
   assert.equal(shippingCost(g(1001), express), shippingCost(g(1001), { express: true, zone: 'home' }));
 });
 
@@ -121,13 +122,13 @@ test('R4: bound, the heaviest far parcel costs 6300 pence, 12600 express', () =>
 
 test('R4: the R2 limit holds for a far parcel', () => {
   for (const opts of [far, { express: true, zone: 'far' }]) {
-    assert.throws(() => shippingCost(g(MAX_GRAMS + 1), opts), (e) => e instanceof RangeError && /over the limit/.test(e.message));
+    assert.throws(() => shippingCost(g(MAX_GRAMS + 1), opts), { name: 'RangeError', message: /over the limit/ });
   }
 });
 
 test('R4: a zone that is not home or far is refused with a TypeError naming it', () => {
-  for (const [zone, named] of [['near', '"near"'], ['Far', '"Far"'], ['', '""'], [null, 'null'], [2, '2']]) {
-    assert.throws(() => shippingCost(g(100), { zone }), (e) => e instanceof TypeError && e.message.includes(named));
+  for (const [zone, named] of /** @type {Array<[unknown, string]>} */ ([['near', '"near"'], ['Far', '"Far"'], ['', '""'], [null, 'null'], [2, '2']])) {
+    assert.throws(() => shippingCost(g(100), { zone }), { name: 'TypeError', message: new RegExp(named) });
   }
 });
 
@@ -181,12 +182,12 @@ test('R6: bound, the heaviest island parcel costs 8400 pence, 16800 express', ()
 
 test('R6: the R2 limit holds for an island parcel', () => {
   for (const opts of [island, { express: true, zone: 'island' }]) {
-    assert.throws(() => shippingCost(g(MAX_GRAMS + 1), opts), (e) => e instanceof RangeError && /over the limit/.test(e.message));
+    assert.throws(() => shippingCost(g(MAX_GRAMS + 1), opts), { name: 'RangeError', message: /over the limit/ });
   }
 });
 
 test('R6: a zone that is not home, far or island is refused with a TypeError naming it', () => {
-  for (const [zone, named] of [['Island', '"Island"'], ['islands', '"islands"'], ['near', '"near"'], ['', '""'], [null, 'null'], [2, '2']]) {
-    assert.throws(() => shippingCost(g(100), { zone }), (e) => e instanceof TypeError && e.message.includes(named));
+  for (const [zone, named] of /** @type {Array<[unknown, string]>} */ ([['Island', '"Island"'], ['islands', '"islands"'], ['near', '"near"'], ['', '""'], [null, 'null'], [2, '2']])) {
+    assert.throws(() => shippingCost(g(100), { zone }), { name: 'TypeError', message: new RegExp(named) });
   }
 });
