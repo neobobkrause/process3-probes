@@ -62,21 +62,21 @@ const show = (v) => (typeof v === 'number' ? String(v) : JSON.stringify(v) ?? St
  * How toGrams rounds a part-gram.
  * @typedef {Object} ToGramsOptions
  * @property {string} [mode] the rounding direction
- * @bound mode: 'nearest' (the default, a half upward), 'up' (to the next whole gram) or 'down' (to the whole gram below); mode left out, and any other value, both give the 'nearest' rounding, with no error
+ * @bound mode: 'nearest' (the default, to the nearest gram with an exact half going to the whole gram below), 'up' (to the next whole gram) or 'down' (to the whole gram below); mode left out, and any other value, both give the 'nearest' rounding, with no error
  */
 
 /**
  * Rounds an exact gram value to a whole number of grams in the named direction.
- * Any mode but 'up' or 'down' (including undefined) rounds to the nearest gram, a half upward.
+ * Any mode but 'up' or 'down' (including undefined) rounds to the nearest gram, an exact half to the gram below.
  * @param {number} exact a finite number, zero or more
  * @param {string} [mode]
  * @returns {number}
  */
-const roundGrams = (exact, mode) => (mode === 'up' ? Math.ceil(exact) : mode === 'down' ? Math.floor(exact) : Math.round(exact)) + 0; // + 0 turns -0 into 0
+const roundGrams = (exact, mode) => (mode === 'up' ? Math.ceil(exact) : mode === 'down' ? Math.floor(exact) : Math.ceil(exact - 0.5)) + 0; // nearest, an exact half to the gram below; + 0 turns -0 into 0
 
 /**
  * Converts a weight to whole grams. By default, and with { mode: 'nearest' }, it rounds to the nearest
- * gram (a half rounds up), as R1 says; with { mode: 'up' } it rounds a part-gram up to the next whole gram,
+ * gram, an exact half going down to the whole gram below; with { mode: 'up' } it rounds a part-gram up to the next whole gram,
  * and with { mode: 'down' } down to the whole gram below. Options left out, and a mode that is not 'nearest',
  * 'up' or 'down', both give the 'nearest' rounding, with no error.
  * A weight may be given as text such as "2.5 kg", "12oz", "0.01 t", "2500 mg", "50 ct" or "2 Kilograms".

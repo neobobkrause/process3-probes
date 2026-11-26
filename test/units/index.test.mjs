@@ -32,12 +32,12 @@ test('units R1: each unit converts to whole grams', () => {
   assert.equal(g(2.5, 'lb'), 1134); // 1133.980925
 });
 
-test('units R1: rounds to the nearest gram, a half upward', () => {
-  assert.equal(g(0.4, 'g'), 0);
-  assert.equal(g(0.5, 'g'), 1);
-  assert.equal(g(1.0005, 'kg'), 1001); // 1000.5 despite binary noise
-  assert.equal(g(1.0004, 'kg'), 1000);
-  assert.equal(g(0.5, 'oz'), 14); // 14.17
+test('units R1: rounds to the nearest gram', () => {
+  assert.equal(g(0.4, 'g'), 0); // below a half, down
+  assert.equal(g(0.6, 'g'), 1); // above a half, up
+  assert.equal(g(1.0004, 'kg'), 1000); // 1000.4
+  assert.equal(g(1.0006, 'kg'), 1001); // 1000.6
+  assert.equal(g(0.5, 'oz'), 14); // 14.17, nearest (not a whole-gram half)
   /** @type {ReadonlyArray<readonly [number, WeightUnit]>} */
   const cases = [[3.3, 'kg'], [7, 'oz'], [0.1, 'lb'], [123.456, 'g']];
   for (const [a, u] of cases) assert.ok(Number.isInteger(g(a, u)), `${a} ${u}`);
@@ -102,8 +102,8 @@ test('units R4: text of a number, optional spaces and a unit converts as R1 says
   assert.equal(toGrams('750 g'), 750);
   assert.equal(toGrams('1lb'), 454);
   assert.equal(toGrams('2   st'), 12701); // 12700.58636, R3's unit
-  assert.equal(toGrams('0.5g'), 1); // a half rounds up
-  assert.equal(toGrams('.5 kg'), 500);
+  assert.equal(toGrams('0.5g'), 0); // 0.5 g, an exact half to the gram below (R11)
+  assert.equal(toGrams('.5 kg'), 500); // 500 g exactly
   assert.equal(toGrams('3. lb'), 1361); // 1360.77711
   assert.equal(toGrams('+2 kg'), 2000);
   for (const u of WEIGHT_UNITS) assert.equal(toGrams(`3.3 ${u}`), g(3.3, u), u);
@@ -132,9 +132,9 @@ test('units R5: tonnes convert to whole grams, rounded to the nearest gram', () 
   assert.equal(g(1, 't'), g(1000, 'kg')); // a tonne is a thousand kilograms
   assert.equal(g(0.01, 't'), 10000);
   assert.equal(g(2.5, 't'), 2500000);
-  assert.equal(g(0.0000005, 't'), 1); // 0.5 g, a half rounds up
+  assert.equal(g(0.0000005, 't'), 0); // 0.5 g, an exact half to the gram below (R11)
   assert.equal(g(0.0000004, 't'), 0); // 0.4 g
-  assert.equal(g(1.0000005, 't'), 1000001); // 1000000.5 despite binary noise
+  assert.equal(g(1.0000005, 't'), 1000000); // 1000000.5 despite binary noise, an exact half to the gram below (R11)
   assert.ok(Number.isInteger(g(3.1415926, 't')));
 });
 
@@ -177,7 +177,7 @@ test('units R6, R7, R8: each unit named in full, singular or plural, converts as
   assert.equal(toGrams('12ounces'), 340);
   assert.equal(toGrams('2.5   stone'), 15876);
   assert.equal(toGrams('0.01 tonne'), 10000);
-  assert.equal(toGrams('0.5 gram'), 1); // a half rounds up
+  assert.equal(toGrams('0.5 gram'), 0); // 0.5 g, an exact half to the gram below (R11)
 });
 
 test('units R6: a full name may be in any letter case', () => {
@@ -212,12 +212,12 @@ test('units R6, R2: a full name given as a unit outside text is still refused, n
 
 test('units R7: milligrams convert to whole grams, rounded to the nearest gram', () => {
   assert.equal(g(1000, 'mg'), 1);
-  assert.equal(g(2500, 'mg'), 3); // 2.5 g, a half rounds up
+  assert.equal(g(2500, 'mg'), 2); // 2.5 g, an exact half to the gram below (R11)
   assert.equal(g(2499, 'mg'), 2); // 2.499 g
   assert.equal(g(499, 'mg'), 0); // 0.499 g
-  assert.equal(g(500, 'mg'), 1); // 0.5 g
-  assert.equal(g(1500, 'mg'), 2); // 1.5 g despite binary noise
-  assert.equal(g(1000500, 'mg'), 1001); // 1000.5 g
+  assert.equal(g(500, 'mg'), 0); // 0.5 g, an exact half to the gram below (R11)
+  assert.equal(g(1500, 'mg'), 1); // 1.5 g despite binary noise, an exact half to the gram below (R11)
+  assert.equal(g(1000500, 'mg'), 1000); // 1000.5 g, an exact half to the gram below (R11)
   assert.equal(g(1e6, 'mg'), g(1, 'kg')); // a million milligrams are a kilogram
   assert.ok(Number.isInteger(g(123456.789, 'mg')));
 });
@@ -230,9 +230,9 @@ test('units R7: bounds for milligrams — zero gives 0, large finite weights con
 });
 
 test('units R7: text in milligrams, by symbol or full name, converts as R1 says', () => {
-  assert.equal(toGrams('2500 mg'), 3);
-  assert.equal(toGrams('2500 milligrams'), 3);
-  assert.equal(toGrams('2500mg'), 3);
+  assert.equal(toGrams('2500 mg'), 2); // 2.5 g, an exact half to the gram below (R11)
+  assert.equal(toGrams('2500 milligrams'), 2);
+  assert.equal(toGrams('2500mg'), 2);
   assert.equal(toGrams('1000 Milligram'), 1);
   assert.equal(toGrams('1499.9   MILLIGRAMS'), 1);
   assert.equal(toGrams('0 mg'), 0);
@@ -258,8 +258,8 @@ test('units R8: carats convert to whole grams, rounded to the nearest gram', () 
   assert.equal(g(50, 'ct'), 10); // 10 g
   assert.equal(g(2, 'ct'), 0); // 0.4 g
   assert.equal(g(3, 'ct'), 1); // 0.6 g
-  assert.equal(g(2.5, 'ct'), 1); // 0.5 g, a half rounds up
-  assert.equal(g(7.5, 'ct'), 2); // 1.5 g, a half rounds up
+  assert.equal(g(2.5, 'ct'), 0); // 0.5 g, an exact half to the gram below (R11)
+  assert.equal(g(7.5, 'ct'), 1); // 1.5 g, an exact half to the gram below (R11)
   assert.equal(g(1000, 'ct'), 200);
   assert.ok(Number.isInteger(g(123.456, 'ct')));
 });
@@ -275,8 +275,8 @@ test('units R8: text in carats, by symbol or full name, converts as R1 says', ()
   assert.equal(toGrams('50 ct'), 10);
   assert.equal(toGrams('50 carats'), 10);
   assert.equal(toGrams('5ct'), 1);
-  assert.equal(toGrams('2.5 carat'), 1); // 0.5 g, a half rounds up
-  assert.equal(toGrams('7.5   Carats'), 2); // 1.5 g, any letter case
+  assert.equal(toGrams('2.5 carat'), 0); // 0.5 g, an exact half to the gram below (R11)
+  assert.equal(toGrams('7.5   Carats'), 1); // 1.5 g, any letter case, an exact half to the gram below (R11)
   assert.equal(toGrams('1000 CARAT'), 200);
   assert.equal(toGrams('0 ct'), 0);
   assert.equal(toGrams('2 g'), 2); // grams are still read as grams
@@ -325,11 +325,11 @@ test('units R9: weight text is read through one routine — every spelling of a 
   }
 });
 
-test('units R10: options left out, {}, and { mode: "nearest" } all give the R1 nearest rounding (a half upward)', () => {
-  // a sample of weights, each a part-gram that must round to the nearest whole gram
+test('units R10: options left out, {}, and { mode: "nearest" } all give the same default nearest rounding', () => {
+  // a sample of weights, each a part-gram that must round to the nearest whole gram (an exact half to the gram below, R11)
   /** @type {ReadonlyArray<readonly [number, WeightUnit, number]>} */
-  const cases = [[1, 'oz', 28], [1, 'lb', 454], [2.5, 'lb', 1134], [0.4, 'g', 0], [0.5, 'g', 1],
-    [2500, 'mg', 3], [2499, 'mg', 2], [1, 'ct', 0], [3, 'ct', 1], [1.0005, 'kg', 1001]];
+  const cases = [[1, 'oz', 28], [1, 'lb', 454], [2.5, 'lb', 1134], [0.4, 'g', 0], [0.5, 'g', 0],
+    [2500, 'mg', 2], [2499, 'mg', 2], [1, 'ct', 0], [3, 'ct', 1], [1.0005, 'kg', 1000]];
   for (const [value, unit, grams] of cases) {
     assert.equal(g(value, unit), grams, `${value} ${unit} default`); // no options: unchanged R1 behaviour
     assert.equal(gm(value, unit), grams, `${value} ${unit} undefined options`);
@@ -372,7 +372,7 @@ test('units R10: a whole-gram weight gives the same result under every mode', ()
 test('units R10: a mode that is not "nearest", "up" or "down" gives the nearest rounding, with no error', () => {
   for (const mode of ['sideways', 'NEAREST', 'Up', 'DOWN', 'round', 'ceil', '', ' up ', 'nearests']) {
     assert.equal(gm(1, 'oz', { mode }), g(1, 'oz'), `${mode} -> nearest`); // 28, not 29
-    assert.equal(gm(0.5, 'g', { mode }), 1, `${mode} half up`);
+    assert.equal(gm(0.5, 'g', { mode }), 0, `${mode} exact half to the gram below`);
     assert.equal(gm(1, 'ct', { mode }), 0, `${mode} 0.2 g -> 0`);
   }
 });
@@ -392,4 +392,48 @@ test('units R10: the modes add no error — a bad weight with any mode still thr
     assert.throws(() => toGrams({ value: 1, unit: 'KG' }, { mode }), { name: 'RangeError', message: /"KG"/ }, mode);
     assert.throws(() => toGrams('2.5 stonez', { mode }), { name: 'RangeError', message: /stonez/ }, mode);
   }
+});
+
+test('units R11: at the default rounding an exact half-gram rounds down to the whole gram below', () => {
+  // the requirement's own example: exactly 2.5 g gives 2, not 3 — as text, as a Weight object, and in another unit
+  assert.equal(toGrams('2500 mg'), 2);
+  assert.equal(g(2500, 'mg'), 2);
+  assert.equal(g(0.0025, 'kg'), 2);
+  assert.equal(g(2.5, 'g'), 2);
+  // more exact half-grams, each to the whole gram below
+  /** @type {ReadonlyArray<readonly [number, WeightUnit, number]>} */
+  const halves = [[0.5, 'g', 0], [500, 'mg', 0], [1500, 'mg', 1], [1000500, 'mg', 1000],
+    [2.5, 'ct', 0], [7.5, 'ct', 1], [1.0005, 'kg', 1000], [0.0000005, 't', 0], [1.0000005, 't', 1000000]];
+  for (const [value, unit, grams] of halves) {
+    // the default (mode omitted), { mode: 'nearest' }, and any unrecognized mode all round the half to the gram below
+    assert.equal(g(value, unit), grams, `${value} ${unit} default`);
+    assert.equal(gm(value, unit), grams, `${value} ${unit} undefined options`);
+    assert.equal(gm(value, unit, { mode: 'nearest' }), grams, `${value} ${unit} nearest`);
+    assert.equal(gm(value, unit, { mode: 'sideways' }), grams, `${value} ${unit} unrecognized`);
+    // the return is still a whole number of grams, zero or more
+    const out = g(value, unit);
+    assert.ok(Number.isInteger(out) && out >= 0, `${value} ${unit} whole and non-negative`);
+  }
+});
+
+test('units R11: everything but which whole gram an exact half gives at the default is unchanged', () => {
+  // a non-half weight still rounds to the nearest gram at the default
+  assert.equal(g(2.4, 'g'), 2);
+  assert.equal(g(2.6, 'g'), 3);
+  assert.equal(g(2499, 'mg'), 2); // 2.499 g
+  assert.equal(g(2501, 'mg'), 3); // 2.501 g
+  // the 'up' and 'down' modes are untouched by R11, on an exact half included
+  assert.equal(gm(2500, 'mg', { mode: 'up' }), 3); // 2.5 g up
+  assert.equal(gm(2500, 'mg', { mode: 'down' }), 2); // 2.5 g down
+  assert.equal(gm(1, 'oz', { mode: 'up' }), 29); // 28.35 up
+  assert.equal(gm(1, 'oz', { mode: 'down' }), 28); // 28.35 down
+  // a whole-gram weight is the same at the default and under every mode
+  assert.equal(g(2, 'kg'), 2000);
+  assert.equal(gm(2, 'kg', { mode: 'up' }), 2000);
+  assert.equal(gm(2, 'kg', { mode: 'down' }), 2000);
+  // the errors a bad weight raises are unchanged
+  assert.throws(() => g(-1, 'g'), { name: 'RangeError', message: /-1/ });
+  assert.throws(() => g(NaN, 'g'), { name: 'RangeError', message: /NaN/ });
+  assert.throws(() => g(1, 'KG'), { name: 'RangeError', message: /"KG"/ });
+  assert.throws(() => toGrams('2.5 stonez'), { name: 'RangeError', message: /stonez/ });
 });
