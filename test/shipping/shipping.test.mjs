@@ -140,7 +140,7 @@ test('R5: a parcel of 100 grams or less costs 150 pence', () => {
 
 test('R5: bound, just over 100 grams costs R1\'s 300 pence', () => {
   assert.equal(shippingCost(g(SMALL_GRAMS + 1)), 300);
-  assert.equal(shippingCost({ value: 100.5, unit: 'g' }), 300); // units rounds to 101 g
+  assert.equal(shippingCost({ value: 100.5, unit: 'g' }), 150); // units rounds the exact half-gram down to 100 g, a small parcel
   assert.equal(shippingCost({ value: 100.4, unit: 'g' }), 150); // units rounds to 100 g
 });
 
