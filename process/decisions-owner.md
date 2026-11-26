@@ -30,9 +30,10 @@ Rule now: as the owner's words below, his answer to ARCH's question "When to sta
 Shown to the owner: 19 Nov 2026.
 
 ## The slot number
-Rule now: as the owner's words below.
+Rule now: as the owner's latest words below.
 - 19 Nov 2026: "Instruction: make the slot number 2"
-Shown to the owner: 19 Nov 2026.
+- 26 Nov 2026: "Decision: Set the job slots max to 4"
+Shown to the owner: 26 Nov 2026.
 
 ## The module put first
 Rule now: as the owner's words below.
