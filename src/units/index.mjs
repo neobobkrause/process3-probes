@@ -38,15 +38,21 @@ const WEIGHT_TEXT = /^([+-]?(?:\d+(?:\.\d*)?|\.\d+)) *([A-Za-z]+)$/;
 const isUnitSymbol = (word) => Object.hasOwn(GRAMS_PER, word);
 
 /**
- * The unit a word of weight text names: one of WEIGHT_UNITS exactly as written, or a full name in any letter case.
- * @param {string | undefined} word
- * @returns {WeightUnit | undefined}
+ * Reads weight text into a weight: the module's single place that turns written weight text, and the
+ * written unit in it, into a WeightUnit. It both splits the text into a number and a unit word (WEIGHT_TEXT)
+ * and maps that word — a unit symbol as written, or a unit's full name in any letter case — to its WeightUnit.
+ * @param {string} text
+ * @returns {Weight | undefined} the weight the text names, or undefined when it is not a number and a known unit
  */
-const unitOfWord = (word) => {
+const readWeightText = (text) => {
+  const m = WEIGHT_TEXT.exec(text);
+  if (m === null) return undefined;
+  const word = m[2];
   if (word === undefined) return undefined;
-  if (isUnitSymbol(word)) return word;
   const lower = word.toLowerCase();
-  return Object.hasOwn(UNIT_NAMES, lower) ? UNIT_NAMES[lower] : undefined;
+  const unit = isUnitSymbol(word) ? word : Object.hasOwn(UNIT_NAMES, lower) ? UNIT_NAMES[lower] : undefined;
+  if (unit === undefined) return undefined;
+  return { value: Number(m[1]), unit };
 };
 
 /** @param {unknown} v */
@@ -63,10 +69,9 @@ const show = (v) => (typeof v === 'number' ? String(v) : JSON.stringify(v) ?? St
  */
 export function toGrams(weight) {
   if (typeof weight === 'string') {
-    const m = WEIGHT_TEXT.exec(weight);
-    const unit = m === null ? undefined : unitOfWord(m[2]);
-    if (m === null || unit === undefined) throw new RangeError(`weight text is not a number and a unit: ${JSON.stringify(weight)}`);
-    return toGrams({ value: Number(m[1]), unit });
+    const parsed = readWeightText(weight);
+    if (parsed === undefined) throw new RangeError(`weight text is not a number and a unit: ${JSON.stringify(weight)}`);
+    return toGrams(parsed);
   }
   if (typeof weight !== 'object' || weight === null) throw new RangeError(`weight is not text or an object with a value and a unit: ${show(weight)}`);
   /** @type {Weight} checks a Weight */
