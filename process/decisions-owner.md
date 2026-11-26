@@ -70,3 +70,8 @@ Shown to the owner: 24 Nov 2026.
 Rule now: as the owner's words below. Carried out: on PROCESS's option C, ARCH joined the two histories — PR #383 merged into main (merge commit 96a4dd7); main now carries the trial's product work with its approvals kept, and merge-base(main, p4-tranche) is p4-tranche's tip. The stop stayed in force for everything else.
 - 20 Nov 2026: "Instruction: carry out PROCESS's option C now — ARCH joins p4-tranche to main by the steps PROCESS #5 sent you. The stop stays for everything else."
 Shown to the owner: 20 Nov 2026.
+
+## Running the "who is told" trial (26 Nov)
+Rule now: as the owner's words below. The trial's steps are in process/research/trial-who-is-told-26nov.md of the Process4 copy (authored by PROCESS #18); ARCH carries them out as ordinary work on the trial product after the version move.
+- 26 Nov 2026: "Instruction: run the trial in process/research/trial-who-is-told-26nov.md of the Process4 copy"
+Shown to the owner: 26 Nov 2026.
