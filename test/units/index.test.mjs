@@ -285,3 +285,34 @@ test('units R8, R2: a bad weight in carats is still refused, naming the value or
     assert.throws(() => toGrams(text), { name: 'RangeError', message: new RegExp(JSON.stringify(text)) }, text);
   }
 });
+
+test('units R9: weight text is read through one routine — every spelling of a unit maps to the same WeightUnit, read as the Weight object is', () => {
+  /** @type {ReadonlyArray<readonly [WeightUnit, readonly string[]]>} */
+  const spellings = [
+    ['mg', ['mg', 'milligram', 'milligrams', 'MILLIGRAM', 'Milligrams']],
+    ['g', ['g', 'gram', 'grams', 'GRAM', 'Grams']],
+    ['kg', ['kg', 'kilogram', 'kilograms', 'KILOGRAM', 'Kilograms']],
+    ['oz', ['oz', 'ounce', 'ounces', 'OUNCE', 'Ounces']],
+    ['lb', ['lb', 'pound', 'pounds', 'POUND', 'Pounds']],
+    ['st', ['st', 'stone', 'stones', 'STONE', 'Stones']],
+    ['t', ['t', 'tonne', 'tonnes', 'TONNE', 'Tonnes']],
+    ['ct', ['ct', 'carat', 'carats', 'CARAT', 'Carats']],
+  ];
+  // every unit is covered, so the one reading routine is exercised for all of WEIGHT_UNITS
+  assert.deepEqual(spellings.map(([u]) => u).sort(), [...WEIGHT_UNITS].sort());
+  for (const [unit, words] of spellings) {
+    const viaObject = toGrams({ value: 3.3, unit });
+    for (const w of words) {
+      // one routine splits the number and maps the word, so each spelling agrees with the Weight-object path
+      assert.equal(toGrams(`3.3 ${w}`), viaObject, `${w} vs {value,unit}`);
+      // the same routine does the split, so spacing around the one unit word does not change the reading
+      assert.equal(toGrams(`3.3${w}`), viaObject, `no space: ${w}`);
+      assert.equal(toGrams(`3.3   ${w}`), viaObject, `spaces: ${w}`);
+    }
+  }
+  // the one routine reads the whole text: a split that fails (a bad number) and a map that fails (an unknown unit word)
+  // both surface as the one "not a number and a unit" error, quoting the text
+  for (const bad of ['1.2.3 kg', '2 g 3 g', '2 kilo', 'two g', '2 KG', '3.3 gramss']) {
+    assert.throws(() => toGrams(bad), { name: 'RangeError', message: new RegExp(JSON.stringify(bad).replace(/[.*+?^${}()|[\]\\]/g, '\\$&')) }, bad);
+  }
+});
