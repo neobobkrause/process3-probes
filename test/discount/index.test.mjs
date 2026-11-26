@@ -2,6 +2,13 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { discountOn } from '../../src/discount/index.mjs';
 
+/**
+ * Escapes a string's regular-expression metacharacters, so an error message can be matched as a substring.
+ * @param {string} s
+ * @returns {string}
+ */
+const quote = (s) => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+
 test('R1: the discount is the amount times the percentage over 100 where that is a whole penny', () => {
   assert.equal(discountOn(0, 0), 0);
   assert.equal(discountOn(0, 50), 0);
@@ -54,11 +61,13 @@ test('R1: large amounts are exact at the top of the safe whole-number range', ()
 });
 
 test('R2: a negative amount is refused with a RangeError naming the amount', () => {
-  assert.throws(() => discountOn(-1, 10), (e) => e instanceof RangeError && /-1\b/.test(e.message));
-  assert.throws(() => discountOn(-500, 10), (e) => e instanceof RangeError && /-500\b/.test(e.message));
+  assert.throws(() => discountOn(-1, 10), { name: 'RangeError', message: /-1\b/ });
+  assert.throws(() => discountOn(-500, 10), { name: 'RangeError', message: /-500\b/ });
 });
 
 test('R2: an amount that is not a whole number of pence is refused with a RangeError naming it', () => {
+  // Bad values handed in on purpose, inside the assertion, to prove the refusal R2 names.
+  /** @type {ReadonlyArray<readonly [unknown, string]>} */
   const bad = [
     [0.5, '0.5'],
     [12.34, '12.34'],
@@ -73,17 +82,14 @@ test('R2: an amount that is not a whole number of pence is refused with a RangeE
     [true, 'true'],
   ];
   for (const [amount, named] of bad) {
-    assert.throws(
-      () => discountOn(amount, 10),
-      (e) => e instanceof RangeError && e.message.includes(named),
-      `amount ${named}`,
-    );
+    assert.throws(() => discountOn(amount, 10), { name: 'RangeError', message: new RegExp(quote(named)) }, `amount ${named}`);
   }
-  assert.throws(() => discountOn(Object.create(null), 10), RangeError);
-  assert.throws(() => discountOn(), RangeError);
+  assert.throws(() => discountOn(Object.create(null), 10), { name: 'RangeError' });
+  assert.throws(() => discountOn(), { name: 'RangeError' });
 });
 
 test('R2: a percentage outside 0 to 100 is refused with a RangeError naming it', () => {
+  /** @type {ReadonlyArray<readonly [unknown, string]>} */
   const bad = [
     [-1, '-1'],
     [-0.01, '-0.01'],
@@ -92,15 +98,12 @@ test('R2: a percentage outside 0 to 100 is refused with a RangeError naming it',
     [1e21, '1e+21'],
   ];
   for (const [percentage, named] of bad) {
-    assert.throws(
-      () => discountOn(1000, percentage),
-      (e) => e instanceof RangeError && e.message.includes(named),
-      `percentage ${named}`,
-    );
+    assert.throws(() => discountOn(1000, percentage), { name: 'RangeError', message: new RegExp(quote(named)) }, `percentage ${named}`);
   }
 });
 
 test('R2: a percentage that is not a finite number is refused with a RangeError naming it', () => {
+  /** @type {ReadonlyArray<readonly [unknown, string]>} */
   const bad = [
     [NaN, 'NaN'],
     [Infinity, 'Infinity'],
@@ -112,19 +115,15 @@ test('R2: a percentage that is not a finite number is refused with a RangeError 
     [false, 'false'],
   ];
   for (const [percentage, named] of bad) {
-    assert.throws(
-      () => discountOn(1000, percentage),
-      (e) => e instanceof RangeError && e.message.includes(named),
-      `percentage ${named}`,
-    );
+    assert.throws(() => discountOn(1000, percentage), { name: 'RangeError', message: new RegExp(quote(named)) }, `percentage ${named}`);
   }
-  assert.throws(() => discountOn(1000, {}), RangeError);
-  assert.throws(() => discountOn(1000), RangeError);
+  assert.throws(() => discountOn(1000, {}), { name: 'RangeError' });
+  assert.throws(() => discountOn(1000), { name: 'RangeError' });
 });
 
 test('R2: a bad amount is named even when the percentage is good, and the other way round', () => {
-  assert.throws(() => discountOn(-7, 50), (e) => e instanceof RangeError && /amount/.test(e.message) && /-7\b/.test(e.message));
-  assert.throws(() => discountOn(700, 250), (e) => e instanceof RangeError && /percentage/.test(e.message) && /250\b/.test(e.message));
+  assert.throws(() => discountOn(-7, 50), { name: 'RangeError', message: /amount[\s\S]*-7\b/ });
+  assert.throws(() => discountOn(700, 250), { name: 'RangeError', message: /percentage[\s\S]*250\b/ });
 });
 
 test('R3: a percentage given as text with a percent sign is judged as the same number', () => {
@@ -158,11 +157,7 @@ test('R3: a fraction in text is taken exactly as written and rounded half up', (
 
 test('R3: text percentages outside 0 to 100 are refused with a RangeError quoting the text', () => {
   for (const text of ['-1%', '-0.01%', '100.01%', '101%', '100.0000000000000000001%', '99999999999999999999999%']) {
-    assert.throws(
-      () => discountOn(1000, text),
-      (e) => e instanceof RangeError && e.message.includes(JSON.stringify(text)),
-      text,
-    );
+    assert.throws(() => discountOn(1000, text), { name: 'RangeError', message: new RegExp(quote(JSON.stringify(text))) }, text);
   }
 });
 
@@ -172,17 +167,13 @@ test('R3: text of any other form is refused with a RangeError quoting it', () =>
     '1e1%', '0x10%', 'Infinity%', 'NaN%', '15\t%', '15\n%', 'ten%', '15 % off', '١٥%',
   ];
   for (const text of bad) {
-    assert.throws(
-      () => discountOn(1000, text),
-      (e) => e instanceof RangeError && e.message.includes(JSON.stringify(text)),
-      JSON.stringify(text),
-    );
+    assert.throws(() => discountOn(1000, text), { name: 'RangeError', message: new RegExp(quote(JSON.stringify(text))) }, JSON.stringify(text));
   }
 });
 
 test('R3: a bad amount is still refused, naming the amount, when the percentage is text', () => {
-  assert.throws(() => discountOn(-7, '50%'), (e) => e instanceof RangeError && /amount/.test(e.message) && /-7\b/.test(e.message));
-  assert.throws(() => discountOn(1.5, '50%'), (e) => e instanceof RangeError && /1\.5/.test(e.message));
+  assert.throws(() => discountOn(-7, '50%'), { name: 'RangeError', message: /amount[\s\S]*-7\b/ });
+  assert.throws(() => discountOn(1.5, '50%'), { name: 'RangeError', message: /1\.5/ });
 });
 
 test('R4: percentage text with a comma before its fraction is judged as the same text with a point', () => {
@@ -206,11 +197,7 @@ test('R4: percentage text with a comma before its fraction is judged as the same
 
 test('R4: comma text outside 0 to 100 is refused with a RangeError quoting the text', () => {
   for (const text of ['-0,01%', '100,01%', '100,0000000000000000001%']) {
-    assert.throws(
-      () => discountOn(1000, text),
-      (e) => e instanceof RangeError && e.message.includes(JSON.stringify(text)),
-      text,
-    );
+    assert.throws(() => discountOn(1000, text), { name: 'RangeError', message: new RegExp(quote(JSON.stringify(text))) }, text);
   }
 });
 
@@ -220,10 +207,6 @@ test('R4: text with both a point and a comma, or more than one of either, is ref
     '12,%', ',5%', '12, 5%', '12 ,5%', '12,5', '12,5 percent',
   ];
   for (const text of bad) {
-    assert.throws(
-      () => discountOn(1000, text),
-      (e) => e instanceof RangeError && e.message.includes(JSON.stringify(text)),
-      JSON.stringify(text),
-    );
+    assert.throws(() => discountOn(1000, text), { name: 'RangeError', message: new RegExp(quote(JSON.stringify(text))) }, JSON.stringify(text));
   }
 });

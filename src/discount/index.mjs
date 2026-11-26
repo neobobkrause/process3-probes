@@ -56,18 +56,27 @@ function percentageAsFraction(percentage) {
   return { numerator, denominator };
 }
 
-/** A finite number from 0 to 100 as the exact fraction of its shortest decimal writing. */
+/**
+ * A finite number from 0 to 100 as the exact fraction of its shortest decimal writing.
+ * @param {number} value
+ * @returns {{ numerator: bigint, denominator: bigint }}
+ */
 function asDecimalFraction(value) {
   const match = /^(\d+)(?:\.(\d+))?(?:e([+-]\d+))?$/.exec(String(value));
-  const whole = match[1];
-  const fraction = match[2] ?? '';
-  const exponent = Number(match[3] ?? 0) - fraction.length;
+  if (!match) throw new RangeError(`discount: cannot read the number ${value}`);
+  const [, whole = '', fraction = '', exp = '0'] = match;
+  const exponent = Number(exp) - fraction.length;
   const digits = BigInt(whole + fraction);
   return exponent >= 0
     ? { numerator: digits * 10n ** BigInt(exponent), denominator: 1n }
     : { numerator: digits, denominator: 10n ** BigInt(-exponent) };
 }
 
+/**
+ * A readable form of a value, for naming the bad value in an error message.
+ * @param {unknown} value
+ * @returns {string}
+ */
 function describe(value) {
   if (typeof value === 'string') return JSON.stringify(value);
   if (typeof value === 'bigint') return `${value}n`;
