@@ -11,7 +11,8 @@ Rule now: as the owner's latest words below.
 - 20 Nov 2026: "Instruction: move the trial to the latest version"
 - 20 Nov 2026: "Instruction: move process3-probes to the latest Process4 version"
 - 24 Nov 2026: "Instruction: move process3-probes to the latest Process4 version"
-Shown to the owner: 24 Nov 2026.
+- 26 Nov 2026: "Instruction: move process3-probes to the latest Process4 version"
+Shown to the owner: 26 Nov 2026.
 
 ## Advancing the trial product
 Rule now: as the owner's words below.
