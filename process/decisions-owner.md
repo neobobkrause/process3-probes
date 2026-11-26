@@ -41,11 +41,12 @@ Rule now: as the owner's words below.
 Shown to the owner: 19 Nov 2026.
 
 ## Stopping work
-Rule now: as the owner's latest words below; development is halted (stop in force since 26 Nov 2026), lifted only on his word.
+Rule now: as the owner's latest words below; all process3-probes work is stopped for an account switch (stop in force since 26 Nov 2026), lifted only on his word and carried on by his own acts in the new account.
 - 19 Nov 2026: "Instruction: stop all work"
 - 19 Nov 2026: "Instruction: confirm that the trial development process is updated to the newly updated version of process4. If it is, then restart trial development under this updated process"
 - 20 Nov 2026: "Instruction: stop development and prepare for development to restart under another Claude account."
 - 26 Nov 2026: "Decision: halt development"
+- 26 Nov 2026: "Instruction: stop all process3-probes work for an account switch"
 Shown to the owner: 26 Nov 2026.
 
 ## The move during the stop
