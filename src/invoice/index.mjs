@@ -5,6 +5,8 @@ import { taxOn, taxDetail } from '../tax/index.mjs';
 import { formatPence } from '../money/index.mjs';
 import { discountOn } from '../discount/index.mjs';
 
+/** @import { Weight } from '../units/index.mjs' */
+/** @import { ShippingOptions } from '../shipping/index.mjs' */
 /** @import { Rate } from '../tax/index.mjs' */
 
 /**
@@ -37,10 +39,7 @@ import { discountOn } from '../discount/index.mjs';
  */
 
 /**
- * @typedef {Object} InvoiceOptions
- * @property {boolean} [express] given to the shipping module as it is: true for express; absent is standard
- * @property {string} [zone] given to the shipping module as it is: 'home' or 'far'; absent is home
- * @property {number} [discount] a percentage given to the discount module as it is; absent is no discount
+ * @typedef {ShippingOptions & { discount?: number }} InvoiceOptions the shipping module's options (express and zone), given to it as they are, together with an optional discount percentage for the discount module
  */
 
 /**
@@ -55,7 +54,7 @@ import { discountOn } from '../discount/index.mjs';
  * likewise passed on unchanged.
  *
  * @param {number} goods the goods, in whole pence
- * @param {Parameters<typeof shippingCost>[0]} parcel the parcel's weight, as the shipping module accepts it
+ * @param {Weight | string} parcel the parcel's weight, as the shipping module accepts it
  * @param {InvoiceOptions} [options] absent is standard shipping to the home zone with no discount
  * @returns {Invoice}
  * @bound goods: whole number of pence, zero or more, as the tax module accepts
@@ -66,7 +65,7 @@ import { discountOn } from '../discount/index.mjs';
  */
 export function invoiceFor(goods, parcel, options) {
   taxOn(goods); // only to have the tax module judge the goods amount on its own
-  const shipping = shippingCost(parcel, shippingOptions(options));
+  const shipping = shippingCost(parcel, options);
   const percent = options?.discount;
   const discount = percent === undefined ? 0 : discountOn(goods, percent);
   const net = goods - discount;
@@ -87,23 +86,4 @@ export function invoiceFor(goods, parcel, options) {
   /** @type {Invoice} builds an Invoice */
   const invoice = { goods, discount, shipping, tax, total, text, taxRate, taxLabel };
   return invoice;
-}
-
-/**
- * The options the shipping module is given: express and zone as the caller gave
- * them, each only when given. Anything that is not an object is given as it is,
- * so that the shipping module refuses it with its own error.
- *
- * @param {unknown} options
- * @returns {any}
- */
-function shippingOptions(options) {
-  if (typeof options !== 'object' || options === null) return options;
-  /** @type {Record<string, unknown>} */
-  const given = /** @type {any} */ (options);
-  /** @type {Record<string, unknown>} */
-  const out = {};
-  if ('express' in given) out.express = given.express;
-  if ('zone' in given) out.zone = given.zone;
-  return out;
 }
