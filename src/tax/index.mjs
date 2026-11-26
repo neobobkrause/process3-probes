@@ -7,7 +7,7 @@
 
 /**
  * Each rate as a fraction, as a whole percent, and as its label for an invoice: standard 20 percent (1/5), reduced 5 percent (1/20), zero 0 percent (0/1).
- * @type {Record<Rate, { numerator: bigint, denominator: bigint, percent: TaxDetail['percent'], label: TaxDetail['label'] }>}
+ * @type {Record<Rate, { numerator: bigint, denominator: bigint, percent: 20 | 5 | 0, label: 'VAT 20%' | 'VAT 5%' | 'VAT 0%' }>}
  */
 const RATES = {
   standard: { numerator: 1n, denominator: 5n, percent: 20, label: 'VAT 20%' },
@@ -70,18 +70,36 @@ export function taxDetail(amount, rate = 'standard') {
 }
 
 /**
- * The rate a caller asked for, in any letter case, as its Rate name; anything else is refused.
- * @param {unknown} rate
- * @returns {Rate}
+ * Whether a lower-cased name is one of the rate names.
+ * @param {string} name
+ * @returns {name is Rate}
  */
-function rateNamed(rate) {
-  const name = typeof rate === 'string' ? rate.toLowerCase() : undefined;
-  if (name === undefined || !Object.hasOwn(RATES, name)) {
-    throw new RangeError(`tax: the rate must be 'standard', 'reduced' or 'zero', in any letter case; got ${describe(rate)}`);
-  }
-  return /** @type {Rate} */ (name);
+function isRate(name) {
+  return Object.hasOwn(RATES, name);
 }
 
+/**
+ * The rate a caller asked for, in any letter case, as its Rate name; anything else is refused.
+ * @param {string} rate the rate asked for, a Rate's name in any letter case
+ * @returns {Rate}
+ * @throws {RangeError} when the rate is not 'standard', 'reduced' or 'zero' in any letter case; the message names it
+ */
+function rateNamed(rate) {
+  if (typeof rate !== 'string') {
+    throw new RangeError(`tax: the rate must be 'standard', 'reduced' or 'zero', in any letter case; got ${describe(rate)}`);
+  }
+  const name = rate.toLowerCase();
+  if (!isRate(name)) {
+    throw new RangeError(`tax: the rate must be 'standard', 'reduced' or 'zero', in any letter case; got ${describe(rate)}`);
+  }
+  return name;
+}
+
+/**
+ * A readable form of a value, for naming the bad value in an error message.
+ * @param {unknown} value
+ * @returns {string}
+ */
 function describe(value) {
   if (typeof value === 'string') return JSON.stringify(value);
   if (typeof value === 'bigint') return `${value}n`;

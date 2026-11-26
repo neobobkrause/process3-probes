@@ -2,10 +2,12 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { taxOn, taxDetail } from '../../src/tax/index.mjs';
 
-/** Bad values handed in on purpose, to prove the refusals R2 and R3 name. @type {(amount?: any, rate?: any) => number} */
-const taxOnBad = taxOn;
-/** @type {(amount?: any, rate?: any) => import('../../src/tax/index.mjs').TaxDetail} */
-const taxDetailBad = taxDetail;
+/**
+ * Escapes a string's regular-expression metacharacters, so an error message can be matched as a substring.
+ * @param {string} s
+ * @returns {string}
+ */
+const quote = (s) => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 
 test('R1: tax is the amount times 0.2 where that is a whole penny', () => {
   assert.equal(taxOn(0), 0);
@@ -40,11 +42,13 @@ test('R1: large amounts are exact at the top of the safe whole-number range', ()
 });
 
 test('R2: a negative amount is refused with a RangeError naming the amount', () => {
-  assert.throws(() => taxOn(-1), (e) => e instanceof RangeError && /-1\b/.test(e.message));
-  assert.throws(() => taxOn(-500), (e) => e instanceof RangeError && /-500\b/.test(e.message));
+  assert.throws(() => taxOn(-1), { name: 'RangeError', message: /-1/ });
+  assert.throws(() => taxOn(-500), { name: 'RangeError', message: /-500/ });
 });
 
 test('R2: an amount that is not a whole number of pence is refused with a RangeError naming it', () => {
+  // Bad values handed in on purpose, inside the assertion, to prove the refusal R2 names.
+  /** @type {ReadonlyArray<readonly [unknown, string]>} */
   const bad = [
     [0.5, '0.5'],
     [12.34, '12.34'],
@@ -59,14 +63,10 @@ test('R2: an amount that is not a whole number of pence is refused with a RangeE
     [true, 'true'],
   ];
   for (const [amount, named] of bad) {
-    assert.throws(
-      () => taxOnBad(amount),
-      (e) => e instanceof RangeError && e.message.includes(named),
-      `amount ${named}`,
-    );
+    assert.throws(() => taxOn(amount), { name: 'RangeError', message: new RegExp(quote(named)) }, `amount ${named}`);
   }
-  assert.throws(() => taxOn(Object.create(null)), RangeError);
-  assert.throws(() => taxOnBad(), RangeError);
+  assert.throws(() => taxOn(Object.create(null)), { name: 'RangeError' });
+  assert.throws(() => taxOn(), { name: 'RangeError' });
 });
 
 test('R1: asking for the standard rate by name, or passing no rate, gives the same tax', () => {
@@ -104,11 +104,13 @@ test('R3: large amounts at the reduced rate are exact at the top of the safe who
 });
 
 test('R2, R3: a bad amount is refused at the reduced rate too', () => {
-  assert.throws(() => taxOn(-1, 'reduced'), (e) => e instanceof RangeError && /-1\b/.test(e.message));
-  assert.throws(() => taxOn(0.5, 'reduced'), (e) => e instanceof RangeError && e.message.includes('0.5'));
+  assert.throws(() => taxOn(-1, 'reduced'), { name: 'RangeError', message: /-1/ });
+  assert.throws(() => taxOn(0.5, 'reduced'), { name: 'RangeError', message: /0\.5/ });
 });
 
 test('R3: any other rate asked for is refused with a RangeError naming it', () => {
+  // Rates handed in on purpose, inside the assertion, to prove the refusal R3 names.
+  /** @type {ReadonlyArray<readonly [unknown, string]>} */
   const bad = [
     ['zero ', '"zero "'],
     [' Reduced', '" Reduced"'],
@@ -126,13 +128,9 @@ test('R3: any other rate asked for is refused with a RangeError naming it', () =
     [false, 'false'],
   ];
   for (const [rate, named] of bad) {
-    assert.throws(
-      () => taxOnBad(100, rate),
-      (e) => e instanceof RangeError && e.message.includes(named),
-      `rate ${named}`,
-    );
+    assert.throws(() => taxOn(100, rate), { name: 'RangeError', message: new RegExp(quote(named)) }, `rate ${named}`);
   }
-  assert.throws(() => taxOnBad(100, {}), RangeError);
+  assert.throws(() => taxOn(100, {}), { name: 'RangeError' });
 });
 
 test('R4: the zero rate, asked for by name, gives a tax of 0 pence on any amount', () => {
@@ -142,9 +140,9 @@ test('R4: the zero rate, asked for by name, gives a tax of 0 pence on any amount
 });
 
 test('R2, R4: a bad amount is refused at the zero rate too', () => {
-  assert.throws(() => taxOn(-1, 'zero'), (e) => e instanceof RangeError && /-1\b/.test(e.message));
-  assert.throws(() => taxOn(0.5, 'zero'), (e) => e instanceof RangeError && e.message.includes('0.5'));
-  assert.throws(() => taxOn(NaN, 'zero'), (e) => e instanceof RangeError && e.message.includes('NaN'));
+  assert.throws(() => taxOn(-1, 'zero'), { name: 'RangeError', message: /-1/ });
+  assert.throws(() => taxOn(0.5, 'zero'), { name: 'RangeError', message: /0\.5/ });
+  assert.throws(() => taxOn(NaN, 'zero'), { name: 'RangeError', message: /NaN/ });
 });
 
 test('R5: the detail names the rate used and its whole percent, beside the tax', () => {
@@ -164,14 +162,20 @@ test('R5: the tax in the detail is the tax R1, R3 and R4 give, rounding included
 });
 
 test('R5, R2, R3: the detail refuses what the tax refuses, with the same RangeError', () => {
-  for (const [amount, rate] of [[-1, 'standard'], [0.5, undefined], [NaN, 'zero'], [100, 'Reduced '], [100, 20], [100, null]]) {
-    let expected;
-    try { taxOnBad(amount, rate); } catch (e) { expected = e; }
-    assert.throws(
-      () => taxDetailBad(amount, rate),
-      (e) => e instanceof RangeError && e.message === expected.message,
-      `amount ${amount}, rate ${rate}`,
-    );
+  // For each input taxOn refuses, taxDetail refuses it too: the same RangeError, naming the same bad value.
+  // Bad values are passed on purpose, inside the assertion.
+  /** @type {ReadonlyArray<readonly [number, unknown, RegExp]>} */
+  const cases = [
+    [-1, 'standard', /-1/],
+    [0.5, undefined, /0\.5/],
+    [NaN, 'zero', /NaN/],
+    [100, 'Reduced ', /"Reduced "/],
+    [100, 20, /20/],
+    [100, null, /null/],
+  ];
+  for (const [amount, rate, naming] of cases) {
+    assert.throws(() => taxOn(amount, rate), { name: 'RangeError', message: naming }, `taxOn ${amount}, ${rate}`);
+    assert.throws(() => taxDetail(amount, rate), { name: 'RangeError', message: naming }, `taxDetail ${amount}, ${rate}`);
   }
 });
 
@@ -198,8 +202,8 @@ test('R6, R5: a rate named in any letter case is named back as the rate used, wi
 });
 
 test('R6, R2: a bad amount is still refused, naming the amount, whatever the letter case of the rate', () => {
-  assert.throws(() => taxOn(-1, 'REDUCED'), (e) => e instanceof RangeError && /-1\b/.test(e.message));
-  assert.throws(() => taxDetail(0.5, 'Zero'), (e) => e instanceof RangeError && e.message.includes('0.5'));
+  assert.throws(() => taxOn(-1, 'REDUCED'), { name: 'RangeError', message: /-1/ });
+  assert.throws(() => taxDetail(0.5, 'Zero'), { name: 'RangeError', message: /0\.5/ });
 });
 
 test('R7: the detail gives the label "VAT " followed by the whole percent and a percent sign', () => {
