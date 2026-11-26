@@ -1,7 +1,7 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { toGrams, WEIGHT_UNITS } from '../../src/units/index.mjs';
-/** @import { WeightUnit } from '../../src/units/index.mjs' */
+/** @import { WeightUnit, ToGramsOptions } from '../../src/units/index.mjs' */
 
 /**
  * @param {number} value
@@ -9,6 +9,14 @@ import { toGrams, WEIGHT_UNITS } from '../../src/units/index.mjs';
  * @returns {number}
  */
 const g = (value, unit) => toGrams({ value, unit });
+
+/**
+ * @param {number} value
+ * @param {WeightUnit} unit
+ * @param {ToGramsOptions} [options]
+ * @returns {number}
+ */
+const gm = (value, unit, options) => toGrams({ value, unit }, options);
 
 test('units R1, R3, R5, R7, R8: the four units of R1, stones, tonnes, milligrams and carats are the ones accepted', () => {
   assert.deepEqual([...WEIGHT_UNITS].sort(), ['ct', 'g', 'kg', 'lb', 'mg', 'oz', 'st', 't']);
@@ -314,5 +322,74 @@ test('units R9: weight text is read through one routine — every spelling of a 
   // both surface as the one "not a number and a unit" error, quoting the text
   for (const bad of ['1.2.3 kg', '2 g 3 g', '2 kilo', 'two g', '2 KG', '3.3 gramss']) {
     assert.throws(() => toGrams(bad), { name: 'RangeError', message: new RegExp(JSON.stringify(bad).replace(/[.*+?^${}()|[\]\\]/g, '\\$&')) }, bad);
+  }
+});
+
+test('units R10: options left out, {}, and { mode: "nearest" } all give the R1 nearest rounding (a half upward)', () => {
+  // a sample of weights, each a part-gram that must round to the nearest whole gram
+  /** @type {ReadonlyArray<readonly [number, WeightUnit, number]>} */
+  const cases = [[1, 'oz', 28], [1, 'lb', 454], [2.5, 'lb', 1134], [0.4, 'g', 0], [0.5, 'g', 1],
+    [2500, 'mg', 3], [2499, 'mg', 2], [1, 'ct', 0], [3, 'ct', 1], [1.0005, 'kg', 1001]];
+  for (const [value, unit, grams] of cases) {
+    assert.equal(g(value, unit), grams, `${value} ${unit} default`); // no options: unchanged R1 behaviour
+    assert.equal(gm(value, unit), grams, `${value} ${unit} undefined options`);
+    assert.equal(gm(value, unit, {}), grams, `${value} ${unit} {}`);
+    assert.equal(gm(value, unit, { mode: 'nearest' }), grams, `${value} ${unit} nearest`);
+  }
+});
+
+test('units R10: { mode: "up" } rounds a part-gram up to the next whole gram', () => {
+  assert.equal(gm(1, 'oz', { mode: 'up' }), 29); // 28.349523125 -> 29
+  assert.equal(gm(2.5, 'lb', { mode: 'up' }), 1134); // 1133.980925 -> 1134
+  assert.equal(gm(0.4, 'g', { mode: 'up' }), 1);
+  assert.equal(gm(0.5, 'g', { mode: 'up' }), 1);
+  assert.equal(gm(1, 'ct', { mode: 'up' }), 1); // 0.2 g -> 1
+  assert.equal(gm(2499, 'mg', { mode: 'up' }), 3); // 2.499 g -> 3
+  assert.equal(toGrams('12oz', { mode: 'up' }), 341); // 340.19427750 -> 341, through the text path
+});
+
+test('units R10: { mode: "down" } rounds a part-gram down to the whole gram below', () => {
+  assert.equal(gm(1, 'oz', { mode: 'down' }), 28); // 28.349523125 -> 28
+  assert.equal(gm(1, 'lb', { mode: 'down' }), 453); // 453.59237 -> 453
+  assert.equal(gm(2.5, 'lb', { mode: 'down' }), 1133); // 1133.980925 -> 1133
+  assert.equal(gm(0.5, 'g', { mode: 'down' }), 0);
+  assert.equal(gm(1, 'ct', { mode: 'down' }), 0); // 0.2 g -> 0
+  assert.equal(gm(2500, 'mg', { mode: 'down' }), 2); // 2.5 g -> 2
+  assert.equal(toGrams('12oz', { mode: 'down' }), 340); // 340.19427750 -> 340, through the text path
+});
+
+test('units R10: a whole-gram weight gives the same result under every mode', () => {
+  /** @type {ReadonlyArray<readonly [number, WeightUnit]>} */
+  const whole = [[2, 'kg'], [750, 'g'], [5, 'ct'], [1000, 'mg'], [1, 't']];
+  for (const [value, unit] of whole) {
+    const exact = g(value, unit);
+    assert.equal(gm(value, unit, { mode: 'up' }), exact, `${value} ${unit} up`);
+    assert.equal(gm(value, unit, { mode: 'down' }), exact, `${value} ${unit} down`);
+    assert.equal(gm(value, unit, { mode: 'nearest' }), exact, `${value} ${unit} nearest`);
+  }
+});
+
+test('units R10: a mode that is not "nearest", "up" or "down" gives the nearest rounding, with no error', () => {
+  for (const mode of ['sideways', 'NEAREST', 'Up', 'DOWN', 'round', 'ceil', '', ' up ', 'nearests']) {
+    assert.equal(gm(1, 'oz', { mode }), g(1, 'oz'), `${mode} -> nearest`); // 28, not 29
+    assert.equal(gm(0.5, 'g', { mode }), 1, `${mode} half up`);
+    assert.equal(gm(1, 'ct', { mode }), 0, `${mode} 0.2 g -> 0`);
+  }
+});
+
+test('units R10: bounds — zero and -0 give 0 under every mode', () => {
+  for (const mode of ['nearest', 'up', 'down']) {
+    assert.equal(gm(0, 'kg', { mode }), 0, `0 ${mode}`);
+    assert.ok(Object.is(gm(-0, 'g', { mode }), 0), `-0 ${mode}`);
+    assert.ok(Object.is(gm(0, 'ct', { mode }), 0), `0 ct ${mode}`);
+  }
+});
+
+test('units R10: the modes add no error — a bad weight with any mode still throws the same RangeError', () => {
+  for (const mode of ['nearest', 'up', 'down', 'sideways']) {
+    assert.throws(() => toGrams({ value: -1, unit: 'g' }, { mode }), { name: 'RangeError', message: /-1/ }, mode);
+    assert.throws(() => toGrams({ value: NaN, unit: 'kg' }, { mode }), { name: 'RangeError', message: /NaN/ }, mode);
+    assert.throws(() => toGrams({ value: 1, unit: 'KG' }, { mode }), { name: 'RangeError', message: /"KG"/ }, mode);
+    assert.throws(() => toGrams('2.5 stonez', { mode }), { name: 'RangeError', message: /stonez/ }, mode);
   }
 });
