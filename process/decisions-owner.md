@@ -41,11 +41,12 @@ Rule now: as the owner's words below.
 Shown to the owner: 19 Nov 2026.
 
 ## Stopping work
-Rule now: as the owner's latest words below; development is stopped, to restart under another Claude account.
+Rule now: as the owner's latest words below; development is halted (stop in force since 26 Nov 2026), lifted only on his word.
 - 19 Nov 2026: "Instruction: stop all work"
 - 19 Nov 2026: "Instruction: confirm that the trial development process is updated to the newly updated version of process4. If it is, then restart trial development under this updated process"
 - 20 Nov 2026: "Instruction: stop development and prepare for development to restart under another Claude account."
-Shown to the owner: 20 Nov 2026.
+- 26 Nov 2026: "Decision: halt development"
+Shown to the owner: 26 Nov 2026.
 
 ## The move during the stop
 Rule now: as the owner's words below, his answer to the coordinator's question "Letting ARCH make the switch while work is stopped", whose option A is that ARCH makes only the move to the new version while the stop stands. He typed them in the coordinator's session and again in ARCH's session.
