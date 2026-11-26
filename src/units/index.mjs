@@ -59,19 +59,39 @@ const readWeightText = (text) => {
 const show = (v) => (typeof v === 'number' ? String(v) : JSON.stringify(v) ?? String(v));
 
 /**
- * Converts a weight to whole grams, rounded to the nearest gram (a half rounds up).
+ * How toGrams rounds a part-gram.
+ * @typedef {Object} ToGramsOptions
+ * @property {string} [mode] the rounding direction
+ * @bound mode: 'nearest' (the default, a half upward), 'up' (to the next whole gram) or 'down' (to the whole gram below); mode left out, and any other value, both give the 'nearest' rounding, with no error
+ */
+
+/**
+ * Rounds an exact gram value to a whole number of grams in the named direction.
+ * Any mode but 'up' or 'down' (including undefined) rounds to the nearest gram, a half upward.
+ * @param {number} exact a finite number, zero or more
+ * @param {string} [mode]
+ * @returns {number}
+ */
+const roundGrams = (exact, mode) => (mode === 'up' ? Math.ceil(exact) : mode === 'down' ? Math.floor(exact) : Math.round(exact)) + 0; // + 0 turns -0 into 0
+
+/**
+ * Converts a weight to whole grams. By default, and with { mode: 'nearest' }, it rounds to the nearest
+ * gram (a half rounds up), as R1 says; with { mode: 'up' } it rounds a part-gram up to the next whole gram,
+ * and with { mode: 'down' } down to the whole gram below. Options left out, and a mode that is not 'nearest',
+ * 'up' or 'down', both give the 'nearest' rounding, with no error.
  * A weight may be given as text such as "2.5 kg", "12oz", "0.01 t", "2500 mg", "50 ct" or "2 Kilograms".
  * @param {Weight | string} weight
+ * @param {ToGramsOptions} [options]
  * @returns {number}
  * @bound weight: as text, a number (digits with an optional decimal point and sign), optional spaces, then one of WEIGHT_UNITS exactly as written or a unit's full name singular or plural in any letter case (milligram, gram, kilogram, ounce, pound, stone, tonne, carat), nothing else
  * @bound returns: whole number of grams, zero or more
  * @throws {RangeError} when the weight is text of any other form (the message quotes it), is neither text nor an object, its value is negative or not a finite number, or its unit is not one of WEIGHT_UNITS; the message names the bad value or unit
  */
-export function toGrams(weight) {
+export function toGrams(weight, options) {
   if (typeof weight === 'string') {
     const parsed = readWeightText(weight);
     if (parsed === undefined) throw new RangeError(`weight text is not a number and a unit: ${JSON.stringify(weight)}`);
-    return toGrams(parsed);
+    return toGrams(parsed, options);
   }
   if (typeof weight !== 'object' || weight === null) throw new RangeError(`weight is not text or an object with a value and a unit: ${show(weight)}`);
   /** @type {Weight} checks a Weight */
@@ -83,5 +103,5 @@ export function toGrams(weight) {
   if (value < 0) throw new RangeError(`weight is negative: ${value}`);
   // Fifteen significant digits remove binary noise such as 1.0005 * 1000 = 1000.4999999999999.
   const exact = Number((value * GRAMS_PER[unit]).toPrecision(15));
-  return Math.round(exact) + 0; // + 0 turns -0 into 0
+  return roundGrams(exact, options?.mode);
 }
