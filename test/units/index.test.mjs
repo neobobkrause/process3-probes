@@ -1,10 +1,14 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { toGrams, WEIGHT_UNITS } from '../../src/units/index.mjs';
+/** @import { WeightUnit } from '../../src/units/index.mjs' */
 
+/**
+ * @param {number} value
+ * @param {WeightUnit} unit
+ * @returns {number}
+ */
 const g = (value, unit) => toGrams({ value, unit });
-/** toGrams called with values outside its stated kind, to show R2 refuses them. @type {(weight?: any) => number} */
-const toGramsOfAnything = toGrams;
 
 test('units R1, R3, R5, R7, R8: the four units of R1, stones, tonnes, milligrams and carats are the ones accepted', () => {
   assert.deepEqual([...WEIGHT_UNITS].sort(), ['ct', 'g', 'kg', 'lb', 'mg', 'oz', 'st', 't']);
@@ -26,9 +30,9 @@ test('units R1: rounds to the nearest gram, a half upward', () => {
   assert.equal(g(1.0005, 'kg'), 1001); // 1000.5 despite binary noise
   assert.equal(g(1.0004, 'kg'), 1000);
   assert.equal(g(0.5, 'oz'), 14); // 14.17
-  for (const [a, u] of [[3.3, 'kg'], [7, 'oz'], [0.1, 'lb'], [123.456, 'g']]) {
-    assert.ok(Number.isInteger(g(a, u)), `${a} ${u}`);
-  }
+  /** @type {ReadonlyArray<readonly [number, WeightUnit]>} */
+  const cases = [[3.3, 'kg'], [7, 'oz'], [0.1, 'lb'], [123.456, 'g']];
+  for (const [a, u] of cases) assert.ok(Number.isInteger(g(a, u)), `${a} ${u}`);
 });
 
 test('units R1: bounds — zero is accepted and gives 0, large finite weights convert', () => {
@@ -49,16 +53,16 @@ test('units R2: a weight that is not a finite number is refused with a RangeErro
   assert.throws(() => g('5', 'g'), { name: 'RangeError', message: /"5"/ });
   assert.throws(() => g(undefined, 'g'), { name: 'RangeError', message: /undefined/ });
   assert.throws(() => g(null, 'g'), { name: 'RangeError', message: /null/ });
-  assert.throws(() => toGramsOfAnything(5), { name: 'RangeError', message: /5/ });
-  assert.throws(() => toGramsOfAnything(null), { name: 'RangeError', message: /null/ });
-  assert.throws(() => toGramsOfAnything(), { name: 'RangeError', message: /undefined/ });
+  assert.throws(() => toGrams(5), { name: 'RangeError', message: /5/ });
+  assert.throws(() => toGrams(null), { name: 'RangeError', message: /null/ });
+  assert.throws(() => toGrams(), { name: 'RangeError', message: /undefined/ });
 });
 
 test('units R2: a unit not named in R1 is refused with a RangeError naming the unit', () => {
   assert.throws(() => g(1, 'stone'), { name: 'RangeError', message: /"stone"/ });
   assert.throws(() => g(1, 'KG'), { name: 'RangeError', message: /"KG"/ });
   assert.throws(() => g(1, 'toString'), { name: 'RangeError', message: /"toString"/ });
-  assert.throws(() => toGramsOfAnything({ value: 1 }), { name: 'RangeError', message: /undefined/ });
+  assert.throws(() => toGrams({ value: 1 }), { name: 'RangeError', message: /undefined/ });
   assert.throws(() => g(1, 1000), { name: 'RangeError', message: /1000/ });
 });
 
@@ -153,10 +157,11 @@ test('units R5, R2: a bad weight in tonnes is still refused, naming the value or
 });
 
 test('units R6, R7, R8: each unit named in full, singular or plural, converts as R4 says', () => {
-  const names = { mg: ['milligram', 'milligrams'], g: ['gram', 'grams'], kg: ['kilogram', 'kilograms'], oz: ['ounce', 'ounces'],
-    lb: ['pound', 'pounds'], st: ['stone', 'stones'], t: ['tonne', 'tonnes'], ct: ['carat', 'carats'] };
-  assert.deepEqual(Object.keys(names).sort(), [...WEIGHT_UNITS].sort());
-  for (const [u, words] of Object.entries(names)) {
+  /** @type {ReadonlyArray<readonly [WeightUnit, string, string]>} */
+  const named = [['mg', 'milligram', 'milligrams'], ['g', 'gram', 'grams'], ['kg', 'kilogram', 'kilograms'], ['oz', 'ounce', 'ounces'],
+    ['lb', 'pound', 'pounds'], ['st', 'stone', 'stones'], ['t', 'tonne', 'tonnes'], ['ct', 'carat', 'carats']];
+  assert.deepEqual(named.map(([u]) => u).sort(), [...WEIGHT_UNITS].sort());
+  for (const [u, ...words] of named) {
     for (const w of words) assert.equal(toGrams(`3.3 ${w}`), toGrams(`3.3 ${u}`), w);
   }
   assert.equal(toGrams('2 Kilograms'), 2000);

@@ -31,12 +31,20 @@ const UNIT_NAMES = Object.freeze({
 const WEIGHT_TEXT = /^([+-]?(?:\d+(?:\.\d*)?|\.\d+)) *([A-Za-z]+)$/;
 
 /**
- * The unit a word of weight text names: one of WEIGHT_UNITS exactly as written, or a full name in any letter case.
+ * Whether a word is one of the unit symbols (a key of GRAMS_PER) exactly as written.
  * @param {string} word
+ * @returns {word is WeightUnit}
+ */
+const isUnitSymbol = (word) => Object.hasOwn(GRAMS_PER, word);
+
+/**
+ * The unit a word of weight text names: one of WEIGHT_UNITS exactly as written, or a full name in any letter case.
+ * @param {string | undefined} word
  * @returns {WeightUnit | undefined}
  */
 const unitOfWord = (word) => {
-  if (Object.hasOwn(GRAMS_PER, word)) return /** @type {WeightUnit} */ (word);
+  if (word === undefined) return undefined;
+  if (isUnitSymbol(word)) return word;
   const lower = word.toLowerCase();
   return Object.hasOwn(UNIT_NAMES, lower) ? UNIT_NAMES[lower] : undefined;
 };
