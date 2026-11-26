@@ -1,6 +1,6 @@
 {
   "module": "units",
-  "written": {"commit":"8159c7c2d02d546f4387421e81036dd4b007e204","tool":"3a1824af07e2b4ccc1ce1b13ec3ec5b35b5e691d"},
+  "written": {"commit":"82900f5b16f561872ecfbaeafb4aa383332cfc0d","tool":"3a1824af07e2b4ccc1ce1b13ec3ec5b35b5e691d"},
   "providers": [],
   "uses": [],
   "outside": [],
@@ -15,7 +15,6 @@
     {"package":"node","facility":"Math"},
     {"package":"node","facility":"Math.ceil"},
     {"package":"node","facility":"Math.floor"},
-    {"package":"node","facility":"Math.round"},
     {"package":"node","facility":"NaN"},
     {"package":"node","facility":"node:test.test"},
     {"package":"node","facility":"NodeAssert.deepEqual"},
